@@ -78,6 +78,7 @@
             this.Controls.Add(this.RequestCommentsTextBox);
             this.Name = "RequestUserControl";
             this.Size = new System.Drawing.Size(600, 300);
+            this.Load += new System.EventHandler(this.RequestUserControl_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

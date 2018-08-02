@@ -17,9 +17,14 @@ namespace EXOFiddlerInspector
             InitializeComponent();
         }
 
+        private void RequestUserControl_Load(object sender, EventArgs e)
+        {
+
+        }
+
         //public static implicit operator RequestUserControl(ResponseUserControl v)
         //{
-         //   throw new NotImplementedException();
+        //   throw new NotImplementedException();
         //}
     }
 }

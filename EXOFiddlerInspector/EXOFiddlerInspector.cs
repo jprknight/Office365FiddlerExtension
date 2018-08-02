@@ -1,11 +1,46 @@
 ﻿using System.Windows.Forms;
 using Fiddler;
 
-[assembly: Fiddler.RequiredVersion("4.4.5.1")]
-
 namespace EXOFiddlerInspector
 {
-    public class EXOFiddlerRequestInspector : Inspector2, IRequestInspector2
+    // Base class, generic inspector, common between request and response
+    public class EXOBaseFiddlerInspector : Inspector2
+    {
+        private byte[] _body;
+        private bool _readOnly;
+
+        internal byte[] rawBody;
+
+        public bool bDirty
+        {
+            get { return false; }
+        }
+
+        public bool bReadOnly
+        {
+            get
+            {
+                return _readOnly;
+            }
+            set
+            {
+                _readOnly = value;
+            }
+        }
+
+        public override void AddToTab(TabPage o)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override int GetOrder()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+
+    public class RequestInspector : EXOBaseFiddlerInspector, IRequestInspector2
     {
         
 
@@ -23,7 +58,7 @@ namespace EXOFiddlerInspector
         public override void AddToTab(TabPage o)
         {
             _displayControl = new RequestUserControl();
-            o.Text = "ExchangeRequest";
+            o.Text = "Exchange Request";
             o.ToolTipText = "Exchange Online Inspector";
             o.Controls.Add(_displayControl);
             o.Controls[0].Dock = DockStyle.Fill;
@@ -89,26 +124,32 @@ namespace EXOFiddlerInspector
         }
     }
 
-    public class EXOFiddlerInspector : EXOFiddlerRequestInspector, IResponseInspector2
+    public class ResponseInspector : EXOBaseFiddlerInspector, IResponseInspector2
     {
 
-        private bool _readOnly;
-        HTTPResponseHeaders _headers;
-        private byte[] _body;
-        ResponseUserControl _displayControl2;
+        //private bool _readOnly;
+        //HTTPResponseHeaders _headers;
+        //private byte[] _body;
+        ResponseUserControl _displayControl;
 
-
-
-        public override void AddToTab(TabPage o2)
-        {
-            _displayControl2 = new ResponseUserControl();
-            o2.Text = "ExchangeResponse";
-            o2.ToolTipText = "Exchange Online Inspector";
-            o2.Controls.Add(_displayControl2);
-            o2.Controls[0].Dock = DockStyle.Fill;
-        }
+        private HTTPResponseHeaders responseHeaders;
 
         public HTTPResponseHeaders headers
+        {
+            get { return responseHeaders; }
+            set { responseHeaders = value; }
+        }
+
+        public override void AddToTab(TabPage o)
+        {
+            _displayControl = new ResponseUserControl();
+            o.Text = "Exchange Response";
+            o.ToolTipText = "Exchange Online Inspector";
+            o.Controls.Add(_displayControl);
+            o.Controls[0].Dock = DockStyle.Fill;
+        }
+
+        /*public HTTPResponseHeaders headers
         {
             get
             {
@@ -125,11 +166,41 @@ namespace EXOFiddlerInspector
                 }
                 //_displayControl.Headers = httpHeaders;
             }
+        }*/
+
+        //HTTPResponseHeaders IResponseInspector2.headers { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        //byte[] IBaseInspector2.body { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
+        public byte[] body
+        {
+            get { return rawBody; }
+            set
+            {
+                /*if (isAlchemyRequest(responseHeaders) && Convert.ToUInt32(responseHeaders["X-ResponseCode"]) == 0)
+                {
+                    AlchemyTab.Clear();
+                    AlchemyTab.AppendLine("X-RequestType:  " + responseHeaders["X-RequestType"]);
+                    AlchemyTab.AppendLine("X-ResponseCode: " + responseHeaders["X-ResponseCode"]);
+                    AlchemyTab.AppendLine("\r\n" + ropHandler.handleResponse(value));
+                }
+                else
+                {
+                    AlchemyTab.SetText("X-RequestType: " + responseHeaders["X-RequestType"] + "\r\n\r\nRequest type not yet implemented.");
+                }*/
+            }
         }
+
+
+        //bool IBaseInspector2.bReadOnly { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         public override int GetOrder()
         {
             return 0;
+        }
+
+        void IBaseInspector2.Clear()
+        {
+            throw new System.NotImplementedException();
         }
     }
 

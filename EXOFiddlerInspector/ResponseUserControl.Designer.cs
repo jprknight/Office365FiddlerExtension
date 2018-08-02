@@ -36,7 +36,7 @@
             // 
             // ResponseBodyTextBox
             // 
-            this.ResponseBodyTextBox.Location = new System.Drawing.Point(7, 163);
+            this.ResponseBodyTextBox.Location = new System.Drawing.Point(3, 160);
             this.ResponseBodyTextBox.Multiline = true;
             this.ResponseBodyTextBox.Name = "ResponseBodyTextBox";
             this.ResponseBodyTextBox.Size = new System.Drawing.Size(587, 125);
@@ -45,7 +45,7 @@
             // ResponseBodyLabel
             // 
             this.ResponseBodyLabel.AutoSize = true;
-            this.ResponseBodyLabel.Location = new System.Drawing.Point(7, 147);
+            this.ResponseBodyLabel.Location = new System.Drawing.Point(3, 144);
             this.ResponseBodyLabel.Name = "ResponseBodyLabel";
             this.ResponseBodyLabel.Size = new System.Drawing.Size(82, 13);
             this.ResponseBodyLabel.TabIndex = 6;
@@ -54,7 +54,7 @@
             // ResponseCommentLabel
             // 
             this.ResponseCommentLabel.AutoSize = true;
-            this.ResponseCommentLabel.Location = new System.Drawing.Point(7, 3);
+            this.ResponseCommentLabel.Location = new System.Drawing.Point(3, 0);
             this.ResponseCommentLabel.Name = "ResponseCommentLabel";
             this.ResponseCommentLabel.Size = new System.Drawing.Size(107, 13);
             this.ResponseCommentLabel.TabIndex = 5;
@@ -62,7 +62,7 @@
             // 
             // ResponseCommentsTextBox
             // 
-            this.ResponseCommentsTextBox.Location = new System.Drawing.Point(10, 19);
+            this.ResponseCommentsTextBox.Location = new System.Drawing.Point(6, 16);
             this.ResponseCommentsTextBox.Multiline = true;
             this.ResponseCommentsTextBox.Name = "ResponseCommentsTextBox";
             this.ResponseCommentsTextBox.Size = new System.Drawing.Size(584, 125);
