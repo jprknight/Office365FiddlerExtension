@@ -37,23 +37,48 @@ namespace EXOFiddlerInspector
         {
             throw new System.NotImplementedException();
         }
+
+        // Double click on a session to highlight inpsector.
+        /*public override int ScoreForSession(Session oS)
+        {
+            if (oS.fullUrl.Contains("autodiscover"))
+            {
+                return 100;
+                
+            }
+            else if (oS.hostname.Contains("autodiscover"))
+            {
+                return 100;
+            }
+            else if (oS.url.Contains("outlook"))
+            {
+                return 100;
+            }
+            else if (oS.fullUrl.Contains("GetUserAvailability"))
+            {
+                return 100;
+            }
+            else if (oS.LocalProcess.Contains("outlook")){
+                return 100;
+            }
+            else
+            {
+                return 0;
+            }
+        }*/
     }
 
-
+    // Request class, inherits the generic class above, only defines things specific or different from the base class
     public class RequestInspector : EXOBaseFiddlerInspector, IRequestInspector2
     {
-        
 
         //    oS.utilDecodeRequest();
         //    oS.utilDecodeResponse();
-        
+
         private bool _readOnly;
         HTTPRequestHeaders _headers;
         private byte[] _body;
         RequestUserControl _displayControl;
-
-        
-
 
         public override void AddToTab(TabPage o)
         {
@@ -69,17 +94,26 @@ namespace EXOFiddlerInspector
             get
             {
                 return _headers;
+
             }
             set
             {
-                _headers = value;
+                /*_headers = value;
                 System.Collections.Generic.Dictionary<string, string> httpHeaders =
                     new System.Collections.Generic.Dictionary<string, string>();
                 foreach (var item in headers)
                 {
                     httpHeaders.Add(item.Name, item.Value);
-                }
+                }*/
                 //_displayControl.Headers = httpHeaders;
+
+            }
+        }
+
+        public void Sessions(Session oS)
+        {
+            if (oS.fullUrl.Contains("autodiscover-s.outlook.com")) {
+                _displayControl.Text = "365 Autodiscover";
             }
         }
 
@@ -124,14 +158,10 @@ namespace EXOFiddlerInspector
         }
     }
 
+    // Response class, same as request class except for responses
     public class ResponseInspector : EXOBaseFiddlerInspector, IResponseInspector2
     {
-
-        //private bool _readOnly;
-        //HTTPResponseHeaders _headers;
-        //private byte[] _body;
         ResponseUserControl _displayControl;
-
         private HTTPResponseHeaders responseHeaders;
 
         public HTTPResponseHeaders headers
@@ -148,6 +178,8 @@ namespace EXOFiddlerInspector
             o.Controls.Add(_displayControl);
             o.Controls[0].Dock = DockStyle.Fill;
         }
+
+     
 
         /*public HTTPResponseHeaders headers
         {
@@ -176,6 +208,7 @@ namespace EXOFiddlerInspector
             get { return rawBody; }
             set
             {
+                
                 /*if (isAlchemyRequest(responseHeaders) && Convert.ToUInt32(responseHeaders["X-ResponseCode"]) == 0)
                 {
                     AlchemyTab.Clear();

@@ -19,8 +19,15 @@ namespace EXOFiddlerInspector
 
         private void RequestUserControl_Load(object sender, EventArgs e)
         {
-
+            
         }
+
+        public void SetRequestCommentsTextBoxText(string txt)
+        {
+            this.RequestCommentsTextBox.Text = txt;
+        }
+
+         
 
         //public static implicit operator RequestUserControl(ResponseUserControl v)
         //{
