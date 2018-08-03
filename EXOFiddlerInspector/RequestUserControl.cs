@@ -17,21 +17,38 @@ namespace EXOFiddlerInspector
             InitializeComponent();
         }
 
+        // Code to write to RequestHostTextBoxTextBox.Text value.
+        internal void SetRequestHostTextBox(string txt)
+        {
+            RequestHostTextBox.Text = txt;
+        }
+
+        // Code to write to RequestURLTextBox.Text value.
+        internal void SetRequestURLTextBox(string txt)
+        {
+            RequestURLTextBox.Text = txt;
+        }
+
+        // Code to write to RequestTypeTextBox.Text value.
+        internal void SetRequestTypeTextBox(string txt)
+        {
+            RequestTypeTextBox.Text = txt;
+        }
+
+        // Code to write to RequestTypeTextBox.Text value.
+        internal void SetRequestProcessTextBox(string txt)
+        {
+            RequestProcessTextBox.Text = txt;
+        }
+
         private void RequestUserControl_Load(object sender, EventArgs e)
         {
             
         }
 
-        public void SetRequestCommentsTextBoxText(string txt)
+        private void RequestHostTextBox_TextChanged(object sender, EventArgs e)
         {
-            this.RequestCommentsTextBox.Text = txt;
+
         }
-
-         
-
-        //public static implicit operator RequestUserControl(ResponseUserControl v)
-        //{
-        //   throw new NotImplementedException();
-        //}
     }
 }

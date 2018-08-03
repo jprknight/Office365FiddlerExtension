@@ -11,6 +11,8 @@ namespace EXOFiddlerInspector
 
         internal byte[] rawBody;
 
+        internal Session session { get; set; }
+
         public bool bDirty
         {
             get { return false; }
@@ -39,9 +41,11 @@ namespace EXOFiddlerInspector
         }
 
         // Double click on a session to highlight inpsector.
-        /*public override int ScoreForSession(Session oS)
+        public override int ScoreForSession(Session oS)
         {
-            if (oS.fullUrl.Contains("autodiscover"))
+            this.session = oS;
+
+            if (oS.url.Contains("autodiscover"))
             {
                 return 100;
                 
@@ -54,7 +58,7 @@ namespace EXOFiddlerInspector
             {
                 return 100;
             }
-            else if (oS.fullUrl.Contains("GetUserAvailability"))
+            else if (oS.url.Contains("GetUserAvailability"))
             {
                 return 100;
             }
@@ -65,7 +69,14 @@ namespace EXOFiddlerInspector
             {
                 return 0;
             }
-        }*/
+        }
+        public override void AssignSession(Session oS)
+        {
+            this.session = oS;
+
+            base.AssignSession(oS);
+        }
+
     }
 
     // Request class, inherits the generic class above, only defines things specific or different from the base class
@@ -110,11 +121,40 @@ namespace EXOFiddlerInspector
             }
         }
 
-        public void Sessions(Session oS)
+ /*       public void Sessions(Session oS)
         {
             if (oS.fullUrl.Contains("autodiscover-s.outlook.com")) {
                 _displayControl.Text = "365 Autodiscover";
             }
+        }
+*/
+        public void SetRequestValues(Session oS)
+        {
+            // Write HTTP Status Code Text box, convert int to string.
+            _displayControl.SetRequestHostTextBox(oS.hostname);
+
+            // Write Request URL Text box.
+            _displayControl.SetRequestURLTextBox(oS.url);
+
+            if (oS.fullUrl.Contains("outlook.office365.com/mapi")) { _displayControl.SetRequestTypeTextBox("EXO MAPI"); }
+            else if (oS.fullUrl.Contains("outlook.office365.com/EWS")) { _displayControl.SetRequestTypeTextBox("EXO EWS"); }
+            else if (oS.fullUrl.Contains("autodiscover-s.outlook.com")) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
+            else if (oS.fullUrl.Contains("onmicrosoft.com/autodiscover")) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
+            else if (oS.utilFindInRequest("autodiscover", false) > 1 && oS.utilFindInRequest("onmicrosoft.com", false) > 1) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
+            else if (oS.fullUrl.Contains("autodiscover") && (oS.fullUrl.Contains(".onmicrosoft.com"))) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
+            else if (oS.fullUrl.Contains("autodiscover")) { _displayControl.SetRequestTypeTextBox("Autodiscover"); }
+            else if (oS.fullUrl.Contains("GetUserAvailability")) { _displayControl.SetRequestTypeTextBox("Free/Busy"); }
+            else if (oS.fullUrl.Contains(".onmicrosoft.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
+            else if (oS.fullUrl.Contains("outlook.office365.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
+            else if (oS.fullUrl.Contains("outlook.office.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
+            else if (oS.LocalProcess.Contains("outlook")) { _displayControl.SetRequestTypeTextBox("Something Outlook"); }
+            else if (oS.LocalProcess.Contains("iexplore")) { _displayControl.SetRequestTypeTextBox("Something Internet Explorer"); }
+            else if (oS.LocalProcess.Contains("chrome")) { _displayControl.SetRequestTypeTextBox("Something Chrome"); }
+            else if (oS.LocalProcess.Contains("firefox")) { _displayControl.SetRequestTypeTextBox("Something Firefox"); }
+            else { _displayControl.SetRequestTypeTextBox("Not Exchange"); }
+
+            // Set Request Process Textbox.
+            _displayControl.SetRequestProcessTextBox(oS.LocalProcess);
         }
 
         public void Clear()
@@ -153,6 +193,7 @@ namespace EXOFiddlerInspector
             set
             {
                 _body = value;
+                SetRequestValues(this.session);
                 //_displayControl.Body = body;
             }
         }
@@ -163,11 +204,59 @@ namespace EXOFiddlerInspector
     {
         ResponseUserControl _displayControl;
         private HTTPResponseHeaders responseHeaders;
+        //private int oResponseCode;
 
         public HTTPResponseHeaders headers
         {
             get { return responseHeaders; }
-            set { responseHeaders = value; }
+            set { responseHeaders = value;
+            }
+        }
+
+        public void SetResponseComments (Session oS)
+        {
+            // Write HTTP Status Code Text box, convert int to string.
+            _displayControl.SetHTTPResponseCodeTextBoxText(oS.responseCode.ToString());
+
+            // Write Client Begin Request into textbox
+            _displayControl.SetRequestBeginTimeTextBox(oS.Timers.ClientBeginRequest.ToString("H:mm:ss.ffff"));
+
+            // Write Client End Request into textbox
+            _displayControl.SetRequestEndTimeTextBox(oS.Timers.ClientDoneResponse.ToString("H:mm:ss.ffff"));
+
+            // Write Elapsed Time into textbox.
+            _displayControl.SetElapsedTimeTextBox(oS.oResponse.iTTLB + "ms");
+
+            // Clear any previous data.
+            _displayControl.SetResponseCommentsTextBoxText("");
+            _displayControl.SetResponseAlertTextBox("");
+
+            // Write Response Alert into Textbox.
+
+            if (oS.responseCode == 403)
+            {
+                if (oS.utilFindInResponse("Access Denied", false) > 1)
+                {
+                    _displayControl.SetResponseAlertTextBox("Panic Stations!!!");
+                    _displayControl.SetResponseCommentsTextBoxText("Is your firewall is blocking Outlook?.");
+                }
+            }
+            else if (oS.responseCode == 502)
+            {
+                if (oS.utilFindInResponse("autodiscover", false) > 1)
+                {
+                    if (oS.utilFindInResponse("target machine actively refused it", false) > 1)
+                    {
+                        if (oS.utilFindInResponse(":443", false) > 1)
+                        {
+                            //oS["ui-backcolor"] = "green";
+                            //oS["ui-color"] = "black";
+                            _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
+                            _displayControl.SetResponseCommentsTextBoxText("False Positive: By design Office 365 Autodiscover does not respond to say autodiscover.contoso.onmicrosoft.com on port 443. Validate this message by confirming this is an Office 365 IP address and a telnet to the IP address on port 80.");
+                        }
+                    }
+                }
+            }
         }
 
         public override void AddToTab(TabPage o)
@@ -179,7 +268,7 @@ namespace EXOFiddlerInspector
             o.Controls[0].Dock = DockStyle.Fill;
         }
 
-     
+
 
         /*public HTTPResponseHeaders headers
         {
@@ -189,6 +278,7 @@ namespace EXOFiddlerInspector
             }
             set
             {
+                
                 _headers = value;
                 System.Collections.Generic.Dictionary<string, string> httpHeaders =
                     new System.Collections.Generic.Dictionary<string, string>();
@@ -208,7 +298,10 @@ namespace EXOFiddlerInspector
             get { return rawBody; }
             set
             {
+
+                SetResponseComments(this.session);
                 
+
                 /*if (isAlchemyRequest(responseHeaders) && Convert.ToUInt32(responseHeaders["X-ResponseCode"]) == 0)
                 {
                     AlchemyTab.Clear();
