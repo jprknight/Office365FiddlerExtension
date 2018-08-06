@@ -35,7 +35,7 @@ namespace EXOFiddlerInspector
             RequestTypeTextBox.Text = txt;
         }
 
-        // Code to write to RequestTypeTextBox.Text value.
+        // Code to write to RequestProcessTextBox.Text value.
         internal void SetRequestProcessTextBox(string txt)
         {
             RequestProcessTextBox.Text = txt;

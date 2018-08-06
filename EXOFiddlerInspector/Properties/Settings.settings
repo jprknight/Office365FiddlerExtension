@@ -1,0 +1,20 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EXOFiddlerInspector.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="HTTP502AutodiscoverFalsePositive" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">False Positive: By design Office 365 Autodiscover does not respond to autodiscover.contoso.onmicrosoft.com for example on port 443. Validate this message by confirming this is an Office 365 IP address and perform a telnet to the IP address on port 80.
+</Value>
+    </Setting>
+    <Setting Name="HTTP403WebProxyBlockingOutlook" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Is your firewall or web proxy blocking Outlook connectivity? Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked? To fire this message a HTTP 403 response code was detected 
+and "Access Denied" was found in the response body.</Value>
+    </Setting>
+    <Setting Name="HTTP503FederatedSTSUnavailable" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">The fedeation service is unreachable or unavailable. Check the Raw tab for additional details.</Value>
+    </Setting>
+    <Setting Name="HTTPStatusCodesURL" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://en.wikipedia.org/wiki/List_of_HTTP_status_codes</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

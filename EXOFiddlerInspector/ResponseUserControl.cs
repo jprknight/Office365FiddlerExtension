@@ -28,6 +28,12 @@ namespace EXOFiddlerInspector
             ResponseCommentsTextBox.Text = txt;
         }
 
+        // Code to write to ResponseProcessTextBox.Text value.
+        internal void SetResponseProcessTextBox(string txt)
+        {
+            ResponseProcessTextBox.Text = txt;
+        }
+
         // Code to write to HTTPResponseCodeTextBox.Text value.
         internal void SetHTTPResponseCodeTextBoxText(string txt)
         {
@@ -53,7 +59,7 @@ namespace EXOFiddlerInspector
         }
 
         // Code to write to TimeElapsedTextBox.Text value.
-        internal void SetElapsedTimeTextBox(string txt)
+        internal void SetResponseElapsedTimeTextBox(string txt)
         {
             ElapsedTimeTextBox.Text = txt;
         }
@@ -84,7 +90,7 @@ namespace EXOFiddlerInspector
             HTTPStatusCodeLinkLabel.LinkVisited = true;
             //Call the Process.Start method to open the default browser   
             //with a URL:  
-            System.Diagnostics.Process.Start("https://en.wikipedia.org/wiki/List_of_HTTP_status_codes");
+            System.Diagnostics.Process.Start(Properties.Settings.Default.HTTPStatusCodesURL);
         }
 
         private void HTTPResponseCodeTextBox_TextChanged(object sender, EventArgs e)
@@ -153,8 +159,6 @@ namespace EXOFiddlerInspector
                 case "402": HTTPStatusDescriptionTextBox.Text = "Payment Required";
                     break;
                 case "403": HTTPStatusDescriptionTextBox.Text = "Forbidden";
-                    HTTPResponseCodeTextBox.BackColor = System.Drawing.Color.Red;
-                    HTTPStatusDescriptionTextBox.BackColor = System.Drawing.Color.Red;
                     break;
                 case "404": HTTPStatusDescriptionTextBox.Text = "Not Found";
                     break;
@@ -210,56 +214,30 @@ namespace EXOFiddlerInspector
                     break;
                 //5xx Server Errors.
                 case "500": HTTPStatusDescriptionTextBox.Text = "Internal Server Error";
-                    HTTPResponseCodeTextBox.BackColor = System.Drawing.Color.Red;
-                    HTTPStatusDescriptionTextBox.BackColor = System.Drawing.Color.Red;
                     break;
                 case "501": HTTPStatusDescriptionTextBox.Text = "Not Implemented";
-                    HTTPResponseCodeTextBox.BackColor = System.Drawing.Color.Red;
-                    HTTPStatusDescriptionTextBox.BackColor = System.Drawing.Color.Red;
                     break;
                 case "502": HTTPStatusDescriptionTextBox.Text = "Bad Gateway";
-                    HTTPResponseCodeTextBox.BackColor = System.Drawing.Color.Red;
-                    HTTPStatusDescriptionTextBox.BackColor = System.Drawing.Color.Red;
                     break;
                 case "503": HTTPStatusDescriptionTextBox.Text = "Service Unavailable";
-                    HTTPResponseCodeTextBox.BackColor = System.Drawing.Color.Red;
-                    HTTPStatusDescriptionTextBox.BackColor = System.Drawing.Color.Red;
                     break;
                 case "504": HTTPStatusDescriptionTextBox.Text = "Gateway Timeout";
-                    HTTPResponseCodeTextBox.BackColor = System.Drawing.Color.Red;
-                    HTTPStatusDescriptionTextBox.BackColor = System.Drawing.Color.Red;
                     break;
                 case "505": HTTPStatusDescriptionTextBox.Text = "HTTP Version Not Supported";
-                    HTTPResponseCodeTextBox.BackColor = System.Drawing.Color.Red;
-                    HTTPStatusDescriptionTextBox.BackColor = System.Drawing.Color.Red;
                     break;
                 case "506": HTTPStatusDescriptionTextBox.Text = "Variant Also Negotiates";
-                    HTTPResponseCodeTextBox.BackColor = System.Drawing.Color.Red;
-                    HTTPStatusDescriptionTextBox.BackColor = System.Drawing.Color.Red;
                     break;
                 case "507": HTTPStatusDescriptionTextBox.Text = "Insufficient Storage";
-                    HTTPResponseCodeTextBox.BackColor = System.Drawing.Color.Red;
-                    HTTPStatusDescriptionTextBox.BackColor = System.Drawing.Color.Red;
                     break;
                 case "508": HTTPStatusDescriptionTextBox.Text = "Loop Detected";
-                    HTTPResponseCodeTextBox.BackColor = System.Drawing.Color.Red;
-                    HTTPStatusDescriptionTextBox.BackColor = System.Drawing.Color.Red;
                     break;
                 case "510": HTTPStatusDescriptionTextBox.Text = "Not Extended";
-                    HTTPResponseCodeTextBox.BackColor = System.Drawing.Color.Red;
-                    HTTPStatusDescriptionTextBox.BackColor = System.Drawing.Color.Red;
                     break;
                 case "511": HTTPStatusDescriptionTextBox.Text = "Network Authentication Required";
-                    HTTPResponseCodeTextBox.BackColor = System.Drawing.Color.Red;
-                    HTTPStatusDescriptionTextBox.BackColor = System.Drawing.Color.Red;
                     break;
                 case "599": HTTPStatusDescriptionTextBox.Text = "Network Connect Timeout Error";
-                    HTTPResponseCodeTextBox.BackColor = System.Drawing.Color.Red;
-                    HTTPStatusDescriptionTextBox.BackColor = System.Drawing.Color.Red;
                     break;
                 default: HTTPStatusDescriptionTextBox.Text = "No known HTTP status.";
-                    HTTPResponseCodeTextBox.BackColor = System.Drawing.Color.Red;
-                    HTTPStatusDescriptionTextBox.BackColor = System.Drawing.Color.Red;
                     break;
             } 
         }

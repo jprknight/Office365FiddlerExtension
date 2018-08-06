@@ -41,12 +41,14 @@
             this.ElapsedTimeTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.ResponseAlertTextBox = new System.Windows.Forms.TextBox();
+            this.ResponseProcessTextBox = new System.Windows.Forms.TextBox();
+            this.ResponseProcessLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // ResponseCommentLabel
             // 
             this.ResponseCommentLabel.AutoSize = true;
-            this.ResponseCommentLabel.Location = new System.Drawing.Point(3, 130);
+            this.ResponseCommentLabel.Location = new System.Drawing.Point(3, 156);
             this.ResponseCommentLabel.Name = "ResponseCommentLabel";
             this.ResponseCommentLabel.Size = new System.Drawing.Size(107, 13);
             this.ResponseCommentLabel.TabIndex = 5;
@@ -56,7 +58,7 @@
             // ResponseCommentsTextBox
             // 
             this.ResponseCommentsTextBox.BackColor = System.Drawing.Color.White;
-            this.ResponseCommentsTextBox.Location = new System.Drawing.Point(6, 146);
+            this.ResponseCommentsTextBox.Location = new System.Drawing.Point(6, 172);
             this.ResponseCommentsTextBox.Multiline = true;
             this.ResponseCommentsTextBox.Name = "ResponseCommentsTextBox";
             this.ResponseCommentsTextBox.ReadOnly = true;
@@ -165,10 +167,28 @@
             this.ResponseAlertTextBox.Size = new System.Drawing.Size(300, 20);
             this.ResponseAlertTextBox.TabIndex = 21;
             // 
+            // ResponseProcessTextBox
+            // 
+            this.ResponseProcessTextBox.Location = new System.Drawing.Point(106, 133);
+            this.ResponseProcessTextBox.Name = "ResponseProcessTextBox";
+            this.ResponseProcessTextBox.Size = new System.Drawing.Size(300, 20);
+            this.ResponseProcessTextBox.TabIndex = 22;
+            // 
+            // ResponseProcessLabel
+            // 
+            this.ResponseProcessLabel.AutoSize = true;
+            this.ResponseProcessLabel.Location = new System.Drawing.Point(3, 136);
+            this.ResponseProcessLabel.Name = "ResponseProcessLabel";
+            this.ResponseProcessLabel.Size = new System.Drawing.Size(45, 13);
+            this.ResponseProcessLabel.TabIndex = 23;
+            this.ResponseProcessLabel.Text = "Process";
+            // 
             // ResponseUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.ResponseProcessLabel);
+            this.Controls.Add(this.ResponseProcessTextBox);
             this.Controls.Add(this.ResponseAlertTextBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.ElapsedTimeTextBox);
@@ -183,7 +203,7 @@
             this.Controls.Add(this.ResponseCommentLabel);
             this.Controls.Add(this.ResponseCommentsTextBox);
             this.Name = "ResponseUserControl";
-            this.Size = new System.Drawing.Size(418, 285);
+            this.Size = new System.Drawing.Size(413, 304);
             this.Load += new System.EventHandler(this.ResponseUserControl_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -204,5 +224,7 @@
         private System.Windows.Forms.TextBox ElapsedTimeTextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox ResponseAlertTextBox;
+        private System.Windows.Forms.TextBox ResponseProcessTextBox;
+        private System.Windows.Forms.Label ResponseProcessLabel;
     }
 }

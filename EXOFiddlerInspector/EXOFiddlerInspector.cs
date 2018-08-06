@@ -40,15 +40,33 @@ namespace EXOFiddlerInspector
             throw new System.NotImplementedException();
         }
 
+        public override void AssignSession(Session oS)
+        {
+            this.session = oS;
+
+            base.AssignSession(oS);
+        }
+    }
+
+    // Request class, inherits the generic class above, only defines things specific or different from the base class
+    public class RequestInspector : EXOBaseFiddlerInspector, IRequestInspector2
+    {
+        private bool _readOnly;
+        HTTPRequestHeaders _headers;
+        private byte[] _body;
+        RequestUserControl _displayControl;
+
         // Double click on a session to highlight inpsector.
         public override int ScoreForSession(Session oS)
         {
             this.session = oS;
 
+            this.session.utilDecodeRequest(true);
+            this.session.utilDecodeResponse(true);
+
             if (oS.url.Contains("autodiscover"))
             {
                 return 100;
-                
             }
             else if (oS.hostname.Contains("autodiscover"))
             {
@@ -62,7 +80,8 @@ namespace EXOFiddlerInspector
             {
                 return 100;
             }
-            else if (oS.LocalProcess.Contains("outlook")){
+            else if (oS.LocalProcess.Contains("outlook"))
+            {
                 return 100;
             }
             else
@@ -70,26 +89,6 @@ namespace EXOFiddlerInspector
                 return 0;
             }
         }
-        public override void AssignSession(Session oS)
-        {
-            this.session = oS;
-
-            base.AssignSession(oS);
-        }
-
-    }
-
-    // Request class, inherits the generic class above, only defines things specific or different from the base class
-    public class RequestInspector : EXOBaseFiddlerInspector, IRequestInspector2
-    {
-
-        //    oS.utilDecodeRequest();
-        //    oS.utilDecodeResponse();
-
-        private bool _readOnly;
-        HTTPRequestHeaders _headers;
-        private byte[] _body;
-        RequestUserControl _displayControl;
 
         public override void AddToTab(TabPage o)
         {
@@ -206,6 +205,37 @@ namespace EXOFiddlerInspector
         private HTTPResponseHeaders responseHeaders;
         //private int oResponseCode;
 
+        // Double click on a session to highlight inpsector.
+        public override int ScoreForSession(Session oS)
+        {
+            this.session = oS;
+
+            if (oS.url.Contains("autodiscover"))
+            {
+                return 100;
+            }
+            else if (oS.hostname.Contains("autodiscover"))
+            {
+                return 100;
+            }
+            else if (oS.url.Contains("outlook"))
+            {
+                return 100;
+            }
+            else if (oS.url.Contains("GetUserAvailability"))
+            {
+                return 100;
+            }
+            else if (oS.LocalProcess.Contains("outlook"))
+            {
+                return 100;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         public HTTPResponseHeaders headers
         {
             get { return responseHeaders; }
@@ -225,11 +255,14 @@ namespace EXOFiddlerInspector
             _displayControl.SetRequestEndTimeTextBox(oS.Timers.ClientDoneResponse.ToString("H:mm:ss.ffff"));
 
             // Write Elapsed Time into textbox.
-            _displayControl.SetElapsedTimeTextBox(oS.oResponse.iTTLB + "ms");
+            _displayControl.SetResponseElapsedTimeTextBox(oS.oResponse.iTTLB + "ms");
+
+            // Write Process into textbox.
+            _displayControl.SetResponseProcessTextBox(oS.LocalProcess);
 
             // Clear any previous data.
-            _displayControl.SetResponseCommentsTextBoxText("");
             _displayControl.SetResponseAlertTextBox("");
+            _displayControl.SetResponseCommentsTextBoxText("");
 
             // Write Response Alert into Textbox.
 
@@ -238,7 +271,7 @@ namespace EXOFiddlerInspector
                 if (oS.utilFindInResponse("Access Denied", false) > 1)
                 {
                     _displayControl.SetResponseAlertTextBox("Panic Stations!!!");
-                    _displayControl.SetResponseCommentsTextBoxText("Is your firewall is blocking Outlook?.");
+                    _displayControl.SetResponseCommentsTextBoxText(Properties.Settings.Default.HTTP403WebProxyBlockingOutlook);
                 }
             }
             else if (oS.responseCode == 502)
@@ -249,13 +282,31 @@ namespace EXOFiddlerInspector
                     {
                         if (oS.utilFindInResponse(":443", false) > 1)
                         {
-                            //oS["ui-backcolor"] = "green";
-                            //oS["ui-color"] = "black";
                             _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
-                            _displayControl.SetResponseCommentsTextBoxText("False Positive: By design Office 365 Autodiscover does not respond to say autodiscover.contoso.onmicrosoft.com on port 443. Validate this message by confirming this is an Office 365 IP address and a telnet to the IP address on port 80.");
+                            _displayControl.SetResponseCommentsTextBoxText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
                         }
                     }
                 }
+            } else if (oS.responseCode == 503)
+            {
+                _displayControl.SetResponseCommentsTextBoxText("Made the 503");
+
+                if (oS.utilFindInResponse("503", false) > 1) { // || oS.utilFindInResponse("FederatedStsUnavailable", false) > 1) {
+                    // FederatedSTSFailure FederatedStsUnreachable
+                    _displayControl.SetResponseAlertTextBox("The federation service is unreachable or unavailable.");
+                    _displayControl.SetResponseCommentsTextBoxText(Properties.Settings.Default.HTTP503FederatedSTSUnavailable);
+                } else
+                {
+                    _displayControl.SetResponseAlertTextBox("Federation failure error missed.");
+                }
+            }
+            else if (oS.responseCode == 200)
+            {
+                //oS.
+            }
+            else
+            {
+                // Do nothing at this point in time.
             }
         }
 
