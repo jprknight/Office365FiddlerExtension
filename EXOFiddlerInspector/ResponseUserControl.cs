@@ -22,12 +22,6 @@ namespace EXOFiddlerInspector
 
         }
 
-        // Code to write to ResponseCommentsTextBox.Text value.
-        internal void SetResponseCommentsTextBoxText(string txt)
-        {
-            ResponseCommentsTextBox.Text = txt;
-        }
-
         // Code to write to ResponseProcessTextBox.Text value.
         internal void SetResponseProcessTextBox(string txt)
         {
@@ -69,7 +63,18 @@ namespace EXOFiddlerInspector
         {
             ResponseAlertTextBox.Text = txt;
         }
-        
+
+        // Code to write to ResponseAlertTextBox.Text value.
+        internal void SetResponseCommentsWebBrowserDocumentText(string txt)
+        {
+            ResponseCommentsWebBrowser.DocumentText = txt;
+        }
+
+        // Code to write to ResponseAlertTextBox.Text value.
+        internal void SetDataFreshnessTextBox(string txt)
+        {
+            DataFreshnessTextBox.Text = txt;
+        }
 
         private void HTTPStatusCodeLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -259,6 +264,39 @@ namespace EXOFiddlerInspector
 
         private void RequestBeginTimeTextBox_TextChanged(object sender, EventArgs e)
         {
+
+        }
+
+        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OpenResponseButton_Click(object sender, EventArgs e)
+        {
+           /* try
+            {
+                OpenResponseBody();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to open link that was clicked.");
+            }*/
+        }
+
+        private void OpenResponseBody()
+        {
+            // Change the color of the link text by setting LinkVisited   
+            // to true.  
+            //HTTPStatusCodeLinkLabel.LinkVisited = true;
+            //Call the Process.Start method to open the default browser   
+            //with a URL:  
+            //System.Diagnostics.Process.Start(Properties.Settings.Default.HTTPStatusCodesURL);
 
         }
     }

@@ -1,5 +1,8 @@
 ﻿using System.Windows.Forms;
+using System.Linq;
+using System.IO;
 using Fiddler;
+using System;
 
 namespace EXOFiddlerInspector
 {
@@ -64,23 +67,25 @@ namespace EXOFiddlerInspector
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
 
-            if (oS.url.Contains("autodiscover"))
+            if (this.session.url.Contains("autodiscover"))
             {
                 return 100;
             }
-            else if (oS.hostname.Contains("autodiscover"))
+            else if (this.session.hostname.Contains("autodiscover"))
             {
                 return 100;
             }
-            else if (oS.url.Contains("outlook"))
+            else if (this.session.url.Contains("outlook"))
             {
                 return 100;
             }
-            else if (oS.url.Contains("GetUserAvailability"))
+            else if (this.session.url.Contains("GetUserAvailability") || 
+                this.session.url.Contains("WSSecurity") ||
+                this.session.utilFindInResponse("GetUserAvailability", false) > 1)
             {
                 return 100;
             }
-            else if (oS.LocalProcess.Contains("outlook"))
+            else if (this.session.LocalProcess.Contains("outlook"))
             {
                 return 100;
             }
@@ -130,30 +135,48 @@ namespace EXOFiddlerInspector
         public void SetRequestValues(Session oS)
         {
             // Write HTTP Status Code Text box, convert int to string.
-            _displayControl.SetRequestHostTextBox(oS.hostname);
+            _displayControl.SetRequestHostTextBox(this.session.hostname);
 
             // Write Request URL Text box.
-            _displayControl.SetRequestURLTextBox(oS.url);
+            _displayControl.SetRequestURLTextBox(this.session.url);
 
-            if (oS.fullUrl.Contains("outlook.office365.com/mapi")) { _displayControl.SetRequestTypeTextBox("EXO MAPI"); }
-            else if (oS.fullUrl.Contains("outlook.office365.com/EWS")) { _displayControl.SetRequestTypeTextBox("EXO EWS"); }
-            else if (oS.fullUrl.Contains("autodiscover-s.outlook.com")) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
-            else if (oS.fullUrl.Contains("onmicrosoft.com/autodiscover")) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
-            else if (oS.utilFindInRequest("autodiscover", false) > 1 && oS.utilFindInRequest("onmicrosoft.com", false) > 1) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
-            else if (oS.fullUrl.Contains("autodiscover") && (oS.fullUrl.Contains(".onmicrosoft.com"))) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
-            else if (oS.fullUrl.Contains("autodiscover")) { _displayControl.SetRequestTypeTextBox("Autodiscover"); }
-            else if (oS.fullUrl.Contains("GetUserAvailability")) { _displayControl.SetRequestTypeTextBox("Free/Busy"); }
-            else if (oS.fullUrl.Contains(".onmicrosoft.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
-            else if (oS.fullUrl.Contains("outlook.office365.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
-            else if (oS.fullUrl.Contains("outlook.office.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
-            else if (oS.LocalProcess.Contains("outlook")) { _displayControl.SetRequestTypeTextBox("Something Outlook"); }
-            else if (oS.LocalProcess.Contains("iexplore")) { _displayControl.SetRequestTypeTextBox("Something Internet Explorer"); }
-            else if (oS.LocalProcess.Contains("chrome")) { _displayControl.SetRequestTypeTextBox("Something Chrome"); }
-            else if (oS.LocalProcess.Contains("firefox")) { _displayControl.SetRequestTypeTextBox("Something Firefox"); }
-            else { _displayControl.SetRequestTypeTextBox("Not Exchange"); }
+            // Classify type on traffic. Set in order of presence to correctly identify as much traffic as possible.
+            // First off make sure we only classify traffic from Outlook or browsers.
+            if (this.session.LocalProcess.Contains("outlook") ||
+                    this.session.LocalProcess.Contains("iexplore") ||
+                    this.session.LocalProcess.Contains("chrome") ||
+                    this.session.LocalProcess.Contains("firefox") ||
+                    this.session.LocalProcess.Contains("edge") ||
+                    this.session.LocalProcess.Contains("w3wp"))
+            {
 
+                if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) { _displayControl.SetRequestTypeTextBox("EXO MAPI"); }
+                else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
+                else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
+                else if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
+                else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
+                else if (this.session.fullUrl.Contains("autodiscover")) { _displayControl.SetRequestTypeTextBox("Autodiscover"); }
+                else if (this.session.fullUrl.Contains("WSSecurity")) { _displayControl.SetRequestTypeTextBox("Free/Busy"); }
+                else if (this.session.fullUrl.Contains("GetUserAvailability")) { _displayControl.SetRequestTypeTextBox("Free/Busy"); }
+                else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1) { _displayControl.SetRequestTypeTextBox("Free/Busy"); }
+                else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { _displayControl.SetRequestTypeTextBox("EXO EWS"); }
+                else if (this.session.fullUrl.Contains(".onmicrosoft.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
+                else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { _displayControl.SetRequestTypeTextBox("Office 365 Authentication"); }
+                else if (this.session.fullUrl.Contains("outlook.office365.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
+                else if (this.session.fullUrl.Contains("outlook.office.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
+                else if (this.session.LocalProcess.Contains("outlook")) { _displayControl.SetRequestTypeTextBox("Something Outlook"); }
+                else if (this.session.LocalProcess.Contains("iexplore")) { _displayControl.SetRequestTypeTextBox("Something Internet Explorer"); }
+                else if (this.session.LocalProcess.Contains("chrome")) { _displayControl.SetRequestTypeTextBox("Something Chrome"); }
+                else if (this.session.LocalProcess.Contains("firefox")) { _displayControl.SetRequestTypeTextBox("Something Firefox"); }
+                else { _displayControl.SetRequestTypeTextBox("Not Exchange"); }
+            }
+            else
+                // If the traffic did not originate from Outlook or a web browser, call it out.
+                {
+                    _displayControl.SetRequestTypeTextBox("Not Outlook or EXO Browser");
+                }
             // Set Request Process Textbox.
-            _displayControl.SetRequestProcessTextBox(oS.LocalProcess);
+            _displayControl.SetRequestProcessTextBox(this.session.LocalProcess);
         }
 
         public void Clear()
@@ -210,23 +233,23 @@ namespace EXOFiddlerInspector
         {
             this.session = oS;
 
-            if (oS.url.Contains("autodiscover"))
+            if (this.session.url.Contains("autodiscover"))
             {
                 return 100;
             }
-            else if (oS.hostname.Contains("autodiscover"))
+            else if (this.session.hostname.Contains("autodiscover"))
             {
                 return 100;
             }
-            else if (oS.url.Contains("outlook"))
+            else if (this.session.url.Contains("outlook"))
             {
                 return 100;
             }
-            else if (oS.url.Contains("GetUserAvailability"))
+            else if (this.session.url.Contains("GetUserAvailability"))
             {
                 return 100;
             }
-            else if (oS.LocalProcess.Contains("outlook"))
+            else if (this.session.LocalProcess.Contains("outlook"))
             {
                 return 100;
             }
@@ -243,70 +266,145 @@ namespace EXOFiddlerInspector
             }
         }
 
+        public byte[] body
+        {
+            get { return rawBody; }
+            set
+            {
+
+                SetResponseComments(this.session);
+                
+
+                /*if (isAlchemyRequest(responseHeaders) && Convert.ToUInt32(responseHeaders["X-ResponseCode"]) == 0)
+                {
+                    AlchemyTab.Clear();
+                    AlchemyTab.AppendLine("X-RequestType:  " + responseHeaders["X-RequestType"]);
+                    AlchemyTab.AppendLine("X-ResponseCode: " + responseHeaders["X-ResponseCode"]);
+                    AlchemyTab.AppendLine("\r\n" + ropHandler.handleResponse(value));
+                }
+                else
+                {
+                    AlchemyTab.SetText("X-RequestType: " + responseHeaders["X-RequestType"] + "\r\n\r\nRequest type not yet implemented.");
+                }*/
+            }
+        }
+
         public void SetResponseComments (Session oS)
         {
+
             // Write HTTP Status Code Text box, convert int to string.
-            _displayControl.SetHTTPResponseCodeTextBoxText(oS.responseCode.ToString());
+            _displayControl.SetHTTPResponseCodeTextBoxText(this.session.responseCode.ToString());
 
             // Write Client Begin Request into textbox
-            _displayControl.SetRequestBeginTimeTextBox(oS.Timers.ClientBeginRequest.ToString("H:mm:ss.ffff"));
+            _displayControl.SetRequestBeginTimeTextBox(this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd H:mm:ss.ffff"));
 
             // Write Client End Request into textbox
-            _displayControl.SetRequestEndTimeTextBox(oS.Timers.ClientDoneResponse.ToString("H:mm:ss.ffff"));
+            _displayControl.SetRequestEndTimeTextBox(this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd H:mm:ss.ffff"));
 
             // Write Elapsed Time into textbox.
-            _displayControl.SetResponseElapsedTimeTextBox(oS.oResponse.iTTLB + "ms");
+            _displayControl.SetResponseElapsedTimeTextBox(this.session.oResponse.iTTLB + "ms");
 
+            // Write Data Freshness data into textbox.
+            String DataFreshnessOutput = "";
+            DateTime SessionDateTime = this.session.Timers.ClientBeginRequest;
+            DateTime DateTimeNow = DateTime.Now;
+            TimeSpan CalcDataFreshness = DateTimeNow - SessionDateTime;
+            int TimeSpanDays = CalcDataFreshness.Days;
+            int TimeSpanHours = CalcDataFreshness.Hours;
+            int TimeSpanMinutes = CalcDataFreshness.Minutes;
+
+            if (TimeSpanDays == 0)
+            {
+                DataFreshnessOutput = "Trace is " + TimeSpanHours + " Hour(s), " + TimeSpanMinutes + " minute(s) old.";
+            } else
+            {
+                DataFreshnessOutput = "Trace is " + TimeSpanDays + " Day(s), " + TimeSpanHours + " Hour(s), " + TimeSpanMinutes + " minute(s) old.";
+            }
+
+            _displayControl.SetDataFreshnessTextBox(DataFreshnessOutput);
+            
             // Write Process into textbox.
-            _displayControl.SetResponseProcessTextBox(oS.LocalProcess);
+            _displayControl.SetResponseProcessTextBox(this.session.LocalProcess);
 
             // Clear any previous data.
             _displayControl.SetResponseAlertTextBox("");
-            _displayControl.SetResponseCommentsTextBoxText("");
+            _displayControl.SetResponseCommentsWebBrowserDocumentText("");
 
             // Write Response Alert into Textbox.
 
-            if (oS.responseCode == 403)
+            if (this.session.responseCode == 403)
             {
-                if (oS.utilFindInResponse("Access Denied", false) > 1)
+                if (this.session.utilFindInResponse("Access Denied", false) > 1)
                 {
                     _displayControl.SetResponseAlertTextBox("Panic Stations!!!");
-                    _displayControl.SetResponseCommentsTextBoxText(Properties.Settings.Default.HTTP403WebProxyBlockingOutlook);
+                    _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP403WebProxyBlocking);
                 }
             }
-            else if (oS.responseCode == 502)
+            else if (this.session.responseCode == 502)
             {
-                if (oS.utilFindInResponse("autodiscover", false) > 1)
+                if (this.session.utilFindInResponse("autodiscover", false) > 1)
                 {
-                    if (oS.utilFindInResponse("target machine actively refused it", false) > 1)
+                    if (this.session.utilFindInResponse("target machine actively refused it", false) > 1)
                     {
-                        if (oS.utilFindInResponse(":443", false) > 1)
+                        if (this.session.utilFindInResponse(":443", false) > 1)
                         {
                             _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
-                            _displayControl.SetResponseCommentsTextBoxText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
+                            _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
                         }
                     }
                 }
-            } else if (oS.responseCode == 503)
+            } else if (this.session.responseCode == 503)
             {
-                _displayControl.SetResponseCommentsTextBoxText("Made the 503");
+                _displayControl.SetResponseCommentsWebBrowserDocumentText("Made the 503");
 
-                if (oS.utilFindInResponse("503", false) > 1) { // || oS.utilFindInResponse("FederatedStsUnavailable", false) > 1) {
+                if (this.session.utilFindInResponse("503", false) > 1) { // || oS.utilFindInResponse("FederatedStsUnavailable", false) > 1) {
                     // FederatedSTSFailure FederatedStsUnreachable
                     _displayControl.SetResponseAlertTextBox("The federation service is unreachable or unavailable.");
-                    _displayControl.SetResponseCommentsTextBoxText(Properties.Settings.Default.HTTP503FederatedSTSUnavailable);
+                    _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP503FederatedSTSUnreachable);
                 } else
                 {
                     _displayControl.SetResponseAlertTextBox("Federation failure error missed.");
                 }
             }
-            else if (oS.responseCode == 200)
+            else if (this.session.responseCode == 200)
             {
-                //oS.
-            }
-            else
-            {
-                // Do nothing at this point in time.
+                int wordCount = 0;
+
+                // Count the occurrences of the word 'Error', ignore things like HasError, NoError etc which can be seen in response body.
+                // 
+                // Looking for errors lurking in HTTP 200 OK results.
+                //
+                // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
+                //
+
+                string text = this.session.ToString();
+                
+                string searchTerm = "error";
+
+                //Convert the string into an array of words  
+                string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',', '"' }, StringSplitOptions.RemoveEmptyEntries);
+
+                // Create the query.  Use ToLowerInvariant to match "data" and "Data"   
+                var matchQuery = from word in source
+                                 where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
+                                 select word;
+
+                // Count the matches, which executes the query.  
+                wordCount = matchQuery.Count();
+
+                string result = "After splitting all words in the response body the word 'error' was found " + wordCount + " time(s).";
+                
+                
+                //_displayControl.SetResponseCommentsWebBrowserDocumentText(result);
+                if (wordCount > 0)
+                {
+                    _displayControl.SetResponseAlertTextBox("Word Search 'Error' found in respone body.");
+                    _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP200ErrorsFound + "<br /><br />" + result);
+                } else
+                {
+                    _displayControl.SetResponseAlertTextBox("Word Search 'Error' Not found in response body.");
+                    _displayControl.SetResponseCommentsWebBrowserDocumentText(result);
+                }
             }
         }
 
@@ -344,31 +442,7 @@ namespace EXOFiddlerInspector
         //HTTPResponseHeaders IResponseInspector2.headers { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         //byte[] IBaseInspector2.body { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-        public byte[] body
-        {
-            get { return rawBody; }
-            set
-            {
-
-                SetResponseComments(this.session);
-                
-
-                /*if (isAlchemyRequest(responseHeaders) && Convert.ToUInt32(responseHeaders["X-ResponseCode"]) == 0)
-                {
-                    AlchemyTab.Clear();
-                    AlchemyTab.AppendLine("X-RequestType:  " + responseHeaders["X-RequestType"]);
-                    AlchemyTab.AppendLine("X-ResponseCode: " + responseHeaders["X-ResponseCode"]);
-                    AlchemyTab.AppendLine("\r\n" + ropHandler.handleResponse(value));
-                }
-                else
-                {
-                    AlchemyTab.SetText("X-RequestType: " + responseHeaders["X-RequestType"] + "\r\n\r\nRequest type not yet implemented.");
-                }*/
-            }
-        }
-
-
-        //bool IBaseInspector2.bReadOnly { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+            //bool IBaseInspector2.bReadOnly { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         public override int GetOrder()
         {

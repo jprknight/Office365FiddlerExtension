@@ -25,10 +25,8 @@ namespace EXOFiddlerInspector.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False Positive: By design Office 365 Autodiscover does not respond to autodiscove" +
-            "r.contoso.onmicrosoft.com for example on port 443. Validate this message by conf" +
-            "irming this is an Office 365 IP address and perform a telnet to the IP address o" +
-            "n port 80.\r\n")]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<font color=""green"">HTTP 502: False Positive</font><br />By design Office 365 Autodiscover does not respond to autodiscover.contoso.onmicrosoft.com for example on port 443. Validate this message by confirming this is an Office 365 IP address and perform a telnet to the IP address on port 80.
+")]
         public string HTTP502AutodiscoverFalsePositive {
             get {
                 return ((string)(this["HTTP502AutodiscoverFalsePositive"]));
@@ -37,21 +35,24 @@ namespace EXOFiddlerInspector.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"Is your firewall or web proxy blocking Outlook connectivity? Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked? To fire this message a HTTP 403 response code was detected 
-and ""Access Denied"" was found in the response body.")]
-        public string HTTP403WebProxyBlockingOutlook {
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<font color=""red"">HTTP 403: Forbidden</font> Is your firewall or web proxy blocking Outlook connectivity?<br />To fire this message a HTTP 403 response code was detected 
+and ""Access Denied"" was found in the response body.<br />Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked?<br /> 
+
+
+")]
+        public string HTTP403WebProxyBlocking {
             get {
-                return ((string)(this["HTTP403WebProxyBlockingOutlook"]));
+                return ((string)(this["HTTP403WebProxyBlocking"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("The fedeation service is unreachable or unavailable. Check the Raw tab for additi" +
-            "onal details.")]
-        public string HTTP503FederatedSTSUnavailable {
+        [global::System.Configuration.DefaultSettingValueAttribute("<font color=\"red\">HTTP 503: FederatedSTSUnreachable</font><br />The fedeation ser" +
+            "vice is unreachable or unavailable. Check the Raw tab for additional details.")]
+        public string HTTP503FederatedSTSUnreachable {
             get {
-                return ((string)(this["HTTP503FederatedSTSUnavailable"]));
+                return ((string)(this["HTTP503FederatedSTSUnreachable"]));
             }
         }
         
@@ -61,6 +62,29 @@ and ""Access Denied"" was found in the response body.")]
         public string HTTPStatusCodesURL {
             get {
                 return ((string)(this["HTTPStatusCodesURL"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<font color=\"red\">HTTP 200: Errors found in response body.</font> Check the Raw t" +
+            "ab, click \'View in Notepad\' button bottom right, and search for error in the res" +
+            "ponse to review.\r\n")]
+        public string HTTP200ErrorsFound {
+            get {
+                return ((string)(this["HTTP200ErrorsFound"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Setting {
+            get {
+                return ((string)(this["Setting"]));
+            }
+            set {
+                this["Setting"] = value;
             }
         }
     }
