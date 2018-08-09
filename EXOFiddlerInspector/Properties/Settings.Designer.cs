@@ -48,8 +48,17 @@ and ""Access Denied"" was found in the response body.<br />Check the Raw and Web
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("<font color=\"red\">HTTP 503: FederatedSTSUnreachable</font><br />The fedeation ser" +
-            "vice is unreachable or unavailable. Check the Raw tab for additional details.")]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<font color=""red"">HTTP 503: FederatedSTSUnreachable</font><br />
+The fedeation service is unreachable or unavailable. Check the Raw tab for additional details.<br /><br />
+Check the realm page for the authenticating domain.<br />
+<a href=""https://login.microsoftonline.com/GetUserRealm.srf?Login=user@contoso.com&xml=1"">https://login.microsoftonline.com/GetUserRealm.srf?Login=user@contoso.com&xml=1</a><br />
+Expected responses:<br />
+AuthURL: Expected to show federation service logon page.<br />
+STSAuthURL: Expected to show HTTP 400<br />
+MEXURL: Expected to show long stream of XML data.
+
+If any of these show the HTTP 503 Service Unavailable this confirms a consistent failure on the federation service.<br />
+If however you get the expected responses, this does not neccessarily mean the federation service / everything authentication is healthy.")]
         public string HTTP503FederatedSTSUnreachable {
             get {
                 return ((string)(this["HTTP503FederatedSTSUnreachable"]));

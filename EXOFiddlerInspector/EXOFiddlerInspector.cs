@@ -271,21 +271,7 @@ namespace EXOFiddlerInspector
             get { return rawBody; }
             set
             {
-
                 SetResponseComments(this.session);
-                
-
-                /*if (isAlchemyRequest(responseHeaders) && Convert.ToUInt32(responseHeaders["X-ResponseCode"]) == 0)
-                {
-                    AlchemyTab.Clear();
-                    AlchemyTab.AppendLine("X-RequestType:  " + responseHeaders["X-RequestType"]);
-                    AlchemyTab.AppendLine("X-ResponseCode: " + responseHeaders["X-ResponseCode"]);
-                    AlchemyTab.AppendLine("\r\n" + ropHandler.handleResponse(value));
-                }
-                else
-                {
-                    AlchemyTab.SetText("X-RequestType: " + responseHeaders["X-RequestType"] + "\r\n\r\nRequest type not yet implemented.");
-                }*/
             }
         }
 
@@ -330,81 +316,104 @@ namespace EXOFiddlerInspector
             _displayControl.SetResponseAlertTextBox("");
             _displayControl.SetResponseCommentsWebBrowserDocumentText("");
 
-            // Write Response Alert into Textbox.
 
-            if (this.session.responseCode == 403)
-            {
-                if (this.session.utilFindInResponse("Access Denied", false) > 1)
-                {
-                    _displayControl.SetResponseAlertTextBox("Panic Stations!!!");
-                    _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP403WebProxyBlocking);
-                }
-            }
-            else if (this.session.responseCode == 502)
-            {
-                if (this.session.utilFindInResponse("autodiscover", false) > 1)
-                {
-                    if (this.session.utilFindInResponse("target machine actively refused it", false) > 1)
-                    {
-                        if (this.session.utilFindInResponse(":443", false) > 1)
-                        {
-                            _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
-                            _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
-                        }
-                    }
-                }
-            } else if (this.session.responseCode == 503)
-            {
-                _displayControl.SetResponseCommentsWebBrowserDocumentText("Made the 503");
 
-                if (this.session.utilFindInResponse("503", false) > 1) { // || oS.utilFindInResponse("FederatedStsUnavailable", false) > 1) {
-                    // FederatedSTSFailure FederatedStsUnreachable
-                    _displayControl.SetResponseAlertTextBox("The federation service is unreachable or unavailable.");
-                    _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP503FederatedSTSUnreachable);
-                } else
-                {
-                    _displayControl.SetResponseAlertTextBox("Federation failure error missed.");
-                }
-            }
-            else if (this.session.responseCode == 200)
-            {
-                int wordCount = 0;
+            int wordCount = 0;
 
-                // Count the occurrences of the word 'Error', ignore things like HasError, NoError etc which can be seen in response body.
-                // 
-                // Looking for errors lurking in HTTP 200 OK results.
-                //
-                // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
-                //
+            // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
+            //
+            // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
+            //
 
-                string text = this.session.ToString();
+            string text = this.session.ToString();
                 
-                string searchTerm = "error";
+            //Convert the string into an array of words  
+            string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',', '"' }, StringSplitOptions.RemoveEmptyEntries);
 
-                //Convert the string into an array of words  
-                string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',', '"' }, StringSplitOptions.RemoveEmptyEntries);
+            //string searchTerm = "error";
+            string[] searchTerms = { "error", "FederatedStsUnreachable" };
 
+            foreach (string searchTerm in searchTerms)
+            {
                 // Create the query.  Use ToLowerInvariant to match "data" and "Data"   
                 var matchQuery = from word in source
-                                 where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
-                                 select word;
+                                    where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
+                                    select word;
 
                 // Count the matches, which executes the query.  
                 wordCount = matchQuery.Count();
 
-                string result = "After splitting all words in the response body the word 'error' was found " + wordCount + " time(s).";
-                
-                
-                //_displayControl.SetResponseCommentsWebBrowserDocumentText(result);
-                if (wordCount > 0)
+                //
+                //  HTTP 200.
+                //
+                // Looking for errors lurking in HTTP 200 OK results.
+                if (this.session.responseCode == 200)
                 {
-                    _displayControl.SetResponseAlertTextBox("Word Search 'Error' found in respone body.");
-                    _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP200ErrorsFound + "<br /><br />" + result);
-                } else
-                {
-                    _displayControl.SetResponseAlertTextBox("Word Search 'Error' Not found in response body.");
-                    _displayControl.SetResponseCommentsWebBrowserDocumentText(result);
+                    if (searchTerm == "Error")
+                    {
+                        string result = "After splitting all words in the response body the word 'error' was found " + wordCount + " time(s).";
+
+                        if (wordCount > 0)
+                        {
+                            _displayControl.SetResponseAlertTextBox("Word Search 'Error' found in respone body.");
+                            _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP200ErrorsFound + "<br /><br />" + result);
+                        }
+                        else
+                        {
+                            _displayControl.SetResponseAlertTextBox("Word Search 'Error' Not found in response body.");
+                            _displayControl.SetResponseCommentsWebBrowserDocumentText(result);
+                        }
+                    }
                 }
+                //
+                //  HTTP 403.
+                //
+                // Simply looking for the term "Access Denied" works fine using utilFindInResponse.
+                if (this.session.responseCode == 403)
+                {
+                    if (this.session.utilFindInResponse("Access Denied", false) > 1)
+                    {
+                        _displayControl.SetResponseAlertTextBox("Panic Stations!!!");
+                        _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP403WebProxyBlocking);
+                    }
+                }
+                //
+                //  HTTP 502.
+                //
+                else if (this.session.responseCode == 502)
+                {
+                    if (this.session.utilFindInResponse("autodiscover", false) > 1)
+                    {
+                        if (this.session.utilFindInResponse("target machine actively refused it", false) > 1)
+                        {
+                            if (this.session.utilFindInResponse(":443", false) > 1)
+                            {
+                                _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
+                                _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
+                            }
+                        }
+                    }
+                }
+                //
+                //  HTTP 503.
+                //
+                // Using utilFindInResponse to find FederatedStsUnreachable did not work for some reason.
+                // So instead we split all words in the response body and check them with Linq.
+                else if (this.session.responseCode == 503)
+                {
+                    if (searchTerm == "FederatedStsUnreachable")
+                    {
+                        if (wordCount > 0)
+                        {
+                            _displayControl.SetResponseAlertTextBox("The federation service is unreachable or unavailable.");
+                            _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP503FederatedSTSUnreachable);
+                        }
+                        else
+                        {
+                            _displayControl.SetResponseAlertTextBox("Federation failure error missed.");
+                        }
+                    }
+                }              
             }
         }
 
