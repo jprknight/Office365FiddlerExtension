@@ -87,13 +87,15 @@ If however you get the expected responses, this does not neccessarily mean the f
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Setting {
+        [global::System.Configuration.DefaultSettingValueAttribute("<font color=\"orange\">HTTP 401: Unauthorized</font> These are expected and are not" +
+            " an issue as long as a HTTP 200 is seen for authentication to the server which i" +
+            "ssued the HTTP 401 unauthorized security challenge.")]
+        public string HTTP401Unauthorized {
             get {
-                return ((string)(this["Setting"]));
+                return ((string)(this["HTTP401Unauthorized"]));
             }
             set {
-                this["Setting"] = value;
+                this["HTTP401Unauthorized"] = value;
             }
         }
     }

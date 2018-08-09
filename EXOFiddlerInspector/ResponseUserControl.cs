@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace EXOFiddlerInspector
 {
@@ -46,10 +47,22 @@ namespace EXOFiddlerInspector
             RequestBeginTimeTextBox.Text = txt;
         }
 
+        // Code to write to RequestBeginDateTextBox.Text value.
+        internal void SetRequestBeginDateTextBox(string txt)
+        {
+            RequestBeginDateTextBox.Text = txt;
+        }
+
         // Code to write to RequestEndTimeTextBox.Text value.
         internal void SetRequestEndTimeTextBox(string txt)
         {
             RequestEndTimeTextBox.Text = txt;
+        }
+
+        // Code to write to RequestEndDateTextBox.Text value.
+        internal void SetRequestEndDateTextBox(string txt)
+        {
+            RequestEndDateTextBox.Text = txt;
         }
 
         // Code to write to TimeElapsedTextBox.Text value.
@@ -75,6 +88,13 @@ namespace EXOFiddlerInspector
         {
             DataFreshnessTextBox.Text = txt;
         }
+
+        // Code to write to ElapsedTimeComemntTextBox.Text value.
+        internal void SetElapsedTimeComemntTextBox(string txt)
+        {
+            ElapsedTimeComemntTextBox.Text = txt;
+        }
+        
 
         private void HTTPStatusCodeLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -277,26 +297,8 @@ namespace EXOFiddlerInspector
 
         }
 
-        private void OpenResponseButton_Click(object sender, EventArgs e)
+        private void label1_Click(object sender, EventArgs e)
         {
-           /* try
-            {
-                OpenResponseBody();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Unable to open link that was clicked.");
-            }*/
-        }
-
-        private void OpenResponseBody()
-        {
-            // Change the color of the link text by setting LinkVisited   
-            // to true.  
-            //HTTPStatusCodeLinkLabel.LinkVisited = true;
-            //Call the Process.Start method to open the default browser   
-            //with a URL:  
-            //System.Diagnostics.Process.Start(Properties.Settings.Default.HTTPStatusCodesURL);
 
         }
     }

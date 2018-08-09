@@ -33,8 +33,8 @@ If however you get the expected responses, this does not neccessarily mean the f
       <Value Profile="(Default)">&lt;font color="red"&gt;HTTP 200: Errors found in response body.&lt;/font&gt; Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review.
 </Value>
     </Setting>
-    <Setting Name="Setting" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="HTTP401Unauthorized" Type="System.String" Scope="User">
+      <Value Profile="(Default)">&lt;font color="orange"&gt;HTTP 401: Unauthorized&lt;/font&gt; These are expected and are not an issue as long as a HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge.</Value>
     </Setting>
   </Settings>
 </SettingsFile>

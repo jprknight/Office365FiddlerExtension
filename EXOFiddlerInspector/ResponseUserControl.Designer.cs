@@ -45,8 +45,9 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.DataFreshnessLabel = new System.Windows.Forms.Label();
             this.DataFreshnessTextBox = new System.Windows.Forms.TextBox();
-            this.OpenResponseButton = new System.Windows.Forms.Button();
-            this.SaveResponseButton = new System.Windows.Forms.Button();
+            this.ElapsedTimeComemntTextBox = new System.Windows.Forms.TextBox();
+            this.RequestBeginDateTextBox = new System.Windows.Forms.TextBox();
+            this.RequestEndDateTextBox = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,10 +94,10 @@
             // RequestBeginTimeTextBox
             // 
             this.RequestBeginTimeTextBox.BackColor = System.Drawing.Color.White;
-            this.RequestBeginTimeTextBox.Location = new System.Drawing.Point(118, 29);
+            this.RequestBeginTimeTextBox.Location = new System.Drawing.Point(212, 29);
             this.RequestBeginTimeTextBox.Name = "RequestBeginTimeTextBox";
             this.RequestBeginTimeTextBox.ReadOnly = true;
-            this.RequestBeginTimeTextBox.Size = new System.Drawing.Size(288, 20);
+            this.RequestBeginTimeTextBox.Size = new System.Drawing.Size(194, 20);
             this.RequestBeginTimeTextBox.TabIndex = 15;
             this.RequestBeginTimeTextBox.TextChanged += new System.EventHandler(this.RequestBeginTimeTextBox_TextChanged);
             // 
@@ -112,10 +113,10 @@
             // RequestEndTimeTextBox
             // 
             this.RequestEndTimeTextBox.BackColor = System.Drawing.Color.White;
-            this.RequestEndTimeTextBox.Location = new System.Drawing.Point(118, 55);
+            this.RequestEndTimeTextBox.Location = new System.Drawing.Point(212, 55);
             this.RequestEndTimeTextBox.Name = "RequestEndTimeTextBox";
             this.RequestEndTimeTextBox.ReadOnly = true;
-            this.RequestEndTimeTextBox.Size = new System.Drawing.Size(288, 20);
+            this.RequestEndTimeTextBox.Size = new System.Drawing.Size(194, 20);
             this.RequestEndTimeTextBox.TabIndex = 17;
             // 
             // ElapsedTimeLabel
@@ -139,16 +140,17 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 136);
+            this.label1.Location = new System.Drawing.Point(6, 162);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(79, 13);
             this.label1.TabIndex = 20;
             this.label1.Text = "Response Alert";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // ResponseAlertTextBox
             // 
             this.ResponseAlertTextBox.BackColor = System.Drawing.Color.White;
-            this.ResponseAlertTextBox.Location = new System.Drawing.Point(118, 133);
+            this.ResponseAlertTextBox.Location = new System.Drawing.Point(118, 159);
             this.ResponseAlertTextBox.Name = "ResponseAlertTextBox";
             this.ResponseAlertTextBox.ReadOnly = true;
             this.ResponseAlertTextBox.Size = new System.Drawing.Size(288, 20);
@@ -156,7 +158,7 @@
             // 
             // ResponseProcessTextBox
             // 
-            this.ResponseProcessTextBox.Location = new System.Drawing.Point(118, 159);
+            this.ResponseProcessTextBox.Location = new System.Drawing.Point(118, 133);
             this.ResponseProcessTextBox.Name = "ResponseProcessTextBox";
             this.ResponseProcessTextBox.Size = new System.Drawing.Size(288, 20);
             this.ResponseProcessTextBox.TabIndex = 22;
@@ -164,7 +166,7 @@
             // ResponseProcessLabel
             // 
             this.ResponseProcessLabel.AutoSize = true;
-            this.ResponseProcessLabel.Location = new System.Drawing.Point(6, 162);
+            this.ResponseProcessLabel.Location = new System.Drawing.Point(6, 136);
             this.ResponseProcessLabel.Name = "ResponseProcessLabel";
             this.ResponseProcessLabel.Size = new System.Drawing.Size(45, 13);
             this.ResponseProcessLabel.TabIndex = 23;
@@ -175,16 +177,16 @@
             this.ResponseCommentsWebBrowser.Location = new System.Drawing.Point(6, 19);
             this.ResponseCommentsWebBrowser.MinimumSize = new System.Drawing.Size(20, 20);
             this.ResponseCommentsWebBrowser.Name = "ResponseCommentsWebBrowser";
-            this.ResponseCommentsWebBrowser.Size = new System.Drawing.Size(388, 125);
+            this.ResponseCommentsWebBrowser.Size = new System.Drawing.Size(385, 125);
             this.ResponseCommentsWebBrowser.TabIndex = 24;
             this.ResponseCommentsWebBrowser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.ResponseCommentsWebBrowser);
-            this.groupBox1.Location = new System.Drawing.Point(6, 185);
+            this.groupBox1.Location = new System.Drawing.Point(9, 185);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(400, 157);
+            this.groupBox1.Size = new System.Drawing.Size(397, 154);
             this.groupBox1.TabIndex = 25;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Response Comments";
@@ -208,31 +210,40 @@
             this.DataFreshnessTextBox.Size = new System.Drawing.Size(288, 20);
             this.DataFreshnessTextBox.TabIndex = 27;
             // 
-            // OpenResponseButton
+            // ElapsedTimeComemntTextBox
             // 
-            this.OpenResponseButton.Location = new System.Drawing.Point(267, 348);
-            this.OpenResponseButton.Name = "OpenResponseButton";
-            this.OpenResponseButton.Size = new System.Drawing.Size(139, 23);
-            this.OpenResponseButton.TabIndex = 28;
-            this.OpenResponseButton.Text = "Open Response";
-            this.OpenResponseButton.UseVisualStyleBackColor = true;
-            this.OpenResponseButton.Click += new System.EventHandler(this.OpenResponseButton_Click);
+            this.ElapsedTimeComemntTextBox.BackColor = System.Drawing.Color.White;
+            this.ElapsedTimeComemntTextBox.Location = new System.Drawing.Point(212, 81);
+            this.ElapsedTimeComemntTextBox.Name = "ElapsedTimeComemntTextBox";
+            this.ElapsedTimeComemntTextBox.ReadOnly = true;
+            this.ElapsedTimeComemntTextBox.Size = new System.Drawing.Size(194, 20);
+            this.ElapsedTimeComemntTextBox.TabIndex = 30;
             // 
-            // SaveResponseButton
+            // RequestBeginDateTextBox
             // 
-            this.SaveResponseButton.Location = new System.Drawing.Point(122, 348);
-            this.SaveResponseButton.Name = "SaveResponseButton";
-            this.SaveResponseButton.Size = new System.Drawing.Size(139, 23);
-            this.SaveResponseButton.TabIndex = 29;
-            this.SaveResponseButton.Text = "Save Response";
-            this.SaveResponseButton.UseVisualStyleBackColor = true;
+            this.RequestBeginDateTextBox.BackColor = System.Drawing.Color.White;
+            this.RequestBeginDateTextBox.Location = new System.Drawing.Point(118, 29);
+            this.RequestBeginDateTextBox.Name = "RequestBeginDateTextBox";
+            this.RequestBeginDateTextBox.ReadOnly = true;
+            this.RequestBeginDateTextBox.Size = new System.Drawing.Size(88, 20);
+            this.RequestBeginDateTextBox.TabIndex = 31;
+            // 
+            // RequestEndDateTextBox
+            // 
+            this.RequestEndDateTextBox.BackColor = System.Drawing.Color.White;
+            this.RequestEndDateTextBox.Location = new System.Drawing.Point(118, 56);
+            this.RequestEndDateTextBox.Name = "RequestEndDateTextBox";
+            this.RequestEndDateTextBox.ReadOnly = true;
+            this.RequestEndDateTextBox.Size = new System.Drawing.Size(88, 20);
+            this.RequestEndDateTextBox.TabIndex = 32;
             // 
             // ResponseUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.SaveResponseButton);
-            this.Controls.Add(this.OpenResponseButton);
+            this.Controls.Add(this.RequestEndDateTextBox);
+            this.Controls.Add(this.RequestBeginDateTextBox);
+            this.Controls.Add(this.ElapsedTimeComemntTextBox);
             this.Controls.Add(this.DataFreshnessTextBox);
             this.Controls.Add(this.DataFreshnessLabel);
             this.Controls.Add(this.groupBox1);
@@ -250,7 +261,7 @@
             this.Controls.Add(this.HTTPResponseCodeTextBox);
             this.Controls.Add(this.HTTPStatusCodeLinkLabel);
             this.Name = "ResponseUserControl";
-            this.Size = new System.Drawing.Size(412, 381);
+            this.Size = new System.Drawing.Size(412, 346);
             this.Load += new System.EventHandler(this.ResponseUserControl_Load);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -276,7 +287,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label DataFreshnessLabel;
         private System.Windows.Forms.TextBox DataFreshnessTextBox;
-        private System.Windows.Forms.Button OpenResponseButton;
-        private System.Windows.Forms.Button SaveResponseButton;
+        private System.Windows.Forms.TextBox ElapsedTimeComemntTextBox;
+        private System.Windows.Forms.TextBox RequestBeginDateTextBox;
+        private System.Windows.Forms.TextBox RequestEndDateTextBox;
     }
 }

@@ -278,17 +278,30 @@ namespace EXOFiddlerInspector
         public void SetResponseComments (Session oS)
         {
 
+            // Clear any previous data.
+            _displayControl.SetResponseAlertTextBox("");
+            _displayControl.SetResponseCommentsWebBrowserDocumentText("");
+            _displayControl.SetElapsedTimeComemntTextBox("");
+
             // Write HTTP Status Code Text box, convert int to string.
             _displayControl.SetHTTPResponseCodeTextBoxText(this.session.responseCode.ToString());
 
-            // Write Client Begin Request into textbox
-            _displayControl.SetRequestBeginTimeTextBox(this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd H:mm:ss.ffff"));
-
-            // Write Client End Request into textbox
-            _displayControl.SetRequestEndTimeTextBox(this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd H:mm:ss.ffff"));
+            // Write Client Begin Request into textboxes
+            _displayControl.SetRequestBeginDateTextBox(this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd"));
+            _displayControl.SetRequestBeginTimeTextBox(this.session.Timers.ClientBeginRequest.ToString(" H:mm:ss.ffff"));
+            
+            // Write Client End Request into textboxes
+            _displayControl.SetRequestEndDateTextBox(this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd"));
+            _displayControl.SetRequestEndTimeTextBox(this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.ffff"));
 
             // Write Elapsed Time into textbox.
             _displayControl.SetResponseElapsedTimeTextBox(this.session.oResponse.iTTLB + "ms");
+
+            // Write Elapsed Time comment into textbox.
+            if (this.session.oResponse.iTTLB > 5000)
+            {
+                _displayControl.SetElapsedTimeComemntTextBox("> 5 second response time.");
+            }
 
             // Write Data Freshness data into textbox.
             String DataFreshnessOutput = "";
@@ -301,10 +314,10 @@ namespace EXOFiddlerInspector
 
             if (TimeSpanDays == 0)
             {
-                DataFreshnessOutput = "Trace is " + TimeSpanHours + " Hour(s), " + TimeSpanMinutes + " minute(s) old.";
+                DataFreshnessOutput = "Session is " + TimeSpanHours + " Hour(s), " + TimeSpanMinutes + " minute(s) old.";
             } else
             {
-                DataFreshnessOutput = "Trace is " + TimeSpanDays + " Day(s), " + TimeSpanHours + " Hour(s), " + TimeSpanMinutes + " minute(s) old.";
+                DataFreshnessOutput = "Session is " + TimeSpanDays + " Day(s), " + TimeSpanHours + " Hour(s), " + TimeSpanMinutes + " minute(s) old.";
             }
 
             _displayControl.SetDataFreshnessTextBox(DataFreshnessOutput);
@@ -312,11 +325,9 @@ namespace EXOFiddlerInspector
             // Write Process into textbox.
             _displayControl.SetResponseProcessTextBox(this.session.LocalProcess);
 
-            // Clear any previous data.
-            _displayControl.SetResponseAlertTextBox("");
-            _displayControl.SetResponseCommentsWebBrowserDocumentText("");
-
-
+            ///////
+            //  Logic to populate fields on response tab.
+            ///////
 
             int wordCount = 0;
 
@@ -331,14 +342,14 @@ namespace EXOFiddlerInspector
             string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',', '"' }, StringSplitOptions.RemoveEmptyEntries);
 
             //string searchTerm = "error";
-            string[] searchTerms = { "error", "FederatedStsUnreachable" };
+            string[] searchTerms = { "Error", "FederatedStsUnreachable" };
 
             foreach (string searchTerm in searchTerms)
             {
                 // Create the query.  Use ToLowerInvariant to match "data" and "Data"   
                 var matchQuery = from word in source
-                                    where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
-                                    select word;
+                    where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
+                    select word;
 
                 // Count the matches, which executes the query.  
                 wordCount = matchQuery.Count();
@@ -346,7 +357,7 @@ namespace EXOFiddlerInspector
                 //
                 //  HTTP 200.
                 //
-                // Looking for errors lurking in HTTP 200 OK results.
+                // Looking for errors lurking in HTTP 200 OK responses.
                 if (this.session.responseCode == 200)
                 {
                     if (searchTerm == "Error")
@@ -366,22 +377,57 @@ namespace EXOFiddlerInspector
                     }
                 }
                 //
-                //  HTTP 403.
+                //  HTTP 401: UNAUTHORIZED.
+                //
+                else if (this.session.responseCode == 401)
+                {
+                    _displayControl.SetResponseAlertTextBox("HTTP 401 Unauthorized");
+                    _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP401Unauthorized);
+                }
+                //
+                //  HTTP 403: FORBIDDEN.
                 //
                 // Simply looking for the term "Access Denied" works fine using utilFindInResponse.
-                if (this.session.responseCode == 403)
+                else if (this.session.responseCode == 403)
                 {
+                    // Specific scenario where a web proxy is blocking traffic.
                     if (this.session.utilFindInResponse("Access Denied", false) > 1)
                     {
                         _displayControl.SetResponseAlertTextBox("Panic Stations!!!");
                         _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP403WebProxyBlocking);
                     }
+                    else
+                    {
+                        // Pick up any 403 Forbidden and write data into the comments box.
+                        _displayControl.SetResponseAlertTextBox("HTTP 403 Forbidden");
+                        _displayControl.SetResponseCommentsWebBrowserDocumentText("HTTP 403 Forbidden");
+                    }
                 }
                 //
-                //  HTTP 502.
+                //  HTTP 404: Not Found.
+                //
+                else if (this.session.responseCode == 404)
+                {
+                    // Pick up any 404 Not Found and write data into the comments box.
+                    _displayControl.SetResponseAlertTextBox("HTTP 404 Not Found");
+                    _displayControl.SetResponseCommentsWebBrowserDocumentText("HTTP 404 Not Found");
+                }
+                //
+                //  HTTP 500: Internal Server Error.
+                //
+                else if (this.session.responseCode == 500)
+                {
+                    // Pick up any 500 Internal Server Error and write data into the comments box.
+                    _displayControl.SetResponseAlertTextBox("HTTP 500 Internal Server Error");
+                    _displayControl.SetResponseCommentsWebBrowserDocumentText("HTTP 500 Internal Server Error");
+                }
+                //
+                //  HTTP 502: BAD GATEWAY.
                 //
                 else if (this.session.responseCode == 502)
                 {
+                    // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
+                    //      autodiscover.domain.onmicrosoft.com:443
                     if (this.session.utilFindInResponse("autodiscover", false) > 1)
                     {
                         if (this.session.utilFindInResponse("target machine actively refused it", false) > 1)
@@ -393,14 +439,21 @@ namespace EXOFiddlerInspector
                             }
                         }
                     }
+                    else
+                    {
+                        // Pick up any other 502 Bad Gateway and write data into the comments box.
+                        _displayControl.SetResponseAlertTextBox("HTTP 502 Bad Gateway");
+                        _displayControl.SetResponseCommentsWebBrowserDocumentText("HTTP 502 Bad Gateway");
+                    }
                 }
                 //
-                //  HTTP 503.
+                //  HTTP 503: SERVICE UNAVAILABLE.
                 //
                 // Using utilFindInResponse to find FederatedStsUnreachable did not work for some reason.
-                // So instead we split all words in the response body and check them with Linq.
+                // So instead split all words in the response body and check them with Linq.
                 else if (this.session.responseCode == 503)
                 {
+                    // Specific scenario where Federation service is unavailable, preventing authentication, preventing access to Office 365 mailbox.
                     if (searchTerm == "FederatedStsUnreachable")
                     {
                         if (wordCount > 0)
@@ -413,7 +466,23 @@ namespace EXOFiddlerInspector
                             _displayControl.SetResponseAlertTextBox("Federation failure error missed.");
                         }
                     }
-                }              
+                    else
+                    {
+                        // Pick up any other 503 Service Unavailable and write data into the comments box.
+                        _displayControl.SetResponseAlertTextBox("HTTP 503 Service Unavailable.");
+                        _displayControl.SetResponseCommentsWebBrowserDocumentText("HTTP 503 Service Unavailable.");
+                    }
+                }
+                //
+                //  HTTP 504: GATEWAY TIMEOUT.
+                //
+                else if (this.session.responseCode == 504)
+                {
+                    // Pick up any 504 Gateway Timeout and write data into the comments box.
+                    _displayControl.SetResponseAlertTextBox("HTTP 504 Gateway Timeout");
+                    _displayControl.SetResponseCommentsWebBrowserDocumentText("HTTP 504 Gateway Timeout");
+                }
+
             }
         }
 
