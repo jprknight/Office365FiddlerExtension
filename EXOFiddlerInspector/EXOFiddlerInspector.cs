@@ -405,6 +405,9 @@ namespace EXOFiddlerInspector
                     _displayControl.SetResponseAlertTextBox("HTTP 404 Not Found");
                     _displayControl.SetResponseCommentsWebBrowserDocumentText("HTTP 404 Not Found");
                 }
+
+                // HTTP 440 ???
+
                 //
                 //  HTTP 500: Internal Server Error.
                 //

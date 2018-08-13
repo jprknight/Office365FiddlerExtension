@@ -65,6 +65,9 @@ public class Violin : IAutoTamper    // Ensure class is public, or Fiddler won't
             // Count the matches, which executes the query.  
             wordCount = matchQuery.Count();
 
+            session.utilDecodeRequest(true);
+            session.utilDecodeResponse(true);
+
             //
             //  HTTP 200.
             //
@@ -132,6 +135,9 @@ public class Violin : IAutoTamper    // Ensure class is public, or Fiddler won't
                 session["ui-backcolor"] = "orange";
                 session["ui-color"] = "black";
             }
+
+            // HTTP 440 ???
+
             //
             //  HTTP 500: Internal Server Error.
             //
