@@ -9,7 +9,7 @@ namespace EXOFiddlerInspector
     // Base class, generic inspector, common between request and response
     public class EXOBaseFiddlerInspector : Inspector2
     {
-        private byte[] _body;
+        //private byte[] _body;
         private bool _readOnly;
 
         internal byte[] rawBody;
@@ -59,7 +59,7 @@ namespace EXOFiddlerInspector
         private byte[] _body;
         RequestUserControl _displayControl;
 
-        // Double click on a session to highlight inpsector.
+        // Double click on a session to highlight inpsector or not.
         public override int ScoreForSession(Session oS)
         {
             this.session = oS;
@@ -95,6 +95,7 @@ namespace EXOFiddlerInspector
             }
         }
 
+        // Add EXO Request tab into inspectors tab.
         public override void AddToTab(TabPage o)
         {
             _displayControl = new RequestUserControl();
@@ -109,29 +110,11 @@ namespace EXOFiddlerInspector
             get
             {
                 return _headers;
-
             }
             set
-            {
-                /*_headers = value;
-                System.Collections.Generic.Dictionary<string, string> httpHeaders =
-                    new System.Collections.Generic.Dictionary<string, string>();
-                foreach (var item in headers)
-                {
-                    httpHeaders.Add(item.Name, item.Value);
-                }*/
-                //_displayControl.Headers = httpHeaders;
-
-            }
+            { }
         }
 
- /*       public void Sessions(Session oS)
-        {
-            if (oS.fullUrl.Contains("autodiscover-s.outlook.com")) {
-                _displayControl.Text = "365 Autodiscover";
-            }
-        }
-*/
         public void SetRequestValues(Session oS)
         {
             // Write HTTP Status Code Text box, convert int to string.
@@ -140,7 +123,10 @@ namespace EXOFiddlerInspector
             // Write Request URL Text box.
             _displayControl.SetRequestURLTextBox(this.session.url);
 
-            // Classify type on traffic. Set in order of presence to correctly identify as much traffic as possible.
+            // Set Request Process Textbox.
+            _displayControl.SetRequestProcessTextBox(this.session.LocalProcess);
+
+            // Classify type of traffic. Set in order of presence to correctly identify as much traffic as possible.
             // First off make sure we only classify traffic from Outlook or browsers.
             if (this.session.LocalProcess.Contains("outlook") ||
                     this.session.LocalProcess.Contains("iexplore") ||
@@ -149,7 +135,6 @@ namespace EXOFiddlerInspector
                     this.session.LocalProcess.Contains("edge") ||
                     this.session.LocalProcess.Contains("w3wp"))
             {
-
                 if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) { _displayControl.SetRequestTypeTextBox("EXO MAPI"); }
                 else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
                 else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
@@ -171,12 +156,10 @@ namespace EXOFiddlerInspector
                 else { _displayControl.SetRequestTypeTextBox("Not Exchange"); }
             }
             else
-                // If the traffic did not originate from Outlook or a web browser, call it out.
-                {
-                    _displayControl.SetRequestTypeTextBox("Not Outlook or EXO Browser");
-                }
-            // Set Request Process Textbox.
-            _displayControl.SetRequestProcessTextBox(this.session.LocalProcess);
+            // If the traffic did not originate from Outlook, web browser or EXO web service (w3wp), call it out.
+            {
+                _displayControl.SetRequestTypeTextBox("Not from Outlook, EXO Browser or web service.");
+            }
         }
 
         public void Clear()
@@ -271,11 +254,11 @@ namespace EXOFiddlerInspector
             get { return rawBody; }
             set
             {
-                SetResponseComments(this.session);
+                SetResponseValues(this.session);
             }
         }
 
-        public void SetResponseComments (Session oS)
+        public void SetResponseValues(Session oS)
         {
 
             // Clear any previous data.
@@ -357,9 +340,9 @@ namespace EXOFiddlerInspector
                 //
                 //  HTTP 200.
                 //
-                // Looking for errors lurking in HTTP 200 OK responses.
                 if (this.session.responseCode == 200)
                 {
+                    // Looking for errors lurking in HTTP 200 OK responses.
                     if (searchTerm == "Error")
                     {
                         string result = "After splitting all words in the response body the word 'error' was found " + wordCount + " time(s).";
@@ -373,6 +356,16 @@ namespace EXOFiddlerInspector
                         {
                             _displayControl.SetResponseAlertTextBox("Word Search 'Error' Not found in response body.");
                             _displayControl.SetResponseCommentsWebBrowserDocumentText(result);
+                        }
+                    }
+
+                    // Autodiscover redirect Address from Exchange On-Premise.
+                    if (this.session.utilFindInResponse("<RedirectAddr>", false) > 1)
+                    {
+                        if (this.session.utilFindInResponse("</RedirectAddr>", false) > 1)
+                        {
+                            _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect Address found.");
+                            _displayControl.SetResponseCommentsWebBrowserDocumentText("Exchange On-Premise Autodiscover redirect Address found.");
                         }
                     }
                 }
@@ -438,6 +431,21 @@ namespace EXOFiddlerInspector
                                 _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
                             }
                         }
+                    // Specific scenario on Outlook and Office 365 invalid DNS lookup.
+                    // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
+                    } else if (this.session.utilFindInResponse("DNS Lookup for ", false) > 1)
+                    {
+                        if (this.session.utilFindInResponse("mail.onmicrosoft.com", false) > 1)
+                        {
+                            if (this.session.utilFindInResponse("failed.System.Net.Sockets.SocketException", false) > 1)
+                            {
+                                if (this.session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1)
+                                {
+                                    _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
+                                    _displayControl.SetResponseCommentsWebBrowserDocumentText("DNS record does not exist. Connection on port 443 will not work by design.");
+                                }
+                            }
+                        }
                     }
                     else
                     {
@@ -485,7 +493,8 @@ namespace EXOFiddlerInspector
 
             }
         }
-
+        
+        // Add the EXO Response tab into the inspector tab.
         public override void AddToTab(TabPage o)
         {
             _displayControl = new ResponseUserControl();
@@ -516,11 +525,6 @@ namespace EXOFiddlerInspector
                 //_displayControl.Headers = httpHeaders;
             }
         }*/
-
-        //HTTPResponseHeaders IResponseInspector2.headers { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        //byte[] IBaseInspector2.body { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
-            //bool IBaseInspector2.bReadOnly { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         public override int GetOrder()
         {

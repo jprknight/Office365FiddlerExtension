@@ -42,13 +42,13 @@
             this.ResponseProcessTextBox = new System.Windows.Forms.TextBox();
             this.ResponseProcessLabel = new System.Windows.Forms.Label();
             this.ResponseCommentsWebBrowser = new System.Windows.Forms.WebBrowser();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ResponseGroupBox = new System.Windows.Forms.GroupBox();
             this.DataFreshnessLabel = new System.Windows.Forms.Label();
             this.DataFreshnessTextBox = new System.Windows.Forms.TextBox();
             this.ElapsedTimeComemntTextBox = new System.Windows.Forms.TextBox();
             this.RequestBeginDateTextBox = new System.Windows.Forms.TextBox();
             this.RequestEndDateTextBox = new System.Windows.Forms.TextBox();
-            this.groupBox1.SuspendLayout();
+            this.ResponseGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // HTTPStatusCodeLinkLabel
@@ -181,16 +181,16 @@
             this.ResponseCommentsWebBrowser.TabIndex = 24;
             this.ResponseCommentsWebBrowser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
             // 
-            // groupBox1
+            // ResponseGroupBox
             // 
-            this.groupBox1.Controls.Add(this.ResponseCommentsWebBrowser);
-            this.groupBox1.Location = new System.Drawing.Point(9, 185);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(397, 154);
-            this.groupBox1.TabIndex = 25;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Response Comments";
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            this.ResponseGroupBox.Controls.Add(this.ResponseCommentsWebBrowser);
+            this.ResponseGroupBox.Location = new System.Drawing.Point(9, 185);
+            this.ResponseGroupBox.Name = "ResponseGroupBox";
+            this.ResponseGroupBox.Size = new System.Drawing.Size(397, 154);
+            this.ResponseGroupBox.TabIndex = 25;
+            this.ResponseGroupBox.TabStop = false;
+            this.ResponseGroupBox.Text = "Response Comments";
+            this.ResponseGroupBox.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // DataFreshnessLabel
             // 
@@ -246,7 +246,7 @@
             this.Controls.Add(this.ElapsedTimeComemntTextBox);
             this.Controls.Add(this.DataFreshnessTextBox);
             this.Controls.Add(this.DataFreshnessLabel);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.ResponseGroupBox);
             this.Controls.Add(this.ResponseProcessLabel);
             this.Controls.Add(this.ResponseProcessTextBox);
             this.Controls.Add(this.ResponseAlertTextBox);
@@ -263,7 +263,7 @@
             this.Name = "ResponseUserControl";
             this.Size = new System.Drawing.Size(412, 346);
             this.Load += new System.EventHandler(this.ResponseUserControl_Load);
-            this.groupBox1.ResumeLayout(false);
+            this.ResponseGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -284,7 +284,7 @@
         private System.Windows.Forms.TextBox ResponseProcessTextBox;
         private System.Windows.Forms.Label ResponseProcessLabel;
         private System.Windows.Forms.WebBrowser ResponseCommentsWebBrowser;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox ResponseGroupBox;
         private System.Windows.Forms.Label DataFreshnessLabel;
         private System.Windows.Forms.TextBox DataFreshnessTextBox;
         private System.Windows.Forms.TextBox ElapsedTimeComemntTextBox;
