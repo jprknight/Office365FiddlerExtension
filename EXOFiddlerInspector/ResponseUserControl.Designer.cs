@@ -42,12 +42,12 @@
             this.ResponseProcessTextBox = new System.Windows.Forms.TextBox();
             this.ResponseProcessLabel = new System.Windows.Forms.Label();
             this.ResponseGroupBox = new System.Windows.Forms.GroupBox();
+            this.ResponseCommentsRichTextBox = new System.Windows.Forms.RichTextBox();
             this.DataFreshnessLabel = new System.Windows.Forms.Label();
             this.DataFreshnessTextBox = new System.Windows.Forms.TextBox();
-            this.ElapsedTimeComemntTextBox = new System.Windows.Forms.TextBox();
+            this.ElapsedTimeCommentTextBox = new System.Windows.Forms.TextBox();
             this.RequestBeginDateTextBox = new System.Windows.Forms.TextBox();
             this.RequestEndDateTextBox = new System.Windows.Forms.TextBox();
-            this.ResponseCommentsRichTextBox = new System.Windows.Forms.RichTextBox();
             this.ResponseGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -183,6 +183,16 @@
             this.ResponseGroupBox.Text = "Response Comments";
             this.ResponseGroupBox.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
+            // ResponseCommentsRichTextBox
+            // 
+            this.ResponseCommentsRichTextBox.BackColor = System.Drawing.Color.White;
+            this.ResponseCommentsRichTextBox.Location = new System.Drawing.Point(6, 19);
+            this.ResponseCommentsRichTextBox.Name = "ResponseCommentsRichTextBox";
+            this.ResponseCommentsRichTextBox.ReadOnly = true;
+            this.ResponseCommentsRichTextBox.Size = new System.Drawing.Size(385, 125);
+            this.ResponseCommentsRichTextBox.TabIndex = 33;
+            this.ResponseCommentsRichTextBox.Text = "";
+            // 
             // DataFreshnessLabel
             // 
             this.DataFreshnessLabel.AutoSize = true;
@@ -201,14 +211,15 @@
             this.DataFreshnessTextBox.Size = new System.Drawing.Size(288, 20);
             this.DataFreshnessTextBox.TabIndex = 27;
             // 
-            // ElapsedTimeComemntTextBox
+            // ElapsedTimeCommentTextBox
             // 
-            this.ElapsedTimeComemntTextBox.BackColor = System.Drawing.Color.White;
-            this.ElapsedTimeComemntTextBox.Location = new System.Drawing.Point(212, 81);
-            this.ElapsedTimeComemntTextBox.Name = "ElapsedTimeComemntTextBox";
-            this.ElapsedTimeComemntTextBox.ReadOnly = true;
-            this.ElapsedTimeComemntTextBox.Size = new System.Drawing.Size(194, 20);
-            this.ElapsedTimeComemntTextBox.TabIndex = 30;
+            this.ElapsedTimeCommentTextBox.BackColor = System.Drawing.Color.White;
+            this.ElapsedTimeCommentTextBox.Location = new System.Drawing.Point(212, 81);
+            this.ElapsedTimeCommentTextBox.Name = "ElapsedTimeCommentTextBox";
+            this.ElapsedTimeCommentTextBox.ReadOnly = true;
+            this.ElapsedTimeCommentTextBox.Size = new System.Drawing.Size(194, 20);
+            this.ElapsedTimeCommentTextBox.TabIndex = 30;
+            this.ElapsedTimeCommentTextBox.TextChanged += new System.EventHandler(this.ElapsedTimeComemntTextBox_TextChanged);
             // 
             // RequestBeginDateTextBox
             // 
@@ -228,22 +239,13 @@
             this.RequestEndDateTextBox.Size = new System.Drawing.Size(88, 20);
             this.RequestEndDateTextBox.TabIndex = 32;
             // 
-            // ResponseCommentsRichTextBox
-            // 
-            this.ResponseCommentsRichTextBox.Location = new System.Drawing.Point(6, 19);
-            this.ResponseCommentsRichTextBox.Name = "ResponseCommentsRichTextBox";
-            this.ResponseCommentsRichTextBox.ReadOnly = true;
-            this.ResponseCommentsRichTextBox.Size = new System.Drawing.Size(385, 125);
-            this.ResponseCommentsRichTextBox.TabIndex = 33;
-            this.ResponseCommentsRichTextBox.Text = "";
-            // 
             // ResponseUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.RequestEndDateTextBox);
             this.Controls.Add(this.RequestBeginDateTextBox);
-            this.Controls.Add(this.ElapsedTimeComemntTextBox);
+            this.Controls.Add(this.ElapsedTimeCommentTextBox);
             this.Controls.Add(this.DataFreshnessTextBox);
             this.Controls.Add(this.DataFreshnessLabel);
             this.Controls.Add(this.ResponseGroupBox);
@@ -286,7 +288,7 @@
         private System.Windows.Forms.GroupBox ResponseGroupBox;
         private System.Windows.Forms.Label DataFreshnessLabel;
         private System.Windows.Forms.TextBox DataFreshnessTextBox;
-        private System.Windows.Forms.TextBox ElapsedTimeComemntTextBox;
+        private System.Windows.Forms.TextBox ElapsedTimeCommentTextBox;
         private System.Windows.Forms.TextBox RequestBeginDateTextBox;
         private System.Windows.Forms.TextBox RequestEndDateTextBox;
         private System.Windows.Forms.RichTextBox ResponseCommentsRichTextBox;

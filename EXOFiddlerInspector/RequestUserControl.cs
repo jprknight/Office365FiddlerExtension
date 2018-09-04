@@ -40,6 +40,13 @@ namespace EXOFiddlerInspector
         {
             RequestProcessTextBox.Text = txt;
         }
+        
+        // Code to write to RequestAlertTextBox.Text value.
+        internal void SetRequestAlertTextBox(string txt)
+        {
+            RequestAlertTextBox.Text = txt;
+        }
+
 
         private void RequestUserControl_Load(object sender, EventArgs e)
         {

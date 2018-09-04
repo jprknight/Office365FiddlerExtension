@@ -77,8 +77,8 @@ namespace EXOFiddlerInspector
             ResponseAlertTextBox.Text = txt;
         }
 
-        // Code to write to ResponseAlertTextBox.Text value.
-        internal void SetResponseCommentsTextboxText(string txt)
+        // Code to write to ResponseCommentsTextBox.Text value.
+        internal void SetResponseCommentsRichTextboxText(string txt)
         {
             ResponseCommentsRichTextBox.Text = txt;
         }
@@ -90,9 +90,9 @@ namespace EXOFiddlerInspector
         }
 
         // Code to write to ElapsedTimeComemntTextBox.Text value.
-        internal void SetElapsedTimeComemntTextBox(string txt)
+        internal void SetElapsedTimeCommentTextBoxText(string txt)
         {
-            ElapsedTimeComemntTextBox.Text = txt;
+            ElapsedTimeCommentTextBox.Text = txt;
         }
         
 
@@ -298,6 +298,11 @@ namespace EXOFiddlerInspector
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ElapsedTimeComemntTextBox_TextChanged(object sender, EventArgs e)
         {
 
         }
