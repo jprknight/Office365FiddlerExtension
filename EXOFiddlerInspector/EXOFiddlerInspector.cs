@@ -263,7 +263,7 @@ namespace EXOFiddlerInspector
 
             // Clear any previous data.
             _displayControl.SetResponseAlertTextBox("");
-            _displayControl.SetResponseCommentsWebBrowserDocumentText("");
+            _displayControl.SetResponseCommentsTextboxText("");
             _displayControl.SetElapsedTimeComemntTextBox("");
 
             // Write HTTP Status Code Text box, convert int to string.
@@ -350,12 +350,12 @@ namespace EXOFiddlerInspector
                         if (wordCount > 0)
                         {
                             _displayControl.SetResponseAlertTextBox("Word Search 'Error' found in respone body.");
-                            _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP200ErrorsFound + "<br /><br />" + result);
+                            _displayControl.SetResponseCommentsTextboxText(Properties.Settings.Default.HTTP200ErrorsFound + "<br /><br />" + result);
                         }
                         else
                         {
                             _displayControl.SetResponseAlertTextBox("Word Search 'Error' Not found in response body.");
-                            _displayControl.SetResponseCommentsWebBrowserDocumentText(result);
+                            _displayControl.SetResponseCommentsTextboxText(result);
                         }
                     }
 
@@ -365,7 +365,7 @@ namespace EXOFiddlerInspector
                         if (this.session.utilFindInResponse("</RedirectAddr>", false) > 1)
                         {
                             _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect Address found.");
-                            _displayControl.SetResponseCommentsWebBrowserDocumentText("Exchange On-Premise Autodiscover redirect Address found.");
+                            _displayControl.SetResponseCommentsTextboxText("Exchange On-Premise Autodiscover redirect Address found.");
                         }
                     }
                 }
@@ -375,7 +375,7 @@ namespace EXOFiddlerInspector
                 else if (this.session.responseCode == 401)
                 {
                     _displayControl.SetResponseAlertTextBox("HTTP 401 Unauthorized");
-                    _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP401Unauthorized);
+                    _displayControl.SetResponseCommentsTextboxText(Properties.Settings.Default.HTTP401Unauthorized);
                 }
                 //
                 //  HTTP 403: FORBIDDEN.
@@ -387,13 +387,13 @@ namespace EXOFiddlerInspector
                     if (this.session.utilFindInResponse("Access Denied", false) > 1)
                     {
                         _displayControl.SetResponseAlertTextBox("Panic Stations!!!");
-                        _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP403WebProxyBlocking);
+                        _displayControl.SetResponseCommentsTextboxText(Properties.Settings.Default.HTTP403WebProxyBlocking);
                     }
                     else
                     {
                         // Pick up any 403 Forbidden and write data into the comments box.
                         _displayControl.SetResponseAlertTextBox("HTTP 403 Forbidden");
-                        _displayControl.SetResponseCommentsWebBrowserDocumentText("HTTP 403 Forbidden");
+                        _displayControl.SetResponseCommentsTextboxText("HTTP 403 Forbidden");
                     }
                 }
                 //
@@ -403,7 +403,7 @@ namespace EXOFiddlerInspector
                 {
                     // Pick up any 404 Not Found and write data into the comments box.
                     _displayControl.SetResponseAlertTextBox("HTTP 404 Not Found");
-                    _displayControl.SetResponseCommentsWebBrowserDocumentText("HTTP 404 Not Found");
+                    _displayControl.SetResponseCommentsTextboxText("HTTP 404 Not Found");
                 }
 
                 // HTTP 440 ???
@@ -415,7 +415,7 @@ namespace EXOFiddlerInspector
                 {
                     // Pick up any 500 Internal Server Error and write data into the comments box.
                     _displayControl.SetResponseAlertTextBox("HTTP 500 Internal Server Error");
-                    _displayControl.SetResponseCommentsWebBrowserDocumentText("HTTP 500 Internal Server Error");
+                    _displayControl.SetResponseCommentsTextboxText("HTTP 500 Internal Server Error");
                 }
                 //
                 //  HTTP 502: BAD GATEWAY.
@@ -431,7 +431,7 @@ namespace EXOFiddlerInspector
                             if (this.session.utilFindInResponse(":443", false) > 1)
                             {
                                 _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
-                                _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
+                                _displayControl.SetResponseCommentsTextboxText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
                             }
                         }
                     // Specific scenario on Outlook and Office 365 invalid DNS lookup.
@@ -445,7 +445,7 @@ namespace EXOFiddlerInspector
                                 if (this.session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1)
                                 {
                                     _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
-                                    _displayControl.SetResponseCommentsWebBrowserDocumentText("DNS record does not exist. Connection on port 443 will not work by design.");
+                                    _displayControl.SetResponseCommentsTextboxText("DNS record does not exist. Connection on port 443 will not work by design.");
                                 }
                             }
                         }
@@ -454,7 +454,7 @@ namespace EXOFiddlerInspector
                     {
                         // Pick up any other 502 Bad Gateway and write data into the comments box.
                         _displayControl.SetResponseAlertTextBox("HTTP 502 Bad Gateway");
-                        _displayControl.SetResponseCommentsWebBrowserDocumentText("HTTP 502 Bad Gateway");
+                        _displayControl.SetResponseCommentsTextboxText("HTTP 502 Bad Gateway");
                     }
                 }
                 //
@@ -470,18 +470,19 @@ namespace EXOFiddlerInspector
                         if (wordCount > 0)
                         {
                             _displayControl.SetResponseAlertTextBox("The federation service is unreachable or unavailable.");
-                            _displayControl.SetResponseCommentsWebBrowserDocumentText(Properties.Settings.Default.HTTP503FederatedSTSUnreachable);
+                            _displayControl.SetResponseCommentsTextboxText(Properties.Settings.Default.HTTP503FederatedSTSUnreachable);
                         }
-                        else
+                        // Testing code.
+                        /*else
                         {
                             _displayControl.SetResponseAlertTextBox("Federation failure error missed.");
-                        }
+                        }*/
                     }
                     else
                     {
                         // Pick up any other 503 Service Unavailable and write data into the comments box.
                         _displayControl.SetResponseAlertTextBox("HTTP 503 Service Unavailable.");
-                        _displayControl.SetResponseCommentsWebBrowserDocumentText("HTTP 503 Service Unavailable.");
+                        _displayControl.SetResponseCommentsTextboxText("HTTP 503 Service Unavailable.");
                     }
                 }
                 //
@@ -491,7 +492,7 @@ namespace EXOFiddlerInspector
                 {
                     // Pick up any 504 Gateway Timeout and write data into the comments box.
                     _displayControl.SetResponseAlertTextBox("HTTP 504 Gateway Timeout");
-                    _displayControl.SetResponseCommentsWebBrowserDocumentText("HTTP 504 Gateway Timeout");
+                    _displayControl.SetResponseCommentsTextboxText("HTTP 504 Gateway Timeout");
                 }
 
             }

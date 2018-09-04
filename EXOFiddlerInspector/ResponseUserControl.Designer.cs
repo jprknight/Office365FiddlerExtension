@@ -41,13 +41,13 @@
             this.ResponseAlertTextBox = new System.Windows.Forms.TextBox();
             this.ResponseProcessTextBox = new System.Windows.Forms.TextBox();
             this.ResponseProcessLabel = new System.Windows.Forms.Label();
-            this.ResponseCommentsWebBrowser = new System.Windows.Forms.WebBrowser();
             this.ResponseGroupBox = new System.Windows.Forms.GroupBox();
             this.DataFreshnessLabel = new System.Windows.Forms.Label();
             this.DataFreshnessTextBox = new System.Windows.Forms.TextBox();
             this.ElapsedTimeComemntTextBox = new System.Windows.Forms.TextBox();
             this.RequestBeginDateTextBox = new System.Windows.Forms.TextBox();
             this.RequestEndDateTextBox = new System.Windows.Forms.TextBox();
+            this.ResponseCommentsRichTextBox = new System.Windows.Forms.RichTextBox();
             this.ResponseGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -172,18 +172,9 @@
             this.ResponseProcessLabel.TabIndex = 23;
             this.ResponseProcessLabel.Text = "Process";
             // 
-            // ResponseCommentsWebBrowser
-            // 
-            this.ResponseCommentsWebBrowser.Location = new System.Drawing.Point(6, 19);
-            this.ResponseCommentsWebBrowser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.ResponseCommentsWebBrowser.Name = "ResponseCommentsWebBrowser";
-            this.ResponseCommentsWebBrowser.Size = new System.Drawing.Size(385, 125);
-            this.ResponseCommentsWebBrowser.TabIndex = 24;
-            this.ResponseCommentsWebBrowser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
-            // 
             // ResponseGroupBox
             // 
-            this.ResponseGroupBox.Controls.Add(this.ResponseCommentsWebBrowser);
+            this.ResponseGroupBox.Controls.Add(this.ResponseCommentsRichTextBox);
             this.ResponseGroupBox.Location = new System.Drawing.Point(9, 185);
             this.ResponseGroupBox.Name = "ResponseGroupBox";
             this.ResponseGroupBox.Size = new System.Drawing.Size(397, 154);
@@ -237,6 +228,15 @@
             this.RequestEndDateTextBox.Size = new System.Drawing.Size(88, 20);
             this.RequestEndDateTextBox.TabIndex = 32;
             // 
+            // ResponseCommentsRichTextBox
+            // 
+            this.ResponseCommentsRichTextBox.Location = new System.Drawing.Point(6, 19);
+            this.ResponseCommentsRichTextBox.Name = "ResponseCommentsRichTextBox";
+            this.ResponseCommentsRichTextBox.ReadOnly = true;
+            this.ResponseCommentsRichTextBox.Size = new System.Drawing.Size(385, 125);
+            this.ResponseCommentsRichTextBox.TabIndex = 33;
+            this.ResponseCommentsRichTextBox.Text = "";
+            // 
             // ResponseUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -261,7 +261,7 @@
             this.Controls.Add(this.HTTPResponseCodeTextBox);
             this.Controls.Add(this.HTTPStatusCodeLinkLabel);
             this.Name = "ResponseUserControl";
-            this.Size = new System.Drawing.Size(412, 346);
+            this.Size = new System.Drawing.Size(412, 350);
             this.Load += new System.EventHandler(this.ResponseUserControl_Load);
             this.ResponseGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -283,12 +283,12 @@
         private System.Windows.Forms.TextBox ResponseAlertTextBox;
         private System.Windows.Forms.TextBox ResponseProcessTextBox;
         private System.Windows.Forms.Label ResponseProcessLabel;
-        private System.Windows.Forms.WebBrowser ResponseCommentsWebBrowser;
         private System.Windows.Forms.GroupBox ResponseGroupBox;
         private System.Windows.Forms.Label DataFreshnessLabel;
         private System.Windows.Forms.TextBox DataFreshnessTextBox;
         private System.Windows.Forms.TextBox ElapsedTimeComemntTextBox;
         private System.Windows.Forms.TextBox RequestBeginDateTextBox;
         private System.Windows.Forms.TextBox RequestEndDateTextBox;
+        private System.Windows.Forms.RichTextBox ResponseCommentsRichTextBox;
     }
 }

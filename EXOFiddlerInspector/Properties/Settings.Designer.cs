@@ -25,8 +25,7 @@ namespace EXOFiddlerInspector.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<font color=""green"">HTTP 502: False Positive</font><br />By design Office 365 Autodiscover does not respond to autodiscover.contoso.onmicrosoft.com for example on port 443. Validate this message by confirming this is an Office 365 IP address and perform a telnet to the IP address on port 80.
-")]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"HTTP 502: False Positive. By design Office 365 Autodiscover does not respond to autodiscover.contoso.onmicrosoft.com for example on port 443. Validate this message by confirming this is an Office 365 IP address and perform a telnet to the IP address on port 80.")]
         public string HTTP502AutodiscoverFalsePositive {
             get {
                 return ((string)(this["HTTP502AutodiscoverFalsePositive"]));
@@ -35,8 +34,8 @@ namespace EXOFiddlerInspector.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<font color=""red"">HTTP 403: Forbidden</font> Is your firewall or web proxy blocking Outlook connectivity?<br />To fire this message a HTTP 403 response code was detected 
-and ""Access Denied"" was found in the response body.<br />Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked?<br /> 
+        [global::System.Configuration.DefaultSettingValueAttribute(@"HTTP 403: Forbidden. Is your firewall or web proxy blocking Outlook connectivity? To fire this message a HTTP 403 response code was detected 
+and ""Access Denied"" was found in the response body. Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked?
 
 
 ")]
@@ -48,16 +47,16 @@ and ""Access Denied"" was found in the response body.<br />Check the Raw and Web
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<font color=""red"">HTTP 503: FederatedSTSUnreachable</font><br />
-The fedeation service is unreachable or unavailable. Check the Raw tab for additional details.<br /><br />
-Check the realm page for the authenticating domain.<br />
-<a href=""https://login.microsoftonline.com/GetUserRealm.srf?Login=user@contoso.com&xml=1"">https://login.microsoftonline.com/GetUserRealm.srf?Login=user@contoso.com&xml=1</a><br />
-Expected responses:<br />
-AuthURL: Expected to show federation service logon page.<br />
-STSAuthURL: Expected to show HTTP 400<br />
+        [global::System.Configuration.DefaultSettingValueAttribute(@"HTTP 503: FederatedSTSUnreachable.
+The fedeation service is unreachable or unavailable. Check the Raw tab for additional details.
+Check the realm page for the authenticating domain.
+https://login.microsoftonline.com/GetUserRealm.srf?Login=user@contoso.com&xml=1
+Expected responses:
+AuthURL: Expected to show federation service logon page.
+STSAuthURL: Expected to show HTTP 400
 MEXURL: Expected to show long stream of XML data.
 
-If any of these show the HTTP 503 Service Unavailable this confirms a consistent failure on the federation service.<br />
+If any of these show the HTTP 503 Service Unavailable this confirms a consistent failure on the federation service.
 If however you get the expected responses, this does not neccessarily mean the federation service / everything authentication is healthy.")]
         public string HTTP503FederatedSTSUnreachable {
             get {
@@ -76,9 +75,8 @@ If however you get the expected responses, this does not neccessarily mean the f
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("<font color=\"red\">HTTP 200: Errors found in response body.</font> Check the Raw t" +
-            "ab, click \'View in Notepad\' button bottom right, and search for error in the res" +
-            "ponse to review.\r\n")]
+        [global::System.Configuration.DefaultSettingValueAttribute("HTTP 200: Errors found in response body. Check the Raw tab, click \'View in Notepa" +
+            "d\' button bottom right, and search for error in the response to review.\r\n")]
         public string HTTP200ErrorsFound {
             get {
                 return ((string)(this["HTTP200ErrorsFound"]));
@@ -87,9 +85,9 @@ If however you get the expected responses, this does not neccessarily mean the f
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("<font color=\"orange\">HTTP 401: Unauthorized</font> These are expected and are not" +
-            " an issue as long as a HTTP 200 is seen for authentication to the server which i" +
-            "ssued the HTTP 401 unauthorized security challenge.")]
+        [global::System.Configuration.DefaultSettingValueAttribute("HTTP 401: Unauthorized. These are expected and are not an issue as long as a HTTP" +
+            " 200 is seen for authentication to the server which issued the HTTP 401 unauthor" +
+            "ized security challenge.")]
         public string HTTP401Unauthorized {
             get {
                 return ((string)(this["HTTP401Unauthorized"]));

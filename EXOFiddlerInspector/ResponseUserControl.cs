@@ -78,9 +78,9 @@ namespace EXOFiddlerInspector
         }
 
         // Code to write to ResponseAlertTextBox.Text value.
-        internal void SetResponseCommentsWebBrowserDocumentText(string txt)
+        internal void SetResponseCommentsTextboxText(string txt)
         {
-            ResponseCommentsWebBrowser.DocumentText = txt;
+            ResponseCommentsRichTextBox.Text = txt;
         }
 
         // Code to write to ResponseAlertTextBox.Text value.

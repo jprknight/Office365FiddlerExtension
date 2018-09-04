@@ -36,11 +36,11 @@
             this.RequestTypeTextBox = new System.Windows.Forms.TextBox();
             this.RequestProcessLabel = new System.Windows.Forms.Label();
             this.RequestProcessTextBox = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.RequestCommentsGroupBox = new System.Windows.Forms.GroupBox();
             this.RequestAlertLabel = new System.Windows.Forms.Label();
             this.RequestAlertTextBox = new System.Windows.Forms.TextBox();
-            this.groupBox1.SuspendLayout();
+            this.RequestCommentsRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.RequestCommentsGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // RequestHostlabel
@@ -116,23 +116,15 @@
             this.RequestProcessTextBox.Size = new System.Drawing.Size(300, 20);
             this.RequestProcessTextBox.TabIndex = 9;
             // 
-            // groupBox1
+            // RequestCommentsGroupBox
             // 
-            this.groupBox1.Controls.Add(this.webBrowser1);
-            this.groupBox1.Location = new System.Drawing.Point(6, 133);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(400, 154);
-            this.groupBox1.TabIndex = 10;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "RequestCommentsGroupBox";
-            // 
-            // webBrowser1
-            // 
-            this.webBrowser1.Location = new System.Drawing.Point(6, 19);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(388, 129);
-            this.webBrowser1.TabIndex = 11;
+            this.RequestCommentsGroupBox.Controls.Add(this.RequestCommentsRichTextBox);
+            this.RequestCommentsGroupBox.Location = new System.Drawing.Point(6, 133);
+            this.RequestCommentsGroupBox.Name = "RequestCommentsGroupBox";
+            this.RequestCommentsGroupBox.Size = new System.Drawing.Size(400, 154);
+            this.RequestCommentsGroupBox.TabIndex = 10;
+            this.RequestCommentsGroupBox.TabStop = false;
+            this.RequestCommentsGroupBox.Text = "Request Comments";
             // 
             // RequestAlertLabel
             // 
@@ -150,13 +142,22 @@
             this.RequestAlertTextBox.Size = new System.Drawing.Size(300, 20);
             this.RequestAlertTextBox.TabIndex = 12;
             // 
+            // RequestCommentsRichTextBox
+            // 
+            this.RequestCommentsRichTextBox.Location = new System.Drawing.Point(6, 19);
+            this.RequestCommentsRichTextBox.Name = "RequestCommentsRichTextBox";
+            this.RequestCommentsRichTextBox.ReadOnly = true;
+            this.RequestCommentsRichTextBox.Size = new System.Drawing.Size(388, 129);
+            this.RequestCommentsRichTextBox.TabIndex = 14;
+            this.RequestCommentsRichTextBox.Text = "";
+            // 
             // RequestUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.RequestAlertTextBox);
             this.Controls.Add(this.RequestAlertLabel);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.RequestCommentsGroupBox);
             this.Controls.Add(this.RequestProcessTextBox);
             this.Controls.Add(this.RequestProcessLabel);
             this.Controls.Add(this.RequestTypeTextBox);
@@ -168,7 +169,7 @@
             this.Name = "RequestUserControl";
             this.Size = new System.Drawing.Size(419, 298);
             this.Load += new System.EventHandler(this.RequestUserControl_Load);
-            this.groupBox1.ResumeLayout(false);
+            this.RequestCommentsGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -183,9 +184,9 @@
         private System.Windows.Forms.TextBox RequestTypeTextBox;
         private System.Windows.Forms.Label RequestProcessLabel;
         private System.Windows.Forms.TextBox RequestProcessTextBox;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.WebBrowser webBrowser1;
+        private System.Windows.Forms.GroupBox RequestCommentsGroupBox;
         private System.Windows.Forms.Label RequestAlertLabel;
         private System.Windows.Forms.TextBox RequestAlertTextBox;
+        private System.Windows.Forms.RichTextBox RequestCommentsRichTextBox;
     }
 }
