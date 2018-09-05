@@ -328,6 +328,12 @@ namespace EXOFiddlerInspector
             //  Logic to populate fields on response tab.
             ///////
 
+            var ruleSet = new WebTrafficRuleSet(session);
+            ruleSet.RunWebTrafficRuleSet();
+
+            #region oldcode
+            /*
+
             int wordCount = 0;
 
             // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
@@ -489,10 +495,10 @@ namespace EXOFiddlerInspector
                             _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP503FederatedSTSUnreachable);
                         }
                         // Testing code.
-                        /*else
-                        {
-                            _displayControl.SetResponseAlertTextBox("Federation failure error missed.");
-                        }*/
+                        //else
+                        //{
+                        //    _displayControl.SetResponseAlertTextBox("Federation failure error missed.");
+                        //}
                     }
                     else
                     {
@@ -510,7 +516,9 @@ namespace EXOFiddlerInspector
                     _displayControl.SetResponseAlertTextBox("HTTP 504 Gateway Timeout");
                     _displayControl.SetResponseCommentsRichTextboxText("HTTP 504 Gateway Timeout");
                 }
-            }
+}
+            */
+            #endregion
         }
         
         // Add the EXO Response tab into the inspector tab.
