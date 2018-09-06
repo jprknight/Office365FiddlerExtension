@@ -288,7 +288,7 @@ namespace EXOFiddlerInspector
             // Clear any previous data.
             _displayControl.SetResponseAlertTextBox("");
             _displayControl.SetResponseCommentsRichTextboxText("");
-           // _displayControl.SetElapsedTimeCommentTextBoxText("");
+            // _displayControl.SetElapsedTimeCommentTextBoxText("");
 
             // Write HTTP Status Code Text box, convert int to string.
             _displayControl.SetHTTPResponseCodeTextBoxText(this.session.responseCode.ToString());
@@ -296,7 +296,7 @@ namespace EXOFiddlerInspector
             // Write Client Begin Request into textboxes
             _displayControl.SetRequestBeginDateTextBox(this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd"));
             _displayControl.SetRequestBeginTimeTextBox(this.session.Timers.ClientBeginRequest.ToString(" H:mm:ss.ffff"));
-            
+
             // Write Client End Request into textboxes
             _displayControl.SetRequestEndDateTextBox(this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd"));
             _displayControl.SetRequestEndTimeTextBox(this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.ffff"));
@@ -307,7 +307,7 @@ namespace EXOFiddlerInspector
             // Write Elapsed Time comment into textbox.
             if (this.session.oResponse.iTTLB > 5000)
             {
-           //     _displayControl.SetElapsedTimeCommentTextBoxText("> 5 second response time.");
+                //     _displayControl.SetElapsedTimeCommentTextBoxText("> 5 second response time.");
             }
 
             // Write Data Freshness data into textbox.
@@ -322,13 +322,14 @@ namespace EXOFiddlerInspector
             if (TimeSpanDays == 0)
             {
                 DataFreshnessOutput = "Session is " + TimeSpanHours + " Hour(s), " + TimeSpanMinutes + " minute(s) old.";
-            } else
+            }
+            else
             {
                 DataFreshnessOutput = "Session is " + TimeSpanDays + " Day(s), " + TimeSpanHours + " Hour(s), " + TimeSpanMinutes + " minute(s) old.";
             }
 
             _displayControl.SetDataFreshnessTextBox(DataFreshnessOutput);
-            
+
             // Write Process into textbox.
             _displayControl.SetResponseProcessTextBox(this.session.LocalProcess);
 
@@ -340,7 +341,7 @@ namespace EXOFiddlerInspector
             //ruleSet.RunWebTrafficRuleSet();
 
             #region RuleSet
-            
+
 
             int wordCount = 0;
 
@@ -350,9 +351,9 @@ namespace EXOFiddlerInspector
             //
 
             string text = this.session.ToString();
-                
+
             //Convert the string into an array of words  
-            string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',', '"' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
             //string searchTerm = "error";
             string[] searchTerms = { "Error", "FederatedStsUnreachable" };
@@ -361,174 +362,237 @@ namespace EXOFiddlerInspector
             {
                 // Create the query.  Use ToLowerInvariant to match "data" and "Data"   
                 var matchQuery = from word in source
-                    where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
-                    select word;
+                                 where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
+                                 select word;
 
                 // Count the matches, which executes the query.  
                 wordCount = matchQuery.Count();
 
-                //
-                //  HTTP 200.
-                //
-                if (this.session.responseCode == 200)
+                switch (this.session.responseCode)
                 {
-                    // Looking for errors lurking in HTTP 200 OK responses.
-                    if (searchTerm == "Error")
-                    {
-                        string result = "After splitting all words in the response body the word 'error' was found " + wordCount + " time(s).";
-
-                        if (wordCount > 0)
+                    case 200:
+                        #region HTTP200
+                        /////////////////////////////
+                        //
+                        // HTTP 200
+                        //
+                        // Looking for errors lurking in HTTP 200 OK responses.
+                        if (searchTerm == "Error")
                         {
-                            _displayControl.SetResponseAlertTextBox("Word Search 'Error' found in respone body.");
-                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP200ErrorsFound + "<br /><br />" + result);
+                            string result = "After splitting all words in the response body the word 'error' was found " + wordCount + " time(s).";
+
+                            if (wordCount > 0)
+                            {
+                                _displayControl.SetResponseAlertTextBox("Word Search 'Error' found in respone body.");
+                                _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP200ErrorsFound + "<br /><br />" + result);
+                            }
+                            else
+                            {
+                                _displayControl.SetResponseAlertTextBox("Word Search 'Error' Not found in response body.");
+                                _displayControl.SetResponseCommentsRichTextboxText(result);
+
+                            }
+                        }
+                        // Autodiscover redirect Address from Exchange On-Premise.
+                        if (this.session.utilFindInResponse("<RedirectAddr>", false) > 1)
+                        {
+                            if (this.session.utilFindInResponse("</RedirectAddr>", false) > 1)
+                            {
+                                _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect Address found.");
+                                _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect Address found.");
+                            }
+                        }
+                        //
+                        /////////////////////////////
+                        #endregion
+                        break;
+                    case 302:
+                        #region HTTP302
+                        /////////////////////////////
+                        //
+                        //  HTTP 302: Found / Redirect.
+                        //
+                        if (session.utilFindInResponse("https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml", false) > 1)
+                        {
+                            _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect to Exchange Online.");
+                            _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect to Exchange Online.");
+
+                        }
+                        //
+                        /////////////////////////////
+                        #endregion
+                        break;
+                    case 401:
+                        #region HTTP401
+                        /////////////////////////////
+                        //
+                        //  HTTP 401: UNAUTHORIZED.
+                        //
+                        _displayControl.SetResponseAlertTextBox("HTTP 401 Unauthorized");
+                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP401Unauthorized);
+                        //
+                        /////////////////////////////
+                        #endregion
+                        break;
+                    case 403:
+                        #region HTTP403
+                        /////////////////////////////
+                        //
+                        //  HTTP 403: FORBIDDEN.
+                        //
+                        // Simply looking for the term "Access Denied" works fine using utilFindInResponse.
+                        // Specific scenario where a web proxy is blocking traffic.
+                        if (this.session.utilFindInResponse("Access Denied", false) > 1)
+                        {
+                            _displayControl.SetResponseAlertTextBox("HTTP 403 Access Denied!");
+                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP403WebProxyBlocking);
                         }
                         else
                         {
-                            _displayControl.SetResponseAlertTextBox("Word Search 'Error' Not found in response body.");
-                            _displayControl.SetResponseCommentsRichTextboxText(result);
-                            
+                            // Pick up any 403 Forbidden and write data into the comments box.
+                            _displayControl.SetResponseAlertTextBox("HTTP 403 Forbidden!");
+                            _displayControl.SetResponseCommentsRichTextboxText("HTTP 403 Forbidden");
                         }
-                    }
+                        //
+                        /////////////////////////////
+                        #endregion
+                        break;
+                    case 404:
+                        #region HTTP404
+                        /////////////////////////////
+                        //
+                        //  HTTP 404: Not Found.
+                        //
+                        // Pick up any 404 Not Found and write data into the comments box.
+                        _displayControl.SetResponseAlertTextBox("HTTP 404 Not Found");
+                        _displayControl.SetResponseCommentsRichTextboxText("HTTP 404 Not Found");
+                        //
+                        /////////////////////////////
+                        #endregion
+                        break;
+                    case 440:
+                        #region HTTP440
+                        /////////////////////////////
+                        //
+                        // HTTP 440: Need to know more about these.
+                        // For the moment do nothing.
+                        //
+                        /////////////////////////////
+                        #endregion
+                        break;
+                    case 500:
+                        #region HTTP500
+                        /////////////////////////////
+                        //
+                        //  HTTP 500: Internal Server Error.
+                        //
+                        // Pick up any 500 Internal Server Error and write data into the comments box.
+                        // Specific scenario on Outlook and Office 365 invalid DNS lookup.
+                        // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
+                        // Pick up any 500 Internal Server Error and write data into the comments box.
+                        _displayControl.SetResponseAlertTextBox("HTTP 500 Internal Server Error");
+                        _displayControl.SetResponseCommentsRichTextboxText("HTTP 500 Internal Server Error");
+                        #endregion
+                        break;
+                    case 502:
+                        #region HTTP502
+                        /////////////////////////////
+                        //
+                        //  HTTP 502: BAD GATEWAY.
+                        //
 
-                    // Autodiscover redirect Address from Exchange On-Premise.
-                    if (this.session.utilFindInResponse("<RedirectAddr>", false) > 1)
-                    {
-                        if (this.session.utilFindInResponse("</RedirectAddr>", false) > 1)
+                        // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
+                        //      autodiscover.domain.onmicrosoft.com:443
+                        if (session.utilFindInResponse("target machine actively refused it", false) > 1)
                         {
-                            _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect Address found.");
-                            _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect Address found.");
-                        }
-                    }
-                }
-                //
-                //  HTTP 401: UNAUTHORIZED.
-                //
-                else if (this.session.responseCode == 401)
-                {
-                    _displayControl.SetResponseAlertTextBox("HTTP 401 Unauthorized");
-                    _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP401Unauthorized);
-                }
-                //
-                //  HTTP 403: FORBIDDEN.
-                //
-                // Simply looking for the term "Access Denied" works fine using utilFindInResponse.
-                else if (this.session.responseCode == 403)
-                {
-                    // Specific scenario where a web proxy is blocking traffic.
-                    if (this.session.utilFindInResponse("Access Denied", false) > 1)
-                    {
-                        _displayControl.SetResponseAlertTextBox("HTTP 403 Access Denied!");
-                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP403WebProxyBlocking);
-                    }
-                    else
-                    {
-                        // Pick up any 403 Forbidden and write data into the comments box.
-                        _displayControl.SetResponseAlertTextBox("HTTP 403 Forbidden!");
-                        _displayControl.SetResponseCommentsRichTextboxText("HTTP 403 Forbidden");
-                    }
-                }
-                //
-                //  HTTP 404: Not Found.
-                //
-                else if (this.session.responseCode == 404)
-                {
-                    // Pick up any 404 Not Found and write data into the comments box.
-                    _displayControl.SetResponseAlertTextBox("HTTP 404 Not Found");
-                    _displayControl.SetResponseCommentsRichTextboxText("HTTP 404 Not Found");
-                }
-
-                // HTTP 440 ???
-
-                //
-                //  HTTP 500: Internal Server Error.
-                //
-                else if (this.session.responseCode == 500)
-                {
-                    // Pick up any 500 Internal Server Error and write data into the comments box.
-                    _displayControl.SetResponseAlertTextBox("HTTP 500 Internal Server Error");
-                    _displayControl.SetResponseCommentsRichTextboxText("HTTP 500 Internal Server Error");
-                }
-                //
-                //  HTTP 502: BAD GATEWAY.
-                //
-                else if (this.session.responseCode == 502)
-                {
-                    // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
-                    //      autodiscover.domain.onmicrosoft.com:443
-                    if (this.session.utilFindInResponse("autodiscover", false) > 1)
-                    {
-                        if (this.session.utilFindInResponse("target machine actively refused it", false) > 1)
-                        {
-                            if (this.session.utilFindInResponse(":443", false) > 1)
+                            if (session.utilFindInResponse("autodiscover", false) > 1)
                             {
-                                _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
-                                _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
-                            }
-                        }
-                    // Specific scenario on Outlook and Office 365 invalid DNS lookup.
-                    // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
-                    } else if (this.session.utilFindInResponse("DNS Lookup for ", false) > 1)
-                    {
-                        if (this.session.utilFindInResponse("mail.onmicrosoft.com", false) > 1)
-                        {
-                            if (this.session.utilFindInResponse("failed.System.Net.Sockets.SocketException", false) > 1)
-                            {
-                                if (this.session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1)
+                                if (session.utilFindInResponse(":443", false) > 1)
                                 {
                                     _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
-                                    _displayControl.SetResponseCommentsRichTextboxText("DNS record does not exist. Connection on port 443 will not work by design.");
+                                    _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
                                 }
                             }
                         }
-                    }
-                    else
-                    {
-                        // Pick up any other 502 Bad Gateway and write data into the comments box.
-                        _displayControl.SetResponseAlertTextBox("HTTP 502 Bad Gateway");
-                        _displayControl.SetResponseCommentsRichTextboxText("HTTP 502 Bad Gateway");
-                    }
-                }
-                //
-                //  HTTP 503: SERVICE UNAVAILABLE.
-                //
-                // Using utilFindInResponse to find FederatedStsUnreachable did not work for some reason.
-                // So instead split all words in the response body and check them with Linq.
-                else if (this.session.responseCode == 503)
-                {
-                    // Specific scenario where Federation service is unavailable, preventing authentication, preventing access to Office 365 mailbox.
-                    if (searchTerm == "FederatedStsUnreachable")
-                    {
-                        if (wordCount > 0)
+                        // Specific scenario on Outlook and Office 365 invalid DNS lookup.
+                        // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
+                        else if (session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1)
                         {
-                            _displayControl.SetResponseAlertTextBox("The federation service is unreachable or unavailable.");
-                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP503FederatedSTSUnreachable);
+                            if (session.utilFindInResponse(".onmicrosoft.com", false) > 1)
+                            {
+                                if (session.utilFindInResponse("failed. System.Net.Sockets.SocketException", false) > 1)
+                                {
+                                    if (session.utilFindInResponse("DNS Lookup for ", false) > 1)
+                                    {
+                                        _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
+                                        _displayControl.SetResponseCommentsRichTextboxText("DNS record does not exist. Connection on port 443 will not work by design.");
+                                    }
+                                }
+                            }
                         }
-                        // Testing code.
-                        //else
-                        //{
-                        //    _displayControl.SetResponseAlertTextBox("Federation failure error missed.");
-                        //}
-                    }
-                    else
-                    {
-                        // Pick up any other 503 Service Unavailable and write data into the comments box.
-                        _displayControl.SetResponseAlertTextBox("HTTP 503 Service Unavailable.");
-                        _displayControl.SetResponseCommentsRichTextboxText("HTTP 503 Service Unavailable.");
-                    }
+                        else
+                        {
+                            // Pick up any other 502 Bad Gateway and write data into the comments box.
+                            _displayControl.SetResponseAlertTextBox("HTTP 502 Bad Gateway");
+                            _displayControl.SetResponseCommentsRichTextboxText("HTTP 502 Bad Gateway");
+                        }
+                        //
+                        /////////////////////////////
+                        #endregion
+                        break;
+                    case 503:
+                        #region HTTP503
+                        /////////////////////////////
+                        //
+                        //  HTTP 503: SERVICE UNAVAILABLE.
+                        //
+                        // Using utilFindInResponse to find FederatedStsUnreachable did not work for some reason.
+                        // So instead split all words in the response body and check them with Linq.
+                        // Specific scenario where Federation service is unavailable, preventing authentication, preventing access to Office 365 mailbox.
+                        if (searchTerm == "FederatedStsUnreachable")
+                        {
+                            if (wordCount > 0)
+                            {
+                                _displayControl.SetResponseAlertTextBox("The federation service is unreachable or unavailable.");
+                                _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP503FederatedSTSUnreachable);
+                            }
+                        }
+                        else
+                        {
+                            // Pick up any other 503 Service Unavailable and write data into the comments box.
+                            _displayControl.SetResponseAlertTextBox("HTTP 503 Service Unavailable.");
+                            _displayControl.SetResponseCommentsRichTextboxText("HTTP 503 Service Unavailable.");
+                        }
+                        //
+                        /////////////////////////////
+                        #endregion
+                        break;
+                    case 504:
+                        #region HTTP504
+                        /////////////////////////////
+                        //
+                        //  HTTP 504: GATEWAY TIMEOUT.
+                        //
+                        // Pick up any 504 Gateway Timeout and write data into the comments box.
+                        _displayControl.SetResponseAlertTextBox("HTTP 504 Gateway Timeout");
+                        _displayControl.SetResponseCommentsRichTextboxText("HTTP 504 Gateway Timeout");
+                        //
+                        /////////////////////////////
+                        #endregion
+                        break;
+                    case 0:
+                        #region HTTP0
+                        // Needs testing, does this pick up null response codes?
+                        _displayControl.SetResponseAlertTextBox("No HTTP response code detected.");
+                        _displayControl.SetResponseCommentsRichTextboxText("No HTTP response code detected.");
+                        #endregion
+                        break;
+                    default:
+                        break;
                 }
-                //
-                //  HTTP 504: GATEWAY TIMEOUT.
-                //
-                else if (this.session.responseCode == 504)
-                {
-                    // Pick up any 504 Gateway Timeout and write data into the comments box.
-                    _displayControl.SetResponseAlertTextBox("HTTP 504 Gateway Timeout");
-                    _displayControl.SetResponseCommentsRichTextboxText("HTTP 504 Gateway Timeout");
-                }
-}
-            
-            #endregion
+            }
         }
+            #endregion
         
         // Add the EXO Response tab into the inspector tab.
         public override void AddToTab(TabPage o)
