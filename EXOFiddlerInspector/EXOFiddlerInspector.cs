@@ -224,6 +224,9 @@ namespace EXOFiddlerInspector
         {
             this.session = oS;
 
+            this.session.utilDecodeRequest(true);
+            this.session.utilDecodeResponse(true);
+
             _displayControl.SetElapsedTimeCommentTextBoxText("");
 
             if (this.session.url.Contains("autodiscover"))
@@ -277,6 +280,11 @@ namespace EXOFiddlerInspector
         public void SetResponseValues(Session oS)
         {
 
+            this.session = oS;
+
+            this.session.utilDecodeRequest(true);
+            this.session.utilDecodeResponse(true);
+
             // Clear any previous data.
             _displayControl.SetResponseAlertTextBox("");
             _displayControl.SetResponseCommentsRichTextboxText("");
@@ -328,11 +336,11 @@ namespace EXOFiddlerInspector
             //  Logic to populate fields on response tab.
             ///////
 
-            var ruleSet = new WebTrafficRuleSet(session);
-            ruleSet.RunWebTrafficRuleSet();
+            //var ruleSet = new WebTrafficRuleSet(session);
+            //ruleSet.RunWebTrafficRuleSet();
 
-            #region oldcode
-            /*
+            #region RuleSet
+            
 
             int wordCount = 0;
 
@@ -378,6 +386,7 @@ namespace EXOFiddlerInspector
                         {
                             _displayControl.SetResponseAlertTextBox("Word Search 'Error' Not found in response body.");
                             _displayControl.SetResponseCommentsRichTextboxText(result);
+                            
                         }
                     }
 
@@ -408,13 +417,13 @@ namespace EXOFiddlerInspector
                     // Specific scenario where a web proxy is blocking traffic.
                     if (this.session.utilFindInResponse("Access Denied", false) > 1)
                     {
-                        _displayControl.SetResponseAlertTextBox("Panic Stations!!!");
+                        _displayControl.SetResponseAlertTextBox("HTTP 403 Access Denied!");
                         _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP403WebProxyBlocking);
                     }
                     else
                     {
                         // Pick up any 403 Forbidden and write data into the comments box.
-                        _displayControl.SetResponseAlertTextBox("HTTP 403 Forbidden");
+                        _displayControl.SetResponseAlertTextBox("HTTP 403 Forbidden!");
                         _displayControl.SetResponseCommentsRichTextboxText("HTTP 403 Forbidden");
                     }
                 }
@@ -517,7 +526,7 @@ namespace EXOFiddlerInspector
                     _displayControl.SetResponseCommentsRichTextboxText("HTTP 504 Gateway Timeout");
                 }
 }
-            */
+            
             #endregion
         }
         

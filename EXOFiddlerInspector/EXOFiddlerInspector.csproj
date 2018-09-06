@@ -65,7 +65,6 @@
     <Compile Include="ResponseUserControl.Designer.cs">
       <DependentUpon>ResponseUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="WebTrafficRuleSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="RequestUserControl.resx">

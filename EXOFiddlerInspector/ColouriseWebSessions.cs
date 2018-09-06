@@ -8,7 +8,8 @@ public class Violin : IAutoTamper    // Ensure class is public, or Fiddler won't
     string sUserAgent = "";
     //private object fSessions;
     private bool bCreatedColumn = false;
-    
+
+
     //public object GetAllSessions { get ; private set; }
 
     public Violin()
@@ -21,7 +22,10 @@ public class Violin : IAutoTamper    // Ensure class is public, or Fiddler won't
         sUserAgent = "Violin";
     }
 
-
+    /////////////////
+    // 
+    // Handle loading a SAZ file.
+    //
     public void OnLoad()
     {
         FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
@@ -37,7 +41,10 @@ public class Violin : IAutoTamper    // Ensure class is public, or Fiddler won't
         }
         FiddlerApplication.UI.lvSessions.EndUpdate();
     }
+    //
+    /////////////////
 
+    #region ColouriseRuleSet
     private void OnPeekAtResponseHeaders(Session session)
     {
         int wordCount = 0;
@@ -73,6 +80,7 @@ public class Violin : IAutoTamper    // Ensure class is public, or Fiddler won't
             //
             if (session.responseCode == 200)
             {
+
                 // Looking for errors lurking in HTTP 200 OK responses.
                 if (searchTerm == "Error")
                 {
@@ -223,14 +231,7 @@ public class Violin : IAutoTamper    // Ensure class is public, or Fiddler won't
         }
     }
 
-    /* public void OnLoad() {
-        var oSessions = FiddlerApplication.UI.GetAllSessions();
-        foreach (var fsess in oSessions)
-        {
-            fsess["ui-backcolor"] = "blue";
-        }
-    }
-    */
+    #endregion
 
     public void OnBeforeUnload() { }
 
@@ -248,28 +249,26 @@ public class Violin : IAutoTamper    // Ensure class is public, or Fiddler won't
 
 
 
-    public void OnPeekAtResponseHeaders(IAutoTamper2 AllSessions)
-    {
+    public void OnPeekAtResponseHeaders(IAutoTamper2 AllSessions) { }
+    
+    public void AutoTamperRequestBefore(Session oSession) { }
 
-    }
-
-    public void AutoTamperRequestBefore(Session oSession)
-    {
-        //if (oSession.hostname.Contains("Outlook"))
-        
-            
-            //oSession.oRequest["User-Agent"] = sUserAgent;
-
-    }
     public void AutoTamperRequestAfter(Session oSession) { }
+
     public void AutoTamperResponseBefore(Session oSession) { }
+
     public void AutoTamperResponseAfter(Session oSession) {
         oSession["X-iTTLB"] = oSession.oResponse.iTTLB.ToString();
+
+        /////////////////
+        //
+        // Call the function to colourise sessions for live traffic capture.
+        //
+        OnPeekAtResponseHeaders(oSession);
+        //
+        /////////////////
     }
 
-
     public void OnBeforeReturningError(Session oSession) { }
-
-
 
 }
