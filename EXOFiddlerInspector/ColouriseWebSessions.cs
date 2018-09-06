@@ -8,6 +8,9 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
     //string sUserAgent = "";
     //private object fSessions;
     private bool bCreatedColumn = false;
+    private string searchTerm;
+    //private int totalwordCount;
+
     internal Session session { get; set; }
 
     //public object GetAllSessions { get ; private set; }
@@ -54,15 +57,13 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
         this.session = session;
 
         if (this.session.LocalProcess.Contains("outlook") ||
+        this.session.LocalProcess.Contains("searchprotocolhost") ||
         this.session.LocalProcess.Contains("iexplore") ||
         this.session.LocalProcess.Contains("chrome") ||
         this.session.LocalProcess.Contains("firefox") ||
         this.session.LocalProcess.Contains("edge") ||
         this.session.LocalProcess.Contains("w3wp"))
         {
-
-        
-
             int wordCount = 0;
 
             // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
@@ -75,22 +76,23 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
             //Convert the string into an array of words  
             string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
+            // Create the query. Use ToLowerInvariant to match "data" and "Data"   
+            var matchQuery = from word in source
+                             where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
+                             select word;
+
             //string searchTerm = "error";
-            string[] searchTerms = { "Error", "FederatedStsUnreachable", "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml" };
+            //string[] searchTerms = { "Error", "FederatedStsUnreachable", "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml" };
 
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
 
-            foreach (string searchTerm in searchTerms)
-            {
+            //foreach (string searchTerm in searchTerms)
+            //{
                 // Create the query.  Use ToLowerInvariant to match "data" and "Data"   
-                var matchQuery = from word in source
-                                 where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
-                                 select word;
+ 
 
-                // Count the matches, which executes the query.  
-                wordCount = matchQuery.Count();
-
+                #region switchstatement
                 switch (this.session.responseCode)
                 {
                     case 200:
@@ -100,30 +102,38 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                         // HTTP 200
                         //
                         // Looking for errors lurking in HTTP 200 OK responses.
-                        if (searchTerm == "Error")
-                        {
-                            string result = "After splitting all words in the response body the word 'error' was found " + wordCount + " time(s).";
+                        searchTerm = "Error";
 
-                            if (wordCount > 0)
-                            {
-                                this.session["ui-backcolor"] = "red";
-                                this.session["ui-color"] = "black";
-                            }
-                            else
-                            {
-                                this.session["ui-backcolor"] = "green";
-                                this.session["ui-color"] = "black";
-                            }
+                        // Count the matches, which executes the query.  
+                        wordCount = matchQuery.Count();
+
+                        string result = "After splitting all words in the response body the word 'error' was found " + wordCount + " time(s).";
+
+                        if (wordCount > 0)
+                        {
+                            this.session["ui-backcolor"] = "red";
+                            this.session["ui-color"] = "black";
+                        }
+                        else
+                        {
+                            this.session["ui-backcolor"] = "green";
+                            this.session["ui-color"] = "black";
                         }
 
                         // Autodiscover redirect Address from Exchange On-Premise.
-                        if (session.utilFindInResponse("<RedirectAddr>", false) > 1)
+                        searchTerm = "<RedirectAddr>";
+
+                        // Count the matches, which executes the query.  
+                        wordCount = matchQuery.Count();
+
+                        // *** NEED FURTHER WORK HERE <RedirectAddr> DOES NOT MEAN EVERYTHING IS GOOD.
+                        // A bad redirect address can give circular AutoD loop back to On-Prem.
+
+                        // Autodiscover redirect Address from Exchange On-Premise.
+                        if (wordCount > 0)
                         {
-                            if (session.utilFindInResponse("</RedirectAddr>", false) > 1)
-                            {
-                                this.session["ui-backcolor"] = "green";
-                                this.session["ui-color"] = "black";
-                            }
+                            this.session["ui-backcolor"] = "green";
+                            this.session["ui-color"] = "black";
                         }
                         //
                         /////////////////////////////
@@ -135,8 +145,13 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                         //
                         //  HTTP 302: Found / Redirect.
                         //
-                        if (searchTerm == "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml")
+                        searchTerm = "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml";
+                        // Count the matches, which executes the query.  
+                        wordCount = matchQuery.Count();
+
+                        if (wordCount > 0)
                         {
+                            // Redirect to Exchange Online.
                             this.session["ui-backcolor"] = "green";
                             this.session["ui-color"] = "black";
                         }
@@ -223,40 +238,88 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                         //  HTTP 502: BAD GATEWAY.
                         //
 
+                        #region linqquerytest
+
+                        // Got to be a better way to do this, for now testing.
+
                         // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
                         //      autodiscover.domain.onmicrosoft.com:443
-                        if (session.utilFindInResponse("target machine actively refused it", false) > 1)
-                        {
-                            if (session.utilFindInResponse("autodiscover", false) > 1)
+                        /*
+                        string[] searchTerms = { "target", "machine","actively","refused","it","autodiscover",":443"};
+
+                            foreach (string searchTerm in searchTerms)
                             {
-                                if (session.utilFindInResponse(":443", false) > 1)
+                                wordCount = matchQuery.Count();
+                                if (wordCount > 0)
                                 {
-                                    session["ui-backcolor"] = "blue";
-                                    session["ui-color"] = "black";
+                                    totalwordCount++;
+                                }
+
+                                if (totalwordCount == 7)
+                                {
+                                    // Matched the false positive condition.
+                                    this.session["ui-backcolor"] = "blue";
+                                    this.session["ui-color"] = "black";
+                                }
+                                else
+                                {
+                                    // No match, highlight 502 as failure.
+                                    this.session["ui-backcolor"] = "red";
+                                    this.session["ui-color"] = "black";
+                                }
+                            }
+                            */
+                        #endregion
+
+                        // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
+                        //      autodiscover.domain.onmicrosoft.com:443
+                        
+                        // Testing because I am finding colourisation based in the nested if statement below is not working.
+                        // Strangely the same HTTP 502 nested if statement logic works fine in EXOFiddlerInspector.cs to write
+                        // response alert and comment.
+                        // From further testing this seems to come down to timing, clicking the sessions as they come into Fiddler
+                        // I see the responsecode / response body unavailable, it then populates after a few sessions. I presume 
+                        // since the UI has moved on already the session cannot be colourised. 
+
+                        // On testing with loadSAZ instead this same code colourises sessions fine.
+                    
+                        if (this.session.utilFindInResponse("target machine actively refused it", false) > 1)
+                        {
+                            //MessageBox.Show("target machine actively refused it");
+                            if (this.session.utilFindInResponse("autodiscover", false) > 1)
+                            {
+                                //MessageBox.Show("autodiscover");
+                                if (this.session.utilFindInResponse(":443", false) > 1)
+                                {
+                                    MessageBox.Show(":443");
+                                    this.session["ui-backcolor"] = "blue";
+                                    this.session["ui-color"] = "black";
                                 }
                             }
                         }
+
                         // Specific scenario on Outlook and Office 365 invalid DNS lookup.
-                        // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
+                        // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
                         else if (session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1)
                         {
-                            if (session.utilFindInResponse(".onmicrosoft.com", false) > 1)
+                            if (this.session.utilFindInResponse(".onmicrosoft.com", false) > 1)
                             {
-                                if (session.utilFindInResponse("failed. System.Net.Sockets.SocketException", false) > 1)
+                                if (this.session.utilFindInResponse("failed. System.Net.Sockets.SocketException", false) > 1)
                                 {
-                                    if (session.utilFindInResponse("DNS Lookup for ", false) > 1)
+                                    if (this.session.utilFindInResponse("DNS Lookup for ", false) > 1)
                                     {
-                                        session["ui-backcolor"] = "blue";
-                                        session["ui-color"] = "black";
+                                        this.session["ui-backcolor"] = "blue";
+                                        this.session["ui-color"] = "black";
                                     }
                                 }
                             }
                         }
+
                         else
                         {
                             // Pick up any other 502 Bad Gateway call it out.
-                            session["ui-backcolor"] = "red";
-                            session["ui-color"] = "black";
+                            this.session["ui-backcolor"] = "red";
+                            this.session["ui-color"] = "black";
                         }
                         //
                         /////////////////////////////
@@ -269,8 +332,8 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                         //  HTTP 503: SERVICE UNAVAILABLE.
                         //
                         // Call out all 503 Service Unavailable as something to focus on.
-                        session["ui-backcolor"] = "red";
-                        session["ui-color"] = "black";
+                        this.session["ui-backcolor"] = "red";
+                        this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
                         #endregion
@@ -282,8 +345,8 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                         //  HTTP 504: GATEWAY TIMEOUT.
                         //
                         // Call out all 504 Gateway Timeout as something to focus on.
-                        session["ui-backcolor"] = "red";
-                        session["ui-color"] = "black";
+                        this.session["ui-backcolor"] = "red";
+                        this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
                         #endregion
@@ -291,7 +354,8 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                     default:
                         break;
                 }
-            }
+                #endregion
+            //}
         }
     }
 
@@ -317,14 +381,15 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
 
     public void AutoTamperResponseBefore(Session oSession) { }
 
-    public void AutoTamperResponseAfter(Session oSession) {
-        oSession["X-iTTLB"] = oSession.oResponse.iTTLB.ToString();
+    public void AutoTamperResponseAfter(Session session) {
+        session["X-iTTLB"] = session.oResponse.iTTLB.ToString();
 
         /////////////////
         //
         // Call the function to colourise sessions for live traffic capture.
         //
-        OnPeekAtResponseHeaders(oSession);
+        OnPeekAtResponseHeaders(session);
+        session.RefreshUI();
         //
         /////////////////
     }

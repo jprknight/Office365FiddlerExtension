@@ -157,6 +157,7 @@ namespace EXOFiddlerInspector
                 else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { _displayControl.SetRequestTypeTextBox("Office 365 Authentication"); }
                 else if (this.session.fullUrl.Contains("outlook.office365.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
                 else if (this.session.fullUrl.Contains("outlook.office.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
+                else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { _displayControl.SetRequestTypeTextBox("ADFS Authentication"); }
                 else if (this.session.LocalProcess.Contains("outlook")) { _displayControl.SetRequestTypeTextBox("Something Outlook"); }
                 else if (this.session.LocalProcess.Contains("iexplore")) { _displayControl.SetRequestTypeTextBox("Something Internet Explorer"); }
                 else if (this.session.LocalProcess.Contains("chrome")) { _displayControl.SetRequestTypeTextBox("Something Chrome"); }
@@ -217,6 +218,8 @@ namespace EXOFiddlerInspector
     {
         ResponseUserControl _displayControl;
         private HTTPResponseHeaders responseHeaders;
+        private string searchTerm;
+
         //private int oResponseCode;
 
         // Double click on a session to highlight inpsector.
@@ -333,10 +336,6 @@ namespace EXOFiddlerInspector
             // Write Process into textbox.
             _displayControl.SetResponseProcessTextBox(this.session.LocalProcess);
 
-            ///////
-            //  Logic to populate fields on response tab.
-            ///////
-
             //var ruleSet = new WebTrafficRuleSet(session);
             //ruleSet.RunWebTrafficRuleSet();
 
@@ -355,20 +354,18 @@ namespace EXOFiddlerInspector
             //Convert the string into an array of words  
             string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
+            // Create the query. Use ToLowerInvariant to match "data" and "Data"   
+            var matchQuery = from word in source
+                             where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
+                             select word;
+
             //string searchTerm = "error";
-            string[] searchTerms = { "Error", "FederatedStsUnreachable" };
+            //string[] searchTerms = { "Error", "FederatedStsUnreachable" };
 
-            foreach (string searchTerm in searchTerms)
-            {
-                // Create the query.  Use ToLowerInvariant to match "data" and "Data"   
-                var matchQuery = from word in source
-                                 where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
-                                 select word;
+            //foreach (string searchTerm in searchTerms)
 
-                // Count the matches, which executes the query.  
-                wordCount = matchQuery.Count();
-
-                switch (this.session.responseCode)
+            #region switchstatement
+            switch (this.session.responseCode)
                 {
                     case 200:
                         #region HTTP200
@@ -376,32 +373,37 @@ namespace EXOFiddlerInspector
                         //
                         // HTTP 200
                         //
+
                         // Looking for errors lurking in HTTP 200 OK responses.
-                        if (searchTerm == "Error")
+                        searchTerm = "Error";
+
+                        // Count the matches, which executes the query.  
+                        wordCount = matchQuery.Count();
+
+                        string result = "After splitting all words in the response body the word 'error' was found " + wordCount + " time(s).";
+
+                        if (wordCount > 0)
                         {
-                            string result = "After splitting all words in the response body the word 'error' was found " + wordCount + " time(s).";
-
-                            if (wordCount > 0)
-                            {
-                                _displayControl.SetResponseAlertTextBox("Word Search 'Error' found in respone body.");
-                                _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP200ErrorsFound + "<br /><br />" + result);
-                            }
-                            else
-                            {
-                                _displayControl.SetResponseAlertTextBox("Word Search 'Error' Not found in response body.");
-                                _displayControl.SetResponseCommentsRichTextboxText(result);
-
-                            }
+                            _displayControl.SetResponseAlertTextBox("Word Search 'Error' found in respone body.");
+                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP200ErrorsFound + result);
                         }
+                        else
+                        {
+                            _displayControl.SetResponseAlertTextBox("Word Search 'Error' Not found in response body.");
+                            _displayControl.SetResponseCommentsRichTextboxText(result);
+                        }
+
+                        searchTerm = "<RedirectAddr>";
+
+                        // Count the matches, which executes the query.  
+                        wordCount = matchQuery.Count();
+
                         // Autodiscover redirect Address from Exchange On-Premise.
-                        if (this.session.utilFindInResponse("<RedirectAddr>", false) > 1)
+                        if (wordCount > 0)
                         {
-                            if (this.session.utilFindInResponse("</RedirectAddr>", false) > 1)
-                            {
-                                _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect Address found.");
-                                _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect Address found.");
-                            }
-                        }
+                            _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect Address found.");
+                            _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect Address found.");
+                        }        
                         //
                         /////////////////////////////
                         #endregion
@@ -451,7 +453,7 @@ namespace EXOFiddlerInspector
                         {
                             // Pick up any 403 Forbidden and write data into the comments box.
                             _displayControl.SetResponseAlertTextBox("HTTP 403 Forbidden!");
-                            _displayControl.SetResponseCommentsRichTextboxText("HTTP 403 Forbidden");
+                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP403Generic);
                         }
                         //
                         /////////////////////////////
@@ -503,11 +505,11 @@ namespace EXOFiddlerInspector
 
                         // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
                         //      autodiscover.domain.onmicrosoft.com:443
-                        if (session.utilFindInResponse("target machine actively refused it", false) > 1)
+                        if (this.session.utilFindInResponse("target machine actively refused it", false) > 1)
                         {
-                            if (session.utilFindInResponse("autodiscover", false) > 1)
+                            if (this.session.utilFindInResponse("autodiscover", false) > 1)
                             {
-                                if (session.utilFindInResponse(":443", false) > 1)
+                                if (this.session.utilFindInResponse(":443", false) > 1)
                                 {
                                     _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
                                     _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
@@ -515,14 +517,14 @@ namespace EXOFiddlerInspector
                             }
                         }
                         // Specific scenario on Outlook and Office 365 invalid DNS lookup.
-                        // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
-                        else if (session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1)
+                        // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
+                        else if (this.session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1)
                         {
-                            if (session.utilFindInResponse(".onmicrosoft.com", false) > 1)
+                            if (this.session.utilFindInResponse(".onmicrosoft.com", false) > 1)
                             {
-                                if (session.utilFindInResponse("failed. System.Net.Sockets.SocketException", false) > 1)
+                                if (this.session.utilFindInResponse("failed. System.Net.Sockets.SocketException", false) > 1)
                                 {
-                                    if (session.utilFindInResponse("DNS Lookup for ", false) > 1)
+                                    if (this.session.utilFindInResponse("DNS Lookup for ", false) > 1)
                                     {
                                         _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
                                         _displayControl.SetResponseCommentsRichTextboxText("DNS record does not exist. Connection on port 443 will not work by design.");
@@ -546,16 +548,16 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 503: SERVICE UNAVAILABLE.
                         //
-                        // Using utilFindInResponse to find FederatedStsUnreachable did not work for some reason.
-                        // So instead split all words in the response body and check them with Linq.
                         // Specific scenario where Federation service is unavailable, preventing authentication, preventing access to Office 365 mailbox.
-                        if (searchTerm == "FederatedStsUnreachable")
+                        searchTerm = "FederatedStsUnreachable";
+                        //"Service Unavailable"
+
+                        // Count the matches, which executes the query.  
+                        wordCount = matchQuery.Count();
+                        if (wordCount > 0)
                         {
-                            if (wordCount > 0)
-                            {
-                                _displayControl.SetResponseAlertTextBox("The federation service is unreachable or unavailable.");
-                                _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP503FederatedSTSUnreachable);
-                            }
+                            _displayControl.SetResponseAlertTextBox("The federation service is unreachable or unavailable.");
+                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP503FederatedSTSUnreachable);
                         }
                         else
                         {
@@ -590,10 +592,13 @@ namespace EXOFiddlerInspector
                     default:
                         break;
                 }
-            }
+                #endregion
+            //}
         }
-            #endregion
-        
+        #endregion
+
+
+        /////////////////////////////
         // Add the EXO Response tab into the inspector tab.
         public override void AddToTab(TabPage o)
         {
@@ -603,9 +608,11 @@ namespace EXOFiddlerInspector
             o.Controls.Add(_displayControl);
             o.Controls[0].Dock = DockStyle.Fill;
         }
+        //
+        /////////////////////////////
 
 
-
+        #region oldcodeToDelete
         /*public HTTPResponseHeaders headers
         {
             get
@@ -625,12 +632,15 @@ namespace EXOFiddlerInspector
                 //_displayControl.Headers = httpHeaders;
             }
         }*/
+        #endregion
 
+        // Mandatory, but not sure what this does.
         public override int GetOrder()
         {
             return 0;
         }
 
+        // Not sure what to do with this.
         void IBaseInspector2.Clear()
         {
             throw new System.NotImplementedException();

@@ -96,5 +96,17 @@ If however you get the expected responses, this does not neccessarily mean the f
                 this["HTTP401Unauthorized"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"While HTTP 403's can be symptomatic of a proxy server blocking traffic, the phrase 'Access Denied' was not detected in the response body. A small number of HTTP 403's can be seen in normal working scenarios. Check the Raw and WebView tabs to look for anything which looks suspect.")]
+        public string HTTP403Generic {
+            get {
+                return ((string)(this["HTTP403Generic"]));
+            }
+            set {
+                this["HTTP403Generic"] = value;
+            }
+        }
     }
 }
