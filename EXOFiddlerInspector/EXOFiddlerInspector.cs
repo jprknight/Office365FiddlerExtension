@@ -71,34 +71,34 @@ namespace EXOFiddlerInspector
 
             if (this.session.url.Contains("autodiscover"))
             {
-                _displayControl.SetRequestAlertTextBox("SFS:100");
+                //_displayControl.SetRequestAlertTextBox("SFS:100");
                 return 100;
             }
             else if (this.session.hostname.Contains("autodiscover"))
             {
-                _displayControl.SetRequestAlertTextBox("SFS:100");
+                //_displayControl.SetRequestAlertTextBox("SFS:100");
                 return 100;
             }
             else if (this.session.url.Contains("outlook"))
             {
-                _displayControl.SetRequestAlertTextBox("SFS:100");
+                //_displayControl.SetRequestAlertTextBox("SFS:100");
                 return 100;
             }
             else if (this.session.url.Contains("GetUserAvailability") || 
                 this.session.url.Contains("WSSecurity") ||
                 this.session.utilFindInResponse("GetUserAvailability", false) > 1)
             {
-                _displayControl.SetRequestAlertTextBox("SFS:100");
+                //_displayControl.SetRequestAlertTextBox("SFS:100");
                 return 100;
             }
             else if (this.session.LocalProcess.Contains("outlook"))
             {
-                _displayControl.SetRequestAlertTextBox("SFS:100");
+                //_displayControl.SetRequestAlertTextBox("SFS:100");
                 return 100;
             }
             else
             {
-                _displayControl.SetRequestAlertTextBox("SFS:0");
+                //_displayControl.SetRequestAlertTextBox("SFS:0");
                 return 0;
             }
         }
@@ -125,6 +125,10 @@ namespace EXOFiddlerInspector
 
         public void SetRequestValues(Session oS)
         {
+
+            // Store response body in variable for opening in notepad.
+            EXOResponseBody = this.session.oResponse.ToString();
+
             // Write HTTP Status Code Text box, convert int to string.
             _displayControl.SetRequestHostTextBox(this.session.hostname);
 
@@ -211,6 +215,8 @@ namespace EXOFiddlerInspector
                 //_displayControl.Body = body;
             }
         }
+
+        public string EXOResponseBody { get; set; }
     }
 
     // Response class, same as request class except for responses
@@ -219,6 +225,7 @@ namespace EXOFiddlerInspector
         ResponseUserControl _displayControl;
         private HTTPResponseHeaders responseHeaders;
         private string searchTerm;
+        private string RealmURL;
 
         //private int oResponseCode;
 
@@ -234,32 +241,32 @@ namespace EXOFiddlerInspector
 
             if (this.session.url.Contains("autodiscover"))
             {
-                _displayControl.SetElapsedTimeCommentTextBoxText("SFS:100:Url:AutoDiscover");
+                //_displayControl.SetElapsedTimeCommentTextBoxText("SFS:100:Url:AutoDiscover");
                 return 100;
             }
             else if (this.session.hostname.Contains("autodiscover"))
             {
-                _displayControl.SetElapsedTimeCommentTextBoxText("SFS:100:Hostname:AutoDiscover");
+                //_displayControl.SetElapsedTimeCommentTextBoxText("SFS:100:Hostname:AutoDiscover");
                 return 100;
             }
             else if (this.session.url.Contains("outlook"))
             {
-                _displayControl.SetElapsedTimeCommentTextBoxText("SFS:100:Url:Outlook");
+                //_displayControl.SetElapsedTimeCommentTextBoxText("SFS:100:Url:Outlook");
                 return 100;
             }
             else if (this.session.url.Contains("GetUserAvailability"))
             {
-                _displayControl.SetElapsedTimeCommentTextBoxText("SFS:100:Url:GetUserAvailability");
+                //_displayControl.SetElapsedTimeCommentTextBoxText("SFS:100:Url:GetUserAvailability");
                 return 100;
             }
             else if (this.session.LocalProcess.Contains("outlook"))
             {
-                _displayControl.SetElapsedTimeCommentTextBoxText("SFS:100:LocalProcess:Outlook");
+                //_displayControl.SetElapsedTimeCommentTextBoxText("SFS:100:LocalProcess:Outlook");
                 return 100;
             }
             else
             {
-                _displayControl.SetElapsedTimeCommentTextBoxText("SFS:0");
+                //_displayControl.SetElapsedTimeCommentTextBoxText("SFS:0");
                 return 0;
             }
         }
@@ -306,6 +313,9 @@ namespace EXOFiddlerInspector
 
             // Write Elapsed Time into textbox.
             _displayControl.SetResponseElapsedTimeTextBox(this.session.oResponse.iTTLB + "ms");
+
+            //Write response server from headers into textbox.
+            _displayControl.SetResponseServerTextBoxText(this.session.oResponse["Server"]);
 
             // Write Elapsed Time comment into textbox.
             if (this.session.oResponse.iTTLB > 5000)
@@ -367,6 +377,16 @@ namespace EXOFiddlerInspector
             #region switchstatement
             switch (this.session.responseCode)
                 {
+                    case 0:
+                       #region HTTP0
+                        /////////////////////////////
+                        //
+                        //  HTTP 0: No Response.
+                        //
+                        _displayControl.SetResponseAlertTextBox("HTTP 0 No Response!");
+                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
+                        #endregion
+                        break;
                     case 200:
                         #region HTTP200
                         /////////////////////////////
@@ -408,6 +428,26 @@ namespace EXOFiddlerInspector
                         /////////////////////////////
                         #endregion
                         break;
+                    case 204:
+                        #region HTTP204
+                        /////////////////////////////
+                        //
+                        //  HTTP 204: No Content.
+                        //
+                        _displayControl.SetResponseAlertTextBox("HTTP 204 No Content.");
+                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
+                        #endregion
+                        break;
+                    case 301:
+                        #region HTTP301
+                        /////////////////////////////
+                        //
+                        //  HTTP 301: Moved Permanently.
+                        //
+                        _displayControl.SetResponseAlertTextBox("HTTP 301 Moved Permanently");
+                        _displayControl.SetResponseCommentsRichTextboxText("Nothing of concern here at this time.");
+                        #endregion
+                        break;
                     case 302:
                         #region HTTP302
                         /////////////////////////////
@@ -418,13 +458,45 @@ namespace EXOFiddlerInspector
                         {
                             _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect to Exchange Online.");
                             _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect to Exchange Online.");
-
                         }
                         //
                         /////////////////////////////
                         #endregion
                         break;
-                    case 401:
+                    case 304:
+                        #region HTTP304
+                        /////////////////////////////
+                        //
+                        //  HTTP 304: Not modified.
+                        //
+                        _displayControl.SetResponseAlertTextBox("HTTP 304 Not Modified");
+                        _displayControl.SetResponseCommentsRichTextboxText("Nothing of concern here at this time.");
+                        #endregion
+                        break;
+                    case 307:
+                        #region HTTP307
+                        /////////////////////////////
+                        //
+                        //  HTTP 307: Temporary Redirect.
+                        //
+
+                        // Specific scenario where a HTTP 307 Temporary Redirect incorrectly send an EXO Autodiscover request to an On-Premise resource, breaking Outlook connectivity.
+                        if (this.session.hostname.Contains("autodiscover") && 
+                            (this.session.hostname.Contains("mail.onmicrosoft.com") && 
+                            (this.session.fullUrl.Contains("autodiscover") && 
+                            (this.session.ResponseHeaders["Location"] != "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml"))))
+                        {
+                            _displayControl.SetResponseAlertTextBox("HTTP 307 Temporary Redirect");
+                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP307IncorrectTemporaryRedirect);
+                        } else
+                        {
+                            _displayControl.SetResponseAlertTextBox("HTTP 307 Temporary Redirect");
+                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP307TemporaryRedirect);
+                        }
+                        
+                        #endregion
+                        break;
+                case 401:
                         #region HTTP401
                         /////////////////////////////
                         //
@@ -467,9 +539,19 @@ namespace EXOFiddlerInspector
                         //
                         // Pick up any 404 Not Found and write data into the comments box.
                         _displayControl.SetResponseAlertTextBox("HTTP 404 Not Found");
-                        _displayControl.SetResponseCommentsRichTextboxText("HTTP 404 Not Found");
+                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
                         //
                         /////////////////////////////
+                        #endregion
+                        break;
+                    case 429:
+                        #region HTTP429
+                        /////////////////////////////
+                        //
+                        //  HTTP 429: Too Many Requests.
+                        //
+                        _displayControl.SetResponseAlertTextBox("HTTP 429 Too Many Requests");
+                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP429TooManyRequests);
                         #endregion
                         break;
                     case 440:
@@ -503,9 +585,17 @@ namespace EXOFiddlerInspector
                         //  HTTP 502: BAD GATEWAY.
                         //
 
+                        if (this.session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443")
+                        {
+                            if (this.session.utilFindInResponse("target machine actively refused it", false) > 1)
+                            {
+                                _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
+                                _displayControl.SetResponseCommentsRichTextboxText("Unlikely the cause of Outlook / OWA connectivity.");
+                            }
+                        }
                         // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
                         //      autodiscover.domain.onmicrosoft.com:443
-                        if (this.session.utilFindInResponse("target machine actively refused it", false) > 1)
+                        else if (this.session.utilFindInResponse("target machine actively refused it", false) > 1)
                         {
                             if (this.session.utilFindInResponse("autodiscover", false) > 1)
                             {
@@ -520,8 +610,10 @@ namespace EXOFiddlerInspector
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
                         else if (this.session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1)
                         {
-                            if (this.session.utilFindInResponse(".onmicrosoft.com", false) > 1)
-                            {
+                            // Found Outlook is going root domain Autodiscover lookups. Vanity domain, which we have no way to key off of in logic here.
+                            // Excluding this if statement to broaden DNS lookups we say are OK.
+                            //if (this.session.utilFindInResponse(".onmicrosoft.com", false) > 1)
+                            //{
                                 if (this.session.utilFindInResponse("failed. System.Net.Sockets.SocketException", false) > 1)
                                 {
                                     if (this.session.utilFindInResponse("DNS Lookup for ", false) > 1)
@@ -530,7 +622,7 @@ namespace EXOFiddlerInspector
                                         _displayControl.SetResponseCommentsRichTextboxText("DNS record does not exist. Connection on port 443 will not work by design.");
                                     }
                                 }
-                            }
+                            //}
                         }
                         else
                         {
@@ -556,8 +648,11 @@ namespace EXOFiddlerInspector
                         wordCount = matchQuery.Count();
                         if (wordCount > 0)
                         {
+                            //XAnchorMailbox = this.session.oRequest["X-AnchorMailbox"];
+                            RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=" + this.session.oRequest["X-User-Identity"] + "&xml=1";
+
                             _displayControl.SetResponseAlertTextBox("The federation service is unreachable or unavailable.");
-                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP503FederatedSTSUnreachable);
+                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP503FederatedSTSUnreachableStart + Environment.NewLine + RealmURL + Environment.NewLine + Properties.Settings.Default.HTTP503FederatedSTSUnreachableEnd);
                         }
                         else
                         {
@@ -577,18 +672,11 @@ namespace EXOFiddlerInspector
                         //
                         // Pick up any 504 Gateway Timeout and write data into the comments box.
                         _displayControl.SetResponseAlertTextBox("HTTP 504 Gateway Timeout");
-                        _displayControl.SetResponseCommentsRichTextboxText("HTTP 504 Gateway Timeout");
+                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
                         //
                         /////////////////////////////
-                        #endregion
-                        break;
-                    case 0:
-                        #region HTTP0
-                        // Needs testing, does this pick up null response codes?
-                        _displayControl.SetResponseAlertTextBox("No HTTP response code detected.");
-                        _displayControl.SetResponseCommentsRichTextboxText("No HTTP response code detected.");
-                        #endregion
-                        break;
+                    #endregion
+                    break;
                     default:
                         break;
                 }

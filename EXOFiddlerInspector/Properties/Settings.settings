@@ -3,27 +3,22 @@
   <Profiles />
   <Settings>
     <Setting Name="HTTP502AutodiscoverFalsePositive" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">HTTP 502: False Positive. By design Office 365 Autodiscover does not respond to autodiscover.contoso.onmicrosoft.com for example on port 443. Validate this message by confirming this is an Office 365 IP address and perform a telnet to the IP address on port 80.</Value>
+      <Value Profile="(Default)">HTTP 502: False Positive. By design Office 365 Autodiscover does not respond to autodiscover.contoso.onmicrosoft.com for example on port 443. 
+Validate this message by confirming this is an Office 365 IP address and perform a telnet to the IP address on port 80. 
+If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects the request to a secure Autodiscover resource.</Value>
     </Setting>
     <Setting Name="HTTP403WebProxyBlocking" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">HTTP 403: Forbidden. Is your firewall or web proxy blocking Outlook connectivity? To fire this message a HTTP 403 response code was detected 
-and "Access Denied" was found in the response body. Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked?
+      <Value Profile="(Default)">HTTP 403: Forbidden. Is your firewall or web proxy blocking Outlook connectivity? 
+To fire this message a HTTP 403 response code was detected and "Access Denied" was found in the response body. 
+Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked?
 
 
 </Value>
     </Setting>
-    <Setting Name="HTTP503FederatedSTSUnreachable" Type="System.String" Scope="Application">
+    <Setting Name="HTTP503FederatedSTSUnreachableStart" Type="System.String" Scope="Application">
       <Value Profile="(Default)">HTTP 503: FederatedSTSUnreachable.
 The fedeation service is unreachable or unavailable. Check the Raw tab for additional details.
-Check the realm page for the authenticating domain.
-https://login.microsoftonline.com/GetUserRealm.srf?Login=user@contoso.com&amp;xml=1
-Expected responses:
-AuthURL: Expected to show federation service logon page.
-STSAuthURL: Expected to show HTTP 400
-MEXURL: Expected to show long stream of XML data.
-
-If any of these show the HTTP 503 Service Unavailable this confirms a consistent failure on the federation service.
-If however you get the expected responses, this does not neccessarily mean the federation service / everything authentication is healthy.</Value>
+Check the realm page for the authenticating domain.</Value>
     </Setting>
     <Setting Name="HTTPStatusCodesURL" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://en.wikipedia.org/wiki/List_of_HTTP_status_codes</Value>
@@ -32,11 +27,35 @@ If however you get the expected responses, this does not neccessarily mean the f
       <Value Profile="(Default)">HTTP 200: Errors found in response body. Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review.
 </Value>
     </Setting>
-    <Setting Name="HTTP401Unauthorized" Type="System.String" Scope="User">
-      <Value Profile="(Default)">HTTP 401: Unauthorized. These are expected and are not an issue as long as a HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge.</Value>
+    <Setting Name="HTTP401Unauthorized" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">HTTP 401: Unauthorized. These are expected and are not an issue as long as a subsequent HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge.</Value>
     </Setting>
-    <Setting Name="HTTP403Generic" Type="System.String" Scope="User">
+    <Setting Name="HTTP403Generic" Type="System.String" Scope="Application">
       <Value Profile="(Default)">While HTTP 403's can be symptomatic of a proxy server blocking traffic, the phrase 'Access Denied' was not detected in the response body. A small number of HTTP 403's can be seen in normal working scenarios. Check the Raw and WebView tabs to look for anything which looks suspect.</Value>
+    </Setting>
+    <Setting Name="HTTP429TooManyRequests" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">HTTP 429: Kind of sounds bad, needs to be taken into context with the rest of the sessions. A small number is probably not an issue, larger numbers of these could be cause for concern.</Value>
+    </Setting>
+    <Setting Name="HTTP503FederatedSTSUnreachableEnd" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Expected responses:
+AuthURL: Normally expected to show federation service logon page.
+STSAuthURL: Normally expected to show HTTP 400
+MEXURL: Normally expected to show long stream of XML data.
+
+If any of these show the HTTP 503 Service Unavailable this confirms a consistent failure on the federation service.
+If however you get the expected responses, this does not neccessarily mean the federation service / everything authentication is healthy.</Value>
+    </Setting>
+    <Setting Name="HTTPQuantity" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">The quantity of these types of server errors need to be considered in context with what you are troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.</Value>
+    </Setting>
+    <Setting Name="HTTP307TemporaryRedirect" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">HTTP 307: Temporary Redirects have been seen to redirect Exchange Online Autodiscover calls back to On-Premise resources, breaking Outlook connectivity.
+Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.</Value>
+    </Setting>
+    <Setting Name="HTTP307IncorrectTemporaryRedirect" Type="System.String" Scope="User">
+      <Value Profile="(Default)">HTTP 307: Temporary Redirects have been seen to redirect Exchange Online Autodiscover calls back to On-Premise resources, breaking Outlook connectivity.
+This session has enough data points to be an Autodiscover request for Exchange Online which has not been sent to https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml as expected.
+Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.</Value>
     </Setting>
   </Settings>
 </SettingsFile>

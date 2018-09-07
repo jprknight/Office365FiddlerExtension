@@ -8,11 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Diagnostics;
 
 namespace EXOFiddlerInspector
 {
     public partial class ResponseUserControl : UserControl
     {
+        
+
         public ResponseUserControl()
         {
             InitializeComponent();
@@ -20,7 +23,7 @@ namespace EXOFiddlerInspector
 
         private void ResponseUserControl_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         // Code to write to ResponseProcessTextBox.Text value.
@@ -94,7 +97,12 @@ namespace EXOFiddlerInspector
         {
             ElapsedTimeCommentTextBox.Text = txt;
         }
-        
+
+        // Code to write to ResponseServerTextBox.Text value.
+        internal void SetResponseServerTextBoxText(string txt)
+        {
+            ResponseServerTextBox.Text = txt;
+        }        
 
         private void HTTPStatusCodeLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -306,5 +314,26 @@ namespace EXOFiddlerInspector
         {
 
         }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ResponseCommentsOpenButton_Click(object sender, EventArgs e)
+        {
+            System.IO.File.WriteAllText(@"c:\temp\EXOFiddlerInspectortemp.txt", ResponseCommentsRichTextBox.Text);
+            System.Diagnostics.Process.Start(@"c:\temp\EXOFiddlerInspectortemp.txt");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //System.IO.File.WriteAllText(@"c:\temp\EXOFiddlerInspectortemp.txt", );
+            //System.Diagnostics.Process.Start(@"c:\temp\EXOFiddlerInspectorResponsetemp.txt");
+        }
+        //internal void SetElapsedTimeCommentTextBoxText(string txt)
+        //{
+        //    ElapsedTimeCommentTextBox.Text = txt;
+        //}
     }
 }
