@@ -8,8 +8,9 @@ Project goals:
 * Colourise sessions in session list. Highlight sessions of interest in typical traffic light style.
   * Red -- Typically will be HTTP 403 and HTTP 5xx response codes.
   * Orange -- Typically will be HTTP 401 unauthorised response codes. Something expected, though need to be accomanied by a subsequent authentication sucess in a HTTP 200 response.
-  * Green -- Typically will be anything which could be a false positive.
-  * Non-colourised -- Sessions not directly related to Outlook or Exchange. Not looking to colourise every session.
+  * Blue -- Typically will be anything which could be a false positive.
+  * Green -- Typically will be anything which is given the all clear by the inspector.
+  * Non-colourised -- Sessions not directly related to Outlook or Exchange.
 * Add an inspector tab to show request and response information:
   * Request hostname, URL, type.
   * Response code, status code short description.
@@ -21,5 +22,3 @@ Project goals:
   * Data freshness. Information on how old the trace is being looked at.
   
 * More to come.
-
-Installer for the inspector to come, most likely when the inspector is ready for prime time. For now if you are interested, build by cloning the project.
