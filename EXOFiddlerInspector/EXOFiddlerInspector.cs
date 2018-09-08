@@ -595,17 +595,14 @@ namespace EXOFiddlerInspector
                         }
                         // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
                         //      autodiscover.domain.onmicrosoft.com:443
-                        else if (this.session.utilFindInResponse("target machine actively refused it", false) > 1)
-                        {
-                            if (this.session.utilFindInResponse("autodiscover", false) > 1)
-                            {
-                                if (this.session.utilFindInResponse(":443", false) > 1)
+                        else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
+                            (this.session.utilFindInResponse("autodiscover", false) > 1) &&
+                            (this.session.utilFindInResponse(":443", false) > 1)))
                                 {
                                     _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
                                     _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
                                 }
-                            }
-                        }
+                                
                         // Specific scenario on Outlook and Office 365 invalid DNS lookup.
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
                         else if (this.session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1)
