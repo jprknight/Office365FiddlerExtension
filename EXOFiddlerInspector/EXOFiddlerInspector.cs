@@ -385,6 +385,8 @@ namespace EXOFiddlerInspector
                         //
                         _displayControl.SetResponseAlertTextBox("HTTP 0 No Response!");
                         _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
+                        //
+                        /////////////////////////////
                         #endregion
                         break;
                     case 200:
@@ -436,6 +438,8 @@ namespace EXOFiddlerInspector
                         //
                         _displayControl.SetResponseAlertTextBox("HTTP 204 No Content.");
                         _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
+                        //
+                        /////////////////////////////
                         #endregion
                         break;
                     case 301:
@@ -446,6 +450,8 @@ namespace EXOFiddlerInspector
                         //
                         _displayControl.SetResponseAlertTextBox("HTTP 301 Moved Permanently");
                         _displayControl.SetResponseCommentsRichTextboxText("Nothing of concern here at this time.");
+                        //
+                        /////////////////////////////
                         #endregion
                         break;
                     case 302:
@@ -471,6 +477,8 @@ namespace EXOFiddlerInspector
                         //
                         _displayControl.SetResponseAlertTextBox("HTTP 304 Not Modified");
                         _displayControl.SetResponseCommentsRichTextboxText("Nothing of concern here at this time.");
+                        //
+                        /////////////////////////////
                         #endregion
                         break;
                     case 307:
@@ -493,7 +501,8 @@ namespace EXOFiddlerInspector
                             _displayControl.SetResponseAlertTextBox("HTTP 307 Temporary Redirect");
                             _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP307TemporaryRedirect);
                         }
-                        
+                        //
+                        /////////////////////////////
                         #endregion
                         break;
                 case 401:
@@ -552,6 +561,8 @@ namespace EXOFiddlerInspector
                         //
                         _displayControl.SetResponseAlertTextBox("HTTP 429 Too Many Requests");
                         _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP429TooManyRequests);
+                        //
+                        /////////////////////////////
                         #endregion
                         break;
                     case 440:
@@ -578,6 +589,8 @@ namespace EXOFiddlerInspector
                         _displayControl.SetResponseCommentsRichTextboxText("HTTP 500 Internal Server Error");
                         #endregion
                         break;
+                        //
+                        /////////////////////////////
                     case 502:
                         #region HTTP502
                         /////////////////////////////
@@ -597,7 +610,7 @@ namespace EXOFiddlerInspector
                         //      autodiscover.domain.onmicrosoft.com:443
                         else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
                             (this.session.utilFindInResponse("autodiscover", false) > 1) &&
-                            (this.session.utilFindInResponse(":443", false) > 1)))
+                            (this.session.utilFindInResponse(":443", false) > 1))
                                 {
                                     _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
                                     _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
@@ -605,21 +618,18 @@ namespace EXOFiddlerInspector
                                 
                         // Specific scenario on Outlook and Office 365 invalid DNS lookup.
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
-                        else if (this.session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1)
+                        else if ((this.session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1) &&
                         {
                             // Found Outlook is going root domain Autodiscover lookups. Vanity domain, which we have no way to key off of in logic here.
                             // Excluding this if statement to broaden DNS lookups we say are OK.
                             //if (this.session.utilFindInResponse(".onmicrosoft.com", false) > 1)
                             //{
-                                if (this.session.utilFindInResponse("failed. System.Net.Sockets.SocketException", false) > 1)
+                            (this.session.utilFindInResponse("failed. System.Net.Sockets.SocketException", false) > 1) &&
+                            (this.session.utilFindInResponse("DNS Lookup for ", false) > 1)
                                 {
-                                    if (this.session.utilFindInResponse("DNS Lookup for ", false) > 1)
-                                    {
-                                        _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
-                                        _displayControl.SetResponseCommentsRichTextboxText("DNS record does not exist. Connection on port 443 will not work by design.");
-                                    }
+                                    _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
+                                    _displayControl.SetResponseCommentsRichTextboxText("DNS record does not exist. Connection on port 443 will not work by design.");
                                 }
-                            //}
                         }
                         else
                         {
