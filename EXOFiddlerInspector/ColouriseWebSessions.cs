@@ -7,6 +7,11 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
 {
     private bool bCreatedColumn = false;
     private string searchTerm;
+    private string sessionbody;
+    private int RedirectAddressStart;
+    private int RedirectAddressEnd;
+    private int RedirectAddressLength;
+    private string RedirectAddress;
 
     internal Session session { get; set; }
 
@@ -94,13 +99,13 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                     //
                     // HTTP 200
                     //
-                    // Looking for errors lurking in HTTP 200 OK responses.
+
+                    /////////////////////////////
+                    // 1. Looking for errors lurking in HTTP 200 OK responses.
                     searchTerm = "Error";
 
                     // Count the matches, which executes the query.  
                     wordCount = matchQuery.Count();
-
-                    
 
                     string result = "After splitting all words in the response body the word 'error' was found " + wordCount + " time(s).";
 
@@ -108,27 +113,55 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                     {
                         this.session["ui-backcolor"] = "red";
                         this.session["ui-color"] = "black";
+                        // break out at this point, we already have a suspect HTTP 200 session.
+                        break;
                     }
                     else
                     {
                         this.session["ui-backcolor"] = "green";
                         this.session["ui-color"] = "black";
                     }
+                    //
+                    /////////////////////////////
 
-                    // Autodiscover redirect Address from Exchange On-Premise.
+                    /////////////////////////////
+                    // 2. Autodiscover redirect Address from Exchange On-Premise to Exchange Online.
                     searchTerm = "<RedirectAddr>";
 
                     // Count the matches, which executes the query.  
                     wordCount = matchQuery.Count();
 
-                    // *** NEED FURTHER WORK HERE <RedirectAddr> DOES NOT MEAN EVERYTHING IS GOOD.
-                    // A bad redirect address can give circular AutoD loop back to On-Prem.
-
-                    // Autodiscover redirect Address from Exchange On-Premise.
+                    // We found a positive match on a redirect address from Exchange On-Premise.
+                    // Analyse redirect address to see where it points to.
+                    // Looking for incorrect redirect address which can cause Autodiscover loop
+                    // back to Exchange On-Premise (or somewhere else unexpected) and break Outlook connectivity.
                     if (wordCount > 0)
                     {
-                        this.session["ui-backcolor"] = "green";
-                        this.session["ui-color"] = "black";
+                        // Put session response body into string.
+                        sessionbody = this.session.oResponse.ToString();
+                        // Get the start position of <RedirectAddr>. 
+                        //  THIS VERY LIKELY NEEDS CORRECTING TO GET THE RIGHT STARTING POSITION INT.
+                        RedirectAddressStart = sessionbody.IndexOf("<RedirectAddr>");
+                        // Get the end position of </RedirectAddr>.
+                        //  THIS VERY LIKELY NEEDS CORRECTING TO GET THE RIGHT STARTING POSITION INT.
+                        RedirectAddressEnd = sessionbody.IndexOf("</RedirectAddr>");
+                        // Get to length of the redirect address for the substring next.
+                        RedirectAddressLength = RedirectAddressEnd - RedirectAddressStart;
+                        // Collect the redirect address from the session body.
+                        RedirectAddress = sessionbody.Substring(RedirectAddressStart, RedirectAddressLength);
+                        // Highlight if we got this far and do not have a redirect address which points to
+                        // Exchange Online such as: contoso.mail.onmicrosoft.com.
+                        if (!(RedirectAddress.Contains(".onmicrosoft.com"))) {
+                            this.session["ui-backcolor"] = "red";
+                            this.session["ui-color"] = "black";
+                        }
+                        // If the redirect address does point to contoso.mail.onmicrosoft.com then all clear
+                        // for connectivity to EXO on this check.
+                        else
+                        {
+                            this.session["ui-backcolor"] = "green";
+                            this.session["ui-color"] = "black";
+                        }
                     }
                     //
                     /////////////////////////////
@@ -209,11 +242,15 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                         (this.session.fullUrl.Contains("autodiscover") &&
                         (this.session.ResponseHeaders["Location"] != "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml"))))
                     {
+                        // Redirect location has been found to send the Autodiscover connection somewhere else other than'
+                        // Exchange Online, highlight.
                         this.session["ui-backcolor"] = "red";
                         this.session["ui-color"] = "black";
                     }
                     else
                     {
+                        // The above scenario is not seem, however Temporary Redirects are not exactly normally expected to be seen.
+                        // Highlight as a warning.
                         this.session["ui-backcolor"] = "orange";
                         this.session["ui-color"] = "black";
                     }
@@ -239,19 +276,10 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                     //
                     //  HTTP 403: FORBIDDEN.
                     //
-                    // Simply looking for the term "Access Denied" works fine using utilFindInResponse.
+                    // Looking for the term "Access Denied" works fine using utilFindInResponse.
                     // Specific scenario where a web proxy is blocking traffic.
-                    if (session.utilFindInResponse("Access Denied", false) > 1)
-                    {
-                        this.session["ui-backcolor"] = "red";
-                        this.session["ui-color"] = "black";
-                    }
-                    else
-                    {
-                        // Pick up any 403 Forbidden and write data into the comments box.
-                        this.session["ui-backcolor"] = "red";
-                        this.session["ui-color"] = "black";
-                    }
+                    this.session["ui-backcolor"] = "red";
+                    this.session["ui-color"] = "black";
                     //
                     /////////////////////////////
                     #endregion
@@ -312,39 +340,10 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                     //  HTTP 502: BAD GATEWAY.
                     //
 
-                    #region linqquerytest
-
-                    // Got to be a better way to do this, for now testing.
-
-                    // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
-                    //      autodiscover.domain.onmicrosoft.com:443
-                    /*
-                    string[] searchTerms = { "target", "machine","actively","refused","it","autodiscover",":443"};
-
-                        foreach (string searchTerm in searchTerms)
-                        {
-                            wordCount = matchQuery.Count();
-                            if (wordCount > 0)
-                            {
-                                totalwordCount++;
-                            }
-
-                            if (totalwordCount == 7)
-                            {
-                                // Matched the false positive condition.
-                                this.session["ui-backcolor"] = "blue";
-                                this.session["ui-color"] = "black";
-                            }
-                            else
-                            {
-                                // No match, highlight 502 as failure.
-                                this.session["ui-backcolor"] = "red";
-                                this.session["ui-color"] = "black";
-                            }
-                        }
-                        */
-                    #endregion
-
+                    /////////////////////////////
+                    //
+                    // 1. 
+                    //
                     // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
                     //      autodiscover.domain.onmicrosoft.com:443
 
@@ -356,6 +355,9 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                     // since the UI has moved on already the session cannot be colourised. 
 
                     // On testing with loadSAZ instead this same code colourises sessions fine.
+
+                    // Altered if statements from being bested to using && to see if this inproves here.
+                    // This appears to be the only section in this code which has a session colourisation issue.
 
                     if ((this.session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443") &&
                         (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
