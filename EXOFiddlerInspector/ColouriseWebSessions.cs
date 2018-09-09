@@ -5,6 +5,7 @@ using System.Linq;
 
 public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or Fiddler won't see it!
 {
+
     //string sUserAgent = "";
     //private object fSessions;
     private bool bCreatedColumn = false;
@@ -103,6 +104,8 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                     //
                     this.session["ui-backcolor"] = "red";
                     this.session["ui-color"] = "black";
+                    //
+                    /////////////////////////////
                     #endregion
                     break;
                 case 200:
@@ -116,6 +119,8 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
 
                     // Count the matches, which executes the query.  
                     wordCount = matchQuery.Count();
+
+                    
 
                     string result = "After splitting all words in the response body the word 'error' was found " + wordCount + " time(s).";
 
@@ -157,6 +162,8 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                     //
                     this.session["ui-backcolor"] = "green";
                     this.session["ui-color"] = "black";
+                    //
+                    /////////////////////////////
                     #endregion
                     break;
                 case 301:
@@ -167,6 +174,8 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                     //
                     this.session["ui-backcolor"] = "green";
                     this.session["ui-color"] = "black";
+                    //
+                    /////////////////////////////
                     #endregion
                     break;
                 case 302:
@@ -203,6 +212,8 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                     //
                     this.session["ui-backcolor"] = "green";
                     this.session["ui-color"] = "black";
+                    //
+                    /////////////////////////////
                     #endregion
                     break;
                 case 307:
@@ -226,7 +237,8 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                         this.session["ui-backcolor"] = "orange";
                         this.session["ui-color"] = "black";
                     }
-
+                    //
+                    /////////////////////////////
                     #endregion
                     break;
                 case 401:
@@ -237,6 +249,8 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                     //
                     this.session["ui-backcolor"] = "orange";
                     this.session["ui-color"] = "black";
+                    //
+                    /////////////////////////////
                     #endregion
                     break;
                 case 403:
@@ -282,6 +296,8 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                     //
                     this.session["ui-backcolor"] = "orange";
                     this.session["ui-color"] = "black";
+                    //
+                    /////////////////////////////
                     #endregion
                     break;
                 case 440:
@@ -305,6 +321,8 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                     // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
                     this.session["ui-backcolor"] = "red";
                     this.session["ui-color"] = "black";
+                    //
+                    /////////////////////////////
                     #endregion
                     break;
                 case 502:
@@ -359,49 +377,31 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
 
                     // On testing with loadSAZ instead this same code colourises sessions fine.
 
-                    if (this.session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443")
-                    {
-                        if (this.session.utilFindInResponse("target machine actively refused it", false) > 1)
+                    if ((this.session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443") &&
+                        (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
                         {
                             this.session["ui-backcolor"] = "blue";
                             this.session["ui-color"] = "black";
                         }
-                    }
-
-                    else if (this.session.utilFindInResponse("target machine actively refused it", false) > 1)
-                    {
-                        //MessageBox.Show("target machine actively refused it");
-                        if (this.session.utilFindInResponse("autodiscover", false) > 1)
+                    else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
+                        (this.session.utilFindInResponse("autodiscover", false) > 1) &&
+                        (this.session.utilFindInResponse(":443", false) > 1))
                         {
-                            //MessageBox.Show("autodiscover");
-                            if (this.session.utilFindInResponse(":443", false) > 1)
-                            {
-                                //MessageBox.Show(":443");
-                                this.session["ui-backcolor"] = "blue";
-                                this.session["ui-color"] = "black";
-                            }
+                            this.session["ui-backcolor"] = "blue";
+                            this.session["ui-color"] = "black";
                         }
-                    }
-
                     // Specific scenario on Outlook and Office 365 invalid DNS lookup.
                     // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
-                    else if (session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1)
-                    {
+                    else if ((session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1) &&
                         // Found Outlook is going root domain Autodiscover lookups. Vanity domain, which we have no way to key off of in logic here.
                         // Excluding this if statement to broaden DNS lookups we say are OK.
-                        //if (this.session.utilFindInResponse(".onmicrosoft.com", false) > 1)
-                        //{
-                            if (this.session.utilFindInResponse("failed. System.Net.Sockets.SocketException", false) > 1)
-                            {
-                                if (this.session.utilFindInResponse("DNS Lookup for ", false) > 1)
-                                {
-                                    this.session["ui-backcolor"] = "blue";
-                                    this.session["ui-color"] = "black";
-                                }
-                            }
-                        //}
-                    }
-
+                        // (this.session.utilFindInResponse(".onmicrosoft.com", false) > 1)
+                        (this.session.utilFindInResponse("failed. System.Net.Sockets.SocketException", false) > 1) &&
+                        (this.session.utilFindInResponse("DNS Lookup for ", false) > 1))
+                        {
+                            this.session["ui-backcolor"] = "blue";
+                            this.session["ui-color"] = "black";
+                        }
                     else
                     {
                         // Pick up any other 502 Bad Gateway call it out.

@@ -103,6 +103,11 @@ namespace EXOFiddlerInspector
             }
         }
 
+        public void SetRequestAlertTextboxTest()
+        {
+            _displayControl.SetRequestAlertTextBox("***TESTER***");
+        }
+
         // Add EXO Request tab into inspectors tab.
         public override void AddToTab(TabPage o)
         {
@@ -373,7 +378,7 @@ namespace EXOFiddlerInspector
             //string[] searchTerms = { "Error", "FederatedStsUnreachable" };
 
             //foreach (string searchTerm in searchTerms)
-
+            
             #region switchstatement
             switch (this.session.responseCode)
                 {
@@ -687,9 +692,10 @@ namespace EXOFiddlerInspector
                 }
                 #endregion
             //}
+            
         }
         #endregion
-
+        
 
         /////////////////////////////
         // Add the EXO Response tab into the inspector tab.
