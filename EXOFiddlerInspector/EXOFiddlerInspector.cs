@@ -103,11 +103,6 @@ namespace EXOFiddlerInspector
             }
         }
 
-        public void SetRequestAlertTextboxTest()
-        {
-            _displayControl.SetRequestAlertTextBox("***TESTER***");
-        }
-
         // Add EXO Request tab into inspectors tab.
         public override void AddToTab(TabPage o)
         {
@@ -356,7 +351,6 @@ namespace EXOFiddlerInspector
 
             #region RuleSet
 
-
             int wordCount = 0;
 
             // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
@@ -374,11 +368,10 @@ namespace EXOFiddlerInspector
                              where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
                              select word;
 
+            // Query samples:
             //string searchTerm = "error";
             //string[] searchTerms = { "Error", "FederatedStsUnreachable" };
 
-            //foreach (string searchTerm in searchTerms)
-            
             #region switchstatement
             switch (this.session.responseCode)
                 {
@@ -691,7 +684,6 @@ namespace EXOFiddlerInspector
                         break;
                 }
                 #endregion
-            //}
             
         }
         #endregion
@@ -709,29 +701,6 @@ namespace EXOFiddlerInspector
         }
         //
         /////////////////////////////
-
-
-        #region oldcodeToDelete
-        /*public HTTPResponseHeaders headers
-        {
-            get
-            {
-                return _headers;
-            }
-            set
-            {
-                
-                _headers = value;
-                System.Collections.Generic.Dictionary<string, string> httpHeaders =
-                    new System.Collections.Generic.Dictionary<string, string>();
-                foreach (var item in headers)
-                {
-                    httpHeaders.Add(item.Name, item.Value);
-                }
-                //_displayControl.Headers = httpHeaders;
-            }
-        }*/
-        #endregion
 
         // Mandatory, but not sure what this does.
         public override int GetOrder()

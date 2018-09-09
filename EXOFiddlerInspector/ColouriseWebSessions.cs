@@ -5,26 +5,10 @@ using System.Linq;
 
 public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or Fiddler won't see it!
 {
-
-    //string sUserAgent = "";
-    //private object fSessions;
     private bool bCreatedColumn = false;
     private string searchTerm;
-    //private int totalwordCount;
 
     internal Session session { get; set; }
-
-    //public object GetAllSessions { get ; private set; }
-
-    //public Violin()
-    //{
-    /* NOTE: It's possible that Fiddler UI isn't fully loaded yet, so don't add any UI in the constructor.
-
-       But it's also possible that AutoTamper* methods are called before OnLoad (below), so be
-       sure any needed data structures are initialized to safe values here in this constructor */
-
-    //    sUserAgent = "Violin";
-    //}
 
     #region LoadSAZ
     /////////////////
@@ -82,16 +66,12 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                              where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
                              select word;
 
+            // Query samples:
             //string searchTerm = "error";
-            //string[] searchTerms = { "Error", "FederatedStsUnreachable", "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml" };
+            //string[] searchTerms = { "Error", "FederatedStsUnreachable" };
 
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
-
-            //foreach (string searchTerm in searchTerms)
-            //{
-            // Create the query.  Use ToLowerInvariant to match "data" and "Data"   
-
 
             #region switchstatement
             switch (this.session.responseCode)
