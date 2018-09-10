@@ -322,18 +322,33 @@ namespace EXOFiddlerInspector
 
         private void ResponseCommentsOpenButton_Click(object sender, EventArgs e)
         {
-            System.IO.File.WriteAllText(@"c:\temp\EXOFiddlerInspectortemp.txt", ResponseCommentsRichTextBox.Text);
-            System.Diagnostics.Process.Start(@"c:\temp\EXOFiddlerInspectortemp.txt");
+            // When the response comments open in notepad button is pressed.
+            System.IO.File.WriteAllText(@"EXOFiddlerInspectorComment.txt", ResponseCommentsRichTextBox.Text);
+            System.Diagnostics.Process.Start(@"EXOFiddlerInspectorComment.txt");
+
+            /////////////////////////////
+            // Expertimented with this code, at least on my computer I could see the characters paste into the notepad file.
+            // Preference on the above WriteAllText to file in temp directory and open instead.
+            /*
+            Process process = new Process();
+            process.StartInfo.FileName = @"notepad.exe";
+            process.EnableRaisingEvents = true;
+            process.Start(); // It will start Notepad process
+            process.WaitForInputIdle(10000);
+            if (process.Responding) // If currently started process(notepad) is responding
+            {
+                System.Windows.Forms.SendKeys.SendWait(ResponseCommentsRichTextBox.Text);
+                // It will Add all the text from text variable to notepad 
+            }
+            */
+            //
+            /////////////////////////////
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //System.IO.File.WriteAllText(@"c:\temp\EXOFiddlerInspectortemp.txt", );
-            //System.Diagnostics.Process.Start(@"c:\temp\EXOFiddlerInspectorResponsetemp.txt");
+
         }
-        //internal void SetElapsedTimeCommentTextBoxText(string txt)
-        //{
-        //    ElapsedTimeCommentTextBox.Text = txt;
-        //}
     }
 }

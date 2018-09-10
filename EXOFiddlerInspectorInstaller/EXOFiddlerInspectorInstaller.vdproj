@@ -99,6 +99,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_A07E3D3FC1124C7F85D12D0ABED13801"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_A24655FA2A16998EBF3D595547E5E64A"
         "OwnerKey" = "8:_0FC81C9049DEB78985E9B6DF47C23FB7"
         "MsmSig" = "8:_UNDEFINED"
@@ -179,12 +185,6 @@
         {
         "MsmKey" = "8:_DACF4044D0772D73927EA5BD3B12BDEF"
         "OwnerKey" = "8:_6B3D579CEC1A482AA01F9D2DB25AE7A2"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E99C8CC31445479598CC189B29B89492"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -464,6 +464,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A07E3D3FC1124C7F85D12D0ABED13801"
+            {
+            "SourcePath" = "8:..\\..\\..\\..\\Downloads\\Icons-Land-Medical-Equipment-Microscope.ico"
+            "TargetName" = "8:Icons-Land-Medical-Equipment-Microscope.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_66B855557151469BAD2C016A2A86162A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A24655FA2A16998EBF3D595547E5E64A"
             {
             "AssemblyRegister" = "3:1"
@@ -586,26 +606,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E99C8CC31445479598CC189B29B89492"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\Downloads\\Exchange.ico"
-            "TargetName" = "8:Exchange.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_66B855557151469BAD2C016A2A86162A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FA65B77C0D10D741BDB8F389EE8B9F29"
@@ -738,16 +738,16 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:EXO Fiddler Extension"
-        "ProductCode" = "8:{9B724A66-6B41-4A76-AE85-4AFF73AA2BD2}"
-        "PackageCode" = "8:{D3BDA9ED-B38F-4578-ACB4-0FDA3242AC0D}"
+        "ProductName" = "8:Exchange Online Fiddler Extension"
+        "ProductCode" = "8:{5A24EDB1-760B-4DAD-9DB8-BA990E7A439C}"
+        "PackageCode" = "8:{B2773EC7-D637-4B87-B2AA-145741182A33}"
         "UpgradeCode" = "8:{827E1199-7576-4FDD-A7F0-FDD5D1800921}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.0.1"
         "Manufacturer" = "8:Jeremy Knight"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/jprknight/EXOFiddlerInspector/issues"
@@ -757,7 +757,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:https://github.com/jprknight/EXOFiddlerInspector"
-        "ARPPRODUCTICON" = "8:_E99C8CC31445479598CC189B29B89492"
+        "ARPPRODUCTICON" = "8:_A07E3D3FC1124C7F85D12D0ABED13801"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"

@@ -64,7 +64,7 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
             string text = this.session.ToString();
 
             //Convert the string into an array of words  
-            string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',', '<', '>' }, StringSplitOptions.RemoveEmptyEntries);
 
             // Create the query. Use ToLowerInvariant to match "data" and "Data"   
             var matchQuery = from word in source
@@ -101,62 +101,58 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                     //
 
                     /////////////////////////////
-                    // 1. Looking for errors lurking in HTTP 200 OK responses.
-                    searchTerm = "Error";
-
-                    // Count the matches, which executes the query.  
-                    wordCount = matchQuery.Count();
-
-                    string result = "After splitting all words in the response body the word 'error' was found " + wordCount + " time(s).";
-
-                    if (wordCount > 0)
+                    // 1. Exchange On-Premise Autodiscover redirect.
+                    if (this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1)
                     {
-                        this.session["ui-backcolor"] = "red";
-                        this.session["ui-color"] = "black";
-                        // break out at this point, we already have a suspect HTTP 200 session.
-                        break;
-                    }
-                    else
-                    {
-                        this.session["ui-backcolor"] = "green";
-                        this.session["ui-color"] = "black";
-                    }
-                    //
-                    /////////////////////////////
+                        /*
+                        <?xml version="1.0" encoding="utf-8"?>
+                        <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
+                        <Response xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a">
+                        <Account>
+                        <Action>redirectAddr</Action>
+                        <RedirectAddr>user@contoso.mail.onmicrosoft.com</RedirectAddr>       
+                        </Account>
+                        </Response>
+                        </Autodiscover>
+                        */
 
-                    /////////////////////////////
-                    // 2. Autodiscover redirect Address from Exchange On-Premise to Exchange Online.
-                    searchTerm = "<RedirectAddr>";
+                        // Logic to detected the redirect address in this session.
+                        // 
+                        string RedirectResponseBody = this.session.GetResponseBodyAsString();
+                        int start = this.session.GetResponseBodyAsString().IndexOf("<RedirectAddr>");
+                        int end = this.session.GetResponseBodyAsString().IndexOf("</RedirectAddr>");
+                        int charcount = end - start;
+                        string RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
 
-                    // Count the matches, which executes the query.  
-                    wordCount = matchQuery.Count();
-
-                    // We found a positive match on a redirect address from Exchange On-Premise.
-                    // Analyse redirect address to see where it points to.
-                    // Looking for incorrect redirect address which can cause Autodiscover loop
-                    // back to Exchange On-Premise (or somewhere else unexpected) and break Outlook connectivity.
-                    if (wordCount > 0)
-                    {
-                        // Put session response body into string.
-                        sessionbody = this.session.oResponse.ToString();
-                        // Get the start position of <RedirectAddr>. 
-                        //  THIS VERY LIKELY NEEDS CORRECTING TO GET THE RIGHT STARTING POSITION INT.
-                        RedirectAddressStart = sessionbody.IndexOf("<RedirectAddr>");
-                        // Get the end position of </RedirectAddr>.
-                        //  THIS VERY LIKELY NEEDS CORRECTING TO GET THE RIGHT STARTING POSITION INT.
-                        RedirectAddressEnd = sessionbody.IndexOf("</RedirectAddr>");
-                        // Get to length of the redirect address for the substring next.
-                        RedirectAddressLength = RedirectAddressEnd - RedirectAddressStart;
-                        // Collect the redirect address from the session body.
-                        RedirectAddress = sessionbody.Substring(RedirectAddressStart, RedirectAddressLength);
+                        if (RedirectAddress.Contains(".onmicrosoft.com"))
+                        {
+                            this.session["ui-backcolor"] = "green";
+                            this.session["ui-color"] = "black";
+                        }
                         // Highlight if we got this far and do not have a redirect address which points to
                         // Exchange Online such as: contoso.mail.onmicrosoft.com.
-                        if (!(RedirectAddress.Contains(".onmicrosoft.com"))) {
+                        else
+                        {
                             this.session["ui-backcolor"] = "red";
                             this.session["ui-color"] = "black";
                         }
-                        // If the redirect address does point to contoso.mail.onmicrosoft.com then all clear
-                        // for connectivity to EXO on this check.
+                    }
+
+                    /////////////////////////////
+                    //
+                    // 99. No other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
+                    else
+                    {
+                        searchTerm = "Error";
+
+                        // Count the matches, which executes the query.  
+                        wordCount = matchQuery.Count();
+
+                        if (wordCount > 0)
+                        {
+                            this.session["ui-backcolor"] = "red";
+                            this.session["ui-color"] = "black";
+                        }
                         else
                         {
                             this.session["ui-backcolor"] = "green";
@@ -340,10 +336,7 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                     //  HTTP 502: BAD GATEWAY.
                     //
 
-                    /////////////////////////////
-                    //
-                    // 1. 
-                    //
+
                     // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
                     //      autodiscover.domain.onmicrosoft.com:443
 
@@ -358,13 +351,22 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
 
                     // Altered if statements from being bested to using && to see if this inproves here.
                     // This appears to be the only section in this code which has a session colourisation issue.
-
+                    
+                    /////////////////////////////
+                    //
+                    // 1. telemetry false positive. <Need to validate in working scenarios>
+                    //
                     if ((this.session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443") &&
                         (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
                         {
                             this.session["ui-backcolor"] = "blue";
                             this.session["ui-color"] = "black";
                         }
+                    
+                    /////////////////////////////
+                    //
+                    // 2. Exchange Online Autodiscover False Positive.
+                    //
                     else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
                         (this.session.utilFindInResponse("autodiscover", false) > 1) &&
                         (this.session.utilFindInResponse(":443", false) > 1))
@@ -372,6 +374,11 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                             this.session["ui-backcolor"] = "blue";
                             this.session["ui-color"] = "black";
                         }
+
+                    /////////////////////////////
+                    //
+                    // 3. Exchange Online DNS lookup on contoso.onmicrosoft.com, False Positive!?
+                    //
                     // Specific scenario on Outlook and Office 365 invalid DNS lookup.
                     // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
                     else if ((session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1) &&
@@ -384,6 +391,11 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                             this.session["ui-backcolor"] = "blue";
                             this.session["ui-color"] = "black";
                         }
+
+                    /////////////////////////////
+                    //
+                    // 99. Everything else.
+                    //
                     else
                     {
                         // Pick up any other 502 Bad Gateway call it out.
