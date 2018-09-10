@@ -351,7 +351,6 @@ namespace EXOFiddlerInspector
 
             #region RuleSet
 
-
             int wordCount = 0;
 
             // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
@@ -369,10 +368,9 @@ namespace EXOFiddlerInspector
                              where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
                              select word;
 
+            // Query samples:
             //string searchTerm = "error";
             //string[] searchTerms = { "Error", "FederatedStsUnreachable" };
-
-            //foreach (string searchTerm in searchTerms)
 
             #region switchstatement
             switch (this.session.responseCode)
@@ -385,6 +383,8 @@ namespace EXOFiddlerInspector
                         //
                         _displayControl.SetResponseAlertTextBox("HTTP 0 No Response!");
                         _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
+                        //
+                        /////////////////////////////
                         #endregion
                         break;
                     case 200:
@@ -436,6 +436,8 @@ namespace EXOFiddlerInspector
                         //
                         _displayControl.SetResponseAlertTextBox("HTTP 204 No Content.");
                         _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
+                        //
+                        /////////////////////////////
                         #endregion
                         break;
                     case 301:
@@ -446,6 +448,8 @@ namespace EXOFiddlerInspector
                         //
                         _displayControl.SetResponseAlertTextBox("HTTP 301 Moved Permanently");
                         _displayControl.SetResponseCommentsRichTextboxText("Nothing of concern here at this time.");
+                        //
+                        /////////////////////////////
                         #endregion
                         break;
                     case 302:
@@ -471,6 +475,8 @@ namespace EXOFiddlerInspector
                         //
                         _displayControl.SetResponseAlertTextBox("HTTP 304 Not Modified");
                         _displayControl.SetResponseCommentsRichTextboxText("Nothing of concern here at this time.");
+                        //
+                        /////////////////////////////
                         #endregion
                         break;
                     case 307:
@@ -493,7 +499,8 @@ namespace EXOFiddlerInspector
                             _displayControl.SetResponseAlertTextBox("HTTP 307 Temporary Redirect");
                             _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP307TemporaryRedirect);
                         }
-                        
+                        //
+                        /////////////////////////////
                         #endregion
                         break;
                 case 401:
@@ -552,6 +559,8 @@ namespace EXOFiddlerInspector
                         //
                         _displayControl.SetResponseAlertTextBox("HTTP 429 Too Many Requests");
                         _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP429TooManyRequests);
+                        //
+                        /////////////////////////////
                         #endregion
                         break;
                     case 440:
@@ -578,6 +587,8 @@ namespace EXOFiddlerInspector
                         _displayControl.SetResponseCommentsRichTextboxText("HTTP 500 Internal Server Error");
                         #endregion
                         break;
+                        //
+                        /////////////////////////////
                     case 502:
                         #region HTTP502
                         /////////////////////////////
@@ -595,34 +606,26 @@ namespace EXOFiddlerInspector
                         }
                         // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
                         //      autodiscover.domain.onmicrosoft.com:443
-                        else if (this.session.utilFindInResponse("target machine actively refused it", false) > 1)
-                        {
-                            if (this.session.utilFindInResponse("autodiscover", false) > 1)
-                            {
-                                if (this.session.utilFindInResponse(":443", false) > 1)
+                        else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
+                            (this.session.utilFindInResponse("autodiscover", false) > 1) &&
+                            (this.session.utilFindInResponse(":443", false) > 1))
                                 {
                                     _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
                                     _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
                                 }
-                            }
-                        }
+                                
                         // Specific scenario on Outlook and Office 365 invalid DNS lookup.
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
-                        else if (this.session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1)
-                        {
+                        else if ((this.session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1) &&
                             // Found Outlook is going root domain Autodiscover lookups. Vanity domain, which we have no way to key off of in logic here.
                             // Excluding this if statement to broaden DNS lookups we say are OK.
                             //if (this.session.utilFindInResponse(".onmicrosoft.com", false) > 1)
                             //{
-                                if (this.session.utilFindInResponse("failed. System.Net.Sockets.SocketException", false) > 1)
-                                {
-                                    if (this.session.utilFindInResponse("DNS Lookup for ", false) > 1)
-                                    {
-                                        _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
-                                        _displayControl.SetResponseCommentsRichTextboxText("DNS record does not exist. Connection on port 443 will not work by design.");
-                                    }
-                                }
-                            //}
+                            (this.session.utilFindInResponse("failed. System.Net.Sockets.SocketException", false) > 1) &&
+                            (this.session.utilFindInResponse("DNS Lookup for ", false) > 1))
+                        {
+                            _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
+                            _displayControl.SetResponseCommentsRichTextboxText("DNS record does not exist. Connection on port 443 will not work by design.");
                         }
                         else
                         {
@@ -681,10 +684,10 @@ namespace EXOFiddlerInspector
                         break;
                 }
                 #endregion
-            //}
+            
         }
         #endregion
-
+        
 
         /////////////////////////////
         // Add the EXO Response tab into the inspector tab.
@@ -698,29 +701,6 @@ namespace EXOFiddlerInspector
         }
         //
         /////////////////////////////
-
-
-        #region oldcodeToDelete
-        /*public HTTPResponseHeaders headers
-        {
-            get
-            {
-                return _headers;
-            }
-            set
-            {
-                
-                _headers = value;
-                System.Collections.Generic.Dictionary<string, string> httpHeaders =
-                    new System.Collections.Generic.Dictionary<string, string>();
-                foreach (var item in headers)
-                {
-                    httpHeaders.Add(item.Name, item.Value);
-                }
-                //_displayControl.Headers = httpHeaders;
-            }
-        }*/
-        #endregion
 
         // Mandatory, but not sure what this does.
         public override int GetOrder()
