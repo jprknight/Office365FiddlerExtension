@@ -7,7 +7,6 @@ using System;
 namespace EXOFiddlerInspector
 {
     // Base class, generic inspector, common between request and response
-    #region EXOBaseFiddlerInspector
     public class EXOBaseFiddlerInspector : Inspector2
     {
         //private byte[] _body;
@@ -51,7 +50,6 @@ namespace EXOFiddlerInspector
             base.AssignSession(oS);
         }
     }
-    #endregion
 
     // Request class, inherits the generic class above, only defines things specific or different from the base class
     public class RequestInspector : EXOBaseFiddlerInspector, IRequestInspector2
@@ -125,6 +123,33 @@ namespace EXOFiddlerInspector
             { }
         }
 
+        public void SetSessionType(Session oS)
+        {
+            if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) { _displayControl.SetRequestTypeTextBox("EXO MAPI"); }
+            else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
+            else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
+            else if (this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1) { _displayControl.SetRequestTypeTextBox("On-Prem Autodiscover Redirect"); }
+            else if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
+            else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
+            else if (this.session.fullUrl.Contains("autodiscover")) { _displayControl.SetRequestTypeTextBox("Autodiscover"); }
+            else if (this.session.url.Contains("autodiscover")) { _displayControl.SetRequestTypeTextBox("Autodiscover"); }
+            else if (this.session.hostname.Contains("autodiscover")) { _displayControl.SetRequestTypeTextBox("Autodiscover"); }
+            else if (this.session.fullUrl.Contains("WSSecurity")) { _displayControl.SetRequestTypeTextBox("Free/Busy"); }
+            else if (this.session.fullUrl.Contains("GetUserAvailability")) { _displayControl.SetRequestTypeTextBox("Free/Busy"); }
+            else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1) { _displayControl.SetRequestTypeTextBox("Free/Busy"); }
+            else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { _displayControl.SetRequestTypeTextBox("EXO EWS"); }
+            else if (this.session.fullUrl.Contains(".onmicrosoft.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
+            else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { _displayControl.SetRequestTypeTextBox("Office 365 Authentication"); }
+            else if (this.session.fullUrl.Contains("outlook.office365.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
+            else if (this.session.fullUrl.Contains("outlook.office.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
+            else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { _displayControl.SetRequestTypeTextBox("ADFS Authentication"); }
+            else if (this.session.LocalProcess.Contains("outlook")) { _displayControl.SetRequestTypeTextBox("Something Outlook"); }
+            else if (this.session.LocalProcess.Contains("iexplore")) { _displayControl.SetRequestTypeTextBox("Something Internet Explorer"); }
+            else if (this.session.LocalProcess.Contains("chrome")) { _displayControl.SetRequestTypeTextBox("Something Chrome"); }
+            else if (this.session.LocalProcess.Contains("firefox")) { _displayControl.SetRequestTypeTextBox("Something Firefox"); }
+            else { _displayControl.SetRequestTypeTextBox("Not Exchange"); }
+        }
+
         public void SetRequestValues(Session oS)
         {
 
@@ -149,27 +174,7 @@ namespace EXOFiddlerInspector
                     this.session.LocalProcess.Contains("edge") ||
                     this.session.LocalProcess.Contains("w3wp"))
             {
-                if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) { _displayControl.SetRequestTypeTextBox("EXO MAPI"); }
-                else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
-                else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
-                else if (this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1) { _displayControl.SetRequestTypeTextBox("On-Prem Autodiscover Redirect"); }
-                else if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
-                else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
-                else if (this.session.fullUrl.Contains("autodiscover")) { _displayControl.SetRequestTypeTextBox("Autodiscover"); }
-                else if (this.session.fullUrl.Contains("WSSecurity")) { _displayControl.SetRequestTypeTextBox("Free/Busy"); }
-                else if (this.session.fullUrl.Contains("GetUserAvailability")) { _displayControl.SetRequestTypeTextBox("Free/Busy"); }
-                else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1) { _displayControl.SetRequestTypeTextBox("Free/Busy"); }
-                else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { _displayControl.SetRequestTypeTextBox("EXO EWS"); }
-                else if (this.session.fullUrl.Contains(".onmicrosoft.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
-                else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { _displayControl.SetRequestTypeTextBox("Office 365 Authentication"); }
-                else if (this.session.fullUrl.Contains("outlook.office365.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
-                else if (this.session.fullUrl.Contains("outlook.office.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
-                else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { _displayControl.SetRequestTypeTextBox("ADFS Authentication"); }
-                else if (this.session.LocalProcess.Contains("outlook")) { _displayControl.SetRequestTypeTextBox("Something Outlook"); }
-                else if (this.session.LocalProcess.Contains("iexplore")) { _displayControl.SetRequestTypeTextBox("Something Internet Explorer"); }
-                else if (this.session.LocalProcess.Contains("chrome")) { _displayControl.SetRequestTypeTextBox("Something Chrome"); }
-                else if (this.session.LocalProcess.Contains("firefox")) { _displayControl.SetRequestTypeTextBox("Something Firefox"); }
-                else { _displayControl.SetRequestTypeTextBox("Not Exchange"); }
+                SetSessionType(this.session);
             }
             else
             // If the traffic did not originate from Outlook, web browser or EXO web service (w3wp), call it out.
@@ -177,6 +182,8 @@ namespace EXOFiddlerInspector
                 _displayControl.SetRequestTypeTextBox("Not from Outlook, EXO Browser or web service.");
             }
         }
+
+
 
         public void Clear()
         {
@@ -352,8 +359,6 @@ namespace EXOFiddlerInspector
             //var ruleSet = new WebTrafficRuleSet(session);
             //ruleSet.RunWebTrafficRuleSet();
 
-            #region RuleSet
-
             int wordCount = 0;
 
             // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
@@ -375,7 +380,6 @@ namespace EXOFiddlerInspector
             //string searchTerm = "error";
             //string[] searchTerms = { "Error", "FederatedStsUnreachable" };
 
-            #region switchstatement
             switch (this.session.responseCode)
                 {
                     case 0:
@@ -388,8 +392,8 @@ namespace EXOFiddlerInspector
                         _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
                         //
                         /////////////////////////////
-                        #endregion
                         break;
+                        #endregion
                     case 200:
                         #region HTTP200s
                         /////////////////////////////
@@ -590,10 +594,10 @@ namespace EXOFiddlerInspector
                         // For the moment do nothing.
                         //
                         /////////////////////////////
-                        #endregion
                         break;
+                    #endregion
                     case 500:
-                        #region HTTP500
+                        #region HTTP500s
                         /////////////////////////////
                         //
                         //  HTTP 500: Internal Server Error.
@@ -707,17 +711,13 @@ namespace EXOFiddlerInspector
                         _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
                         //
                         /////////////////////////////
-                    #endregion
-                    break;
+                        break;
+                        #endregion
                     default:
                         break;
                 }
-                #endregion
-            
         }
-        #endregion
         
-
         /////////////////////////////
         // Add the EXO Response tab into the inspector tab.
         public override void AddToTab(TabPage o)
@@ -743,5 +743,4 @@ namespace EXOFiddlerInspector
             throw new System.NotImplementedException();
         }
     }
-
 }

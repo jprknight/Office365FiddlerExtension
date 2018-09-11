@@ -7,14 +7,23 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
 {
     private bool bCreatedColumn = false;
     private string searchTerm;
-    private string sessionbody;
-    private int RedirectAddressStart;
-    private int RedirectAddressEnd;
-    private int RedirectAddressLength;
-    private string RedirectAddress;
 
     internal Session session { get; set; }
+    
+    // Make sure the Columns are added to the UI.
+    public void EnsureColumn()
+    {
+        if (bCreatedColumn) return;
 
+        FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Time", 2, 110, "X-iTTLB");
+        FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 3, 110, "@response.Server");
+        FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 4, 110, "X-ExchangeType");
+
+        //FiddlerApplication.UI.Refresh();
+
+        bCreatedColumn = true;
+    }
+    
     #region LoadSAZ
     /////////////////
     // 
@@ -22,18 +31,24 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
     //
     public void OnLoad()
     {
+        EnsureColumn();
         FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
     }
 
     private void HandleLoadSaz(object sender, FiddlerApplication.ReadSAZEventArgs e)
     {
-        FiddlerApplication.UI.lvSessions.BeginUpdate();
+        //FiddlerApplication.UI.lvSessions.BeginUpdate();
         foreach (var session in e.arrSessions)
         {
+            // Populate the ResponseTime column on load SAZ.
+            session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
+            // Populate the ExchangeType column on load SAZ.
+            SetExchangeType(session);
+            // Colourise sessions on load SAZ.
             OnPeekAtResponseHeaders(session); //Run whatever function you use in IAutoTamper
             session.RefreshUI();
         }
-        FiddlerApplication.UI.lvSessions.EndUpdate();
+        //FiddlerApplication.UI.lvSessions.EndUpdate();
     }
     //
     /////////////////
@@ -54,26 +69,6 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
         this.session.LocalProcess.Contains("edge") ||
         this.session.LocalProcess.Contains("w3wp"))
         {
-            int wordCount = 0;
-
-            // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
-            //
-            // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
-            //
-
-            string text = this.session.ToString();
-
-            //Convert the string into an array of words  
-            string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',', '<', '>' }, StringSplitOptions.RemoveEmptyEntries);
-
-            // Create the query. Use ToLowerInvariant to match "data" and "Data"   
-            var matchQuery = from word in source
-                             where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
-                             select word;
-
-            // Query samples:
-            //string searchTerm = "error";
-            //string[] searchTerms = { "Error", "FederatedStsUnreachable" };
 
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
@@ -143,6 +138,25 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                     // 99. No other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                     else
                     {
+                        int wordCount = 0;
+
+                        // Due to compute cost attempting to minimise when this function is used.
+                        //
+                        // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
+                        //
+                        // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
+                        //
+
+                        string text = this.session.ToString();
+
+                        //Convert the string into an array of words  
+                        string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',', '<', '>' }, StringSplitOptions.RemoveEmptyEntries);
+
+                        // Create the query. Use ToLowerInvariant to match "data" and "Data"   
+                        var matchQuery = from word in source
+                                         where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
+                                         select word;
+
                         searchTerm = "Error";
 
                         // Count the matches, which executes the query.  
@@ -192,23 +206,9 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
                     /////////////////////////////
                     //
                     //  HTTP 302: Found / Redirect.
-                    //
-                    searchTerm = "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml";
-                    // Count the matches, which executes the query.  
-                    wordCount = matchQuery.Count();
-
-                    if (wordCount > 0)
-                    {
-                        // Redirect to Exchange Online.
-                        this.session["ui-backcolor"] = "green";
-                        this.session["ui-color"] = "black";
-                    }
-                    else
-                    {
-                        // To be determined. Right now just highlight as green.
-                        this.session["ui-backcolor"] = "green";
-                        this.session["ui-color"] = "black";
-                    }
+                    //            
+                    this.session["ui-backcolor"] = "green";
+                    this.session["ui-color"] = "black";
                     //
                     /////////////////////////////
                     #endregion
@@ -450,16 +450,6 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
 
     public void OnBeforeUnload() { }
 
-    // Make sure the Columns are added to the UI.
-    private void EnsureColumn()
-    {
-        if (bCreatedColumn) return;
-
-        FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Time", 2, 110, "X-iTTLB");
-        
-        bCreatedColumn = true;
-    }
-
     public void OnPeekAtResponseHeaders(IAutoTamper2 AllSessions) { }
     
     public void AutoTamperRequestBefore(Session oSession) { }
@@ -469,13 +459,30 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
     public void AutoTamperResponseBefore(Session oSession) { }
 
     public void AutoTamperResponseAfter(Session session) {
-        session["X-iTTLB"] = session.oResponse.iTTLB.ToString();
+
+        // Populate the ResponseTime column on live trace.
+        session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
 
         /////////////////
         //
         // Call the function to colourise sessions for live traffic capture.
         //
         OnPeekAtResponseHeaders(session);
+        FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("#", 0, -1);
+        FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Result", 1, -1);
+        FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Time", 2, -1);
+        FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 3, -1);
+        FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 4, -1);
+        FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Protocol", 5, -1);
+        FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host", 6, -1);
+        FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("URL", 7, -1);
+        FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Body", 8, -1);
+        FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Caching", 9, -1);
+        FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Content-Type", 10, -1);
+        FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 11, -1);
+        FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", 12, -1);
+        FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 13, -1);
+        SetExchangeType(session);
         session.RefreshUI();
         //
         /////////////////
@@ -483,4 +490,43 @@ public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or
 
     public void OnBeforeReturningError(Session oSession) { }
 
+    public void SetExchangeType(Session session)
+    {
+        this.session = session;
+
+        // Outlook Connections.
+        if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) { session["X-ExchangeType"] = "EXO MAPI"; }
+        // Exchange Online Autodiscover.
+        else if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { session["X-ExchangeType"] = "EXO Autodiscover"; }
+        else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { session["X-ExchangeType"] = "EXO Autodiscover"; }
+        else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { session["X-ExchangeType"] = "EXO Autodiscover"; }
+        else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { session["X-ExchangeType"] = "EXO Autodiscover"; }
+        // Exchange On-Premise Autodiscover Redirect.
+        else if (this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1) { session["X-ExchangeType"] = "On-Prem AutoD Redirect"; }
+        // Autodiscover.     
+        else if (this.session.fullUrl.Contains("autodiscover")) { session["X-ExchangeType"] = "Autodiscover"; }
+        else if (this.session.url.Contains("autodiscover")) { session["X-ExchangeType"] = "Autodiscover"; }
+        else if (this.session.hostname.Contains("autodiscover")) { session["X-ExchangeType"] = "Autodiscover"; }
+        // Free/Busy.
+        else if (this.session.fullUrl.Contains("WSSecurity")) { session["X-ExchangeType"] = "Free/Busy"; }
+        else if (this.session.fullUrl.Contains("GetUserAvailability")) { session["X-ExchangeType"] = "Free/Busy"; }
+        else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1) { session["X-ExchangeType"] = "Free/Busy"; }
+        // EWS.
+        else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { session["X-ExchangeType"] = "EXO EWS"; }
+        // Generic Office 365.
+        else if (this.session.fullUrl.Contains(".onmicrosoft.com") && (!(this.session.hostname.Contains("live.com")))) { session["X -ExchangeType"] = "Exchange Online"; }
+        else if (this.session.fullUrl.Contains("outlook.office365.com")) { session["X-ExchangeType"] = "Office 365"; }
+        else if (this.session.fullUrl.Contains("outlook.office.com")) { session["X-ExchangeType"] = "Office 365"; }
+        // Office 365 Authentication.
+        else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { session["X-ExchangeType"] = "Office 365 Authentication"; }
+        // ADFS Authentication.
+        else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { session["X-ExchangeType"] = "ADFS Authentication"; }
+        // Undetermined, but related to local process.
+        else if (this.session.LocalProcess.Contains("outlook")) { session["X-ExchangeType"] = "Outlook"; }
+        else if (this.session.LocalProcess.Contains("iexplore")) { session["X-ExchangeType"] = "Internet Explorer"; }
+        else if (this.session.LocalProcess.Contains("chrome")) { session["X-ExchangeType"] = "Chrome"; }
+        else if (this.session.LocalProcess.Contains("firefox")) { session["X-ExchangeType"] = "Firefox"; }
+        // Everything else.
+        else { session["X-ExchangeType"] = "Not Exchange"; }
+    }
 }

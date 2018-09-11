@@ -37,9 +37,9 @@
             this.RequestProcessLabel = new System.Windows.Forms.Label();
             this.RequestProcessTextBox = new System.Windows.Forms.TextBox();
             this.RequestCommentsGroupBox = new System.Windows.Forms.GroupBox();
+            this.RequestCommentsRichTextBox = new System.Windows.Forms.RichTextBox();
             this.RequestAlertLabel = new System.Windows.Forms.Label();
             this.RequestAlertTextBox = new System.Windows.Forms.TextBox();
-            this.RequestCommentsRichTextBox = new System.Windows.Forms.RichTextBox();
             this.RequestCommentsGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -125,6 +125,17 @@
             this.RequestCommentsGroupBox.TabIndex = 10;
             this.RequestCommentsGroupBox.TabStop = false;
             this.RequestCommentsGroupBox.Text = "Request Comments";
+            this.RequestCommentsGroupBox.Visible = false;
+            // 
+            // RequestCommentsRichTextBox
+            // 
+            this.RequestCommentsRichTextBox.Location = new System.Drawing.Point(6, 19);
+            this.RequestCommentsRichTextBox.Name = "RequestCommentsRichTextBox";
+            this.RequestCommentsRichTextBox.ReadOnly = true;
+            this.RequestCommentsRichTextBox.Size = new System.Drawing.Size(388, 129);
+            this.RequestCommentsRichTextBox.TabIndex = 14;
+            this.RequestCommentsRichTextBox.Text = "";
+            this.RequestCommentsRichTextBox.Visible = false;
             // 
             // RequestAlertLabel
             // 
@@ -141,15 +152,6 @@
             this.RequestAlertTextBox.Name = "RequestAlertTextBox";
             this.RequestAlertTextBox.Size = new System.Drawing.Size(300, 20);
             this.RequestAlertTextBox.TabIndex = 12;
-            // 
-            // RequestCommentsRichTextBox
-            // 
-            this.RequestCommentsRichTextBox.Location = new System.Drawing.Point(6, 19);
-            this.RequestCommentsRichTextBox.Name = "RequestCommentsRichTextBox";
-            this.RequestCommentsRichTextBox.ReadOnly = true;
-            this.RequestCommentsRichTextBox.Size = new System.Drawing.Size(388, 129);
-            this.RequestCommentsRichTextBox.TabIndex = 14;
-            this.RequestCommentsRichTextBox.Text = "";
             // 
             // RequestUserControl
             // 

@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using Fiddler;
 
 namespace EXOFiddlerInspector
 {
     public partial class ResponseUserControl : UserControl
     {
-        
+        private Session session;
 
         public ResponseUserControl()
         {
@@ -346,9 +347,18 @@ namespace EXOFiddlerInspector
 
         }
 
+        public void SaveResponseBody(Session session)
+        {
+            //this.session = session;
+
+            //System.IO.File.WriteAllText(@"EXOFiddlerInspectorResponseBody.txt", this.session.GetResponseBodyAsString());
+            //System.Diagnostics.Process.Start(@"EXOFiddlerInspectorResponseBody.txt");
+
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
-
+            //SaveResponseBody(session);
         }
     }
 }
