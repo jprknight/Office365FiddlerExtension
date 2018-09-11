@@ -219,6 +219,7 @@
             this.ResponseCommentsRichTextBox.Size = new System.Drawing.Size(385, 125);
             this.ResponseCommentsRichTextBox.TabIndex = 33;
             this.ResponseCommentsRichTextBox.Text = "";
+            this.ResponseCommentsRichTextBox.TextChanged += new System.EventHandler(this.ResponseCommentsRichTextBox_TextChanged);
             // 
             // DataFreshnessLabel
             // 

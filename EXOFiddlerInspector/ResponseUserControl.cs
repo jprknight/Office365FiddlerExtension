@@ -323,7 +323,6 @@ namespace EXOFiddlerInspector
 
         private void ResponseCommentsOpenButton_Click(object sender, EventArgs e)
         {
-            // When the response comments open in notepad button is pressed.
             System.IO.File.WriteAllText(@"EXOFiddlerInspectorComment.txt", ResponseCommentsRichTextBox.Text);
             System.Diagnostics.Process.Start(@"EXOFiddlerInspectorComment.txt");
 
@@ -350,7 +349,7 @@ namespace EXOFiddlerInspector
         public void SaveResponseBody(Session session)
         {
             //this.session = session;
-
+            
             //System.IO.File.WriteAllText(@"EXOFiddlerInspectorResponseBody.txt", this.session.GetResponseBodyAsString());
             //System.Diagnostics.Process.Start(@"EXOFiddlerInspectorResponseBody.txt");
 
@@ -359,6 +358,20 @@ namespace EXOFiddlerInspector
         private void button1_Click(object sender, EventArgs e)
         {
             //SaveResponseBody(session);
+        }
+
+        private void ResponseCommentsRichTextBox_TextChanged(object sender, EventArgs e)
+        {
+            // Disable the ResponseCommentsRichTextBox if the response comment is zero length.
+            if (ResponseCommentsRichTextBox.TextLength == 0)
+            {
+                ResponseCommentsOpenButton.Enabled = false;
+            }
+            // Enable it otherwise.
+            else
+            {
+                ResponseCommentsOpenButton.Enabled = true;
+            }
         }
     }
 }
