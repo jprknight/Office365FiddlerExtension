@@ -52,7 +52,7 @@ namespace EXOFiddlerInspector
             {
                 reader = new XmlTextReader(xmlUrl);
                 reader.MoveToContent();
-                string elementName = null;
+                string elementName = "";
                 if ((reader.NodeType == XmlNodeType.Element) && reader.Name == "EXOFiddlerInspector")
                 {
                     while (reader.Read())
@@ -98,6 +98,7 @@ namespace EXOFiddlerInspector
             }
             else
             {
+                //MessageBox.Show("Application up to date.");
                 return;
             }
         }
