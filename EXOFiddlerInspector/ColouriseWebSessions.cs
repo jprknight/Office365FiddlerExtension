@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Fiddler;
 using System.Linq;
 using System.Xml;
+using System.Net;
 
 namespace EXOFiddlerInspector
 {
@@ -12,6 +13,9 @@ namespace EXOFiddlerInspector
     {
         private bool bCreatedColumn = false;
         private string searchTerm;
+
+        private MenuItem mnuCookieTag;
+        private object proxy;
 
         internal Session session { get; set; }
 
@@ -36,11 +40,35 @@ namespace EXOFiddlerInspector
         //
         public void OnLoad()
         {
-            CheckForUpdate();
+            //CheckForUpdate();
             EnsureColumn();
             FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
         }
 
+        private void HandleLoadSaz(object sender, FiddlerApplication.ReadSAZEventArgs e)
+        {
+            //FiddlerApplication.UI.lvSessions.BeginUpdate();
+            foreach (var session in e.arrSessions)
+            {
+                // Populate the ResponseTime column on load SAZ.
+                session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
+                // Populate the ExchangeType column on load SAZ.
+                SetExchangeType(session);
+                // Colourise sessions on load SAZ.
+                OnPeekAtResponseHeaders(session); //Run whatever function you use in IAutoTamper
+                session.RefreshUI();
+            }
+            //FiddlerApplication.UI.lvSessions.EndUpdate();
+        }
+        //
+        /////////////////
+
+        /////////////////
+        //
+        // Check for updates.
+        //
+        // Called from Onload. Not currently implemented, due to web call issue, as Fiddler substitutes in http://localhost:8888 as the proxy server.
+        //
         public void CheckForUpdate()
         {
             string downloadUrl = "";
@@ -48,6 +76,7 @@ namespace EXOFiddlerInspector
             string xmlUrl = Properties.Settings.Default.UpdateURL;
 
             XmlTextReader reader = null;
+
             try
             {
                 reader = new XmlTextReader(xmlUrl);
@@ -62,7 +91,7 @@ namespace EXOFiddlerInspector
                         }
                         else
                         {
-                            if((reader.NodeType == XmlNodeType.Text) && reader.HasValue)
+                            if ((reader.NodeType == XmlNodeType.Text) && reader.HasValue)
                             {
                                 switch (elementName)
                                 {
@@ -102,24 +131,9 @@ namespace EXOFiddlerInspector
                 return;
             }
         }
-
-        private void HandleLoadSaz(object sender, FiddlerApplication.ReadSAZEventArgs e)
-        {
-            //FiddlerApplication.UI.lvSessions.BeginUpdate();
-            foreach (var session in e.arrSessions)
-            {
-                // Populate the ResponseTime column on load SAZ.
-                session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
-                // Populate the ExchangeType column on load SAZ.
-                SetExchangeType(session);
-                // Colourise sessions on load SAZ.
-                OnPeekAtResponseHeaders(session); //Run whatever function you use in IAutoTamper
-                session.RefreshUI();
-            }
-            //FiddlerApplication.UI.lvSessions.EndUpdate();
-        }
         //
         /////////////////
+
         #endregion
 
         #region ColouriseRuleSet
@@ -528,15 +542,19 @@ namespace EXOFiddlerInspector
 
         public void AutoTamperResponseAfter(Session session)
         {
-
-            // Populate the ResponseTime column on live trace.
-            session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
-
             /////////////////
             //
             // Call the function to colourise sessions for live traffic capture.
             //
             OnPeekAtResponseHeaders(session);
+            session.RefreshUI();
+            //
+            /////////////////
+
+            /////////////////
+            //
+            // For some reason setting the column ordering when adding the columns did not work.
+            // Adding the ordering here instead does work.
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("#", 0, -1);
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Result", 1, -1);
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Time", 2, -1);
@@ -551,8 +569,16 @@ namespace EXOFiddlerInspector
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 11, -1);
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", 12, -1);
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 13, -1);
+            //
+            /////////////////
+
+            /////////////////
+            //
+            // Call the function to populate the session type column on live trace.
             SetExchangeType(session);
-            session.RefreshUI();
+            //
+            // Populate the ResponseTime column on live trace.
+            session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
             //
             /////////////////
         }
