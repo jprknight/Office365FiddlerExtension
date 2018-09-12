@@ -52,10 +52,13 @@ If however you get the expected responses, this does not neccessarily mean the f
       <Value Profile="(Default)">HTTP 307: Temporary Redirects have been seen to redirect Exchange Online Autodiscover calls back to On-Premise resources, breaking Outlook connectivity.
 Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.</Value>
     </Setting>
-    <Setting Name="HTTP307IncorrectTemporaryRedirect" Type="System.String" Scope="User">
+    <Setting Name="HTTP307IncorrectTemporaryRedirect" Type="System.String" Scope="Application">
       <Value Profile="(Default)">HTTP 307: Temporary Redirects have been seen to redirect Exchange Online Autodiscover calls back to On-Premise resources, breaking Outlook connectivity.
 This session has enough data points to be an Autodiscover request for Exchange Online which has not been sent to https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml as expected.
 Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.</Value>
+    </Setting>
+    <Setting Name="UpdateURL" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://github.com/jprknight/EXOFiddlerInspector/tree/master/EXOFiddlerInspector/update.xml</Value>
     </Setting>
   </Settings>
 </SettingsFile>

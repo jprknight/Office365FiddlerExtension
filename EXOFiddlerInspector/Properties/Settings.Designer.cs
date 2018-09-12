@@ -146,7 +146,7 @@ Check the Headers or Raw tab and the Location to ensure the Autodiscover call is
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"HTTP 307: Temporary Redirects have been seen to redirect Exchange Online Autodiscover calls back to On-Premise resources, breaking Outlook connectivity.
 This session has enough data points to be an Autodiscover request for Exchange Online which has not been sent to https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml as expected.
@@ -155,8 +155,15 @@ Check the Headers or Raw tab and the Location to ensure the Autodiscover call is
             get {
                 return ((string)(this["HTTP307IncorrectTemporaryRedirect"]));
             }
-            set {
-                this["HTTP307IncorrectTemporaryRedirect"] = value;
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/jprknight/EXOFiddlerInspector/tree/master/EXOFiddlerInspector/" +
+            "update.xml")]
+        public string UpdateURL {
+            get {
+                return ((string)(this["UpdateURL"]));
             }
         }
     }
