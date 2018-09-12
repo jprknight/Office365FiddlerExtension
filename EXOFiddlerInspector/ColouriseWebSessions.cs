@@ -36,7 +36,7 @@ namespace EXOFiddlerInspector
         //
         public void OnLoad()
         {
-            //CheckForUpdate();
+            CheckForUpdate();
             EnsureColumn();
             FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
         }
