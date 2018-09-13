@@ -14,13 +14,22 @@ namespace EXOFiddlerInspector
 
         internal Session session { get; set; }
 
+        /////////////////
+        //
+        // OnLoad
+        //
         public void OnLoad()
         {
             EnsureColumn();
             FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
         }
+        //
+        /////////////////
 
+        /////////////////
+        //
         // Make sure the Columns are added to the UI.
+        //
         public void EnsureColumn()
         {
             if (bCreatedColumn) return;
@@ -29,18 +38,16 @@ namespace EXOFiddlerInspector
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 3, 110, "@response.Server");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 4, 110, "X-ExchangeType");
 
-            //FiddlerApplication.UI.Refresh();
-
             bCreatedColumn = true;
         }
+        //
+        /////////////////
 
         #region LoadSAZ
         /////////////////
         // 
         // Handle loading a SAZ file.
         //
-
-
         private void HandleLoadSaz(object sender, FiddlerApplication.ReadSAZEventArgs e)
         {
             // At this point in time only checking for updates when SAZ file is loaded.
@@ -148,6 +155,8 @@ namespace EXOFiddlerInspector
             }
         }
         //
+        // Check for updates end.
+        //
         /////////////////
 
         #endregion
@@ -229,6 +238,29 @@ namespace EXOFiddlerInspector
                                 this.session["ui-backcolor"] = "red";
                                 this.session["ui-color"] = "black";
                             }
+                        }
+
+                        /////////////////////////////
+                        //
+                        // 2. Exchange On-Premise Autodiscover redirect - address can't be found
+                        //
+                        if ((this.session.utilFindInResponse("<Message>The email address can't be found.</Message>", false) > 1) || 
+                            (this.session.utilFindInResponse("<ErrorCode>500</ErrorCode>", false) > 1))
+                        {
+                            /*
+                            <?xml version="1.0" encoding="utf-8"?>
+                            <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
+                              <Response>
+                                <Error Time="12:03:32.8803744" Id="2422600485">
+                                  <ErrorCode>500</ErrorCode>
+                                  <Message>The email address can't be found.</Message>
+                                  <DebugData />
+                                </Error>
+                              </Response>
+                            </Autodiscover>
+                            */
+                            this.session["ui-backcolor"] = "red";
+                            this.session["ui-color"] = "black";
                         }
 
                         /////////////////////////////
@@ -482,7 +514,7 @@ namespace EXOFiddlerInspector
                         else if ((session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1) &&
                             // Found Outlook is going root domain Autodiscover lookups. Vanity domain, which we have no way to key off of in logic here.
                             // Excluding this if statement to broaden DNS lookups we say are OK.
-                            // (this.session.utilFindInResponse(".onmicrosoft.com", false) > 1)
+                            (this.session.utilFindInResponse(".onmicrosoft.com", false) > 1) &&
                             (this.session.utilFindInResponse("failed. System.Net.Sockets.SocketException", false) > 1) &&
                             (this.session.utilFindInResponse("DNS Lookup for ", false) > 1))
                         {

@@ -442,6 +442,29 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
+                        // 2. Exchange On-Premise Autodiscover redirect - address can't be found
+                        //
+                        if ((this.session.utilFindInResponse("<Message>The email address can't be found.</Message>", false) > 1) || 
+                            (this.session.utilFindInResponse("<ErrorCode>500</ErrorCode>", false) > 1))
+                        {
+                            /*
+                            <?xml version="1.0" encoding="utf-8"?>
+                            <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
+                              <Response>
+                                <Error Time="12:03:32.8803744" Id="2422600485">
+                                  <ErrorCode>500</ErrorCode>
+                                  <Message>The email address can't be found.</Message>
+                                  <DebugData />
+                                </Error>
+                              </Response>
+                            </Autodiscover>
+                            */
+                            _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect: Error Code 500.");
+                            _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address can't be found.");
+                        }
+
+                        /////////////////////////////
+                        //
                         // 99. No other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                         else
                         {
