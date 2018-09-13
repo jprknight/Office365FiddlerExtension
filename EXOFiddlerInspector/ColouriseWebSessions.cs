@@ -48,7 +48,10 @@ namespace EXOFiddlerInspector
 
         private void HandleLoadSaz(object sender, FiddlerApplication.ReadSAZEventArgs e)
         {
+            // At this point in time only checking for updates when SAZ file is loaded.
+            // Doing this on a live trace is problematic and has hung Fiddler in my testing.
             CheckForUpdate();
+            
             FiddlerApplication.UI.lvSessions.BeginUpdate();
             foreach (var session in e.arrSessions)
             {
@@ -123,23 +126,25 @@ namespace EXOFiddlerInspector
             Version applicationVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             if (applicationVersion.CompareTo(newVersion) < 0)
             {
+                // Setup message box options.
                 string message = "An extension update is available: " + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ". Do you want to download the update?";
                 string caption = "EXO Fiddler Extension";
                 MessageBoxButtons buttons = MessageBoxButtons.YesNo;
                 DialogResult result;
 
-                // Displays the MessageBox.
-
+                // Display the MessageBox.
                 result = MessageBox.Show(message, caption, buttons, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
 
                 if (result == DialogResult.Yes)
                 {
+                    // Execute the installer MSI URL, which will open in the user's default browser.
                     System.Diagnostics.Process.Start(Properties.Settings.Default.InstallerURL);
                 }             
             }
             else
             {
-                MessageBox.Show("EXO Fiddler Extension up to date.");
+                // No need to do anything here on a normal basis.
+                // MessageBox.Show("EXO Fiddler Extension up to date.");
             }
         }
         //
