@@ -772,7 +772,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Exchange Online Fiddler Extension"
         "ProductCode" = "8:{AFB768A6-8BA1-49C5-BFAB-59096C4180CC}"
-        "PackageCode" = "8:{FB07A6C0-B25B-4299-8053-384286EE7478}"
+        "PackageCode" = "8:{633F202F-27E6-4E5F-BE44-C014265F17BB}"
         "UpgradeCode" = "8:{827E1199-7576-4FDD-A7F0-FDD5D1800921}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -795,7 +795,7 @@
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:0"
         "PreBuildEvent" = "8:"
-        "PostBuildEvent" = "8:"
+        "PostBuildEvent" = "8:copy C:\\Users\\jeremkn\\source\\repos\\EXOFiddlerInspector\\EXOFiddlerInspectorInstaller\\Debug\\EXOFiddlerInspectorInstaller.msi C:\\Users\\jeremkn\\source\\repos\\EXOFiddlerInspector\\EXOFiddlerInspector\\Setup"
         "RunPostBuildEvent" = "3:0"
         }
         "Registry"
