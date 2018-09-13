@@ -58,7 +58,10 @@ This session has enough data points to be an Autodiscover request for Exchange O
 Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.</Value>
     </Setting>
     <Setting Name="UpdateURL" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">https://github.com/jprknight/EXOFiddlerInspector/tree/master/EXOFiddlerInspector/update.xml</Value>
+      <Value Profile="(Default)">https://raw.githubusercontent.com/jprknight/EXOFiddlerInspector/master/EXOFiddlerInspector/update.xml</Value>
+    </Setting>
+    <Setting Name="InstallerURL" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://github.com/jprknight/EXOFiddlerInspector/tree/master/EXOFiddlerInspector/Setup</Value>
     </Setting>
   </Settings>
 </SettingsFile>

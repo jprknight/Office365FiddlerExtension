@@ -120,26 +120,22 @@ namespace EXOFiddlerInspector
                 }
             }
 
-            MessageBox.Show(downloadUrl);
-
             Version applicationVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             if (applicationVersion.CompareTo(newVersion) < 0)
             {
-                string message = "Update available: " + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build;
-                string caption = "Update available Caption";
+                string message = "An extension update is available: " + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ". Do you want to download the update?";
+                string caption = "EXO Fiddler Extension";
                 MessageBoxButtons buttons = MessageBoxButtons.YesNo;
                 DialogResult result;
 
                 // Displays the MessageBox.
 
-                result = MessageBox.Show(message, caption, buttons, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
+                result = MessageBox.Show(message, caption, buttons, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
 
                 if (result == DialogResult.Yes)
                 {
-                    System.Diagnostics.Process.Start(downloadUrl);
-                }
-                //MessageBox.Show(System.Diagnostics.Process.Start(downloadUrl));
-                
+                    System.Diagnostics.Process.Start(Properties.Settings.Default.InstallerURL);
+                }             
             }
             else
             {
