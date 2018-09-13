@@ -83,6 +83,7 @@
     <None Include="Setup\EXOFiddlerInspectorInstaller.msi" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BuildInstructions.txt" />
     <Content Include="update.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

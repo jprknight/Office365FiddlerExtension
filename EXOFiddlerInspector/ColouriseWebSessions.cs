@@ -262,8 +262,8 @@ namespace EXOFiddlerInspector
 
                             if (wordCount > 0)
                             {
-                                this.session["ui-backcolor"] = "red";
-                                this.session["ui-color"] = "black";
+                                this.session["ui-backcolor"] = "black";
+                                this.session["ui-color"] = "red";
                             }
                             else
                             {
