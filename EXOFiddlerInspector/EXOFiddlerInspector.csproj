@@ -76,11 +76,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Setup\EXOFiddlerInspectorInstaller.msi" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Setup\EXOFiddlerInspectorInstaller.msi" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="update.xml" />
