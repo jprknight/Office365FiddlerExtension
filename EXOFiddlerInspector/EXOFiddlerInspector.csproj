@@ -76,7 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="EXOFiddlerInspectorInstaller.msi" />
+    <None Include="Setup\EXOFiddlerInspectorInstaller.msi" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

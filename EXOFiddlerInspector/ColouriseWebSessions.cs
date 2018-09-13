@@ -19,6 +19,12 @@ namespace EXOFiddlerInspector
 
         internal Session session { get; set; }
 
+        public void OnLoad()
+        {
+            EnsureColumn();
+            FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
+        }
+
         // Make sure the Columns are added to the UI.
         public void EnsureColumn()
         {
@@ -38,16 +44,12 @@ namespace EXOFiddlerInspector
         // 
         // Handle loading a SAZ file.
         //
-        public void OnLoad()
-        {
-            //CheckForUpdate();
-            EnsureColumn();
-            FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
-        }
+
 
         private void HandleLoadSaz(object sender, FiddlerApplication.ReadSAZEventArgs e)
         {
-            //FiddlerApplication.UI.lvSessions.BeginUpdate();
+            CheckForUpdate();
+            FiddlerApplication.UI.lvSessions.BeginUpdate();
             foreach (var session in e.arrSessions)
             {
                 // Populate the ResponseTime column on load SAZ.
@@ -58,7 +60,7 @@ namespace EXOFiddlerInspector
                 OnPeekAtResponseHeaders(session); //Run whatever function you use in IAutoTamper
                 session.RefreshUI();
             }
-            //FiddlerApplication.UI.lvSessions.EndUpdate();
+            FiddlerApplication.UI.lvSessions.EndUpdate();
         }
         //
         /////////////////
@@ -117,18 +119,31 @@ namespace EXOFiddlerInspector
                     reader.Close();
                 }
             }
+
+            MessageBox.Show(downloadUrl);
+
             Version applicationVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             if (applicationVersion.CompareTo(newVersion) < 0)
             {
-                MessageBox.Show("Update available: " + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build);
+                string message = "Update available: " + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build;
+                string caption = "Update available Caption";
+                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                DialogResult result;
 
+                // Displays the MessageBox.
+
+                result = MessageBox.Show(message, caption, buttons, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
+
+                if (result == DialogResult.Yes)
+                {
+                    System.Diagnostics.Process.Start(downloadUrl);
+                }
                 //MessageBox.Show(System.Diagnostics.Process.Start(downloadUrl));
-                MessageBox.Show(downloadUrl);
+                
             }
             else
             {
-                //MessageBox.Show("Application up to date.");
-                return;
+                MessageBox.Show("EXO Fiddler Extension up to date.");
             }
         }
         //
