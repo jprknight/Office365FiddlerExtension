@@ -111,6 +111,7 @@ namespace EXOFiddlerInspector
             o.ToolTipText = "Exchange Online Inspector";
             o.Controls.Add(_displayControl);
             o.Controls[0].Dock = DockStyle.Fill;
+            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Loaded RequestUserControl");
         }
 
         public HTTPRequestHeaders headers
@@ -727,6 +728,7 @@ namespace EXOFiddlerInspector
             o.ToolTipText = "Exchange Online Inspector";
             o.Controls.Add(_displayControl);
             o.Controls[0].Dock = DockStyle.Fill;
+            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Loaded ResponseUserControl");
         }
         //
         /////////////////////////////

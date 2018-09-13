@@ -679,7 +679,7 @@
         {
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_66B855557151469BAD2C016A2A86162A"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
+            "DefaultLocation" = "8:[ProgramFilesFolder]\\[ProductName]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -687,6 +687,39 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_0D1287B03A344F1F9DB7BED1A56EBE6F"
+                    {
+                    "Name" = "8:Fiddler2"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_8FF098E261AE4347A63CB463A69200F6"
+                        "Folders"
+                        {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_00E35C3F65CC4CF890FE9E0B63FB2772"
+                            {
+                            "Name" = "8:Inspectors"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_750DC8ECB0E4415CBB710760A85C02B2"
+                                "Folders"
+                                {
+                                }
+                            }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_A8DB89E7F7334B0D9AE49FA5356E819F"
+                            {
+                            "Name" = "8:Scripts"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_167040369358421FAACC9C0961D18FB8"
+                                "Folders"
+                                {
+                                }
+                            }
+                        }
+                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_D710A76D5B4044D3867E6DC9ACFDA7F8"
@@ -720,39 +753,6 @@
             "Property" = "8:PersonalFolder"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_1124DB5F46FA4412BF477E895888F095"
-                    {
-                    "Name" = "8:Fiddler2"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_F1CC7B27104D48A9848C2EBFDA059515"
-                        "Folders"
-                        {
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_BD47DB686AFD4559B57F204429366EED"
-                            {
-                            "Name" = "8:Scripts"
-                            "AlwaysCreate" = "11:FALSE"
-                            "Condition" = "8:"
-                            "Transitive" = "11:FALSE"
-                            "Property" = "8:_8F9C1C2F89C140A6BC8E3CCC3BF67C47"
-                                "Folders"
-                                {
-                                }
-                            }
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_BEE8F44D4CA445558E274369E356D6CF"
-                            {
-                            "Name" = "8:Inspectors"
-                            "AlwaysCreate" = "11:FALSE"
-                            "Condition" = "8:"
-                            "Transitive" = "11:FALSE"
-                            "Property" = "8:_73334CA204B04CD3A110941D2834C9FA"
-                                "Folders"
-                                {
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -771,15 +771,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Exchange Online Fiddler Extension"
-        "ProductCode" = "8:{5E579B81-3631-4C20-840F-46826446CBE9}"
-        "PackageCode" = "8:{922ABD1F-CEE2-4E67-86BE-FEB5E31EA908}"
+        "ProductCode" = "8:{9D8723D0-A26C-4F72-9737-184E0C27A2FC}"
+        "PackageCode" = "8:{52C21DE8-3B0D-4DCD-A721-54069B168929}"
         "UpgradeCode" = "8:{827E1199-7576-4FDD-A7F0-FDD5D1800921}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.10"
+        "ProductVersion" = "8:1.0.11"
         "Manufacturer" = "8:Jeremy Knight"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/jprknight/EXOFiddlerInspector/issues"
@@ -1296,7 +1296,7 @@
             "SourcePath" = "8:..\\EXOFiddlerInspector\\obj\\Debug\\EXOFiddlerInspector.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_BEE8F44D4CA445558E274369E356D6CF"
+            "Folder" = "8:_00E35C3F65CC4CF890FE9E0B63FB2772"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1324,7 +1324,7 @@
             "SourcePath" = "8:..\\EXOFiddlerInspector\\obj\\Debug\\EXOFiddlerInspector.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_BD47DB686AFD4559B57F204429366EED"
+            "Folder" = "8:_A8DB89E7F7334B0D9AE49FA5356E819F"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"

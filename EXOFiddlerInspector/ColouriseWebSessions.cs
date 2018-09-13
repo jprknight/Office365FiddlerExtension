@@ -7,15 +7,10 @@ using System.Net;
 
 namespace EXOFiddlerInspector
 {
-
-
     public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or Fiddler won't see it!
     {
         private bool bCreatedColumn = false;
         private string searchTerm;
-
-        private MenuItem mnuCookieTag;
-        private object proxy;
 
         internal Session session { get; set; }
 
@@ -53,6 +48,7 @@ namespace EXOFiddlerInspector
             CheckForUpdate();
             
             FiddlerApplication.UI.lvSessions.BeginUpdate();
+            FiddlerApplication.Log.LogString("EXOFiddlerExtention: HandleLoadSAZ");
             foreach (var session in e.arrSessions)
             {
                 // Populate the ResponseTime column on load SAZ.
@@ -127,8 +123,11 @@ namespace EXOFiddlerInspector
             if (applicationVersion.CompareTo(newVersion) < 0)
             {
                 // Setup message box options.
-                string message = "An extension update is available: " + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ". Do you want to download the update?";
-                string caption = "EXO Fiddler Extension";
+                string message = "You are currently using " + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + "." + Environment.NewLine +
+                    "A new version is available " + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + "." + Environment.NewLine +
+                    "Do you want to download the update?";
+
+                string caption = "EXO Fiddler Extension - Update Available";
                 MessageBoxButtons buttons = MessageBoxButtons.YesNo;
                 DialogResult result;
 
@@ -139,12 +138,13 @@ namespace EXOFiddlerInspector
                 {
                     // Execute the installer MSI URL, which will open in the user's default browser.
                     System.Diagnostics.Process.Start(Properties.Settings.Default.InstallerURL);
-                }             
+                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Update check. Version installed." + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
+                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Update check. New Version Available." + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
+                }
             }
             else
             {
-                // No need to do anything here on a normal basis.
-                // MessageBox.Show("EXO Fiddler Extension up to date.");
+                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Update check. Latest version installed." + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".");
             }
         }
         //
