@@ -268,7 +268,7 @@ namespace EXOFiddlerInspector
                         //
                         // 2. Exchange On-Premise Autodiscover redirect - address can't be found
                         //
-                        if ((this.session.utilFindInResponse("<Message>The email address can't be found.</Message>", false) > 1) || 
+                        if ((this.session.utilFindInResponse("<Message>The email address can't be found.</Message>", false) > 1) && 
                             (this.session.utilFindInResponse("<ErrorCode>500</ErrorCode>", false) > 1))
                         {
                             /*
@@ -301,11 +301,14 @@ namespace EXOFiddlerInspector
 
                             if (wordCount > 0)
                             {
-                                this.session["ui-backcolor"] = "red";
-                                this.session["ui-color"] = "black";
+                                // Special attention to HTTP 200's where the keyword 'error' is found.
+                                // Red text on black background.
+                                this.session["ui-backcolor"] = "black";
+                                this.session["ui-color"] = "red";
                             }
                             else
                             {
+                                // All good.
                                 this.session["ui-backcolor"] = "green";
                                 this.session["ui-color"] = "black";
                             }
