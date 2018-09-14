@@ -55,9 +55,10 @@ namespace EXOFiddlerInspector
             CheckForUpdate();
             
             FiddlerApplication.UI.lvSessions.BeginUpdate();
-            FiddlerApplication.Log.LogString("EXOFiddlerExtention: HandleLoadSAZ");
+            int sessioncount = 0;
             foreach (var session in e.arrSessions)
             {
+                sessioncount++;
                 // Populate the ResponseTime column on load SAZ.
                 session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
                 // Populate the ExchangeType column on load SAZ.
@@ -230,6 +231,7 @@ namespace EXOFiddlerInspector
                             {
                                 this.session["ui-backcolor"] = "green";
                                 this.session["ui-color"] = "black";
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
                             }
                             // Highlight if we got this far and do not have a redirect address which points to
                             // Exchange Online such as: contoso.mail.onmicrosoft.com.
@@ -237,6 +239,7 @@ namespace EXOFiddlerInspector
                             {
                                 this.session["ui-backcolor"] = "red";
                                 this.session["ui-color"] = "black";
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
                             }
                         }
 
@@ -261,6 +264,8 @@ namespace EXOFiddlerInspector
                             */
                             this.session["ui-backcolor"] = "red";
                             this.session["ui-color"] = "black";
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
+                            
                         }
 
                         /////////////////////////////

@@ -15,8 +15,6 @@ namespace EXOFiddlerInspector
 {
     public partial class ResponseUserControl : UserControl
     {
-        private Session session;
-
         public ResponseUserControl()
         {
             InitializeComponent();
