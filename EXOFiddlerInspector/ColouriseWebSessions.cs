@@ -180,6 +180,27 @@ namespace EXOFiddlerInspector
 
                 this.session.utilDecodeRequest(true);
                 this.session.utilDecodeResponse(true);
+                
+                int wordCount = 0;
+
+                // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
+                //
+                // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
+                //
+
+                string text = this.session.ToString();
+
+                //Convert the string into an array of words  
+                string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',', }, StringSplitOptions.RemoveEmptyEntries);
+
+                // Create the query. Use ToLowerInvariant to match "data" and "Data"   
+                var matchQuery = from word in source
+                                 where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
+                                 select word;
+
+                // Query samples:
+                //string searchTerm = "error";
+                //string[] searchTerms = { "Error", "FederatedStsUnreachable" };
 
                 #region switchstatement
                 switch (this.session.responseCode)
@@ -273,25 +294,6 @@ namespace EXOFiddlerInspector
                         // 99. No other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                         else
                         {
-                            int wordCount = 0;
-
-                            // Due to compute cost attempting to minimise when this function is used.
-                            //
-                            // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
-                            //
-                            // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
-                            //
-
-                            string text = this.session.ToString();
-
-                            //Convert the string into an array of words  
-                            string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',', '<', '>' }, StringSplitOptions.RemoveEmptyEntries);
-
-                            // Create the query. Use ToLowerInvariant to match "data" and "Data"   
-                            var matchQuery = from word in source
-                                             where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
-                                             select word;
-
                             searchTerm = "Error";
 
                             // Count the matches, which executes the query.  
@@ -299,8 +301,8 @@ namespace EXOFiddlerInspector
 
                             if (wordCount > 0)
                             {
-                                this.session["ui-backcolor"] = "black";
-                                this.session["ui-color"] = "red";
+                                this.session["ui-backcolor"] = "red";
+                                this.session["ui-color"] = "black";
                             }
                             else
                             {
@@ -377,6 +379,7 @@ namespace EXOFiddlerInspector
                             // Exchange Online, highlight.
                             this.session["ui-backcolor"] = "red";
                             this.session["ui-color"] = "black";
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
                         }
                         else
                         {
@@ -409,8 +412,18 @@ namespace EXOFiddlerInspector
                         //
                         // Looking for the term "Access Denied" works fine using utilFindInResponse.
                         // Specific scenario where a web proxy is blocking traffic.
-                        this.session["ui-backcolor"] = "red";
-                        this.session["ui-color"] = "black";
+                        if (this.session.utilFindInResponse("Access Denied", false) > 1)
+                        {
+                            this.session["ui-backcolor"] = "red";
+                            this.session["ui-color"] = "black";
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
+                        }
+                        else
+                        {
+                            // Potentially nothing to worry about. Not marking in log.
+                            this.session["ui-backcolor"] = "red";
+                            this.session["ui-color"] = "black";
+                        }
                         //
                         /////////////////////////////
                         #endregion
@@ -460,6 +473,7 @@ namespace EXOFiddlerInspector
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
                         this.session["ui-backcolor"] = "red";
                         this.session["ui-color"] = "black";
+                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 500 Internal Server Error.");
                         //
                         /////////////////////////////
                         #endregion
@@ -508,6 +522,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = "blue";
                             this.session["ui-color"] = "black";
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
                         }
 
                         /////////////////////////////
@@ -525,6 +540,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = "blue";
                             this.session["ui-color"] = "black";
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
                         }
 
                         /////////////////////////////
@@ -536,6 +552,7 @@ namespace EXOFiddlerInspector
                             // Pick up any other 502 Bad Gateway call it out.
                             this.session["ui-backcolor"] = "red";
                             this.session["ui-color"] = "black";
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway.");
                         }
                         //
                         /////////////////////////////
@@ -548,8 +565,23 @@ namespace EXOFiddlerInspector
                         //  HTTP 503: SERVICE UNAVAILABLE.
                         //
                         // Call out all 503 Service Unavailable as something to focus on.
-                        this.session["ui-backcolor"] = "red";
-                        this.session["ui-color"] = "black";
+                        searchTerm = "FederatedStsUnreachable";
+                        //"Service Unavailable"
+
+                        // Count the matches, which executes the query.  
+                        wordCount = matchQuery.Count();
+                        if (wordCount > 0)
+                        {
+                            this.session["ui-backcolor"] = "red";
+                            this.session["ui-color"] = "black";
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
+                        }
+                        else
+                        {
+                            this.session["ui-backcolor"] = "red";
+                            this.session["ui-color"] = "black";
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable.");
+                        }
                         //
                         /////////////////////////////
                         #endregion
@@ -563,6 +595,7 @@ namespace EXOFiddlerInspector
                         // Call out all 504 Gateway Timeout as something to focus on.
                         this.session["ui-backcolor"] = "red";
                         this.session["ui-color"] = "black";
+                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 504 Gateway Timeout.");
                         //
                         /////////////////////////////
                         #endregion
