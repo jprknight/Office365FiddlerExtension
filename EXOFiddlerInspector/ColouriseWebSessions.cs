@@ -11,6 +11,7 @@ namespace EXOFiddlerInspector
     {
         private bool bCreatedColumn = false;
         private string searchTerm;
+        private bool AppLoggingEnabled = false;
 
         internal Session session { get; set; }
 
@@ -146,13 +147,19 @@ namespace EXOFiddlerInspector
                 {
                     // Execute the installer MSI URL, which will open in the user's default browser.
                     System.Diagnostics.Process.Start(Properties.Settings.Default.InstallerURL);
-                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Update check. Version installed." + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
-                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Update check. New Version Available." + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
+                    if (AppLoggingEnabled)
+                    {
+                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Update check. Version installed." + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
+                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Update check. New Version Available." + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
+                    }
                 }
             }
             else
             {
-                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Update check. Latest version installed." + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".");
+                if (AppLoggingEnabled)
+                {
+                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Update check. Latest version installed." + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".");
+                }
             }
         }
         //
@@ -252,7 +259,10 @@ namespace EXOFiddlerInspector
                             {
                                 this.session["ui-backcolor"] = "green";
                                 this.session["ui-color"] = "black";
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
+                                if(AppLoggingEnabled)
+                                {
+                                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
+                                }
                             }
                             // Highlight if we got this far and do not have a redirect address which points to
                             // Exchange Online such as: contoso.mail.onmicrosoft.com.
@@ -260,7 +270,10 @@ namespace EXOFiddlerInspector
                             {
                                 this.session["ui-backcolor"] = "red";
                                 this.session["ui-color"] = "black";
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
+                                if(AppLoggingEnabled)
+                                {
+                                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
+                                }
                             }
                         }
 
@@ -285,8 +298,10 @@ namespace EXOFiddlerInspector
                             */
                             this.session["ui-backcolor"] = "red";
                             this.session["ui-color"] = "black";
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
-                            
+                            if(AppLoggingEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
+                            }                           
                         }
 
                         /////////////////////////////
@@ -382,7 +397,10 @@ namespace EXOFiddlerInspector
                             // Exchange Online, highlight.
                             this.session["ui-backcolor"] = "red";
                             this.session["ui-color"] = "black";
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
+                            if (AppLoggingEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
+                            }
                         }
                         else
                         {
@@ -419,7 +437,10 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = "red";
                             this.session["ui-color"] = "black";
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
+                            if(AppLoggingEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
+                            }
                         }
                         else
                         {
@@ -476,7 +497,10 @@ namespace EXOFiddlerInspector
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
                         this.session["ui-backcolor"] = "red";
                         this.session["ui-color"] = "black";
-                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 500 Internal Server Error.");
+                        if (AppLoggingEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 500 Internal Server Error.");
+                        }
                         //
                         /////////////////////////////
                         #endregion
@@ -525,7 +549,10 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = "blue";
                             this.session["ui-color"] = "black";
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
+                            if(AppLoggingEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
+                            }
                         }
 
                         /////////////////////////////
@@ -543,7 +570,10 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = "blue";
                             this.session["ui-color"] = "black";
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
+                            if(AppLoggingEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
+                            }
                         }
 
                         /////////////////////////////
@@ -555,7 +585,10 @@ namespace EXOFiddlerInspector
                             // Pick up any other 502 Bad Gateway call it out.
                             this.session["ui-backcolor"] = "red";
                             this.session["ui-color"] = "black";
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway.");
+                            if (AppLoggingEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway.");
+                            }
                         }
                         //
                         /////////////////////////////
@@ -577,13 +610,19 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = "red";
                             this.session["ui-color"] = "black";
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
+                            if(AppLoggingEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
+                            }
                         }
                         else
                         {
                             this.session["ui-backcolor"] = "red";
                             this.session["ui-color"] = "black";
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable.");
+                            if(AppLoggingEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable.");
+                            }
                         }
                         //
                         /////////////////////////////
@@ -598,7 +637,10 @@ namespace EXOFiddlerInspector
                         // Call out all 504 Gateway Timeout as something to focus on.
                         this.session["ui-backcolor"] = "red";
                         this.session["ui-color"] = "black";
-                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 504 Gateway Timeout.");
+                        if (AppLoggingEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 504 Gateway Timeout.");
+                        }
                         //
                         /////////////////////////////
                         #endregion
