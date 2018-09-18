@@ -86,9 +86,9 @@ namespace EXOFiddlerInspector
         }
 
         // Code to write to ResponseAlertTextBox.Text value.
-        internal void SetDataFreshnessTextBox(string txt)
+        internal void SetDataAgeTextBox(string txt)
         {
-            DataFreshnessTextBox.Text = txt;
+            DataAgeTextBox.Text = txt;
         }
 
         // Code to write to ElapsedTimeComemntTextBox.Text value.

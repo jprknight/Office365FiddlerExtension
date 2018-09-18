@@ -9,14 +9,23 @@ namespace EXOFiddlerInspector
 {
     public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or Fiddler won't see it!
     {
+        // Setup variables for menu.
+
+        private MenuItem ExchangeOnlineTopMenu;
+
+        private bool boolExtensionEnabled = false;
+        private MenuItem miEnabled;
+
+        private bool boolResponseTimeColumnEnabled = false;
+        private MenuItem miResponseTimeColumnEnabled;
+
+
         /////////////////
         //
         // Setup for Application UI columns.
         //
         // State Response Time column has not been created.
         private bool bResponseTimeColumnCreated = false;
-        // Enable/disable switch for Response Time column.
-        private bool ResponseTimeColumnEnabled = true;
 
         // State Response Server column has not been created.
         private bool bResponseServerColumnCreated = false;
@@ -29,14 +38,46 @@ namespace EXOFiddlerInspector
         private bool ExchangeTypeColumnEnabled = true;
 
         // Enable/disable switch for Fiddler Application Log entries from extension.
-        private bool AppLoggingEnabled = true;
+        public bool AppLoggingEnabled = true;
 
         // Enable/disable switch for colourising sessions.
         private bool ColouriseSessionsEnabled = true;
 
-
         private string searchTerm;
         internal Session session { get; set; }
+
+        private void InitializeMenu()
+        {
+            //
+            this.miEnabled = new MenuItem("&Enabled");
+            this.miResponseTimeColumnEnabled = new MenuItem("Response &Time");
+            this.miEnabled.Index = 0;
+            this.miResponseTimeColumnEnabled.Index = 1;
+            // This does not work, I would like the 'Exchange Online' menu to the left of the help menu.
+            //this.ExchangeOnlineTopMenu.Index = 1;
+            this.ExchangeOnlineTopMenu = new MenuItem("Exchange Online");
+            this.ExchangeOnlineTopMenu.MenuItems.AddRange(new MenuItem[] { this.miEnabled, this.miResponseTimeColumnEnabled });
+            this.miEnabled.Click += new System.EventHandler(this.miEnabled_Click);
+            this.miEnabled.Checked = boolExtensionEnabled;
+            this.miResponseTimeColumnEnabled.Click += new System.EventHandler(this.miResponseTimeColumnEnabled_Click);
+            this.miResponseTimeColumnEnabled.Checked = boolResponseTimeColumnEnabled;
+        }
+
+        public void miEnabled_Click(object sender, EventArgs e)
+        {
+            miEnabled.Checked = !miEnabled.Checked;
+            boolExtensionEnabled = miEnabled.Checked;
+            // Set the application preference for this option.
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", boolExtensionEnabled);
+        }
+
+        public void miResponseTimeColumnEnabled_Click(object sender, EventArgs e)
+        {
+            miResponseTimeColumnEnabled.Checked = !miResponseTimeColumnEnabled.Checked;
+            boolResponseTimeColumnEnabled = miResponseTimeColumnEnabled.Checked;
+            // Set the application preference for this option.
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", boolResponseTimeColumnEnabled);
+        }
 
         /////////////////
         //
@@ -44,10 +85,32 @@ namespace EXOFiddlerInspector
         //
         public void OnLoad()
         {
-            EnsureResponseTimeColumn();
+
+            
             EnsureResponseServerColumn();
             EnsureExchangeTypeColumn();
-            FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
+
+
+            // Get application preferences.
+            this.boolExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+            this.boolResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
+
+            //MessageBox.Show("boolResponseTimeColumnEnabled: " + boolResponseTimeColumnEnabled);
+
+            if (boolResponseTimeColumnEnabled)
+            {
+                EnsureResponseTimeColumn();
+            }
+
+
+            // Initialise menu.
+            InitializeMenu();
+            // Add the menu.
+            FiddlerApplication.UI.mnuMain.MenuItems.Add(ExchangeOnlineTopMenu);
+            if (boolExtensionEnabled)
+            {
+                FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
+            }
         }
         //
         /////////////////
@@ -62,13 +125,15 @@ namespace EXOFiddlerInspector
             // Response Time column.
             //
             // If the column is already created exit.
-            if (bResponseTimeColumnCreated) return;
+             if (bResponseTimeColumnCreated) return;
+
             // Create the Response Time Column if enabled.
-            if (ResponseTimeColumnEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Time", 2, 110, "X-iTTLB");
-                bResponseTimeColumnCreated = true;
-            }
+                if (boolResponseTimeColumnEnabled)
+                {
+                    FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Time", 2, 110, "X-iTTLB");
+                    bResponseTimeColumnCreated = true;
+                }
+            
             //
             /////////////////
         }
@@ -109,6 +174,9 @@ namespace EXOFiddlerInspector
         //
         /////////////////
 
+        
+
+        
         #region LoadSAZ
         /////////////////
         // 
@@ -126,7 +194,7 @@ namespace EXOFiddlerInspector
             {
                 sessioncount++;
                 // Populate the ResponseTime column on load SAZ, if the column is enabled.
-                if (ResponseTimeColumnEnabled)
+                if (boolResponseTimeColumnEnabled)
                 {
                     session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
                 }
@@ -767,18 +835,32 @@ namespace EXOFiddlerInspector
             // Adding the ordering here instead does work.
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("#", 0, -1);
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Result", 1, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Time", 2, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 3, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 4, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Protocol", 5, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host", 6, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("URL", 7, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Body", 8, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Caching", 9, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Content-Type", 10, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 11, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", 12, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 13, -1);
+            if (boolResponseTimeColumnEnabled)
+            {
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Time", 2, -1);
+                /*FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 3, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 4, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Protocol", 5, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host", 6, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("URL", 7, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Body", 8, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Caching", 9, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Content-Type", 10, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 11, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", 12, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 13, -1);*/
+            }
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 4, -1);
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 5, -1);
+            /*FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Protocol", 4, -1);
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host", 5, -1);
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("URL", 6, -1);
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Body", 7, -1);
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Caching", 8, -1);
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Content-Type", 9, -1);
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 10, -1);
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", 11, -1);
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 12, -1);*/
             //
             /////////////////
 
@@ -792,7 +874,7 @@ namespace EXOFiddlerInspector
 
             //
             // Populate the ResponseTime column on live trace, if the column is enabled.
-            if (ResponseTimeColumnEnabled) {
+            if (boolResponseTimeColumnEnabled) {
                 session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
             }
             //

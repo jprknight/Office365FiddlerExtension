@@ -45,8 +45,8 @@
             this.OpenResponseBodyButton = new System.Windows.Forms.Button();
             this.ResponseCommentsOpenButton = new System.Windows.Forms.Button();
             this.ResponseCommentsRichTextBox = new System.Windows.Forms.RichTextBox();
-            this.DataFreshnessLabel = new System.Windows.Forms.Label();
-            this.DataFreshnessTextBox = new System.Windows.Forms.TextBox();
+            this.DataAgeLabel = new System.Windows.Forms.Label();
+            this.DataAgeTextBox = new System.Windows.Forms.TextBox();
             this.ElapsedTimeCommentTextBox = new System.Windows.Forms.TextBox();
             this.RequestBeginDateTextBox = new System.Windows.Forms.TextBox();
             this.RequestEndDateTextBox = new System.Windows.Forms.TextBox();
@@ -91,9 +91,9 @@
             this.RquestBeginTimeLabel.AutoSize = true;
             this.RquestBeginTimeLabel.Location = new System.Drawing.Point(6, 32);
             this.RquestBeginTimeLabel.Name = "RquestBeginTimeLabel";
-            this.RquestBeginTimeLabel.Size = new System.Drawing.Size(77, 13);
+            this.RquestBeginTimeLabel.Size = new System.Drawing.Size(106, 13);
             this.RquestBeginTimeLabel.TabIndex = 14;
-            this.RquestBeginTimeLabel.Text = "Request Begin";
+            this.RquestBeginTimeLabel.Text = "Client Begin Request";
             // 
             // RequestBeginTimeTextBox
             // 
@@ -110,9 +110,9 @@
             this.RequestEndTimelabel.AutoSize = true;
             this.RequestEndTimelabel.Location = new System.Drawing.Point(6, 58);
             this.RequestEndTimelabel.Name = "RequestEndTimelabel";
-            this.RequestEndTimelabel.Size = new System.Drawing.Size(69, 13);
+            this.RequestEndTimelabel.Size = new System.Drawing.Size(105, 13);
             this.RequestEndTimelabel.TabIndex = 16;
-            this.RequestEndTimelabel.Text = "Request End";
+            this.RequestEndTimelabel.Text = "Client Done Request";
             // 
             // RequestEndTimeTextBox
             // 
@@ -128,9 +128,9 @@
             this.ElapsedTimeLabel.AutoSize = true;
             this.ElapsedTimeLabel.Location = new System.Drawing.Point(6, 84);
             this.ElapsedTimeLabel.Name = "ElapsedTimeLabel";
-            this.ElapsedTimeLabel.Size = new System.Drawing.Size(71, 13);
+            this.ElapsedTimeLabel.Size = new System.Drawing.Size(111, 13);
             this.ElapsedTimeLabel.TabIndex = 18;
-            this.ElapsedTimeLabel.Text = "Elapsed Time";
+            this.ElapsedTimeLabel.Text = "Elapsed Time / iTTLB";
             // 
             // ElapsedTimeTextBox
             // 
@@ -172,9 +172,9 @@
             this.ResponseProcessLabel.AutoSize = true;
             this.ResponseProcessLabel.Location = new System.Drawing.Point(6, 136);
             this.ResponseProcessLabel.Name = "ResponseProcessLabel";
-            this.ResponseProcessLabel.Size = new System.Drawing.Size(45, 13);
+            this.ResponseProcessLabel.Size = new System.Drawing.Size(74, 13);
             this.ResponseProcessLabel.TabIndex = 23;
-            this.ResponseProcessLabel.Text = "Process";
+            this.ResponseProcessLabel.Text = "Local Process";
             // 
             // ResponseGroupBox
             // 
@@ -221,23 +221,23 @@
             this.ResponseCommentsRichTextBox.Text = "";
             this.ResponseCommentsRichTextBox.TextChanged += new System.EventHandler(this.ResponseCommentsRichTextBox_TextChanged);
             // 
-            // DataFreshnessLabel
+            // DataAgeLabel
             // 
-            this.DataFreshnessLabel.AutoSize = true;
-            this.DataFreshnessLabel.Location = new System.Drawing.Point(6, 110);
-            this.DataFreshnessLabel.Name = "DataFreshnessLabel";
-            this.DataFreshnessLabel.Size = new System.Drawing.Size(81, 13);
-            this.DataFreshnessLabel.TabIndex = 26;
-            this.DataFreshnessLabel.Text = "Data Freshness";
+            this.DataAgeLabel.AutoSize = true;
+            this.DataAgeLabel.Location = new System.Drawing.Point(6, 110);
+            this.DataAgeLabel.Name = "DataAgeLabel";
+            this.DataAgeLabel.Size = new System.Drawing.Size(52, 13);
+            this.DataAgeLabel.TabIndex = 26;
+            this.DataAgeLabel.Text = "Data Age";
             // 
-            // DataFreshnessTextBox
+            // DataAgeTextBox
             // 
-            this.DataFreshnessTextBox.BackColor = System.Drawing.Color.White;
-            this.DataFreshnessTextBox.Location = new System.Drawing.Point(118, 107);
-            this.DataFreshnessTextBox.Name = "DataFreshnessTextBox";
-            this.DataFreshnessTextBox.ReadOnly = true;
-            this.DataFreshnessTextBox.Size = new System.Drawing.Size(288, 20);
-            this.DataFreshnessTextBox.TabIndex = 27;
+            this.DataAgeTextBox.BackColor = System.Drawing.Color.White;
+            this.DataAgeTextBox.Location = new System.Drawing.Point(118, 107);
+            this.DataAgeTextBox.Name = "DataAgeTextBox";
+            this.DataAgeTextBox.ReadOnly = true;
+            this.DataAgeTextBox.Size = new System.Drawing.Size(288, 20);
+            this.DataAgeTextBox.TabIndex = 27;
             // 
             // ElapsedTimeCommentTextBox
             // 
@@ -295,8 +295,8 @@
             this.Controls.Add(this.RequestEndDateTextBox);
             this.Controls.Add(this.RequestBeginDateTextBox);
             this.Controls.Add(this.ElapsedTimeCommentTextBox);
-            this.Controls.Add(this.DataFreshnessTextBox);
-            this.Controls.Add(this.DataFreshnessLabel);
+            this.Controls.Add(this.DataAgeTextBox);
+            this.Controls.Add(this.DataAgeLabel);
             this.Controls.Add(this.ResponseGroupBox);
             this.Controls.Add(this.ResponseProcessLabel);
             this.Controls.Add(this.ResponseProcessTextBox);
@@ -335,8 +335,8 @@
         private System.Windows.Forms.TextBox ResponseProcessTextBox;
         private System.Windows.Forms.Label ResponseProcessLabel;
         private System.Windows.Forms.GroupBox ResponseGroupBox;
-        private System.Windows.Forms.Label DataFreshnessLabel;
-        private System.Windows.Forms.TextBox DataFreshnessTextBox;
+        private System.Windows.Forms.Label DataAgeLabel;
+        private System.Windows.Forms.TextBox DataAgeTextBox;
         private System.Windows.Forms.TextBox ElapsedTimeCommentTextBox;
         private System.Windows.Forms.TextBox RequestBeginDateTextBox;
         private System.Windows.Forms.TextBox RequestEndDateTextBox;

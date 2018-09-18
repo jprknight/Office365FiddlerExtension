@@ -240,8 +240,6 @@ namespace EXOFiddlerInspector
         private string searchTerm;
         private string RealmURL;
 
-        //private int oResponseCode;
-
         // Double click on a session to highlight inpsector.
         public override int ScoreForSession(Session oS)
         {
@@ -250,36 +248,18 @@ namespace EXOFiddlerInspector
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
 
-            _displayControl.SetElapsedTimeCommentTextBoxText("");
-
-            if (this.session.url.Contains("autodiscover"))
+            if (this.session.LocalProcess.Contains("outlook") ||
+            this.session.LocalProcess.Contains("searchprotocolhost") ||
+            this.session.LocalProcess.Contains("iexplore") ||
+            this.session.LocalProcess.Contains("chrome") ||
+            this.session.LocalProcess.Contains("firefox") ||
+            this.session.LocalProcess.Contains("edge") ||
+            this.session.LocalProcess.Contains("w3wp"))
             {
-                //_displayControl.SetElapsedTimeCommentTextBoxText("SFS:100:Url:AutoDiscover");
-                return 100;
-            }
-            else if (this.session.hostname.Contains("autodiscover"))
-            {
-                //_displayControl.SetElapsedTimeCommentTextBoxText("SFS:100:Hostname:AutoDiscover");
-                return 100;
-            }
-            else if (this.session.url.Contains("outlook"))
-            {
-                //_displayControl.SetElapsedTimeCommentTextBoxText("SFS:100:Url:Outlook");
-                return 100;
-            }
-            else if (this.session.url.Contains("GetUserAvailability"))
-            {
-                //_displayControl.SetElapsedTimeCommentTextBoxText("SFS:100:Url:GetUserAvailability");
-                return 100;
-            }
-            else if (this.session.LocalProcess.Contains("outlook"))
-            {
-                //_displayControl.SetElapsedTimeCommentTextBoxText("SFS:100:LocalProcess:Outlook");
                 return 100;
             }
             else
             {
-                //_displayControl.SetElapsedTimeCommentTextBoxText("SFS:0");
                 return 0;
             }
         }
@@ -305,7 +285,6 @@ namespace EXOFiddlerInspector
 
             this.session = oS;
 
-            // Note are these needed? Already done above.
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
 
@@ -337,25 +316,25 @@ namespace EXOFiddlerInspector
                 //     _displayControl.SetElapsedTimeCommentTextBoxText("> 5 second response time.");
             }
 
-            // Write Data Freshness data into textbox.
-            String DataFreshnessOutput = "";
+            // Write Data age data into textbox.
+            String DataAgeOutput = "";
             DateTime SessionDateTime = this.session.Timers.ClientBeginRequest;
             DateTime DateTimeNow = DateTime.Now;
-            TimeSpan CalcDataFreshness = DateTimeNow - SessionDateTime;
-            int TimeSpanDays = CalcDataFreshness.Days;
-            int TimeSpanHours = CalcDataFreshness.Hours;
-            int TimeSpanMinutes = CalcDataFreshness.Minutes;
+            TimeSpan CalcDataAge = DateTimeNow - SessionDateTime;
+            int TimeSpanDays = CalcDataAge.Days;
+            int TimeSpanHours = CalcDataAge.Hours;
+            int TimeSpanMinutes = CalcDataAge.Minutes;
 
             if (TimeSpanDays == 0)
             {
-                DataFreshnessOutput = "Session is " + TimeSpanHours + " Hour(s), " + TimeSpanMinutes + " minute(s) old.";
+                DataAgeOutput = "Session is " + TimeSpanHours + " Hour(s), " + TimeSpanMinutes + " minute(s) old.";
             }
             else
             {
-                DataFreshnessOutput = "Session is " + TimeSpanDays + " Day(s), " + TimeSpanHours + " Hour(s), " + TimeSpanMinutes + " minute(s) old.";
+                DataAgeOutput = "Session is " + TimeSpanDays + " Day(s), " + TimeSpanHours + " Hour(s), " + TimeSpanMinutes + " minute(s) old.";
             }
 
-            _displayControl.SetDataFreshnessTextBox(DataFreshnessOutput);
+            _displayControl.SetDataAgeTextBox(DataAgeOutput);
 
             // Write Process into textbox.
             _displayControl.SetResponseProcessTextBox(this.session.LocalProcess);
