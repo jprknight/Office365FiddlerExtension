@@ -51,14 +51,20 @@ namespace EXOFiddlerInspector
         }
     }
 
+    // DISABLING REQUEST TAB, DOES NOT ADD VALUE TO INSPECTOR.
+    /*
     // Request class, inherits the generic class above, only defines things specific or different from the base class
     public class RequestInspector : EXOBaseFiddlerInspector, IRequestInspector2
     {
         private bool _readOnly;
         HTTPRequestHeaders _headers;
         private byte[] _body;
-        RequestUserControl _displayControl;
 
+        // DISABLING REQUEST TAB, DOES NOT ADD VALUE TO INSPECTOR.
+        //RequestUserControl _displayControl;
+
+        // DISABLING REQUEST TAB, DOES NOT ADD VALUE TO INSPECTOR.
+        
         // Double click on a session to highlight inpsector or not.
         public override int ScoreForSession(Session oS)
         {
@@ -67,7 +73,7 @@ namespace EXOFiddlerInspector
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
 
-            _displayControl.SetRequestAlertTextBox("");
+            //_displayControl.SetRequestAlertTextBox("");
 
             if (this.session.url.Contains("autodiscover"))
             {
@@ -102,7 +108,10 @@ namespace EXOFiddlerInspector
                 return 0;
             }
         }
+        
 
+       
+        // DISABLING REQUEST TAB, DOES NOT ADD VALUE TO INSPECTOR.
         // Add EXO Request tab into inspectors tab.
         public override void AddToTab(TabPage o)
         {
@@ -112,6 +121,7 @@ namespace EXOFiddlerInspector
             o.Controls.Add(_displayControl);
             o.Controls[0].Dock = DockStyle.Fill;
         }
+        
 
         public HTTPRequestHeaders headers
         {
@@ -123,6 +133,8 @@ namespace EXOFiddlerInspector
             { }
         }
 
+        // DISABLING REQUEST TAB, DOES NOT ADD VALUE TO INSPECTOR.
+        
         public void SetSessionType(Session oS)
         {
             if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) { _displayControl.SetRequestTypeTextBox("EXO MAPI"); }
@@ -149,7 +161,10 @@ namespace EXOFiddlerInspector
             else if (this.session.LocalProcess.Contains("firefox")) { _displayControl.SetRequestTypeTextBox("Something Firefox"); }
             else { _displayControl.SetRequestTypeTextBox("Not Exchange"); }
         }
+        
 
+        // DISABLING REQUEST TAB, DOES NOT ADD VALUE TO INSPECTOR.
+        
         public void SetRequestValues(Session oS)
         {
 
@@ -157,13 +172,13 @@ namespace EXOFiddlerInspector
             EXOResponseBody = this.session.oResponse.ToString();
 
             // Write HTTP Status Code Text box, convert int to string.
-            _displayControl.SetRequestHostTextBox(this.session.hostname);
+            //_displayControl.SetRequestHostTextBox(this.session.hostname);
 
             // Write Request URL Text box.
-            _displayControl.SetRequestURLTextBox(this.session.url);
+            //_displayControl.SetRequestURLTextBox(this.session.url);
 
             // Set Request Process Textbox.
-            _displayControl.SetRequestProcessTextBox(this.session.LocalProcess);
+            //_displayControl.SetRequestProcessTextBox(this.session.LocalProcess);
 
             // Classify type of traffic. Set in order of presence to correctly identify as much traffic as possible.
             // First off make sure we only classify traffic from Outlook or browsers.
@@ -182,6 +197,7 @@ namespace EXOFiddlerInspector
                 _displayControl.SetRequestTypeTextBox("Not from Outlook, EXO Browser or web service.");
             }
         }
+        
 
         public void Clear()
         {
@@ -219,13 +235,15 @@ namespace EXOFiddlerInspector
             set
             {
                 _body = value;
-                SetRequestValues(this.session);
+                // DISABLING REQUEST TAB, DOES NOT ADD VALUE TO INSPECTOR.
+                //SetRequestValues(this.session);
                 //_displayControl.Body = body;
             }
         }
 
         public string EXOResponseBody { get; set; }
     }
+    */
 
     // Response class, same as request class except for responses
     public class ResponseInspector : EXOBaseFiddlerInspector, IResponseInspector2
@@ -300,6 +318,7 @@ namespace EXOFiddlerInspector
 
             this.session = oS;
 
+            // Note are these needed? Already done above.
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
 
@@ -756,7 +775,7 @@ namespace EXOFiddlerInspector
         public override void AddToTab(TabPage o)
         {
             _displayControl = new ResponseUserControl();
-            o.Text = "Exchange Response";
+            o.Text = "Exchange Online";
             o.ToolTipText = "Exchange Online Inspector";
             o.Controls.Add(_displayControl);
             o.Controls[0].Dock = DockStyle.Fill;

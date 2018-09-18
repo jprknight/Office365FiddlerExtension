@@ -9,10 +9,33 @@ namespace EXOFiddlerInspector
 {
     public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or Fiddler won't see it!
     {
-        private bool bCreatedColumn = false;
-        private string searchTerm;
-        private bool AppLoggingEnabled = false;
+        /////////////////
+        //
+        // Setup for Application UI columns.
+        //
+        // State Response Time column has not been created.
+        private bool bResponseTimeColumnCreated = false;
+        // Enable/disable switch for Response Time column.
+        private bool ResponseTimeColumnEnabled = true;
 
+        // State Response Server column has not been created.
+        private bool bResponseServerColumnCreated = false;
+        // Enable/disable switch for Response Server column.
+        private bool ResponseServerColumnEnabled = true;
+
+        // State Exchange Type column has not been created.
+        private bool bExchangeTypeColumnCreated = false;
+        // Enable/disable switch for Exchange Type column.
+        private bool ExchangeTypeColumnEnabled = true;
+
+        // Enable/disable switch for Fiddler Application Log entries from extension.
+        private bool AppLoggingEnabled = true;
+
+        // Enable/disable switch for colourising sessions.
+        private bool ColouriseSessionsEnabled = true;
+
+
+        private string searchTerm;
         internal Session session { get; set; }
 
         /////////////////
@@ -21,7 +44,9 @@ namespace EXOFiddlerInspector
         //
         public void OnLoad()
         {
-            EnsureColumn();
+            EnsureResponseTimeColumn();
+            EnsureResponseServerColumn();
+            EnsureExchangeTypeColumn();
             FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
         }
         //
@@ -31,15 +56,55 @@ namespace EXOFiddlerInspector
         //
         // Make sure the Columns are added to the UI.
         //
-        public void EnsureColumn()
+        public void EnsureResponseTimeColumn()
         {
-            if (bCreatedColumn) return;
+            /////////////////
+            // Response Time column.
+            //
+            // If the column is already created exit.
+            if (bResponseTimeColumnCreated) return;
+            // Create the Response Time Column if enabled.
+            if (ResponseTimeColumnEnabled)
+            {
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Time", 2, 110, "X-iTTLB");
+                bResponseTimeColumnCreated = true;
+            }
+            //
+            /////////////////
+        }
 
-            FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Time", 2, 110, "X-iTTLB");
-            FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 3, 110, "@response.Server");
-            FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 4, 110, "X-ExchangeType");
+        public void EnsureResponseServerColumn()
+        {
+            /////////////////
+            // Response Server column.
+            //
+            // If the column is already created exit.
+            if (bResponseServerColumnCreated) return;
+            // Create the Response Server Column if enabled.
+            if (ResponseServerColumnEnabled)
+            {
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 3, 130, "@response.Server");
+                bResponseServerColumnCreated = true;
+            }
+            //
+            /////////////////
+        }
 
-            bCreatedColumn = true;
+        public void EnsureExchangeTypeColumn()
+        {
+            /////////////////
+            // Response Server column.
+            //
+            // If the column is already created exit.
+            if (bExchangeTypeColumnCreated) return;
+            // Create the Response Server Column if enabled.
+            if (ExchangeTypeColumnEnabled)
+            {
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 4, 100, "X-ExchangeType");
+                bExchangeTypeColumnCreated = true;
+            }
+            //
+            /////////////////
         }
         //
         /////////////////
@@ -60,13 +125,24 @@ namespace EXOFiddlerInspector
             foreach (var session in e.arrSessions)
             {
                 sessioncount++;
-                // Populate the ResponseTime column on load SAZ.
-                session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
-                // Populate the ExchangeType column on load SAZ.
-                SetExchangeType(session);
+                // Populate the ResponseTime column on load SAZ, if the column is enabled.
+                if (ResponseTimeColumnEnabled)
+                {
+                    session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
+                }
+                
+                // Populate the ExchangeType column on load SAZ, if the column is enabled.
+                if (ExchangeTypeColumnEnabled)
+                {
+                    SetExchangeType(session);
+                }
+
                 // Colourise sessions on load SAZ.
-                OnPeekAtResponseHeaders(session); //Run whatever function you use in IAutoTamper
-                session.RefreshUI();
+                if (ColouriseSessionsEnabled)
+                {
+                    OnPeekAtResponseHeaders(session); //Run whatever function you use in IAutoTamper
+                    session.RefreshUI();
+                }
             }
             FiddlerApplication.UI.lvSessions.EndUpdate();
         }
@@ -677,8 +753,11 @@ namespace EXOFiddlerInspector
             //
             // Call the function to colourise sessions for live traffic capture.
             //
-            OnPeekAtResponseHeaders(session);
-            session.RefreshUI();
+            if (ColouriseSessionsEnabled)
+            {
+                OnPeekAtResponseHeaders(session);
+                session.RefreshUI();
+            }
             //
             /////////////////
 
@@ -705,11 +784,17 @@ namespace EXOFiddlerInspector
 
             /////////////////
             //
-            // Call the function to populate the session type column on live trace.
-            SetExchangeType(session);
+            // Call the function to populate the session type column on live trace, if the column is enabled.
+            if (ExchangeTypeColumnEnabled)
+            {
+                SetExchangeType(session);
+            }
+
             //
-            // Populate the ResponseTime column on live trace.
-            session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
+            // Populate the ResponseTime column on live trace, if the column is enabled.
+            if (ResponseTimeColumnEnabled) {
+                session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
+            }
             //
             /////////////////
         }
