@@ -60,10 +60,7 @@ namespace EXOFiddlerInspector
         HTTPRequestHeaders _headers;
         private byte[] _body;
 
-        // DISABLING REQUEST TAB, DOES NOT ADD VALUE TO INSPECTOR.
-        //RequestUserControl _displayControl;
-
-        // DISABLING REQUEST TAB, DOES NOT ADD VALUE TO INSPECTOR.
+        RequestUserControl _displayControl;
         
         // Double click on a session to highlight inpsector or not.
         public override int ScoreForSession(Session oS)
@@ -73,7 +70,7 @@ namespace EXOFiddlerInspector
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
 
-            //_displayControl.SetRequestAlertTextBox("");
+            _displayControl.SetRequestAlertTextBox("");
 
             if (this.session.url.Contains("autodiscover"))
             {
@@ -108,10 +105,7 @@ namespace EXOFiddlerInspector
                 return 0;
             }
         }
-        
 
-       
-        // DISABLING REQUEST TAB, DOES NOT ADD VALUE TO INSPECTOR.
         // Add EXO Request tab into inspectors tab.
         public override void AddToTab(TabPage o)
         {
@@ -122,7 +116,6 @@ namespace EXOFiddlerInspector
             o.Controls[0].Dock = DockStyle.Fill;
         }
         
-
         public HTTPRequestHeaders headers
         {
             get
@@ -132,8 +125,6 @@ namespace EXOFiddlerInspector
             set
             { }
         }
-
-        // DISABLING REQUEST TAB, DOES NOT ADD VALUE TO INSPECTOR.
         
         public void SetSessionType(Session oS)
         {
@@ -162,9 +153,6 @@ namespace EXOFiddlerInspector
             else { _displayControl.SetRequestTypeTextBox("Not Exchange"); }
         }
         
-
-        // DISABLING REQUEST TAB, DOES NOT ADD VALUE TO INSPECTOR.
-        
         public void SetRequestValues(Session oS)
         {
 
@@ -172,13 +160,13 @@ namespace EXOFiddlerInspector
             EXOResponseBody = this.session.oResponse.ToString();
 
             // Write HTTP Status Code Text box, convert int to string.
-            //_displayControl.SetRequestHostTextBox(this.session.hostname);
+            _displayControl.SetRequestHostTextBox(this.session.hostname);
 
             // Write Request URL Text box.
-            //_displayControl.SetRequestURLTextBox(this.session.url);
+            _displayControl.SetRequestURLTextBox(this.session.url);
 
             // Set Request Process Textbox.
-            //_displayControl.SetRequestProcessTextBox(this.session.LocalProcess);
+            _displayControl.SetRequestProcessTextBox(this.session.LocalProcess);
 
             // Classify type of traffic. Set in order of presence to correctly identify as much traffic as possible.
             // First off make sure we only classify traffic from Outlook or browsers.
@@ -235,8 +223,7 @@ namespace EXOFiddlerInspector
             set
             {
                 _body = value;
-                // DISABLING REQUEST TAB, DOES NOT ADD VALUE TO INSPECTOR.
-                //SetRequestValues(this.session);
+                SetRequestValues(this.session);
                 //_displayControl.Body = body;
             }
         }
