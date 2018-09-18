@@ -687,39 +687,6 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_0D1287B03A344F1F9DB7BED1A56EBE6F"
-                    {
-                    "Name" = "8:Fiddler2"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_8FF098E261AE4347A63CB463A69200F6"
-                        "Folders"
-                        {
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_00E35C3F65CC4CF890FE9E0B63FB2772"
-                            {
-                            "Name" = "8:Inspectors"
-                            "AlwaysCreate" = "11:FALSE"
-                            "Condition" = "8:"
-                            "Transitive" = "11:FALSE"
-                            "Property" = "8:_750DC8ECB0E4415CBB710760A85C02B2"
-                                "Folders"
-                                {
-                                }
-                            }
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_A8DB89E7F7334B0D9AE49FA5356E819F"
-                            {
-                            "Name" = "8:Scripts"
-                            "AlwaysCreate" = "11:FALSE"
-                            "Condition" = "8:"
-                            "Transitive" = "11:FALSE"
-                            "Property" = "8:_167040369358421FAACC9C0961D18FB8"
-                                "Folders"
-                                {
-                                }
-                            }
-                        }
-                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_D710A76D5B4044D3867E6DC9ACFDA7F8"
@@ -753,6 +720,39 @@
             "Property" = "8:PersonalFolder"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_3201498D203E42D2BD8A56B3F68E4C6F"
+                    {
+                    "Name" = "8:Fiddler2"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_3322E4FCF7E54A8CB000FACEF1F263F7"
+                        "Folders"
+                        {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_8172E7A559944176ACBD9047ACA269A7"
+                            {
+                            "Name" = "8:Inspectors"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_DD11E1497CE2415280964652BA2C523A"
+                                "Folders"
+                                {
+                                }
+                            }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_B64C9B8299AE4428903E4F5DE4B35249"
+                            {
+                            "Name" = "8:Scripts"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_966C7ABB4820434EA6B8F6D42D548F84"
+                                "Folders"
+                                {
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -772,7 +772,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Exchange Online Fiddler Extension"
         "ProductCode" = "8:{FE7E0CD5-DD03-4958-8046-22796296A728}"
-        "PackageCode" = "8:{5BE7678F-36CA-4054-B002-1282135E9A08}"
+        "PackageCode" = "8:{5865FB58-6F1C-4FD1-81E7-6371D5506AE8}"
         "UpgradeCode" = "8:{827E1199-7576-4FDD-A7F0-FDD5D1800921}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1296,7 +1296,7 @@
             "SourcePath" = "8:..\\EXOFiddlerInspector\\obj\\Debug\\EXOFiddlerInspector.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_00E35C3F65CC4CF890FE9E0B63FB2772"
+            "Folder" = "8:_8172E7A559944176ACBD9047ACA269A7"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1324,7 +1324,7 @@
             "SourcePath" = "8:..\\EXOFiddlerInspector\\obj\\Debug\\EXOFiddlerInspector.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_A8DB89E7F7334B0D9AE49FA5356E819F"
+            "Folder" = "8:_B64C9B8299AE4428903E4F5DE4B35249"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
