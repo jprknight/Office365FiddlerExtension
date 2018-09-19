@@ -451,7 +451,7 @@ namespace EXOFiddlerInspector
             this.session = session;
 
             string HTMLColourBlue = "#81BEF7";
-            string HTMLColourGreen = "#81f7ba";
+            string HTMLColourGreen = "#81f7ba"; 
             string HTMLColourRed = "#f78f81";
             string HTMLColourGrey = "#BDBDBD";
             string HTMLColourOrange = "#f7ac81";
