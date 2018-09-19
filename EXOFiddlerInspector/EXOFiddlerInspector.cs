@@ -796,7 +796,7 @@ namespace EXOFiddlerInspector
                         break;
                 }
         }
-        
+
         /////////////////////////////
         // Add the EXO Response tab into the inspector tab.
         public override void AddToTab(TabPage o)

@@ -46,6 +46,10 @@ namespace EXOFiddlerInspector
         private bool boolManualCheckForUpdate = false;
         private MenuItem miCheckForUpdate;
 
+        private MenuItem miWiki;
+
+        private MenuItem miReportIssues;
+
         // State Response Time column has not been created.
         private bool bResponseTimeColumnCreated = false;
 
@@ -84,14 +88,22 @@ namespace EXOFiddlerInspector
             this.miAppLoggingEnabled = new MenuItem("Application &Logging Enabled");
             this.miAppLoggingEnabled.Index = 4;
 
+            this.miWiki = new MenuItem("Extension &Wiki");
+            this.miWiki.Index = 5;
+
+            this.miReportIssues = new MenuItem("&Report Issues");
+            this.miReportIssues.Index = 6;
+
             this.miCheckForUpdate = new MenuItem("&Check For Update");
-            this.miCheckForUpdate.Index = 5;
+            this.miCheckForUpdate.Index = 7;
 
             this.ExchangeOnlineTopMenu.MenuItems.AddRange(new MenuItem[] { this.miEnabled,
                 this.miResponseTimeColumnEnabled,
                 this.miResponseServerColumnEnabled,
                 this.miExchangeTypeColumnEnabled,
                 this.miAppLoggingEnabled,
+                this.miWiki,
+                this.miReportIssues,
                 this.miCheckForUpdate});
 
             this.miEnabled.Click += new System.EventHandler(this.miEnabled_Click);
@@ -108,6 +120,10 @@ namespace EXOFiddlerInspector
 
             this.miAppLoggingEnabled.Click += new System.EventHandler(this.miAppLoggingEnabled_Click);
             this.miAppLoggingEnabled.Checked = boolAppLoggingEnabled;
+
+            this.miWiki.Click += new System.EventHandler(this.miWiki_Click);
+
+            this.miReportIssues.Click += new System.EventHandler(this.miReportIssues_Click);
 
             this.miCheckForUpdate.Click += new System.EventHandler(this.miCheckForUpdate_Click);
         }
@@ -150,6 +166,16 @@ namespace EXOFiddlerInspector
             miAppLoggingEnabled.Checked = !miAppLoggingEnabled.Checked;
             boolAppLoggingEnabled = miAppLoggingEnabled.Checked;
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", boolAppLoggingEnabled);
+        }
+
+        public void miWiki_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(Properties.Settings.Default.WikiURL);
+        }
+
+        public void miReportIssues_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(Properties.Settings.Default.ReportIssuesURL);
         }
 
         public void miCheckForUpdate_Click(object sender, EventArgs e)
@@ -373,8 +399,8 @@ namespace EXOFiddlerInspector
             if (applicationVersion.CompareTo(newVersion) < 0)
             {
                 // Setup message box options.
-                string message = "You are currently using " + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + "." + Environment.NewLine +
-                    "A new version is available " + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + "." + Environment.NewLine +
+                string message = "You are currently using v" + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + "." + Environment.NewLine +
+                    "A new version is available v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + "." + Environment.NewLine +
                     "Do you want to download the update?";
 
                 string caption = "EXO Fiddler Extension - Update Available";
@@ -390,8 +416,8 @@ namespace EXOFiddlerInspector
                     System.Diagnostics.Process.Start(Properties.Settings.Default.InstallerURL);
                     if (boolAppLoggingEnabled && boolExtensionEnabled)
                     {
-                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Version installed. " + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
-                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: New Version Available. " + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
+                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Version installed. v" + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
+                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: New Version Available. v" + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
                     }
                 }
             }
@@ -399,12 +425,12 @@ namespace EXOFiddlerInspector
             {
                 if (boolAppLoggingEnabled && boolExtensionEnabled)
                 {
-                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Latest version installed." + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".");
+                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Latest version installed. v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".");
                 }
                 // Regardless of extension enabled or not, give the user feedback when they click the 'Check For Update' menu item if no update is available.
                 else if (boolManualCheckForUpdate)
                 {
-                    MessageBox.Show("EXOFiddlerExtention: Latest version installed. " + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".", "EXO Fiddler Extension");
+                    MessageBox.Show("EXOFiddlerExtention: Latest version installed. v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".", "EXO Fiddler Extension");
                     // return this value back to false, so we don't give this feedback unintentionally.
                     boolManualCheckForUpdate = false;
                 }
@@ -423,6 +449,12 @@ namespace EXOFiddlerInspector
         {
 
             this.session = session;
+
+            string HTMLColourBlue = "#81BEF7";
+            string HTMLColourGreen = "#81f7ba";
+            string HTMLColourRed = "#f78f81";
+            string HTMLColourGrey = "#BDBDBD";
+            string HTMLColourOrange = "#f7ac81";
 
             if (this.session.LocalProcess.Contains("outlook") ||
             this.session.LocalProcess.Contains("searchprotocolhost") ||
@@ -457,6 +489,8 @@ namespace EXOFiddlerInspector
                 //string searchTerm = "error";
                 //string[] searchTerms = { "Error", "FederatedStsUnreachable" };
 
+
+
                 #region switchstatement
                 switch (this.session.responseCode)
                 {
@@ -466,7 +500,7 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 0: No Response.
                         //
-                        this.session["ui-backcolor"] = "red";
+                        this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
@@ -516,7 +550,7 @@ namespace EXOFiddlerInspector
                             // Exchange Online such as: contoso.mail.onmicrosoft.com.
                             else
                             {
-                                this.session["ui-backcolor"] = "red";
+                                this.session["ui-backcolor"] = HTMLColourRed;
                                 this.session["ui-color"] = "black";
                                 if(boolAppLoggingEnabled && boolExtensionEnabled)
                                 {
@@ -544,7 +578,7 @@ namespace EXOFiddlerInspector
                               </Response>
                             </Autodiscover>
                             */
-                            this.session["ui-backcolor"] = "red";
+                            this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             if(boolAppLoggingEnabled && boolExtensionEnabled)
                             {
@@ -572,7 +606,7 @@ namespace EXOFiddlerInspector
                             else
                             {
                                 // All good.
-                                this.session["ui-backcolor"] = "green";
+                                this.session["ui-backcolor"] = HTMLColourGreen;
                                 this.session["ui-color"] = "black";
                             }
                         }
@@ -586,7 +620,7 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 204: No Content.
                         //
-                        this.session["ui-backcolor"] = "green";
+                        this.session["ui-backcolor"] = HTMLColourGreen;
                         this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
@@ -598,7 +632,7 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 301: Moved Permanently.
                         //
-                        this.session["ui-backcolor"] = "green";
+                        this.session["ui-backcolor"] = HTMLColourGreen;
                         this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
@@ -610,7 +644,7 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 302: Found / Redirect.
                         //            
-                        this.session["ui-backcolor"] = "green";
+                        this.session["ui-backcolor"] = HTMLColourGreen;
                         this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
@@ -622,7 +656,7 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 304: Not modified.
                         //
-                        this.session["ui-backcolor"] = "green";
+                        this.session["ui-backcolor"] = HTMLColourGreen;
                         this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
@@ -643,7 +677,7 @@ namespace EXOFiddlerInspector
                         {
                             // Redirect location has been found to send the Autodiscover connection somewhere else other than'
                             // Exchange Online, highlight.
-                            this.session["ui-backcolor"] = "red";
+                            this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             if (boolAppLoggingEnabled && boolExtensionEnabled)
                             {
@@ -654,7 +688,7 @@ namespace EXOFiddlerInspector
                         {
                             // The above scenario is not seem, however Temporary Redirects are not exactly normally expected to be seen.
                             // Highlight as a warning.
-                            this.session["ui-backcolor"] = "orange";
+                            this.session["ui-backcolor"] = HTMLColourOrange;
                             this.session["ui-color"] = "black";
                         }
                         //
@@ -667,7 +701,7 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 401: UNAUTHORIZED.
                         //
-                        this.session["ui-backcolor"] = "orange";
+                        this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
@@ -683,7 +717,7 @@ namespace EXOFiddlerInspector
                         // Specific scenario where a web proxy is blocking traffic.
                         if (this.session.utilFindInResponse("Access Denied", false) > 1)
                         {
-                            this.session["ui-backcolor"] = "red";
+                            this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             if(boolAppLoggingEnabled && boolExtensionEnabled)
                             {
@@ -693,7 +727,7 @@ namespace EXOFiddlerInspector
                         else
                         {
                             // Potentially nothing to worry about. Not marking in log.
-                            this.session["ui-backcolor"] = "red";
+                            this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                         }
                         //
@@ -706,7 +740,7 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 404: Not Found.
                         //
-                        this.session["ui-backcolor"] = "orange";
+                        this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
@@ -718,7 +752,7 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 429: Too Many Requests.
                         //
-                        this.session["ui-backcolor"] = "orange";
+                        this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
@@ -743,7 +777,7 @@ namespace EXOFiddlerInspector
                         // Pick up any 500 Internal Server Error and write data into the comments box.
                         // Specific scenario on Outlook and Office 365 invalid DNS lookup.
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
-                        this.session["ui-backcolor"] = "red";
+                        this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
                         if (boolAppLoggingEnabled && boolExtensionEnabled)
                         {
@@ -783,7 +817,7 @@ namespace EXOFiddlerInspector
                         if ((this.session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443") &&
                             (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
                         {
-                            this.session["ui-backcolor"] = "blue";
+                            this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
                         }
 
@@ -795,7 +829,7 @@ namespace EXOFiddlerInspector
                             (this.session.utilFindInResponse("autodiscover", false) > 1) &&
                             (this.session.utilFindInResponse(":443", false) > 1))
                         {
-                            this.session["ui-backcolor"] = "blue";
+                            this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
                             if(boolAppLoggingEnabled && boolExtensionEnabled)
                             {
@@ -816,7 +850,7 @@ namespace EXOFiddlerInspector
                             (this.session.utilFindInResponse("failed. System.Net.Sockets.SocketException", false) > 1) &&
                             (this.session.utilFindInResponse("DNS Lookup for ", false) > 1))
                         {
-                            this.session["ui-backcolor"] = "blue";
+                            this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
                             if(boolAppLoggingEnabled && boolExtensionEnabled)
                             {
@@ -831,7 +865,7 @@ namespace EXOFiddlerInspector
                         else
                         {
                             // Pick up any other 502 Bad Gateway call it out.
-                            this.session["ui-backcolor"] = "red";
+                            this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             if (boolAppLoggingEnabled && boolExtensionEnabled)
                             {
@@ -856,7 +890,7 @@ namespace EXOFiddlerInspector
                         wordCount = matchQuery.Count();
                         if (wordCount > 0)
                         {
-                            this.session["ui-backcolor"] = "red";
+                            this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             if(boolAppLoggingEnabled && boolExtensionEnabled)
                             {
@@ -865,7 +899,7 @@ namespace EXOFiddlerInspector
                         }
                         else
                         {
-                            this.session["ui-backcolor"] = "red";
+                            this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             if(boolAppLoggingEnabled && boolExtensionEnabled)
                             {
@@ -883,7 +917,7 @@ namespace EXOFiddlerInspector
                         //  HTTP 504: GATEWAY TIMEOUT.
                         //
                         // Call out all 504 Gateway Timeout as something to focus on.
-                        this.session["ui-backcolor"] = "red";
+                        this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
                         if (boolAppLoggingEnabled && boolExtensionEnabled)
                         {

@@ -176,5 +176,23 @@ Check the Headers or Raw tab and the Location to ensure the Autodiscover call is
                 return ((string)(this["InstallerURL"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/jprknight/EXOFiddlerInspector/wiki")]
+        public string WikiURL {
+            get {
+                return ((string)(this["WikiURL"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/jprknight/EXOFiddlerInspector/issues")]
+        public string ReportIssuesURL {
+            get {
+                return ((string)(this["ReportIssuesURL"]));
+            }
+        }
     }
 }
