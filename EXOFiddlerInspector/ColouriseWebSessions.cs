@@ -87,8 +87,6 @@ namespace EXOFiddlerInspector
             this.miCheckForUpdate = new MenuItem("&Check For Update");
             this.miCheckForUpdate.Index = 5;
 
-            // This does not work, I would like the 'Exchange Online' menu to the left of the help menu.
-            //this.ExchangeOnlineTopMenu.Index = 1;
             this.ExchangeOnlineTopMenu.MenuItems.AddRange(new MenuItem[] { this.miEnabled,
                 this.miResponseTimeColumnEnabled,
                 this.miResponseServerColumnEnabled,
@@ -121,6 +119,8 @@ namespace EXOFiddlerInspector
             // Set the application preference for this option.
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", boolExtensionEnabled);
 
+            // Make sure the menu items are available / not available depending on extension status.
+            EnableDisableMenuItemsAccordingToExtensionStatus();
         }
 
         public void miResponseTimeColumnEnabled_Click(object sender, EventArgs e)
@@ -158,11 +158,30 @@ namespace EXOFiddlerInspector
             CheckForUpdate();
         }
 
-        /////////////////
-        //
-        // OnLoad
-        //
-        public void OnLoad()
+        public void EnableDisableMenuItemsAccordingToExtensionStatus()
+        {
+            // Enable / disable menu items according to extension enabled.
+            if (boolExtensionEnabled)
+            {
+                this.miResponseTimeColumnEnabled.Enabled = true;
+                this.miResponseServerColumnEnabled.Enabled = true;
+                this.miExchangeTypeColumnEnabled.Enabled = true;
+                this.miAppLoggingEnabled.Enabled = true;
+            }
+            else
+            {
+                this.miResponseTimeColumnEnabled.Enabled = false;
+                this.miResponseServerColumnEnabled.Enabled = false;
+                this.miExchangeTypeColumnEnabled.Enabled = false;
+                this.miAppLoggingEnabled.Enabled = false;
+            }
+        }
+
+    /////////////////
+    //
+    // OnLoad
+    //
+    public void OnLoad()
         {
             // Get application preferences.
             this.boolExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
@@ -190,6 +209,10 @@ namespace EXOFiddlerInspector
             InitializeMenu();
             // Add the menu.
             FiddlerApplication.UI.mnuMain.MenuItems.Add(ExchangeOnlineTopMenu);
+
+            // Make sure the menu items are available / not available depending on extension status.
+            EnableDisableMenuItemsAccordingToExtensionStatus();
+
             if (boolExtensionEnabled && boolExtensionEnabled)
             {
                 FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
@@ -367,8 +390,8 @@ namespace EXOFiddlerInspector
                     System.Diagnostics.Process.Start(Properties.Settings.Default.InstallerURL);
                     if (boolAppLoggingEnabled && boolExtensionEnabled)
                     {
-                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Version installed." + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
-                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: New Version Available." + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
+                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Version installed. " + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
+                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: New Version Available. " + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
                     }
                 }
             }
@@ -381,7 +404,7 @@ namespace EXOFiddlerInspector
                 // Regardless of extension enabled or not, give the user feedback when they click the 'Check For Update' menu item if no update is available.
                 else if (boolManualCheckForUpdate)
                 {
-                    MessageBox.Show("EXOFiddlerExtention: Latest version installed." + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".", "EXO Fiddler Extension");
+                    MessageBox.Show("EXOFiddlerExtention: Latest version installed. " + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".", "EXO Fiddler Extension");
                     // return this value back to false, so we don't give this feedback unintentionally.
                     boolManualCheckForUpdate = false;
                 }

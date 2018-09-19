@@ -6,7 +6,7 @@ Three locations to update:
 
 Rebuild Application and Setup projects.
 
-Comment to GitHub.
+Commit to GitHub.
 
 Notes:
 
