@@ -51,6 +51,8 @@ namespace EXOFiddlerInspector
         }
     }
 
+    #region RequestInspectorNoLongerUsedCodeBlock
+
     // DISABLING REQUEST TAB, DOES NOT ADD VALUE TO INSPECTOR.
     /*
     // Request class, inherits the generic class above, only defines things specific or different from the base class
@@ -231,16 +233,22 @@ namespace EXOFiddlerInspector
         public string EXOResponseBody { get; set; }
     }
     */
+    #endregion
 
     // Response class, same as request class except for responses
     public class ResponseInspector : EXOBaseFiddlerInspector, IResponseInspector2
     {
-        ResponseUserControl _displayControl;
+        public ResponseUserControl _displayControl;
         private HTTPResponseHeaders responseHeaders;
         private string searchTerm;
         private string RealmURL;
 
-        // Double click on a session to highlight inpsector.
+        private bool boolInspectorAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
+        private bool boolInspectorExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+
+        // Double click or hit return with session selected.
+        // From discussion with EE Fiddler code known to be problematic with the ScoreForSession feature.
+        // Not expected to work 100% of the time per logic below.
         public override int ScoreForSession(Session oS)
         {
             this.session = oS;
@@ -276,7 +284,28 @@ namespace EXOFiddlerInspector
             get { return rawBody; }
             set
             {
-                SetResponseValues(this.session);
+                // If the extension is enabled, start analysing the sessions.
+                if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false))
+                {
+                    SetResponseValues(this.session);
+                }
+                // If the extension is disabled, do as little as possible, mark all user control fields as such.
+                else
+                {
+                    _displayControl.SetHTTPResponseCodeTextBoxText("DIS");
+
+                    _displayControl.SetRequestBeginDateTextBox("Inspector disabled.");
+                    _displayControl.SetRequestBeginTimeTextBox("Inspector disabled.");
+                    _displayControl.SetRequestEndDateTextBox("Inspector disabled.");
+                    _displayControl.SetRequestEndTimeTextBox("Inspector disabled.");
+                    _displayControl.SetResponseAlertTextBox("Inspector disabled.");
+                    _displayControl.SetResponseElapsedTimeTextBox("Inspector disabled");
+                    _displayControl.SetDataAgeTextBox("Inspector disabled");
+                    _displayControl.SetResponseProcessTextBox("Inspector disabled");
+                    _displayControl.SetElapsedTimeCommentTextBoxText("Inspector disabled");
+                    _displayControl.SetResponseServerTextBoxText("Inspector disabled");
+                    _displayControl.SetResponseCommentsRichTextboxText("Inspector disabled.");
+                }
             }
         }
 
@@ -313,7 +342,7 @@ namespace EXOFiddlerInspector
             // Write Elapsed Time comment into textbox.
             if (this.session.oResponse.iTTLB > 5000)
             {
-                //     _displayControl.SetElapsedTimeCommentTextBoxText("> 5 second response time.");
+                _displayControl.SetElapsedTimeCommentTextBoxText("> 5 second response time.");
             }
 
             // Write Data age data into textbox.
@@ -421,7 +450,10 @@ namespace EXOFiddlerInspector
                                 {
                                     _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect.");
                                     _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." + Environment.NewLine + RedirectAddress);
-                                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address doesn't contain .onmicrosoft.com.");
+                                    if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                                    {
+                                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address doesn't contain .onmicrosoft.com.");
+                                    }
                                 }
                             }
 
@@ -446,8 +478,11 @@ namespace EXOFiddlerInspector
                                 */
                                 _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect: Error Code 500.");
                                 _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address can't be found.");
+                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address can't be found.");
                             }
+                        }
 
                         /////////////////////////////
                         //
@@ -465,7 +500,10 @@ namespace EXOFiddlerInspector
                                 string result = "After splitting all words in the response body the word 'error' was found " + wordCount + " time(s).";
                                 _displayControl.SetResponseAlertTextBox("Word Search 'Error' found in respone body.");
                                 _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP200ErrorsFound + result);
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 keyword 'error' found in response body!");
+                                if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                                {
+                                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 keyword 'error' found in response body!");
+                                }
                             }
                             else
                             {
@@ -536,8 +574,13 @@ namespace EXOFiddlerInspector
                         {
                             _displayControl.SetResponseAlertTextBox("HTTP 307 Temporary Redirect");
                             _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP307IncorrectTemporaryRedirect);
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
-                        } else
+                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
+                            }
+                        
+                        }
+                        else
                         {
                             _displayControl.SetResponseAlertTextBox("HTTP 307 Temporary Redirect");
                             _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP307TemporaryRedirect);
@@ -568,7 +611,10 @@ namespace EXOFiddlerInspector
                         {
                             _displayControl.SetResponseAlertTextBox("HTTP 403 Access Denied!");
                             _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP403WebProxyBlocking);
+                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
+                            }
                         }
                         else
                         {
@@ -621,7 +667,10 @@ namespace EXOFiddlerInspector
                         // Pick up any 500 Internal Server Error and write data into the comments box.
                         _displayControl.SetResponseAlertTextBox("HTTP 500 Internal Server Error");
                         _displayControl.SetResponseCommentsRichTextboxText("HTTP 500 Internal Server Error");
-                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 500 Internal Server Error.");
+                        if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 500 Internal Server Error.");
+                        }
                         break;
                         //
                         /////////////////////////////
@@ -683,7 +732,10 @@ namespace EXOFiddlerInspector
                             // Pick up any other 502 Bad Gateway and write data into the comments box.
                             _displayControl.SetResponseAlertTextBox("HTTP 502 Bad Gateway");
                             _displayControl.SetResponseCommentsRichTextboxText("Nothing detected directly related to Exchange Online.");
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway.");
+                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway.");
+                            }
                         }
                         //
                         /////////////////////////////
@@ -706,14 +758,20 @@ namespace EXOFiddlerInspector
 
                             _displayControl.SetResponseAlertTextBox("The federation service is unreachable or unavailable.");
                             _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP503FederatedSTSUnreachableStart + Environment.NewLine + RealmURL + Environment.NewLine + Properties.Settings.Default.HTTP503FederatedSTSUnreachableEnd);
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
+                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
+                            }
                         }
                         else
                         {
                             // Pick up any other 503 Service Unavailable and write data into the comments box.
                             _displayControl.SetResponseAlertTextBox("HTTP 503 Service Unavailable.");
                             _displayControl.SetResponseCommentsRichTextboxText("HTTP 503 Service Unavailable.");
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable.");
+                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable.");
+                            }
                         }
                         //
                         /////////////////////////////
@@ -726,7 +784,10 @@ namespace EXOFiddlerInspector
                         // Pick up any 504 Gateway Timeout and write data into the comments box.
                         _displayControl.SetResponseAlertTextBox("HTTP 504 Gateway Timeout");
                         _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
-                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 504 Gateway Timeout.");
+                        if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 504 Gateway Timeout.");
+                        }
                         //
                         /////////////////////////////
                         break;

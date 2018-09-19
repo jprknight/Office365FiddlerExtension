@@ -269,6 +269,8 @@ namespace EXOFiddlerInspector
                     break;
                 case "599": HTTPStatusDescriptionTextBox.Text = "Network Connect Timeout Error";
                     break;
+                case "DIS": HTTPStatusDescriptionTextBox.Text = "Inspector disabled";
+                    break;
                 default: HTTPStatusDescriptionTextBox.Text = "No known HTTP status.";
                     break;
             } 
