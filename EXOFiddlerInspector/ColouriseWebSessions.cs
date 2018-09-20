@@ -1035,19 +1035,25 @@ namespace EXOFiddlerInspector
             //FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("#", 0, -1);
             //FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Result", 1, -1);
 
-            if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
+            // These get called on each session, seen strange behaviour on reordering on live trace due 
+            // to setting each of these as ordering 2 to ensure column positions regardless of column enabled selections.
+            // Use an if statement to fire these once per Fiddler application session.
+            if (this.session.id == 1)
             {
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 2, -1);
-            }
+                if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 2, -1);
+                }
 
-            if (boolResponseServerColumnEnabled && boolExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
-            }
+                if (boolResponseServerColumnEnabled && boolExtensionEnabled)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
+                }
 
-            if (boolResponseTimeColumnEnabled && boolExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Time", 2, -1);
+                if (boolResponseTimeColumnEnabled && boolExtensionEnabled)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Time", 2, -1);
+                }
             }
 
             /*
