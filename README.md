@@ -1,7 +1,15 @@
 # EXOFiddlerExtension
 The Exchange Online Fiddler Extension
 
-Created in Visual Studio 2017 this inspector is intended to help with troubleshooting issues with Outlook and Office 365 / Exchange Online. This inspector is intended to be installed as an addition to Fiddler and used to review traffic while or after reproducing an issue.
+This inspector is intended to help with troubleshooting issues with Outlook and Office 365 / Exchange Online. With Fiddler installed, install this extension to alter the standard Fiddler UI:
+
+* Add a 'Response Time' column.
+* Add a 'Response Server' column.
+* Add an 'Exchange Type' column.
+* Add an 'Exchange Online' response inspector tab.
+* Add an 'Exchange Online' menu to turn off extension features and other options.
+* Colourisation of sessions upon loading a .SAZ file.
+* Colourisation of sessions upon live tracing.
 
 For more information click here: https://github.com/jprknight/EXOFiddlerExtension/wiki
 
