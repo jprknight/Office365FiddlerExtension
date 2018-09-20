@@ -128,9 +128,9 @@
             this.ElapsedTimeLabel.AutoSize = true;
             this.ElapsedTimeLabel.Location = new System.Drawing.Point(6, 84);
             this.ElapsedTimeLabel.Name = "ElapsedTimeLabel";
-            this.ElapsedTimeLabel.Size = new System.Drawing.Size(111, 13);
+            this.ElapsedTimeLabel.Size = new System.Drawing.Size(71, 13);
             this.ElapsedTimeLabel.TabIndex = 18;
-            this.ElapsedTimeLabel.Text = "Elapsed Time / iTTLB";
+            this.ElapsedTimeLabel.Text = "Elapsed Time";
             // 
             // ElapsedTimeTextBox
             // 
@@ -312,7 +312,7 @@
             this.Controls.Add(this.HTTPResponseCodeTextBox);
             this.Controls.Add(this.HTTPStatusCodeLinkLabel);
             this.Name = "ResponseUserControl";
-            this.Size = new System.Drawing.Size(412, 467);
+            this.Size = new System.Drawing.Size(412, 409);
             this.Load += new System.EventHandler(this.ResponseUserControl_Load);
             this.ResponseGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);

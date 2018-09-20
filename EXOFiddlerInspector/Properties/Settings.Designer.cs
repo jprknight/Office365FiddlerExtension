@@ -159,7 +159,7 @@ Check the Headers or Raw tab and the Location to ensure the Autodiscover call is
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/jprknight/EXOFiddlerInspector/master/EXOFiddler" +
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/jprknight/EXOFiddlerExtension/master/EXOFiddler" +
             "Inspector/update.xml")]
         public string UpdateURL {
             get {
@@ -169,7 +169,7 @@ Check the Headers or Raw tab and the Location to ensure the Autodiscover call is
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/jprknight/EXOFiddlerInspector/tree/master/EXOFiddlerInspector/" +
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/jprknight/EXOFiddlerExtension/tree/master/EXOFiddlerInspector/" +
             "Setup")]
         public string InstallerURL {
             get {
@@ -179,7 +179,7 @@ Check the Headers or Raw tab and the Location to ensure the Autodiscover call is
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/jprknight/EXOFiddlerInspector/wiki")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/jprknight/EXOFiddlerExtension/wiki")]
         public string WikiURL {
             get {
                 return ((string)(this["WikiURL"]));
@@ -188,7 +188,7 @@ Check the Headers or Raw tab and the Location to ensure the Autodiscover call is
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/jprknight/EXOFiddlerInspector/issues")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/jprknight/EXOFiddlerExtension/issues")]
         public string ReportIssuesURL {
             get {
                 return ((string)(this["ReportIssuesURL"]));
