@@ -279,12 +279,16 @@ namespace EXOFiddlerInspector
         // for first time users.
         public void FirstRunEnableMenuOptions()
         {
+            // Anticipate extensions.EXFiddlerInspector.FirstRun will be null on first run. Thereafter it will be set to false.
             if ((FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.FirstRun", false) != false)) 
             {
-                boolExtensionEnabled = true;
-                boolResponseTimeColumnEnabled = true;
-                boolResponseServerColumnEnabled = true;
-                boolExchangeTypeColumnEnabled = true;
+                // Light up functionality for first run.
+                this.boolExtensionEnabled = true;
+                this.boolResponseTimeColumnEnabled = true;
+                this.boolResponseServerColumnEnabled = true;
+                this.boolExchangeTypeColumnEnabled = true;
+
+                // Set this app preference as false so we don't execute the above after first run.
                 FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.FirstRun", false);
             }
         }
@@ -660,8 +664,17 @@ namespace EXOFiddlerInspector
                         /////////////////////////////
                         #endregion
                         break;
+                    case 201:
+                        /////////////////////////////
+                        //
+                        //  HTTP 201: Created.
+                        //
+                        this.session["ui-backcolor"] = HTMLColourGreen;
+                        this.session["ui-color"] = "black";
+                        //
+                        /////////////////////////////
+                        break;
                     case 204:
-                        #region HTTP204
                         /////////////////////////////
                         //
                         //  HTTP 204: No Content.
@@ -670,7 +683,6 @@ namespace EXOFiddlerInspector
                         this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
-                        #endregion
                         break;
                     case 301:
                         #region HTTP301

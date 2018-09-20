@@ -516,6 +516,16 @@ namespace EXOFiddlerInspector
                         //
                         /////////////////////////////
                         break;
+                    case 201:
+                        /////////////////////////////
+                        //
+                        //  HTTP 201: Created.
+                        //
+                        _displayControl.SetResponseAlertTextBox("HTTP 201 Created.");
+                        _displayControl.SetResponseCommentsRichTextboxText("Not expecting this to be anything which needs attention for troubleshooting.");
+                        //
+                        /////////////////////////////
+                        break;
                     case 204:
                         /////////////////////////////
                         //
