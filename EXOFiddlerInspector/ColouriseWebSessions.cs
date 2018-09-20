@@ -235,6 +235,9 @@ namespace EXOFiddlerInspector
             this.boolExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
             this.boolAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
 
+            // Call the FirstRun function to enable the extension and columns for users running the extension on their computer for the first time.
+            FirstRunEnableMenuOptions();
+
             // Call the function to add column if the menu item is checked and if the extension is enabled.
             if (boolResponseTimeColumnEnabled && boolExtensionEnabled)
             {
@@ -265,6 +268,24 @@ namespace EXOFiddlerInspector
             if (boolExtensionEnabled)
             {
                 FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
+            }
+        }
+        //
+        /////////////////
+
+        /////////////////
+        // Read out an application preference and if not set we know this is the first 
+        // time the extension has run on this machine. Enable all options to light up functionality
+        // for first time users.
+        public void FirstRunEnableMenuOptions()
+        {
+            if ((FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.FirstRun", false) != false)) 
+            {
+                boolExtensionEnabled = true;
+                boolResponseTimeColumnEnabled = true;
+                boolResponseServerColumnEnabled = true;
+                boolExchangeTypeColumnEnabled = true;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.FirstRun", false);
             }
         }
         //
