@@ -110,9 +110,9 @@
             this.RequestEndTimelabel.AutoSize = true;
             this.RequestEndTimelabel.Location = new System.Drawing.Point(6, 58);
             this.RequestEndTimelabel.Name = "RequestEndTimelabel";
-            this.RequestEndTimelabel.Size = new System.Drawing.Size(105, 13);
+            this.RequestEndTimelabel.Size = new System.Drawing.Size(113, 13);
             this.RequestEndTimelabel.TabIndex = 16;
-            this.RequestEndTimelabel.Text = "Client Done Request";
+            this.RequestEndTimelabel.Text = "Client Done Response";
             // 
             // RequestEndTimeTextBox
             // 

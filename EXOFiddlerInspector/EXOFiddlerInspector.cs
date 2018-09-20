@@ -327,15 +327,16 @@ namespace EXOFiddlerInspector
 
             // Write Client Begin Request into textboxes
             _displayControl.SetRequestBeginDateTextBox(this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd"));
-            _displayControl.SetRequestBeginTimeTextBox(this.session.Timers.ClientBeginRequest.ToString(" H:mm:ss.ffff"));
+            _displayControl.SetRequestBeginTimeTextBox(this.session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff"));
 
             // Write Client End Request into textboxes
             _displayControl.SetRequestEndDateTextBox(this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd"));
-            _displayControl.SetRequestEndTimeTextBox(this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.ffff"));
+            _displayControl.SetRequestEndTimeTextBox(this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff"));
 
             // Write Elapsed Time into textbox.
-            _displayControl.SetResponseElapsedTimeTextBox(this.session.oResponse.iTTLB + "ms");
-
+            // _displayControl.SetResponseElapsedTimeTextBox(this.session.oResponse.iTTLB + "ms");
+            _displayControl.SetResponseElapsedTimeTextBox(Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms");
+            
             //Write response server from headers into textbox.
             _displayControl.SetResponseServerTextBoxText(this.session.oResponse["Server"]);
 

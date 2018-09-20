@@ -70,7 +70,7 @@ namespace EXOFiddlerInspector
 
         private void InitializeMenu()
         {
-            //
+            // Setup each menu item name and ordering.
             this.ExchangeOnlineTopMenu = new MenuItem("Exchange Online");
 
             this.miEnabled = new MenuItem("&Extension Enabled");
@@ -78,6 +78,7 @@ namespace EXOFiddlerInspector
 
             this.miResponseTimeColumnEnabled = new MenuItem("Response &Time Column Enabled");
             this.miResponseTimeColumnEnabled.Index = 1;
+
 
             this.miResponseServerColumnEnabled = new MenuItem("Response &Server Column Enabled");
             this.miResponseServerColumnEnabled.Index = 2;
@@ -97,6 +98,7 @@ namespace EXOFiddlerInspector
             this.miCheckForUpdate = new MenuItem("&Check For Update");
             this.miCheckForUpdate.Index = 7;
 
+            // Add menu items to top level menu.
             this.ExchangeOnlineTopMenu.MenuItems.AddRange(new MenuItem[] { this.miEnabled,
                 this.miResponseTimeColumnEnabled,
                 this.miResponseServerColumnEnabled,
@@ -106,6 +108,7 @@ namespace EXOFiddlerInspector
                 this.miReportIssues,
                 this.miCheckForUpdate});
 
+            // Setup event handlers for menu items.
             this.miEnabled.Click += new System.EventHandler(this.miEnabled_Click);
             this.miEnabled.Checked = boolExtensionEnabled;
 
@@ -128,9 +131,12 @@ namespace EXOFiddlerInspector
             this.miCheckForUpdate.Click += new System.EventHandler(this.miCheckForUpdate_Click);
         }
 
+        // Menu item event handlers.
         public void miEnabled_Click(object sender, EventArgs e)
         {
+            // Invert selection when this menu item is clicked.
             miEnabled.Checked = !miEnabled.Checked;
+            // Match boolean variable on whether extension is enabled or not.
             boolExtensionEnabled = miEnabled.Checked;
             // Set the application preference for this option.
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", boolExtensionEnabled);
@@ -141,7 +147,9 @@ namespace EXOFiddlerInspector
 
         public void miResponseTimeColumnEnabled_Click(object sender, EventArgs e)
         {
+            // Invert selection when this menu item is clicked.
             miResponseTimeColumnEnabled.Checked = !miResponseTimeColumnEnabled.Checked;
+            // Match boolean variable on whether column is enabled or not.
             boolResponseTimeColumnEnabled = miResponseTimeColumnEnabled.Checked;
             // Set the application preference for this option.
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", boolResponseTimeColumnEnabled);
@@ -149,38 +157,49 @@ namespace EXOFiddlerInspector
 
         public void miResponseServerColumnEnabled_Click(object sender, EventArgs e)
         {
+            // Invert selection when this menu item is clicked.
             miResponseServerColumnEnabled.Checked = !miResponseServerColumnEnabled.Checked;
+            // Match boolean variable on whether column is enabled or not.
             boolResponseServerColumnEnabled = miResponseServerColumnEnabled.Checked;
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", boolResponseServerColumnEnabled);
         }
 
         public void miExchangeTypeColumnEnabled_Click(object sender, EventArgs e)
         {
+            // Invert selection when this menu item is clicked.
             miExchangeTypeColumnEnabled.Checked = !miExchangeTypeColumnEnabled.Checked;
+            // Match boolean variable on whether column is enabled or not.
             boolExchangeTypeColumnEnabled = miExchangeTypeColumnEnabled.Checked;
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", boolExchangeTypeColumnEnabled);
         }
 
         public void miAppLoggingEnabled_Click(object sender, EventArgs e)
         {
+            // Invert selection when this menu item is clicked.
             miAppLoggingEnabled.Checked = !miAppLoggingEnabled.Checked;
+            // Match boolean variable on whether app logging is enabled or not.
             boolAppLoggingEnabled = miAppLoggingEnabled.Checked;
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", boolAppLoggingEnabled);
         }
 
         public void miWiki_Click(object sender, EventArgs e)
         {
+            // Fire up a web browser to the project Wiki URL.
             System.Diagnostics.Process.Start(Properties.Settings.Default.WikiURL);
         }
 
         public void miReportIssues_Click(object sender, EventArgs e)
         {
+            // Fire up a web browser to the project issues URL.
             System.Diagnostics.Process.Start(Properties.Settings.Default.ReportIssuesURL);
         }
 
         public void miCheckForUpdate_Click(object sender, EventArgs e)
         {
+            // Since the user has manually clicked this menu item to check for updates,
+            // set this boolean variable to true so we can give user feedback if no update available.
             boolManualCheckForUpdate = true;
+            // Call check for update function.
             CheckForUpdate();
         }
 
@@ -209,23 +228,26 @@ namespace EXOFiddlerInspector
     //
     public void OnLoad()
         {
-            // Get application preferences.
+            // Get application preferences from settings saved from last set.
             this.boolExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
             this.boolResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
             this.boolResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
             this.boolExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
             this.boolAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
 
+            // Call the function to add column if the menu item is checked and if the extension is enabled.
             if (boolResponseTimeColumnEnabled && boolExtensionEnabled)
             {
                 EnsureResponseTimeColumn();
             }
 
+            // Call the function to add column if the menu item is checked and if the extension is enabled.
             if (boolResponseServerColumnEnabled && boolExtensionEnabled)
             {
                 EnsureResponseServerColumn();
             }
-            
+
+            // Call the function to add column if the menu item is checked and if the extension is enabled.
             if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
             {
                 EnsureExchangeTypeColumn();
@@ -239,7 +261,8 @@ namespace EXOFiddlerInspector
             // Make sure the menu items are available / not available depending on extension status.
             EnableDisableMenuItemsAccordingToExtensionStatus();
 
-            if (boolExtensionEnabled && boolExtensionEnabled)
+            // Call function to process sessions only if the extension is enabled.
+            if (boolExtensionEnabled)
             {
                 FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
             }
@@ -307,7 +330,7 @@ namespace EXOFiddlerInspector
             // Only do this if the extension is enabled.
             if (boolExtensionEnabled)
             {
-
+                // Only check for updates on LoadSAZ if the extension is enabled.
                 CheckForUpdate();
             }
             
@@ -316,13 +339,14 @@ namespace EXOFiddlerInspector
             foreach (var session in e.arrSessions)
             {
                 sessioncount++;
-                // Populate the ResponseTime column on load SAZ, if the column is enabled.
+                // Populate the ResponseTime column on load SAZ, if the column is enabled, and the extension is enabled.
                 if (boolResponseTimeColumnEnabled && boolExtensionEnabled)
                 {
-                    session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
+                    //session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
+                    session["X-iTTLB"] = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms";
                 }
-                
-                // Populate the ExchangeType column on load SAZ, if the column is enabled.
+
+                // Populate the ExchangeType column on load SAZ, if the column is enabled, and the extension is enabled
                 if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
                 {
                     SetExchangeType(session);
@@ -428,7 +452,7 @@ namespace EXOFiddlerInspector
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: Latest version installed. v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".");
                 }
                 // Regardless of extension enabled or not, give the user feedback when they click the 'Check For Update' menu item if no update is available.
-                else if (boolManualCheckForUpdate)
+                if (boolManualCheckForUpdate)
                 {
                     MessageBox.Show("EXOFiddlerExtention: Latest version installed. v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".", "EXO Fiddler Extension");
                     // return this value back to false, so we don't give this feedback unintentionally.
@@ -450,6 +474,7 @@ namespace EXOFiddlerInspector
 
             this.session = session;
 
+            // Colour codes for sessions. Softer tones, easier on the eye than standard red, orange and green.
             string HTMLColourBlue = "#81BEF7";
             string HTMLColourGreen = "#81f7ba"; 
             string HTMLColourRed = "#f78f81";
@@ -539,7 +564,7 @@ namespace EXOFiddlerInspector
 
                             if (RedirectAddress.Contains(".onmicrosoft.com"))
                             {
-                                this.session["ui-backcolor"] = "green";
+                                this.session["ui-backcolor"] = HTMLColourGreen;
                                 this.session["ui-color"] = "black";
                                 if(boolAppLoggingEnabled && boolExtensionEnabled)
                                 {
@@ -936,7 +961,7 @@ namespace EXOFiddlerInspector
             else
             {
                 // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
-                this.session["ui-backcolor"] = "gray";
+                this.session["ui-backcolor"] = HTMLColourGrey;
                 this.session["ui-color"] = "black";
             }
         }
@@ -1017,7 +1042,8 @@ namespace EXOFiddlerInspector
             //
             // Populate the ResponseTime column on live trace, if the column is enabled.
             if (boolResponseTimeColumnEnabled && boolExtensionEnabled) {
-                session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
+                //session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
+                session["X-iTTLB"] = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms";
             }
             //
             /////////////////
