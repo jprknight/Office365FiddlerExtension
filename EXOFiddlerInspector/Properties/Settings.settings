@@ -61,7 +61,7 @@ Check the Headers or Raw tab and the Location to ensure the Autodiscover call is
       <Value Profile="(Default)">https://raw.githubusercontent.com/jprknight/EXOFiddlerExtension/master/EXOFiddlerInspector/update.xml</Value>
     </Setting>
     <Setting Name="InstallerURL" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">https://github.com/jprknight/EXOFiddlerExtension/tree/master/EXOFiddlerInspector/Setup</Value>
+      <Value Profile="(Default)">https://github.com/jprknight/EXOFiddlerExtension/releases/download/1.0.18/EXOFiddlerInspectorInstaller.msi</Value>
     </Setting>
     <Setting Name="WikiURL" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://github.com/jprknight/EXOFiddlerExtension/wiki</Value>
