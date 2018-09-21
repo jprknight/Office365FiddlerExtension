@@ -545,7 +545,6 @@ namespace EXOFiddlerInspector
                 switch (this.session.responseCode)
                 {
                     case 0:
-                        #region HTTP0
                         /////////////////////////////
                         //
                         //  HTTP 0: No Response.
@@ -554,10 +553,10 @@ namespace EXOFiddlerInspector
                         this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
-                        #endregion
                         break;
+
+                    #region HTTP200s
                     case 200:
-                        #region HTTP200
                         /////////////////////////////
                         //
                         // HTTP 200
@@ -662,7 +661,6 @@ namespace EXOFiddlerInspector
                         }
                         //
                         /////////////////////////////
-                        #endregion
                         break;
                     case 201:
                         /////////////////////////////
@@ -684,8 +682,10 @@ namespace EXOFiddlerInspector
                         //
                         /////////////////////////////
                         break;
+                    #endregion
+
+                    #region HTTP300s
                     case 301:
-                        #region HTTP301
                         /////////////////////////////
                         //
                         //  HTTP 301: Moved Permanently.
@@ -694,10 +694,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
-                        #endregion
                         break;
                     case 302:
-                        #region HTTP302
                         /////////////////////////////
                         //
                         //  HTTP 302: Found / Redirect.
@@ -706,10 +704,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
-                        #endregion
                         break;
                     case 304:
-                        #region HTTP304
                         /////////////////////////////
                         //
                         //  HTTP 304: Not modified.
@@ -718,10 +714,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
-                        #endregion
                         break;
                     case 307:
-                        #region HTTP307
                         /////////////////////////////
                         //
                         //  HTTP 307: Temporary Redirect.
@@ -751,10 +745,12 @@ namespace EXOFiddlerInspector
                         }
                         //
                         /////////////////////////////
-                        #endregion
                         break;
+                    #endregion
+
+                    #region HTTP400s
                     case 401:
-                        #region HTTP401
+                        
                         /////////////////////////////
                         //
                         //  HTTP 401: UNAUTHORIZED.
@@ -763,10 +759,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
-                        #endregion
                         break;
                     case 403:
-                        #region HTTP403
                         /////////////////////////////
                         //
                         //  HTTP 403: FORBIDDEN.
@@ -790,10 +784,8 @@ namespace EXOFiddlerInspector
                         }
                         //
                         /////////////////////////////
-                        #endregion
                         break;
                     case 404:
-                        #region HTTP404
                         /////////////////////////////
                         //
                         //  HTTP 404: Not Found.
@@ -802,10 +794,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
-                        #endregion
                         break;
                     case 429:
-                        #region HTTP429
                         /////////////////////////////
                         //
                         //  HTTP 429: Too Many Requests.
@@ -814,20 +804,19 @@ namespace EXOFiddlerInspector
                         this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
-                        #endregion
                         break;
                     case 440:
-                        #region HTTP440
                         /////////////////////////////
                         //
                         // HTTP 440: Need to know more about these.
                         // For the moment do nothing.
                         //
                         /////////////////////////////
-                        #endregion
                         break;
+                    #endregion
+
+                    #region HTTP500s
                     case 500:
-                        #region HTTP500
                         /////////////////////////////
                         //
                         //  HTTP 500: Internal Server Error.
@@ -843,10 +832,8 @@ namespace EXOFiddlerInspector
                         }
                         //
                         /////////////////////////////
-                        #endregion
                         break;
                     case 502:
-                        #region HTTP502
                         /////////////////////////////
                         //
                         //  HTTP 502: BAD GATEWAY.
@@ -932,10 +919,8 @@ namespace EXOFiddlerInspector
                         }
                         //
                         /////////////////////////////
-                        #endregion
                         break;
                     case 503:
-                        #region HTTP503
                         /////////////////////////////
                         //
                         //  HTTP 503: SERVICE UNAVAILABLE.
@@ -966,10 +951,8 @@ namespace EXOFiddlerInspector
                         }
                         //
                         /////////////////////////////
-                        #endregion
                         break;
                     case 504:
-                        #region HTTP504
                         /////////////////////////////
                         //
                         //  HTTP 504: GATEWAY TIMEOUT.
@@ -983,13 +966,13 @@ namespace EXOFiddlerInspector
                         }
                         //
                         /////////////////////////////
-                        #endregion
                         break;
+                    #endregion
+
                     default:
                         break;
                 }
                 #endregion
-                //}
             }
             else
             {
@@ -1013,6 +996,9 @@ namespace EXOFiddlerInspector
 
         public void AutoTamperResponseAfter(Session session)
         {
+
+            this.session = session;
+
             /////////////////
             //
             // Call the function to colourise sessions for live traffic capture.
@@ -1030,24 +1016,31 @@ namespace EXOFiddlerInspector
             // For some reason setting the column ordering when adding the columns did not work.
             // Adding the ordering here instead does work.
             // For column ordering to work on disabe/enable it seems neccessary to set ordering here
-            // in reverse order for my preference on column order.
+            // in reverse order for my preference on column order as I want each to be set to priority 2
+            // so that other standard columns do not get put into the Exchange Online column grouping.
 
             //FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("#", 0, -1);
             //FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Result", 1, -1);
 
-            if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
+            // These get called on each session, seen strange behaviour on reordering on live trace due 
+            // to setting each of these as ordering 2 to ensure column positions regardless of column enabled selections.
+            // Use an if statement to fire these once per Fiddler application session.
+            if (this.session.id == 1)
             {
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 2, -1);
-            }
+                if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 2, -1);
+                }
 
-            if (boolResponseServerColumnEnabled && boolExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
-            }
+                if (boolResponseServerColumnEnabled && boolExtensionEnabled)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
+                }
 
-            if (boolResponseTimeColumnEnabled && boolExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Time", 2, -1);
+                if (boolResponseTimeColumnEnabled && boolExtensionEnabled)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Time", 2, -1);
+                }
             }
 
             /*
@@ -1075,8 +1068,18 @@ namespace EXOFiddlerInspector
             //
             // Populate the ResponseTime column on live trace, if the column is enabled.
             if (boolResponseTimeColumnEnabled && boolExtensionEnabled) {
-                //session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
-                session["X-iTTLB"] = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms";
+                // Realised everything about the below is inaccurate.
+                // Also for some reason in AutoTamperResponseAfter this.session.Timers.ClientDoneResponse has a default timestamp of 01/01/0001 12:00.
+                // Messing up any math. By the time the inspector gets to loading the same math.round statement the correct value is displayed in the 
+                // inspector Exchange Online tab.
+                // This needs more thought, read through Fiddler book some more on what could be happening and whether this can work or if the Response time
+                // column is removed from the extension in favour of the response time on the inspector tab.
+                session["X-iTTLB"] = this.session.oResponse.iTTLB.ToString() + "ms"; // Known to give inaccurate results.
+
+                //MessageBox.Show("ClientDoneResponse: " + this.session.Timers.ClientDoneResponse + Environment.NewLine + "ClientBeginRequest: " + this.session.Timers.ClientBeginRequest
+                //    + Environment.NewLine + "iTTLB: " + this.session.oResponse.iTTLB);
+                // The below is not working in a live trace scenario. Reverting back to the previous configuration above as this works for now.
+                //session["X-iTTLB"] = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms";
             }
             //
             /////////////////

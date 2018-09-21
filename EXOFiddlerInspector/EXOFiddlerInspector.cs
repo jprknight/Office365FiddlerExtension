@@ -336,7 +336,8 @@ namespace EXOFiddlerInspector
             // Write Elapsed Time into textbox.
             // _displayControl.SetResponseElapsedTimeTextBox(this.session.oResponse.iTTLB + "ms");
             _displayControl.SetResponseElapsedTimeTextBox(Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms");
-            
+            session["X-iTTLB"] = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms";
+
             //Write response server from headers into textbox.
             _displayControl.SetResponseServerTextBoxText(this.session.oResponse["Server"]);
 
