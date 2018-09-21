@@ -539,8 +539,6 @@ namespace EXOFiddlerInspector
                 //string searchTerm = "error";
                 //string[] searchTerms = { "Error", "FederatedStsUnreachable" };
 
-
-
                 #region switchstatement
                 switch (this.session.responseCode)
                 {
