@@ -67,6 +67,7 @@ namespace EXOFiddlerInspector
 
         private string searchTerm;
         internal Session session { get; set; }
+        public int ClientDoneResponseYear { get; private set; }
 
         private void InitializeMenu()
         {
@@ -76,7 +77,7 @@ namespace EXOFiddlerInspector
             this.miEnabled = new MenuItem("&Extension Enabled");
             this.miEnabled.Index = 0;
 
-            this.miResponseTimeColumnEnabled = new MenuItem("Response &Time Column Enabled");
+            this.miResponseTimeColumnEnabled = new MenuItem("Response &Time Column Enabled (Load SAZ only)");
             this.miResponseTimeColumnEnabled.Index = 1;
 
 
@@ -239,12 +240,6 @@ namespace EXOFiddlerInspector
             FirstRunEnableMenuOptions();
 
             // Call the function to add column if the menu item is checked and if the extension is enabled.
-            if (boolResponseTimeColumnEnabled && boolExtensionEnabled)
-            {
-                EnsureResponseTimeColumn();
-            }
-
-            // Call the function to add column if the menu item is checked and if the extension is enabled.
             if (boolResponseServerColumnEnabled && boolExtensionEnabled)
             {
                 EnsureResponseServerColumn();
@@ -358,12 +353,17 @@ namespace EXOFiddlerInspector
                 // Only check for updates on LoadSAZ if the extension is enabled.
                 CheckForUpdate();
             }
-            
+
+            // Call the function to add column if the menu item is checked and if the extension is enabled.
+            if (boolResponseTimeColumnEnabled && boolExtensionEnabled)
+            {
+                EnsureResponseTimeColumn();
+            }
+
             FiddlerApplication.UI.lvSessions.BeginUpdate();
-            int sessioncount = 0;
+
             foreach (var session in e.arrSessions)
             {
-                sessioncount++;
                 // Populate the ResponseTime column on load SAZ, if the column is enabled, and the extension is enabled.
                 if (boolResponseTimeColumnEnabled && boolExtensionEnabled)
                 {
@@ -538,8 +538,6 @@ namespace EXOFiddlerInspector
                 // Query samples:
                 //string searchTerm = "error";
                 //string[] searchTerms = { "Error", "FederatedStsUnreachable" };
-
-
 
                 #region switchstatement
                 switch (this.session.responseCode)
@@ -1068,18 +1066,36 @@ namespace EXOFiddlerInspector
             //
             // Populate the ResponseTime column on live trace, if the column is enabled.
             if (boolResponseTimeColumnEnabled && boolExtensionEnabled) {
-                // Realised everything about the below is inaccurate.
-                // Also for some reason in AutoTamperResponseAfter this.session.Timers.ClientDoneResponse has a default timestamp of 01/01/0001 12:00.
+                // Realised this.session.oResponse.iTTLB.ToString() + "ms" is not the value I want to display as Response Time.
+                // More desirable figure is created from:
+                // Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds)
+                // 
+                // For some reason in AutoTamperResponseAfter this.session.Timers.ClientDoneResponse has a default timestamp of 01/01/0001 12:00
                 // Messing up any math. By the time the inspector gets to loading the same math.round statement the correct value is displayed in the 
                 // inspector Exchange Online tab.
+                //
                 // This needs more thought, read through Fiddler book some more on what could be happening and whether this can work or if the Response time
                 // column is removed from the extension in favour of the response time on the inspector tab.
-                session["X-iTTLB"] = this.session.oResponse.iTTLB.ToString() + "ms"; // Known to give inaccurate results.
+                //
+                // For the moment disabled the Response Time column when live tracing. Only displayed on LoadSAZ.
+                
+                /*
+                // Trying out delaying the process, waiting for the ClientDoneResponse to be correctly populated.
+                // Did not work out, Fiddler process hangs / very slow.
+                while (this.session.Timers.ClientDoneResponse.Year < 2000)
+                {
+                    if (this.session.Timers.ClientDoneResponse.Year > 2000)
+                    {
+                        break;
+                    }
+                }
+                //session["X-iTTLB"] = this.session.oResponse.iTTLB.ToString() + "ms"; // Known to give inaccurate results.
 
                 //MessageBox.Show("ClientDoneResponse: " + this.session.Timers.ClientDoneResponse + Environment.NewLine + "ClientBeginRequest: " + this.session.Timers.ClientBeginRequest
                 //    + Environment.NewLine + "iTTLB: " + this.session.oResponse.iTTLB);
                 // The below is not working in a live trace scenario. Reverting back to the previous configuration above as this works for now.
-                //session["X-iTTLB"] = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms";
+                session["X-iTTLB"] = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms";
+                */
             }
             //
             /////////////////
