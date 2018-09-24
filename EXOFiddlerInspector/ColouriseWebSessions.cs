@@ -229,15 +229,23 @@ namespace EXOFiddlerInspector
     //
     public void OnLoad()
         {
-            // Get application preferences from settings saved from last set.
-            this.boolExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-            this.boolResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
-            this.boolResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
-            this.boolExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
-            this.boolAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
+            // If the FirstRun application preference is set to false, then the extension has previously run.
+            // The function FirstRunEnableMenuOptions sets the FirstRun app preference to false.
+            // If the above ... then collect the column preferences off of last preferences set.
+            if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.FirstRun", false) == false) {
+                this.boolExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+                this.boolResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
+                this.boolResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
+                this.boolExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
+                this.boolAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
+            }
+            // If the FirstRun application preference is not set, then go run the FirstRunEnableMenuOptions function to light up features for first use.
+            else
+            {
+                FirstRunEnableMenuOptions();
+            }
 
-            // Call the FirstRun function to enable the extension and columns for users running the extension on their computer for the first time.
-            FirstRunEnableMenuOptions();
+            // Response Time column function is no longer called here. Only in OnLoadSAZ.
 
             // Call the function to add column if the menu item is checked and if the extension is enabled.
             if (boolResponseServerColumnEnabled && boolExtensionEnabled)
