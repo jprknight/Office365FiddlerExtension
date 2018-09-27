@@ -882,12 +882,9 @@ namespace EXOFiddlerInspector
                     //
                     // Specific scenario on Outlook and Office 365 invalid DNS lookup.
                     // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
-                    else if ((session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1) &&
-                        // Found Outlook is going root domain Autodiscover lookups. Vanity domain, which we have no way to key off of in logic here.
-                        // Excluding this if statement to broaden DNS lookups we say are OK.
-                        (this.session.utilFindInResponse(".onmicrosoft.com", false) > 1) &&
-                        (this.session.utilFindInResponse("failed. System.Net.Sockets.SocketException", false) > 1) &&
-                        (this.session.utilFindInResponse("DNS Lookup for ", false) > 1))
+                    else if ((this.session.utilFindInResponse(".onmicrosoft.com", false) > 1) &&
+                            (this.session.utilFindInResponse("DNS Lookup for ", false) > 1) &&
+                            (this.session.utilFindInResponse(" failed.", false) > 1))
                     {
                         this.session["ui-backcolor"] = HTMLColourBlue;
                         this.session["ui-color"] = "black";
@@ -975,13 +972,13 @@ namespace EXOFiddlerInspector
             {
                 // With that out of the way,  if the traffic is not related to any of the below processes, then mark it as grey to
                 // de-emphasise it.
-                if (this.session.LocalProcess.Contains("outlook") ||
+                if (!(this.session.LocalProcess.Contains("outlook") ||
                     this.session.LocalProcess.Contains("searchprotocolhost") ||
                     this.session.LocalProcess.Contains("iexplore") ||
                     this.session.LocalProcess.Contains("chrome") ||
                     this.session.LocalProcess.Contains("firefox") ||
                     this.session.LocalProcess.Contains("edge") ||
-                    this.session.LocalProcess.Contains("w3wp"))
+                    this.session.LocalProcess.Contains("w3wp")))
                 {
                     // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
                     this.session["ui-backcolor"] = HTMLColourGrey;
@@ -1145,13 +1142,16 @@ namespace EXOFiddlerInspector
             else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { session["X-ExchangeType"] = "Office 365 Authentication"; }
             // ADFS Authentication.
             else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { session["X-ExchangeType"] = "ADFS Authentication"; }
+            // Null localprocess, so a remote capture.
+            else if (this.session.LocalProcess == null) { session["X-ExchangeType"] = "Remote Capture"; }
+            else if (this.session.LocalProcess == "") { session["X-ExchangeType"] = "Remote Capture"; }
             // Undetermined, but related to local process.
             else if (this.session.LocalProcess.Contains("outlook")) { session["X-ExchangeType"] = "Outlook"; }
             else if (this.session.LocalProcess.Contains("iexplore")) { session["X-ExchangeType"] = "Internet Explorer"; }
             else if (this.session.LocalProcess.Contains("chrome")) { session["X-ExchangeType"] = "Chrome"; }
             else if (this.session.LocalProcess.Contains("firefox")) { session["X-ExchangeType"] = "Firefox"; }
             // Everything else.
-            else { session["X-ExchangeType"] = "Not Exchange"; }
+            else { session["X-ExchangeType"] = this.session.LocalProcess; }
         }
     }
 }

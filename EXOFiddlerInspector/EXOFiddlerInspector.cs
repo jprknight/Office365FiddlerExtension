@@ -723,13 +723,9 @@ namespace EXOFiddlerInspector
                         //
                         // Specific scenario on Outlook and Office 365 invalid DNS lookup.
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
-                        else if ((this.session.utilFindInResponse("The requested name is valid, but no data of the requested type was found", false) > 1) &&
-                                // Found Outlook is going root domain Autodiscover lookups. Vanity domain, which we have no way to key off of in logic here.
-                                // Excluding this if statement to broaden DNS lookups we say are OK.
-                                //if (this.session.utilFindInResponse(".onmicrosoft.com", false) > 1)
-                                //{
-                                (this.session.utilFindInResponse("failed. System.Net.Sockets.SocketException", false) > 1) &&
-                                (this.session.utilFindInResponse("DNS Lookup for ", false) > 1))
+                        else if  ((this.session.utilFindInResponse(".onmicrosoft.com", false) > 1) && 
+                            (this.session.utilFindInResponse("DNS Lookup for ", false) > 1) &&
+                            (this.session.utilFindInResponse(" failed.", false) > 1))
                             {
                                 _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
                                 _displayControl.SetResponseCommentsRichTextboxText("DNS record does not exist. Connection on port 443 will not work by design.");
@@ -743,7 +739,7 @@ namespace EXOFiddlerInspector
                         {
                             // Pick up any other 502 Bad Gateway and write data into the comments box.
                             _displayControl.SetResponseAlertTextBox("HTTP 502 Bad Gateway");
-                            _displayControl.SetResponseCommentsRichTextboxText("Nothing detected directly related to Exchange Online.");
+                            _displayControl.SetResponseCommentsRichTextboxText("Potential to cause the issue you are investigating. Do you see expected responses beyond this session in the trace?");
                             if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway.");
