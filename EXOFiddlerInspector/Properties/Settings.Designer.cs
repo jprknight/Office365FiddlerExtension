@@ -12,7 +12,7 @@ namespace EXOFiddlerInspector.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.7.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.8.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -139,7 +139,8 @@ If however you get the expected responses, this does not neccessarily mean the f
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"HTTP 307: Temporary Redirects have been seen to redirect Exchange Online Autodiscover calls back to On-Premise resources, breaking Outlook connectivity.
-Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.")]
+Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.
+If this session is not for an Outlook process then the information above may not be relevant to the issue under investigation.")]
         public string HTTP307TemporaryRedirect {
             get {
                 return ((string)(this["HTTP307TemporaryRedirect"]));

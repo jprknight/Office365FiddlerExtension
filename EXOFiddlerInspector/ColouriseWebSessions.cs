@@ -507,9 +507,13 @@ namespace EXOFiddlerInspector
             // Colour codes for sessions. Softer tones, easier on the eye than standard red, orange and green.
             string HTMLColourBlue = "#81BEF7";
             string HTMLColourGreen = "#81f7ba";
-            string HTMLColourRed = "#f78f81";
+            // Previous red and orange values too similar when not shown in the same trace.
+            //string HTMLColourRed = "#f78f81";
+            string HTMLColourRed = "#f06141";
             string HTMLColourGrey = "#BDBDBD";
-            string HTMLColourOrange = "#f7ac81";
+            // Previous red and orange values too similar when not shown in the same trace.
+            //string HTMLColourOrange = "#f7ac81";
+            string HTMLColourOrange = "#f59758";
 
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
@@ -524,7 +528,7 @@ namespace EXOFiddlerInspector
             string text = this.session.ToString();
 
             //Convert the string into an array of words  
-            string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',', }, StringSplitOptions.RemoveEmptyEntries);
+            string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
             // Create the query. Use ToLowerInvariant to match "data" and "Data"   
             var matchQuery = from word in source
@@ -538,6 +542,7 @@ namespace EXOFiddlerInspector
             #region ColouriseSessionsSwitchStatement
             switch (this.session.responseCode)
             {
+                #region HTTP0
                 case 0:
                     /////////////////////////////
                     //
@@ -548,6 +553,7 @@ namespace EXOFiddlerInspector
                     //
                     /////////////////////////////
                     break;
+                #endregion
 
                 #region HTTP200s
                 case 200:
@@ -1143,6 +1149,7 @@ namespace EXOFiddlerInspector
             // ADFS Authentication.
             else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { session["X-ExchangeType"] = "ADFS Authentication"; }
             // Null localprocess, so a remote capture.
+            else if (this.session.hostname == "www.fiddler2.com") { session["X-ExchangeType"] = "www.Fiddler2.com"; }
             else if (this.session.LocalProcess == null) { session["X-ExchangeType"] = "Remote Capture"; }
             else if (this.session.LocalProcess == "") { session["X-ExchangeType"] = "Remote Capture"; }
             // Undetermined, but related to local process.

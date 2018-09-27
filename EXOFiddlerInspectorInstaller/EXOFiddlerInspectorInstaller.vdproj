@@ -214,19 +214,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2108516C462CF1740A6B0FA2443A4C89"
+        "OwnerKey" = "8:_848EA86F9C854F39985C8F8700E06896"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_B37552A9853A4605BC1E3851A4443A02"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_848EA86F9C854F39985C8F8700E06896"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -275,6 +269,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_95EF045D54A9D6469AD301F356B23039"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_2108516C462CF1740A6B0FA2443A4C89"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -771,15 +771,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Exchange Online Fiddler Extension"
-        "ProductCode" = "8:{D8239018-0D42-497E-B7A0-4901213CE1A9}"
-        "PackageCode" = "8:{F94B95CF-22A8-4EC7-8354-75BAE508471C}"
+        "ProductCode" = "8:{39ACEC5C-2E0F-47B4-86EA-E2192D9AF792}"
+        "PackageCode" = "8:{0E1A914A-2FAA-4B24-96C6-00619D0D9797}"
         "UpgradeCode" = "8:{827E1199-7576-4FDD-A7F0-FDD5D1800921}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.23"
+        "ProductVersion" = "8:1.0.24"
         "Manufacturer" = "8:Jeremy Knight"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/jprknight/EXOFiddlerExtension/issues"

@@ -383,7 +383,7 @@ namespace EXOFiddlerInspector
             string text = this.session.ToString();
 
             //Convert the string into an array of words  
-            string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',', }, StringSplitOptions.RemoveEmptyEntries);
+            string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
             // Create the query. Use ToLowerInvariant to match "data" and "Data"   
             var matchQuery = from word in source
@@ -396,412 +396,419 @@ namespace EXOFiddlerInspector
 
             switch (this.session.responseCode)
                 {
-                    case 0:
-                       #region HTTP0
-                        /////////////////////////////
-                        //
-                        //  HTTP 0: No Response.
-                        //
+                #region HTTP0
+                case 0:
+                       
+                    /////////////////////////////
+                    //
+                    //  HTTP 0: No Response.
+                    //
 
-                        // Thinking a check on this.session["X-ResponseCode"] is needed to eliminate false positives here.
-                        _displayControl.SetResponseAlertTextBox("HTTP 0 No Response!");
-                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
-                        //
-                        /////////////////////////////
-                        break;
-                        #endregion
-                    case 200:
-                        #region HTTP200s
-                        /////////////////////////////
-                        //
-                        // HTTP 200
-                        //
+                    // Thinking a check on this.session["X-ResponseCode"] is needed to eliminate false positives here.
+                    _displayControl.SetResponseAlertTextBox("HTTP 0 No Response!");
+                    _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
+                    //
+                    /////////////////////////////
+                    break;
+                #endregion
+
+                #region HTTP200s
+                case 200:
+                    
+                    /////////////////////////////
+                    //
+                    // HTTP 200
+                    //
                         
-                        /////////////////////////////
-                        // 1. Exchange On-Premise Autodiscover redirect.
-                        if (this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1)
-                            {
-                                /*
-                                <?xml version="1.0" encoding="utf-8"?>
-                                <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
-                                <Response xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a">
-                                <Account>
-                                <Action>redirectAddr</Action>
-                                <RedirectAddr>user@contoso.mail.onmicrosoft.com</RedirectAddr>       
-                                </Account>
-                                </Response>
-                                </Autodiscover>
-                                */
-
-                                // Logic to detected the redirect address in this session.
-                                // 
-                                string RedirectResponseBody = this.session.GetResponseBodyAsString();
-                                int start = this.session.GetResponseBodyAsString().IndexOf("<RedirectAddr>");
-                                int end = this.session.GetResponseBodyAsString().IndexOf("</RedirectAddr>");
-                                int charcount = end - start;
-                                string RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
-                        
-                            if (RedirectAddress.Contains(".onmicrosoft.com"))
-                                {
-                                    _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect.");
-                                    _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address to Exchange Online found." + Environment.NewLine + RedirectAddress);
-                                }
-                                // Highlight if we got this far and do not have a redirect address which points to
-                                // Exchange Online such as: contoso.mail.onmicrosoft.com.
-                                else
-                                {
-                                    _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect.");
-                                    _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." + Environment.NewLine + RedirectAddress);
-                                    if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
-                                    {
-                                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address doesn't contain .onmicrosoft.com.");
-                                    }
-                                }
-                            }
-
-                        /////////////////////////////
-                        //
-                        // 2. Exchange On-Premise Autodiscover redirect - address can't be found
-                        //
-                        if ((this.session.utilFindInResponse("<Message>The email address can't be found.</Message>", false) > 1) && 
-                            (this.session.utilFindInResponse("<ErrorCode>500</ErrorCode>", false) > 1))
-                            {
-                                /*
-                                <?xml version="1.0" encoding="utf-8"?>
-                                <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
-                                  <Response>
-                                    <Error Time="12:03:32.8803744" Id="2422600485">
-                                      <ErrorCode>500</ErrorCode>
-                                      <Message>The email address can't be found.</Message>
-                                      <DebugData />
-                                    </Error>
-                                  </Response>
-                                </Autodiscover>
-                                */
-                                _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect: Error Code 500.");
-                                _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address can't be found.");
-                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
-                            {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address can't be found.");
-                            }
-                        }
-
-                        /////////////////////////////
-                        //
-                        // 99. No other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
-                        else
+                    /////////////////////////////
+                    // 1. Exchange On-Premise Autodiscover redirect.
+                    if (this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1)
                         {
-                            
-                            searchTerm = "Error";
+                            /*
+                            <?xml version="1.0" encoding="utf-8"?>
+                            <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
+                            <Response xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a">
+                            <Account>
+                            <Action>redirectAddr</Action>
+                            <RedirectAddr>user@contoso.mail.onmicrosoft.com</RedirectAddr>       
+                            </Account>
+                            </Response>
+                            </Autodiscover>
+                            */
 
-                            // Count the matches, which executes the query.  
-                            wordCount = matchQuery.Count();
-
-                            if (wordCount > 0)
+                            // Logic to detected the redirect address in this session.
+                            // 
+                            string RedirectResponseBody = this.session.GetResponseBodyAsString();
+                            int start = this.session.GetResponseBodyAsString().IndexOf("<RedirectAddr>");
+                            int end = this.session.GetResponseBodyAsString().IndexOf("</RedirectAddr>");
+                            int charcount = end - start;
+                            string RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
+                        
+                        if (RedirectAddress.Contains(".onmicrosoft.com"))
                             {
-                                string result = "After splitting all words in the response body the word 'error' was found " + wordCount + " time(s).";
-                                _displayControl.SetResponseAlertTextBox("Word Search 'Error' found in respone body.");
-                                _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP200ErrorsFound + result);
-                                if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
-                                {
-                                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 keyword 'error' found in response body!");
-                                }
+                                _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect.");
+                                _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address to Exchange Online found." + Environment.NewLine + RedirectAddress);
                             }
+                            // Highlight if we got this far and do not have a redirect address which points to
+                            // Exchange Online such as: contoso.mail.onmicrosoft.com.
                             else
                             {
-                                string result = "Keyword 'error' not found in response body.";
-                                _displayControl.SetResponseAlertTextBox("Word Search 'Error' found in respone body.");
-                                _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP200ErrorsFound + result);
+                                _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect.");
+                                _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." + Environment.NewLine + RedirectAddress);
+                                if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                                {
+                                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address doesn't contain .onmicrosoft.com.");
+                                }
                             }
                         }
-                        //
-                        /////////////////////////////
-                        break;
-                    case 201:
-                        /////////////////////////////
-                        //
-                        //  HTTP 201: Created.
-                        //
-                        _displayControl.SetResponseAlertTextBox("HTTP 201 Created.");
-                        _displayControl.SetResponseCommentsRichTextboxText("Not expecting this to be anything which needs attention for troubleshooting.");
-                        //
-                        /////////////////////////////
-                        break;
-                    case 204:
-                        /////////////////////////////
-                        //
-                        //  HTTP 204: No Content.
-                        //
-                        _displayControl.SetResponseAlertTextBox("HTTP 204 No Content.");
-                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
-                        //
-                        /////////////////////////////
-                        break;
-                        #endregion
-                    case 301:
-                        #region HTTP300s
-                        /////////////////////////////
-                        //
-                        //  HTTP 301: Moved Permanently.
-                        //
-                        _displayControl.SetResponseAlertTextBox("HTTP 301 Moved Permanently");
-                        _displayControl.SetResponseCommentsRichTextboxText("Nothing of concern here at this time.");
-                        //
-                        /////////////////////////////
-                        break;
-                    case 302:
-                        /////////////////////////////
-                        //
-                        //  HTTP 302: Found / Redirect.
-                        //
-                        if (session.utilFindInResponse("https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml", false) > 1)
-                        {
-                            _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect to Exchange Online.");
-                            _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect to Exchange Online.");
-                        }
-                        //
-                        /////////////////////////////
-                        break;
-                    case 304:
-                        /////////////////////////////
-                        //
-                        //  HTTP 304: Not modified.
-                        //
-                        _displayControl.SetResponseAlertTextBox("HTTP 304 Not Modified");
-                        _displayControl.SetResponseCommentsRichTextboxText("Nothing of concern here at this time.");
-                        //
-                        /////////////////////////////
-                        break;
-                    case 307:
-                        /////////////////////////////
-                        //
-                        //  HTTP 307: Temporary Redirect.
-                        //
 
-                        // Specific scenario where a HTTP 307 Temporary Redirect incorrectly send an EXO Autodiscover request to an On-Premise resource, breaking Outlook connectivity.
-                        if (this.session.hostname.Contains("autodiscover") && 
-                            (this.session.hostname.Contains("mail.onmicrosoft.com") && 
-                            (this.session.fullUrl.Contains("autodiscover") && 
-                            (this.session.ResponseHeaders["Location"] != "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml"))))
+                    /////////////////////////////
+                    //
+                    // 2. Exchange On-Premise Autodiscover redirect - address can't be found
+                    //
+                    if ((this.session.utilFindInResponse("<Message>The email address can't be found.</Message>", false) > 1) && 
+                        (this.session.utilFindInResponse("<ErrorCode>500</ErrorCode>", false) > 1))
                         {
-                            _displayControl.SetResponseAlertTextBox("HTTP 307 Temporary Redirect");
-                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP307IncorrectTemporaryRedirect);
-                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
-                            {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
-                            }
-                        
-                        }
-                        else
-                        {
-                            _displayControl.SetResponseAlertTextBox("HTTP 307 Temporary Redirect");
-                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP307TemporaryRedirect);
-                        }
-                        //
-                        /////////////////////////////
-                        break;
-                        #endregion
-                    case 401:
-                        #region HTTP400s
-                        /////////////////////////////
-                        //
-                        //  HTTP 401: UNAUTHORIZED.
-                        //
-                        _displayControl.SetResponseAlertTextBox("HTTP 401 Unauthorized");
-                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP401Unauthorized);
-                        //
-                        /////////////////////////////
-                        break;
-                    case 403:
-                        /////////////////////////////
-                        //
-                        //  HTTP 403: FORBIDDEN.
-                        //
-                        // Simply looking for the term "Access Denied" works fine using utilFindInResponse.
-                        // Specific scenario where a web proxy is blocking traffic.
-                        if (this.session.utilFindInResponse("Access Denied", false) > 1)
-                        {
-                            _displayControl.SetResponseAlertTextBox("HTTP 403 Access Denied!");
-                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP403WebProxyBlocking);
-                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
-                            {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
-                            }
-                        }
-                        else
-                        {
-                            // Pick up any 403 Forbidden and write data into the comments box.
-                            _displayControl.SetResponseAlertTextBox("HTTP 403 Forbidden!");
-                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP403Generic);
-                        }
-                        //
-                        /////////////////////////////
-                        break;
-                    case 404:
-                        /////////////////////////////
-                        //
-                        //  HTTP 404: Not Found.
-                        //
-                        // Pick up any 404 Not Found and write data into the comments box.
-                        _displayControl.SetResponseAlertTextBox("HTTP 404 Not Found");
-                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
-                        //
-                        /////////////////////////////
-                        break;
-                    case 429:
-                        /////////////////////////////
-                        //
-                        //  HTTP 429: Too Many Requests.
-                        //
-                        _displayControl.SetResponseAlertTextBox("HTTP 429 Too Many Requests");
-                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP429TooManyRequests);
-                        //
-                        /////////////////////////////
-                        break;
-                    case 440:
-                        /////////////////////////////
-                        //
-                        // HTTP 440: Need to know more about these.
-                        // For the moment do nothing.
-                        //
-                        /////////////////////////////
-                        break;
-                    #endregion
-                    case 500:
-                        #region HTTP500s
-                        /////////////////////////////
-                        //
-                        //  HTTP 500: Internal Server Error.
-                        //
-                        // Pick up any 500 Internal Server Error and write data into the comments box.
-                        // Specific scenario on Outlook and Office 365 invalid DNS lookup.
-                        // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
-                        // Pick up any 500 Internal Server Error and write data into the comments box.
-                        _displayControl.SetResponseAlertTextBox("HTTP 500 Internal Server Error");
-                        _displayControl.SetResponseCommentsRichTextboxText("HTTP 500 Internal Server Error");
+                            /*
+                            <?xml version="1.0" encoding="utf-8"?>
+                            <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
+                                <Response>
+                                <Error Time="12:03:32.8803744" Id="2422600485">
+                                    <ErrorCode>500</ErrorCode>
+                                    <Message>The email address can't be found.</Message>
+                                    <DebugData />
+                                </Error>
+                                </Response>
+                            </Autodiscover>
+                            */
+                            _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect: Error Code 500.");
+                            _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address can't be found.");
                         if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                         {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 500 Internal Server Error.");
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address can't be found.");
                         }
-                        break;
-                        //
-                        /////////////////////////////
-                    case 502:
-                        /////////////////////////////
-                        //
-                        //  HTTP 502: BAD GATEWAY.
-                        //
+                    }
 
-                        /////////////////////////////
-                        //
-                        // 1. telemetry false positive. <Need to validate in working scenarios>
-                        //
-                        if ((this.session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443") &&
-                            (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
-                            {
-                                _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
-                                _displayControl.SetResponseCommentsRichTextboxText("Unlikely the cause of Outlook / OWA connectivity.");
-                            }
-
-                        /////////////////////////////
-                        //
-                        // 2. Exchange Online Autodiscover False Positive.
-                        //
-                        // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
-                        //      autodiscover.domain.onmicrosoft.com:443
-                        else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
-                            (this.session.utilFindInResponse("autodiscover", false) > 1) &&
-                            (this.session.utilFindInResponse(":443", false) > 1))
-                                {
-                                    _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
-                                    _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
-                                }
-
-                        /////////////////////////////
-                        //
-                        // 3. Exchange Online DNS lookup on contoso.onmicrosoft.com, False Positive!?
-                        //
-                        // Specific scenario on Outlook and Office 365 invalid DNS lookup.
-                        // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
-                        else if  ((this.session.utilFindInResponse(".onmicrosoft.com", false) > 1) && 
-                            (this.session.utilFindInResponse("DNS Lookup for ", false) > 1) &&
-                            (this.session.utilFindInResponse(" failed.", false) > 1))
-                            {
-                                _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
-                                _displayControl.SetResponseCommentsRichTextboxText("DNS record does not exist. Connection on port 443 will not work by design.");
-                            }
-
-                        /////////////////////////////
-                        //
-                        // 99. Everything else.
-                        //
-                        else
-                        {
-                            // Pick up any other 502 Bad Gateway and write data into the comments box.
-                            _displayControl.SetResponseAlertTextBox("HTTP 502 Bad Gateway");
-                            _displayControl.SetResponseCommentsRichTextboxText("Potential to cause the issue you are investigating. Do you see expected responses beyond this session in the trace?");
-                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
-                            {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway.");
-                            }
-                        }
-                        //
-                        /////////////////////////////
-                        break;
-                    case 503:
-                        /////////////////////////////
-                        //
-                        //  HTTP 503: SERVICE UNAVAILABLE.
-                        //
-                        // Specific scenario where Federation service is unavailable, preventing authentication, preventing access to Office 365 mailbox.
-                        searchTerm = "FederatedStsUnreachable";
-                        //"Service Unavailable"
+                    /////////////////////////////
+                    //
+                    // 99. No other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
+                    else
+                    {
+                            
+                        searchTerm = "Error";
 
                         // Count the matches, which executes the query.  
                         wordCount = matchQuery.Count();
+
                         if (wordCount > 0)
                         {
-                            //XAnchorMailbox = this.session.oRequest["X-AnchorMailbox"];
-                            RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=" + this.session.oRequest["X-User-Identity"] + "&xml=1";
-
-                            _displayControl.SetResponseAlertTextBox("The federation service is unreachable or unavailable.");
-                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP503FederatedSTSUnreachableStart + Environment.NewLine + RealmURL + Environment.NewLine + Properties.Settings.Default.HTTP503FederatedSTSUnreachableEnd);
+                            string result = "After splitting all words in the response body the word 'error' was found " + wordCount + " time(s).";
+                            _displayControl.SetResponseAlertTextBox("Word Search 'Error' found in respone body.");
+                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP200ErrorsFound + result);
                             if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                             {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 keyword 'error' found in response body!");
                             }
                         }
                         else
                         {
-                            // Pick up any other 503 Service Unavailable and write data into the comments box.
-                            _displayControl.SetResponseAlertTextBox("HTTP 503 Service Unavailable.");
-                            _displayControl.SetResponseCommentsRichTextboxText("HTTP 503 Service Unavailable.");
-                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
-                            {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable.");
-                            }
+                            string result = "Keyword 'error' not found in response body.";
+                            _displayControl.SetResponseAlertTextBox("Word Search 'Error' found in respone body.");
+                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP200ErrorsFound + result);
                         }
-                        //
-                        /////////////////////////////
-                        break;
-                    case 504:
-                        /////////////////////////////
-                        //
-                        //  HTTP 504: GATEWAY TIMEOUT.
-                        //
-                        // Pick up any 504 Gateway Timeout and write data into the comments box.
-                        _displayControl.SetResponseAlertTextBox("HTTP 504 Gateway Timeout");
-                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
+                    }
+                    //
+                    /////////////////////////////
+                    break;
+                case 201:
+                    /////////////////////////////
+                    //
+                    //  HTTP 201: Created.
+                    //
+                    _displayControl.SetResponseAlertTextBox("HTTP 201 Created.");
+                    _displayControl.SetResponseCommentsRichTextboxText("Not expecting this to be anything which needs attention for troubleshooting.");
+                    //
+                    /////////////////////////////
+                    break;
+                case 204:
+                    /////////////////////////////
+                    //
+                    //  HTTP 204: No Content.
+                    //
+                    _displayControl.SetResponseAlertTextBox("HTTP 204 No Content.");
+                    _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
+                    //
+                    /////////////////////////////
+                    break;
+                #endregion
+
+                #region HTTP300s
+                case 301:
+                    /////////////////////////////
+                    //
+                    //  HTTP 301: Moved Permanently.
+                    //
+                    _displayControl.SetResponseAlertTextBox("HTTP 301 Moved Permanently");
+                    _displayControl.SetResponseCommentsRichTextboxText("Nothing of concern here at this time.");
+                    //
+                    /////////////////////////////
+                    break;
+                case 302:
+                    /////////////////////////////
+                    //
+                    //  HTTP 302: Found / Redirect.
+                    //
+                    if (session.utilFindInResponse("https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml", false) > 1)
+                    {
+                        _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect to Exchange Online.");
+                        _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect to Exchange Online.");
+                    }
+                    //
+                    /////////////////////////////
+                    break;
+                case 304:
+                    /////////////////////////////
+                    //
+                    //  HTTP 304: Not modified.
+                    //
+                    _displayControl.SetResponseAlertTextBox("HTTP 304 Not Modified");
+                    _displayControl.SetResponseCommentsRichTextboxText("Nothing of concern here at this time.");
+                    //
+                    /////////////////////////////
+                    break;
+                case 307:
+                    /////////////////////////////
+                    //
+                    //  HTTP 307: Temporary Redirect.
+                    //
+
+                    // Specific scenario where a HTTP 307 Temporary Redirect incorrectly send an EXO Autodiscover request to an On-Premise resource, breaking Outlook connectivity.
+                    if (this.session.hostname.Contains("autodiscover") && 
+                        (this.session.hostname.Contains("mail.onmicrosoft.com") && 
+                        (this.session.fullUrl.Contains("autodiscover") && 
+                        (this.session.ResponseHeaders["Location"] != "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml"))))
+                    {
+                        _displayControl.SetResponseAlertTextBox("HTTP 307 Temporary Redirect");
+                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP307IncorrectTemporaryRedirect);
                         if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                         {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 504 Gateway Timeout.");
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
                         }
-                        //
-                        /////////////////////////////
-                        break;
-                        #endregion
-                    default:
-                        break;
+                        
+                    }
+                    else
+                    {
+                        _displayControl.SetResponseAlertTextBox("HTTP 307 Temporary Redirect");
+                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP307TemporaryRedirect);
+                    }
+                    //
+                    /////////////////////////////
+                    break;
+                #endregion
+
+                #region HTTP400s
+                case 401:
+                    /////////////////////////////
+                    //
+                    //  HTTP 401: UNAUTHORIZED.
+                    //
+                    _displayControl.SetResponseAlertTextBox("HTTP 401 Unauthorized");
+                    _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP401Unauthorized);
+                    //
+                    /////////////////////////////
+                    break;
+                case 403:
+                    /////////////////////////////
+                    //
+                    //  HTTP 403: FORBIDDEN.
+                    //
+                    // Simply looking for the term "Access Denied" works fine using utilFindInResponse.
+                    // Specific scenario where a web proxy is blocking traffic.
+                    if (this.session.utilFindInResponse("Access Denied", false) > 1)
+                    {
+                        _displayControl.SetResponseAlertTextBox("HTTP 403 Access Denied!");
+                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP403WebProxyBlocking);
+                        if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                        {
+                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
+                        }
+                    }
+                    else
+                    {
+                        // Pick up any 403 Forbidden and write data into the comments box.
+                        _displayControl.SetResponseAlertTextBox("HTTP 403 Forbidden!");
+                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP403Generic);
+                    }
+                    //
+                    /////////////////////////////
+                    break;
+                case 404:
+                    /////////////////////////////
+                    //
+                    //  HTTP 404: Not Found.
+                    //
+                    // Pick up any 404 Not Found and write data into the comments box.
+                    _displayControl.SetResponseAlertTextBox("HTTP 404 Not Found");
+                    _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
+                    //
+                    /////////////////////////////
+                    break;
+                case 429:
+                    /////////////////////////////
+                    //
+                    //  HTTP 429: Too Many Requests.
+                    //
+                    _displayControl.SetResponseAlertTextBox("HTTP 429 Too Many Requests");
+                    _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP429TooManyRequests);
+                    //
+                    /////////////////////////////
+                    break;
+                case 440:
+                    /////////////////////////////
+                    //
+                    // HTTP 440: Need to know more about these.
+                    // For the moment do nothing.
+                    //
+                    /////////////////////////////
+                    break;
+                #endregion
+
+                #region HTTP500s
+                case 500:
+                    /////////////////////////////
+                    //
+                    //  HTTP 500: Internal Server Error.
+                    //
+                    // Pick up any 500 Internal Server Error and write data into the comments box.
+                    // Specific scenario on Outlook and Office 365 invalid DNS lookup.
+                    // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
+                    // Pick up any 500 Internal Server Error and write data into the comments box.
+                    _displayControl.SetResponseAlertTextBox("HTTP 500 Internal Server Error");
+                    _displayControl.SetResponseCommentsRichTextboxText("HTTP 500 Internal Server Error");
+                    if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                    {
+                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 500 Internal Server Error.");
+                    }
+                    break;
+                    //
+                    /////////////////////////////
+                case 502:
+                    /////////////////////////////
+                    //
+                    //  HTTP 502: BAD GATEWAY.
+                    //
+
+                    /////////////////////////////
+                    //
+                    // 1. telemetry false positive. <Need to validate in working scenarios>
+                    //
+                    if ((this.session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443") &&
+                        (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
+                        {
+                            _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
+                            _displayControl.SetResponseCommentsRichTextboxText("Unlikely the cause of Outlook / OWA connectivity.");
+                        }
+
+                    /////////////////////////////
+                    //
+                    // 2. Exchange Online Autodiscover False Positive.
+                    //
+                    // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
+                    //      autodiscover.domain.onmicrosoft.com:443
+                    else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
+                        (this.session.utilFindInResponse("autodiscover", false) > 1) &&
+                        (this.session.utilFindInResponse(":443", false) > 1))
+                            {
+                                _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
+                                _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
+                            }
+
+                    /////////////////////////////
+                    //
+                    // 3. Exchange Online DNS lookup on contoso.onmicrosoft.com, False Positive!?
+                    //
+                    // Specific scenario on Outlook and Office 365 invalid DNS lookup.
+                    // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
+                    else if  ((this.session.utilFindInResponse(".onmicrosoft.com", false) > 1) && 
+                        (this.session.utilFindInResponse("DNS Lookup for ", false) > 1) &&
+                        (this.session.utilFindInResponse(" failed.", false) > 1))
+                        {
+                            _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
+                            _displayControl.SetResponseCommentsRichTextboxText("DNS record does not exist. Connection on port 443 will not work by design.");
+                        }
+
+                    /////////////////////////////
+                    //
+                    // 99. Everything else.
+                    //
+                    else
+                    {
+                        // Pick up any other 502 Bad Gateway and write data into the comments box.
+                        _displayControl.SetResponseAlertTextBox("HTTP 502 Bad Gateway");
+                        _displayControl.SetResponseCommentsRichTextboxText("Potential to cause the issue you are investigating. Do you see expected responses beyond this session in the trace?");
+                        if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway.");
+                        }
+                    }
+                    //
+                    /////////////////////////////
+                    break;
+                case 503:
+                    /////////////////////////////
+                    //
+                    //  HTTP 503: SERVICE UNAVAILABLE.
+                    //
+                    // Specific scenario where Federation service is unavailable, preventing authentication, preventing access to Office 365 mailbox.
+                    searchTerm = "FederatedStsUnreachable";
+                    //"Service Unavailable"
+
+                    // Count the matches, which executes the query.  
+                    wordCount = matchQuery.Count();
+                    if (wordCount > 0)
+                    {
+                        //XAnchorMailbox = this.session.oRequest["X-AnchorMailbox"];
+                        RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=" + this.session.oRequest["X-User-Identity"] + "&xml=1";
+
+                        _displayControl.SetResponseAlertTextBox("The federation service is unreachable or unavailable.");
+                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP503FederatedSTSUnreachableStart + Environment.NewLine + RealmURL + Environment.NewLine + Properties.Settings.Default.HTTP503FederatedSTSUnreachableEnd);
+                        if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
+                        }
+                    }
+                    else
+                    {
+                        // Pick up any other 503 Service Unavailable and write data into the comments box.
+                        _displayControl.SetResponseAlertTextBox("HTTP 503 Service Unavailable.");
+                        _displayControl.SetResponseCommentsRichTextboxText("HTTP 503 Service Unavailable.");
+                        if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable.");
+                        }
+                    }
+                    //
+                    /////////////////////////////
+                    break;
+                case 504:
+                    /////////////////////////////
+                    //
+                    //  HTTP 504: GATEWAY TIMEOUT.
+                    //
+                    // Pick up any 504 Gateway Timeout and write data into the comments box.
+                    _displayControl.SetResponseAlertTextBox("HTTP 504 Gateway Timeout");
+                    _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
+                    if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                    {
+                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 504 Gateway Timeout.");
+                    }
+                    //
+                    /////////////////////////////
+                    break;
+                    #endregion
+
+                default:
+                    break;
                 }
         }
 
