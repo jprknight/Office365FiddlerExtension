@@ -9,12 +9,12 @@ namespace EXOFiddlerInspector
 {
     public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or Fiddler won't see it!
     {
-
+        #region MenuUI
         /////////////////
         // 
         // Setup for menu.
         //
-        
+
         private MenuItem ExchangeOnlineTopMenu;
 
         private bool boolExtensionEnabled = false;
@@ -222,12 +222,15 @@ namespace EXOFiddlerInspector
                 this.miAppLoggingEnabled.Enabled = false;
             }
         }
+        //
+        /////////////////
+        #endregion
 
-    /////////////////
-    //
-    // OnLoad
-    //
-    public void OnLoad()
+        /////////////////
+        //
+        // OnLoad
+        //
+        public void OnLoad()
         {
             // If the FirstRun application preference is set to false, then the extension has previously run.
             // The function FirstRunEnableMenuOptions sets the FirstRun app preference to false.
@@ -393,7 +396,9 @@ namespace EXOFiddlerInspector
         }
         //
         /////////////////
+        #endregion
 
+        #region CheckForUpdates
         /////////////////
         //
         // Check for updates.
@@ -540,434 +545,489 @@ namespace EXOFiddlerInspector
             //string[] searchTerms = { "Error", "FederatedStsUnreachable" };
 
             #region ColouriseSessionsSwitchStatement
-            switch (this.session.responseCode)
+            /////////////////////////////
+            //
+            //  Broader code logic for sessions, where the response code cannot be used as in the switch statement.
+            //
+
+            /////////////////////////////
+            //
+            // From a scenario where Apache Web Server found to be answering Autodiscover calls and throwing HTTP 301 & 405 responses.
+            //
+            if ((this.session.url.Contains("autodiscover") && (this.session.oResponse["server"] == "Apache")))
             {
-                #region HTTP0
-                case 0:
-                    /////////////////////////////
-                    //
-                    //  HTTP 0: No Response.
-                    //
-                    this.session["ui-backcolor"] = HTMLColourRed;
-                    this.session["ui-color"] = "black";
-                    //
-                    /////////////////////////////
-                    break;
-                #endregion
+                this.session["ui-backcolor"] = HTMLColourRed;
+                this.session["ui-color"] = "black";
+                if (boolAppLoggingEnabled && boolExtensionEnabled)
+                {
+                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 405 Method Not Allowed; Apache is answering Autodiscover requests!");
+                }
+            }
+            // If the above is not true, then drop into the switch statement based on response codes.
+            else
+            {
+                /////////////////////////////
+                //
+                // Response code logic.
+                //
+                switch (this.session.responseCode)
+                {
+                    #region HTTP0
+                    case 0:
+                        /////////////////////////////
+                        //
+                        //  HTTP 0: No Response.
+                        //
+                        this.session["ui-backcolor"] = HTMLColourRed;
+                        this.session["ui-color"] = "black";
+                        //
+                        /////////////////////////////
+                        break;
+                    #endregion
 
-                #region HTTP200s
-                case 200:
-                    /////////////////////////////
-                    //
-                    // HTTP 200
-                    //
+                    #region HTTP200s
+                    case 200:
+                        /////////////////////////////
+                        //
+                        // HTTP 200
+                        //
 
-                    /////////////////////////////
-                    // 1. Exchange On-Premise Autodiscover redirect.
-                    if (this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1)
-                    {
-                        /*
-                        <?xml version="1.0" encoding="utf-8"?>
-                        <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
-                        <Response xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a">
-                        <Account>
-                        <Action>redirectAddr</Action>
-                        <RedirectAddr>user@contoso.mail.onmicrosoft.com</RedirectAddr>       
-                        </Account>
-                        </Response>
-                        </Autodiscover>
-                        */
-
-                        // Logic to detected the redirect address in this session.
-                        // 
-                        string RedirectResponseBody = this.session.GetResponseBodyAsString();
-                        int start = this.session.GetResponseBodyAsString().IndexOf("<RedirectAddr>");
-                        int end = this.session.GetResponseBodyAsString().IndexOf("</RedirectAddr>");
-                        int charcount = end - start;
-                        string RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
-
-                        if (RedirectAddress.Contains(".onmicrosoft.com"))
+                        /////////////////////////////
+                        // 1. Exchange On-Premise Autodiscover redirect.
+                        if (this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1)
                         {
-                            this.session["ui-backcolor"] = HTMLColourGreen;
+                            /*
+                            <?xml version="1.0" encoding="utf-8"?>
+                            <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
+                            <Response xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a">
+                            <Account>
+                            <Action>redirectAddr</Action>
+                            <RedirectAddr>user@contoso.mail.onmicrosoft.com</RedirectAddr>       
+                            </Account>
+                            </Response>
+                            </Autodiscover>
+                            */
+
+                            // Logic to detected the redirect address in this session.
+                            // 
+                            string RedirectResponseBody = this.session.GetResponseBodyAsString();
+                            int start = this.session.GetResponseBodyAsString().IndexOf("<RedirectAddr>");
+                            int end = this.session.GetResponseBodyAsString().IndexOf("</RedirectAddr>");
+                            int charcount = end - start;
+                            string RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
+
+                            if (RedirectAddress.Contains(".onmicrosoft.com"))
+                            {
+                                this.session["ui-backcolor"] = HTMLColourGreen;
+                                this.session["ui-color"] = "black";
+                                if (boolAppLoggingEnabled && boolExtensionEnabled)
+                                {
+                                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
+                                }
+                            }
+                            // Highlight if we got this far and do not have a redirect address which points to
+                            // Exchange Online such as: contoso.mail.onmicrosoft.com.
+                            else
+                            {
+                                this.session["ui-backcolor"] = HTMLColourRed;
+                                this.session["ui-color"] = "black";
+                                if (boolAppLoggingEnabled && boolExtensionEnabled)
+                                {
+                                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
+                                }
+                            }
+                        }
+
+                        /////////////////////////////
+                        //
+                        // 2. Exchange On-Premise Autodiscover redirect - address can't be found
+                        //
+                        if ((this.session.utilFindInResponse("<Message>The email address can't be found.</Message>", false) > 1) &&
+                            (this.session.utilFindInResponse("<ErrorCode>500</ErrorCode>", false) > 1))
+                        {
+                            /*
+                            <?xml version="1.0" encoding="utf-8"?>
+                            <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
+                              <Response>
+                                <Error Time="12:03:32.8803744" Id="2422600485">
+                                  <ErrorCode>500</ErrorCode>
+                                  <Message>The email address can't be found.</Message>
+                                  <DebugData />
+                                </Error>
+                              </Response>
+                            </Autodiscover>
+                            */
+                            this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             if (boolAppLoggingEnabled && boolExtensionEnabled)
                             {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
                             }
                         }
-                        // Highlight if we got this far and do not have a redirect address which points to
-                        // Exchange Online such as: contoso.mail.onmicrosoft.com.
+
+                        /////////////////////////////
+                        //
+                        // 99. No other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
+                        else
+                        {
+                            searchTerm = "Error";
+
+                            // Count the matches, which executes the query.  
+                            wordCount = matchQuery.Count();
+
+                            if (wordCount > 0)
+                            {
+                                // Special attention to HTTP 200's where the keyword 'error' is found.
+                                // Red text on black background.
+                                this.session["ui-backcolor"] = "black";
+                                this.session["ui-color"] = "red";
+                            }
+                            else
+                            {
+                                // All good.
+                                this.session["ui-backcolor"] = HTMLColourGreen;
+                                this.session["ui-color"] = "black";
+                            }
+
+                            searchTerm = "failed";
+
+                            // Count the matches, which executes the query.  
+                            wordCount = matchQuery.Count();
+
+                            if (wordCount > 0)
+                            {
+                                // Special attention to HTTP 200's where the keyword 'error' is found.
+                                // Red text on black background.
+                                this.session["ui-backcolor"] = "black";
+                                this.session["ui-color"] = "red";
+                            }
+                            else
+                            {
+                                // All good.
+                                this.session["ui-backcolor"] = HTMLColourGreen;
+                                this.session["ui-color"] = "black";
+                            }
+                        }
+                        //
+                        /////////////////////////////
+                        break;
+                    case 201:
+                        /////////////////////////////
+                        //
+                        //  HTTP 201: Created.
+                        //
+                        this.session["ui-backcolor"] = HTMLColourGreen;
+                        this.session["ui-color"] = "black";
+                        //
+                        /////////////////////////////
+                        break;
+                    case 204:
+                        /////////////////////////////
+                        //
+                        //  HTTP 204: No Content.
+                        //
+                        this.session["ui-backcolor"] = HTMLColourGreen;
+                        this.session["ui-color"] = "black";
+                        //
+                        /////////////////////////////
+                        break;
+                    #endregion
+
+                    #region HTTP300s
+                    case 301:
+                        /////////////////////////////
+                        //
+                        //  HTTP 301: Moved Permanently.
+                        //
+                        this.session["ui-backcolor"] = HTMLColourGreen;
+                        this.session["ui-color"] = "black";
+                        //
+                        /////////////////////////////
+                        break;
+                    case 302:
+                        /////////////////////////////
+                        //
+                        //  HTTP 302: Found / Redirect.
+                        //            
+                        this.session["ui-backcolor"] = HTMLColourGreen;
+                        this.session["ui-color"] = "black";
+                        //
+                        /////////////////////////////
+                        break;
+                    case 304:
+                        /////////////////////////////
+                        //
+                        //  HTTP 304: Not modified.
+                        //
+                        this.session["ui-backcolor"] = HTMLColourGreen;
+                        this.session["ui-color"] = "black";
+                        //
+                        /////////////////////////////
+                        break;
+                    case 307:
+                        /////////////////////////////
+                        //
+                        //  HTTP 307: Temporary Redirect.
+                        //
+
+                        // Specific scenario where a HTTP 307 Temporary Redirect incorrectly send an EXO Autodiscover request to an On-Premise resource, breaking Outlook connectivity.
+                        if (this.session.hostname.Contains("autodiscover") &&
+                            (this.session.hostname.Contains("mail.onmicrosoft.com") &&
+                            (this.session.fullUrl.Contains("autodiscover") &&
+                            (this.session.ResponseHeaders["Location"] != "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml"))))
+                        {
+                            // Redirect location has been found to send the Autodiscover connection somewhere else other than'
+                            // Exchange Online, highlight.
+                            this.session["ui-backcolor"] = HTMLColourRed;
+                            this.session["ui-color"] = "black";
+                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
+                            }
+                        }
+                        else
+                        {
+                            // The above scenario is not seem, however Temporary Redirects are not exactly normally expected to be seen.
+                            // Highlight as a warning.
+                            this.session["ui-backcolor"] = HTMLColourOrange;
+                            this.session["ui-color"] = "black";
+                        }
+                        //
+                        /////////////////////////////
+                        break;
+                    #endregion
+
+                    #region HTTP400s
+                    case 401:
+
+                        /////////////////////////////
+                        //
+                        //  HTTP 401: UNAUTHORIZED.
+                        //
+                        this.session["ui-backcolor"] = HTMLColourOrange;
+                        this.session["ui-color"] = "black";
+                        //
+                        /////////////////////////////
+                        break;
+                    case 403:
+                        /////////////////////////////
+                        //
+                        //  HTTP 403: FORBIDDEN.
+                        //
+                        // Looking for the term "Access Denied" works fine using utilFindInResponse.
+                        // Specific scenario where a web proxy is blocking traffic.
+                        if (this.session.utilFindInResponse("Access Denied", false) > 1)
+                        {
+                            this.session["ui-backcolor"] = HTMLColourRed;
+                            this.session["ui-color"] = "black";
+                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
+                            }
+                        }
+                        else
+                        {
+                            // Potentially nothing to worry about. Not marking in log.
+                            this.session["ui-backcolor"] = HTMLColourRed;
+                            this.session["ui-color"] = "black";
+                        }
+                        //
+                        /////////////////////////////
+                        break;
+                    case 404:
+                        /////////////////////////////
+                        //
+                        //  HTTP 404: Not Found.
+                        //
+                        this.session["ui-backcolor"] = HTMLColourOrange;
+                        this.session["ui-color"] = "black";
+                        //
+                        /////////////////////////////
+                        break;
+                    case 405:
+                        /////////////////////////////
+                        //
+                        //  HTTP 405: Method Not Allowed.
+                        //
+                        this.session["ui-backcolor"] = HTMLColourOrange;
+                        this.session["ui-color"] = "black";
+                        //
+                        /////////////////////////////
+                        break;
+                    case 429:
+                        /////////////////////////////
+                        //
+                        //  HTTP 429: Too Many Requests.
+                        //
+                        this.session["ui-backcolor"] = HTMLColourOrange;
+                        this.session["ui-color"] = "black";
+                        //
+                        /////////////////////////////
+                        break;
+                    case 440:
+                        /////////////////////////////
+                        //
+                        // HTTP 440: Need to know more about these.
+                        // For the moment do nothing.
+                        //
+                        /////////////////////////////
+                        break;
+                    #endregion
+
+                    #region HTTP500s
+                    case 500:
+                        /////////////////////////////
+                        //
+                        //  HTTP 500: Internal Server Error.
+                        //
+                        // Pick up any 500 Internal Server Error and write data into the comments box.
+                        // Specific scenario on Outlook and Office 365 invalid DNS lookup.
+                        // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
+                        this.session["ui-backcolor"] = HTMLColourRed;
+                        this.session["ui-color"] = "black";
+                        if (boolAppLoggingEnabled && boolExtensionEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 500 Internal Server Error.");
+                        }
+                        //
+                        /////////////////////////////
+                        break;
+                    case 502:
+                        /////////////////////////////
+                        //
+                        //  HTTP 502: BAD GATEWAY.
+                        //
+
+
+                        // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
+                        //      autodiscover.domain.onmicrosoft.com:443
+
+                        // Testing because I am finding colourisation based in the nested if statement below is not working.
+                        // Strangely the same HTTP 502 nested if statement logic works fine in EXOFiddlerInspector.cs to write
+                        // response alert and comment.
+                        // From further testing this seems to come down to timing, clicking the sessions as they come into Fiddler
+                        // I see the responsecode / response body unavailable, it then populates after a few sessions. I presume 
+                        // since the UI has moved on already the session cannot be colourised. 
+
+                        // On testing with loadSAZ instead this same code colourises sessions fine.
+
+                        // Altered if statements from being bested to using && to see if this inproves here.
+                        // This appears to be the only section in this code which has a session colourisation issue.
+
+                        /////////////////////////////
+                        //
+                        // 1. telemetry false positive. <Need to validate in working scenarios>
+                        //
+                        if ((this.session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443") &&
+                            (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
+                        {
+                            this.session["ui-backcolor"] = HTMLColourBlue;
+                            this.session["ui-color"] = "black";
+                        }
+
+                        /////////////////////////////
+                        //
+                        // 2. Exchange Online Autodiscover False Positive.
+                        //
+                        else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
+                            (this.session.utilFindInResponse("autodiscover", false) > 1) &&
+                            (this.session.utilFindInResponse(":443", false) > 1))
+                        {
+                            this.session["ui-backcolor"] = HTMLColourBlue;
+                            this.session["ui-color"] = "black";
+                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
+                            }
+                        }
+
+                        /////////////////////////////
+                        //
+                        // 3. Exchange Online DNS lookup on contoso.onmicrosoft.com, False Positive!?
+                        //
+                        // Specific scenario on Outlook and Office 365 invalid DNS lookup.
+                        // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
+                        else if ((this.session.utilFindInResponse(".onmicrosoft.com", false) > 1) &&
+                                (this.session.utilFindInResponse("DNS Lookup for ", false) > 1) &&
+                                (this.session.utilFindInResponse(" failed.", false) > 1))
+                        {
+                            this.session["ui-backcolor"] = HTMLColourBlue;
+                            this.session["ui-color"] = "black";
+                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
+                            }
+                        }
+
+                        /////////////////////////////
+                        //
+                        // 99. Everything else.
+                        //
+                        else
+                        {
+                            // Pick up any other 502 Bad Gateway call it out.
+                            this.session["ui-backcolor"] = HTMLColourRed;
+                            this.session["ui-color"] = "black";
+                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway.");
+                            }
+                        }
+                        //
+                        /////////////////////////////
+                        break;
+                    case 503:
+                        /////////////////////////////
+                        //
+                        //  HTTP 503: SERVICE UNAVAILABLE.
+                        //
+                        // Call out all 503 Service Unavailable as something to focus on.
+                        searchTerm = "FederatedStsUnreachable";
+                        //"Service Unavailable"
+
+                        // Count the matches, which executes the query.  
+                        wordCount = matchQuery.Count();
+                        if (wordCount > 0)
+                        {
+                            this.session["ui-backcolor"] = HTMLColourRed;
+                            this.session["ui-color"] = "black";
+                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
+                            }
+                        }
                         else
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             if (boolAppLoggingEnabled && boolExtensionEnabled)
                             {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable.");
                             }
                         }
-                    }
-
-                    /////////////////////////////
-                    //
-                    // 2. Exchange On-Premise Autodiscover redirect - address can't be found
-                    //
-                    if ((this.session.utilFindInResponse("<Message>The email address can't be found.</Message>", false) > 1) &&
-                        (this.session.utilFindInResponse("<ErrorCode>500</ErrorCode>", false) > 1))
-                    {
-                        /*
-                        <?xml version="1.0" encoding="utf-8"?>
-                        <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
-                          <Response>
-                            <Error Time="12:03:32.8803744" Id="2422600485">
-                              <ErrorCode>500</ErrorCode>
-                              <Message>The email address can't be found.</Message>
-                              <DebugData />
-                            </Error>
-                          </Response>
-                        </Autodiscover>
-                        */
+                        //
+                        /////////////////////////////
+                        break;
+                    case 504:
+                        /////////////////////////////
+                        //
+                        //  HTTP 504: GATEWAY TIMEOUT.
+                        //
+                        // Call out all 504 Gateway Timeout as something to focus on.
                         this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
                         if (boolAppLoggingEnabled && boolExtensionEnabled)
                         {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 504 Gateway Timeout.");
                         }
-                    }
+                        //
+                        /////////////////////////////
+                        break;
+                    #endregion
 
-                    /////////////////////////////
-                    //
-                    // 99. No other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
-                    else
-                    {
-                        searchTerm = "Error";
-
-                        // Count the matches, which executes the query.  
-                        wordCount = matchQuery.Count();
-
-                        if (wordCount > 0)
-                        {
-                            // Special attention to HTTP 200's where the keyword 'error' is found.
-                            // Red text on black background.
-                            this.session["ui-backcolor"] = "black";
-                            this.session["ui-color"] = "red";
-                        }
-                        else
-                        {
-                            // All good.
-                            this.session["ui-backcolor"] = HTMLColourGreen;
-                            this.session["ui-color"] = "black";
-                        }
-                    }
-                    //
-                    /////////////////////////////
-                    break;
-                case 201:
-                    /////////////////////////////
-                    //
-                    //  HTTP 201: Created.
-                    //
-                    this.session["ui-backcolor"] = HTMLColourGreen;
-                    this.session["ui-color"] = "black";
-                    //
-                    /////////////////////////////
-                    break;
-                case 204:
-                    /////////////////////////////
-                    //
-                    //  HTTP 204: No Content.
-                    //
-                    this.session["ui-backcolor"] = HTMLColourGreen;
-                    this.session["ui-color"] = "black";
-                    //
-                    /////////////////////////////
-                    break;
-                #endregion
-
-                #region HTTP300s
-                case 301:
-                    /////////////////////////////
-                    //
-                    //  HTTP 301: Moved Permanently.
-                    //
-                    this.session["ui-backcolor"] = HTMLColourGreen;
-                    this.session["ui-color"] = "black";
-                    //
-                    /////////////////////////////
-                    break;
-                case 302:
-                    /////////////////////////////
-                    //
-                    //  HTTP 302: Found / Redirect.
-                    //            
-                    this.session["ui-backcolor"] = HTMLColourGreen;
-                    this.session["ui-color"] = "black";
-                    //
-                    /////////////////////////////
-                    break;
-                case 304:
-                    /////////////////////////////
-                    //
-                    //  HTTP 304: Not modified.
-                    //
-                    this.session["ui-backcolor"] = HTMLColourGreen;
-                    this.session["ui-color"] = "black";
-                    //
-                    /////////////////////////////
-                    break;
-                case 307:
-                    /////////////////////////////
-                    //
-                    //  HTTP 307: Temporary Redirect.
-                    //
-
-                    // Specific scenario where a HTTP 307 Temporary Redirect incorrectly send an EXO Autodiscover request to an On-Premise resource, breaking Outlook connectivity.
-                    if (this.session.hostname.Contains("autodiscover") &&
-                        (this.session.hostname.Contains("mail.onmicrosoft.com") &&
-                        (this.session.fullUrl.Contains("autodiscover") &&
-                        (this.session.ResponseHeaders["Location"] != "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml"))))
-                    {
-                        // Redirect location has been found to send the Autodiscover connection somewhere else other than'
-                        // Exchange Online, highlight.
-                        this.session["ui-backcolor"] = HTMLColourRed;
-                        this.session["ui-color"] = "black";
-                        if (boolAppLoggingEnabled && boolExtensionEnabled)
-                        {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
-                        }
-                    }
-                    else
-                    {
-                        // The above scenario is not seem, however Temporary Redirects are not exactly normally expected to be seen.
-                        // Highlight as a warning.
-                        this.session["ui-backcolor"] = HTMLColourOrange;
-                        this.session["ui-color"] = "black";
-                    }
-                    //
-                    /////////////////////////////
-                    break;
-                #endregion
-
-                #region HTTP400s
-                case 401:
-
-                    /////////////////////////////
-                    //
-                    //  HTTP 401: UNAUTHORIZED.
-                    //
-                    this.session["ui-backcolor"] = HTMLColourOrange;
-                    this.session["ui-color"] = "black";
-                    //
-                    /////////////////////////////
-                    break;
-                case 403:
-                    /////////////////////////////
-                    //
-                    //  HTTP 403: FORBIDDEN.
-                    //
-                    // Looking for the term "Access Denied" works fine using utilFindInResponse.
-                    // Specific scenario where a web proxy is blocking traffic.
-                    if (this.session.utilFindInResponse("Access Denied", false) > 1)
-                    {
-                        this.session["ui-backcolor"] = HTMLColourRed;
-                        this.session["ui-color"] = "black";
-                        if (boolAppLoggingEnabled && boolExtensionEnabled)
-                        {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
-                        }
-                    }
-                    else
-                    {
-                        // Potentially nothing to worry about. Not marking in log.
-                        this.session["ui-backcolor"] = HTMLColourRed;
-                        this.session["ui-color"] = "black";
-                    }
-                    //
-                    /////////////////////////////
-                    break;
-                case 404:
-                    /////////////////////////////
-                    //
-                    //  HTTP 404: Not Found.
-                    //
-                    this.session["ui-backcolor"] = HTMLColourOrange;
-                    this.session["ui-color"] = "black";
-                    //
-                    /////////////////////////////
-                    break;
-                case 429:
-                    /////////////////////////////
-                    //
-                    //  HTTP 429: Too Many Requests.
-                    //
-                    this.session["ui-backcolor"] = HTMLColourOrange;
-                    this.session["ui-color"] = "black";
-                    //
-                    /////////////////////////////
-                    break;
-                case 440:
-                    /////////////////////////////
-                    //
-                    // HTTP 440: Need to know more about these.
-                    // For the moment do nothing.
-                    //
-                    /////////////////////////////
-                    break;
-                #endregion
-
-                #region HTTP500s
-                case 500:
-                    /////////////////////////////
-                    //
-                    //  HTTP 500: Internal Server Error.
-                    //
-                    // Pick up any 500 Internal Server Error and write data into the comments box.
-                    // Specific scenario on Outlook and Office 365 invalid DNS lookup.
-                    // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
-                    this.session["ui-backcolor"] = HTMLColourRed;
-                    this.session["ui-color"] = "black";
-                    if (boolAppLoggingEnabled && boolExtensionEnabled)
-                    {
-                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 500 Internal Server Error.");
-                    }
-                    //
-                    /////////////////////////////
-                    break;
-                case 502:
-                    /////////////////////////////
-                    //
-                    //  HTTP 502: BAD GATEWAY.
-                    //
-
-
-                    // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
-                    //      autodiscover.domain.onmicrosoft.com:443
-
-                    // Testing because I am finding colourisation based in the nested if statement below is not working.
-                    // Strangely the same HTTP 502 nested if statement logic works fine in EXOFiddlerInspector.cs to write
-                    // response alert and comment.
-                    // From further testing this seems to come down to timing, clicking the sessions as they come into Fiddler
-                    // I see the responsecode / response body unavailable, it then populates after a few sessions. I presume 
-                    // since the UI has moved on already the session cannot be colourised. 
-
-                    // On testing with loadSAZ instead this same code colourises sessions fine.
-
-                    // Altered if statements from being bested to using && to see if this inproves here.
-                    // This appears to be the only section in this code which has a session colourisation issue.
-
-                    /////////////////////////////
-                    //
-                    // 1. telemetry false positive. <Need to validate in working scenarios>
-                    //
-                    if ((this.session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443") &&
-                        (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
-                    {
-                        this.session["ui-backcolor"] = HTMLColourBlue;
-                        this.session["ui-color"] = "black";
-                    }
-
-                    /////////////////////////////
-                    //
-                    // 2. Exchange Online Autodiscover False Positive.
-                    //
-                    else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
-                        (this.session.utilFindInResponse("autodiscover", false) > 1) &&
-                        (this.session.utilFindInResponse(":443", false) > 1))
-                    {
-                        this.session["ui-backcolor"] = HTMLColourBlue;
-                        this.session["ui-color"] = "black";
-                        if (boolAppLoggingEnabled && boolExtensionEnabled)
-                        {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
-                        }
-                    }
-
-                    /////////////////////////////
-                    //
-                    // 3. Exchange Online DNS lookup on contoso.onmicrosoft.com, False Positive!?
-                    //
-                    // Specific scenario on Outlook and Office 365 invalid DNS lookup.
-                    // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
-                    else if ((this.session.utilFindInResponse(".onmicrosoft.com", false) > 1) &&
-                            (this.session.utilFindInResponse("DNS Lookup for ", false) > 1) &&
-                            (this.session.utilFindInResponse(" failed.", false) > 1))
-                    {
-                        this.session["ui-backcolor"] = HTMLColourBlue;
-                        this.session["ui-color"] = "black";
-                        if (boolAppLoggingEnabled && boolExtensionEnabled)
-                        {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
-                        }
-                    }
-
-                    /////////////////////////////
-                    //
-                    // 99. Everything else.
-                    //
-                    else
-                    {
-                        // Pick up any other 502 Bad Gateway call it out.
-                        this.session["ui-backcolor"] = HTMLColourRed;
-                        this.session["ui-color"] = "black";
-                        if (boolAppLoggingEnabled && boolExtensionEnabled)
-                        {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway.");
-                        }
-                    }
-                    //
-                    /////////////////////////////
-                    break;
-                case 503:
-                    /////////////////////////////
-                    //
-                    //  HTTP 503: SERVICE UNAVAILABLE.
-                    //
-                    // Call out all 503 Service Unavailable as something to focus on.
-                    searchTerm = "FederatedStsUnreachable";
-                    //"Service Unavailable"
-
-                    // Count the matches, which executes the query.  
-                    wordCount = matchQuery.Count();
-                    if (wordCount > 0)
-                    {
-                        this.session["ui-backcolor"] = HTMLColourRed;
-                        this.session["ui-color"] = "black";
-                        if (boolAppLoggingEnabled && boolExtensionEnabled)
-                        {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
-                        }
-                    }
-                    else
-                    {
-                        this.session["ui-backcolor"] = HTMLColourRed;
-                        this.session["ui-color"] = "black";
-                        if (boolAppLoggingEnabled && boolExtensionEnabled)
-                        {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable.");
-                        }
-                    }
-                    //
-                    /////////////////////////////
-                    break;
-                case 504:
-                    /////////////////////////////
-                    //
-                    //  HTTP 504: GATEWAY TIMEOUT.
-                    //
-                    // Call out all 504 Gateway Timeout as something to focus on.
-                    this.session["ui-backcolor"] = HTMLColourRed;
-                    this.session["ui-color"] = "black";
-                    if (boolAppLoggingEnabled && boolExtensionEnabled)
-                    {
-                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 504 Gateway Timeout.");
-                    }
-                    //
-                    /////////////////////////////
-                    break;
-                #endregion
-
-                default:
-                    break;
+                    default:
+                        break;
+                }
             }
             #endregion
 
@@ -1091,7 +1151,8 @@ namespace EXOFiddlerInspector
                 // This needs more thought, read through Fiddler book some more on what could be happening and whether this can work or if the Response time
                 // column is removed from the extension in favour of the response time on the inspector tab.
                 //
-                // For the moment disabled the Response Time column when live tracing. Only displayed on LoadSAZ.
+
+                // *** For the moment disabled the Response Time column when live tracing. Only displayed on LoadSAZ. ***
                 
                 /*
                 // Trying out delaying the process, waiting for the ClientDoneResponse to be correctly populated.
@@ -1159,6 +1220,18 @@ namespace EXOFiddlerInspector
             else if (this.session.LocalProcess.Contains("firefox")) { session["X-ExchangeType"] = "Firefox"; }
             // Everything else.
             else { session["X-ExchangeType"] = this.session.LocalProcess; }
+
+            //Process override.
+            if (!(this.session.LocalProcess.Contains("outlook") ||
+                this.session.LocalProcess.Contains("searchprotocolhost") ||
+                this.session.LocalProcess.Contains("iexplore") ||
+                this.session.LocalProcess.Contains("chrome") ||
+                this.session.LocalProcess.Contains("firefox") ||
+                this.session.LocalProcess.Contains("edge") ||
+                this.session.LocalProcess.Contains("w3wp")))
+            {
+                session["X-ExchangeType"] = this.session.LocalProcess;
+            }
         }
     }
 }

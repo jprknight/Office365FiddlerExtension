@@ -178,12 +178,10 @@
             // 
             // ResponseGroupBox
             // 
-            this.ResponseGroupBox.Controls.Add(this.OpenResponseBodyButton);
-            this.ResponseGroupBox.Controls.Add(this.ResponseCommentsOpenButton);
             this.ResponseGroupBox.Controls.Add(this.ResponseCommentsRichTextBox);
             this.ResponseGroupBox.Location = new System.Drawing.Point(9, 211);
             this.ResponseGroupBox.Name = "ResponseGroupBox";
-            this.ResponseGroupBox.Size = new System.Drawing.Size(397, 182);
+            this.ResponseGroupBox.Size = new System.Drawing.Size(397, 154);
             this.ResponseGroupBox.TabIndex = 25;
             this.ResponseGroupBox.TabStop = false;
             this.ResponseGroupBox.Text = "Response Comments";
@@ -191,7 +189,7 @@
             // 
             // OpenResponseBodyButton
             // 
-            this.OpenResponseBodyButton.Location = new System.Drawing.Point(93, 150);
+            this.OpenResponseBodyButton.Location = new System.Drawing.Point(108, 371);
             this.OpenResponseBodyButton.Name = "OpenResponseBodyButton";
             this.OpenResponseBodyButton.Size = new System.Drawing.Size(138, 23);
             this.OpenResponseBodyButton.TabIndex = 35;
@@ -202,12 +200,13 @@
             // 
             // ResponseCommentsOpenButton
             // 
-            this.ResponseCommentsOpenButton.Location = new System.Drawing.Point(237, 150);
+            this.ResponseCommentsOpenButton.Location = new System.Drawing.Point(252, 371);
             this.ResponseCommentsOpenButton.Name = "ResponseCommentsOpenButton";
             this.ResponseCommentsOpenButton.Size = new System.Drawing.Size(154, 23);
             this.ResponseCommentsOpenButton.TabIndex = 34;
             this.ResponseCommentsOpenButton.Text = "Open Response Comments";
             this.ResponseCommentsOpenButton.UseVisualStyleBackColor = true;
+            this.ResponseCommentsOpenButton.Visible = false;
             this.ResponseCommentsOpenButton.Click += new System.EventHandler(this.ResponseCommentsOpenButton_Click);
             // 
             // ResponseCommentsRichTextBox
@@ -290,6 +289,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.ResponseCommentsOpenButton);
+            this.Controls.Add(this.OpenResponseBodyButton);
             this.Controls.Add(this.ResponseServerTextBox);
             this.Controls.Add(this.ResponseServerLabel);
             this.Controls.Add(this.RequestEndDateTextBox);
@@ -312,7 +313,7 @@
             this.Controls.Add(this.HTTPResponseCodeTextBox);
             this.Controls.Add(this.HTTPStatusCodeLinkLabel);
             this.Name = "ResponseUserControl";
-            this.Size = new System.Drawing.Size(412, 409);
+            this.Size = new System.Drawing.Size(412, 403);
             this.Load += new System.EventHandler(this.ResponseUserControl_Load);
             this.ResponseGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);

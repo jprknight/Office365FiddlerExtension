@@ -70,8 +70,9 @@ Check the Raw and WebView tabs, do you see anything which indicates traffic is b
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("HTTP 200: Errors found in response body. Check the Raw tab, click \'View in Notepa" +
-            "d\' button bottom right, and search for error in the response to review.\r\n")]
+        [global::System.Configuration.DefaultSettingValueAttribute("HTTP 200: Errors or failures found in response body. Check the Raw tab, click \'Vi" +
+            "ew in Notepad\' button bottom right, and search for error in the response to revi" +
+            "ew.\r\n")]
         public string HTTP200ErrorsFound {
             get {
                 return ((string)(this["HTTP200ErrorsFound"]));
@@ -193,6 +194,28 @@ Check the Headers or Raw tab and the Location to ensure the Autodiscover call is
         public string ReportIssuesURL {
             get {
                 return ((string)(this["ReportIssuesURL"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Potential to cause the issue you are investigating. Do you see expected responses" +
+            " beyond this session in the trace? Is this an Exchange On-Premise, Exchange Onli" +
+            "ne or other device?")]
+        public string HTTP502BadGateway {
+            get {
+                return ((string)(this["HTTP502BadGateway"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"An Apache Web Server (Unix/Linux) is answering Autodiscover requests! This should not be happening.
+Consider disabling Root Domain Autodiscover lookups. 
+See ExcludeHttpsRootDomain on https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under")]
+        public string ApacheAutodiscover {
+            get {
+                return ((string)(this["ApacheAutodiscover"]));
             }
         }
     }

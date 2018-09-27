@@ -24,7 +24,7 @@ Check the realm page for the authenticating domain.</Value>
       <Value Profile="(Default)">https://en.wikipedia.org/wiki/List_of_HTTP_status_codes</Value>
     </Setting>
     <Setting Name="HTTP200ErrorsFound" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">HTTP 200: Errors found in response body. Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review.
+      <Value Profile="(Default)">HTTP 200: Errors or failures found in response body. Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review.
 </Value>
     </Setting>
     <Setting Name="HTTP401Unauthorized" Type="System.String" Scope="Application">
@@ -69,6 +69,14 @@ Check the Headers or Raw tab and the Location to ensure the Autodiscover call is
     </Setting>
     <Setting Name="ReportIssuesURL" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://github.com/jprknight/EXOFiddlerExtension/issues</Value>
+    </Setting>
+    <Setting Name="HTTP502BadGateway" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Potential to cause the issue you are investigating. Do you see expected responses beyond this session in the trace? Is this an Exchange On-Premise, Exchange Online or other device?</Value>
+    </Setting>
+    <Setting Name="ApacheAutodiscover" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">An Apache Web Server (Unix/Linux) is answering Autodiscover requests! This should not be happening.
+Consider disabling Root Domain Autodiscover lookups. 
+See ExcludeHttpsRootDomain on https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under</Value>
     </Setting>
   </Settings>
 </SettingsFile>
