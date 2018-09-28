@@ -53,7 +53,10 @@ namespace EXOFiddlerInspector
 
     #region RequestInspectorNoLongerUsedCodeBlock
 
-    // DISABLING REQUEST TAB, DOES NOT ADD VALUE TO INSPECTOR.
+    // 
+    // Commneting out the RequestInspector code to disable the requestor inspector tab.
+    // No value add, just complicates usage.
+    //
     /*
     // Request class, inherits the generic class above, only defines things specific or different from the base class
     public class RequestInspector : EXOBaseFiddlerInspector, IRequestInspector2
@@ -240,12 +243,16 @@ namespace EXOFiddlerInspector
     {
         public ResponseUserControl _displayControl;
         private HTTPResponseHeaders responseHeaders;
+        // Used with Linq word split, looking for particular search terms in response body.
         private string searchTerm;
+        // Used in HTTP 503 responses when dealing with Federated domains.
         private string RealmURL;
 
+        // These application preferences are actually set in ColouriseWebSessions.cs, pulling them into variables for use here.
         private bool boolInspectorAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
         private bool boolInspectorExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
 
+        #region ScoreForSession
         // Double click or hit return with session selected.
         // From discussion with EE Fiddler code known to be problematic with the ScoreForSession feature.
         // Not expected to work 100% of the time per logic below.
@@ -271,6 +278,7 @@ namespace EXOFiddlerInspector
                 return 0;
             }
         }
+        #endregion
 
         public HTTPResponseHeaders headers
         {
@@ -279,6 +287,7 @@ namespace EXOFiddlerInspector
             }
         }
 
+        // Function which starts everything.
         public byte[] body
         {
             get { return rawBody; }
@@ -309,11 +318,14 @@ namespace EXOFiddlerInspector
             }
         }
 
+        /////////////////////////////
+        // Function which analyses request/response data to provide additional feedback.
         public void SetResponseValues(Session oS)
         {
-
+            // create this.session for use everywhere in code.
             this.session = oS;
 
+            // decode sessions to make sure request/response body can be fully read by logic checks.
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
 
@@ -406,7 +418,8 @@ namespace EXOFiddlerInspector
 
             /////////////////////////////
             //
-            // From a scenario where Apache Web Server found to be answering Autodiscover calls and throwing HTTP 301 & 405 responses.
+            // From a scenario where an Apache Web Server (Unix/Linux) found to be answering Autodiscover calls and throwing HTTP 301 & 405 responses.
+            // When this happens unexpected XML data can be passed to Outlook causing credential prompts which cannot be satisfied with username/password.
             //
             if ((this.session.url.Contains("autodiscover") && (this.session.oResponse["server"] == "Apache")))
             {
@@ -417,7 +430,7 @@ namespace EXOFiddlerInspector
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 405 Method Not Allowed; Apache is answering Autodiscover requests!");
                 }
             }
-            // If the above is not true, then drop into the switch statement based on response codes.
+            // If the above is not true, then drop into the switch statement based on individual response codes.
             else
             {
                 /////////////////////////////
@@ -881,6 +894,8 @@ namespace EXOFiddlerInspector
             }
             #endregion
         }
+        //
+        /////////////////////////////
 
         /////////////////////////////
         // Add the EXO Response tab into the inspector tab.
@@ -900,11 +915,16 @@ namespace EXOFiddlerInspector
         {
             return 0;
         }
+        //
+        /////////////////////////////
 
+        /////////////////////////////
         // Not sure what to do with this.
         void IBaseInspector2.Clear()
         {
             throw new System.NotImplementedException();
         }
+        //
+        /////////////////////////////
     }
 }

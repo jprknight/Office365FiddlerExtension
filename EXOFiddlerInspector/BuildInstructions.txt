@@ -1,7 +1,7 @@
 ﻿
 Three locations to update:
 1. Go to EXOFiddlerInspector top level, properties, Application tab, Assembly Information and update version here.
-2. Open update.xml and update version here.
+2. Open update.xml and update version here in both version and download URL.
 3. Go to 'EXO Fiddler Extension' or setup project, properties of top level, update version here.
 
 Rebuild Application and Setup projects.

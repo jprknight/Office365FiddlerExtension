@@ -212,7 +212,8 @@ Check the Headers or Raw tab and the Location to ensure the Autodiscover call is
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"An Apache Web Server (Unix/Linux) is answering Autodiscover requests! This should not be happening.
 Consider disabling Root Domain Autodiscover lookups. 
-See ExcludeHttpsRootDomain on https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under")]
+See ExcludeHttpsRootDomain on https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under
+Beyond this, the customer needs their web administrator responsible for the server answering the calls to stop the Apache web server from answering to Autodiscover.")]
         public string ApacheAutodiscover {
             get {
                 return ((string)(this["ApacheAutodiscover"]));

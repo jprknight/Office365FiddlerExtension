@@ -226,6 +226,7 @@ namespace EXOFiddlerInspector
         /////////////////
         #endregion
 
+        #region OnLoad
         /////////////////
         //
         // OnLoad
@@ -278,7 +279,9 @@ namespace EXOFiddlerInspector
         }
         //
         /////////////////
+        #endregion
 
+        #region FirstRunMenuOptions
         /////////////////
         // Read out an application preference and if not set we know this is the first 
         // time the extension has run on this machine. Enable all options to light up functionality
@@ -297,7 +300,9 @@ namespace EXOFiddlerInspector
         }
         //
         /////////////////
+        #endregion
 
+        #region EnsureColumns
         /////////////////
         //
         // Make sure the Columns are added to the UI as enabled and if Extension is enabled.
@@ -345,6 +350,7 @@ namespace EXOFiddlerInspector
         }
         //
         /////////////////
+        #endregion
 
         #region LoadSAZ
         /////////////////
@@ -504,6 +510,10 @@ namespace EXOFiddlerInspector
 
         #region ColouriseRuleSet
 
+        /////////////////////////////
+        //
+        // Function where all session colourisation happens.
+        //
         private void OnPeekAtResponseHeaders(Session session)
         {
 
@@ -563,7 +573,7 @@ namespace EXOFiddlerInspector
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 405 Method Not Allowed; Apache is answering Autodiscover requests!");
                 }
             }
-            // If the above is not true, then drop into the switch statement based on response codes.
+            // If the above is not true, then drop into the switch statement based on individual response codes.
             else
             {
                 /////////////////////////////
@@ -1028,16 +1038,34 @@ namespace EXOFiddlerInspector
                     default:
                         break;
                 }
+                //
+                /////////////////////////////
             }
             #endregion
+            //
+            /////////////////////////////
 
+            /////////////////////////////
+            //
             #region ColouriseSessionsOverrides
-            // First off if the local process is null, then we are analysing traffic from a remote client such as a mobile device.
+            // First off if the local process is nullor blank, then we are analysing traffic from a remote client such as a mobile device.
+            // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
             // So don't pay any attention to overrides for this type of traffic.
-            if (!(this.session.LocalProcess == null))
+            if (this.session.hostname == "www.fiddler2.com")
+            {
+                this.session["ui-backcolor"] = HTMLColourGrey;
+                this.session["ui-color"] = "black";
+            }
+            else if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
+            {
+                // Traffic has a null or blank local process value.
+                // No overrides needed in this scenario.
+            }
+            else
             {
                 // With that out of the way,  if the traffic is not related to any of the below processes, then mark it as grey to
                 // de-emphasise it.
+                // So if for example lync.exe is the process de-emphasise the traffic with grey.
                 if (!(this.session.LocalProcess.Contains("outlook") ||
                     this.session.LocalProcess.Contains("searchprotocolhost") ||
                     this.session.LocalProcess.Contains("iexplore") ||
@@ -1052,8 +1080,11 @@ namespace EXOFiddlerInspector
                 }
             }
             #endregion
+            //
+            /////////////////////////////
         }
-
+        //
+        /////////////////////////////
         #endregion
 
         public void OnBeforeUnload() { }
@@ -1066,6 +1097,10 @@ namespace EXOFiddlerInspector
 
         public void AutoTamperResponseBefore(Session oSession) { }
 
+        /////////////////////////////
+        //
+        // Function where live tracing is processed.
+        //
         public void AutoTamperResponseAfter(Session session)
         {
 
@@ -1175,9 +1210,15 @@ namespace EXOFiddlerInspector
             //
             /////////////////
         }
-
+        //
+        /////////////////////////////
+        
         public void OnBeforeReturningError(Session oSession) { }
 
+        /////////////////////////////
+        //
+        // Function where the Exchange Type column is populated.
+        //
         public void SetExchangeType(Session session)
         {
             this.session = session;
@@ -1209,29 +1250,48 @@ namespace EXOFiddlerInspector
             else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { session["X-ExchangeType"] = "Office 365 Authentication"; }
             // ADFS Authentication.
             else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { session["X-ExchangeType"] = "ADFS Authentication"; }
-            // Null localprocess, so a remote capture.
-            else if (this.session.hostname == "www.fiddler2.com") { session["X-ExchangeType"] = "www.Fiddler2.com"; }
-            else if (this.session.LocalProcess == null) { session["X-ExchangeType"] = "Remote Capture"; }
-            else if (this.session.LocalProcess == "") { session["X-ExchangeType"] = "Remote Capture"; }
             // Undetermined, but related to local process.
             else if (this.session.LocalProcess.Contains("outlook")) { session["X-ExchangeType"] = "Outlook"; }
             else if (this.session.LocalProcess.Contains("iexplore")) { session["X-ExchangeType"] = "Internet Explorer"; }
             else if (this.session.LocalProcess.Contains("chrome")) { session["X-ExchangeType"] = "Chrome"; }
             else if (this.session.LocalProcess.Contains("firefox")) { session["X-ExchangeType"] = "Firefox"; }
             // Everything else.
-            else { session["X-ExchangeType"] = this.session.LocalProcess; }
+            else { session["X-ExchangeType"] = "Undefined"; }
 
-            //Process override.
-            if (!(this.session.LocalProcess.Contains("outlook") ||
-                this.session.LocalProcess.Contains("searchprotocolhost") ||
-                this.session.LocalProcess.Contains("iexplore") ||
-                this.session.LocalProcess.Contains("chrome") ||
-                this.session.LocalProcess.Contains("firefox") ||
-                this.session.LocalProcess.Contains("edge") ||
-                this.session.LocalProcess.Contains("w3wp")))
+            /////////////////////////////
+            //
+            // Exchange Type overrides
+            //
+            // First off if the local process is nullor blank, then we are analysing traffic from a remote client such as a mobile device.
+            // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
+            // So don't pay any attention to overrides for this type of traffic.
+            if (this.session.hostname == "www.fiddler2.com")
             {
-                session["X-ExchangeType"] = this.session.LocalProcess;
+                session["X-ExchangeType"] = "Not Exchange";
+            }
+            else if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
+            {
+                // Traffic has a null or blank local process value.
+                session["X-ExchangeType"] = "Remote Capture";
+            }
+            else
+            {
+                // With that out of the way,  if the traffic is not related to any of the below processes call it out.
+                // So if for example lync.exe is the process write that to the Exchange Type column.
+                if (!(this.session.LocalProcess.Contains("outlook") ||
+                    this.session.LocalProcess.Contains("searchprotocolhost") ||
+                    this.session.LocalProcess.Contains("iexplore") ||
+                    this.session.LocalProcess.Contains("chrome") ||
+                    this.session.LocalProcess.Contains("firefox") ||
+                    this.session.LocalProcess.Contains("edge") ||
+                    this.session.LocalProcess.Contains("w3wp")))
+                {
+                    // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
+                    { session["X-ExchangeType"] = this.session.LocalProcess; }
+                }
             }
         }
+        //
+        /////////////////////////////
     }
 }

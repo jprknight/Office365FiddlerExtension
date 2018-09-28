@@ -76,7 +76,8 @@ Check the Headers or Raw tab and the Location to ensure the Autodiscover call is
     <Setting Name="ApacheAutodiscover" Type="System.String" Scope="Application">
       <Value Profile="(Default)">An Apache Web Server (Unix/Linux) is answering Autodiscover requests! This should not be happening.
 Consider disabling Root Domain Autodiscover lookups. 
-See ExcludeHttpsRootDomain on https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under</Value>
+See ExcludeHttpsRootDomain on https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under
+Beyond this, the customer needs their web administrator responsible for the server answering the calls to stop the Apache web server from answering to Autodiscover.</Value>
     </Setting>
   </Settings>
 </SettingsFile>
