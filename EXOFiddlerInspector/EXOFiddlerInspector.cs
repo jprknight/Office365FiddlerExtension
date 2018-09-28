@@ -886,10 +886,12 @@ namespace EXOFiddlerInspector
                         break;
                     #endregion
 
+                    #region Default
                     default:
                         _displayControl.SetResponseAlertTextBox("Undefined.");
                         _displayControl.SetResponseCommentsRichTextboxText("No specific information on this session in the EXO Fiddler Extension.");
                         break;
+                    #endregion
                 }
             }
             #endregion

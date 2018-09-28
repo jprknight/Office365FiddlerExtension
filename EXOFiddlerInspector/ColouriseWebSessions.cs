@@ -1035,8 +1035,12 @@ namespace EXOFiddlerInspector
                         break;
                     #endregion
 
+                    #region Default
                     default:
+                        this.session["ui-backcolor"] = "Yellow";
+                        this.session["ui-color"] = "black";
                         break;
+                    #endregion
                 }
                 //
                 /////////////////////////////
