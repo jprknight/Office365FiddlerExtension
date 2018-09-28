@@ -534,6 +534,8 @@ namespace EXOFiddlerInspector
             this.session.utilDecodeResponse(true);
 
             int wordCount = 0;
+            int wordCountError = 0;
+            int wordCountFailed = 0;
 
             // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
             //
@@ -683,30 +685,17 @@ namespace EXOFiddlerInspector
                             searchTerm = "Error";
 
                             // Count the matches, which executes the query.  
-                            wordCount = matchQuery.Count();
-
-                            if (wordCount > 0)
-                            {
-                                // Special attention to HTTP 200's where the keyword 'error' is found.
-                                // Red text on black background.
-                                this.session["ui-backcolor"] = "black";
-                                this.session["ui-color"] = "red";
-                            }
-                            else
-                            {
-                                // All good.
-                                this.session["ui-backcolor"] = HTMLColourGreen;
-                                this.session["ui-color"] = "black";
-                            }
+                            wordCountError = matchQuery.Count();
 
                             searchTerm = "failed";
 
                             // Count the matches, which executes the query.  
-                            wordCount = matchQuery.Count();
+                            wordCountFailed = matchQuery.Count();
 
-                            if (wordCount > 0)
+                            // If either the keyword searches give us a result.
+                            if (wordCountError > 0 || wordCountFailed > 0)
                             {
-                                // Special attention to HTTP 200's where the keyword 'error' is found.
+                                // Special attention to HTTP 200's where the keyword 'error' or 'failed' is found.
                                 // Red text on black background.
                                 this.session["ui-backcolor"] = "black";
                                 this.session["ui-color"] = "red";
@@ -1260,7 +1249,7 @@ namespace EXOFiddlerInspector
             else if (this.session.LocalProcess.Contains("chrome")) { session["X-ExchangeType"] = "Chrome"; }
             else if (this.session.LocalProcess.Contains("firefox")) { session["X-ExchangeType"] = "Firefox"; }
             // Everything else.
-            else { session["X-ExchangeType"] = "Undefined"; }
+            else { session["X-ExchangeType"] = "Not Exchange"; }
 
             /////////////////////////////
             //
