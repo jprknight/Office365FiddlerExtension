@@ -926,11 +926,13 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 2. Exchange Online Autodiscover False Positive.
+                        // 2. Exchange Online DNS lookup on contoso.onmicrosoft.com, False Positive!?
                         //
-                        else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
-                            (this.session.utilFindInResponse("autodiscover", false) > 1) &&
-                            (this.session.utilFindInResponse(":443", false) > 1))
+                        // Specific scenario on Outlook and Office 365 invalid DNS lookup.
+                        // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
+                        else if ((this.session.utilFindInResponse(".onmicrosoft.com", false) > 1) &&
+                                (this.session.utilFindInResponse("DNS Lookup for ", false) > 1) &&
+                                (this.session.utilFindInResponse(" failed.", false) > 1))
                         {
                             this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
@@ -942,15 +944,13 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 3. Exchange Online DNS lookup on contoso.onmicrosoft.com, False Positive!?
+                        // 3. Exchange Online Autodiscover False Positive.
                         //
-                        // Specific scenario on Outlook and Office 365 invalid DNS lookup.
-                        // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
-                        else if ((this.session.utilFindInResponse(".onmicrosoft.com", false) > 1) &&
-                                (this.session.utilFindInResponse("DNS Lookup for ", false) > 1) &&
-                                (this.session.utilFindInResponse(" failed.", false) > 1))
+                        else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
+                            (this.session.utilFindInResponse("autodiscover", false) > 1) &&
+                            (this.session.utilFindInResponse(":443", false) > 1))
                         {
-                            this.session["ui-backcolor"] = HTMLColourBlue;
+                            this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             if (boolAppLoggingEnabled && boolExtensionEnabled)
                             {

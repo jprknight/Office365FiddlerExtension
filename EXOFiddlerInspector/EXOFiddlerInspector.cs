@@ -790,21 +790,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 2. Exchange Online Autodiscover False Positive.
-                        //
-                        // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
-                        //      autodiscover.domain.onmicrosoft.com:443
-                        else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
-                            (this.session.utilFindInResponse("autodiscover", false) > 1) &&
-                            (this.session.utilFindInResponse(":443", false) > 1))
-                        {
-                            _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
-                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
-                        }
-
-                        /////////////////////////////
-                        //
-                        // 3. Exchange Online DNS lookup on contoso.onmicrosoft.com, False Positive!?
+                        // 2. Exchange Online DNS lookup on contoso.onmicrosoft.com, False Positive!?
                         //
                         // Specific scenario on Outlook and Office 365 invalid DNS lookup.
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
@@ -814,6 +800,20 @@ namespace EXOFiddlerInspector
                         {
                             _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
                             _displayControl.SetResponseCommentsRichTextboxText("DNS record does not exist. Connection on port 443 will not work by design.");
+                        }
+
+                        /////////////////////////////
+                        //
+                        // 3. Autodiscover Failure.
+                        //
+                        // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
+                        //      autodiscover.domain.onmicrosoft.com:443
+                        else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
+                            (this.session.utilFindInResponse("autodiscover", false) > 1) &&
+                            (this.session.utilFindInResponse(":443", false) > 1))
+                        {
+                            _displayControl.SetResponseAlertTextBox("Cannot connect to this Autodiscover Endpoint.");
+                            _displayControl.SetResponseCommentsRichTextboxText("Cannot connect to this Autodiscover Endpoint.");
                         }
 
                         /////////////////////////////
