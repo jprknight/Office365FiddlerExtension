@@ -790,7 +790,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 2. Exchange Online DNS lookup on contoso.onmicrosoft.com, False Positive!?
+                        // 2. Exchange Online DNS lookup on contoso.onmicrosoft.com, False Positive!
                         //
                         // Specific scenario on Outlook and Office 365 invalid DNS lookup.
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
@@ -804,7 +804,21 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 3. Autodiscover Failure.
+                        // 3. Exchange Online connection to contoso.mail.onmicrosoft.com, False Positive!
+                        //
+                        // Specific scenario on Outlook and Office 365 invalid connection to contoso.mail.onmicrosoft.com
+                        // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
+                        else if ((this.session.utilFindInResponse(".onmicrosoft.com", false) > 1) &&
+                            (this.session.utilFindInResponse("ConnectionRefused ", false) > 1) &&
+                            (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
+                        {
+                            _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
+                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
+                        }
+
+                        /////////////////////////////
+                        //
+                        // 4. Autodiscover Failure.
                         //
                         // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
                         //      autodiscover.domain.onmicrosoft.com:443

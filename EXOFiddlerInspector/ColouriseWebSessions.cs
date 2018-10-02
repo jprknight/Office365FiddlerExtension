@@ -944,7 +944,25 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 3. Exchange Online Autodiscover False Positive.
+                        // 3. Exchange Online connection to contoso.mail.onmicrosoft.com, False Positive!
+                        //
+                        // Specific scenario on Outlook and Office 365 invalid connection to contoso.mail.onmicrosoft.com
+                        // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
+                        else if ((this.session.utilFindInResponse(".onmicrosoft.com", false) > 1) &&
+                            (this.session.utilFindInResponse("ConnectionRefused ", false) > 1) &&
+                            (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
+                        {
+                            this.session["ui-backcolor"] = HTMLColourGreen;
+                            this.session["ui-color"] = "black";
+                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
+                            }
+                        }
+
+                        /////////////////////////////
+                        //
+                        // 4. Exchange Online Autodiscover False Positive.
                         //
                         else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
                             (this.session.utilFindInResponse("autodiscover", false) > 1) &&
@@ -954,7 +972,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-color"] = "black";
                             if (boolAppLoggingEnabled && boolExtensionEnabled)
                             {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway.");
                             }
                         }
 
