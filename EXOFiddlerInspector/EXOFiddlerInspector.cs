@@ -389,7 +389,9 @@ namespace EXOFiddlerInspector
             int wordCount = 0;
             int wordCountError = 0;
             int wordCountFailed = 0;
+            int wordCountException = 0;
 
+            /*
             // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
             //
             // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
@@ -404,6 +406,7 @@ namespace EXOFiddlerInspector
             var matchQuery = from word in source
                              where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
                              select word;
+            */
 
             // Query samples:
             //string searchTerm = "error";
@@ -539,51 +542,93 @@ namespace EXOFiddlerInspector
                         {
                             string wordCountErrorText;
                             string wordCountFailedText;
+                            string wordCountExceptionText;
 
-                            searchTerm = "Error";
+                            // Only want to start splitting word in responses only sessions we need to.
+                            // Specifically HTTP 200's with the appropriate content type.
+                            if ((this.session.ResponseHeaders.ExistsAndContains("Content-Type", "text") ||
+                                (this.session.ResponseHeaders.ExistsAndContains("Content-Type", "html") ||
+                                (this.session.ResponseHeaders.ExistsAndContains("Content-Type", "xml"))))) {
 
-                            // Count the matches, which executes the query.  
-                            wordCountError = matchQuery.Count();
+                                // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
+                                //
+                                // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
+                                //
 
-                            searchTerm = "failed";
+                                string text200 = this.session.ToString();
 
-                            // Count the matches, which executes the query.  
-                            wordCountFailed = matchQuery.Count();
+                                //Convert the string into an array of words  
+                                string[] source200 = text200.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-                            // If either the keyword searches give us a result.
-                            if (wordCountError > 0 || wordCountFailed > 0)
-                            {
-                                if (wordCountError == 1)
+                                // Create the query. Use ToLowerInvariant to match "data" and "Data"   
+                                var matchQuery200 = from word in source200
+                                                 where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
+                                                 select word;
+
+                                searchTerm = "Error";
+
+                                // Count the matches, which executes the query.  
+                                wordCountError = matchQuery200.Count();
+
+                                searchTerm = "failed";
+
+                                // Count the matches, which executes the query.  
+                                wordCountFailed = matchQuery200.Count();
+
+                                searchTerm = "exception";
+
+                                // Count the matches, which executes the query.  
+                                wordCountException = matchQuery200.Count();
+
+
+                                // If either the keyword searches give us a result.
+                                if (wordCountError > 0 || wordCountFailed > 0 || wordCountException > 0)
                                 {
-                                    wordCountErrorText = wordCountError + " time.";
+
+                                    if (wordCountError == 1)
+                                    {
+                                        wordCountErrorText = wordCountError + " time.";
+                                    }
+                                    else
+                                    {
+                                        wordCountErrorText = wordCountError + " times.";
+                                    }
+
+                                    if (wordCountFailed == 1)
+                                    {
+                                        wordCountFailedText = wordCountFailed + " time.";
+                                    }
+                                    else
+                                    {
+                                        wordCountFailedText = wordCountFailed + " times.";
+                                    }
+
+                                    if (wordCountException == 1)
+                                    {
+                                        wordCountExceptionText = wordCountException + " time.";
+                                    }
+                                    else
+                                    {
+                                        wordCountExceptionText = wordCountException + " times.";
+                                    }
+
+                                    string result = "After splitting all words in the response body the following were found:" +
+                                        Environment.NewLine + "Keyword 'Error' found " + wordCountErrorText +
+                                        Environment.NewLine + "Keyword 'Failed' found " + wordCountFailedText +
+                                        Environment.NewLine + "Keyword 'Exception' found " + wordCountExceptionText;
+                                    _displayControl.SetResponseAlertTextBox("Word Search 'Error' or 'failed' found in respone body.");
+                                    _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP200ErrorsFound + result);
+                                    if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                                    {
+                                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 keyword 'error' or 'failed' found in response body!");
+                                    }
                                 }
+                                // both word count variables are zero.
                                 else
                                 {
-                                    wordCountErrorText = wordCountError + " times.";
+                                    _displayControl.SetResponseAlertTextBox("Word Search 'Error' or 'failed' not found in respone body.");
+                                    _displayControl.SetResponseCommentsRichTextboxText("Word Search 'Error' or 'failed' not found in respone body.");
                                 }
-                                if (wordCountFailed == 1)
-                                {
-                                    wordCountFailedText = wordCountFailed + " time.";
-                                }
-                                else
-                                {
-                                    wordCountFailedText = wordCountFailed + " times.";
-                                }
-                                string result = "After splitting all words in the response body the following were found:" +
-                                    Environment.NewLine + "Keyword 'Error' found " + wordCountErrorText +
-                                    Environment.NewLine + "Keyword 'Failed' found " + wordCountFailedText;
-                                _displayControl.SetResponseAlertTextBox("Word Search 'Error' or 'failed' found in respone body.");
-                                _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP200ErrorsFound + result);
-                                if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
-                                {
-                                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 keyword 'error' or 'failed' found in response body!");
-                                }
-                            }
-                            // both word count variables are zero.
-                            else
-                            {
-                                _displayControl.SetResponseAlertTextBox("Word Search 'Error' or 'failed' not found in respone body.");
-                                _displayControl.SetResponseCommentsRichTextboxText("Word Search 'Error' or 'failed' not found in respone body.");
                             }
                         }
                         //
@@ -811,7 +856,8 @@ namespace EXOFiddlerInspector
                         else if ((this.session.utilFindInResponse(".onmicrosoft.com", false) > 1) &&
                             // Too specific, it looks as though we see ConnectionRefused or The socket connection to ... failed.
                             //(this.session.utilFindInResponse("ConnectionRefused ", false) > 1) &&
-                            (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
+                            (this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
+                            (this.session.utilFindInResponse(":443", false) > 1))
                         {
                             _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
                             _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
@@ -857,8 +903,23 @@ namespace EXOFiddlerInspector
                         searchTerm = "FederatedStsUnreachable";
                         //"Service Unavailable"
 
+                        // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
+                        //
+                        // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
+                        //
+
+                        string text503 = this.session.ToString();
+
+                        //Convert the string into an array of words  
+                        string[] source503 = text503.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                        // Create the query. Use ToLowerInvariant to match "data" and "Data"   
+                        var matchQuery503 = from word in source503
+                                         where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
+                                         select word;
+
                         // Count the matches, which executes the query.  
-                        wordCount = matchQuery.Count();
+                        wordCount = matchQuery503.Count();
                         if (wordCount > 0)
                         {
                             //XAnchorMailbox = this.session.oRequest["X-AnchorMailbox"];

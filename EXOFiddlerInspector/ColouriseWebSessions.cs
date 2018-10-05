@@ -533,7 +533,9 @@ namespace EXOFiddlerInspector
             int wordCount = 0;
             int wordCountError = 0;
             int wordCountFailed = 0;
+            int wordCountException = 0;
 
+            /*
             // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
             //
             // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
@@ -548,6 +550,8 @@ namespace EXOFiddlerInspector
             var matchQuery = from word in source
                              where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
                              select word;
+
+            */
 
             // Query samples:
             //string searchTerm = "error";
@@ -679,18 +683,39 @@ namespace EXOFiddlerInspector
                         // 99. No other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                         else
                         {
+
+                            // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
+                            //
+                            // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
+                            //
+
+                            string text200 = this.session.ToString();
+
+                            //Convert the string into an array of words  
+                            string[] source200 = text200.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                            // Create the query. Use ToLowerInvariant to match "data" and "Data"   
+                            var matchQuery200 = from word in source200
+                                                where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
+                                                select word;
+
                             searchTerm = "Error";
 
                             // Count the matches, which executes the query.  
-                            wordCountError = matchQuery.Count();
+                            wordCountError = matchQuery200.Count();
 
                             searchTerm = "failed";
 
                             // Count the matches, which executes the query.  
-                            wordCountFailed = matchQuery.Count();
+                            wordCountFailed = matchQuery200.Count();
+
+                            searchTerm = "exception";
+
+                            // Count the matches, which executes the query.  
+                            wordCountException = matchQuery200.Count();
 
                             // If either the keyword searches give us a result.
-                            if (wordCountError > 0 || wordCountFailed > 0)
+                            if (wordCountError > 0 || wordCountFailed > 0 || wordCountException > 0)
                             {
                                 // Special attention to HTTP 200's where the keyword 'error' or 'failed' is found.
                                 // Red text on black background.
@@ -1000,8 +1025,23 @@ namespace EXOFiddlerInspector
                         searchTerm = "FederatedStsUnreachable";
                         //"Service Unavailable"
 
+                        // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
+                        //
+                        // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
+                        //
+
+                        string text503 = this.session.ToString();
+
+                        //Convert the string into an array of words  
+                        string[] source503 = text503.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                        // Create the query. Use ToLowerInvariant to match "data" and "Data"   
+                        var matchQuery503 = from word in source503
+                                            where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
+                                            select word;
+
                         // Count the matches, which executes the query.  
-                        wordCount = matchQuery.Count();
+                        wordCount = matchQuery503.Count();
                         if (wordCount > 0)
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
