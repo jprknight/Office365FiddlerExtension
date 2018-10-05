@@ -62,9 +62,6 @@ namespace EXOFiddlerInspector
         // Enable/disable switch for Fiddler Application Log entries from extension.
         public bool AppLoggingEnabled = true;
 
-        // Enable/disable switch for colourising sessions.
-        private bool ColouriseSessionsEnabled = true;
-
         private string searchTerm;
         internal Session session { get; set; }
         public int ClientDoneResponseYear { get; private set; }
@@ -392,7 +389,7 @@ namespace EXOFiddlerInspector
                 }
 
                 // Colourise sessions on load SAZ.
-                if (ColouriseSessionsEnabled && boolExtensionEnabled)
+                if (boolExtensionEnabled)
                 {
                     OnPeekAtResponseHeaders(session); //Run whatever function you use in IAutoTamper
                     session.RefreshUI();
@@ -952,7 +949,7 @@ namespace EXOFiddlerInspector
                             (this.session.utilFindInResponse("ConnectionRefused ", false) > 1) &&
                             (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
                         {
-                            this.session["ui-backcolor"] = HTMLColourGreen;
+                            this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
                             if (boolAppLoggingEnabled && boolExtensionEnabled)
                             {
@@ -1121,7 +1118,7 @@ namespace EXOFiddlerInspector
             //
             // Call the function to colourise sessions for live traffic capture.
             //
-            if (ColouriseSessionsEnabled && boolExtensionEnabled)
+            if (boolExtensionEnabled)
             {
                 OnPeekAtResponseHeaders(session);
                 session.RefreshUI();
