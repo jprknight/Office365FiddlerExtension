@@ -83,7 +83,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="BuildInstructions.txt" />
-    <Content Include="Setup\WhereIsSetup.txt" />
     <Content Include="update.xml" />
   </ItemGroup>
   <ItemGroup />

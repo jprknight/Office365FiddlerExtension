@@ -1,3 +1,0 @@
-﻿Where is the setup / installer?
-
-If you arrived here go to https://github.com/jprknight/EXOFiddlerExtension/releases to download the latest version of the extension.
