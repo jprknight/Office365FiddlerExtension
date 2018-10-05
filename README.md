@@ -16,3 +16,5 @@ For more information click here: https://github.com/jprknight/EXOFiddlerExtensio
 To submit issues or suggestions click here: https://github.com/jprknight/EXOFiddlerExtension/issues
 
 To download the extension click here: https://github.com/jprknight/EXOFiddlerExtension/releases
+
+Technet Blog: https://blogs.technet.microsoft.com/jeremyknight/2018/10/01/introducing-the-exchange-online-fiddler-extension/
