@@ -351,8 +351,38 @@ namespace EXOFiddlerInspector
             session["X-iTTLB"] = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms";
 
             //Write response server from headers into textbox.
-            _displayControl.SetResponseServerTextBoxText(this.session.oResponse["Server"]);
+            //_displayControl.SetResponseServerTextBoxText(this.session.oResponse["Server"]);
 
+            // Populate Response Server on session in order of preference from common to obsure.
+
+            // If the response server header is not null or blank then populate it into the response server value.
+            if ((this.session.oResponse["Server"] != null) && (this.session.oResponse["Server"] != ""))
+            {
+                _displayControl.SetResponseServerTextBoxText(this.session.oResponse["Server"]);
+            }
+            // Else if the reponnse Host header is not null or blank then populate it into the response server value
+            // Some traffic identifies a host rather than a response server.
+            else if ((this.session.oResponse["Host"] != null && (this.session.oResponse["Host"] != "")))
+            {
+                _displayControl.SetResponseServerTextBoxText("Host: " + this.session.oResponse["Host"]);
+            }
+            // Else if the response PoweredBy header is not null or blank then populate it into the response server value.
+            // Some Office 365 servers respond as X-Powered-By ASP.NET.
+            else if ((this.session.oResponse["X-Powered-By"] != null) && (this.session.oResponse["X-Powered-By"] != ""))
+            {
+                _displayControl.SetResponseServerTextBoxText("X-Powered-By: " + this.session.oResponse["X-Powered-By"]);
+            }
+            // Else if the response X-Served-By header is not null or blank then populate it into the response server value.
+            else if ((this.session.oResponse["X-Served-By"] != null && (this.session.oResponse["X-Served-By"] != "")))
+            {
+                _displayControl.SetResponseServerTextBoxText("X-Served-By: " + this.session.oResponse["X-Served-By"]);
+            }
+            // Else if the response X-Served-By header is not null or blank then populate it into the response server value.
+            else if ((this.session.oResponse["X-Server-Name"] != null && (this.session.oResponse["X-Server-Name"] != "")))
+            {
+                _displayControl.SetResponseServerTextBoxText("X-Server-Name: " + this.session.oResponse["X-Server-Name"]);
+            }
+            
             // Write Elapsed Time comment into textbox.
             if (this.session.oResponse.iTTLB > 5000)
             {

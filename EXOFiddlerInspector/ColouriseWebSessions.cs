@@ -326,7 +326,7 @@ namespace EXOFiddlerInspector
             // If the column is already created exit.
             if (bResponseServerColumnCreated) return;
             
-            FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 2, 130, "@response.Server");
+            FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 2, 130, "X-ResponseServer");
             bResponseServerColumnCreated = true;
             //
             /////////////////
@@ -386,6 +386,12 @@ namespace EXOFiddlerInspector
                 if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
                 {
                     SetExchangeType(session);
+                }
+
+                // Populate the ResponseServer column on load SAZ, if the column is enabled, and the extension is enabled
+                if (boolResponseServerColumnEnabled && boolExtensionEnabled)
+                {
+                    SetResponseServer(session);
                 }
 
                 // Colourise sessions on load SAZ.
@@ -1221,6 +1227,14 @@ namespace EXOFiddlerInspector
                 SetExchangeType(session);
             }
 
+            /////////////////
+            //
+            // Call the function to populate the session type column on live trace, if the column is enabled.
+            if (boolResponseServerColumnEnabled && boolExtensionEnabled)
+            {
+                SetResponseServer(session);
+            }
+
             //
             // Populate the ResponseTime column on live trace, if the column is enabled.
             if (boolResponseTimeColumnEnabled && boolExtensionEnabled) {
@@ -1266,6 +1280,43 @@ namespace EXOFiddlerInspector
 
         /////////////////////////////
         //
+        // Function where the Response Server column is populated.
+        //
+        public void SetResponseServer(Session session)
+        {        
+            this.session = session;
+
+            // Populate Response Server on session in order of preference from common to obsure.
+
+            // If the response server header is not null or blank then populate it into the response server value.
+            if ((this.session.oResponse["Server"] != null) && (this.session.oResponse["Server"] != "")) {
+                this.session["X-ResponseServer"] = this.session.oResponse["Server"];
+            }
+            // Else if the reponnse Host header is not null or blank then populate it into the response server value
+            // Some traffic identifies a host rather than a response server.
+            else if ((this.session.oResponse["Host"] != null && (this.session.oResponse["Host"] != "")))
+            {
+                this.session["X-ResponseServer"] = "Host: " + this.session.oResponse["Host"];
+            }
+            // Else if the response PoweredBy header is not null or blank then populate it into the response server value.
+            // Some Office 365 servers respond as X-Powered-By ASP.NET.
+            else if ((this.session.oResponse["X-Powered-By"] != null) && (this.session.oResponse["X-Powered-By"] != "")) {
+                this.session["X-ResponseServer"] = "X-Powered-By: " + this.session.oResponse["X-Powered-By"];
+            }
+            // Else if the response X-Served-By header is not null or blank then populate it into the response server value.
+            else if ((this.session.oResponse["X-Served-By"] != null && (this.session.oResponse["X-Served-By"] != "")))
+            {
+                this.session["X-Served-By"] = "X-Served-By: " + this.session.oResponse["X-Served-By"];
+            }
+            // Else if the response X-Served-By header is not null or blank then populate it into the response server value.
+            else if ((this.session.oResponse["X-Server-Name"] != null && (this.session.oResponse["X-Server-Name"] != "")))
+            {
+                this.session["X-Served-Name"] = "X-Served-Name: " + this.session.oResponse["X-Server-Name"];
+            }
+        }
+
+        /////////////////////////////
+        //
         // Function where the Exchange Type column is populated.
         //
         public void SetExchangeType(Session session)
@@ -1305,7 +1356,7 @@ namespace EXOFiddlerInspector
             else if (this.session.LocalProcess.Contains("chrome")) { session["X-ExchangeType"] = "Chrome"; }
             else if (this.session.LocalProcess.Contains("firefox")) { session["X-ExchangeType"] = "Firefox"; }
             // Everything else.
-            else { session["X-ExchangeType"] = "Not Exchange"; }
+            else { this.session["X-ExchangeType"] = "Not Exchange"; }
 
             /////////////////////////////
             //
@@ -1316,12 +1367,12 @@ namespace EXOFiddlerInspector
             // So don't pay any attention to overrides for this type of traffic.
             if (this.session.hostname == "www.fiddler2.com")
             {
-                session["X-ExchangeType"] = "Not Exchange";
+                this.session["X-ExchangeType"] = "Not Exchange";
             }
             else if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
             {
                 // Traffic has a null or blank local process value.
-                session["X-ExchangeType"] = "Remote Capture";
+                this.session["X-ExchangeType"] = "Remote Capture";
             }
             else
             {
@@ -1336,7 +1387,7 @@ namespace EXOFiddlerInspector
                     this.session.LocalProcess.Contains("w3wp")))
                 {
                     // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
-                    { session["X-ExchangeType"] = this.session.LocalProcess; }
+                    { this.session["X-ExchangeType"] = this.session.LocalProcess; }
                 }
             }
         }
