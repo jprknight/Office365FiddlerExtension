@@ -460,7 +460,7 @@ namespace EXOFiddlerInspector
                 _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.ApacheAutodiscover);
                 if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                 {
-                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 405 Method Not Allowed; Apache is answering Autodiscover requests!");
+                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 405 Method Not Allowed; Apache is answering Autodiscover requests!");
                 }
             }
             // If the above is not true, then drop into the switch statement based on individual response codes.
@@ -491,6 +491,9 @@ namespace EXOFiddlerInspector
                     #region HTTP200s
                     case 200:
 
+                        // Set HTTP200SkipLogic to zero for each session we work through in the trace.
+                        int HTTP200SkipLogic = 0;
+
                         /////////////////////////////
                         //
                         // HTTP 200
@@ -519,21 +522,27 @@ namespace EXOFiddlerInspector
                             int end = this.session.GetResponseBodyAsString().IndexOf("</RedirectAddr>");
                             int charcount = end - start;
                             string RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
-
+                            
                             if (RedirectAddress.Contains(".onmicrosoft.com"))
                             {
                                 _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect.");
-                                _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address to Exchange Online found." + Environment.NewLine + RedirectAddress);
+                                _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address to Exchange Online found." + Environment.NewLine + RedirectAddress +
+                                    Environment.NewLine + "This is what we want to see, the mail.onmicrosoft.com targetAddress from On-Premise sends Outlook to Office 365.");
+                                // Increment HTTP200SkipLogic so that 99 does not run below.
+                                HTTP200SkipLogic++;
                             }
                             // Highlight if we got this far and do not have a redirect address which points to
                             // Exchange Online such as: contoso.mail.onmicrosoft.com.
                             else
                             {
                                 _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect.");
-                                _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." + Environment.NewLine + RedirectAddress);
+                                _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." + Environment.NewLine +
+                                    RedirectAddress + Environment.NewLine + "If this is an Office 365 mailbox the targetAddress from On-Premise is not sending Outlook to Office 365!");
+                                // Increment HTTP200SkipLogic so that 99 does not run below.
+                                HTTP200SkipLogic++;
                                 if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                                 {
-                                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address doesn't contain .onmicrosoft.com.");
+                                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address doesn't contain .onmicrosoft.com.");
                                 }
                             }
                         }
@@ -558,10 +567,13 @@ namespace EXOFiddlerInspector
                             </Autodiscover>
                             */
                             _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect: Error Code 500.");
-                            _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address can't be found.");
+                            _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address can't be found. Look for other On-Premise Autodiscover responses, we may have a " +
+                                "valid Autodiscover targetAddress from On-Premise in another session in this trace.");
+                            // Increment HTTP200SkipLogic so that 99 does not run below.
+                            HTTP200SkipLogic++;
                             if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                             {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address can't be found.");
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address can't be found.");
                             }
                         }
 
@@ -570,94 +582,101 @@ namespace EXOFiddlerInspector
                         // 99. No other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                         else
                         {
-                            string wordCountErrorText;
-                            string wordCountFailedText;
-                            string wordCountExceptionText;
+                            // If the HTTP200SkipLogic value is zero, then none of the above logic has run on the session.
+                            // Treat this session as a HTTP 200 we need to check for error / failures / exceptions on.
+                            if (HTTP200SkipLogic == 0)
+                            {
 
-                            // Only want to start splitting word in responses only sessions we need to.
-                            // Specifically HTTP 200's with the appropriate content type.
-                            if ((this.session.ResponseHeaders.ExistsAndContains("Content-Type", "text") ||
-                                (this.session.ResponseHeaders.ExistsAndContains("Content-Type", "html") ||
-                                (this.session.ResponseHeaders.ExistsAndContains("Content-Type", "xml"))))) {
+                                string wordCountErrorText;
+                                string wordCountFailedText;
+                                string wordCountExceptionText;
 
-                                // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
-                                //
-                                // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
-                                //
-
-                                string text200 = this.session.ToString();
-
-                                //Convert the string into an array of words  
-                                string[] source200 = text200.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-                                // Create the query. Use ToLowerInvariant to match "data" and "Data"   
-                                var matchQuery200 = from word in source200
-                                                 where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
-                                                 select word;
-
-                                searchTerm = "Error";
-
-                                // Count the matches, which executes the query.  
-                                wordCountError = matchQuery200.Count();
-
-                                searchTerm = "failed";
-
-                                // Count the matches, which executes the query.  
-                                wordCountFailed = matchQuery200.Count();
-
-                                searchTerm = "exception";
-
-                                // Count the matches, which executes the query.  
-                                wordCountException = matchQuery200.Count();
-
-
-                                // If either the keyword searches give us a result.
-                                if (wordCountError > 0 || wordCountFailed > 0 || wordCountException > 0)
+                                // Only want to start splitting word in responses only sessions we need to.
+                                // Specifically HTTP 200's with the appropriate content type.
+                                if ((this.session.ResponseHeaders.ExistsAndContains("Content-Type", "text") ||
+                                    (this.session.ResponseHeaders.ExistsAndContains("Content-Type", "html") ||
+                                    (this.session.ResponseHeaders.ExistsAndContains("Content-Type", "xml")))))
                                 {
 
-                                    if (wordCountError == 1)
+                                    // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
+                                    //
+                                    // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
+                                    //
+
+                                    string text200 = this.session.ToString();
+
+                                    //Convert the string into an array of words  
+                                    string[] source200 = text200.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                                    // Create the query. Use ToLowerInvariant to match "data" and "Data"   
+                                    var matchQuery200 = from word in source200
+                                                        where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
+                                                        select word;
+
+                                    searchTerm = "Error";
+
+                                    // Count the matches, which executes the query.  
+                                    wordCountError = matchQuery200.Count();
+
+                                    searchTerm = "failed";
+
+                                    // Count the matches, which executes the query.  
+                                    wordCountFailed = matchQuery200.Count();
+
+                                    searchTerm = "exception";
+
+                                    // Count the matches, which executes the query.  
+                                    wordCountException = matchQuery200.Count();
+
+
+                                    // If either the keyword searches give us a result.
+                                    if (wordCountError > 0 || wordCountFailed > 0 || wordCountException > 0)
                                     {
-                                        wordCountErrorText = wordCountError + " time.";
+
+                                        if (wordCountError == 1)
+                                        {
+                                            wordCountErrorText = wordCountError + " time.";
+                                        }
+                                        else
+                                        {
+                                            wordCountErrorText = wordCountError + " times.";
+                                        }
+
+                                        if (wordCountFailed == 1)
+                                        {
+                                            wordCountFailedText = wordCountFailed + " time.";
+                                        }
+                                        else
+                                        {
+                                            wordCountFailedText = wordCountFailed + " times.";
+                                        }
+
+                                        if (wordCountException == 1)
+                                        {
+                                            wordCountExceptionText = wordCountException + " time.";
+                                        }
+                                        else
+                                        {
+                                            wordCountExceptionText = wordCountException + " times.";
+                                        }
+
+                                        string result = "After splitting all words in the response body the following were found:" +
+                                            Environment.NewLine + "Keyword 'Error' found " + wordCountErrorText +
+                                            Environment.NewLine + "Keyword 'Failed' found " + wordCountFailedText +
+                                            Environment.NewLine + "Keyword 'Exception' found " + wordCountExceptionText;
+                                        _displayControl.SetResponseAlertTextBox("Word Search 'Error' or 'failed' found in respone body.");
+                                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP200ErrorsFound + result);
+                                        if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                                        {
+                                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 keyword 'error' or 'failed' found in response body!");
+                                        }
                                     }
+                                    // both word count variables are zero.
                                     else
                                     {
-                                        wordCountErrorText = wordCountError + " times.";
+                                        _displayControl.SetResponseAlertTextBox("Word Search 'Error' or 'failed' not found in respone body.");
+                                        _displayControl.SetResponseCommentsRichTextboxText("Word Search 'Error' or 'failed' not found in respone body.");
                                     }
-
-                                    if (wordCountFailed == 1)
-                                    {
-                                        wordCountFailedText = wordCountFailed + " time.";
-                                    }
-                                    else
-                                    {
-                                        wordCountFailedText = wordCountFailed + " times.";
-                                    }
-
-                                    if (wordCountException == 1)
-                                    {
-                                        wordCountExceptionText = wordCountException + " time.";
-                                    }
-                                    else
-                                    {
-                                        wordCountExceptionText = wordCountException + " times.";
-                                    }
-
-                                    string result = "After splitting all words in the response body the following were found:" +
-                                        Environment.NewLine + "Keyword 'Error' found " + wordCountErrorText +
-                                        Environment.NewLine + "Keyword 'Failed' found " + wordCountFailedText +
-                                        Environment.NewLine + "Keyword 'Exception' found " + wordCountExceptionText;
-                                    _displayControl.SetResponseAlertTextBox("Word Search 'Error' or 'failed' found in respone body.");
-                                    _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP200ErrorsFound + result);
-                                    if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
-                                    {
-                                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 keyword 'error' or 'failed' found in response body!");
-                                    }
-                                }
-                                // both word count variables are zero.
-                                else
-                                {
-                                    _displayControl.SetResponseAlertTextBox("Word Search 'Error' or 'failed' not found in respone body.");
-                                    _displayControl.SetResponseCommentsRichTextboxText("Word Search 'Error' or 'failed' not found in respone body.");
                                 }
                             }
                         }
@@ -736,7 +755,7 @@ namespace EXOFiddlerInspector
                             _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP307IncorrectTemporaryRedirect);
                             if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                             {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
                             }
 
                         }
@@ -774,7 +793,7 @@ namespace EXOFiddlerInspector
                             _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP403WebProxyBlocking);
                             if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                             {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
                             }
                         }
                         else
@@ -841,7 +860,7 @@ namespace EXOFiddlerInspector
                         _displayControl.SetResponseCommentsRichTextboxText("HTTP 500 Internal Server Error");
                         if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                         {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 500 Internal Server Error.");
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 500 Internal Server Error.");
                         }
                         break;
                     //
@@ -918,7 +937,7 @@ namespace EXOFiddlerInspector
                             _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP502BadGateway);
                             if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                             {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway.");
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway.");
                             }
                         }
                         //
@@ -959,7 +978,7 @@ namespace EXOFiddlerInspector
                             _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP503FederatedSTSUnreachableStart + Environment.NewLine + RealmURL + Environment.NewLine + Properties.Settings.Default.HTTP503FederatedSTSUnreachableEnd);
                             if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                             {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
                             }
                         }
                         else
@@ -969,7 +988,7 @@ namespace EXOFiddlerInspector
                             _displayControl.SetResponseCommentsRichTextboxText("HTTP 503 Service Unavailable.");
                             if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                             {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable.");
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable.");
                             }
                         }
                         //
@@ -985,7 +1004,7 @@ namespace EXOFiddlerInspector
                         _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
                         if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                         {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 504 Gateway Timeout.");
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout.");
                         }
                         //
                         /////////////////////////////
