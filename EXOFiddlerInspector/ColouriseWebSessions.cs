@@ -599,6 +599,7 @@ namespace EXOFiddlerInspector
                         //
                         this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
+                        this.session["X-ExchangeType"] = "NO RESPONSE!";
                         //
                         /////////////////////////////
                         break;
@@ -650,6 +651,7 @@ namespace EXOFiddlerInspector
                             {
                                 this.session["ui-backcolor"] = HTMLColourRed;
                                 this.session["ui-color"] = "black";
+                                this.session["X-ExchangeType"] = "AUTOD REDIRECT ADDR!";
                                 if (boolAppLoggingEnabled && boolExtensionEnabled)
                                 {
                                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
@@ -678,6 +680,7 @@ namespace EXOFiddlerInspector
                             */
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
+                            this.session["X-ExchangeType"] = "NO AUTOD REDIRECT ADDR!";
                             if (boolAppLoggingEnabled && boolExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
@@ -727,6 +730,7 @@ namespace EXOFiddlerInspector
                                 // Red text on black background.
                                 this.session["ui-backcolor"] = "black";
                                 this.session["ui-color"] = "red";
+                                this.session["X-ExchangeType"] = "FAILURE LURKING!";
                             }
                             else
                             {
@@ -833,6 +837,7 @@ namespace EXOFiddlerInspector
                         //
                         this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
+                        this.session["X-ExchangeType"] = "Auth Challenge";
                         //
                         /////////////////////////////
                         break;
@@ -847,6 +852,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
+                            this.session["X-ExchangeType"] = "WEB PROXY BLOCK!";
                             if (boolAppLoggingEnabled && boolExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
@@ -950,6 +956,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
+                            this.session["X-ExchangeType"] = "False Positive";
                         }
 
                         /////////////////////////////
@@ -964,6 +971,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
+                            this.session["X-ExchangeType"] = "False Positive";
                             if (boolAppLoggingEnabled && boolExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
@@ -983,6 +991,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
+                            this.session["X-ExchangeType"] = "False Positive";
                             if (boolAppLoggingEnabled && boolExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
@@ -999,6 +1008,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
+                            this.session["X-ExchangeType"] = "AUTODISCOVER!";
                             if (boolAppLoggingEnabled && boolExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 502 Bad Gateway.");
@@ -1052,6 +1062,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
+                            this.session["X-ExchangeType"] = "FEDERATION!";
                             if (boolAppLoggingEnabled && boolExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: Session " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
@@ -1163,7 +1174,26 @@ namespace EXOFiddlerInspector
 
             /////////////////
             //
+            // Call the function to populate the session type column on live trace, if the column is enabled.
+            if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
+            {
+                SetExchangeType(session);
+            }
+
+            /////////////////
+            //
+            // Call the function to populate the session type column on live trace, if the column is enabled.
+            if (boolResponseServerColumnEnabled && boolExtensionEnabled)
+            {
+                SetResponseServer(session);
+            }
+
+            /////////////////
+            //
             // Call the function to colourise sessions for live traffic capture.
+            //
+            // Making sure this is called after SetExchangeType and SetResponseServer, so we can use overrides
+            // in OnPeekAtResponseHeaders function.
             //
             if (boolExtensionEnabled)
             {
@@ -1218,22 +1248,6 @@ namespace EXOFiddlerInspector
             */
             //
             /////////////////
-
-            /////////////////
-            //
-            // Call the function to populate the session type column on live trace, if the column is enabled.
-            if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
-            {
-                SetExchangeType(session);
-            }
-
-            /////////////////
-            //
-            // Call the function to populate the session type column on live trace, if the column is enabled.
-            if (boolResponseServerColumnEnabled && boolExtensionEnabled)
-            {
-                SetResponseServer(session);
-            }
 
             //
             // Populate the ResponseTime column on live trace, if the column is enabled.
@@ -1306,12 +1320,16 @@ namespace EXOFiddlerInspector
             // Else if the response X-Served-By header is not null or blank then populate it into the response server value.
             else if ((this.session.oResponse["X-Served-By"] != null && (this.session.oResponse["X-Served-By"] != "")))
             {
-                this.session["X-Served-By"] = "X-Served-By: " + this.session.oResponse["X-Served-By"];
+                this.session["X-ResponseServer"] = "X-Served-By: " + this.session.oResponse["X-Served-By"];
             }
             // Else if the response X-Served-By header is not null or blank then populate it into the response server value.
             else if ((this.session.oResponse["X-Server-Name"] != null && (this.session.oResponse["X-Server-Name"] != "")))
             {
-                this.session["X-Served-Name"] = "X-Served-Name: " + this.session.oResponse["X-Server-Name"];
+                this.session["X-ResponseServer"] = "X-Served-Name: " + this.session.oResponse["X-Server-Name"];
+            }
+            else if (this.session.isTunnel == true)
+            {
+                this.session["X-ResponseServer"] = "Connect Tunnel";
             }
         }
 
