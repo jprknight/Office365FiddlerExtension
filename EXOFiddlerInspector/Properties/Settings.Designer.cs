@@ -171,8 +171,7 @@ Check the Headers or Raw tab and the Location to ensure the Autodiscover call is
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/jprknight/EXOFiddlerExtension/releases/download/1.0.18/EXOFidd" +
-            "lerInspectorInstaller.msi")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/jprknight/EXOFiddlerExtension/releases")]
         public string InstallerURL {
             get {
                 return ((string)(this["InstallerURL"]));
