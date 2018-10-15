@@ -416,6 +416,14 @@ namespace EXOFiddlerInspector
         //
         public void CheckForUpdate()
         {
+            // If the Fiddler application is attached as the system proxy and an update check is triggered via menu.
+            // First Try detach.
+            //FiddlerApplication.oProxy.Detach();
+            // Wait some time.
+            //System.Threading.Thread.Sleep(5000);
+            // Continue processing.
+            // FiddlerApplication.OnDetach??
+
             string downloadUrl = "";
             Version newVersion = null;
             string xmlUrl = Properties.Settings.Default.UpdateURL;
@@ -1359,8 +1367,7 @@ namespace EXOFiddlerInspector
             else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { session["X-ExchangeType"] = "EXO Autodiscover"; }
             else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { session["X-ExchangeType"] = "EXO Autodiscover"; }
             // Autodiscover.     
-            else if (this.session.fullUrl.Contains("autodiscover")) { session["X-ExchangeType"] = "On-Prem Autodiscover"; }
-            else if (this.session.url.Contains("autodiscover")) { session["X-ExchangeType"] = "On-Prem Autodiscover"; }
+            else if ((this.session.fullUrl.Contains("autodiscover") && (!(this.session.hostname == "outlook.office365.com")))) { session["X-ExchangeType"] = "On-Prem Autodiscover"; }
             else if (this.session.hostname.Contains("autodiscover")) { session["X-ExchangeType"] = "On-Prem Autodiscover"; }
             // Free/Busy.
             else if (this.session.fullUrl.Contains("WSSecurity")) { session["X-ExchangeType"] = "Free/Busy"; }
