@@ -318,6 +318,9 @@ namespace EXOFiddlerInspector
             }
         }
 
+        public HTTPRequestHeaders RequestHeaders { get; private set; }
+        public HTTPResponseHeaders ResponseHeaders { get; private set; }
+
         /////////////////////////////
         // Function which analyses request/response data to provide additional feedback.
         public void SetResponseValues(Session oS)
@@ -333,6 +336,16 @@ namespace EXOFiddlerInspector
             _displayControl.SetResponseAlertTextBox("");
             _displayControl.SetResponseCommentsRichTextboxText("");
             _displayControl.SetElapsedTimeCommentTextBoxText("");
+            //_displayControl.SetRequestHeadersTextBoxText("");
+            //_displayControl.SetRequestBodyTextBoxText("");
+            //_displayControl.SetResponseHeadersTextBoxText("");
+            //_displayControl.SetResponseBodyTextBoxText("");
+
+            // Write data into hidden fields.
+            _displayControl.SetRequestHeadersTextBoxText(this.session.oRequest.headers.ToString());
+            _displayControl.SetRequestBodyTextBoxText(this.session.GetRequestBodyAsString());
+            _displayControl.SetResponseHeadersTextBoxText(this.session.oResponse.headers.ToString());
+            _displayControl.SetResponseBodyTextBoxText(this.session.GetResponseBodyAsString());
 
             // Write HTTP Status Code Text box, convert int to string.
             _displayControl.SetHTTPResponseCodeTextBoxText(this.session.responseCode.ToString());
@@ -356,6 +369,10 @@ namespace EXOFiddlerInspector
             // Populate Response Server on session in order of preference from common to obsure.
 
             // If the response server header is not null or blank then populate it into the response server value.
+            if (this.session.isTunnel == true)
+            {
+                _displayControl.SetResponseServerTextBoxText(this.session.url);
+            }
             if ((this.session.oResponse["Server"] != null) && (this.session.oResponse["Server"] != ""))
             {
                 _displayControl.SetResponseServerTextBoxText(this.session.oResponse["Server"]);
@@ -421,32 +438,11 @@ namespace EXOFiddlerInspector
             int wordCountFailed = 0;
             int wordCountException = 0;
 
-            /*
-            // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
-            //
-            // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
-            //
-
-            string text = this.session.ToString();
-
-            //Convert the string into an array of words  
-            string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-            // Create the query. Use ToLowerInvariant to match "data" and "Data"   
-            var matchQuery = from word in source
-                             where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
-                             select word;
-            */
-
-            // Query samples:
-            //string searchTerm = "error";
-            //string[] searchTerms = { "Error", "FederatedStsUnreachable" };
-
             #region SessionRuleSet
 
             /////////////////////////////
             //
-            //  Broader code logic for sessions, where the response code cannot be used as in the switch statement.
+            //  Broader code logic for sessions, where we do not want to use the response code as in the switch statement.
             //
 
             /////////////////////////////
@@ -457,13 +453,20 @@ namespace EXOFiddlerInspector
             if ((this.session.url.Contains("autodiscover") && (this.session.oResponse["server"] == "Apache")))
             {
                 _displayControl.SetResponseAlertTextBox("Apache is answering Autodiscover requests!");
-                _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.ApacheAutodiscover);
+                _displayControl.SetResponseCommentsRichTextboxText("An Apache Web Server(Unix/ Linux) is answering Autodiscover requests!" + Environment.NewLine +
+                    "This should not be happening. Consider disabling Root Domain Autodiscover lookups." + Environment.NewLine +
+                    "See ExcludeHttpsRootDomain on https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under" + Environment.NewLine +
+                    "Beyond this, the customer needs their web administrator responsible for the server answering the calls to stop the Apache web server from answering to Autodiscover.");
                 if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                 {
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 405 Method Not Allowed; Apache is answering Autodiscover requests!");
                 }
             }
+            //
+            /////////////////////////////
+            // 
             // If the above is not true, then drop into the switch statement based on individual response codes.
+            //
             else
             {
                 /////////////////////////////
@@ -500,7 +503,18 @@ namespace EXOFiddlerInspector
                         //
 
                         /////////////////////////////
-                        // 1. Exchange On-Premise Autodiscover redirect.
+                        // 1. Connect Tunnel.
+                        if (this.session.isTunnel == true)
+                        {
+                            _displayControl.SetResponseAlertTextBox("Connect Tunnel");
+                            _displayControl.SetResponseCommentsRichTextboxText("Encrypted HTTPS traffic flows through this CONNECT tunnel. " +
+                                "HTTPS Decryption is enabled in Fiddler, so decrypted sessions running in this tunnel will be shown in the Web Sessions list.");
+                            // No reason currently known to check the response body on tunnel sessions. Compute saving.
+                            HTTP200SkipLogic++;
+                        }
+
+                        /////////////////////////////
+                        // 2. Exchange On-Premise Autodiscover redirect.
                         if (this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1)
                         {
                             /*
@@ -549,7 +563,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 2. Exchange On-Premise Autodiscover redirect - address can't be found
+                        // 3. Exchange On-Premise Autodiscover redirect - address can't be found
                         //
                         if ((this.session.utilFindInResponse("<Message>The email address can't be found.</Message>", false) > 1) &&
                             (this.session.utilFindInResponse("<ErrorCode>500</ErrorCode>", false) > 1))
@@ -579,7 +593,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 99. No other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
+                        // 99. All other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                         else
                         {
                             // If the HTTP200SkipLogic value is zero, then none of the above logic has run on the session.
@@ -613,7 +627,7 @@ namespace EXOFiddlerInspector
                                                         where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
                                                         select word;
 
-                                    searchTerm = "Error";
+                                    searchTerm = "error";
 
                                     // Count the matches, which executes the query.  
                                     wordCountError = matchQuery200.Count();
@@ -660,22 +674,24 @@ namespace EXOFiddlerInspector
                                             wordCountExceptionText = wordCountException + " times.";
                                         }
 
-                                        string result = "After splitting all words in the response body the following were found:" +
+                                        _displayControl.SetResponseAlertTextBox("'error', 'failed' or 'exception' found in respone body.");
+                                        _displayControl.SetResponseCommentsRichTextboxText("HTTP 200: Errors or failures found in response body. " + 
+                                            "Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review." +
+                                            Environment.NewLine + Environment.NewLine +
+                                            "After splitting all words in the response body the following were found:" + Environment.NewLine +
                                             Environment.NewLine + "Keyword 'Error' found " + wordCountErrorText +
                                             Environment.NewLine + "Keyword 'Failed' found " + wordCountFailedText +
-                                            Environment.NewLine + "Keyword 'Exception' found " + wordCountExceptionText;
-                                        _displayControl.SetResponseAlertTextBox("Word Search 'Error' or 'failed' found in respone body.");
-                                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP200ErrorsFound + result);
+                                            Environment.NewLine + "Keyword 'Exception' found " + wordCountExceptionText);
                                         if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                                         {
-                                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 keyword 'error' or 'failed' found in response body!");
+                                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 keyword 'error', 'failed' or 'exception' found in respone body!");
                                         }
                                     }
                                     // both word count variables are zero.
                                     else
                                     {
-                                        _displayControl.SetResponseAlertTextBox("Word Search 'Error' or 'failed' not found in respone body.");
-                                        _displayControl.SetResponseCommentsRichTextboxText("Word Search 'Error' or 'failed' not found in respone body.");
+                                        _displayControl.SetResponseAlertTextBox("No failures keywords detected in respone body.");
+                                        _displayControl.SetResponseCommentsRichTextboxText("No failures keywords ('error', 'failed' or 'exception') detected in respone body.");
                                     }
                                 }
                             }
@@ -752,7 +768,12 @@ namespace EXOFiddlerInspector
                             (this.session.ResponseHeaders["Location"] != "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml"))))
                         {
                             _displayControl.SetResponseAlertTextBox("HTTP 307 Temporary Redirect");
-                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP307IncorrectTemporaryRedirect);
+                            _displayControl.SetResponseCommentsRichTextboxText("HTTP 307: Temporary Redirects have been seen to redirect Exchange Online Autodiscover " +
+                                "calls back to On-Premise resources, breaking Outlook connectivity." + Environment.NewLine +
+                                "This session has enough data points to be an Autodiscover request for Exchange Online which has not been sent to " +
+                                "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml as expected." + Environment.NewLine +
+                                "Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.");
+
                             if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
@@ -762,7 +783,9 @@ namespace EXOFiddlerInspector
                         else
                         {
                             _displayControl.SetResponseAlertTextBox("HTTP 307 Temporary Redirect");
-                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP307TemporaryRedirect);
+                            _displayControl.SetResponseCommentsRichTextboxText("HTTP 307: Temporary Redirects have been seen to redirect Exchange Online Autodiscover calls " +
+                                "back to On-Premise resources, breaking Outlook connectivity. " + Environment.NewLine + "Check the Headers or Raw tab and the Location to ensure the Autodiscover call is " +
+                                "going to the correct place. " + Environment.NewLine + "If this session is not for an Outlook process then the information above may not be relevant to the issue under investigation.");
                         }
                         //
                         /////////////////////////////
@@ -776,10 +799,12 @@ namespace EXOFiddlerInspector
                         //  HTTP 401: UNAUTHORIZED.
                         //
                         _displayControl.SetResponseAlertTextBox("HTTP 401 Unauthorized");
-                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP401Unauthorized);
+                        _displayControl.SetResponseCommentsRichTextboxText("HTTP 401: Unauthorized / Authentication Challenge. These are expected and are not an issue as long as a subsequent " +
+                            Environment.NewLine + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. " + Environment.NewLine +
+                            "If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.");
                         //
                         /////////////////////////////
-                        break;
+                            break;
                     case 403:
                         /////////////////////////////
                         //
@@ -790,7 +815,9 @@ namespace EXOFiddlerInspector
                         if (this.session.utilFindInResponse("Access Denied", false) > 1)
                         {
                             _displayControl.SetResponseAlertTextBox("HTTP 403 Access Denied!");
-                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP403WebProxyBlocking);
+                            _displayControl.SetResponseCommentsRichTextboxText("HTTP 403: Forbidden. Is your firewall or web proxy blocking Outlook connectivity?" + Environment.NewLine +
+                                "To fire this message a HTTP 403 response code was detected and 'Access Denied' was found in the response body." + Environment.NewLine +
+                                "Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked?");
                             if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
@@ -800,7 +827,9 @@ namespace EXOFiddlerInspector
                         {
                             // Pick up any 403 Forbidden and write data into the comments box.
                             _displayControl.SetResponseAlertTextBox("HTTP 403 Forbidden!");
-                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP403Generic);
+                            _displayControl.SetResponseCommentsRichTextboxText("While HTTP 403's can be symptomatic of a proxy server blocking traffic, " +
+                                "however the phrase 'Access Denied' was NOT detected in the response body." + Environment.NewLine +
+                                "A small number of HTTP 403's can be seen in normal working scenarios. Check the Raw and WebView tabs to look for anything which looks suspect.");
                         }
                         //
                         /////////////////////////////
@@ -832,10 +861,11 @@ namespace EXOFiddlerInspector
                         //  HTTP 429: Too Many Requests.
                         //
                         _displayControl.SetResponseAlertTextBox("HTTP 429 Too Many Requests");
-                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP429TooManyRequests);
+                        _displayControl.SetResponseCommentsRichTextboxText("HTTP 429: These responses need to be taken into context with the rest of the sessions in the trace. " + 
+                            "A small number is probably not an issue, larger numbers of these could be cause for concern.");
                         //
                         /////////////////////////////
-                        break;
+                            break;
                     case 440:
                         /////////////////////////////
                         //
@@ -893,7 +923,9 @@ namespace EXOFiddlerInspector
                             (this.session.utilFindInResponse(" failed.", false) > 1))
                         {
                             _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
-                            _displayControl.SetResponseCommentsRichTextboxText("DNS record does not exist. Connection on port 443 will not work by design.");
+                            _displayControl.SetResponseCommentsRichTextboxText("From the data in the response body this failure is likely due to a Microsoft DNS MX record "+
+                                "which points to an Exchange Online Protection mail host that accepts connections only on port 25. Connection on port 443 will not work by design." +
+                                Environment.NewLine + Environment.NewLine + "To validate this above lookup the record, confirm it is a MX record and attempt to connect to the MX host on ports 25 and 443.");
                         }
 
                         /////////////////////////////
@@ -908,8 +940,20 @@ namespace EXOFiddlerInspector
                             (this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
                             (this.session.utilFindInResponse(":443", false) > 1))
                         {
+
+                            string AutoDFalsePositiveResponseBody = this.session.GetResponseBodyAsString();
+                            int start = this.session.GetResponseBodyAsString().IndexOf("'");
+                            int end = this.session.GetResponseBodyAsString().LastIndexOf("'");
+                            int charcount = end - start;
+                            string AutoDFalsePositiveDomain = AutoDFalsePositiveResponseBody.Substring(start, charcount).Replace("'", "");
+                            //MessageBox.Show("Test: " + AutoDFalsePositiveDomain);
+
                             _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
-                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP502AutodiscoverFalsePositive);
+                            _displayControl.SetResponseCommentsRichTextboxText("HTTP 502: False Positive. By design Office 365 Autodiscover does not respond to " +
+                                AutoDFalsePositiveDomain + " on port 443. " + Environment.NewLine + Environment.NewLine +
+                                "Validate this message by confirming this is an Office 365 Host/IP address and perform a telnet to it on port 80." +
+                                Environment.NewLine + Environment.NewLine +
+                                "If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects requests to https://autodiscover-s.outlook.com.");
                         }
 
                         /////////////////////////////
@@ -934,7 +978,8 @@ namespace EXOFiddlerInspector
                         {
                             // Pick up any other 502 Bad Gateway and write data into the comments box.
                             _displayControl.SetResponseAlertTextBox("HTTP 502 Bad Gateway");
-                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP502BadGateway);
+                            _displayControl.SetResponseCommentsRichTextboxText("Potential to cause the issue you are investigating. " +
+                                "Do you see expected responses beyond this session in the trace? Is this an Exchange On - Premise, Exchange Online or other device ?");
                             if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway.");
@@ -975,7 +1020,15 @@ namespace EXOFiddlerInspector
                             RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=" + this.session.oRequest["X-User-Identity"] + "&xml=1";
 
                             _displayControl.SetResponseAlertTextBox("The federation service is unreachable or unavailable.");
-                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTP503FederatedSTSUnreachableStart + Environment.NewLine + RealmURL + Environment.NewLine + Properties.Settings.Default.HTTP503FederatedSTSUnreachableEnd);
+                            _displayControl.SetResponseCommentsRichTextboxText("HTTP 503: FederatedSTSUnreachable." + Environment.NewLine +
+                                "The fedeation service is unreachable or unavailable. Check the Raw tab for additional details." + Environment.NewLine +
+                                "Check the realm page for the authenticating domain." + Environment.NewLine + RealmURL + Environment.NewLine + Environment.NewLine +
+                                "Expected responses:" + Environment.NewLine +
+                                "AuthURL: Normally expected to show federation service logon page." + Environment.NewLine +
+                                "STSAuthURL: Normally expected to show HTTP 400." + Environment.NewLine +
+                                "MEXURL: Normally expected to show long stream of XML data." + Environment.NewLine + Environment.NewLine +
+                                "If any of these show the HTTP 503 Service Unavailable this confirms a consistent failure on the federation service." + Environment.NewLine +
+                                "If however you get the expected responses, this does not neccessarily mean the federation service / everything authentication is healthy. Further investigation is advised.");
                             if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
@@ -1018,11 +1071,26 @@ namespace EXOFiddlerInspector
                         break;
                     #endregion
                 }
+                //
+                /////////////////////////////
             }
+            //
+            /////////////////////////////
             #endregion
         }
         //
         /////////////////////////////
+
+        public void SaveSessionData(Session oS)
+        {
+            this.session = oS;
+
+            RequestHeaders = this.session.RequestHeaders;
+            ResponseHeaders = this.session.ResponseHeaders;
+
+
+        }
+
 
         /////////////////////////////
         // Add the EXO Response tab into the inspector tab.

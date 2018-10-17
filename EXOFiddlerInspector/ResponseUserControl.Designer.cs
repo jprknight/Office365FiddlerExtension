@@ -42,8 +42,6 @@
             this.ResponseProcessTextBox = new System.Windows.Forms.TextBox();
             this.ResponseProcessLabel = new System.Windows.Forms.Label();
             this.ResponseGroupBox = new System.Windows.Forms.GroupBox();
-            this.OpenResponseBodyButton = new System.Windows.Forms.Button();
-            this.ResponseCommentsOpenButton = new System.Windows.Forms.Button();
             this.ResponseCommentsRichTextBox = new System.Windows.Forms.RichTextBox();
             this.DataAgeLabel = new System.Windows.Forms.Label();
             this.DataAgeTextBox = new System.Windows.Forms.TextBox();
@@ -52,6 +50,15 @@
             this.RequestEndDateTextBox = new System.Windows.Forms.TextBox();
             this.ResponseServerLabel = new System.Windows.Forms.Label();
             this.ResponseServerTextBox = new System.Windows.Forms.TextBox();
+            this.RequestHeadersTextBox = new System.Windows.Forms.TextBox();
+            this.RequestHeadersLabel = new System.Windows.Forms.Label();
+            this.RequestBodyLabel = new System.Windows.Forms.Label();
+            this.RequestBodyTextbox = new System.Windows.Forms.TextBox();
+            this.ResponseHeadersLabel = new System.Windows.Forms.Label();
+            this.ResponseHeadersTextbox = new System.Windows.Forms.TextBox();
+            this.ResponseBodyLabel = new System.Windows.Forms.Label();
+            this.ResponseBodyTextbox = new System.Windows.Forms.TextBox();
+            this.SaveSessionDataButton = new System.Windows.Forms.Button();
             this.ResponseGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -187,28 +194,6 @@
             this.ResponseGroupBox.Text = "Response Comments";
             this.ResponseGroupBox.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // OpenResponseBodyButton
-            // 
-            this.OpenResponseBodyButton.Location = new System.Drawing.Point(108, 371);
-            this.OpenResponseBodyButton.Name = "OpenResponseBodyButton";
-            this.OpenResponseBodyButton.Size = new System.Drawing.Size(138, 23);
-            this.OpenResponseBodyButton.TabIndex = 35;
-            this.OpenResponseBodyButton.Text = "Open Response Body";
-            this.OpenResponseBodyButton.UseVisualStyleBackColor = true;
-            this.OpenResponseBodyButton.Visible = false;
-            this.OpenResponseBodyButton.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // ResponseCommentsOpenButton
-            // 
-            this.ResponseCommentsOpenButton.Location = new System.Drawing.Point(252, 371);
-            this.ResponseCommentsOpenButton.Name = "ResponseCommentsOpenButton";
-            this.ResponseCommentsOpenButton.Size = new System.Drawing.Size(154, 23);
-            this.ResponseCommentsOpenButton.TabIndex = 34;
-            this.ResponseCommentsOpenButton.Text = "Open Response Comments";
-            this.ResponseCommentsOpenButton.UseVisualStyleBackColor = true;
-            this.ResponseCommentsOpenButton.Visible = false;
-            this.ResponseCommentsOpenButton.Click += new System.EventHandler(this.ResponseCommentsOpenButton_Click);
-            // 
             // ResponseCommentsRichTextBox
             // 
             this.ResponseCommentsRichTextBox.BackColor = System.Drawing.Color.White;
@@ -285,12 +270,105 @@
             this.ResponseServerTextBox.TabIndex = 34;
             this.ResponseServerTextBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
+            // RequestHeadersTextBox
+            // 
+            this.RequestHeadersTextBox.Location = new System.Drawing.Point(451, 19);
+            this.RequestHeadersTextBox.Multiline = true;
+            this.RequestHeadersTextBox.Name = "RequestHeadersTextBox";
+            this.RequestHeadersTextBox.Size = new System.Drawing.Size(490, 149);
+            this.RequestHeadersTextBox.TabIndex = 36;
+            this.RequestHeadersTextBox.Visible = false;
+            // 
+            // RequestHeadersLabel
+            // 
+            this.RequestHeadersLabel.AutoSize = true;
+            this.RequestHeadersLabel.Location = new System.Drawing.Point(448, 3);
+            this.RequestHeadersLabel.Name = "RequestHeadersLabel";
+            this.RequestHeadersLabel.Size = new System.Drawing.Size(90, 13);
+            this.RequestHeadersLabel.TabIndex = 37;
+            this.RequestHeadersLabel.Text = "Request Headers";
+            this.RequestHeadersLabel.Visible = false;
+            // 
+            // RequestBodyLabel
+            // 
+            this.RequestBodyLabel.AutoSize = true;
+            this.RequestBodyLabel.Location = new System.Drawing.Point(451, 175);
+            this.RequestBodyLabel.Name = "RequestBodyLabel";
+            this.RequestBodyLabel.Size = new System.Drawing.Size(74, 13);
+            this.RequestBodyLabel.TabIndex = 38;
+            this.RequestBodyLabel.Text = "Request Body";
+            this.RequestBodyLabel.Visible = false;
+            // 
+            // RequestBodyTextbox
+            // 
+            this.RequestBodyTextbox.Location = new System.Drawing.Point(451, 191);
+            this.RequestBodyTextbox.Multiline = true;
+            this.RequestBodyTextbox.Name = "RequestBodyTextbox";
+            this.RequestBodyTextbox.Size = new System.Drawing.Size(490, 149);
+            this.RequestBodyTextbox.TabIndex = 39;
+            this.RequestBodyTextbox.Visible = false;
+            // 
+            // ResponseHeadersLabel
+            // 
+            this.ResponseHeadersLabel.AutoSize = true;
+            this.ResponseHeadersLabel.Location = new System.Drawing.Point(454, 347);
+            this.ResponseHeadersLabel.Name = "ResponseHeadersLabel";
+            this.ResponseHeadersLabel.Size = new System.Drawing.Size(98, 13);
+            this.ResponseHeadersLabel.TabIndex = 40;
+            this.ResponseHeadersLabel.Text = "Response Headers";
+            this.ResponseHeadersLabel.Visible = false;
+            // 
+            // ResponseHeadersTextbox
+            // 
+            this.ResponseHeadersTextbox.Location = new System.Drawing.Point(451, 363);
+            this.ResponseHeadersTextbox.Multiline = true;
+            this.ResponseHeadersTextbox.Name = "ResponseHeadersTextbox";
+            this.ResponseHeadersTextbox.Size = new System.Drawing.Size(490, 149);
+            this.ResponseHeadersTextbox.TabIndex = 41;
+            this.ResponseHeadersTextbox.Visible = false;
+            // 
+            // ResponseBodyLabel
+            // 
+            this.ResponseBodyLabel.AutoSize = true;
+            this.ResponseBodyLabel.Location = new System.Drawing.Point(457, 519);
+            this.ResponseBodyLabel.Name = "ResponseBodyLabel";
+            this.ResponseBodyLabel.Size = new System.Drawing.Size(82, 13);
+            this.ResponseBodyLabel.TabIndex = 42;
+            this.ResponseBodyLabel.Text = "Response Body";
+            this.ResponseBodyLabel.Visible = false;
+            // 
+            // ResponseBodyTextbox
+            // 
+            this.ResponseBodyTextbox.Location = new System.Drawing.Point(451, 535);
+            this.ResponseBodyTextbox.Multiline = true;
+            this.ResponseBodyTextbox.Name = "ResponseBodyTextbox";
+            this.ResponseBodyTextbox.Size = new System.Drawing.Size(490, 149);
+            this.ResponseBodyTextbox.TabIndex = 43;
+            this.ResponseBodyTextbox.Visible = false;
+            // 
+            // SaveSessionDataButton
+            // 
+            this.SaveSessionDataButton.Location = new System.Drawing.Point(249, 371);
+            this.SaveSessionDataButton.Name = "SaveSessionDataButton";
+            this.SaveSessionDataButton.Size = new System.Drawing.Size(157, 23);
+            this.SaveSessionDataButton.TabIndex = 44;
+            this.SaveSessionDataButton.Text = "Save Session Data";
+            this.SaveSessionDataButton.UseVisualStyleBackColor = true;
+            this.SaveSessionDataButton.Click += new System.EventHandler(this.SaveSessionDataButton_Click);
+            // 
             // ResponseUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.ResponseCommentsOpenButton);
-            this.Controls.Add(this.OpenResponseBodyButton);
+            this.Controls.Add(this.SaveSessionDataButton);
+            this.Controls.Add(this.ResponseBodyTextbox);
+            this.Controls.Add(this.ResponseBodyLabel);
+            this.Controls.Add(this.ResponseHeadersTextbox);
+            this.Controls.Add(this.ResponseHeadersLabel);
+            this.Controls.Add(this.RequestBodyTextbox);
+            this.Controls.Add(this.RequestBodyLabel);
+            this.Controls.Add(this.RequestHeadersLabel);
+            this.Controls.Add(this.RequestHeadersTextBox);
             this.Controls.Add(this.ResponseServerTextBox);
             this.Controls.Add(this.ResponseServerLabel);
             this.Controls.Add(this.RequestEndDateTextBox);
@@ -313,7 +391,7 @@
             this.Controls.Add(this.HTTPResponseCodeTextBox);
             this.Controls.Add(this.HTTPStatusCodeLinkLabel);
             this.Name = "ResponseUserControl";
-            this.Size = new System.Drawing.Size(412, 403);
+            this.Size = new System.Drawing.Size(956, 698);
             this.Load += new System.EventHandler(this.ResponseUserControl_Load);
             this.ResponseGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -344,7 +422,14 @@
         private System.Windows.Forms.RichTextBox ResponseCommentsRichTextBox;
         private System.Windows.Forms.Label ResponseServerLabel;
         private System.Windows.Forms.TextBox ResponseServerTextBox;
-        private System.Windows.Forms.Button ResponseCommentsOpenButton;
-        private System.Windows.Forms.Button OpenResponseBodyButton;
+        private System.Windows.Forms.TextBox RequestHeadersTextBox;
+        private System.Windows.Forms.Label RequestHeadersLabel;
+        private System.Windows.Forms.Label RequestBodyLabel;
+        private System.Windows.Forms.TextBox RequestBodyTextbox;
+        private System.Windows.Forms.Label ResponseHeadersLabel;
+        private System.Windows.Forms.TextBox ResponseHeadersTextbox;
+        private System.Windows.Forms.Label ResponseBodyLabel;
+        private System.Windows.Forms.TextBox ResponseBodyTextbox;
+        private System.Windows.Forms.Button SaveSessionDataButton;
     }
 }

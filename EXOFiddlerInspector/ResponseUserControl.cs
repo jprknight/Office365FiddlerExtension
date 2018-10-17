@@ -15,6 +15,8 @@ namespace EXOFiddlerInspector
 {
     public partial class ResponseUserControl : UserControl
     {
+        private string SessionData;
+
         public ResponseUserControl()
         {
             InitializeComponent();
@@ -101,7 +103,31 @@ namespace EXOFiddlerInspector
         internal void SetResponseServerTextBoxText(string txt)
         {
             ResponseServerTextBox.Text = txt;
-        }        
+        }
+
+        // Code to write to RequestHeadersTextBox.Text value.
+        internal void SetRequestHeadersTextBoxText(string txt)
+        {
+            RequestHeadersTextBox.Text = txt;
+        }
+
+        // Code to write to RequestBodyTextBox.Text value.
+        internal void SetRequestBodyTextBoxText(string txt)
+        {
+            RequestBodyTextbox.Text = txt;
+        }
+
+        // Code to write to ResponseHeadersTextBox.Text value.
+        internal void SetResponseHeadersTextBoxText(string txt)
+        {
+            ResponseHeadersTextbox.Text = txt;
+        }
+
+        // Code to write to RequestBodyTextBox.Text value.
+        internal void SetResponseBodyTextBoxText(string txt)
+        {
+            ResponseBodyTextbox.Text = txt;
+        }
 
         private void HTTPStatusCodeLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -321,31 +347,6 @@ namespace EXOFiddlerInspector
 
         }
 
-        private void ResponseCommentsOpenButton_Click(object sender, EventArgs e)
-        {
-            System.IO.File.WriteAllText(@"EXOFiddlerInspectorComment.txt", ResponseCommentsRichTextBox.Text);
-            System.Diagnostics.Process.Start(@"EXOFiddlerInspectorComment.txt");
-
-            /////////////////////////////
-            // Expertimented with this code, at least on my computer I could see the characters paste into the notepad file.
-            // Preference on the above WriteAllText to file in temp directory and open instead.
-            /*
-            Process process = new Process();
-            process.StartInfo.FileName = @"notepad.exe";
-            process.EnableRaisingEvents = true;
-            process.Start(); // It will start Notepad process
-            process.WaitForInputIdle(10000);
-            if (process.Responding) // If currently started process(notepad) is responding
-            {
-                System.Windows.Forms.SendKeys.SendWait(ResponseCommentsRichTextBox.Text);
-                // It will Add all the text from text variable to notepad 
-            }
-            */
-            //
-            /////////////////////////////
-
-        }
-
         public void SaveResponseBody(Session session)
         {
             //this.session = session;
@@ -355,23 +356,61 @@ namespace EXOFiddlerInspector
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //SaveResponseBody(session);
-        }
-
         private void ResponseCommentsRichTextBox_TextChanged(object sender, EventArgs e)
         {
-            // Disable the ResponseCommentsRichTextBox if the response comment is zero length.
+            /*
+            // Disable the SaveSessionDataButton if the response comment is zero length.
+            // Commented out as even if we don't have any comments user may still want to export data.
             if (ResponseCommentsRichTextBox.TextLength == 0)
             {
-                ResponseCommentsOpenButton.Enabled = false;
+                SaveSessionDataButton.Enabled = false;
             }
             // Enable it otherwise.
             else
             {
-                ResponseCommentsOpenButton.Enabled = true;
+                SaveSessionDataButton.Enabled = true;
             }
+            */
+        }
+
+        private void SaveSessionDataButton_Click(object sender, EventArgs e)
+        {
+            if (RequestBodyTextbox.Text == "")
+            {
+                RequestBodyTextbox.Text = "-- Request Body was found to be blank in session. --";
+            }
+            if (ResponseBodyTextbox.Text == "")
+            {
+                ResponseBodyTextbox.Text = "-- Response Body was found to be blank in the session. --";
+            }
+            if (ResponseHeadersTextbox.Text == "")
+            {
+                ResponseHeadersTextbox.Text = "-- Response Headers were found to be blank in the session. --";
+            }
+
+            // Put all the data together.
+            SessionData = "HIGH LEVEL SESSION DATA" + Environment.NewLine + Environment.NewLine +
+                "HTTP Response Code: " + HTTPResponseCodeTextBox.Text + Environment.NewLine +
+                "Client Begin Request: " + RequestBeginDateTextBox.Text + " " + RequestBeginTimeTextBox.Text + Environment.NewLine +
+                "Client Done Response: " + RequestEndDateTextBox.Text + " " + RequestEndTimeTextBox.Text + Environment.NewLine +
+                "Elapsed Time: " + ElapsedTimeTextBox.Text + " " + ElapsedTimeCommentTextBox.Text + Environment.NewLine +
+                "Local Process: " + ResponseProcessTextBox.Text + Environment.NewLine +
+                "Response Server: " + ResponseServerTextBox.Text + Environment.NewLine +
+                "Response Alert: " + ResponseAlertTextBox.Text + Environment.NewLine +
+                Environment.NewLine + "Response Comments: " + Environment.NewLine + "------------------------------------------" + Environment.NewLine +
+                ResponseCommentsRichTextBox.Text + Environment.NewLine + "------------------------------------------" + Environment.NewLine + Environment.NewLine +
+                "REQUEST HEADERS" + Environment.NewLine + "------------------------------------------" + Environment.NewLine +
+                RequestHeadersTextBox.Text + Environment.NewLine + "------------------------------------------" + Environment.NewLine + Environment.NewLine +
+                "REQUEST BODY" + Environment.NewLine + "------------------------------------------" + Environment.NewLine +
+                RequestBodyTextbox.Text + Environment.NewLine + "------------------------------------------" + Environment.NewLine + Environment.NewLine +
+                "RESPONSE HEADERS" + Environment.NewLine + "------------------------------------------" + Environment.NewLine +
+                ResponseHeadersTextbox.Text + Environment.NewLine + "------------------------------------------" + Environment.NewLine + Environment.NewLine +
+                "RESPONSE BODY" + Environment.NewLine + "------------------------------------------" + Environment.NewLine +
+                ResponseBodyTextbox.Text + Environment.NewLine + "------------------------------------------";
+
+            // Save output to a .txt file so we can easily call notepad.
+            System.IO.File.WriteAllText(@"EXOFiddlerExtensionSessionData.txt", SessionData);
+            System.Diagnostics.Process.Start(@"EXOFiddlerExtensionSessionData.txt");
         }
     }
 }

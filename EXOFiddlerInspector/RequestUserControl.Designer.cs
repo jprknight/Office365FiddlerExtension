@@ -169,7 +169,7 @@
             this.Controls.Add(this.RequestHostTextBox);
             this.Controls.Add(this.RequestHostlabel);
             this.Name = "RequestUserControl";
-            this.Size = new System.Drawing.Size(419, 298);
+            this.Size = new System.Drawing.Size(419, 301);
             this.Load += new System.EventHandler(this.RequestUserControl_Load);
             this.RequestCommentsGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);

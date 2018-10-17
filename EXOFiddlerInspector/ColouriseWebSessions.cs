@@ -549,28 +549,6 @@ namespace EXOFiddlerInspector
             int wordCountFailed = 0;
             int wordCountException = 0;
 
-            /*
-            // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
-            //
-            // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
-            //
-
-            string text = this.session.ToString();
-
-            //Convert the string into an array of words  
-            string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-            // Create the query. Use ToLowerInvariant to match "data" and "Data"   
-            var matchQuery = from word in source
-                             where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
-                             select word;
-
-            */
-
-            // Query samples:
-            //string searchTerm = "error";
-            //string[] searchTerms = { "Error", "FederatedStsUnreachable" };
-
             #region ColouriseSessionsSwitchStatement
             /////////////////////////////
             //
@@ -621,7 +599,14 @@ namespace EXOFiddlerInspector
                         //
 
                         /////////////////////////////
-                        // 1. Exchange On-Premise Autodiscover redirect.
+                        // 1. Connect Tunnel.
+                        if (this.session.isTunnel == true)
+                        {
+                            // Do nothing here right now. Colourisation of these sessions is taken care of elsewhere.
+                        }
+
+                        /////////////////////////////
+                        // 2. Exchange On-Premise Autodiscover redirect.
                         if (this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1)
                         {
                             /*
@@ -670,7 +655,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 2. Exchange On-Premise Autodiscover redirect - address can't be found
+                        // 3. Exchange On-Premise Autodiscover redirect - address can't be found
                         //
                         if ((this.session.utilFindInResponse("<Message>The email address can't be found.</Message>", false) > 1) &&
                             (this.session.utilFindInResponse("<ErrorCode>500</ErrorCode>", false) > 1))
@@ -698,7 +683,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 99. No other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
+                        // 99. All other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                         else
                         {
 
@@ -1237,6 +1222,11 @@ namespace EXOFiddlerInspector
             // Use an if statement to fire these once per Fiddler application session.
             if (this.session.id == 1)
             {
+                if (boolExtensionEnabled)
+                {
+                    // Move the process column further to the left.
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 2, 100);
+                }
                 if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
                 {
                     FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 2, -1);
@@ -1260,7 +1250,6 @@ namespace EXOFiddlerInspector
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Body", 8, -1);
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Caching", 9, -1);
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Content-Type", 10, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 11, -1);
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", 12, -1);
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 13, -1);
             */
