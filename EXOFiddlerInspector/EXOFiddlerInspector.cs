@@ -336,16 +336,18 @@ namespace EXOFiddlerInspector
             _displayControl.SetResponseAlertTextBox("");
             _displayControl.SetResponseCommentsRichTextboxText("");
             _displayControl.SetElapsedTimeCommentTextBoxText("");
-            //_displayControl.SetRequestHeadersTextBoxText("");
-            //_displayControl.SetRequestBodyTextBoxText("");
-            //_displayControl.SetResponseHeadersTextBoxText("");
-            //_displayControl.SetResponseBodyTextBoxText("");
+            _displayControl.SetRequestHeadersTextBoxText("");
+            _displayControl.SetRequestBodyTextBoxText("");
+            _displayControl.SetResponseHeadersTextBoxText("");
+            _displayControl.SetResponseBodyTextBoxText("");
+            _displayControl.SetExchangeTypeTextBoxText("");
 
             // Write data into hidden fields.
             _displayControl.SetRequestHeadersTextBoxText(this.session.oRequest.headers.ToString());
             _displayControl.SetRequestBodyTextBoxText(this.session.GetRequestBodyAsString());
             _displayControl.SetResponseHeadersTextBoxText(this.session.oResponse.headers.ToString());
             _displayControl.SetResponseBodyTextBoxText(this.session.GetResponseBodyAsString());
+            _displayControl.SetExchangeTypeTextBoxText(this.session["X-ExchangeType"]);
 
             // Write HTTP Status Code Text box, convert int to string.
             _displayControl.SetHTTPResponseCodeTextBoxText(this.session.responseCode.ToString());
@@ -923,8 +925,8 @@ namespace EXOFiddlerInspector
                             (this.session.utilFindInResponse(" failed.", false) > 1))
                         {
                             _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
-                            _displayControl.SetResponseCommentsRichTextboxText("From the data in the response body this failure is likely due to a Microsoft DNS MX record "+
-                                "which points to an Exchange Online Protection mail host that accepts connections only on port 25. Connection on port 443 will not work by design." +
+                            _displayControl.SetResponseCommentsRichTextboxText("From the data in the response body this failure is likely due to a Microsoft DNS MX record " + Environment.NewLine +
+                                "which points to an Exchange Online Protection mail host that accepts connections only on port 25. Connection on port 443 will not work by design." + Environment.NewLine +
                                 Environment.NewLine + Environment.NewLine + "To validate this above lookup the record, confirm it is a MX record and attempt to connect to the MX host on ports 25 and 443.");
                         }
 
@@ -953,7 +955,7 @@ namespace EXOFiddlerInspector
                                 AutoDFalsePositiveDomain + " on port 443. " + Environment.NewLine + Environment.NewLine +
                                 "Validate this message by confirming this is an Office 365 Host/IP address and perform a telnet to it on port 80." +
                                 Environment.NewLine + Environment.NewLine +
-                                "If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects requests to https://autodiscover-s.outlook.com.");
+                                "If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects requests to https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml.");
                         }
 
                         /////////////////////////////

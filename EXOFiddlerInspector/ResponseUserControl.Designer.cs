@@ -59,6 +59,8 @@
             this.ResponseBodyLabel = new System.Windows.Forms.Label();
             this.ResponseBodyTextbox = new System.Windows.Forms.TextBox();
             this.SaveSessionDataButton = new System.Windows.Forms.Button();
+            this.ExchangeTypeLabel = new System.Windows.Forms.Label();
+            this.ExchangeTypeTextbox = new System.Windows.Forms.TextBox();
             this.ResponseGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -151,7 +153,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 188);
+            this.label1.Location = new System.Drawing.Point(6, 213);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(79, 13);
             this.label1.TabIndex = 20;
@@ -161,7 +163,7 @@
             // ResponseAlertTextBox
             // 
             this.ResponseAlertTextBox.BackColor = System.Drawing.Color.White;
-            this.ResponseAlertTextBox.Location = new System.Drawing.Point(118, 185);
+            this.ResponseAlertTextBox.Location = new System.Drawing.Point(118, 210);
             this.ResponseAlertTextBox.Name = "ResponseAlertTextBox";
             this.ResponseAlertTextBox.ReadOnly = true;
             this.ResponseAlertTextBox.Size = new System.Drawing.Size(288, 20);
@@ -186,7 +188,7 @@
             // ResponseGroupBox
             // 
             this.ResponseGroupBox.Controls.Add(this.ResponseCommentsRichTextBox);
-            this.ResponseGroupBox.Location = new System.Drawing.Point(9, 211);
+            this.ResponseGroupBox.Location = new System.Drawing.Point(9, 240);
             this.ResponseGroupBox.Name = "ResponseGroupBox";
             this.ResponseGroupBox.Size = new System.Drawing.Size(397, 154);
             this.ResponseGroupBox.TabIndex = 25;
@@ -254,7 +256,7 @@
             // ResponseServerLabel
             // 
             this.ResponseServerLabel.AutoSize = true;
-            this.ResponseServerLabel.Location = new System.Drawing.Point(6, 162);
+            this.ResponseServerLabel.Location = new System.Drawing.Point(6, 187);
             this.ResponseServerLabel.Name = "ResponseServerLabel";
             this.ResponseServerLabel.Size = new System.Drawing.Size(89, 13);
             this.ResponseServerLabel.TabIndex = 33;
@@ -263,7 +265,7 @@
             // ResponseServerTextBox
             // 
             this.ResponseServerTextBox.BackColor = System.Drawing.Color.White;
-            this.ResponseServerTextBox.Location = new System.Drawing.Point(118, 159);
+            this.ResponseServerTextBox.Location = new System.Drawing.Point(118, 184);
             this.ResponseServerTextBox.Name = "ResponseServerTextBox";
             this.ResponseServerTextBox.ReadOnly = true;
             this.ResponseServerTextBox.Size = new System.Drawing.Size(288, 20);
@@ -272,7 +274,7 @@
             // 
             // RequestHeadersTextBox
             // 
-            this.RequestHeadersTextBox.Location = new System.Drawing.Point(451, 19);
+            this.RequestHeadersTextBox.Location = new System.Drawing.Point(9, 449);
             this.RequestHeadersTextBox.Multiline = true;
             this.RequestHeadersTextBox.Name = "RequestHeadersTextBox";
             this.RequestHeadersTextBox.Size = new System.Drawing.Size(490, 149);
@@ -282,7 +284,7 @@
             // RequestHeadersLabel
             // 
             this.RequestHeadersLabel.AutoSize = true;
-            this.RequestHeadersLabel.Location = new System.Drawing.Point(448, 3);
+            this.RequestHeadersLabel.Location = new System.Drawing.Point(6, 433);
             this.RequestHeadersLabel.Name = "RequestHeadersLabel";
             this.RequestHeadersLabel.Size = new System.Drawing.Size(90, 13);
             this.RequestHeadersLabel.TabIndex = 37;
@@ -292,7 +294,7 @@
             // RequestBodyLabel
             // 
             this.RequestBodyLabel.AutoSize = true;
-            this.RequestBodyLabel.Location = new System.Drawing.Point(451, 175);
+            this.RequestBodyLabel.Location = new System.Drawing.Point(9, 605);
             this.RequestBodyLabel.Name = "RequestBodyLabel";
             this.RequestBodyLabel.Size = new System.Drawing.Size(74, 13);
             this.RequestBodyLabel.TabIndex = 38;
@@ -301,7 +303,7 @@
             // 
             // RequestBodyTextbox
             // 
-            this.RequestBodyTextbox.Location = new System.Drawing.Point(451, 191);
+            this.RequestBodyTextbox.Location = new System.Drawing.Point(9, 621);
             this.RequestBodyTextbox.Multiline = true;
             this.RequestBodyTextbox.Name = "RequestBodyTextbox";
             this.RequestBodyTextbox.Size = new System.Drawing.Size(490, 149);
@@ -311,7 +313,7 @@
             // ResponseHeadersLabel
             // 
             this.ResponseHeadersLabel.AutoSize = true;
-            this.ResponseHeadersLabel.Location = new System.Drawing.Point(454, 347);
+            this.ResponseHeadersLabel.Location = new System.Drawing.Point(512, 433);
             this.ResponseHeadersLabel.Name = "ResponseHeadersLabel";
             this.ResponseHeadersLabel.Size = new System.Drawing.Size(98, 13);
             this.ResponseHeadersLabel.TabIndex = 40;
@@ -320,7 +322,7 @@
             // 
             // ResponseHeadersTextbox
             // 
-            this.ResponseHeadersTextbox.Location = new System.Drawing.Point(451, 363);
+            this.ResponseHeadersTextbox.Location = new System.Drawing.Point(509, 449);
             this.ResponseHeadersTextbox.Multiline = true;
             this.ResponseHeadersTextbox.Name = "ResponseHeadersTextbox";
             this.ResponseHeadersTextbox.Size = new System.Drawing.Size(490, 149);
@@ -330,7 +332,7 @@
             // ResponseBodyLabel
             // 
             this.ResponseBodyLabel.AutoSize = true;
-            this.ResponseBodyLabel.Location = new System.Drawing.Point(457, 519);
+            this.ResponseBodyLabel.Location = new System.Drawing.Point(515, 605);
             this.ResponseBodyLabel.Name = "ResponseBodyLabel";
             this.ResponseBodyLabel.Size = new System.Drawing.Size(82, 13);
             this.ResponseBodyLabel.TabIndex = 42;
@@ -339,7 +341,7 @@
             // 
             // ResponseBodyTextbox
             // 
-            this.ResponseBodyTextbox.Location = new System.Drawing.Point(451, 535);
+            this.ResponseBodyTextbox.Location = new System.Drawing.Point(509, 621);
             this.ResponseBodyTextbox.Multiline = true;
             this.ResponseBodyTextbox.Name = "ResponseBodyTextbox";
             this.ResponseBodyTextbox.Size = new System.Drawing.Size(490, 149);
@@ -348,7 +350,7 @@
             // 
             // SaveSessionDataButton
             // 
-            this.SaveSessionDataButton.Location = new System.Drawing.Point(249, 371);
+            this.SaveSessionDataButton.Location = new System.Drawing.Point(249, 400);
             this.SaveSessionDataButton.Name = "SaveSessionDataButton";
             this.SaveSessionDataButton.Size = new System.Drawing.Size(157, 23);
             this.SaveSessionDataButton.TabIndex = 44;
@@ -356,10 +358,28 @@
             this.SaveSessionDataButton.UseVisualStyleBackColor = true;
             this.SaveSessionDataButton.Click += new System.EventHandler(this.SaveSessionDataButton_Click);
             // 
+            // ExchangeTypeLabel
+            // 
+            this.ExchangeTypeLabel.AutoSize = true;
+            this.ExchangeTypeLabel.Location = new System.Drawing.Point(6, 162);
+            this.ExchangeTypeLabel.Name = "ExchangeTypeLabel";
+            this.ExchangeTypeLabel.Size = new System.Drawing.Size(82, 13);
+            this.ExchangeTypeLabel.TabIndex = 45;
+            this.ExchangeTypeLabel.Text = "Exchange Type";
+            // 
+            // ExchangeTypeTextbox
+            // 
+            this.ExchangeTypeTextbox.Location = new System.Drawing.Point(118, 159);
+            this.ExchangeTypeTextbox.Name = "ExchangeTypeTextbox";
+            this.ExchangeTypeTextbox.Size = new System.Drawing.Size(288, 20);
+            this.ExchangeTypeTextbox.TabIndex = 46;
+            // 
             // ResponseUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.ExchangeTypeTextbox);
+            this.Controls.Add(this.ExchangeTypeLabel);
             this.Controls.Add(this.SaveSessionDataButton);
             this.Controls.Add(this.ResponseBodyTextbox);
             this.Controls.Add(this.ResponseBodyLabel);
@@ -391,7 +411,7 @@
             this.Controls.Add(this.HTTPResponseCodeTextBox);
             this.Controls.Add(this.HTTPStatusCodeLinkLabel);
             this.Name = "ResponseUserControl";
-            this.Size = new System.Drawing.Size(956, 698);
+            this.Size = new System.Drawing.Size(1014, 782);
             this.Load += new System.EventHandler(this.ResponseUserControl_Load);
             this.ResponseGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -431,5 +451,7 @@
         private System.Windows.Forms.Label ResponseBodyLabel;
         private System.Windows.Forms.TextBox ResponseBodyTextbox;
         private System.Windows.Forms.Button SaveSessionDataButton;
+        private System.Windows.Forms.Label ExchangeTypeLabel;
+        private System.Windows.Forms.TextBox ExchangeTypeTextbox;
     }
 }

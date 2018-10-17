@@ -129,6 +129,12 @@ namespace EXOFiddlerInspector
             ResponseBodyTextbox.Text = txt;
         }
 
+        // Code to write to ExchangeTypeTextBox.Text value.
+        internal void SetExchangeTypeTextBoxText(string txt)
+        {
+            ExchangeTypeTextbox.Text = txt;
+        }
+
         private void HTTPStatusCodeLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
@@ -395,6 +401,7 @@ namespace EXOFiddlerInspector
                 "Client Done Response: " + RequestEndDateTextBox.Text + " " + RequestEndTimeTextBox.Text + Environment.NewLine +
                 "Elapsed Time: " + ElapsedTimeTextBox.Text + " " + ElapsedTimeCommentTextBox.Text + Environment.NewLine +
                 "Local Process: " + ResponseProcessTextBox.Text + Environment.NewLine +
+                "Exchange Type: " + ExchangeTypeTextbox.Text + Environment.NewLine +
                 "Response Server: " + ResponseServerTextBox.Text + Environment.NewLine +
                 "Response Alert: " + ResponseAlertTextBox.Text + Environment.NewLine +
                 Environment.NewLine + "Response Comments: " + Environment.NewLine + "------------------------------------------" + Environment.NewLine +
