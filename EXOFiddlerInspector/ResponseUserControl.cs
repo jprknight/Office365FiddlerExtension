@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
-using Fiddler;
 
 namespace EXOFiddlerInspector
 {
@@ -133,6 +132,12 @@ namespace EXOFiddlerInspector
         internal void SetExchangeTypeTextBoxText(string txt)
         {
             ExchangeTypeTextbox.Text = txt;
+        }
+
+        // Code to write to SessionIDTextBox.Text value.
+        internal void SetSessionIDTextBoxText(string txt)
+        {
+            SessionIDTextbox.Text = txt;
         }
 
         private void HTTPStatusCodeLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -353,30 +358,9 @@ namespace EXOFiddlerInspector
 
         }
 
-        public void SaveResponseBody(Session session)
-        {
-            //this.session = session;
-            
-            //System.IO.File.WriteAllText(@"EXOFiddlerInspectorResponseBody.txt", this.session.GetResponseBodyAsString());
-            //System.Diagnostics.Process.Start(@"EXOFiddlerInspectorResponseBody.txt");
-
-        }
-
         private void ResponseCommentsRichTextBox_TextChanged(object sender, EventArgs e)
         {
-            /*
-            // Disable the SaveSessionDataButton if the response comment is zero length.
-            // Commented out as even if we don't have any comments user may still want to export data.
-            if (ResponseCommentsRichTextBox.TextLength == 0)
-            {
-                SaveSessionDataButton.Enabled = false;
-            }
-            // Enable it otherwise.
-            else
-            {
-                SaveSessionDataButton.Enabled = true;
-            }
-            */
+
         }
 
         private void SaveSessionDataButton_Click(object sender, EventArgs e)
@@ -394,8 +378,9 @@ namespace EXOFiddlerInspector
                 ResponseHeadersTextbox.Text = "-- Response Headers were found to be blank in the session. --";
             }
 
-            // Put all the data together.
+            // Put all the data together to be sent to text file.
             SessionData = "HIGH LEVEL SESSION DATA" + Environment.NewLine + Environment.NewLine +
+                "Session ID: " + SessionIDTextbox.Text + Environment.NewLine +
                 "HTTP Response Code: " + HTTPResponseCodeTextBox.Text + Environment.NewLine +
                 "Client Begin Request: " + RequestBeginDateTextBox.Text + " " + RequestBeginTimeTextBox.Text + Environment.NewLine +
                 "Client Done Response: " + RequestEndDateTextBox.Text + " " + RequestEndTimeTextBox.Text + Environment.NewLine +
@@ -403,8 +388,8 @@ namespace EXOFiddlerInspector
                 "Local Process: " + ResponseProcessTextBox.Text + Environment.NewLine +
                 "Exchange Type: " + ExchangeTypeTextbox.Text + Environment.NewLine +
                 "Response Server: " + ResponseServerTextBox.Text + Environment.NewLine +
-                "Response Alert: " + ResponseAlertTextBox.Text + Environment.NewLine +
-                Environment.NewLine + "Response Comments: " + Environment.NewLine + "------------------------------------------" + Environment.NewLine +
+                "Response Alert: " + ResponseAlertTextBox.Text + Environment.NewLine + Environment.NewLine +
+                "Response Comments: " + Environment.NewLine + "------------------------------------------" + Environment.NewLine +
                 ResponseCommentsRichTextBox.Text + Environment.NewLine + "------------------------------------------" + Environment.NewLine + Environment.NewLine +
                 "REQUEST HEADERS" + Environment.NewLine + "------------------------------------------" + Environment.NewLine +
                 RequestHeadersTextBox.Text + Environment.NewLine + "------------------------------------------" + Environment.NewLine + Environment.NewLine +

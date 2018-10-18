@@ -61,6 +61,8 @@
             this.SaveSessionDataButton = new System.Windows.Forms.Button();
             this.ExchangeTypeLabel = new System.Windows.Forms.Label();
             this.ExchangeTypeTextbox = new System.Windows.Forms.TextBox();
+            this.SessionIDTextbox = new System.Windows.Forms.TextBox();
+            this.SessionIDLabel = new System.Windows.Forms.Label();
             this.ResponseGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -91,7 +93,7 @@
             this.HTTPStatusDescriptionTextBox.Location = new System.Drawing.Point(148, 3);
             this.HTTPStatusDescriptionTextBox.Name = "HTTPStatusDescriptionTextBox";
             this.HTTPStatusDescriptionTextBox.ReadOnly = true;
-            this.HTTPStatusDescriptionTextBox.Size = new System.Drawing.Size(258, 20);
+            this.HTTPStatusDescriptionTextBox.Size = new System.Drawing.Size(190, 20);
             this.HTTPStatusDescriptionTextBox.TabIndex = 11;
             this.HTTPStatusDescriptionTextBox.TextChanged += new System.EventHandler(this.HTTPStatusDescriptionTextBox_TextChanged);
             // 
@@ -369,15 +371,38 @@
             // 
             // ExchangeTypeTextbox
             // 
+            this.ExchangeTypeTextbox.BackColor = System.Drawing.Color.White;
             this.ExchangeTypeTextbox.Location = new System.Drawing.Point(118, 159);
             this.ExchangeTypeTextbox.Name = "ExchangeTypeTextbox";
+            this.ExchangeTypeTextbox.ReadOnly = true;
             this.ExchangeTypeTextbox.Size = new System.Drawing.Size(288, 20);
             this.ExchangeTypeTextbox.TabIndex = 46;
+            // 
+            // SessionIDTextbox
+            // 
+            this.SessionIDTextbox.BackColor = System.Drawing.Color.White;
+            this.SessionIDTextbox.Location = new System.Drawing.Point(364, 3);
+            this.SessionIDTextbox.Name = "SessionIDTextbox";
+            this.SessionIDTextbox.ReadOnly = true;
+            this.SessionIDTextbox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SessionIDTextbox.Size = new System.Drawing.Size(42, 20);
+            this.SessionIDTextbox.TabIndex = 47;
+            // 
+            // SessionIDLabel
+            // 
+            this.SessionIDLabel.AutoSize = true;
+            this.SessionIDLabel.Location = new System.Drawing.Point(344, 6);
+            this.SessionIDLabel.Name = "SessionIDLabel";
+            this.SessionIDLabel.Size = new System.Drawing.Size(18, 13);
+            this.SessionIDLabel.TabIndex = 48;
+            this.SessionIDLabel.Text = "ID";
             // 
             // ResponseUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.SessionIDLabel);
+            this.Controls.Add(this.SessionIDTextbox);
             this.Controls.Add(this.ExchangeTypeTextbox);
             this.Controls.Add(this.ExchangeTypeLabel);
             this.Controls.Add(this.SaveSessionDataButton);
@@ -453,5 +478,7 @@
         private System.Windows.Forms.Button SaveSessionDataButton;
         private System.Windows.Forms.Label ExchangeTypeLabel;
         private System.Windows.Forms.TextBox ExchangeTypeTextbox;
+        private System.Windows.Forms.TextBox SessionIDTextbox;
+        private System.Windows.Forms.Label SessionIDLabel;
     }
 }

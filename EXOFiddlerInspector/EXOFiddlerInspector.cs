@@ -347,7 +347,10 @@ namespace EXOFiddlerInspector
             _displayControl.SetRequestBodyTextBoxText(this.session.GetRequestBodyAsString());
             _displayControl.SetResponseHeadersTextBoxText(this.session.oResponse.headers.ToString());
             _displayControl.SetResponseBodyTextBoxText(this.session.GetResponseBodyAsString());
+
+            // Write data into Exchange Type and session ID.
             _displayControl.SetExchangeTypeTextBoxText(this.session["X-ExchangeType"]);
+            _displayControl.SetSessionIDTextBoxText(this.session.id.ToString());
 
             // Write HTTP Status Code Text box, convert int to string.
             _displayControl.SetHTTPResponseCodeTextBoxText(this.session.responseCode.ToString());
@@ -802,7 +805,7 @@ namespace EXOFiddlerInspector
                         //
                         _displayControl.SetResponseAlertTextBox("HTTP 401 Unauthorized");
                         _displayControl.SetResponseCommentsRichTextboxText("HTTP 401: Unauthorized / Authentication Challenge. These are expected and are not an issue as long as a subsequent " +
-                            Environment.NewLine + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. " + Environment.NewLine +
+                            "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. " + Environment.NewLine + Environment.NewLine +
                             "If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.");
                         //
                         /////////////////////////////
