@@ -60,6 +60,7 @@
             this.RequestHostTextBox.ReadOnly = true;
             this.RequestHostTextBox.Size = new System.Drawing.Size(300, 20);
             this.RequestHostTextBox.TabIndex = 3;
+            this.RequestHostTextBox.Text = "UNUSED.";
             this.RequestHostTextBox.TextChanged += new System.EventHandler(this.RequestHostTextBox_TextChanged);
             // 
             // RequestURLlabel
@@ -79,6 +80,7 @@
             this.RequestURLTextBox.ReadOnly = true;
             this.RequestURLTextBox.Size = new System.Drawing.Size(300, 20);
             this.RequestURLTextBox.TabIndex = 5;
+            this.RequestURLTextBox.Text = "UNUSED";
             // 
             // RequestTypeLabel
             // 
@@ -97,6 +99,7 @@
             this.RequestTypeTextBox.ReadOnly = true;
             this.RequestTypeTextBox.Size = new System.Drawing.Size(300, 20);
             this.RequestTypeTextBox.TabIndex = 7;
+            this.RequestTypeTextBox.Text = "UNUSED";
             // 
             // RequestProcessLabel
             // 
@@ -115,6 +118,7 @@
             this.RequestProcessTextBox.ReadOnly = true;
             this.RequestProcessTextBox.Size = new System.Drawing.Size(300, 20);
             this.RequestProcessTextBox.TabIndex = 9;
+            this.RequestProcessTextBox.Text = "UNUSED";
             // 
             // RequestCommentsGroupBox
             // 
@@ -129,12 +133,13 @@
             // 
             // RequestCommentsRichTextBox
             // 
+            this.RequestCommentsRichTextBox.BackColor = System.Drawing.Color.White;
             this.RequestCommentsRichTextBox.Location = new System.Drawing.Point(6, 19);
             this.RequestCommentsRichTextBox.Name = "RequestCommentsRichTextBox";
             this.RequestCommentsRichTextBox.ReadOnly = true;
             this.RequestCommentsRichTextBox.Size = new System.Drawing.Size(388, 129);
             this.RequestCommentsRichTextBox.TabIndex = 14;
-            this.RequestCommentsRichTextBox.Text = "";
+            this.RequestCommentsRichTextBox.Text = "UNUSED";
             this.RequestCommentsRichTextBox.Visible = false;
             // 
             // RequestAlertLabel
@@ -152,6 +157,7 @@
             this.RequestAlertTextBox.Name = "RequestAlertTextBox";
             this.RequestAlertTextBox.Size = new System.Drawing.Size(300, 20);
             this.RequestAlertTextBox.TabIndex = 12;
+            this.RequestAlertTextBox.Text = "UNUSED";
             // 
             // RequestUserControl
             // 

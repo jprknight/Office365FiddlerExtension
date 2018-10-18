@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+// UNUSED AT THIS TIME.
+
 namespace EXOFiddlerInspector
 {
     public partial class RequestUserControl : UserControl
