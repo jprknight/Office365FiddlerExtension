@@ -434,10 +434,10 @@ namespace EXOFiddlerInspector
 
         private void OpenSessionData_Click(object sender, EventArgs e)
         {
-            // Save output to a .txt file so we can easily call notepad.
+            // As the user has elected to open the file instead of save somewhere specific, write data out to a text file in %TEMP% environment variable and open it up in Notepad.
             WriteSessionData();
-            System.IO.File.WriteAllText(Environment.GetEnvironmentVariable("temp") + "\\EXOFiddlerExtensionSessionData.txt", SessionData);
-            System.Diagnostics.Process.Start(Environment.GetEnvironmentVariable("temp") + "\\EXOFiddlerExtensionSessionData.txt");
+            System.IO.File.WriteAllText(Environment.GetEnvironmentVariable("temp") + "\\FiddlerTrace - SessionID - " + SessionIDTextbox.Text + " - HTTP - " + HTTPResponseCodeTextBox.Text + ".txt", SessionData);
+            System.Diagnostics.Process.Start(Environment.GetEnvironmentVariable("temp") + "\\FiddlerTrace - SessionID - " + SessionIDTextbox.Text + " - HTTP - " + HTTPResponseCodeTextBox.Text + ".txt");
         }
     }
 }
