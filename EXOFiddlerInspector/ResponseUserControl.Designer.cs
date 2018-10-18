@@ -63,6 +63,7 @@
             this.ExchangeTypeTextbox = new System.Windows.Forms.TextBox();
             this.SessionIDTextbox = new System.Windows.Forms.TextBox();
             this.SessionIDLabel = new System.Windows.Forms.Label();
+            this.OpenSessionData = new System.Windows.Forms.Button();
             this.ResponseGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -352,9 +353,9 @@
             // 
             // SaveSessionDataButton
             // 
-            this.SaveSessionDataButton.Location = new System.Drawing.Point(249, 400);
+            this.SaveSessionDataButton.Location = new System.Drawing.Point(284, 400);
             this.SaveSessionDataButton.Name = "SaveSessionDataButton";
-            this.SaveSessionDataButton.Size = new System.Drawing.Size(157, 23);
+            this.SaveSessionDataButton.Size = new System.Drawing.Size(122, 23);
             this.SaveSessionDataButton.TabIndex = 44;
             this.SaveSessionDataButton.Text = "Save Session Data";
             this.SaveSessionDataButton.UseVisualStyleBackColor = true;
@@ -397,10 +398,21 @@
             this.SessionIDLabel.TabIndex = 48;
             this.SessionIDLabel.Text = "ID";
             // 
+            // OpenSessionData
+            // 
+            this.OpenSessionData.Location = new System.Drawing.Point(156, 400);
+            this.OpenSessionData.Name = "OpenSessionData";
+            this.OpenSessionData.Size = new System.Drawing.Size(122, 23);
+            this.OpenSessionData.TabIndex = 49;
+            this.OpenSessionData.Text = "Open Session Data";
+            this.OpenSessionData.UseVisualStyleBackColor = true;
+            this.OpenSessionData.Click += new System.EventHandler(this.OpenSessionData_Click);
+            // 
             // ResponseUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.OpenSessionData);
             this.Controls.Add(this.SessionIDLabel);
             this.Controls.Add(this.SessionIDTextbox);
             this.Controls.Add(this.ExchangeTypeTextbox);
@@ -480,5 +492,6 @@
         private System.Windows.Forms.TextBox ExchangeTypeTextbox;
         private System.Windows.Forms.TextBox SessionIDTextbox;
         private System.Windows.Forms.Label SessionIDLabel;
+        private System.Windows.Forms.Button OpenSessionData;
     }
 }

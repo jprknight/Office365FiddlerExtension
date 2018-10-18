@@ -379,6 +379,11 @@
             "AssemblyAsmDisplayName" = "8:Xceed.Compression.v5.4, Version=5.4.13572.13590, Culture=neutral, PublicKeyToken=ba83ff368b7563c6, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_01056A10886E9DCEF4121163A945522C"
+                    {
+                    "Name" = "8:Xceed.Compression.v5.4.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Xceed.Compression.v5.4.dll"
             "TargetName" = "8:"
@@ -405,6 +410,11 @@
             "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
                 "ScatterAssemblies"
                 {
+                    "_2108516C462CF1740A6B0FA2443A4C89"
+                    {
+                    "Name" = "8:System.Net.Http.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:System.Net.Http.dll"
             "TargetName" = "8:"
@@ -431,6 +441,11 @@
             "AssemblyAsmDisplayName" = "8:Analytics, Version=1.0.20182.27266, Culture=neutral, PublicKeyToken=2b2cea67609c9510, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_3394F1B690925D6A3FF7D9ED3B70DA64"
+                    {
+                    "Name" = "8:Analytics.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Analytics.dll"
             "TargetName" = "8:"
@@ -457,6 +472,11 @@
             "AssemblyAsmDisplayName" = "8:Xceed.FileSystem.v5.4, Version=5.4.13572.13590, Culture=neutral, PublicKeyToken=ba83ff368b7563c6, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_37136BDFB926CAEA740657E6375C5B8E"
+                    {
+                    "Name" = "8:Xceed.FileSystem.v5.4.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Xceed.FileSystem.v5.4.dll"
             "TargetName" = "8:"
@@ -483,6 +503,11 @@
             "AssemblyAsmDisplayName" = "8:GA.Analytics.Monitor, Version=1.0.20182.27266, Culture=neutral, PublicKeyToken=2b2cea67609c9510, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_95EF045D54A9D6469AD301F356B23039"
+                    {
+                    "Name" = "8:GA.Analytics.Monitor.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:GA.Analytics.Monitor.dll"
             "TargetName" = "8:"
@@ -529,6 +554,11 @@
             "AssemblyAsmDisplayName" = "8:Xceed.Zip.v5.4, Version=5.4.13572.13590, Culture=neutral, PublicKeyToken=ba83ff368b7563c6, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_AFC2EA54DE21616ED659FC1E4109AC99"
+                    {
+                    "Name" = "8:Xceed.Zip.v5.4.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Xceed.Zip.v5.4.dll"
             "TargetName" = "8:"
@@ -555,6 +585,11 @@
             "AssemblyAsmDisplayName" = "8:Xceed.Compression.Formats.v5.4, Version=5.4.13572.13590, Culture=neutral, PublicKeyToken=ba83ff368b7563c6, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_B46EDC48BFB4405AE6BFC8EDFB12C7CC"
+                    {
+                    "Name" = "8:Xceed.Compression.Formats.v5.4.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Xceed.Compression.Formats.v5.4.dll"
             "TargetName" = "8:"
@@ -581,6 +616,11 @@
             "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_D140938ED0AC51B1F20A85B15144634E"
+                    {
+                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Newtonsoft.Json.dll"
             "TargetName" = "8:"
@@ -607,6 +647,11 @@
             "AssemblyAsmDisplayName" = "8:Fiddler, Version=5.0.20182.28034, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_DA620110B824F5F7E4A54C1461CEDEAF"
+                    {
+                    "Name" = "8:Fiddler.exe"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Fiddler.exe"
             "TargetName" = "8:"
@@ -726,15 +771,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Exchange Online Fiddler Extension"
-        "ProductCode" = "8:{DE708685-907E-4D13-8C17-EC234BAB71EF}"
-        "PackageCode" = "8:{90ABDE36-644E-4FF8-B4AA-4CDDA35C6052}"
+        "ProductCode" = "8:{9C10F216-A3AD-4BC6-ABEB-3DAE8302FD48}"
+        "PackageCode" = "8:{5F5F8162-8B16-4841-AA81-919946E2530E}"
         "UpgradeCode" = "8:{827E1199-7576-4FDD-A7F0-FDD5D1800921}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.37"
+        "ProductVersion" = "8:1.0.38"
         "Manufacturer" = "8:Jeremy Knight"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/jprknight/EXOFiddlerExtension/issues"

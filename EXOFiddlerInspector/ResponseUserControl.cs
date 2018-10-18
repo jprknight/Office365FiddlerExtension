@@ -14,7 +14,7 @@ namespace EXOFiddlerInspector
 {
     public partial class ResponseUserControl : UserControl
     {
-        private string SessionData;
+        public string SessionData;
 
         public ResponseUserControl()
         {
@@ -363,21 +363,8 @@ namespace EXOFiddlerInspector
 
         }
 
-        private void SaveSessionDataButton_Click(object sender, EventArgs e)
+        private void WriteSessionData()
         {
-            if (RequestBodyTextbox.Text == "")
-            {
-                RequestBodyTextbox.Text = "-- Request Body was found to be blank in session. --";
-            }
-            if (ResponseBodyTextbox.Text == "")
-            {
-                ResponseBodyTextbox.Text = "-- Response Body was found to be blank in the session. --";
-            }
-            if (ResponseHeadersTextbox.Text == "")
-            {
-                ResponseHeadersTextbox.Text = "-- Response Headers were found to be blank in the session. --";
-            }
-
             // Put all the data together to be sent to text file.
             SessionData = "HIGH LEVEL SESSION DATA" + Environment.NewLine + Environment.NewLine +
                 "Session ID: " + SessionIDTextbox.Text + Environment.NewLine +
@@ -399,10 +386,58 @@ namespace EXOFiddlerInspector
                 ResponseHeadersTextbox.Text + Environment.NewLine + "------------------------------------------" + Environment.NewLine + Environment.NewLine +
                 "RESPONSE BODY" + Environment.NewLine + "------------------------------------------" + Environment.NewLine +
                 ResponseBodyTextbox.Text + Environment.NewLine + "------------------------------------------";
+        }
 
+        private void SaveSessionDataButton_Click(object sender, EventArgs e)
+        {
+            if (RequestBodyTextbox.Text == "")
+            {
+                RequestBodyTextbox.Text = "-- Request Body was found to be blank in session. --";
+            }
+            if (ResponseBodyTextbox.Text == "")
+            {
+                ResponseBodyTextbox.Text = "-- Response Body was found to be blank in the session. --";
+            }
+            if (ResponseHeadersTextbox.Text == "")
+            {
+                ResponseHeadersTextbox.Text = "-- Response Headers were found to be blank in the session. --";
+            }
+
+            // Initialise new SaveFileDialog.
+            SaveFileDialog save = new SaveFileDialog();
+
+            // Use the user setting PreviousPath to determine if we open %USERPROFILE%\Documents or some other previous path.
+            if (string.IsNullOrEmpty(Properties.Settings.Default.PreviousPath))
+            {
+                save.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            }
+            else
+            {
+                save.InitialDirectory = Properties.Settings.Default.PreviousPath;
+            }
+
+            // Setup dialog.
+            save.FileName = "FiddlerTrace-SessionID-" + SessionIDTextbox.Text + "-HTTP-" + HTTPResponseCodeTextBox.Text + ".txt";
+            save.RestoreDirectory = true;
+            save.Filter = "Text File|*.txt";
+
+            WriteSessionData();
+
+            if (save.ShowDialog() == DialogResult.OK)
+            {
+                StreamWriter writer = new StreamWriter(save.OpenFile());
+                writer.Write(SessionData);
+                writer.Dispose();
+                writer.Close();
+            }
+        }
+
+        private void OpenSessionData_Click(object sender, EventArgs e)
+        {
             // Save output to a .txt file so we can easily call notepad.
-            System.IO.File.WriteAllText(@"EXOFiddlerExtensionSessionData.txt", SessionData);
-            System.Diagnostics.Process.Start(@"EXOFiddlerExtensionSessionData.txt");
+            WriteSessionData();
+            System.IO.File.WriteAllText(Environment.GetEnvironmentVariable("temp") + "\\EXOFiddlerExtensionSessionData.txt", SessionData);
+            System.Diagnostics.Process.Start(Environment.GetEnvironmentVariable("temp") + "\\EXOFiddlerExtensionSessionData.txt");
         }
     }
 }

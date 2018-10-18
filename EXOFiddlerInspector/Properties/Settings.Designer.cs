@@ -80,5 +80,17 @@ namespace EXOFiddlerInspector.Properties {
                 return ((string)(this["ReportIssuesURL"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PreviousPath {
+            get {
+                return ((string)(this["PreviousPath"]));
+            }
+            set {
+                this["PreviousPath"] = value;
+            }
+        }
     }
 }
