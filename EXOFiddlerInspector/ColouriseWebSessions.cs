@@ -46,6 +46,9 @@ namespace EXOFiddlerInspector
         private bool boolManualCheckForUpdate = false;
         private MenuItem miCheckForUpdate;
 
+        private bool boolHighlightOutlookOWAOnlyEnabled = false;
+        private MenuItem miHighlightOutlookOWAOnly;
+
         private MenuItem miWiki;
 
         private MenuItem miReportIssues;
@@ -87,14 +90,17 @@ namespace EXOFiddlerInspector
             this.miAppLoggingEnabled = new MenuItem("Application &Logging Enabled");
             this.miAppLoggingEnabled.Index = 4;
 
+            this.miHighlightOutlookOWAOnly = new MenuItem("&Highlight Outlook and OWA Only");
+            this.miHighlightOutlookOWAOnly.Index = 5;
+
             this.miWiki = new MenuItem("Extension &Wiki");
-            this.miWiki.Index = 5;
+            this.miWiki.Index = 6;
 
             this.miReportIssues = new MenuItem("&Report Issues");
-            this.miReportIssues.Index = 6;
+            this.miReportIssues.Index = 7;
 
             this.miCheckForUpdate = new MenuItem("&Check For Update");
-            this.miCheckForUpdate.Index = 7;
+            this.miCheckForUpdate.Index = 8;
 
             // Add menu items to top level menu.
             this.ExchangeOnlineTopMenu.MenuItems.AddRange(new MenuItem[] { this.miEnabled,
@@ -102,6 +108,7 @@ namespace EXOFiddlerInspector
                 this.miResponseServerColumnEnabled,
                 this.miExchangeTypeColumnEnabled,
                 this.miAppLoggingEnabled,
+                this.miHighlightOutlookOWAOnly,
                 this.miWiki,
                 this.miReportIssues,
                 this.miCheckForUpdate});
@@ -121,6 +128,9 @@ namespace EXOFiddlerInspector
 
             this.miAppLoggingEnabled.Click += new System.EventHandler(this.miAppLoggingEnabled_Click);
             this.miAppLoggingEnabled.Checked = boolAppLoggingEnabled;
+
+            this.miHighlightOutlookOWAOnly.Click += new System.EventHandler(this.miHighlightOutlookOWAOnly_click);
+            this.miHighlightOutlookOWAOnly.Checked = boolHighlightOutlookOWAOnlyEnabled;
 
             this.miWiki.Click += new System.EventHandler(this.miWiki_Click);
 
@@ -202,6 +212,15 @@ namespace EXOFiddlerInspector
             CheckForUpdate();
         }
 
+        public void miHighlightOutlookOWAOnly_click(object sender, EventArgs e)
+        {
+            // Invert selection when this menu item is clicked.
+            miHighlightOutlookOWAOnly.Checked = !miHighlightOutlookOWAOnly.Checked;
+            // Match boolean variable on whether column is enabled or not.
+            boolHighlightOutlookOWAOnlyEnabled = miHighlightOutlookOWAOnly.Checked;
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnly", boolHighlightOutlookOWAOnlyEnabled);
+        }
+
         /*
         public void EnableDisableMenuItemsAccordingToExtensionStatus()
         {
@@ -242,6 +261,7 @@ namespace EXOFiddlerInspector
                 this.boolResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
                 this.boolExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
                 this.boolAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
+                this.boolHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnly", false);
             }
             // If the FirstRun application preference is not set, then go run the FirstRunEnableMenuOptions function to light up features for first use.
             else
@@ -1156,9 +1176,8 @@ namespace EXOFiddlerInspector
             }
             else
             {
-                Boolean boolOutlookOWAOnly = false;
-
-                if (boolOutlookOWAOnly == true)
+                // If the menu item Highlight Outlook and OWA Only is enabled then grey out all the other traffic.
+                if (boolHighlightOutlookOWAOnlyEnabled == true)
                 {
                     // With that out of the way,  if the traffic is not related to any of the below processes, then mark it as grey to
                     // de-emphasise it.
