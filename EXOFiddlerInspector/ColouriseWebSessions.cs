@@ -140,7 +140,8 @@ namespace EXOFiddlerInspector
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", boolExtensionEnabled);
 
             // Make sure the menu items are available / not available depending on extension status.
-            EnableDisableMenuItemsAccordingToExtensionStatus();
+            // Turned off as this is a PITA.
+            // EnableDisableMenuItemsAccordingToExtensionStatus();
         }
 
         public void miResponseTimeColumnEnabled_Click(object sender, EventArgs e)
@@ -201,6 +202,7 @@ namespace EXOFiddlerInspector
             CheckForUpdate();
         }
 
+        /*
         public void EnableDisableMenuItemsAccordingToExtensionStatus()
         {
             // Enable / disable menu items according to extension enabled.
@@ -219,6 +221,7 @@ namespace EXOFiddlerInspector
                 this.miAppLoggingEnabled.Enabled = false;
             }
         }
+        */
         //
         /////////////////
         #endregion
@@ -266,7 +269,8 @@ namespace EXOFiddlerInspector
             FiddlerApplication.UI.mnuMain.MenuItems.Add(ExchangeOnlineTopMenu);
 
             // Make sure the menu items are available / not available depending on extension status.
-            EnableDisableMenuItemsAccordingToExtensionStatus();
+            // Turned off as this is a PITA.
+            // EnableDisableMenuItemsAccordingToExtensionStatus();
 
             // Call function to process sessions only if the extension is enabled.
             if (boolExtensionEnabled)
@@ -340,7 +344,7 @@ namespace EXOFiddlerInspector
             // If the column is already created exit.
             if (bExchangeTypeColumnCreated) return;
 
-            FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 2, 130, "X-ExchangeType");
+            FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 2, 150, "X-ExchangeType");
             bExchangeTypeColumnCreated = true;
             //
             /////////////////
@@ -1226,6 +1230,11 @@ namespace EXOFiddlerInspector
                 {
                     // Move the process column further to the left.
                     FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 2, 100);
+                }
+                else
+                {
+                    // Since the extension is not enabled return the process column back to its original location.
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 8, -1);
                 }
                 if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
                 {
