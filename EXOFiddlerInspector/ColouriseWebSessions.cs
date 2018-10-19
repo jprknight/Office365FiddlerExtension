@@ -1091,6 +1091,27 @@ namespace EXOFiddlerInspector
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout.");
                         }
+
+
+                        /////////////////////////////
+                        // 1. HTTP 504 Bad Gateway 'internet has been blocked'
+                        this.session["ui-backcolor"] = HTMLColourRed;
+                        this.session["ui-color"] = "black";
+                        this.session["X-ExchangeType"] = "INTERNET BLOCKED!";
+                        if (boolAppLoggingEnabled && boolExtensionEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + "  HTTP 504 Gateway Timeout -- Internet Access Blocked.");
+                        }
+                        /////////////////////////////
+                        // 99. Pick up any other 504 Gateway Timeout and write data into the comments box.
+                        this.session["ui-backcolor"] = HTMLColourRed;
+                        this.session["ui-color"] = "black";
+                        if (boolAppLoggingEnabled && boolExtensionEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout.");
+                        }
+                        //
+                        /////////////////////////////
                         //
                         /////////////////////////////
                         break;
@@ -1135,21 +1156,26 @@ namespace EXOFiddlerInspector
             }
             else
             {
-                // With that out of the way,  if the traffic is not related to any of the below processes, then mark it as grey to
-                // de-emphasise it.
-                // So if for example lync.exe is the process de-emphasise the traffic with grey.
-                if (!(this.session.LocalProcess.Contains("outlook") ||
-                    this.session.LocalProcess.Contains("searchprotocolhost") ||
-                    this.session.LocalProcess.Contains("iexplore") ||
-                    this.session.LocalProcess.Contains("chrome") ||
-                    this.session.LocalProcess.Contains("firefox") ||
-                    this.session.LocalProcess.Contains("edge") ||
-                    this.session.LocalProcess.Contains("w3wp")))
+                Boolean boolOutlookOWAOnly = false;
+
+                if (boolOutlookOWAOnly == true)
                 {
-                    // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
-                    this.session["ui-backcolor"] = HTMLColourGrey;
-                    this.session["ui-color"] = "black";
-                    this.session["X-ExchangeType"] = "Not Exchange";
+                    // With that out of the way,  if the traffic is not related to any of the below processes, then mark it as grey to
+                    // de-emphasise it.
+                    // So if for example lync.exe is the process de-emphasise the traffic with grey.
+                    if (!(this.session.LocalProcess.Contains("outlook") ||
+                        this.session.LocalProcess.Contains("searchprotocolhost") ||
+                        this.session.LocalProcess.Contains("iexplore") ||
+                        this.session.LocalProcess.Contains("chrome") ||
+                        this.session.LocalProcess.Contains("firefox") ||
+                        this.session.LocalProcess.Contains("edge") ||
+                        this.session.LocalProcess.Contains("w3wp")))
+                    {
+                        // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
+                        this.session["ui-backcolor"] = HTMLColourGrey;
+                        this.session["ui-color"] = "black";
+                        this.session["X-ExchangeType"] = "Not Exchange";
+                    }
                 }
             }
             #endregion

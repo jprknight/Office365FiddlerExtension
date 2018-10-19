@@ -1057,11 +1057,26 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 504: GATEWAY TIMEOUT.
                         //
-                        // Pick up any 504 Gateway Timeout and write data into the comments box.
-                        _displayControl.SetResponseAlertTextBox("HTTP 504 Gateway Timeout");
-                        _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
-                        if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+
+                        /////////////////////////////
+                        // 1. HTTP 504 Bad Gateway 'internet has been blocked'
+                        if ((this.session.utilFindInResponse("access", false) > 1) &&
+                            (this.session.utilFindInResponse("internet", false) > 1) &&
+                            (this.session.utilFindInResponse("blocked", false) > 1) &&
+                            boolInspectorExtensionEnabled)
                         {
+                            _displayControl.SetResponseAlertTextBox("HTTP 504 Gateway Timeout -- Internet Access Blocked");
+                            _displayControl.SetResponseCommentsRichTextboxText("Detected the keywords 'internet' and 'access' and 'blocked'. Potentially the computer this trace was collected " +
+                                "from has been quaratined for internet access on the customer's network." + Environment.NewLine + Environment.NewLine +
+                                "Validate this by checking the webview and raw tabs for more information.");
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout -- Internet Access Blocked.");
+                        }
+                        /////////////////////////////
+                        // 99. Pick up any other 504 Gateway Timeout and write data into the comments box.
+                        else if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                        {
+                            _displayControl.SetResponseAlertTextBox("HTTP 504 Gateway Timeout");
+                            _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout.");
                         }
                         //
