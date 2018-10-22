@@ -643,6 +643,7 @@ namespace EXOFiddlerInspector
                             {
                                 _displayControl.SetResponseAlertTextBox("Exchange Online Autodiscover");
                                 _displayControl.SetResponseCommentsRichTextboxText("Exchange Online Autodiscover.");
+                                // Increment HTTP200SkipLogic so that 99 does not run below.
                                 HTTP200SkipLogic++;
                             }
                             // If we got this far and those strings do not exist in the response body something is wrong.
@@ -879,7 +880,9 @@ namespace EXOFiddlerInspector
                         //
                         _displayControl.SetResponseAlertTextBox("HTTP 401 Unauthorized");
                         _displayControl.SetResponseCommentsRichTextboxText("HTTP 401: Unauthorized / Authentication Challenge. These are expected and are not an issue as long as a subsequent " +
-                            "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. " + Environment.NewLine + Environment.NewLine +
+                            "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. " + 
+                            Environment.NewLine + 
+                            Environment.NewLine +
                             "If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.");
                         //
                         /////////////////////////////
@@ -907,8 +910,16 @@ namespace EXOFiddlerInspector
                             // Pick up any 403 Forbidden and write data into the comments box.
                             _displayControl.SetResponseAlertTextBox("HTTP 403 Forbidden!");
                             _displayControl.SetResponseCommentsRichTextboxText("While HTTP 403's can be symptomatic of a proxy server blocking traffic, " +
-                                "however the phrase 'Access Denied' was NOT detected in the response body." + Environment.NewLine +
-                                "A small number of HTTP 403's can be seen in normal working scenarios. Check the Raw and WebView tabs to look for anything which looks suspect.");
+                                "however the phrase 'Access Denied' was NOT detected in the response body." + 
+                                Environment.NewLine + 
+                                Environment.NewLine +
+                                "A small number of HTTP 403's can be seen in normal working scenarios. Check the Raw and WebView tabs to look for anything which looks suspect." + 
+                                Environment.NewLine + 
+                                Environment.NewLine + 
+                                "If you are troubleshooting Free/Busy (Meeting availability info) or setting Out of Office messages then you may be more interested in these." +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "See: https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-2010/dd877045(v=exchg.140)");
                         }
                         //
                         /////////////////////////////
@@ -1185,7 +1196,6 @@ namespace EXOFiddlerInspector
 
             RequestHeaders = this.session.RequestHeaders;
             ResponseHeaders = this.session.ResponseHeaders;
-
 
         }
 

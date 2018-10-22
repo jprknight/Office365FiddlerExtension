@@ -268,7 +268,7 @@ namespace EXOFiddlerInspector
                 MessageBox.Show("Demo mode is running!");
             }
 
-            
+
             // If the FirstRun application preference is set to false, then the extension has previously run.
             // The function FirstRunEnableMenuOptions sets the FirstRun app preference to false.
             // If the above ... then collect the column preferences off of last preferences set.
@@ -711,6 +711,7 @@ namespace EXOFiddlerInspector
                                 this.session["ui-backcolor"] = HTMLColourRed;
                                 this.session["ui-color"] = "black";
                                 this.session["X-ExchangeType"] = "AUTOD REDIRECT ADDR!";
+                                // Increment HTTP200SkipLogic so that 99 does not run below.
                                 HTTP200SkipLogic++;
                                 if (boolAppLoggingEnabled && boolExtensionEnabled)
                                 {
@@ -741,6 +742,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "NO AUTOD REDIRECT ADDR!";
+                            // Increment HTTP200SkipLogic so that 99 does not run below.
                             HTTP200SkipLogic++;
                             if (boolAppLoggingEnabled && boolExtensionEnabled)
                             {
@@ -762,6 +764,7 @@ namespace EXOFiddlerInspector
                             {
                                 this.session["ui-backcolor"] = HTMLColourGreen;
                                 this.session["ui-color"] = "black";
+                                // Increment HTTP200SkipLogic so that 99 does not run below.
                                 HTTP200SkipLogic++;
                             }
                             // If we got this far and those strings do not exist in the response body something is wrong.
@@ -783,6 +786,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourGreen;
                             this.session["ui-color"] = "black";
+                            // Increment HTTP200SkipLogic so that 99 does not run below.
                             HTTP200SkipLogic++;
                         }
 
@@ -849,9 +853,7 @@ namespace EXOFiddlerInspector
                                     this.session["ui-backcolor"] = "Yellow";
                                     this.session["ui-color"] = "black";
                                 }
-
                             }
-
                         }
                         //
                         /////////////////////////////
@@ -871,7 +873,8 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 204: No Content.
                         //
-                        this.session["ui-backcolor"] = HTMLColourGreen;
+                        // Somewhat highlight these.
+                        this.session["ui-backcolor"] = "Yellow";
                         this.session["ui-color"] = "black";
                         //
                         /////////////////////////////
