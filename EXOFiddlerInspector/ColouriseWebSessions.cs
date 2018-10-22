@@ -775,6 +775,16 @@ namespace EXOFiddlerInspector
                             }
                         }
 
+                        /////////////////////////////
+                        //
+                        // 5. Outlook MAPI traffic.
+                        //
+                        if (this.session.HostnameIs("outlook.office365.com") && (this.session.uriContains("/mapi/emsmdb/?MailboxId=")))
+                        {
+                            this.session["ui-backcolor"] = HTMLColourGreen;
+                            this.session["ui-color"] = "black";
+                            HTTP200SkipLogic++;
+                        }
 
                         /////////////////////////////
                         //

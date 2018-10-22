@@ -658,6 +658,15 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
+                        // 5. Outlook MAPI traffic.
+                        //
+                        if (this.session.HostnameIs("outlook.office365.com") && (this.session.uriContains("/mapi/emsdb/?MailboxId=")))
+                        {
+                            // Do nothing right now.
+                        }
+
+                        /////////////////////////////
+                        //
                         // 99. All other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                         else
                         {
