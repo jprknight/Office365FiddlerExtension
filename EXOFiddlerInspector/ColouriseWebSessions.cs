@@ -254,7 +254,12 @@ namespace EXOFiddlerInspector
         {
             // Set demo mode. If enabled as much domain specific information as possible will be replaced with contoso.com.
             // Ensure this is disabled before build and deploy!!!
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false);
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", true);
+            if ((FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false) == true))
+            {
+                MessageBox.Show("Demo mode is running!");
+            }
+
             
             // If the FirstRun application preference is set to false, then the extension has previously run.
             // The function FirstRunEnableMenuOptions sets the FirstRun app preference to false.
@@ -1212,6 +1217,31 @@ namespace EXOFiddlerInspector
 
         public void OnBeforeUnload() { }
 
+        public void OnBeforeRequest(Session oS)
+        {
+            this.session = oS;
+
+            MessageBox.Show("Test: " + (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false)));
+
+            if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false) == true)
+            {
+
+                if (this.session.hostname.Contains("51stkingdom.com"))
+                {
+                    if (this.session.id == 16)
+                    {
+
+                    }
+                    this.session.hostname.Replace("51stkingdom.com", "contoso.com");
+                }
+
+                if (this.session.uriContains("51stkingdom.com"))
+                {
+                    this.session.url.Replace("51stkingdom.com", "contoso.com");
+                }
+            }
+        }
+
         public void OnPeekAtResponseHeaders(IAutoTamper2 AllSessions) { }
 
         public void AutoTamperRequestBefore(Session oSession) { }
@@ -1357,6 +1387,8 @@ namespace EXOFiddlerInspector
         /////////////////////////////
         
         public void OnBeforeReturningError(Session oSession) { }
+
+
 
         /////////////////////////////
         //
