@@ -254,7 +254,7 @@ namespace EXOFiddlerInspector
         {
             // Set demo mode. If enabled as much domain specific information as possible will be replaced with contoso.com.
             // Ensure this is disabled before build and deploy!!!
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", true);
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false);
             if ((FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false) == true))
             {
                 MessageBox.Show("Demo mode is running!");
