@@ -252,6 +252,7 @@ namespace EXOFiddlerInspector
         // These application preferences are actually set in ColouriseWebSessions.cs, pulling them into variables for use here.
         private bool boolInspectorAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
         private bool boolInspectorExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+        private string RedirectAddress;
 
         #region ScoreForSession
         // Double click or hit return with session selected.
@@ -541,8 +542,18 @@ namespace EXOFiddlerInspector
                             int start = this.session.GetResponseBodyAsString().IndexOf("<RedirectAddr>");
                             int end = this.session.GetResponseBodyAsString().IndexOf("</RedirectAddr>");
                             int charcount = end - start;
-                            string RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
                             
+                            // If demo mode is running then substitute in this static redirect address.
+                            // Otherwise run as normal based on code above to set RedirectAddress string.
+                            if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false) == true)
+                            {
+                                RedirectAddress = "user@contoso.mail.onmicrosoft.com";
+                            }
+                            else
+                            {
+                                string RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
+                            }
+
                             if (RedirectAddress.Contains(".onmicrosoft.com"))
                             {
                                 _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect.");
