@@ -9,6 +9,7 @@ namespace EXOFiddlerInspector
     // Base class, generic inspector, common between request and response
     public class EXOBaseFiddlerInspector : Inspector2
     {
+
         //private byte[] _body;
         private bool _readOnly;
 
@@ -449,7 +450,7 @@ namespace EXOFiddlerInspector
             //
             //  Broader code logic for sessions, where we do not want to use the response code as in the switch statement.
             //
-
+            
             /////////////////////////////
             //
             // From a scenario where an Apache Web Server (Unix/Linux) found to be answering Autodiscover calls and throwing HTTP 301 & 405 responses.
@@ -1023,6 +1024,10 @@ namespace EXOFiddlerInspector
                         {
                             //XAnchorMailbox = this.session.oRequest["X-AnchorMailbox"];
                             RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=" + this.session.oRequest["X-User-Identity"] + "&xml=1";
+                            if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false) == true)
+                            {
+                                RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=user@contoso.com&xml=1";
+                            }
 
                             _displayControl.SetResponseAlertTextBox("The federation service is unreachable or unavailable.");
                             _displayControl.SetResponseCommentsRichTextboxText("HTTP 503: FederatedSTSUnreachable." + Environment.NewLine +

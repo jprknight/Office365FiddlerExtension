@@ -252,9 +252,14 @@ namespace EXOFiddlerInspector
         //
         public void OnLoad()
         {
+            // Set demo mode. If enabled as much domain specific information as possible will be replaced with contoso.com.
+            // Ensure this is disabled before build and deploy!!!
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false);
+            
             // If the FirstRun application preference is set to false, then the extension has previously run.
             // The function FirstRunEnableMenuOptions sets the FirstRun app preference to false.
             // If the above ... then collect the column preferences off of last preferences set.
+            // The below logic check does not work for new installations. Needs a fix.
             if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.FirstRun", false) == false) {
                 this.boolExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
                 this.boolResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
