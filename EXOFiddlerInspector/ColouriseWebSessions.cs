@@ -66,6 +66,9 @@ namespace EXOFiddlerInspector
         public bool AppLoggingEnabled = true;
 
         private string searchTerm;
+        private string RedirectAddress;
+        private int HTTP200SkipLogic;
+
         internal Session session { get; set; }
         public int ClientDoneResponseYear { get; private set; }
 
@@ -255,7 +258,12 @@ namespace EXOFiddlerInspector
             // Set demo mode. If enabled as much domain specific information as possible will be replaced with contoso.com.
             // Ensure this is disabled before build and deploy!!!
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false);
-            if ((FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false) == true))
+            //FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", true);
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios", false);
+            //FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios", true);
+
+            // Throw a message box to alert demo mode is running.
+            if ((FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false) == true))
             {
                 MessageBox.Show("Demo mode is running!");
             }
@@ -636,7 +644,11 @@ namespace EXOFiddlerInspector
                         // 1. Connect Tunnel.
                         if (this.session.isTunnel == true)
                         {
-                            // Do nothing here right now. Colourisation of these sessions is taken care of elsewhere.
+                            // Skip 99 response body word split and keyword search with Linq code.
+                            // Mark as green, not expecting to find anything noteworthy in these sessions.
+                            this.session["ui-backcolor"] = HTMLColourGreen;
+                            this.session["ui-color"] = "black";
+                            HTTP200SkipLogic++;
                         }
 
                         /////////////////////////////
@@ -661,13 +673,32 @@ namespace EXOFiddlerInspector
                             int start = this.session.GetResponseBodyAsString().IndexOf("<RedirectAddr>");
                             int end = this.session.GetResponseBodyAsString().IndexOf("</RedirectAddr>");
                             int charcount = end - start;
-                            string RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
+
+                            if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false) == true)
+                            {
+                                // If as well as being in demo mode, demo mode break scenarios is enabled. Show fault through incorrect direct
+                                // address for an Exchange Online mailbox.
+                                if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios", false) == true)
+                                {
+                                    RedirectAddress = "user@contoso.com";
+                                }
+                                else
+                                {
+                                    RedirectAddress = "user@contoso.mail.onmicrosoft.com";
+                                }
+                            }
+                            else
+                            {
+                                // If demo mode is not running, set RedirectAddress detected from the session.
+                                RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
+                            }
 
                             if (RedirectAddress.Contains(".onmicrosoft.com"))
                             {
                                 this.session["ui-backcolor"] = HTMLColourGreen;
                                 this.session["ui-color"] = "black";
                                 this.session["X-ExchangeType"] = "On-Prem AutoD Redirect";
+                                HTTP200SkipLogic++;
                                 if (boolAppLoggingEnabled && boolExtensionEnabled)
                                 {
                                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
@@ -680,9 +711,10 @@ namespace EXOFiddlerInspector
                                 this.session["ui-backcolor"] = HTMLColourRed;
                                 this.session["ui-color"] = "black";
                                 this.session["X-ExchangeType"] = "AUTOD REDIRECT ADDR!";
+                                HTTP200SkipLogic++;
                                 if (boolAppLoggingEnabled && boolExtensionEnabled)
                                 {
-                                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
+                                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD REDIRECT ADDR! : " + RedirectAddress);
                                 }
                             }
                         }
@@ -709,6 +741,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "NO AUTOD REDIRECT ADDR!";
+                            HTTP200SkipLogic++;
                             if (boolAppLoggingEnabled && boolExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
@@ -717,55 +750,98 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
+                        // 4. Exchange Online Autodiscover
+                        //
+
+                        // Make sure this session if an Exchange Online Autodiscover request.
+                        if ((this.session.hostname == "autodiscover-s.outlook.com") && (this.session.uriContains("autodiscover.xml"))) {
+                            if ((this.session.utilFindInResponse("<DisplayName>", false) > 1) && 
+                                (this.session.utilFindInResponse("<MicrosoftOnline>", false) > 1) && 
+                                (this.session.utilFindInResponse("<MailStore>", false) > 1) && 
+                                (this.session.utilFindInResponse("<ExternalUrl>", false) > 1))
+                            {
+                                this.session["ui-backcolor"] = HTMLColourGreen;
+                                this.session["ui-color"] = "black";
+                                HTTP200SkipLogic++;
+                            }
+                            // If we got this far and those strings do not exist in the response body something is wrong.
+                            else
+                            {
+                                this.session["ui-backcolor"] = HTMLColourGreen;
+                                this.session["ui-color"] = "black";
+                                // Don't use skip logic here, we want to dig deeper and see if there are errors, failures, or exceptions.
+                                //HTTP200SkipLogic++;
+
+                            }
+                        }
+
+
+                        /////////////////////////////
+                        //
                         // 99. All other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                         else
                         {
-
-                            // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
-                            //
-                            // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
-                            //
-
-                            string text200 = this.session.ToString();
-
-                            //Convert the string into an array of words  
-                            string[] source200 = text200.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-                            // Create the query. Use ToLowerInvariant to match "data" and "Data"   
-                            var matchQuery200 = from word in source200
-                                                where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
-                                                select word;
-
-                            searchTerm = "Error";
-
-                            // Count the matches, which executes the query.  
-                            wordCountError = matchQuery200.Count();
-
-                            searchTerm = "failed";
-
-                            // Count the matches, which executes the query.  
-                            wordCountFailed = matchQuery200.Count();
-
-                            searchTerm = "exception";
-
-                            // Count the matches, which executes the query.  
-                            wordCountException = matchQuery200.Count();
-
-                            // If either the keyword searches give us a result.
-                            if (wordCountError > 0 || wordCountFailed > 0 || wordCountException > 0)
+                            if (HTTP200SkipLogic == 0)
                             {
-                                // Special attention to HTTP 200's where the keyword 'error' or 'failed' is found.
-                                // Red text on black background.
-                                this.session["ui-backcolor"] = "black";
-                                this.session["ui-color"] = "red";
-                                this.session["X-ExchangeType"] = "FAILURE LURKING!";
+
+                                // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
+                                //
+                                // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
+                                //
+
+                                string text200 = this.session.ToString();
+
+                                //Convert the string into an array of words  
+                                string[] source200 = text200.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                                // Create the query. Use ToLowerInvariant to match "data" and "Data"   
+                                var matchQuery200 = from word in source200
+                                                    where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
+                                                    select word;
+
+                                searchTerm = "Error";
+
+                                // Count the matches, which executes the query.  
+                                wordCountError = matchQuery200.Count();
+
+                                searchTerm = "failed";
+
+                                // Count the matches, which executes the query.  
+                                wordCountFailed = matchQuery200.Count();
+
+                                searchTerm = "exception";
+
+                                // Count the matches, which executes the query.  
+                                wordCountException = matchQuery200.Count();
+
+                                // If either the keyword searches give us a result.
+                                if (wordCountError > 0 || wordCountFailed > 0 || wordCountException > 0)
+                                {
+                                    // Special attention to HTTP 200's where the keyword 'error' or 'failed' is found.
+                                    // Red text on black background.
+                                    this.session["ui-backcolor"] = "black";
+                                    this.session["ui-color"] = "red";
+                                    this.session["X-ExchangeType"] = "FAILURE LURKING!";
+                                }
+                                else
+                                {
+                                    // All good.
+                                    this.session["ui-backcolor"] = HTMLColourGreen;
+                                    this.session["ui-color"] = "black";
+                                }
                             }
+                            // HTTP200SkipLogic is >= 1.
                             else
                             {
-                                // All good.
-                                this.session["ui-backcolor"] = HTMLColourGreen;
-                                this.session["ui-color"] = "black";
+                                // Since we use HTTP200SkipLogic and skipped the code above to split words and search for keywords, and we have also not detected any other conditions
+                                // mark the remaining sessions as yellow, not detected.
+                                if (string.IsNullOrEmpty(this.session["UI-BACKCOLOR"]) && string.IsNullOrEmpty(this.session["UI-COLOR"])) {
+                                    this.session["ui-backcolor"] = "Yellow";
+                                    this.session["ui-color"] = "black";
+                                }
+
                             }
+
                         }
                         //
                         /////////////////////////////

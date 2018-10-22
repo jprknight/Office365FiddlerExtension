@@ -547,18 +547,33 @@ namespace EXOFiddlerInspector
                             // Otherwise run as normal based on code above to set RedirectAddress string.
                             if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false) == true)
                             {
-                                RedirectAddress = "user@contoso.mail.onmicrosoft.com";
+                                // If as well as being in demo mode, demo mode break scenarios is enabled. Show fault through incorrect direct
+                                // address for an Exchange Online mailbox.
+                                if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios", false) == true)
+                                {
+                                    RedirectAddress = "user@contoso.com";
+                                }
+                                else
+                                {
+                                    RedirectAddress = "user@contoso.mail.onmicrosoft.com";
+                                }
                             }
                             else
                             {
-                                string RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
+                                // If demo mode is not running, set RedirectAddress detected from the session.
+                                RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
                             }
 
                             if (RedirectAddress.Contains(".onmicrosoft.com"))
                             {
                                 _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect.");
-                                _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address to Exchange Online found." + Environment.NewLine + RedirectAddress +
-                                    Environment.NewLine + "This is what we want to see, the mail.onmicrosoft.com targetAddress from On-Premise sends Outlook to Office 365.");
+                                _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address to Exchange Online found." + 
+                                    Environment.NewLine + 
+                                    Environment.NewLine +
+                                    "RedirectAddress: " + RedirectAddress + 
+                                    Environment.NewLine +
+                                    Environment.NewLine + 
+                                    "This is what we want to see, the mail.onmicrosoft.com targetAddress from On-Premise sends Outlook to Office 365.");
                                 // Increment HTTP200SkipLogic so that 99 does not run below.
                                 HTTP200SkipLogic++;
                             }
@@ -567,8 +582,13 @@ namespace EXOFiddlerInspector
                             else
                             {
                                 _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect.");
-                                _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." + Environment.NewLine +
-                                    RedirectAddress + Environment.NewLine + "If this is an Office 365 mailbox the targetAddress from On-Premise is not sending Outlook to Office 365!");
+                                _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." + 
+                                    Environment.NewLine + 
+                                    Environment.NewLine +
+                                    "RedirectAddress: " + RedirectAddress + 
+                                    Environment.NewLine + 
+                                    Environment.NewLine + 
+                                    "If this is an Office 365 mailbox the targetAddress from On-Premise is not sending Outlook to Office 365!");
                                 // Increment HTTP200SkipLogic so that 99 does not run below.
                                 HTTP200SkipLogic++;
                                 if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
@@ -605,6 +625,34 @@ namespace EXOFiddlerInspector
                             if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address can't be found.");
+                            }
+                        }
+
+                        /////////////////////////////
+                        //
+                        // 4. Exchange Online Autodiscover
+                        //
+
+                        // Make sure this session if an Exchange Online Autodiscover request.
+                        if ((this.session.hostname == "autodiscover-s.outlook.com") && (this.session.uriContains("autodiscover.xml")))
+                        {
+                            if ((this.session.utilFindInResponse("<DisplayName>", false) > 1) &&
+                                (this.session.utilFindInResponse("<MicrosoftOnline>", false) > 1) &&
+                                (this.session.utilFindInResponse("<MailStore>", false) > 1) &&
+                                (this.session.utilFindInResponse("<ExternalUrl>", false) > 1))
+                            {
+                                _displayControl.SetResponseAlertTextBox("Exchange Online Autodiscover");
+                                _displayControl.SetResponseCommentsRichTextboxText("Exchange Online Autodiscover.");
+                                HTTP200SkipLogic++;
+                            }
+                            // If we got this far and those strings do not exist in the response body something is wrong.
+                            else
+                            {
+                                _displayControl.SetResponseAlertTextBox("Exchange Online Autodiscover - FAILURE!");
+                                _displayControl.SetResponseCommentsRichTextboxText("Exchange Online Autodiscover. FAILURE!");
+                                // Don't use skip logic here, we want to dig deeper and see if there are errors, failures, or exceptions.
+                                //HTTP200SkipLogic++;
+
                             }
                         }
 
@@ -711,6 +759,11 @@ namespace EXOFiddlerInspector
                                         _displayControl.SetResponseCommentsRichTextboxText("No failures keywords ('error', 'failed' or 'exception') detected in respone body.");
                                     }
                                 }
+                            }
+                            // HTTP200SkipLogic is >= 1.
+                            else
+                            {
+                                // Do nothing here right now.
                             }
                         }
                         //
