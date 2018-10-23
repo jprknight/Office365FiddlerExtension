@@ -460,7 +460,7 @@ namespace EXOFiddlerInspector
             if ((this.session.url.Contains("autodiscover") && (this.session.oResponse["server"] == "Apache")))
             {
                 _displayControl.SetResponseAlertTextBox("Apache is answering Autodiscover requests!");
-                _displayControl.SetResponseCommentsRichTextboxText("An Apache Web Server(Unix/ Linux) is answering Autodiscover requests!" + Environment.NewLine +
+                _displayControl.SetResponseCommentsRichTextboxText("An Apache Web Server(Unix/Linux) is answering Autodiscover requests!" + Environment.NewLine +
                     "This should not be happening. Consider disabling Root Domain Autodiscover lookups." + Environment.NewLine +
                     "See ExcludeHttpsRootDomain on https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under" + Environment.NewLine +
                     "Beyond this, the customer needs their web administrator responsible for the server answering the calls to stop the Apache web server from answering to Autodiscover.");
@@ -573,7 +573,7 @@ namespace EXOFiddlerInspector
                                     "RedirectAddress: " + RedirectAddress + 
                                     Environment.NewLine +
                                     Environment.NewLine + 
-                                    "This is what we want to see, the mail.onmicrosoft.com targetAddress from On-Premise sends Outlook to Office 365.");
+                                    "This is what we want to see, the mail.onmicrosoft.com redirect address (you may know this as the target address or remote routing address) from On-Premise sends Outlook to Office 365.");
                                 // Increment HTTP200SkipLogic so that 99 does not run below.
                                 HTTP200SkipLogic++;
                             }

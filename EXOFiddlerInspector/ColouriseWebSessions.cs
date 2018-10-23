@@ -255,19 +255,26 @@ namespace EXOFiddlerInspector
         //
         public void OnLoad()
         {
+            /////////////////
+            //
             // Set demo mode. If enabled as much domain specific information as possible will be replaced with contoso.com.
             // Ensure this is disabled before build and deploy!!!
+            //
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false);
             //FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", true);
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios", false);
             //FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios", true);
+            //
+            /////////////////
+            //
 
             // Throw a message box to alert demo mode is running.
             if ((FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false) == true))
             {
                 MessageBox.Show("Demo mode is running!");
             }
-
+            //
+            /////////////////
 
             // If the FirstRun application preference is set to false, then the extension has previously run.
             // The function FirstRunEnableMenuOptions sets the FirstRun app preference to false.
