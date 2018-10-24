@@ -49,6 +49,8 @@ namespace EXOFiddlerInspector
         private bool boolHighlightOutlookOWAOnlyEnabled = false;
         private MenuItem miHighlightOutlookOWAOnly;
 
+        private MenuItem miReleasesDownloadWebpage;
+
         private MenuItem miWiki;
 
         private MenuItem miReportIssues;
@@ -97,14 +99,17 @@ namespace EXOFiddlerInspector
             this.miHighlightOutlookOWAOnly = new MenuItem("&Highlight Outlook and OWA Only");
             this.miHighlightOutlookOWAOnly.Index = 5;
 
+            this.miReleasesDownloadWebpage = new MenuItem("&Releases Download Page");
+            this.miReleasesDownloadWebpage.Index = 6;
+
             this.miWiki = new MenuItem("Extension &Wiki");
-            this.miWiki.Index = 6;
+            this.miWiki.Index = 7;
 
             this.miReportIssues = new MenuItem("&Report Issues");
-            this.miReportIssues.Index = 7;
+            this.miReportIssues.Index = 8;
 
             this.miCheckForUpdate = new MenuItem("&Check For Update");
-            this.miCheckForUpdate.Index = 8;
+            this.miCheckForUpdate.Index = 9;
 
             // Add menu items to top level menu.
             this.ExchangeOnlineTopMenu.MenuItems.AddRange(new MenuItem[] { this.miEnabled,
@@ -113,6 +118,7 @@ namespace EXOFiddlerInspector
                 this.miExchangeTypeColumnEnabled,
                 this.miAppLoggingEnabled,
                 this.miHighlightOutlookOWAOnly,
+                this.miReleasesDownloadWebpage,
                 this.miWiki,
                 this.miReportIssues,
                 this.miCheckForUpdate});
@@ -137,6 +143,8 @@ namespace EXOFiddlerInspector
             this.miHighlightOutlookOWAOnly.Checked = boolHighlightOutlookOWAOnlyEnabled;
 
             this.miWiki.Click += new System.EventHandler(this.miWiki_Click);
+
+            this.miReleasesDownloadWebpage.Click += new System.EventHandler(this.miReleasesDownloadWebpage_click);
 
             this.miReportIssues.Click += new System.EventHandler(this.miReportIssues_Click);
 
@@ -199,6 +207,12 @@ namespace EXOFiddlerInspector
         {
             // Fire up a web browser to the project Wiki URL.
             System.Diagnostics.Process.Start(Properties.Settings.Default.WikiURL);
+        }
+
+        public void miReleasesDownloadWebpage_click(object sender, EventArgs e)
+        {
+            // Fire up a web browser to the project Wiki URL.
+            System.Diagnostics.Process.Start(Properties.Settings.Default.InstallerURL);
         }
 
         public void miReportIssues_Click(object sender, EventArgs e)
