@@ -659,6 +659,39 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
+                        // 6. GetUnifiedGroupsSettings EWS call.
+                        //
+                        if (this.session.HostnameIs("outlook.office365.com") && 
+                            (this.session.uriContains("ews/exchange.asmx") && 
+                            (this.session.utilFindInRequest("GetUnifiedGroupsSettings", false) >1)))
+                        {
+                            // User can create Office 365 gropus.
+                            if (this.session.utilFindInResponse("<GroupCreationEnabled>true</GroupCreationEnabled>", false) > 1)
+                            {
+                                _displayControl.SetResponseAlertTextBox("GetUnifiedGroupsSettings EWS call.");
+                                _displayControl.SetResponseCommentsRichTextboxText("<GroupCreationEnabled>true</GroupCreationEnabled> found in response body. " +
+                                    "Expect user to be able to create Office 365 groups in Outlook.");
+                                HTTP200SkipLogic++;
+                            }
+                            // User cannot create Office 365 groups.
+                            else if (this.session.utilFindInResponse("<GroupCreationEnabled>false</GroupCreationEnabled>", false) > 1)
+                            {
+                                _displayControl.SetResponseAlertTextBox("GetUnifiedGroupsSettings EWS call!");
+                                _displayControl.SetResponseCommentsRichTextboxText("<GroupCreationEnabled>false</GroupCreationEnabled> found in response body. " +
+                                    "Expect user to NOT be able to create Office 365 groups in Outlook.");
+                                HTTP200SkipLogic++;
+                            }
+                            else
+                            {
+                                _displayControl.SetResponseAlertTextBox("GetUnifiedGroupsSettings EWS call!");
+                                _displayControl.SetResponseCommentsRichTextboxText("Though GetUnifiedGroupsSettings scenario was detected neither <GroupCreationEnabled>true</GroupCreationEnabled> or" +
+                                    "<GroupCreationEnabled>false</GroupCreationEnabled> was found in the response body. Check the Raw tab for more details.");
+                            }
+                        }
+                        
+
+                        /////////////////////////////
+                        //
                         // 99. All other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                         else
                         {

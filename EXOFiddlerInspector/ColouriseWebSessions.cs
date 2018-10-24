@@ -837,6 +837,40 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
+                        // 6. GetUnifiedGroupsSettings EWS call.
+                        //
+                        if (this.session.HostnameIs("outlook.office365.com") &&
+                            (this.session.uriContains("ews/exchange.asmx") &&
+                            (this.session.utilFindInRequest("GetUnifiedGroupsSettings", false) > 1)))
+                        {
+                            // User can create Office 365 gropus.
+                            if (this.session.utilFindInResponse("<GroupCreationEnabled>true</GroupCreationEnabled>", false) > 1)
+                            {
+                                this.session["ui-backcolor"] = HTMLColourGreen;
+                                this.session["ui-color"] = "black";
+                                this.session["X-ExchangeType"] = "EWS GetUnifiedGroupsSettings";
+                                HTTP200SkipLogic++;
+                            }
+                            // User cannot create Office 365 groups.
+                            else if (this.session.utilFindInResponse("<GroupCreationEnabled>false</GroupCreationEnabled>", false) > 1)
+                            {
+                                this.session["ui-backcolor"] = HTMLColourGreen;
+                                this.session["ui-color"] = "black";
+                                this.session["X-ExchangeType"] = "EWS GetUnifiedGroupsSettings";
+                                HTTP200SkipLogic++;
+                            }
+                            else
+                            {
+                                this.session["ui-backcolor"] = HTMLColourRed;
+                                this.session["ui-color"] = "black";
+                                this.session["X-ExchangeType"] = "EWS GetUnifiedGroupsSettings";
+                                // Do not do HTTP200SkipLogic here, expected response not found. Run keyword search on response for deeper inpsection of response.
+                                // HTTP200SkipLogic++;
+                            }
+                        }
+
+                        /////////////////////////////
+                        //
                         // 99. All other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                         else
                         {
