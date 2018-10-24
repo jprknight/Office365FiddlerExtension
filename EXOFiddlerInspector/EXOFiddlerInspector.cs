@@ -52,13 +52,13 @@ namespace EXOFiddlerInspector
         }
     }
 
-    #region RequestInspectorNoLongerUsedCodeBlock
+    #region RequestInspectorNotInProduction
 
     // 
-    // Commneting out the RequestInspector code to disable the requestor inspector tab.
-    // No value add, just complicates usage.
-    //
-    /*
+    // Request inspector tab not used in production.
+    // Code originally added to work out what was possible with Fiddler, however the inspector part
+    // of the extension has grown out of server responses rather than client requests.
+
     // Request class, inherits the generic class above, only defines things specific or different from the base class
     public class RequestInspector : EXOBaseFiddlerInspector, IRequestInspector2
     {
@@ -67,47 +67,29 @@ namespace EXOFiddlerInspector
         private byte[] _body;
 
         RequestUserControl _displayControl;
-        
+
         // Double click on a session to highlight inpsector or not.
         public override int ScoreForSession(Session oS)
         {
+            // Discussion with EE, not expecting ScoreForSession to be consistent.
+
             this.session = oS;
 
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
 
-            _displayControl.SetRequestAlertTextBox("");
-
-            if (this.session.url.Contains("autodiscover"))
+            if (this.session.LocalProcess.Contains("outlook") ||
+            this.session.LocalProcess.Contains("searchprotocolhost") ||
+            this.session.LocalProcess.Contains("iexplore") ||
+            this.session.LocalProcess.Contains("chrome") ||
+            this.session.LocalProcess.Contains("firefox") ||
+            this.session.LocalProcess.Contains("edge") ||
+            this.session.LocalProcess.Contains("w3wp"))
             {
-                //_displayControl.SetRequestAlertTextBox("SFS:100");
-                return 100;
-            }
-            else if (this.session.hostname.Contains("autodiscover"))
-            {
-                //_displayControl.SetRequestAlertTextBox("SFS:100");
-                return 100;
-            }
-            else if (this.session.url.Contains("outlook"))
-            {
-                //_displayControl.SetRequestAlertTextBox("SFS:100");
-                return 100;
-            }
-            else if (this.session.url.Contains("GetUserAvailability") || 
-                this.session.url.Contains("WSSecurity") ||
-                this.session.utilFindInResponse("GetUserAvailability", false) > 1)
-            {
-                //_displayControl.SetRequestAlertTextBox("SFS:100");
-                return 100;
-            }
-            else if (this.session.LocalProcess.Contains("outlook"))
-            {
-                //_displayControl.SetRequestAlertTextBox("SFS:100");
                 return 100;
             }
             else
             {
-                //_displayControl.SetRequestAlertTextBox("SFS:0");
                 return 0;
             }
         }
@@ -115,11 +97,14 @@ namespace EXOFiddlerInspector
         // Add EXO Request tab into inspectors tab.
         public override void AddToTab(TabPage o)
         {
-            _displayControl = new RequestUserControl();
-            o.Text = "Exchange Request";
-            o.ToolTipText = "Exchange Online Inspector";
-            o.Controls.Add(_displayControl);
-            o.Controls[0].Dock = DockStyle.Fill;
+            if (Environment.UserName == "jeknight" || Environment.UserName == "brandev")
+            {
+                _displayControl = new RequestUserControl();
+                o.Text = "Exchange Request";
+                o.ToolTipText = "Exchange Online Inspector";
+                o.Controls.Add(_displayControl);
+                o.Controls[0].Dock = DockStyle.Fill;
+            }
         }
         
         public HTTPRequestHeaders headers
@@ -134,61 +119,67 @@ namespace EXOFiddlerInspector
         
         public void SetSessionType(Session oS)
         {
-            if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) { _displayControl.SetRequestTypeTextBox("EXO MAPI"); }
-            else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
-            else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
-            else if (this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1) { _displayControl.SetRequestTypeTextBox("On-Prem Autodiscover Redirect"); }
-            else if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
-            else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
-            else if (this.session.fullUrl.Contains("autodiscover")) { _displayControl.SetRequestTypeTextBox("Autodiscover"); }
-            else if (this.session.url.Contains("autodiscover")) { _displayControl.SetRequestTypeTextBox("Autodiscover"); }
-            else if (this.session.hostname.Contains("autodiscover")) { _displayControl.SetRequestTypeTextBox("Autodiscover"); }
-            else if (this.session.fullUrl.Contains("WSSecurity")) { _displayControl.SetRequestTypeTextBox("Free/Busy"); }
-            else if (this.session.fullUrl.Contains("GetUserAvailability")) { _displayControl.SetRequestTypeTextBox("Free/Busy"); }
-            else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1) { _displayControl.SetRequestTypeTextBox("Free/Busy"); }
-            else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { _displayControl.SetRequestTypeTextBox("EXO EWS"); }
-            else if (this.session.fullUrl.Contains(".onmicrosoft.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
-            else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { _displayControl.SetRequestTypeTextBox("Office 365 Authentication"); }
-            else if (this.session.fullUrl.Contains("outlook.office365.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
-            else if (this.session.fullUrl.Contains("outlook.office.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
-            else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { _displayControl.SetRequestTypeTextBox("ADFS Authentication"); }
-            else if (this.session.LocalProcess.Contains("outlook")) { _displayControl.SetRequestTypeTextBox("Something Outlook"); }
-            else if (this.session.LocalProcess.Contains("iexplore")) { _displayControl.SetRequestTypeTextBox("Something Internet Explorer"); }
-            else if (this.session.LocalProcess.Contains("chrome")) { _displayControl.SetRequestTypeTextBox("Something Chrome"); }
-            else if (this.session.LocalProcess.Contains("firefox")) { _displayControl.SetRequestTypeTextBox("Something Firefox"); }
-            else { _displayControl.SetRequestTypeTextBox("Not Exchange"); }
+            if (Environment.UserName == "jeknight" || Environment.UserName == "brandev")
+            {
+                // Earlier version of Exchange Type.
+                if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) { _displayControl.SetRequestTypeTextBox("EXO MAPI"); }
+                else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
+                else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
+                else if (this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1) { _displayControl.SetRequestTypeTextBox("On-Prem Autodiscover Redirect"); }
+                else if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
+                else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { _displayControl.SetRequestTypeTextBox("EXO Autodiscover"); }
+                else if (this.session.fullUrl.Contains("autodiscover")) { _displayControl.SetRequestTypeTextBox("Autodiscover"); }
+                else if (this.session.url.Contains("autodiscover")) { _displayControl.SetRequestTypeTextBox("Autodiscover"); }
+                else if (this.session.hostname.Contains("autodiscover")) { _displayControl.SetRequestTypeTextBox("Autodiscover"); }
+                else if (this.session.fullUrl.Contains("WSSecurity")) { _displayControl.SetRequestTypeTextBox("Free/Busy"); }
+                else if (this.session.fullUrl.Contains("GetUserAvailability")) { _displayControl.SetRequestTypeTextBox("Free/Busy"); }
+                else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1) { _displayControl.SetRequestTypeTextBox("Free/Busy"); }
+                else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { _displayControl.SetRequestTypeTextBox("EXO EWS"); }
+                else if (this.session.fullUrl.Contains(".onmicrosoft.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
+                else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { _displayControl.SetRequestTypeTextBox("Office 365 Authentication"); }
+                else if (this.session.fullUrl.Contains("outlook.office365.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
+                else if (this.session.fullUrl.Contains("outlook.office.com")) { _displayControl.SetRequestTypeTextBox("Office 365"); }
+                else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { _displayControl.SetRequestTypeTextBox("ADFS Authentication"); }
+                else if (this.session.LocalProcess.Contains("outlook")) { _displayControl.SetRequestTypeTextBox("Something Outlook"); }
+                else if (this.session.LocalProcess.Contains("iexplore")) { _displayControl.SetRequestTypeTextBox("Something Internet Explorer"); }
+                else if (this.session.LocalProcess.Contains("chrome")) { _displayControl.SetRequestTypeTextBox("Something Chrome"); }
+                else if (this.session.LocalProcess.Contains("firefox")) { _displayControl.SetRequestTypeTextBox("Something Firefox"); }
+                else { _displayControl.SetRequestTypeTextBox("Not Exchange"); }
+            }
         }
         
         public void SetRequestValues(Session oS)
         {
-
-            // Store response body in variable for opening in notepad.
-            EXOResponseBody = this.session.oResponse.ToString();
-
-            // Write HTTP Status Code Text box, convert int to string.
-            _displayControl.SetRequestHostTextBox(this.session.hostname);
-
-            // Write Request URL Text box.
-            _displayControl.SetRequestURLTextBox(this.session.url);
-
-            // Set Request Process Textbox.
-            _displayControl.SetRequestProcessTextBox(this.session.LocalProcess);
-
-            // Classify type of traffic. Set in order of presence to correctly identify as much traffic as possible.
-            // First off make sure we only classify traffic from Outlook or browsers.
-            if (this.session.LocalProcess.Contains("outlook") ||
-                    this.session.LocalProcess.Contains("iexplore") ||
-                    this.session.LocalProcess.Contains("chrome") ||
-                    this.session.LocalProcess.Contains("firefox") ||
-                    this.session.LocalProcess.Contains("edge") ||
-                    this.session.LocalProcess.Contains("w3wp"))
+            if (Environment.UserName == "jeknight" || Environment.UserName == "brandev")
             {
-                SetSessionType(this.session);
-            }
-            else
-            // If the traffic did not originate from Outlook, web browser or EXO web service (w3wp), call it out.
-            {
-                _displayControl.SetRequestTypeTextBox("Not from Outlook, EXO Browser or web service.");
+                // Store response body in variable for opening in notepad.
+                EXOResponseBody = this.session.oResponse.ToString();
+
+                // Write HTTP Status Code Text box, convert int to string.
+                _displayControl.SetRequestHostTextBox(this.session.hostname);
+
+                // Write Request URL Text box.
+                _displayControl.SetRequestURLTextBox(this.session.url);
+
+                // Set Request Process Textbox.
+                _displayControl.SetRequestProcessTextBox(this.session.LocalProcess);
+
+                // Classify type of traffic. Set in order of presence to correctly identify as much traffic as possible.
+                // First off make sure we only classify traffic from Outlook or browsers.
+                if (this.session.LocalProcess.Contains("outlook") ||
+                        this.session.LocalProcess.Contains("iexplore") ||
+                        this.session.LocalProcess.Contains("chrome") ||
+                        this.session.LocalProcess.Contains("firefox") ||
+                        this.session.LocalProcess.Contains("edge") ||
+                        this.session.LocalProcess.Contains("w3wp"))
+                {
+                    SetSessionType(this.session);
+                }
+                else
+                // If the traffic did not originate from Outlook, web browser or EXO web service (w3wp), call it out.
+                {
+                    _displayControl.SetRequestTypeTextBox("Not from Outlook, EXO Browser or web service.");
+                }
             }
         }
         
@@ -236,7 +227,7 @@ namespace EXOFiddlerInspector
 
         public string EXOResponseBody { get; set; }
     }
-    */
+    
     #endregion
 
     // Response class, same as request class except for responses

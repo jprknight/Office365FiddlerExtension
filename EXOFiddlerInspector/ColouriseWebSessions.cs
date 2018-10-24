@@ -68,6 +68,7 @@ namespace EXOFiddlerInspector
         private string searchTerm;
         private string RedirectAddress;
         private int HTTP200SkipLogic;
+        private int HTTP200FreeBusy;
 
         internal Session session { get; set; }
         public int ClientDoneResponseYear { get; private set; }
@@ -260,16 +261,36 @@ namespace EXOFiddlerInspector
             // Set demo mode. If enabled as much domain specific information as possible will be replaced with contoso.com.
             // Ensure this is disabled before build and deploy!!!
             //
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false);
-            //FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", true);
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios", false);
-            //FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios", true);
+            Boolean DemoMode = true;
+            Boolean DemoModeBreakScenarios = false;
+            //
+            /////////////////
+            //
+            // Make sure that even if these are mistakenly left on from debugging, production users are not impacted.
+            if (Environment.UserName == "jeknight" || Environment.UserName == "brandev" && DemoMode == true)
+            {
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", true);
+            }
+            else
+            {
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false);
+            }
+
+            // Make sure that even if these are mistakenly left on from debugging, production users are not impacted.
+            if (Environment.UserName == "jeknight" || Environment.UserName == "brandev" && DemoModeBreakScenarios == true)
+            {
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios", true);
+            }
+            else
+            {
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios", false);
+            }
             //
             /////////////////
             //
 
             // Throw a message box to alert demo mode is running.
-            if ((FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false) == true))
+            if (Environment.UserName == "jeknight" || Environment.UserName == "brandev" && DemoMode == true)
             {
                 MessageBox.Show("Demo mode is running!");
             }
@@ -576,6 +597,9 @@ namespace EXOFiddlerInspector
         //
         private void OnPeekAtResponseHeaders(Session session)
         {
+            // Reset these session counters.
+            HTTP200SkipLogic = 0;
+            HTTP200FreeBusy = 0;
 
             this.session = session;
 
@@ -802,7 +826,11 @@ namespace EXOFiddlerInspector
                         // 99. All other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                         else
                         {
-                            if (HTTP200SkipLogic == 0)
+                            // Only fire the Linq response body word split and keyword search if:
+                            // HTTP200SkipLogic has not been incremented above = Session has been classified as something else and this is not necessary.
+                            // OR...
+                            // HTTP200FreeBusy is greater than zero = Session is marked as Free/Busy and we want deep inspection for errors, failed or exception keywords.
+                            if (HTTP200SkipLogic == 0 || HTTP200FreeBusy > 0)
                             {
 
                                 // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
@@ -851,7 +879,7 @@ namespace EXOFiddlerInspector
                                     this.session["ui-color"] = "black";
                                 }
                             }
-                            // HTTP200SkipLogic is >= 1.
+                            // HTTP200SkipLogic is >= 1 or HTTP200FreeBusy is 0.
                             else
                             {
                                 // Since we use HTTP200SkipLogic and skipped the code above to split words and search for keywords, and we have also not detected any other conditions
@@ -1536,34 +1564,49 @@ namespace EXOFiddlerInspector
             this.session = session;
 
             // Outlook Connections.
-            if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) { session["X-ExchangeType"] = "EXO MAPI"; }
+            if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) { this.session["X-ExchangeType"] = "EXO MAPI"; }
             // Exchange Online Autodiscover.
-            else if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { session["X-ExchangeType"] = "EXO Autodiscover"; }
-            else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { session["X-ExchangeType"] = "EXO Autodiscover"; }
-            else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { session["X-ExchangeType"] = "EXO Autodiscover"; }
-            else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { session["X-ExchangeType"] = "EXO Autodiscover"; }
+            else if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { this.session["X-ExchangeType"] = "EXO Autodiscover"; }
+            else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { this.session["X-ExchangeType"] = "EXO Autodiscover"; }
+            else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { this.session["X-ExchangeType"] = "EXO Autodiscover"; }
+            else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { this.session["X-ExchangeType"] = "EXO Autodiscover"; }
             // Autodiscover.     
-            else if ((this.session.fullUrl.Contains("autodiscover") && (!(this.session.hostname == "outlook.office365.com")))) { session["X-ExchangeType"] = "On-Prem Autodiscover"; }
-            else if (this.session.hostname.Contains("autodiscover")) { session["X-ExchangeType"] = "On-Prem Autodiscover"; }
+            else if ((this.session.fullUrl.Contains("autodiscover") && (!(this.session.hostname == "outlook.office365.com")))) { this.session["X-ExchangeType"] = "On-Prem Autodiscover"; }
+            else if (this.session.hostname.Contains("autodiscover")) { this.session["X-ExchangeType"] = "On-Prem Autodiscover"; }
             // Free/Busy.
-            else if (this.session.fullUrl.Contains("WSSecurity")) { session["X-ExchangeType"] = "Free/Busy"; }
-            else if (this.session.fullUrl.Contains("GetUserAvailability")) { session["X-ExchangeType"] = "Free/Busy"; }
-            else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1) { session["X-ExchangeType"] = "Free/Busy"; }
+            else if (this.session.fullUrl.Contains("WSSecurity"))
+            {
+                this.session["X-ExchangeType"] = "Free/Busy";
+                // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
+                HTTP200FreeBusy++;
+            }
+            else if (this.session.fullUrl.Contains("GetUserAvailability"))
+            {
+                this.session["X-ExchangeType"] = "Free/Busy";
+                // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
+                HTTP200FreeBusy++;
+            }
+            else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1)
+            {
+                this.session["X-ExchangeType"] = "Free/Busy";
+                // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
+                HTTP200FreeBusy++;
+            }
             // EWS.
-            else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { session["X-ExchangeType"] = "EXO EWS"; }
+            else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { this.session["X-ExchangeType"] = "EXO EWS"; }
             // Generic Office 365.
-            else if (this.session.fullUrl.Contains(".onmicrosoft.com") && (!(this.session.hostname.Contains("live.com")))) { session["X -ExchangeType"] = "Exchange Online"; }
-            else if (this.session.fullUrl.Contains("outlook.office365.com")) { session["X-ExchangeType"] = "Office 365"; }
-            else if (this.session.fullUrl.Contains("outlook.office.com")) { session["X-ExchangeType"] = "Office 365"; }
+            else if (this.session.fullUrl.Contains(".onmicrosoft.com") && (!(this.session.hostname.Contains("live.com")))) { this.session["X -ExchangeType"] = "Exchange Online"; }
+            else if (this.session.fullUrl.Contains("outlook.office365.com")) { this.session["X-ExchangeType"] = "Office 365"; }
+            else if (this.session.fullUrl.Contains("outlook.office.com")) { this.session["X-ExchangeType"] = "Office 365"; }
             // Office 365 Authentication.
-            else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { session["X-ExchangeType"] = "Office 365 Authentication"; }
+            else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { this.session["X-ExchangeType"] = "Office 365 Authentication"; }
             // ADFS Authentication.
-            else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { session["X-ExchangeType"] = "ADFS Authentication"; }
+            else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { this.session["X-ExchangeType"] = "ADFS Authentication"; }
             // Undetermined, but related to local process.
-            else if (this.session.LocalProcess.Contains("outlook")) { session["X-ExchangeType"] = "Outlook"; }
-            else if (this.session.LocalProcess.Contains("iexplore")) { session["X-ExchangeType"] = "Internet Explorer"; }
-            else if (this.session.LocalProcess.Contains("chrome")) { session["X-ExchangeType"] = "Chrome"; }
-            else if (this.session.LocalProcess.Contains("firefox")) { session["X-ExchangeType"] = "Firefox"; }
+            else if (this.session.LocalProcess.Contains("outlook")) { this.session["X-ExchangeType"] = "Outlook"; }
+            else if (this.session.LocalProcess.Contains("iexplore")) { this.session["X-ExchangeType"] = "Internet Explorer"; }
+            else if (this.session.LocalProcess.Contains("chrome")) { this.session["X-ExchangeType"] = "Chrome"; }
+            else if (this.session.LocalProcess.Contains("firefox")) { this.session["X-ExchangeType"] = "Firefox"; }
             // Everything else.
             else { this.session["X-ExchangeType"] = "Not Exchange"; }
 
