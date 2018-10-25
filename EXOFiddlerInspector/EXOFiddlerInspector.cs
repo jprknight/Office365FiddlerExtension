@@ -654,13 +654,18 @@ namespace EXOFiddlerInspector
                         //
                         if (this.session.HostnameIs("outlook.office365.com") && (this.session.uriContains("/mapi/emsdb/?MailboxId=")))
                         {
-                            // Do nothing right now.
+                            // Cannot think of any good reason to run the keyword search on this session.
+                            // If we are interacting with MAPI on the mailbox at this point this is a working scenario as far as connectivity
+                            // is concerned.
+                            // Increment HTTP200SkipLogic so that 99 does not run below.
+                            HTTP200SkipLogic++;
                         }
 
                         /////////////////////////////
                         //
                         // 6. GetUnifiedGroupsSettings EWS call.
                         //
+
                         if (this.session.HostnameIs("outlook.office365.com") && 
                             (this.session.uriContains("ews/exchange.asmx") && 
                             (this.session.utilFindInRequest("GetUnifiedGroupsSettings", false) >1)))
@@ -673,7 +678,7 @@ namespace EXOFiddlerInspector
                                     "Expect user to be able to create Office 365 groups in Outlook.");
                                 HTTP200SkipLogic++;
                             }
-                            // User cannot create Office 365 groups.
+                            // User cannot create Office 365 groups. Not an error condition in and of itself.
                             else if (this.session.utilFindInResponse("<GroupCreationEnabled>false</GroupCreationEnabled>", false) > 1)
                             {
                                 _displayControl.SetResponseAlertTextBox("GetUnifiedGroupsSettings EWS call!");
@@ -681,6 +686,7 @@ namespace EXOFiddlerInspector
                                     "Expect user to NOT be able to create Office 365 groups in Outlook.");
                                 HTTP200SkipLogic++;
                             }
+                            // Did not see the expected keyword in the response body. This is the error condition.
                             else
                             {
                                 _displayControl.SetResponseAlertTextBox("GetUnifiedGroupsSettings EWS call!");

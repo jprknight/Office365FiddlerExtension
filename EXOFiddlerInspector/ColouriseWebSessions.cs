@@ -851,7 +851,7 @@ namespace EXOFiddlerInspector
                                 this.session["X-ExchangeType"] = "EWS GetUnifiedGroupsSettings";
                                 HTTP200SkipLogic++;
                             }
-                            // User cannot create Office 365 groups.
+                            // User cannot create Office 365 groups. Not an error condition in and of itself.
                             else if (this.session.utilFindInResponse("<GroupCreationEnabled>false</GroupCreationEnabled>", false) > 1)
                             {
                                 this.session["ui-backcolor"] = HTMLColourGreen;
@@ -859,6 +859,7 @@ namespace EXOFiddlerInspector
                                 this.session["X-ExchangeType"] = "EWS GetUnifiedGroupsSettings";
                                 HTTP200SkipLogic++;
                             }
+                            // Did not see the expected keyword in the response body. This is the error condition.
                             else
                             {
                                 this.session["ui-backcolor"] = HTMLColourRed;
