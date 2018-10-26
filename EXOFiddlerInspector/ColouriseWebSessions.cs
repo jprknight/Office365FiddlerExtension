@@ -16,7 +16,7 @@ namespace EXOFiddlerInspector
         /// Note: This is not much right now, just outputs in response comments on the inspector tab.
         /// </summary>
         ///
-        Boolean DeveloperDemoMode = true;
+        Boolean DeveloperDemoMode = false;
         Boolean DeveloperDemoModeBreakScenarios = false;
         /////////////////
         
