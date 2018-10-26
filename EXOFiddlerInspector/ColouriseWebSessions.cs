@@ -4,6 +4,7 @@ using Fiddler;
 using System.Linq;
 using System.Xml;
 using System.Net;
+using System.Collections.Generic;
 
 namespace EXOFiddlerInspector
 {
@@ -71,6 +72,11 @@ namespace EXOFiddlerInspector
         private string RedirectAddress;
         private int HTTP200SkipLogic;
         private int HTTP200FreeBusy;
+
+        Boolean DeveloperDemoMode = true;
+        Boolean DeveloperDemoModeBreakScenarios = false;
+
+        List<string> Developers = new List<string>(new string[] { "jeknight", "brandev", "jasonsla" });
 
         internal Session session { get; set; }
         public int ClientDoneResponseYear { get; private set; }
@@ -275,27 +281,30 @@ namespace EXOFiddlerInspector
             // Set demo mode. If enabled as much domain specific information as possible will be replaced with contoso.com.
             // Ensure this is disabled before build and deploy!!!
             //
-            Boolean DemoMode = true;
-            Boolean DemoModeBreakScenarios = false;
+
             //
             /////////////////
             //
             // Make sure that even if these are mistakenly left on from debugging, production users are not impacted.
-            if (Environment.UserName == "jeknight" || Environment.UserName == "brandev" && DemoMode == true)
+            //if (Environment.UserName == "jeknight" || Environment.UserName == "brandev" && DemoMode == true)
+            if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
             {
                 FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", true);
             }
-            else
+            //else if (Environment.UserName == "jeknight" || Environment.UserName == "brandev" && DemoMode == false)
+            else if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoMode == false)
             {
                 FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false);
             }
 
             // Make sure that even if these are mistakenly left on from debugging, production users are not impacted.
-            if (Environment.UserName == "jeknight" || Environment.UserName == "brandev" && DemoModeBreakScenarios == true)
+            //if (Environment.UserName == "jeknight" || Environment.UserName == "brandev" && DemoModeBreakScenarios == true)
+            if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoModeBreakScenarios == true)
             {
                 FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios", true);
             }
-            else
+            //else if (Environment.UserName == "jeknight" || Environment.UserName == "brandev" && DemoMode == false)
+            else if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoModeBreakScenarios == false)
             {
                 FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios", false);
             }
@@ -304,9 +313,9 @@ namespace EXOFiddlerInspector
             //
 
             // Throw a message box to alert demo mode is running.
-            if (Environment.UserName == "jeknight" || Environment.UserName == "brandev" && DemoMode == true)
+            if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
             {
-                MessageBox.Show("Demo mode is running!");
+                MessageBox.Show("Developer / Demo mode is running!");
             }
             //
             /////////////////
@@ -719,11 +728,11 @@ namespace EXOFiddlerInspector
                             int end = this.session.GetResponseBodyAsString().IndexOf("</RedirectAddr>");
                             int charcount = end - start;
 
-                            if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false) == true)
+                            if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
                             {
                                 // If as well as being in demo mode, demo mode break scenarios is enabled. Show fault through incorrect direct
                                 // address for an Exchange Online mailbox.
-                                if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios", false) == true)
+                                if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoModeBreakScenarios == true)
                                 {
                                     RedirectAddress = "user@contoso.com";
                                 }
@@ -869,6 +878,9 @@ namespace EXOFiddlerInspector
                                 // HTTP200SkipLogic++;
                             }
                         }
+                        
+                        // Exchange On-Premise redirect to Exchange Online Autodiscover.
+                        // 7.Location: https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml
 
                         /////////////////////////////
                         //
@@ -1389,31 +1401,6 @@ namespace EXOFiddlerInspector
         #endregion
 
         public void OnBeforeUnload() { }
-
-        public void OnBeforeRequest(Session oS)
-        {
-            this.session = oS;
-
-            MessageBox.Show("Test: " + (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false)));
-
-            if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false) == true)
-            {
-
-                if (this.session.hostname.Contains("51stkingdom.com"))
-                {
-                    if (this.session.id == 16)
-                    {
-
-                    }
-                    this.session.hostname.Replace("51stkingdom.com", "contoso.com");
-                }
-
-                if (this.session.uriContains("51stkingdom.com"))
-                {
-                    this.session.url.Replace("51stkingdom.com", "contoso.com");
-                }
-            }
-        }
 
         public void OnPeekAtResponseHeaders(IAutoTamper2 AllSessions) { }
 
