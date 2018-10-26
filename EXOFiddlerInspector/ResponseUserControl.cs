@@ -23,7 +23,34 @@ namespace EXOFiddlerInspector
 
         private void ResponseUserControl_Load(object sender, EventArgs e)
         {
-            
+            /////////////////////////////
+            //
+            // Before we go ahead and run the add tab code work out if 
+            // the user is a developer or not.
+
+            // Developer list is actually set in ColouriseWebSessions.
+            ColouriseWebSessions CWS = new ColouriseWebSessions();
+            List<string> calledDeveloperList = CWS.GetDeveloperList();
+
+            // Based on the above set the Boolean Developer for use through the rest of the code.
+            if (calledDeveloperList.Any(Environment.UserName.Contains))
+            {
+                RequestHeadersLabel.Visible = true;
+                RequestHeadersTextBox.Visible = true;
+                RequestBodyLabel.Visible = true;
+                RequestBodyTextbox.Visible = true;
+
+                ResponseHeadersLabel.Visible = true;
+                ResponseHeadersTextbox.Visible = true;
+                ResponseBodyLabel.Visible = true;
+                ResponseBodyTextbox.Visible = true;
+            }
+            else
+            {
+                // Don't do anything right now. Leave the above as invisible to other users.
+            }
+
+
         }
 
         // Code to write to ResponseProcessTextBox.Text value.

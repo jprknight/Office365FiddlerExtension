@@ -10,6 +10,24 @@ namespace EXOFiddlerInspector
 {
     public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or Fiddler won't see it!
     {
+        /////////////////
+        /// <summary>
+        /// Developer Demo Mode. If enabled as much domain specific information as possible will be replaced with contoso.com.
+        /// Note: This is not much right now, just outputs in response comments on the inspector tab.
+        /// </summary>
+        ///
+        Boolean DeveloperDemoMode = true;
+        Boolean DeveloperDemoModeBreakScenarios = false;
+        /////////////////
+        
+        List<string> Developers = new List<string>(new string[] { "jeknight", "brandev", "jasonsla" });
+
+        public List<string> GetDeveloperList()
+        {
+            return Developers;
+        }
+        /////////////////
+
         #region MenuUI
         /////////////////
         // 
@@ -19,16 +37,6 @@ namespace EXOFiddlerInspector
         private MenuItem ExchangeOnlineTopMenu;
 
         private bool boolExtensionEnabled = false;
-        /*
-        // Testing use of pubboolExtensionEnabled in another class.
-        public bool pubboolExtensionEnabled
-        {
-            get
-            { return boolExtensionEnabled; }
-            set
-            { boolExtensionEnabled = value; }
-        }
-        */
 
         private MenuItem miEnabled;
 
@@ -73,13 +81,11 @@ namespace EXOFiddlerInspector
         private int HTTP200SkipLogic;
         private int HTTP200FreeBusy;
 
-        Boolean DeveloperDemoMode = true;
-        Boolean DeveloperDemoModeBreakScenarios = false;
-
-        List<string> Developers = new List<string>(new string[] { "jeknight", "brandev", "jasonsla" });
-
         internal Session session { get; set; }
-        public int ClientDoneResponseYear { get; private set; }
+
+        // Found created most likely in error.
+        // Commented out to see if anything breaks.
+        //public int ClientDoneResponseYear { get; private set; }
 
         private void InitializeMenu()
         {
@@ -278,15 +284,7 @@ namespace EXOFiddlerInspector
         {
             /////////////////
             //
-            // Set demo mode. If enabled as much domain specific information as possible will be replaced with contoso.com.
-            // Ensure this is disabled before build and deploy!!!
-            //
-
-            //
-            /////////////////
-            //
             // Make sure that even if these are mistakenly left on from debugging, production users are not impacted.
-            //if (Environment.UserName == "jeknight" || Environment.UserName == "brandev" && DemoMode == true)
             if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
             {
                 FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", true);

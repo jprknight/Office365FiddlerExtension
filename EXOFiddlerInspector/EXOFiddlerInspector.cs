@@ -3,12 +3,15 @@ using System.Linq;
 using System.IO;
 using Fiddler;
 using System;
+using System.Collections.Generic;
 
 namespace EXOFiddlerInspector
 {
     // Base class, generic inspector, common between request and response
     public class EXOBaseFiddlerInspector : Inspector2
     {
+
+        public Boolean Developer;
 
         //private byte[] _body;
         private bool _readOnly;
@@ -48,7 +51,7 @@ namespace EXOFiddlerInspector
         {
             this.session = oS;
 
-            base.AssignSession(oS);
+            base.AssignSession(oS);   
         }
     }
 
@@ -60,8 +63,11 @@ namespace EXOFiddlerInspector
     // of the extension has grown out of server responses rather than client requests.
 
     // Request class, inherits the generic class above, only defines things specific or different from the base class
+
     public class RequestInspector : EXOBaseFiddlerInspector, IRequestInspector2
     {
+
+        
         private bool _readOnly;
         HTTPRequestHeaders _headers;
         private byte[] _body;
@@ -97,7 +103,26 @@ namespace EXOFiddlerInspector
         // Add EXO Request tab into inspectors tab.
         public override void AddToTab(TabPage o)
         {
-            if (Environment.UserName == "jeknight" || Environment.UserName == "brandev")
+            /////////////////////////////
+            //
+            // Before we go ahead and run the add tab code work out if 
+            // the user is a developer or not.
+
+            // Developer list is actually set in ColouriseWebSessions.
+            ColouriseWebSessions CWS = new ColouriseWebSessions();
+            List<string> calledDeveloperList = CWS.GetDeveloperList();
+
+            // Based on the above set the Boolean Developer for use through the rest of the code.
+            if (calledDeveloperList.Any(Environment.UserName.Contains))
+            {
+                Developer = true;
+            }
+            else
+            {
+                Developer = false;
+            }
+            
+            if (Developer)
             {
                 _displayControl = new RequestUserControl();
                 o.Text = "Exchange Request";
@@ -119,7 +144,7 @@ namespace EXOFiddlerInspector
         
         public void SetSessionType(Session oS)
         {
-            if (Environment.UserName == "jeknight" || Environment.UserName == "brandev")
+            if (Developer)
             {
                 // Earlier version of Exchange Type.
                 if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) { _displayControl.SetRequestTypeTextBox("EXO MAPI"); }
@@ -150,7 +175,7 @@ namespace EXOFiddlerInspector
         
         public void SetRequestValues(Session oS)
         {
-            if (Environment.UserName == "jeknight" || Environment.UserName == "brandev")
+            if (Developer)
             {
                 // Store response body in variable for opening in notepad.
                 EXOResponseBody = this.session.oResponse.ToString();
@@ -227,7 +252,7 @@ namespace EXOFiddlerInspector
 
         public string EXOResponseBody { get; set; }
     }
-    
+
     #endregion
 
     // Response class, same as request class except for responses

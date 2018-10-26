@@ -147,6 +147,13 @@
   <metadata name="RequestCommentsRichTextBox.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="RequestCommentsRichTextBox.Text" xml:space="preserve">
+    <value>You are seeing this tab as you are recognised as an extension developer.
+
+Other users do not see this tab at all.
+
+Though intiially useful, the bulk of the data the extension exposes is all about server responses, so this tab has been hidden.</value>
+  </data>
   <metadata name="RequestAlertLabel.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
