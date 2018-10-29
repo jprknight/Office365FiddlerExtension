@@ -35,11 +35,20 @@ namespace EXOFiddlerInspector
         //
 
         private MenuItem ExchangeOnlineTopMenu;
+        private MenuItem miColumnsMenu;
 
         private bool boolExtensionEnabled = false;
 
         private MenuItem miEnabled;
 
+        private MenuItem miSeperator1;
+        private MenuItem miSeperator2;
+        private MenuItem miSeperator3;
+        private MenuItem miSeperator4;
+
+        private bool boolColumnsEnableAllEnabled = false;
+        private MenuItem miColumnsEnableAll;
+        
         private bool boolResponseTimeColumnEnabled = false;
         private MenuItem miResponseTimeColumnEnabled;
 
@@ -95,46 +104,77 @@ namespace EXOFiddlerInspector
             this.miEnabled = new MenuItem("&Extension Enabled");
             this.miEnabled.Index = 0;
 
-            this.miResponseTimeColumnEnabled = new MenuItem("Response &Time Column Enabled (Load SAZ only)");
-            this.miResponseTimeColumnEnabled.Index = 1;
+            this.miSeperator1 = new MenuItem("-");
+            this.miSeperator1.Index = 1;
 
+            this.miColumnsMenu = new MenuItem("&Columns");
+            this.miColumnsMenu.Index = 2;
 
-            this.miResponseServerColumnEnabled = new MenuItem("Response &Server Column Enabled");
-            this.miResponseServerColumnEnabled.Index = 2;
-
-            this.miExchangeTypeColumnEnabled = new MenuItem("Exchange T&ype Column Enabled");
-            this.miExchangeTypeColumnEnabled.Index = 3;
-
+            this.miSeperator2 = new MenuItem("-");
+            this.miSeperator2.Index = 3;
+            
             this.miAppLoggingEnabled = new MenuItem("Application &Logging Enabled");
             this.miAppLoggingEnabled.Index = 4;
 
             this.miHighlightOutlookOWAOnly = new MenuItem("&Highlight Outlook and OWA Only");
             this.miHighlightOutlookOWAOnly.Index = 5;
 
+            this.miSeperator3 = new MenuItem("-");
+            this.miSeperator3.Index = 6;
+
             this.miReleasesDownloadWebpage = new MenuItem("&Releases Download Page");
-            this.miReleasesDownloadWebpage.Index = 6;
+            this.miReleasesDownloadWebpage.Index = 7;
 
             this.miWiki = new MenuItem("Extension &Wiki");
-            this.miWiki.Index = 7;
+            this.miWiki.Index = 8;
 
             this.miReportIssues = new MenuItem("&Report Issues");
-            this.miReportIssues.Index = 8;
+            this.miReportIssues.Index = 9;
+
+
+            this.miSeperator4 = new MenuItem("-");
+            this.miSeperator4.Index = 10;
 
             this.miCheckForUpdate = new MenuItem("&Check For Update");
-            this.miCheckForUpdate.Index = 9;
-
+            this.miCheckForUpdate.Index = 11;
+            
             // Add menu items to top level menu.
             this.ExchangeOnlineTopMenu.MenuItems.AddRange(new MenuItem[] { this.miEnabled,
-                this.miResponseTimeColumnEnabled,
-                this.miResponseServerColumnEnabled,
-                this.miExchangeTypeColumnEnabled,
+                this.miSeperator1,
+                this.miColumnsMenu,
+                this.miSeperator2,
                 this.miAppLoggingEnabled,
                 this.miHighlightOutlookOWAOnly,
+                this.miSeperator3,
                 this.miReleasesDownloadWebpage,
                 this.miWiki,
                 this.miReportIssues,
-                this.miCheckForUpdate});
+                this.miSeperator4,
+                this.miCheckForUpdate
+            });
+            
+            // Columns menu items.
 
+            this.miColumnsEnableAll = new MenuItem("Enable &All");
+            this.miColumnsEnableAll.Index = 0;
+
+            this.miResponseTimeColumnEnabled = new MenuItem("Response &Time (Load SAZ only)");
+            this.miResponseTimeColumnEnabled.Index = 1;
+
+            this.miResponseServerColumnEnabled = new MenuItem("Response &Server");
+            this.miResponseServerColumnEnabled.Index = 2;
+
+            this.miExchangeTypeColumnEnabled = new MenuItem("Exchange T&ype");
+            this.miExchangeTypeColumnEnabled.Index = 3;
+
+            this.miColumnsMenu.MenuItems.AddRange(new MenuItem[]
+            {
+                this.miColumnsEnableAll,
+                this.miResponseTimeColumnEnabled,
+                this.miResponseServerColumnEnabled,
+                this.miExchangeTypeColumnEnabled
+            });
+            
             // Setup event handlers for menu items.
             this.miEnabled.Click += new System.EventHandler(this.miEnabled_Click);
             this.miEnabled.Checked = boolExtensionEnabled;
