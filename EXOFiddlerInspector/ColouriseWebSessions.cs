@@ -93,10 +93,6 @@ namespace EXOFiddlerInspector
 
         internal Session session { get; set; }
 
-        // Found created most likely in error.
-        // Commented out to see if anything breaks.
-        //public int ClientDoneResponseYear { get; private set; }
-
         private void InitializeMenu()
         {
             // Setup each menu item name and ordering.
@@ -215,15 +211,13 @@ namespace EXOFiddlerInspector
         {
             if (boolResponseTimeColumnEnabled && boolResponseServerColumnEnabled && boolExchangeTypeColumnEnabled)
             {
-                //MessageBox.Show("test: " + boolResponseTimeColumnEnabled + boolResponseServerColumnEnabled + boolExchangeTypeColumnEnabled);
                 miColumnsEnableAll.Checked = true;
             }
             else
             {
-                //MessageBox.Show("test: " + boolResponseTimeColumnEnabled + boolResponseServerColumnEnabled + boolExchangeTypeColumnEnabled);
                 miColumnsEnableAll.Checked = false;
             }
-            // Regardless of the above, set the application preferences here.
+            // Regardless of the above, set the application preferences here for function called in OnLoad.
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", boolResponseTimeColumnEnabled);
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", boolResponseServerColumnEnabled);
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", boolExchangeTypeColumnEnabled);
@@ -255,15 +249,13 @@ namespace EXOFiddlerInspector
             // Match boolean variable on menu selection.
             // Do it for all colums.
             boolColumnsEnableAllEnabled = miColumnsEnableAll.Checked;
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAll", boolColumnsEnableAllEnabled);
             boolResponseTimeColumnEnabled = miColumnsEnableAll.Checked;
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", boolResponseTimeColumnEnabled);
             boolResponseServerColumnEnabled = miColumnsEnableAll.Checked;
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", boolResponseServerColumnEnabled);
             boolExchangeTypeColumnEnabled = miExchangeTypeColumnEnabled.Checked;
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", boolExchangeTypeColumnEnabled);
-
-            // Set the application preference for this option.
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAll", boolColumnsEnableAllEnabled);
         }
 
         public void miResponseTimeColumnEnabled_Click(object sender, EventArgs e)
