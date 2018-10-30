@@ -1614,8 +1614,6 @@ namespace EXOFiddlerInspector
         
         public void OnBeforeReturningError(Session oSession) { }
 
-
-
         /////////////////////////////
         //
         // Function where the Response Server column is populated.
