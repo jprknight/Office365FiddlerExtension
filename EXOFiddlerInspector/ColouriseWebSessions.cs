@@ -1185,6 +1185,18 @@ namespace EXOFiddlerInspector
                         //
                         /////////////////////////////
                         break;
+                    case 456:
+                        /////////////////////////////
+                        //
+                        // HTTP 456: Multi-Factor Required.
+                        //
+                        /////////////////////////////
+                        this.session["ui-backcolor"] = HTMLColourRed;
+                        this.session["ui-color"] = "black";
+                        this.session["X-ExchangeType"] = "Multi-Factor Auth";
+                        //
+                        /////////////////////////////
+                        break;
                     #endregion
 
                     #region HTTP500s
