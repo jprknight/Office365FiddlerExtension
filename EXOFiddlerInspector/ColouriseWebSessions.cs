@@ -344,26 +344,6 @@ namespace EXOFiddlerInspector
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnly", boolHighlightOutlookOWAOnlyEnabled);
         }
 
-        /*
-        public void EnableDisableMenuItemsAccordingToExtensionStatus()
-        {
-            // Enable / disable menu items according to extension enabled.
-            if (boolExtensionEnabled)
-            {
-                this.miResponseTimeColumnEnabled.Enabled = true;
-                this.miResponseServerColumnEnabled.Enabled = true;
-                this.miExchangeTypeColumnEnabled.Enabled = true;
-                this.miAppLoggingEnabled.Enabled = true;
-            }
-            else
-            {
-                this.miResponseTimeColumnEnabled.Enabled = false;
-                this.miResponseServerColumnEnabled.Enabled = false;
-                this.miExchangeTypeColumnEnabled.Enabled = false;
-                this.miAppLoggingEnabled.Enabled = false;
-            }
-        }
-        */
         //
         /////////////////
         #endregion
