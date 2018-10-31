@@ -1242,6 +1242,7 @@ namespace EXOFiddlerInspector
                                 "Validate this by checking the webview and raw tabs for more information.");
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout -- Internet Access Blocked.");
                         }
+
                         /////////////////////////////
                         // 99. Pick up any other 504 Gateway Timeout and write data into the comments box.
                         else if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
