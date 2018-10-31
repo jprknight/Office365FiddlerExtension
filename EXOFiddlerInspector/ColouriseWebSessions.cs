@@ -1386,36 +1386,34 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 504: GATEWAY TIMEOUT.
                         //
-                        // Call out all 504 Gateway Timeout as something to focus on.
-                        this.session["ui-backcolor"] = HTMLColourRed;
-                        this.session["ui-color"] = "black";
-                        if (boolAppLoggingEnabled && boolExtensionEnabled)
-                        {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout.");
-                        }
-
 
                         /////////////////////////////
                         // 1. HTTP 504 Bad Gateway 'internet has been blocked'
-                        this.session["ui-backcolor"] = HTMLColourRed;
-                        this.session["ui-color"] = "black";
-                        this.session["X-ExchangeType"] = "INTERNET BLOCKED!";
-                        if (boolAppLoggingEnabled && boolExtensionEnabled)
+                        if ((this.session.utilFindInResponse("access", false) > 1) &&
+                            (this.session.utilFindInResponse("internet", false) > 1) &&
+                            (this.session.utilFindInResponse("blocked", false) > 1))
                         {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + "  HTTP 504 Gateway Timeout -- Internet Access Blocked.");
+                            this.session["ui-backcolor"] = HTMLColourRed;
+                            this.session["ui-color"] = "black";
+                            this.session["X-ExchangeType"] = "INTERNET BLOCKED!";
+                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + "  HTTP 504 Gateway Timeout -- Internet Access Blocked.");
+                            }
                         }
                         /////////////////////////////
                         // 99. Pick up any other 504 Gateway Timeout and write data into the comments box.
-                        this.session["ui-backcolor"] = HTMLColourRed;
-                        this.session["ui-color"] = "black";
-                        if (boolAppLoggingEnabled && boolExtensionEnabled)
+                        else
                         {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout.");
+                            this.session["ui-backcolor"] = HTMLColourRed;
+                            this.session["ui-color"] = "black";
+                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout.");
+                            }
+                            //
+                            /////////////////////////////
                         }
-                        //
-                        /////////////////////////////
-                        //
-                        /////////////////////////////
                         break;
                     #endregion
 
