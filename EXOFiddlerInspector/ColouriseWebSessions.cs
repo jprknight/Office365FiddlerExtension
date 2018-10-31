@@ -1191,9 +1191,18 @@ namespace EXOFiddlerInspector
                         // HTTP 456: Multi-Factor Required.
                         //
                         /////////////////////////////
-                        this.session["ui-backcolor"] = HTMLColourRed;
-                        this.session["ui-color"] = "black";
-                        this.session["X-ExchangeType"] = "Multi-Factor Auth";
+                        if (this.session.utilFindInResponse("you must use multi-factor authentication", false) > 1)
+                        {
+                            this.session["ui-backcolor"] = HTMLColourRed;
+                            this.session["ui-color"] = "black";
+                            this.session["X-ExchangeType"] = "Multi-Factor Auth";
+                        }
+                        else
+                        {
+                            this.session["ui-backcolor"] = HTMLColourOrange;
+                            this.session["ui-color"] = "black";
+                            this.session["X-ExchangeType"] = "Multi-Factor Auth?";
+                        }
                         //
                         /////////////////////////////
                         break;

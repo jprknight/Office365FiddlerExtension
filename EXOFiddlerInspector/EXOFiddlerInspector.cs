@@ -1022,18 +1022,27 @@ namespace EXOFiddlerInspector
                     case 456:
                         /////////////////////////////
                         //
-                        // HTTP 456: Multi-Factor Required.
+                        // HTTP 456: Multi-Factor Authentication. Complications seen when MFA is enabled on accounts, but Modern Authentication
+                        // is not enabled in Exchange Online.
                         //
                         /////////////////////////////
-                        _displayControl.SetResponseAlertTextBox("HTTP 456 Multi-Factor Authentication");
-                        _displayControl.SetResponseCommentsRichTextboxText("HTTP 429: See details on Raw tab. Look for the presence of 'you must use multi-factor authentication'." +
-                            Environment.NewLine +
-                            Environment.NewLine +
-                            "This has been seen where users have MFA enabled/enforced, but Modern Authentication is not enabled in Exchange Online" +
-                            Environment.NewLine +
-                            Environment.NewLine +
-                            "See https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662"
-                            );
+                        if (this.session.utilFindInResponse("you must use multi-factor authentication", false) > 1)
+                        {
+                            _displayControl.SetResponseAlertTextBox("HTTP 456 Multi-Factor Authentication");
+                            _displayControl.SetResponseCommentsRichTextboxText("HTTP 429: See details on Raw tab. Look for the presence of 'you must use multi-factor authentication'." +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "This has been seen where users have MFA enabled/enforced, but Modern Authentication is not enabled in Exchange Online" +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "See https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662"
+                                );
+                        }
+                        else
+                        {
+                            _displayControl.SetResponseAlertTextBox("HTTP 456 Multi-Factor Authentication?");
+                            _displayControl.SetResponseCommentsRichTextboxText("HTTP 429: See details on Raw tab.");
+                        }
                         //
                         /////////////////////////////
                         break;
