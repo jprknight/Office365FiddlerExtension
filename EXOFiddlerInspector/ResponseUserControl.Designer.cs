@@ -64,7 +64,10 @@
             this.SessionIDTextbox = new System.Windows.Forms.TextBox();
             this.SessionIDLabel = new System.Windows.Forms.Label();
             this.OpenSessionData = new System.Windows.Forms.Button();
+            this.DeveloperSessionGroupBox = new System.Windows.Forms.GroupBox();
+            this.DeveloperControlsLabel = new System.Windows.Forms.Label();
             this.ResponseGroupBox.SuspendLayout();
+            this.DeveloperSessionGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // HTTPStatusCodeLinkLabel
@@ -277,79 +280,75 @@
             // 
             // RequestHeadersTextBox
             // 
-            this.RequestHeadersTextBox.Location = new System.Drawing.Point(9, 449);
+            this.RequestHeadersTextBox.Location = new System.Drawing.Point(6, 32);
             this.RequestHeadersTextBox.Multiline = true;
             this.RequestHeadersTextBox.Name = "RequestHeadersTextBox";
-            this.RequestHeadersTextBox.Size = new System.Drawing.Size(490, 149);
+            this.RequestHeadersTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.RequestHeadersTextBox.Size = new System.Drawing.Size(385, 40);
             this.RequestHeadersTextBox.TabIndex = 36;
-            this.RequestHeadersTextBox.Visible = false;
             // 
             // RequestHeadersLabel
             // 
             this.RequestHeadersLabel.AutoSize = true;
-            this.RequestHeadersLabel.Location = new System.Drawing.Point(6, 433);
+            this.RequestHeadersLabel.Location = new System.Drawing.Point(3, 16);
             this.RequestHeadersLabel.Name = "RequestHeadersLabel";
             this.RequestHeadersLabel.Size = new System.Drawing.Size(90, 13);
             this.RequestHeadersLabel.TabIndex = 37;
             this.RequestHeadersLabel.Text = "Request Headers";
-            this.RequestHeadersLabel.Visible = false;
             // 
             // RequestBodyLabel
             // 
             this.RequestBodyLabel.AutoSize = true;
-            this.RequestBodyLabel.Location = new System.Drawing.Point(9, 605);
+            this.RequestBodyLabel.Location = new System.Drawing.Point(3, 140);
             this.RequestBodyLabel.Name = "RequestBodyLabel";
             this.RequestBodyLabel.Size = new System.Drawing.Size(74, 13);
             this.RequestBodyLabel.TabIndex = 38;
             this.RequestBodyLabel.Text = "Request Body";
-            this.RequestBodyLabel.Visible = false;
             // 
             // RequestBodyTextbox
             // 
-            this.RequestBodyTextbox.Location = new System.Drawing.Point(9, 621);
+            this.RequestBodyTextbox.Location = new System.Drawing.Point(6, 156);
             this.RequestBodyTextbox.Multiline = true;
             this.RequestBodyTextbox.Name = "RequestBodyTextbox";
-            this.RequestBodyTextbox.Size = new System.Drawing.Size(490, 149);
+            this.RequestBodyTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.RequestBodyTextbox.Size = new System.Drawing.Size(385, 40);
             this.RequestBodyTextbox.TabIndex = 39;
-            this.RequestBodyTextbox.Visible = false;
             // 
             // ResponseHeadersLabel
             // 
             this.ResponseHeadersLabel.AutoSize = true;
-            this.ResponseHeadersLabel.Location = new System.Drawing.Point(512, 433);
+            this.ResponseHeadersLabel.Location = new System.Drawing.Point(3, 81);
             this.ResponseHeadersLabel.Name = "ResponseHeadersLabel";
             this.ResponseHeadersLabel.Size = new System.Drawing.Size(98, 13);
             this.ResponseHeadersLabel.TabIndex = 40;
             this.ResponseHeadersLabel.Text = "Response Headers";
-            this.ResponseHeadersLabel.Visible = false;
             // 
             // ResponseHeadersTextbox
             // 
-            this.ResponseHeadersTextbox.Location = new System.Drawing.Point(509, 449);
+            this.ResponseHeadersTextbox.Location = new System.Drawing.Point(6, 97);
             this.ResponseHeadersTextbox.Multiline = true;
             this.ResponseHeadersTextbox.Name = "ResponseHeadersTextbox";
-            this.ResponseHeadersTextbox.Size = new System.Drawing.Size(490, 149);
+            this.ResponseHeadersTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.ResponseHeadersTextbox.Size = new System.Drawing.Size(385, 40);
             this.ResponseHeadersTextbox.TabIndex = 41;
-            this.ResponseHeadersTextbox.Visible = false;
             // 
             // ResponseBodyLabel
             // 
             this.ResponseBodyLabel.AutoSize = true;
-            this.ResponseBodyLabel.Location = new System.Drawing.Point(515, 605);
+            this.ResponseBodyLabel.Location = new System.Drawing.Point(3, 199);
             this.ResponseBodyLabel.Name = "ResponseBodyLabel";
             this.ResponseBodyLabel.Size = new System.Drawing.Size(82, 13);
             this.ResponseBodyLabel.TabIndex = 42;
             this.ResponseBodyLabel.Text = "Response Body";
-            this.ResponseBodyLabel.Visible = false;
             // 
             // ResponseBodyTextbox
             // 
-            this.ResponseBodyTextbox.Location = new System.Drawing.Point(509, 621);
+            this.ResponseBodyTextbox.Location = new System.Drawing.Point(6, 215);
             this.ResponseBodyTextbox.Multiline = true;
             this.ResponseBodyTextbox.Name = "ResponseBodyTextbox";
-            this.ResponseBodyTextbox.Size = new System.Drawing.Size(490, 149);
+            this.ResponseBodyTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.ResponseBodyTextbox.Size = new System.Drawing.Size(385, 40);
             this.ResponseBodyTextbox.TabIndex = 43;
-            this.ResponseBodyTextbox.Visible = false;
             // 
             // SaveSessionDataButton
             // 
@@ -408,24 +407,46 @@
             this.OpenSessionData.UseVisualStyleBackColor = true;
             this.OpenSessionData.Click += new System.EventHandler(this.OpenSessionData_Click);
             // 
+            // DeveloperSessionGroupBox
+            // 
+            this.DeveloperSessionGroupBox.Controls.Add(this.RequestBodyTextbox);
+            this.DeveloperSessionGroupBox.Controls.Add(this.RequestHeadersTextBox);
+            this.DeveloperSessionGroupBox.Controls.Add(this.RequestHeadersLabel);
+            this.DeveloperSessionGroupBox.Controls.Add(this.RequestBodyLabel);
+            this.DeveloperSessionGroupBox.Controls.Add(this.ResponseHeadersLabel);
+            this.DeveloperSessionGroupBox.Controls.Add(this.ResponseHeadersTextbox);
+            this.DeveloperSessionGroupBox.Controls.Add(this.ResponseBodyLabel);
+            this.DeveloperSessionGroupBox.Controls.Add(this.ResponseBodyTextbox);
+            this.DeveloperSessionGroupBox.Location = new System.Drawing.Point(412, 156);
+            this.DeveloperSessionGroupBox.Name = "DeveloperSessionGroupBox";
+            this.DeveloperSessionGroupBox.Size = new System.Drawing.Size(397, 267);
+            this.DeveloperSessionGroupBox.TabIndex = 54;
+            this.DeveloperSessionGroupBox.TabStop = false;
+            this.DeveloperSessionGroupBox.Text = "DeveloperSessionGroupBox";
+            // 
+            // DeveloperControlsLabel
+            // 
+            this.DeveloperControlsLabel.AutoSize = true;
+            this.DeveloperControlsLabel.Location = new System.Drawing.Point(247, 426);
+            this.DeveloperControlsLabel.Name = "DeveloperControlsLabel";
+            this.DeveloperControlsLabel.Size = new System.Drawing.Size(326, 13);
+            this.DeveloperControlsLabel.TabIndex = 56;
+            this.DeveloperControlsLabel.Text = "Developer mode enabled: Additional controls on the right hand side.";
+            this.DeveloperControlsLabel.Visible = false;
+            this.DeveloperControlsLabel.Click += new System.EventHandler(this.DeveloperControlsLabel_Click);
+            // 
             // ResponseUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.DeveloperControlsLabel);
+            this.Controls.Add(this.DeveloperSessionGroupBox);
             this.Controls.Add(this.OpenSessionData);
             this.Controls.Add(this.SessionIDLabel);
             this.Controls.Add(this.SessionIDTextbox);
             this.Controls.Add(this.ExchangeTypeTextbox);
             this.Controls.Add(this.ExchangeTypeLabel);
             this.Controls.Add(this.SaveSessionDataButton);
-            this.Controls.Add(this.ResponseBodyTextbox);
-            this.Controls.Add(this.ResponseBodyLabel);
-            this.Controls.Add(this.ResponseHeadersTextbox);
-            this.Controls.Add(this.ResponseHeadersLabel);
-            this.Controls.Add(this.RequestBodyTextbox);
-            this.Controls.Add(this.RequestBodyLabel);
-            this.Controls.Add(this.RequestHeadersLabel);
-            this.Controls.Add(this.RequestHeadersTextBox);
             this.Controls.Add(this.ResponseServerTextBox);
             this.Controls.Add(this.ResponseServerLabel);
             this.Controls.Add(this.RequestEndDateTextBox);
@@ -448,9 +469,11 @@
             this.Controls.Add(this.HTTPResponseCodeTextBox);
             this.Controls.Add(this.HTTPStatusCodeLinkLabel);
             this.Name = "ResponseUserControl";
-            this.Size = new System.Drawing.Size(1014, 782);
+            this.Size = new System.Drawing.Size(818, 466);
             this.Load += new System.EventHandler(this.ResponseUserControl_Load);
             this.ResponseGroupBox.ResumeLayout(false);
+            this.DeveloperSessionGroupBox.ResumeLayout(false);
+            this.DeveloperSessionGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -493,5 +516,7 @@
         private System.Windows.Forms.TextBox SessionIDTextbox;
         private System.Windows.Forms.Label SessionIDLabel;
         private System.Windows.Forms.Button OpenSessionData;
+        private System.Windows.Forms.GroupBox DeveloperSessionGroupBox;
+        private System.Windows.Forms.Label DeveloperControlsLabel;
     }
 }

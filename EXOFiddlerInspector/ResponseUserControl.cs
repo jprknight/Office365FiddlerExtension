@@ -16,9 +16,13 @@ namespace EXOFiddlerInspector
     {
         public string SessionData;
 
+        //private DebugConsole DevConsole;
+
         public ResponseUserControl()
         {
             InitializeComponent();
+            // Telemtry call goes here. Called once per session.
+
         }
 
         private void ResponseUserControl_Load(object sender, EventArgs e)
@@ -35,6 +39,10 @@ namespace EXOFiddlerInspector
             // Based on the above set the Boolean Developer for use through the rest of the code.
             if (calledDeveloperList.Any(Environment.UserName.Contains))
             {
+                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: Developer mode {Environment.UserName} on {Environment.MachineName}.");
+                DeveloperSessionGroupBox.Visible = true;
+                DeveloperControlsLabel.Visible = true;
+                /*
                 RequestHeadersLabel.Visible = true;
                 RequestHeadersTextBox.Visible = true;
                 RequestBodyLabel.Visible = true;
@@ -44,6 +52,13 @@ namespace EXOFiddlerInspector
                 ResponseHeadersTextbox.Visible = true;
                 ResponseBodyLabel.Visible = true;
                 ResponseBodyTextbox.Visible = true;
+
+                HTTP200FreeBusyLabel.Visible = true;
+                HTTP200FreeBusyTextBox.Visible = true;
+
+                HTTP200SkipLogicLabel.Visible = true;
+                HTTP200SkipLogicTextBox.Visible = true;
+                */
             }
             else
             {
@@ -166,6 +181,7 @@ namespace EXOFiddlerInspector
         {
             SessionIDTextbox.Text = txt;
         }
+
 
         private void HTTPStatusCodeLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -465,6 +481,11 @@ namespace EXOFiddlerInspector
             WriteSessionData();
             System.IO.File.WriteAllText(Environment.GetEnvironmentVariable("temp") + "\\FiddlerTrace - SessionID - " + SessionIDTextbox.Text + " - HTTP - " + HTTPResponseCodeTextBox.Text + ".txt", SessionData);
             System.Diagnostics.Process.Start(Environment.GetEnvironmentVariable("temp") + "\\FiddlerTrace - SessionID - " + SessionIDTextbox.Text + " - HTTP - " + HTTPResponseCodeTextBox.Text + ".txt");
+        }
+
+        private void DeveloperControlsLabel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

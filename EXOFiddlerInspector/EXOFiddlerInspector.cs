@@ -4,6 +4,7 @@ using System.IO;
 using Fiddler;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace EXOFiddlerInspector
 {
@@ -346,10 +347,12 @@ namespace EXOFiddlerInspector
             // create this.session for use everywhere in code.
             this.session = oS;
 
+            /// <remarks
+
             // decode sessions to make sure request/response body can be fully read by logic checks.
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
-
+            
             // Clear any previous data.
             _displayControl.SetResponseAlertTextBox("");
             _displayControl.SetResponseCommentsRichTextboxText("");
@@ -534,6 +537,9 @@ namespace EXOFiddlerInspector
                                 "HTTPS Decryption is enabled in Fiddler, so decrypted sessions running in this tunnel will be shown in the Web Sessions list.");
                             // No reason currently known to check the response body on tunnel sessions. Compute saving.
                             HTTP200SkipLogic++;
+
+                            // Write the value of HTTP200SkipLogic into debug output.
+                            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: IsTunnel - HTT200SkipLogic {HTTP200SkipLogic.ToString()}");
                         }
 
                         /////////////////////////////
@@ -612,6 +618,9 @@ namespace EXOFiddlerInspector
                                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address doesn't contain .onmicrosoft.com.");
                                 }
                             }
+
+                            // Write the value of HTTP200SkipLogic into debug output.
+                            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: Exchange On-Premise Autodiscover redirect. - HTT200SkipLogic {HTTP200SkipLogic.ToString()}");
                         }
 
                         /////////////////////////////
@@ -642,6 +651,9 @@ namespace EXOFiddlerInspector
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address can't be found.");
                             }
+
+                            // Write the value of HTTP200SkipLogic into debug output.
+                            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: HTTP 200 Exchange On-Premise Autodiscover redirect. - HTT200SkipLogic {HTTP200SkipLogic.ToString()}");
                         }
 
                         /////////////////////////////
@@ -669,8 +681,10 @@ namespace EXOFiddlerInspector
                                 _displayControl.SetResponseCommentsRichTextboxText("Exchange Online Autodiscover. FAILURE!");
                                 // Don't use skip logic here, we want to dig deeper and see if there are errors, failures, or exceptions.
                                 //HTTP200SkipLogic++;
-
                             }
+
+                            // Write the value of HTTP200SkipLogic into debug output.
+                            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: HTTP 200 Exchange Online Autodiscover - HTT200SkipLogic {HTTP200SkipLogic.ToString()}");
                         }
 
                         /////////////////////////////
@@ -684,6 +698,9 @@ namespace EXOFiddlerInspector
                             // is concerned.
                             // Increment HTTP200SkipLogic so that 99 does not run below.
                             HTTP200SkipLogic++;
+
+                            // Write the value of HTTP200SkipLogic into debug output.
+                            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: HTTP 200 Outlook MAPI traffic. - HTT200SkipLogic {HTTP200SkipLogic.ToString()}");
                         }
 
                         /////////////////////////////
@@ -718,14 +735,21 @@ namespace EXOFiddlerInspector
                                 _displayControl.SetResponseCommentsRichTextboxText("Though GetUnifiedGroupsSettings scenario was detected neither <GroupCreationEnabled>true</GroupCreationEnabled> or" +
                                     "<GroupCreationEnabled>false</GroupCreationEnabled> was found in the response body. Check the Raw tab for more details.");
                             }
+
+                            // Write the value of HTTP200SkipLogic into debug output.
+                            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: HTTP 200 GetUnifiedGroupsSettings EWS call. - HTT200SkipLogic {HTTP200SkipLogic.ToString()}");
+
                         }
-                        
+
 
                         /////////////////////////////
                         //
                         // 99. All other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                         else
                         {
+                            // Write the value of HTTP200SkipLogic into debug output.
+                            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: HTTP 200 99 Skip Logic. - HTT200SkipLogic {HTTP200SkipLogic.ToString()}");
+
                             // If the HTTP200SkipLogic value is zero, then none of the above logic has run on the session.
                             // Treat this session as a HTTP 200 we need to check for error / failures / exceptions on.
                             if (HTTP200SkipLogic == 0)
