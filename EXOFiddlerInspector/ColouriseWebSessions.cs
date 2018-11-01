@@ -56,46 +56,6 @@ namespace EXOFiddlerInspector
         }
         /////////////////
 
-        public Boolean GetboolEntensionEnabled()
-        {
-            return boolExtensionEnabled;
-        }
-
-        public Boolean GetboolColumnsEnableAllEnabled()
-        {
-            return boolColumnsEnableAllEnabled;
-        }
-
-        public Boolean GetboolResponseTimeColumnEnabled()
-        {
-            return boolResponseTimeColumnEnabled;
-        }
-
-        public Boolean GetboolResponseServerColumnEnabled()
-        {
-            return boolResponseServerColumnEnabled;
-        }
-
-        public Boolean GetboolExchangeTypeColumnEnabled()
-        {
-            return boolExchangeTypeColumnEnabled;
-        }
-
-        public Boolean GetboolAppLoggingEnabled()
-        {
-            return boolAppLoggingEnabled;
-        }
-
-        public Boolean GetboolHighlightOutlookOWAOnlyEnabled()
-        {
-            return boolHighlightOutlookOWAOnlyEnabled;
-        }
-
-        public Boolean GetboolManualCheckForUpdate()
-        {
-            return boolManualCheckForUpdate;
-        }
-
         #region OnLoad
         /////////////////
         //
