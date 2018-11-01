@@ -420,12 +420,13 @@ namespace EXOFiddlerInspector
                 {
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: Latest version installed. v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".");
                 }
+
                 // Regardless of extension enabled or not, give the user feedback when they click the 'Check For Update' menu item if no update is available.
-                if (boolManualCheckForUpdate)
+                if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ManualCheckForUpdate", false))
                 {
                     MessageBox.Show("EXOFiddlerExtention: Latest version installed. v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".", "EXO Fiddler Extension");
-                    // return this value back to false, so we don't give this feedback unintentionally.
-                    boolManualCheckForUpdate = false;
+                    // return this perference back to false, so we don't give this feedback unintentionally.
+                    FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ManualCheckForUpdate", false);
                 }
             }
         }

@@ -198,9 +198,7 @@ namespace EXOFiddlerInspector
         // Menu item event handlers.
         public void miEnabled_Click(object sender, EventArgs e)
         {
-            // Get the Boolean values from ColouriseWebSessions.cs.
-            ColouriseWebSessions CWS = new ColouriseWebSessions();
-            Boolean boolExtensionEnabled = CWS.GetboolEntensionEnabled();
+            Boolean boolExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
 
             // Invert selection when this menu item is clicked.
             miEnabled.Checked = !miEnabled.Checked;
@@ -311,23 +309,18 @@ namespace EXOFiddlerInspector
 
         public void miCheckForUpdate_Click(object sender, EventArgs e)
         {
-            // Get the Boolean values from ColouriseWebSessions.cs.
-            ColouriseWebSessions CWS = new ColouriseWebSessions();
-            Boolean boolManualCheckForUpdate = CWS.GetboolManualCheckForUpdate();
-
             // Since the user has manually clicked this menu item to check for updates,
             // set this boolean variable to true so we can give user feedback if no update available.
-            boolManualCheckForUpdate = true;
-            
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ManualCheckForUpdate", true);
+
             // Call check for update function.
+            ColouriseWebSessions CWS = new ColouriseWebSessions();
             CWS.CheckForUpdate();
         }
 
         public void miHighlightOutlookOWAOnly_click(object sender, EventArgs e)
         {
-            // Get the Boolean values from ColouriseWebSessions.cs.
-            ColouriseWebSessions CWS = new ColouriseWebSessions();
-            Boolean boolHighlightOutlookOWAOnlyEnabled = CWS.GetboolHighlightOutlookOWAOnlyEnabled();
+            Boolean boolHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
 
             // Invert selection when this menu item is clicked.
             miHighlightOutlookOWAOnly.Checked = !miHighlightOutlookOWAOnly.Checked;
