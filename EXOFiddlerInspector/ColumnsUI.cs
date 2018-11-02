@@ -7,12 +7,16 @@ using Fiddler;
 
 namespace EXOFiddlerInspector
 {
-    class ColumnsUI : IAutoTamper
+    class ColumnsUI
     {
         /// <summary>
         /// Call ColouriseWebSessions.
         /// </summary>
-        ColouriseWebSessions calledColouriseWebSessions = new ColouriseWebSessions();
+        /// CALL BACK TO COLOURISEWEBSESSIONS BROKE EVERYTHING. APP BUILDS. WILL NOT EXECUTE.
+        /// SUSPECT CIRCULAR CALLS ARE REALLY BAD.
+        /// WILL BE FIXED ONCE RULE SET MOVES OUT AS WELL.
+
+        //ColouriseWebSessions calledColouriseWebSessions = new ColouriseWebSessions();
 
         private bool bResponseTimeColumnCreated = false;
         private bool bResponseServerColumnCreated = false;
@@ -123,19 +127,19 @@ namespace EXOFiddlerInspector
             {
                 this.session["X-ExchangeType"] = "Free/Busy";
                 // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
+                //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
             }
             else if (this.session.fullUrl.Contains("GetUserAvailability"))
             {
                 this.session["X-ExchangeType"] = "Free/Busy";
                 // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
+                //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
             }
             else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1)
             {
                 this.session["X-ExchangeType"] = "Free/Busy";
                 // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
+                //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
             }
             // EWS.
             else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { this.session["X-ExchangeType"] = "EXO EWS"; }
