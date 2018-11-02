@@ -124,16 +124,6 @@ namespace EXOFiddlerInspector
                 this.miExchangeTypeColumnEnabled
             });
 
-            // Get the Boolean values from ColouriseWebSessions.cs.
-            /*ColouriseWebSessions CWS = new ColouriseWebSessions();
-            Boolean boolExtensionEnabled = CWS.GetboolEntensionEnabled();
-            Boolean boolColumnsEnableAllEnabled = CWS.GetboolColumnsEnableAllEnabled();
-            Boolean boolResponseTimeColumnEnabled = CWS.GetboolResponseTimeColumnEnabled();
-            Boolean boolResponseServerColumnEnabled = CWS.GetboolResponseServerColumnEnabled();
-            Boolean boolExchangeTypeColumnEnabled = CWS.GetboolExchangeTypeColumnEnabled();
-            Boolean boolAppLoggingEnabled = CWS.GetboolAppLoggingEnabled();
-            Boolean boolHighlightOutlookOWAOnlyEnabled = CWS.GetboolHighlightOutlookOWAOnlyEnabled();
-            */
             Boolean boolExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
             Boolean boolResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
             Boolean boolResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
@@ -141,7 +131,6 @@ namespace EXOFiddlerInspector
             Boolean boolAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
             Boolean boolHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnly", false);
             Boolean boolColumnsEnableAllEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAllEnabled", false);
-            //Boolean boolResponseTimeColumnEnabled = CWS.GetboolResponseTimeColumnEnabled();
 
             // Setup event handlers for menu items.
             this.miEnabled.Click += new System.EventHandler(this.miEnabled_Click);
@@ -313,9 +302,9 @@ namespace EXOFiddlerInspector
             // set this boolean variable to true so we can give user feedback if no update available.
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ManualCheckForUpdate", true);
 
-            // Call check for update function.
-            ColouriseWebSessions CWS = new ColouriseWebSessions();
-            CWS.CheckForUpdate();
+            // Check for app update.
+            CheckForAppUpdate calledCheckForAppUpdate = new CheckForAppUpdate();
+            calledCheckForAppUpdate.CheckForUpdate();
         }
 
         public void miHighlightOutlookOWAOnly_click(object sender, EventArgs e)
