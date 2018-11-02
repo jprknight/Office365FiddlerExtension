@@ -5,11 +5,15 @@ using System.Linq;
 using System.Xml;
 using System.Net;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace EXOFiddlerInspector
 {
     public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or Fiddler won't see it!
     {
+        MenuUI calledMenuUI = new MenuUI();
+        ColumnsUI calledColumnsUI = new ColumnsUI();
+
         /////////////////
         /// <summary>
         /// Developer Demo Mode. If enabled as much domain specific information as possible will be replaced with contoso.com.
@@ -41,15 +45,6 @@ namespace EXOFiddlerInspector
         private string RedirectAddress;
         private int HTTP200SkipLogic;
         private int HTTP200FreeBusy;
-
-        // State Response Time column has not been created.
-        private bool bResponseTimeColumnCreated = false;
-
-        // State Response Server column has not been created.
-        private bool bResponseServerColumnCreated = false;
-
-        // State Exchange Type column has not been created.
-        private bool bExchangeTypeColumnCreated = false;
 
         // Enable/disable switch for Fiddler Application Log entries from extension.
         private bool AppLoggingEnabled = true;
@@ -123,24 +118,23 @@ namespace EXOFiddlerInspector
             // Call the function to add column if the menu item is checked and if the extension is enabled.
             if (boolResponseServerColumnEnabled && boolExtensionEnabled)
             {
-                EnsureResponseServerColumn();
+                calledColumnsUI.EnsureResponseServerColumn();
             }
 
             // Call the function to add column if the menu item is checked and if the extension is enabled.
             if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
             {
-                EnsureExchangeTypeColumn();
+                calledColumnsUI.EnsureExchangeTypeColumn();
             }
 
             // Initialise menu, called from MenuUI.cs.
-            MenuUI MUI = new MenuUI();
-            MUI.InitializeMenu();
+            calledMenuUI.InitializeMenu();
 
             // Add the menu.
-            FiddlerApplication.UI.mnuMain.MenuItems.Add(MUI.ExchangeOnlineTopMenu);
+            FiddlerApplication.UI.mnuMain.MenuItems.Add(calledMenuUI.ExchangeOnlineTopMenu);
 
             // Call function to set Enable all columns check box to required setting.
-            MUI.SetEnableAllMenuItem();
+            calledMenuUI.SetEnableAllMenuItem();
 
             // Make sure the menu items are available / not available depending on extension status.
             // Turned off as this is a PITA.
@@ -177,55 +171,7 @@ namespace EXOFiddlerInspector
         /////////////////
         #endregion
 
-        #region EnsureColumns
-        /////////////////
-        //
-        // Make sure the Columns are added to the UI as enabled and if Extension is enabled.
-        //
-        public void EnsureResponseTimeColumn()
-        {
-            /////////////////
-            // Response Time column.
-            //
-            // If the column is already created exit.
-            if (bResponseTimeColumnCreated) return;
 
-            FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Time", 2, 110, "X-iTTLB");
-            bResponseTimeColumnCreated = true;
-            //
-            /////////////////
-        }
-
-        public void EnsureResponseServerColumn()
-        {
-            /////////////////
-            // Response Server column.
-            //
-            // If the column is already created exit.
-            if (bResponseServerColumnCreated) return;
-            
-            FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 2, 130, "X-ResponseServer");
-            bResponseServerColumnCreated = true;
-            //
-            /////////////////
-        }
-
-        public void EnsureExchangeTypeColumn()
-        {
-            /////////////////
-            // Response Server column.
-            //
-            // If the column is already created exit.
-            if (bExchangeTypeColumnCreated) return;
-
-            FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 2, 150, "X-ExchangeType");
-            bExchangeTypeColumnCreated = true;
-            //
-            /////////////////
-        }
-        //
-        /////////////////
-        #endregion
 
         #region LoadSAZ
         /////////////////
@@ -247,7 +193,7 @@ namespace EXOFiddlerInspector
             // Call the function to add column if the menu item is checked and if the extension is enabled.
             if (boolResponseTimeColumnEnabled && boolExtensionEnabled)
             {
-                EnsureResponseTimeColumn();
+                calledColumnsUI.EnsureResponseTimeColumn();
             }
 
             FiddlerApplication.UI.lvSessions.BeginUpdate();
@@ -264,13 +210,13 @@ namespace EXOFiddlerInspector
                 // Populate the ExchangeType column on load SAZ, if the column is enabled, and the extension is enabled
                 if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
                 {
-                    SetExchangeType(session);
+                    calledColumnsUI.SetExchangeType(session);
                 }
 
                 // Populate the ResponseServer column on load SAZ, if the column is enabled, and the extension is enabled
                 if (boolResponseServerColumnEnabled && boolExtensionEnabled)
                 {
-                    SetResponseServer(session);
+                    calledColumnsUI.SetResponseServer(session);
                 }
 
                 // Colourise sessions on load SAZ.
@@ -286,6 +232,12 @@ namespace EXOFiddlerInspector
         /////////////////
         #endregion
 
+        public void IncrementHTTP200FreeBusyCount()
+        {
+            HTTP200FreeBusy++;
+            // Write the value of HTTP200SkipLogic into debug output.
+            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: HTTP200FreeBusy Incremented {HTTP200FreeBusy.ToString()}");
+        }
 
 
         #region ColouriseRuleSet
@@ -1120,7 +1072,7 @@ namespace EXOFiddlerInspector
             // Call the function to populate the session type column on live trace, if the column is enabled.
             if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
             {
-                SetExchangeType(session);
+                calledColumnsUI.SetExchangeType(session);
             }
 
             /////////////////
@@ -1128,7 +1080,7 @@ namespace EXOFiddlerInspector
             // Call the function to populate the session type column on live trace, if the column is enabled.
             if (boolResponseServerColumnEnabled && boolExtensionEnabled)
             {
-                SetResponseServer(session);
+                calledColumnsUI.SetResponseServer(session);
             }
 
             /////////////////
@@ -1201,175 +1153,11 @@ namespace EXOFiddlerInspector
             //
             /////////////////
 
-            //
-            // Populate the ResponseTime column on live trace, if the column is enabled.
-            if (boolResponseTimeColumnEnabled && boolExtensionEnabled) {
-                // Realised this.session.oResponse.iTTLB.ToString() + "ms" is not the value I want to display as Response Time.
-                // More desirable figure is created from:
-                // Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds)
-                // 
-                // For some reason in AutoTamperResponseAfter this.session.Timers.ClientDoneResponse has a default timestamp of 01/01/0001 12:00
-                // Messing up any math. By the time the inspector gets to loading the same math.round statement the correct value is displayed in the 
-                // inspector Exchange Online tab.
-                //
-                // This needs more thought, read through Fiddler book some more on what could be happening and whether this can work or if the Response time
-                // column is removed from the extension in favour of the response time on the inspector tab.
-                //
 
-                // *** For the moment disabled the Response Time column when live tracing. Only displayed on LoadSAZ. ***
-                
-                /*
-                // Trying out delaying the process, waiting for the ClientDoneResponse to be correctly populated.
-                // Did not work out, Fiddler process hangs / very slow.
-                while (this.session.Timers.ClientDoneResponse.Year < 2000)
-                {
-                    if (this.session.Timers.ClientDoneResponse.Year > 2000)
-                    {
-                        break;
-                    }
-                }
-                //session["X-iTTLB"] = this.session.oResponse.iTTLB.ToString() + "ms"; // Known to give inaccurate results.
-
-                //MessageBox.Show("ClientDoneResponse: " + this.session.Timers.ClientDoneResponse + Environment.NewLine + "ClientBeginRequest: " + this.session.Timers.ClientBeginRequest
-                //    + Environment.NewLine + "iTTLB: " + this.session.oResponse.iTTLB);
-                // The below is not working in a live trace scenario. Reverting back to the previous configuration above as this works for now.
-                session["X-iTTLB"] = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms";
-                */
-            }
-            //
-            /////////////////
         }
         //
         /////////////////////////////
         
         public void OnBeforeReturningError(Session oSession) { }
-
-        /////////////////////////////
-        //
-        // Function where the Response Server column is populated.
-        //
-        public void SetResponseServer(Session session)
-        {        
-            this.session = session;
-
-            // Populate Response Server on session in order of preference from common to obsure.
-
-            // If the response server header is not null or blank then populate it into the response server value.
-            if ((this.session.oResponse["Server"] != null) && (this.session.oResponse["Server"] != "")) {
-                this.session["X-ResponseServer"] = this.session.oResponse["Server"];
-            }
-            // Else if the reponnse Host header is not null or blank then populate it into the response server value
-            // Some traffic identifies a host rather than a response server.
-            else if ((this.session.oResponse["Host"] != null && (this.session.oResponse["Host"] != "")))
-            {
-                this.session["X-ResponseServer"] = "Host: " + this.session.oResponse["Host"];
-            }
-            // Else if the response PoweredBy header is not null or blank then populate it into the response server value.
-            // Some Office 365 servers respond as X-Powered-By ASP.NET.
-            else if ((this.session.oResponse["X-Powered-By"] != null) && (this.session.oResponse["X-Powered-By"] != "")) {
-                this.session["X-ResponseServer"] = "X-Powered-By: " + this.session.oResponse["X-Powered-By"];
-            }
-            // Else if the response X-Served-By header is not null or blank then populate it into the response server value.
-            else if ((this.session.oResponse["X-Served-By"] != null && (this.session.oResponse["X-Served-By"] != "")))
-            {
-                this.session["X-ResponseServer"] = "X-Served-By: " + this.session.oResponse["X-Served-By"];
-            }
-            // Else if the response X-Served-By header is not null or blank then populate it into the response server value.
-            else if ((this.session.oResponse["X-Server-Name"] != null && (this.session.oResponse["X-Server-Name"] != "")))
-            {
-                this.session["X-ResponseServer"] = "X-Served-Name: " + this.session.oResponse["X-Server-Name"];
-            }
-            else if (this.session.isTunnel == true)
-            {
-                this.session["X-ResponseServer"] = "Connect Tunnel";
-            }
-        }
-
-        /////////////////////////////
-        //
-        // Function where the Exchange Type column is populated.
-        //
-        public void SetExchangeType(Session session)
-        {
-            this.session = session;
-
-            // Outlook Connections.
-            if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) { this.session["X-ExchangeType"] = "EXO MAPI"; }
-            // Exchange Online Autodiscover.
-            else if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { this.session["X-ExchangeType"] = "EXO Autodiscover"; }
-            else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { this.session["X-ExchangeType"] = "EXO Autodiscover"; }
-            else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { this.session["X-ExchangeType"] = "EXO Autodiscover"; }
-            else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { this.session["X-ExchangeType"] = "EXO Autodiscover"; }
-            // Autodiscover.     
-            else if ((this.session.fullUrl.Contains("autodiscover") && (!(this.session.hostname == "outlook.office365.com")))) { this.session["X-ExchangeType"] = "On-Prem Autodiscover"; }
-            else if (this.session.hostname.Contains("autodiscover")) { this.session["X-ExchangeType"] = "On-Prem Autodiscover"; }
-            // Free/Busy.
-            else if (this.session.fullUrl.Contains("WSSecurity"))
-            {
-                this.session["X-ExchangeType"] = "Free/Busy";
-                // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                HTTP200FreeBusy++;
-            }
-            else if (this.session.fullUrl.Contains("GetUserAvailability"))
-            {
-                this.session["X-ExchangeType"] = "Free/Busy";
-                // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                HTTP200FreeBusy++;
-            }
-            else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1)
-            {
-                this.session["X-ExchangeType"] = "Free/Busy";
-                // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                HTTP200FreeBusy++;
-            }
-            // EWS.
-            else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { this.session["X-ExchangeType"] = "EXO EWS"; }
-            // Generic Office 365.
-            else if (this.session.fullUrl.Contains(".onmicrosoft.com") && (!(this.session.hostname.Contains("live.com")))) { this.session["X -ExchangeType"] = "Exchange Online"; }
-            else if (this.session.fullUrl.Contains("outlook.office365.com")) { this.session["X-ExchangeType"] = "Office 365"; }
-            else if (this.session.fullUrl.Contains("outlook.office.com")) { this.session["X-ExchangeType"] = "Office 365"; }
-            // Office 365 Authentication.
-            else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { this.session["X-ExchangeType"] = "Office 365 Authentication"; }
-            // ADFS Authentication.
-            else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { this.session["X-ExchangeType"] = "ADFS Authentication"; }
-            // Undetermined, but related to local process.
-            else if (this.session.LocalProcess.Contains("outlook")) { this.session["X-ExchangeType"] = "Outlook"; }
-            else if (this.session.LocalProcess.Contains("iexplore")) { this.session["X-ExchangeType"] = "Internet Explorer"; }
-            else if (this.session.LocalProcess.Contains("chrome")) { this.session["X-ExchangeType"] = "Chrome"; }
-            else if (this.session.LocalProcess.Contains("firefox")) { this.session["X-ExchangeType"] = "Firefox"; }
-            // Everything else.
-            else { this.session["X-ExchangeType"] = "Not Exchange"; }
-
-            /////////////////////////////
-            //
-            // Exchange Type overrides
-            //
-            // First off if the local process is nullor blank, then we are analysing traffic from a remote client such as a mobile device.
-            // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
-            // So don't pay any attention to overrides for this type of traffic.
-            if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
-            {
-                // Traffic has a null or blank local process value.
-                this.session["X-ExchangeType"] = "Remote Capture";
-            }
-            else
-            {
-                // With that out of the way,  if the traffic is not related to any of the below processes call it out.
-                // So if for example lync.exe is the process write that to the Exchange Type column.
-                if (!(this.session.LocalProcess.Contains("outlook") ||
-                    this.session.LocalProcess.Contains("searchprotocolhost") ||
-                    this.session.LocalProcess.Contains("iexplore") ||
-                    this.session.LocalProcess.Contains("chrome") ||
-                    this.session.LocalProcess.Contains("firefox") ||
-                    this.session.LocalProcess.Contains("edge") ||
-                    this.session.LocalProcess.Contains("w3wp")))
-                {
-                    // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
-                    { this.session["X-ExchangeType"] = this.session.LocalProcess; }
-                }
-            }
-        }
-        //
-        /////////////////////////////
     }
 }

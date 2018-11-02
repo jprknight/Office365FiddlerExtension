@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace EXOFiddlerInspector
 {
-    public class MenuUI : IAutoTamper    // Ensure class is public, or Fiddler won't see it!
+    public class MenuUI    // Ensure class is public, or Fiddler won't see it!
     {
         public MenuItem ExchangeOnlineTopMenu;
         public MenuItem miColumnsMenu;

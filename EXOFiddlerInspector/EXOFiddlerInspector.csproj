@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="CheckForAppUpdate.cs" />
     <Compile Include="ColouriseWebSessions.cs" />
+    <Compile Include="ColumnsUI.cs" />
     <Compile Include="EXOFiddlerInspector.cs" />
     <Compile Include="MenuUI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
