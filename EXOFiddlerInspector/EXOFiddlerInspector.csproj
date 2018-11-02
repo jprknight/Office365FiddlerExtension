@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckForAppUpdate.cs" />
     <Compile Include="ColouriseWebSessions.cs" />
     <Compile Include="EXOFiddlerInspector.cs" />
     <Compile Include="MenuUI.cs" />
