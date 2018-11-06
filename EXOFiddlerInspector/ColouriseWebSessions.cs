@@ -11,8 +11,17 @@ namespace EXOFiddlerInspector
 {
     public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or Fiddler won't see it!
     {
+        /////////////////
+        /// <summary>
+        /// References to other classes.
+        /// </summary>
         MenuUI calledMenuUI = new MenuUI();
         ColumnsUI calledColumnsUI = new ColumnsUI();
+        ///
+        /////////////////
+
+        // Temporary int to count executions.
+        public int ExecutionCount = 0;
 
         /////////////////
         /// <summary>
@@ -33,13 +42,13 @@ namespace EXOFiddlerInspector
         internal Session session { get; set; }
 
         private bool boolExtensionEnabled = false;
-        private bool boolColumnsEnableAllEnabled = false;
+        //private bool boolColumnsEnableAllEnabled = false;
         private bool boolResponseTimeColumnEnabled = false;
         private bool boolResponseServerColumnEnabled = false;
         private bool boolExchangeTypeColumnEnabled = false;
         private bool boolAppLoggingEnabled = false;
         private bool boolHighlightOutlookOWAOnlyEnabled = false;
-        private bool boolManualCheckForUpdate = false;
+        //private bool boolManualCheckForUpdate = false;
 
         private string searchTerm;
         private string RedirectAddress;
@@ -47,8 +56,7 @@ namespace EXOFiddlerInspector
         private int HTTP200FreeBusy;
 
         // Enable/disable switch for Fiddler Application Log entries from extension.
-        private bool AppLoggingEnabled = true;
-
+        //private bool AppLoggingEnabled = true;
 
         /////////////////
 
@@ -59,46 +67,60 @@ namespace EXOFiddlerInspector
         //
         public void OnLoad()
         {
+            ///
+            /// <remarks>
+            /// Ideal place to put execution telemetry call?
+            /// Debug (live trace) show a count of only 1. LoadSAZ does not show anything, since I connect to the Fiddler process too late with VS.
+            /// Further browsing / usage does not throw another message below or increment the int ExecutionCount.
+            /// </remarks>
+            /// 
+            ExecutionCount++;
+            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColouriseWebSessions {ExecutionCount}");
+
             /////////////////
-            //
-            // Make sure that even if these are mistakenly left on from debugging, production users are not impacted.
+            /// <remarks>
+            /// Make sure that even if these are mistakenly left on from debugging, production users are not impacted.
+            /// </remarks>
+            /// 
             if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
             {
                 FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", true);
             }
-            //else if (Environment.UserName == "jeknight" || Environment.UserName == "brandev" && DemoMode == false)
             else if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoMode == false)
             {
                 FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false);
             }
 
-            // Make sure that even if these are mistakenly left on from debugging, production users are not impacted.
-            //if (Environment.UserName == "jeknight" || Environment.UserName == "brandev" && DemoModeBreakScenarios == true)
             if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoModeBreakScenarios == true)
             {
                 FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios", true);
             }
-            //else if (Environment.UserName == "jeknight" || Environment.UserName == "brandev" && DemoMode == false)
             else if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoModeBreakScenarios == false)
             {
                 FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios", false);
             }
-            //
+            ///
             /////////////////
-            //
 
-            // Throw a message box to alert demo mode is running.
+            /////////////////
+            /// <remarks>
+            /// Throw a message box to alert demo mode is running.
+            /// </remarks> 
+            /// 
             if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
             {
                 MessageBox.Show("Developer / Demo mode is running!");
             }
-            //
+            ///
             /////////////////
 
-            // If the FirstRun application preference is set to false, then the extension has previously run.
-            // The function FirstRunEnableMenuOptions sets the FirstRun app preference to false.
-            // If the above ... then collect the column preferences off of last preferences set.
-            // The below logic check does not work for new installations. Needs a fix.
+            /////////////////
+            /// <remarks>
+            /// If the FirstRun application preference is set to false, then the extension has previously run.
+            /// The function FirstRunEnableMenuOptions sets the FirstRun app preference to false.
+            /// If the above ... then collect the column preferences off of last preferences set.
+            /// The below logic check does not work for new installations. Needs a fix.
+            /// </remarks>
             if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.FirstRun", false) == false) {
                 this.boolExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
                 this.boolResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
@@ -107,44 +129,76 @@ namespace EXOFiddlerInspector
                 this.boolAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
                 this.boolHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnly", false);
             }
-            // If the FirstRun application preference is not set, then go run the FirstRunEnableMenuOptions function to light up features for first use.
+            /// If the FirstRun application preference is not set, then go run the FirstRunEnableMenuOptions function to light up features for first use.
             else
             {
                 FirstRunEnableMenuOptions();
             }
+            ///
+            /////////////////
 
-            // Response Time column function is no longer called here. Only in OnLoadSAZ.
+            /////////////////
+            /// <remarks>
+            /// Response Time column function is no longer called here. Only in OnLoadSAZ.
+            /// </remarks>
+            /////////////////
 
-            // Call the function to add column if the menu item is checked and if the extension is enabled.
+            /////////////////
+            /// <remarks>
+            /// Call to function in ColumnsUI.cs to add Server Response column if the menu item is checked and if the extension is enabled.
+            /// </remarks> 
             if (boolResponseServerColumnEnabled && boolExtensionEnabled)
             {
                 calledColumnsUI.EnsureResponseServerColumn();
             }
+            ///
+            /////////////////
 
-            // Call the function to add column if the menu item is checked and if the extension is enabled.
+            /////////////////
+            /// <remarks>
+            /// Call to function in ColumnsUI.cs to add Exchange Type column if the menu item is checked and if the extension is enabled. 
+            /// </remarks>
             if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
             {
                 calledColumnsUI.EnsureExchangeTypeColumn();
             }
+            ///
+            /////////////////
 
-            // Initialise menu, called from MenuUI.cs.
+            /////////////////
+            /// <remarks>
+            /// Initialise menu, called from MenuUI.cs.
+            /// </remarks> 
             calledMenuUI.InitializeMenu();
+            ///
+            /////////////////
 
-            // Add the menu.
+            /////////////////
+            /// <remarks>
+            /// Add the menu to the Fiddler UI.
+            /// </remarks> 
             FiddlerApplication.UI.mnuMain.MenuItems.Add(calledMenuUI.ExchangeOnlineTopMenu);
+            ///
+            /////////////////
 
-            // Call function to set Enable all columns check box to required setting.
+            /////////////////
+            /// <remarks> 
+            /// Call to function in MenuUI.cs to make sure menu items for columns are set per previous preferences.
+            /// </remarks>
             calledMenuUI.SetEnableAllMenuItem();
-
-            // Make sure the menu items are available / not available depending on extension status.
-            // Turned off as this is a PITA.
-            // EnableDisableMenuItemsAccordingToExtensionStatus();
-
-            // Call function to process sessions only if the extension is enabled.
+            ///
+            /////////////////
+            
+            /////////////////
+            /// <remarks>
+            /// Call function to start LoadSAZ only if the extension is enabled.
+            /// </remarks> 
             if (boolExtensionEnabled)
             {
                 FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
             }
+            ///
+            /////////////////
         }
         //
         /////////////////

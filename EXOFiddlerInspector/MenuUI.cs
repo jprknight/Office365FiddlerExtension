@@ -195,10 +195,6 @@ namespace EXOFiddlerInspector
             boolExtensionEnabled = miEnabled.Checked;
             // Set the application preference for this option.
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", boolExtensionEnabled);
-
-            // Make sure the menu items are available / not available depending on extension status.
-            // Turned off as this is a PITA.
-            // EnableDisableMenuItemsAccordingToExtensionStatus();
         }
 
         // Enable/disable all columns.
