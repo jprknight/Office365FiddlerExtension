@@ -8,7 +8,9 @@ using System.Diagnostics;
 
 namespace EXOFiddlerInspector
 {
-    // Base class, generic inspector, common between request and response
+    /// <summary>
+    /// Base class, generic inspector, common between request and response
+     /// </summary>
     public class EXOBaseFiddlerInspector : Inspector2
     {
 
@@ -58,13 +60,16 @@ namespace EXOFiddlerInspector
 
     #region RequestInspectorNotInProduction
 
-    // 
-    // Request inspector tab not used in production.
-    // Code originally added to work out what was possible with Fiddler, however the inspector part
-    // of the extension has grown out of server responses rather than client requests.
-
-    // Request class, inherits the generic class above, only defines things specific or different from the base class
-
+    /// <summary>
+    /// Request Inspector class, inherits the generic class above, only defines things specific or different from the base class
+    /// Request inspector tab not used in production.
+    /// Code originally added to work out what was possible with Fiddler, however the inspector part
+    /// of the extension has grown out of server responses rather than client requests.
+    /// -- ScoreForSession.
+    /// -- SetSessionType -- for request tab.
+    /// -- SetRequestValues, small rule set.
+    /// -- AddToTab.
+    /// </summary>
     public class RequestInspector : EXOBaseFiddlerInspector, IRequestInspector2
     {
 
@@ -75,7 +80,11 @@ namespace EXOFiddlerInspector
 
         RequestUserControl _displayControl;
 
-        // Double click on a session to highlight inpsector or not.
+        /// <summary>
+        /// Double click or press return for Score For Session.
+        /// </summary>
+        /// <param name="oS"></param>
+        /// <returns></returns>
         public override int ScoreForSession(Session oS)
         {
             // Discussion with EE, not expecting ScoreForSession to be consistent.
@@ -101,7 +110,10 @@ namespace EXOFiddlerInspector
             }
         }
 
-        // Add EXO Request tab into inspectors tab.
+        /// <summary>
+        /// Add Exchange Online Request tab into inspectors tab.
+        /// </summary>
+        /// <param name="o"></param>
         public override void AddToTab(TabPage o)
         {
             /////////////////////////////
@@ -258,7 +270,12 @@ namespace EXOFiddlerInspector
 
     #endregion
 
-    // Response class, same as request class except for responses
+    /// <summary>
+    /// Response Inspector class.
+    /// -- ScoreForSession.
+    /// -- SetResponseValues containing SessionRuleSet.
+    /// -- AddToTab.
+    /// </summary>
     public class ResponseInspector : EXOBaseFiddlerInspector, IResponseInspector2
     {
         public ResponseUserControl _displayControl;

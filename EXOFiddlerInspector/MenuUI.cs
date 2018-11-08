@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace EXOFiddlerInspector
+namespace EXOFiddlerInspector 
 {
-    public class MenuUI    // Ensure class is public, or Fiddler won't see it!
+    public class MenuUI : IAutoTamper    // Ensure class is public, or Fiddler won't see it!
     {
         public MenuItem ExchangeOnlineTopMenu;
         public MenuItem miColumnsMenu;
@@ -341,7 +341,29 @@ namespace EXOFiddlerInspector
 
         public void OnLoad()
         {
-            //throw new NotImplementedException();
+            /////////////////
+            /// <remarks>
+            /// Initialise menu, called from MenuUI.cs.
+            /// </remarks> 
+            this.InitializeMenu();
+            ///
+            /////////////////
+
+            /////////////////
+            /// <remarks>
+            /// Add the menu to the Fiddler UI.
+            /// </remarks> 
+            FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExchangeOnlineTopMenu);
+            ///
+            /////////////////
+
+            /////////////////
+            /// <remarks> 
+            /// Call to function in MenuUI.cs to make sure menu items for columns are set per previous preferences.
+            /// </remarks>
+            this.SetEnableAllMenuItem();
+            ///
+            /////////////////
         }
 
         public void OnBeforeUnload()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ using Fiddler;
 
 namespace EXOFiddlerInspector
 {
-    class ColumnsUI
+    class ColumnsUI : IAutoTamper
     {
         /// <summary>
         /// Call ColouriseWebSessions.
@@ -16,11 +17,14 @@ namespace EXOFiddlerInspector
         /// SUSPECT CIRCULAR CALLS ARE REALLY BAD.
         /// WILL BE FIXED ONCE RULE SET MOVES OUT AS WELL.
 
-        //ColouriseWebSessions calledColouriseWebSessions = new ColouriseWebSessions();
-
         private bool bResponseTimeColumnCreated = false;
         private bool bResponseServerColumnCreated = false;
         private bool bExchangeTypeColumnCreated = false;
+
+        public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+        public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
+        public Boolean bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
+        public Boolean bResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
 
         internal Session session { get; set; }
 
@@ -199,14 +203,88 @@ namespace EXOFiddlerInspector
             //throw new NotImplementedException();
         }
 
-        public void AutoTamperResponseBefore(Session oSession)
+        public void AutoTamperResponseBefore(Session session)
         {
             //throw new NotImplementedException();
         }
 
-        public void AutoTamperResponseAfter(Session oSession)
+        public void AutoTamperResponseAfter(Session session)
         {
-            //throw new NotImplementedException();
+            this.session = session;
+
+            /////////////////
+            //
+            // Call the function to populate the session type column on live trace, if the column is enabled.
+            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
+            {
+                this.SetExchangeType(this.session);
+            }
+
+            /////////////////
+            //
+            // Call the function to populate the session type column on live trace, if the column is enabled.
+            if (bResponseServerColumnEnabled && bExtensionEnabled)
+            {
+                this.SetResponseServer(this.session);
+            }
+
+            /////////////////
+            //
+            // For some reason setting the column ordering when adding the columns did not work.
+            // Adding the ordering here instead does work.
+            // For column ordering to work on disabe/enable it seems neccessary to set ordering here
+            // in reverse order for my preference on column order as I want each to be set to priority 2
+            // so that other standard columns do not get put into the Exchange Online column grouping.
+
+            //FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("#", 0, -1);
+            //FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Result", 1, -1);
+
+            // These get called on each session, seen strange behaviour on reordering on live trace due 
+            // to setting each of these as ordering 2 to ensure column positions regardless of column enabled selections.
+            // Use an if statement to fire these once per Fiddler application session.
+            if (this.session.id == 1)
+            {
+                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs Set Column Order and Width.");
+                if (bExtensionEnabled)
+                {
+                    // Move the process column further to the left for visibility.
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 2, 100);
+                }
+                else
+                {
+                    // Since the extension is not enabled return the process column back to its original location.
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 8, -1);
+                }
+                if (bExchangeTypeColumnEnabled && bExtensionEnabled)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 2, -1);
+                }
+
+                if (bResponseServerColumnEnabled && bExtensionEnabled)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
+                }
+
+                if (bResponseTimeColumnEnabled && bExtensionEnabled)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Time", 2, -1);
+                }
+            }
+
+            /*
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Protocol", 5, -1);
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host", 6, -1);
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("URL", 7, -1);
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Body", 8, -1);
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Caching", 9, -1);
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Content-Type", 10, -1);
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", 12, -1);
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 13, -1);
+            */
+            //
+            /////////////////
+
+
         }
 
         public void OnBeforeReturningError(Session oSession)
@@ -216,7 +294,45 @@ namespace EXOFiddlerInspector
 
         public void OnLoad()
         {
-            throw new NotImplementedException();
+
+            /////////////////
+            /// <remarks>
+            /// Response Time column function is no longer called here. Only in OnLoadSAZ.
+            /// </remarks>
+            /////////////////
+
+            /////////////////
+            /// <remarks>
+            /// Call to function in ColumnsUI.cs to add Server Response column if the menu item is checked and if the extension is enabled.
+            /// </remarks> 
+            if (bResponseServerColumnEnabled && bExtensionEnabled)
+            {
+                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs Adding Response Server Column.");
+                this.EnsureResponseServerColumn();
+            }
+            else
+            {
+                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs NOT Adding Response Server Column.");
+            }
+            ///
+            /////////////////
+
+            /////////////////
+            /// <remarks>
+            /// Call to function in ColumnsUI.cs to add Exchange Type column if the menu item is checked and if the extension is enabled. 
+            /// </remarks>
+            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
+            {
+
+                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs Adding Exchange Type Column.");
+                this.EnsureExchangeTypeColumn();
+            }
+            else
+            {
+                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs NOT Adding Exchange Type Column.");
+            }
+            ///
+            /////////////////
         }
 
         public void OnBeforeUnload()

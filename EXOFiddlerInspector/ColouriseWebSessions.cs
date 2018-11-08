@@ -9,9 +9,16 @@ using System.Diagnostics;
 
 namespace EXOFiddlerInspector
 {
+    /// <summary>
+    /// ColouriseWebSessions containing:
+    /// -- OnLoad
+    /// -- FirstRunEnableMenuOptions
+    /// -- HandleLoadSaz
+    /// -- ColouriseRuleSet
+    /// -- OnPeekAtResponseHeaders
+    /// </summary>
     public class ColouriseWebSessions : IAutoTamper    // Ensure class is public, or Fiddler won't see it!
     {
-        /////////////////
         /// <summary>
         /// References to other classes.
         /// </summary>
@@ -19,7 +26,6 @@ namespace EXOFiddlerInspector
         ColumnsUI calledColumnsUI = new ColumnsUI();
         // Developer list is actually set in Preferences.cs.
         Preferences calledPreferences = new Preferences();
-
         ///
         /////////////////
 
@@ -28,22 +34,17 @@ namespace EXOFiddlerInspector
 
         internal Session session { get; set; }
 
-        private bool boolExtensionEnabled = false;
-        //private bool boolColumnsEnableAllEnabled = false;
-        private bool boolResponseTimeColumnEnabled = false;
-        private bool boolResponseServerColumnEnabled = false;
-        private bool boolExchangeTypeColumnEnabled = false;
-        private bool boolAppLoggingEnabled = false;
-        private bool boolHighlightOutlookOWAOnlyEnabled = false;
-        //private bool boolManualCheckForUpdate = false;
+        private bool bExtensionEnabled = false;
+        private bool bResponseTimeColumnEnabled = false;
+        private bool bResponseServerColumnEnabled = false;
+        private bool bExchangeTypeColumnEnabled = false;
+        private bool bAppLoggingEnabled = false;
+        private bool bHighlightOutlookOWAOnlyEnabled = false;
 
         private string searchTerm;
         private string RedirectAddress;
         private int HTTP200SkipLogic;
         private int HTTP200FreeBusy;
-
-        // Enable/disable switch for Fiddler Application Log entries from extension.
-        //private bool AppLoggingEnabled = true;
 
         /////////////////
 
@@ -114,79 +115,35 @@ namespace EXOFiddlerInspector
             /// If the above ... then collect the column preferences off of last preferences set.
             /// The below logic check does not work for new installations. Needs a fix.
             /// </remarks>
-            if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.FirstRun", false) == false) {
-                this.boolExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-                this.boolResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
-                this.boolResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
-                this.boolExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
-                this.boolAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
-                this.boolHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnly", false);
-            }
+            //if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.FirstRun", false) == false) {
+                this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+                this.bResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
+                this.bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
+                this.bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
+                this.bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
+                this.bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnly", false);
+            //}
             /// If the FirstRun application preference is not set, then go run the FirstRunEnableMenuOptions function to light up features for first use.
-            else
-            {
-                FirstRunEnableMenuOptions();
-            }
+            //else
+            //{
+                //FirstRunEnableMenuOptions();
+            //}
+
+            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColouriseWebSessions.cs ExtensionEnabled {bExtensionEnabled}.");
+            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColouriseWebSessions.cs bResponseTimeColumnEnabled {bResponseTimeColumnEnabled}.");
+            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColouriseWebSessions.cs bResponseServerColumnEnabled {bResponseServerColumnEnabled}.");
+            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColouriseWebSessions.cs bExchangeTypeColumnEnabled {bExchangeTypeColumnEnabled}.");
+            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColouriseWebSessions.cs bAppLoggingEnabled {bAppLoggingEnabled}.");
+            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColouriseWebSessions.cs bHighlightOutlookOWAOnlyEnabled {bHighlightOutlookOWAOnlyEnabled}.");
+
             ///
             /////////////////
 
-            /////////////////
-            /// <remarks>
-            /// Response Time column function is no longer called here. Only in OnLoadSAZ.
-            /// </remarks>
-            /////////////////
-
-            /////////////////
-            /// <remarks>
-            /// Call to function in ColumnsUI.cs to add Server Response column if the menu item is checked and if the extension is enabled.
-            /// </remarks> 
-            if (boolResponseServerColumnEnabled && boolExtensionEnabled)
-            {
-                calledColumnsUI.EnsureResponseServerColumn();
-            }
-            ///
-            /////////////////
-
-            /////////////////
-            /// <remarks>
-            /// Call to function in ColumnsUI.cs to add Exchange Type column if the menu item is checked and if the extension is enabled. 
-            /// </remarks>
-            if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
-            {
-                calledColumnsUI.EnsureExchangeTypeColumn();
-            }
-            ///
-            /////////////////
-
-            /////////////////
-            /// <remarks>
-            /// Initialise menu, called from MenuUI.cs.
-            /// </remarks> 
-            calledMenuUI.InitializeMenu();
-            ///
-            /////////////////
-
-            /////////////////
-            /// <remarks>
-            /// Add the menu to the Fiddler UI.
-            /// </remarks> 
-            FiddlerApplication.UI.mnuMain.MenuItems.Add(calledMenuUI.ExchangeOnlineTopMenu);
-            ///
-            /////////////////
-
-            /////////////////
-            /// <remarks> 
-            /// Call to function in MenuUI.cs to make sure menu items for columns are set per previous preferences.
-            /// </remarks>
-            calledMenuUI.SetEnableAllMenuItem();
-            ///
-            /////////////////
-            
             /////////////////
             /// <remarks>
             /// Call function to start LoadSAZ only if the extension is enabled.
             /// </remarks> 
-            if (boolExtensionEnabled)
+            if (bExtensionEnabled)
             {
                 FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
             }
@@ -206,10 +163,10 @@ namespace EXOFiddlerInspector
         {
             // FirstRun will be null on first run. Thereafter it will be set to false.
             // Light up functionality for first run.
-            this.boolExtensionEnabled = true;
-            this.boolResponseTimeColumnEnabled = true;
-            this.boolResponseServerColumnEnabled = true;
-            this.boolExchangeTypeColumnEnabled = true;
+            this.bExtensionEnabled = true;
+            this.bResponseTimeColumnEnabled = true;
+            this.bResponseServerColumnEnabled = true;
+            this.bExchangeTypeColumnEnabled = true;
 
             // Set this app preference as false so we don't execute the above after first run.
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.FirstRun", false);
@@ -227,18 +184,40 @@ namespace EXOFiddlerInspector
         //
         private void HandleLoadSaz(object sender, FiddlerApplication.ReadSAZEventArgs e)
         {
+            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColouriseWebSessions.cs HandleLoadSaz function.");
             // At this point in time only checking for updates when SAZ file is loaded.
             // Doing this on a live trace is problematic and has hung Fiddler in my testing.
             // Only do this if the extension is enabled.
-            if (boolExtensionEnabled)
+            if (bExtensionEnabled)
             {
                 // Check for app update.
                 CheckForAppUpdate calledCheckForAppUpdate = new CheckForAppUpdate();
                 calledCheckForAppUpdate.CheckForUpdate();
             }
 
-            // Call the function to add column if the menu item is checked and if the extension is enabled.
-            if (boolResponseTimeColumnEnabled && boolExtensionEnabled)
+            /// <remarks>
+            /// Add in the Response Server column. Due to these columns all being added as in with priority of 2,
+            /// they are added into the interface in this reverse order.
+            /// </remarks>
+            if (bResponseServerColumnEnabled && bExtensionEnabled)
+            {
+                calledColumnsUI.EnsureResponseServerColumn();
+            }
+
+            /// <remarks>
+            /// Add in the Exchange Type column. Due to these columns all being added as in with priority of 2,
+            /// they are added into the interface in this reverse order.
+            /// </remarks>
+            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
+            {
+                calledColumnsUI.EnsureExchangeTypeColumn();
+            }
+
+            /// <remarks>
+            /// Add in the Response Time column. Due to these columns all being added as in with priority of 2,
+            /// they are added into the interface in this reverse order.
+            /// </remarks>
+            if (bResponseTimeColumnEnabled && bExtensionEnabled)
             {
                 calledColumnsUI.EnsureResponseTimeColumn();
             }
@@ -248,26 +227,26 @@ namespace EXOFiddlerInspector
             foreach (var session in e.arrSessions)
             {
                 // Populate the ResponseTime column on load SAZ, if the column is enabled, and the extension is enabled.
-                if (boolResponseTimeColumnEnabled && boolExtensionEnabled)
+                if (bResponseTimeColumnEnabled && bExtensionEnabled)
                 {
                     //session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
                     session["X-iTTLB"] = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms";
                 }
 
                 // Populate the ExchangeType column on load SAZ, if the column is enabled, and the extension is enabled
-                if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
+                if (bExchangeTypeColumnEnabled && bExtensionEnabled)
                 {
                     calledColumnsUI.SetExchangeType(session);
                 }
 
                 // Populate the ResponseServer column on load SAZ, if the column is enabled, and the extension is enabled
-                if (boolResponseServerColumnEnabled && boolExtensionEnabled)
+                if (bResponseServerColumnEnabled && bExtensionEnabled)
                 {
                     calledColumnsUI.SetResponseServer(session);
                 }
 
                 // Colourise sessions on load SAZ.
-                if (boolExtensionEnabled)
+                if (bExtensionEnabled)
                 {
                     OnPeekAtResponseHeaders(session); //Run whatever function you use in IAutoTamper
                     session.RefreshUI();
@@ -339,7 +318,7 @@ namespace EXOFiddlerInspector
             {
                 this.session["ui-backcolor"] = HTMLColourRed;
                 this.session["ui-color"] = "black";
-                if (boolAppLoggingEnabled && boolExtensionEnabled)
+                if (bAppLoggingEnabled && bExtensionEnabled)
                 {
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 405 Method Not Allowed; Apache is answering Autodiscover requests!");
                 }
@@ -433,7 +412,7 @@ namespace EXOFiddlerInspector
                                 this.session["ui-color"] = "black";
                                 this.session["X-ExchangeType"] = "On-Prem AutoD Redirect";
                                 HTTP200SkipLogic++;
-                                if (boolAppLoggingEnabled && boolExtensionEnabled)
+                                if (bAppLoggingEnabled && bExtensionEnabled)
                                 {
                                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
                                 }
@@ -447,7 +426,7 @@ namespace EXOFiddlerInspector
                                 this.session["X-ExchangeType"] = "AUTOD REDIRECT ADDR!";
                                 // Increment HTTP200SkipLogic so that 99 does not run below.
                                 HTTP200SkipLogic++;
-                                if (boolAppLoggingEnabled && boolExtensionEnabled)
+                                if (bAppLoggingEnabled && bExtensionEnabled)
                                 {
                                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD REDIRECT ADDR! : " + RedirectAddress);
                                 }
@@ -478,7 +457,7 @@ namespace EXOFiddlerInspector
                             this.session["X-ExchangeType"] = "NO AUTOD REDIRECT ADDR!";
                             // Increment HTTP200SkipLogic so that 99 does not run below.
                             HTTP200SkipLogic++;
-                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
                             }
@@ -705,7 +684,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "UNEXPECTED LOCATION!";
-                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
                             }
@@ -747,7 +726,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "WEB PROXY BLOCK!";
-                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
                             }
@@ -833,7 +812,7 @@ namespace EXOFiddlerInspector
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
                         this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
-                        if (boolAppLoggingEnabled && boolExtensionEnabled)
+                        if (bAppLoggingEnabled && bExtensionEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 500 Internal Server Error.");
                         }
@@ -887,7 +866,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "False Positive";
-                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
                             }
@@ -907,7 +886,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "False Positive";
-                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
                             }
@@ -924,7 +903,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "AUTODISCOVER!";
-                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway.");
                             }
@@ -939,7 +918,7 @@ namespace EXOFiddlerInspector
                             // Pick up any other 502 Bad Gateway call it out.
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway.");
                             }
@@ -978,7 +957,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "FEDERATION!";
-                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
                             }
@@ -987,7 +966,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable.");
                             }
@@ -1010,7 +989,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "INTERNET BLOCKED!";
-                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + "  HTTP 504 Gateway Timeout -- Internet Access Blocked.");
                             }
@@ -1022,7 +1001,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            if (boolAppLoggingEnabled && boolExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout.");
                             }
@@ -1072,7 +1051,7 @@ namespace EXOFiddlerInspector
             else
             {
                 // If the menu item Highlight Outlook and OWA Only is enabled then grey out all the other traffic.
-                if (boolHighlightOutlookOWAOnlyEnabled == true)
+                if (bHighlightOutlookOWAOnlyEnabled == true)
                 {
                     // With that out of the way,  if the traffic is not related to any of the below processes, then mark it as grey to
                     // de-emphasise it.
@@ -1110,30 +1089,14 @@ namespace EXOFiddlerInspector
 
         public void AutoTamperResponseBefore(Session oSession) { }
 
-        /////////////////////////////
-        //
-        // Function where live tracing is processed.
-        //
+        /// <summary>
+        /// Calling OnPeekAtResponseHeaders(session) to process session for live traffic capture.
+        /// </summary>
+        /// <param name="session"></param>
         public void AutoTamperResponseAfter(Session session)
         {
 
             this.session = session;
-
-            /////////////////
-            //
-            // Call the function to populate the session type column on live trace, if the column is enabled.
-            if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
-            {
-                calledColumnsUI.SetExchangeType(session);
-            }
-
-            /////////////////
-            //
-            // Call the function to populate the session type column on live trace, if the column is enabled.
-            if (boolResponseServerColumnEnabled && boolExtensionEnabled)
-            {
-                calledColumnsUI.SetResponseServer(session);
-            }
 
             /////////////////
             //
@@ -1142,70 +1105,13 @@ namespace EXOFiddlerInspector
             // Making sure this is called after SetExchangeType and SetResponseServer, so we can use overrides
             // in OnPeekAtResponseHeaders function.
             //
-            if (boolExtensionEnabled)
+            if (bExtensionEnabled)
             {
                 OnPeekAtResponseHeaders(session);
                 session.RefreshUI();
             }
             //
             /////////////////
-
-            /////////////////
-            //
-            // For some reason setting the column ordering when adding the columns did not work.
-            // Adding the ordering here instead does work.
-            // For column ordering to work on disabe/enable it seems neccessary to set ordering here
-            // in reverse order for my preference on column order as I want each to be set to priority 2
-            // so that other standard columns do not get put into the Exchange Online column grouping.
-
-            //FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("#", 0, -1);
-            //FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Result", 1, -1);
-
-            // These get called on each session, seen strange behaviour on reordering on live trace due 
-            // to setting each of these as ordering 2 to ensure column positions regardless of column enabled selections.
-            // Use an if statement to fire these once per Fiddler application session.
-            if (this.session.id == 1)
-            {
-                if (boolExtensionEnabled)
-                {
-                    // Move the process column further to the left.
-                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 2, 100);
-                }
-                else
-                {
-                    // Since the extension is not enabled return the process column back to its original location.
-                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 8, -1);
-                }
-                if (boolExchangeTypeColumnEnabled && boolExtensionEnabled)
-                {
-                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 2, -1);
-                }
-
-                if (boolResponseServerColumnEnabled && boolExtensionEnabled)
-                {
-                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
-                }
-
-                if (boolResponseTimeColumnEnabled && boolExtensionEnabled)
-                {
-                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Time", 2, -1);
-                }
-            }
-
-            /*
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Protocol", 5, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host", 6, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("URL", 7, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Body", 8, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Caching", 9, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Content-Type", 10, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", 12, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 13, -1);
-            */
-            //
-            /////////////////
-
-
         }
         //
         /////////////////////////////
