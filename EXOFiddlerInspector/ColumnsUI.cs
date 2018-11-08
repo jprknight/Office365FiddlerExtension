@@ -34,7 +34,6 @@ namespace EXOFiddlerInspector
             {
                 return;
             }
-            
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Time", 2, 110, "X-iTTLB");
             bResponseTimeColumnCreated = true;
             //
@@ -46,7 +45,10 @@ namespace EXOFiddlerInspector
         /// </summary>
         public void EnsureResponseServerColumn()
         {
-            if (bResponseServerColumnCreated) return;
+            if (bResponseServerColumnCreated)
+            {
+                return;
+            }
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 2, 130, "X-ResponseServer");
             bResponseServerColumnCreated = true;
         }
@@ -56,7 +58,10 @@ namespace EXOFiddlerInspector
         /// </summary>
         public void EnsureExchangeTypeColumn()
         {
-            if (bExchangeTypeColumnCreated) return;
+            if (bExchangeTypeColumnCreated)
+            {
+                return;
+            }
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 2, 150, "X-ExchangeType");
             bExchangeTypeColumnCreated = true;
         }
