@@ -175,8 +175,6 @@ namespace EXOFiddlerInspector
         /////////////////
         #endregion
 
-
-
         #region LoadSAZ
         /////////////////
         // 

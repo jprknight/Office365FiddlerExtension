@@ -10,13 +10,6 @@ namespace EXOFiddlerInspector
 {
     class ColumnsUI : IAutoTamper
     {
-        /// <summary>
-        /// Call ColouriseWebSessions.
-        /// </summary>
-        /// CALL BACK TO COLOURISEWEBSESSIONS BROKE EVERYTHING. APP BUILDS. WILL NOT EXECUTE.
-        /// SUSPECT CIRCULAR CALLS ARE REALLY BAD.
-        /// WILL BE FIXED ONCE RULE SET MOVES OUT AS WELL.
-
         private bool bResponseTimeColumnCreated = false;
         private bool bResponseServerColumnCreated = false;
         private bool bExchangeTypeColumnCreated = false;
@@ -37,8 +30,11 @@ namespace EXOFiddlerInspector
             // Response Time column.
             //
             // If the column is already created exit.
-            if (bResponseTimeColumnCreated) return;
-
+            if (bResponseTimeColumnCreated)
+            {
+                return;
+            }
+            
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Time", 2, 110, "X-iTTLB");
             bResponseTimeColumnCreated = true;
             //

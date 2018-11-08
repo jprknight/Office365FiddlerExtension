@@ -200,8 +200,7 @@ namespace EXOFiddlerInspector
         // Enable/disable all columns.
         public void miColumnsEnableAll_Click(object sender, EventArgs e)
         {
-            // Get the Boolean values from ColouriseWebSessions.cs.
-            ColouriseWebSessions CWS = new ColouriseWebSessions();
+            // Get the Boolean values.
             Boolean boolColumnsEnableAllEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAllEnabled", false);
             Boolean boolResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
             Boolean boolResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
@@ -212,6 +211,7 @@ namespace EXOFiddlerInspector
             miResponseTimeColumnEnabled.Checked = miColumnsEnableAll.Checked;
             miResponseServerColumnEnabled.Checked = miColumnsEnableAll.Checked;
             miExchangeTypeColumnEnabled.Checked = miColumnsEnableAll.Checked;
+
             // Match boolean variable on menu selection.
             // Do it for all colums.
             boolColumnsEnableAllEnabled = miColumnsEnableAll.Checked;
