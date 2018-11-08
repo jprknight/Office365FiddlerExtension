@@ -109,9 +109,11 @@ namespace EXOFiddlerInspector
             // Before we go ahead and run the add tab code work out if 
             // the user is a developer or not.
 
-            // Developer list is actually set in ColouriseWebSessions.
-            ColouriseWebSessions CWS = new ColouriseWebSessions();
-            List<string> calledDeveloperList = CWS.GetDeveloperList();
+            // Developer list is actually set in Preferences.cs.
+            Preferences calledPreferences = new Preferences();
+            List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
+
+            Boolean DeveloperDemoMode = calledPreferences.GetDeveloperMode();
 
             // Based on the above set the Boolean Developer for use through the rest of the code.
             if (calledDeveloperList.Any(Environment.UserName.Contains))
@@ -1104,7 +1106,7 @@ namespace EXOFiddlerInspector
                         if ((this.session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443") &&
                             (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
                         {
-                            _displayControl.SetResponseAlertTextBox("False positive!");
+                            _displayControl.SetResponseAlertTextBox("False Positive");
                             _displayControl.SetResponseCommentsRichTextboxText("Unlikely the cause of Outlook / OWA connectivity.");
                         }
 
@@ -1118,7 +1120,7 @@ namespace EXOFiddlerInspector
                             (this.session.utilFindInResponse("DNS Lookup for ", false) > 1) &&
                             (this.session.utilFindInResponse(" failed.", false) > 1))
                         {
-                            _displayControl.SetResponseAlertTextBox("False positive!");
+                            _displayControl.SetResponseAlertTextBox("False Positive");
                             _displayControl.SetResponseCommentsRichTextboxText("From the data in the response body this failure is likely due to a Microsoft DNS MX record " + Environment.NewLine +
                                 "which points to an Exchange Online Protection mail host that accepts connections only on port 25. Connection on port 443 will not work by design." + Environment.NewLine +
                                 Environment.NewLine + Environment.NewLine + "To validate this above lookup the record, confirm it is a MX record and attempt to connect to the MX host on ports 25 and 443.");
@@ -1144,7 +1146,7 @@ namespace EXOFiddlerInspector
                             string AutoDFalsePositiveDomain = AutoDFalsePositiveResponseBody.Substring(start, charcount).Replace("'", "");
                             //MessageBox.Show("Test: " + AutoDFalsePositiveDomain);
 
-                            _displayControl.SetResponseAlertTextBox("False positive!");
+                            _displayControl.SetResponseAlertTextBox("False Positive");
                             _displayControl.SetResponseCommentsRichTextboxText("HTTP 502: False Positive. By design Office 365 Autodiscover does not respond to " +
                                 AutoDFalsePositiveDomain + " on port 443. " + Environment.NewLine + Environment.NewLine +
                                 "Validate this message by confirming this is an Office 365 Host/IP address and perform a telnet to it on port 80." +

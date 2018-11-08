@@ -32,9 +32,9 @@ namespace EXOFiddlerInspector
             // Before we go ahead and run the add tab code work out if 
             // the user is a developer or not.
 
-            // Developer list is actually set in ColouriseWebSessions.
-            ColouriseWebSessions CWS = new ColouriseWebSessions();
-            List<string> calledDeveloperList = CWS.GetDeveloperList();
+            // Developer list is actually set in Preferences.cs.
+            Preferences calledPreferences = new Preferences();
+            List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
 
             // Based on the above set the Boolean Developer for use through the rest of the code.
             if (calledDeveloperList.Any(Environment.UserName.Contains))

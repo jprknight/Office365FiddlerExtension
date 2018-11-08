@@ -17,27 +17,14 @@ namespace EXOFiddlerInspector
         /// </summary>
         MenuUI calledMenuUI = new MenuUI();
         ColumnsUI calledColumnsUI = new ColumnsUI();
+        // Developer list is actually set in Preferences.cs.
+        Preferences calledPreferences = new Preferences();
+
         ///
         /////////////////
 
         // Temporary int to count executions.
         public int ExecutionCount = 0;
-
-        /////////////////
-        /// <summary>
-        /// Developer Demo Mode. If enabled as much domain specific information as possible will be replaced with contoso.com.
-        /// Note: This is not much right now, just outputs in response comments on the inspector tab.
-        /// </summary>
-        ///
-        Boolean DeveloperDemoMode = false;
-        Boolean DeveloperDemoModeBreakScenarios = false;
-        /////////////////
-        
-        List<string> Developers = new List<string>(new string[] { "jeknight", "brandev", "jasonsla" });
-        public List<string> GetDeveloperList()
-        {
-            return Developers;
-        }
 
         internal Session session { get; set; }
 
@@ -74,6 +61,12 @@ namespace EXOFiddlerInspector
             /// Further browsing / usage does not throw another message below or increment the int ExecutionCount.
             /// </remarks>
             /// 
+
+            // Developer list is actually set in Preferences.cs.
+            List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
+            Boolean DeveloperDemoMode = calledPreferences.GetDeveloperMode();
+            Boolean DeveloperDemoModeBreakScenarios = calledPreferences.GetDeveloperDemoModeBreakScenarios();
+
             ExecutionCount++;
             Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColouriseWebSessions {ExecutionCount}");
 
@@ -82,20 +75,20 @@ namespace EXOFiddlerInspector
             /// Make sure that even if these are mistakenly left on from debugging, production users are not impacted.
             /// </remarks>
             /// 
-            if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
+            if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
             {
                 FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", true);
             }
-            else if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoMode == false)
+            else if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == false)
             {
                 FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false);
             }
 
-            if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoModeBreakScenarios == true)
+            if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoModeBreakScenarios == true)
             {
                 FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios", true);
             }
-            else if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoModeBreakScenarios == false)
+            else if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoModeBreakScenarios == false)
             {
                 FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios", false);
             }
@@ -107,7 +100,7 @@ namespace EXOFiddlerInspector
             /// Throw a message box to alert demo mode is running.
             /// </remarks> 
             /// 
-            if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
+            if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
             {
                 MessageBox.Show("Developer / Demo mode is running!");
             }
@@ -302,6 +295,11 @@ namespace EXOFiddlerInspector
         //
         private void OnPeekAtResponseHeaders(Session session)
         {
+            // Developer list is actually set in Preferences.cs.
+            List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
+            Boolean DeveloperDemoMode = calledPreferences.GetDeveloperMode();
+            Boolean DeveloperDemoModeBreakScenarios = calledPreferences.GetDeveloperDemoModeBreakScenarios();
+
             // Reset these session counters.
             HTTP200SkipLogic = 0;
             HTTP200FreeBusy = 0;
@@ -410,11 +408,11 @@ namespace EXOFiddlerInspector
                             int end = this.session.GetResponseBodyAsString().IndexOf("</RedirectAddr>");
                             int charcount = end - start;
 
-                            if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
+                            if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
                             {
                                 // If as well as being in demo mode, demo mode break scenarios is enabled. Show fault through incorrect direct
                                 // address for an Exchange Online mailbox.
-                                if (Developers.Any(Environment.UserName.Contains) && DeveloperDemoModeBreakScenarios == true)
+                                if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoModeBreakScenarios == true)
                                 {
                                     RedirectAddress = "user@contoso.com";
                                 }
