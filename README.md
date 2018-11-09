@@ -7,7 +7,7 @@ This inspector is intended to help with troubleshooting issues with Outlook and 
 * Add a 'Response Server' column.
 * Add an 'Exchange Type' column.
 * Add an 'Exchange Online' response inspector tab.
-* Add an 'Exchange Online' menu to turn off extension features and other options.
+* Add an 'Exchange Online' menu to turn off/on extension, extension features and other options.
 * Colourisation of sessions upon loading a .SAZ file.
 * Colourisation of sessions upon live tracing.
 
