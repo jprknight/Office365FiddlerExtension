@@ -61,7 +61,7 @@ namespace EXOFiddlerInspector
             /// Debug (live trace) show a count of only 1. LoadSAZ does not show anything, since I connect to the Fiddler process too late with VS.
             /// Further browsing / usage does not throw another message below or increment the int ExecutionCount.
             /// </remarks>
-            /// 
+            ///
 
             // Developer list is actually set in Preferences.cs.
             List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
