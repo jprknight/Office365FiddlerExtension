@@ -17,16 +17,28 @@ namespace EXOFiddlerInspector
         Boolean DeveloperDemoModeBreakScenarios = false;
         /////////////////
 
+        /// <summary>
+        /// Developer list and return.
+        /// </summary>
         List<string> Developers = new List<string>(new string[] { "jeknight", "brandev", "jasonsla" });
         public List<string> GetDeveloperList()
         {
             return Developers;
         }
+
+        /// <summary>
+        /// Return DeveloperDemoMode value.
+        /// </summary>
+        /// <returns></returns>
         public Boolean GetDeveloperMode()
         {
             return DeveloperDemoMode;
         }
 
+        /// <summary>
+        /// Return DeveloperDemoModeBreakScenarios value.
+        /// </summary>
+        /// <returns></returns>
         public Boolean GetDeveloperDemoModeBreakScenarios()
         {
             return DeveloperDemoModeBreakScenarios;

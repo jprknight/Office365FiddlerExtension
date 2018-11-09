@@ -325,7 +325,7 @@ namespace EXOFiddlerInspector
                         //
                         this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
-                        this.session["X-ExchangeType"] = "NO RESPONSE!";
+                        this.session["X-ExchangeType"] = "!NO RESPONSE!";
                         //
                         /////////////////////////////
                         break;
@@ -408,7 +408,7 @@ namespace EXOFiddlerInspector
                             {
                                 this.session["ui-backcolor"] = HTMLColourRed;
                                 this.session["ui-color"] = "black";
-                                this.session["X-ExchangeType"] = "AUTOD REDIRECT ADDR!";
+                                this.session["X-ExchangeType"] = "!AUTOD REDIRECT ADDR!";
                                 // Increment HTTP200SkipLogic so that 99 does not run below.
                                 HTTP200SkipLogic++;
                                 if (bAppLoggingEnabled && bExtensionEnabled)
@@ -439,7 +439,7 @@ namespace EXOFiddlerInspector
                             */
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "NO AUTOD REDIRECT ADDR!";
+                            this.session["X-ExchangeType"] = "!NO AUTOD REDIRECT ADDR!";
                             // Increment HTTP200SkipLogic so that 99 does not run below.
                             HTTP200SkipLogic++;
                             if (bAppLoggingEnabled && bExtensionEnabled)
@@ -517,7 +517,7 @@ namespace EXOFiddlerInspector
                             {
                                 this.session["ui-backcolor"] = HTMLColourRed;
                                 this.session["ui-color"] = "black";
-                                this.session["X-ExchangeType"] = "EWS GetUnifiedGroupsSettings";
+                                this.session["X-ExchangeType"] = "!EWS GetUnifiedGroupsSettings!";
                                 // Do not do HTTP200SkipLogic here, expected response not found. Run keyword search on response for deeper inpsection of response.
                                 // HTTP200SkipLogic++;
                             }
@@ -575,7 +575,7 @@ namespace EXOFiddlerInspector
                                     // Red text on black background.
                                     this.session["ui-backcolor"] = "black";
                                     this.session["ui-color"] = "red";
-                                    this.session["X-ExchangeType"] = "FAILURE LURKING!";
+                                    this.session["X-ExchangeType"] = "!FAILURE LURKING!";
                                 }
                                 else
                                 {
@@ -668,7 +668,7 @@ namespace EXOFiddlerInspector
                             // Exchange Online, highlight.
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "UNEXPECTED LOCATION!";
+                            this.session["X-ExchangeType"] = "!UNEXPECTED LOCATION!";
                             if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
@@ -710,7 +710,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "WEB PROXY BLOCK!";
+                            this.session["X-ExchangeType"] = "!WEB PROXY BLOCK!";
                             if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
@@ -773,7 +773,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "Multi-Factor Auth";
+                            this.session["X-ExchangeType"] = "!Multi-Factor Auth!";
                         }
                         else
                         {
@@ -887,7 +887,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "AUTODISCOVER!";
+                            this.session["X-ExchangeType"] = "!AUTODISCOVER!";
                             if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway.");
@@ -941,7 +941,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "FEDERATION!";
+                            this.session["X-ExchangeType"] = "!FEDERATION!";
                             if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
@@ -973,7 +973,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "INTERNET BLOCKED!";
+                            this.session["X-ExchangeType"] = "!INTERNET BLOCKED!";
                             if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + "  HTTP 504 Gateway Timeout -- Internet Access Blocked.");

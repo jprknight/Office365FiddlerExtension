@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace EXOFiddlerInspector
 {
+    /// <summary>
+    /// Telemetry IAutoTamper.
+    /// </summary>
     public class Telemetry : IAutoTamper // Ensure class is public, or Fiddler won't see it!
     {
         Boolean bExtensionEnabled = false;
@@ -23,6 +26,9 @@ namespace EXOFiddlerInspector
 
         public void OnBeforeUnload() { }
 
+        /// <summary>
+        /// OnLoad Telemetry call if extension is enabled.
+        /// </summary>
         public void OnLoad()
         {
             this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);

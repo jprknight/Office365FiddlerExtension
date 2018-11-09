@@ -529,7 +529,7 @@ namespace EXOFiddlerInspector
                         //
 
                         // Thinking a check on this.session["X-ResponseCode"] is needed to eliminate false positives here.
-                        _displayControl.SetResponseAlertTextBox("HTTP 0 No Response!");
+                        _displayControl.SetResponseAlertTextBox("!HTTP 0 No Response!");
                         _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
                         //
                         /////////////////////////////
@@ -622,7 +622,7 @@ namespace EXOFiddlerInspector
                             // Exchange Online such as: contoso.mail.onmicrosoft.com.
                             else
                             {
-                                _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect.");
+                                _displayControl.SetResponseAlertTextBox("!Exchange On-Premise Autodiscover redirect!");
                                 _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." + 
                                     Environment.NewLine + 
                                     Environment.NewLine +
@@ -661,7 +661,7 @@ namespace EXOFiddlerInspector
                                 </Response>
                             </Autodiscover>
                             */
-                            _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect: Error Code 500.");
+                            _displayControl.SetResponseAlertTextBox("!Exchange On-Premise Autodiscover redirect: Error Code 500!");
                             _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address can't be found. Look for other On-Premise Autodiscover responses, we may have a " +
                                 "valid Autodiscover targetAddress from On-Premise in another session in this trace.");
                             // Increment HTTP200SkipLogic so that 99 does not run below.
@@ -696,7 +696,7 @@ namespace EXOFiddlerInspector
                             // If we got this far and those strings do not exist in the response body something is wrong.
                             else
                             {
-                                _displayControl.SetResponseAlertTextBox("Exchange Online Autodiscover - FAILURE!");
+                                _displayControl.SetResponseAlertTextBox("!Exchange Online Autodiscover - FAILURE!");
                                 _displayControl.SetResponseCommentsRichTextboxText("Exchange Online Autodiscover. FAILURE!");
                                 // Don't use skip logic here, we want to dig deeper and see if there are errors, failures, or exceptions.
                                 //HTTP200SkipLogic++;
@@ -750,7 +750,7 @@ namespace EXOFiddlerInspector
                             // Did not see the expected keyword in the response body. This is the error condition.
                             else
                             {
-                                _displayControl.SetResponseAlertTextBox("GetUnifiedGroupsSettings EWS call!");
+                                _displayControl.SetResponseAlertTextBox("!GetUnifiedGroupsSettings EWS call!");
                                 _displayControl.SetResponseCommentsRichTextboxText("Though GetUnifiedGroupsSettings scenario was detected neither <GroupCreationEnabled>true</GroupCreationEnabled> or" +
                                     "<GroupCreationEnabled>false</GroupCreationEnabled> was found in the response body. Check the Raw tab for more details.");
                             }
@@ -847,7 +847,7 @@ namespace EXOFiddlerInspector
                                             wordCountExceptionText = wordCountException + " times.";
                                         }
 
-                                        _displayControl.SetResponseAlertTextBox("'error', 'failed' or 'exception' found in respone body.");
+                                        _displayControl.SetResponseAlertTextBox("!'error', 'failed' or 'exception' found in respone body!");
                                         _displayControl.SetResponseCommentsRichTextboxText("HTTP 200: Errors or failures found in response body. " + 
                                             "Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review." +
                                             Environment.NewLine + Environment.NewLine +
@@ -945,7 +945,7 @@ namespace EXOFiddlerInspector
                             (this.session.fullUrl.Contains("autodiscover") &&
                             (this.session.ResponseHeaders["Location"] != "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml"))))
                         {
-                            _displayControl.SetResponseAlertTextBox("HTTP 307 Temporary Redirect");
+                            _displayControl.SetResponseAlertTextBox("!HTTP 307 Temporary Redirect!");
                             _displayControl.SetResponseCommentsRichTextboxText("HTTP 307: Temporary Redirects have been seen to redirect Exchange Online Autodiscover " +
                                 "calls back to On-Premise resources, breaking Outlook connectivity." + Environment.NewLine +
                                 "This session has enough data points to be an Autodiscover request for Exchange Online which has not been sent to " +
@@ -994,7 +994,7 @@ namespace EXOFiddlerInspector
                         // Specific scenario where a web proxy is blocking traffic.
                         if (this.session.utilFindInResponse("Access Denied", false) > 1)
                         {
-                            _displayControl.SetResponseAlertTextBox("HTTP 403 Access Denied!");
+                            _displayControl.SetResponseAlertTextBox("!HTTP 403 Access Denied!");
                             _displayControl.SetResponseCommentsRichTextboxText("HTTP 403: Forbidden. Is your firewall or web proxy blocking Outlook connectivity?" + Environment.NewLine +
                                 "To fire this message a HTTP 403 response code was detected and 'Access Denied' was found in the response body." + Environment.NewLine +
                                 "Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked?");
@@ -1006,7 +1006,7 @@ namespace EXOFiddlerInspector
                         else
                         {
                             // Pick up any 403 Forbidden and write data into the comments box.
-                            _displayControl.SetResponseAlertTextBox("HTTP 403 Forbidden!");
+                            _displayControl.SetResponseAlertTextBox("!HTTP 403 Forbidden!");
                             _displayControl.SetResponseCommentsRichTextboxText("While HTTP 403's can be symptomatic of a proxy server blocking traffic, " +
                                 "however the phrase 'Access Denied' was NOT detected in the response body." + 
                                 Environment.NewLine + 
@@ -1028,7 +1028,7 @@ namespace EXOFiddlerInspector
                         //  HTTP 404: Not Found.
                         //
                         // Pick up any 404 Not Found and write data into the comments box.
-                        _displayControl.SetResponseAlertTextBox("HTTP 404 Not Found");
+                        _displayControl.SetResponseAlertTextBox("!HTTP 404 Not Found!");
                         _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
                         //
                         /////////////////////////////
@@ -1038,7 +1038,7 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 405: Method Not Allowed.
                         //
-                        _displayControl.SetResponseAlertTextBox("HTTP 405: Method Not Allowed");
+                        _displayControl.SetResponseAlertTextBox("!HTTP 405: Method Not Allowed!");
                         _displayControl.SetResponseCommentsRichTextboxText("HTTP 405: Method Not Allowed");
                         //
                         /////////////////////////////
@@ -1048,7 +1048,7 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 429: Too Many Requests.
                         //
-                        _displayControl.SetResponseAlertTextBox("HTTP 429 Too Many Requests");
+                        _displayControl.SetResponseAlertTextBox("!HTTP 429 Too Many Requests!");
                         _displayControl.SetResponseCommentsRichTextboxText("HTTP 429: These responses need to be taken into context with the rest of the sessions in the trace. " + 
                             "A small number is probably not an issue, larger numbers of these could be cause for concern.");
                         //
@@ -1083,7 +1083,7 @@ namespace EXOFiddlerInspector
                         }
                         else
                         {
-                            _displayControl.SetResponseAlertTextBox("HTTP 456 Multi-Factor Authentication?");
+                            _displayControl.SetResponseAlertTextBox("!HTTP 456 Multi-Factor Authentication!");
                             _displayControl.SetResponseCommentsRichTextboxText("HTTP 429: See details on Raw tab.");
                         }
                         //
@@ -1101,7 +1101,7 @@ namespace EXOFiddlerInspector
                         // Specific scenario on Outlook and Office 365 invalid DNS lookup.
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
                         // Pick up any 500 Internal Server Error and write data into the comments box.
-                        _displayControl.SetResponseAlertTextBox("HTTP 500 Internal Server Error");
+                        _displayControl.SetResponseAlertTextBox("!HTTP 500 Internal Server Error!");
                         _displayControl.SetResponseCommentsRichTextboxText("HTTP 500 Internal Server Error");
                         if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                         {
@@ -1181,7 +1181,7 @@ namespace EXOFiddlerInspector
                             (this.session.utilFindInResponse("autodiscover", false) > 1) &&
                             (this.session.utilFindInResponse(":443", false) > 1))
                         {
-                            _displayControl.SetResponseAlertTextBox("Cannot connect to this Autodiscover Endpoint.");
+                            _displayControl.SetResponseAlertTextBox("!Cannot connect to this Autodiscover Endpoint!");
                             _displayControl.SetResponseCommentsRichTextboxText("Cannot connect to this Autodiscover Endpoint.");
                         }
 
@@ -1192,7 +1192,7 @@ namespace EXOFiddlerInspector
                         else
                         {
                             // Pick up any other 502 Bad Gateway and write data into the comments box.
-                            _displayControl.SetResponseAlertTextBox("HTTP 502 Bad Gateway");
+                            _displayControl.SetResponseAlertTextBox("!HTTP 502 Bad Gateway!");
                             _displayControl.SetResponseCommentsRichTextboxText("Potential to cause the issue you are investigating. " +
                                 "Do you see expected responses beyond this session in the trace? Is this an Exchange On - Premise, Exchange Online or other device ?");
                             if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
@@ -1238,7 +1238,7 @@ namespace EXOFiddlerInspector
                                 RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=user@contoso.com&xml=1";
                             }
 
-                            _displayControl.SetResponseAlertTextBox("The federation service is unreachable or unavailable.");
+                            _displayControl.SetResponseAlertTextBox("!FederatedSTSUnreachable!");
                             _displayControl.SetResponseCommentsRichTextboxText("HTTP 503: FederatedSTSUnreachable." + Environment.NewLine +
                                 "The fedeation service is unreachable or unavailable. Check the Raw tab for additional details." + Environment.NewLine +
                                 "Check the realm page for the authenticating domain." + Environment.NewLine + RealmURL + Environment.NewLine + Environment.NewLine +
@@ -1256,7 +1256,7 @@ namespace EXOFiddlerInspector
                         else
                         {
                             // Pick up any other 503 Service Unavailable and write data into the comments box.
-                            _displayControl.SetResponseAlertTextBox("HTTP 503 Service Unavailable.");
+                            _displayControl.SetResponseAlertTextBox("!HTTP 503 Service Unavailable!");
                             _displayControl.SetResponseCommentsRichTextboxText("HTTP 503 Service Unavailable.");
                             if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                             {
@@ -1279,7 +1279,7 @@ namespace EXOFiddlerInspector
                             (this.session.utilFindInResponse("blocked", false) > 1) &&
                             boolInspectorExtensionEnabled)
                         {
-                            _displayControl.SetResponseAlertTextBox("HTTP 504 Gateway Timeout -- Internet Access Blocked");
+                            _displayControl.SetResponseAlertTextBox("!HTTP 504 Gateway Timeout -- Internet Access Blocked!");
                             _displayControl.SetResponseCommentsRichTextboxText("Detected the keywords 'internet' and 'access' and 'blocked'. Potentially the computer this trace was collected " +
                                 "from has been quaratined for internet access on the customer's network." + Environment.NewLine + Environment.NewLine +
                                 "Validate this by checking the webview and raw tabs for more information.");
@@ -1290,7 +1290,7 @@ namespace EXOFiddlerInspector
                         // 99. Pick up any other 504 Gateway Timeout and write data into the comments box.
                         else if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
                         {
-                            _displayControl.SetResponseAlertTextBox("HTTP 504 Gateway Timeout");
+                            _displayControl.SetResponseAlertTextBox("!HTTP 504 Gateway Timeout!");
                             _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout.");
                         }
