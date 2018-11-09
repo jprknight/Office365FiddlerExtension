@@ -29,9 +29,6 @@ namespace EXOFiddlerInspector
         ///
         /////////////////
 
-        // Temporary int to count executions.
-        public int ExecutionCount = 0;
-
         internal Session session { get; set; }
 
         private bool bExtensionEnabled = false;
@@ -55,21 +52,11 @@ namespace EXOFiddlerInspector
         //
         public void OnLoad()
         {
-            ///
-            /// <remarks>
-            /// Ideal place to put execution telemetry call?
-            /// Debug (live trace) show a count of only 1. LoadSAZ does not show anything, since I connect to the Fiddler process too late with VS.
-            /// Further browsing / usage does not throw another message below or increment the int ExecutionCount.
-            /// </remarks>
-            ///
 
             // Developer list is actually set in Preferences.cs.
             List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
             Boolean DeveloperDemoMode = calledPreferences.GetDeveloperMode();
             Boolean DeveloperDemoModeBreakScenarios = calledPreferences.GetDeveloperDemoModeBreakScenarios();
-
-            ExecutionCount++;
-            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColouriseWebSessions {ExecutionCount}");
 
             /////////////////
             /// <remarks>
