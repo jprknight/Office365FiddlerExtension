@@ -476,7 +476,7 @@ namespace EXOFiddlerInspector
         {
 
             MessageBox.Show("Enabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false) + Environment.NewLine +
-                "ColumsEnableAll: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumsEnableAll", false) + Environment.NewLine +
+                "ColumnsEnableAll: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAll", false) + Environment.NewLine +
                 "ResponseTimeColumnEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false) + Environment.NewLine +
                 "ResponseServerColumnEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false) + Environment.NewLine +
                 "ExchangeTypeColumnEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false) + Environment.NewLine +
@@ -485,7 +485,7 @@ namespace EXOFiddlerInspector
                 "ExecutionCount: " + FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0));
 
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", true);
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ColumsEnableAll", true);
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAll", true);
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", true);
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", true);
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", true);
@@ -494,13 +494,28 @@ namespace EXOFiddlerInspector
             FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
 
             MessageBox.Show("Enabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false) + Environment.NewLine +
-                "ColumsEnableAll: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumsEnableAll", false) + Environment.NewLine +
+                "ColumsEnableAll: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAll", false) + Environment.NewLine +
                 "ResponseTimeColumnEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false) + Environment.NewLine +
                 "ResponseServerColumnEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false) + Environment.NewLine +
                 "ExchangeTypeColumnEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false) + Environment.NewLine +
                 "AppLoggingEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false) + Environment.NewLine +
                 "HighlightOutlookOWAOnlyEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false) + Environment.NewLine +
                 "ExecutionCount: " + FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0));
+        }
+
+        private void RemoveAllAppPrefsButton_Click(object sender, EventArgs e)
+        {
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.enabled");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.ColumnsEnableAll");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.DemoMode");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.AppLoggingEnabled");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.ExecutionCount");
+            MessageBox.Show("Removed extensions.EXOFiddlerInspector. known Prefs.");
         }
     }
 }

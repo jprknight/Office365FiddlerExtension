@@ -52,7 +52,9 @@ namespace EXOFiddlerInspector
         //
         public void OnLoad()
         {
-            
+
+            calledMenuUI.FirstRunEnableMenuOptions();
+
             // Developer list is actually set in Preferences.cs.
             List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
             Boolean DeveloperDemoMode = calledPreferences.GetDeveloperMode();
@@ -100,9 +102,11 @@ namespace EXOFiddlerInspector
             /// Call function to start LoadSAZ only if the extension is enabled.
             /// </remarks>
             /// 
-            this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
 
-            if (this.bExtensionEnabled)
+            /// Refresh this variable now to take account of first load code.
+            bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+
+            if (bExtensionEnabled)
             {
                 FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
             }
@@ -135,6 +139,11 @@ namespace EXOFiddlerInspector
             /// Add in the Response Server column. Due to these columns all being added as in with priority of 2,
             /// they are added into the interface in this reverse order.
             /// </remarks>
+
+            /// Refresh these variables now to take account of first load code.
+            this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+            this.bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
+
             if (bResponseServerColumnEnabled && bExtensionEnabled)
             {
                 calledColumnsUI.EnsureResponseServerColumn();
@@ -144,6 +153,12 @@ namespace EXOFiddlerInspector
             /// Add in the Exchange Type column. Due to these columns all being added as in with priority of 2,
             /// they are added into the interface in this reverse order.
             /// </remarks>
+            /// 
+
+            /// Refresh these variables now to take account of first load code.
+            this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+            this.bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
+
             if (bExchangeTypeColumnEnabled && bExtensionEnabled)
             {
                 calledColumnsUI.EnsureExchangeTypeColumn();
@@ -153,6 +168,11 @@ namespace EXOFiddlerInspector
             /// Add in the Response Time column. Due to these columns all being added as in with priority of 2,
             /// they are added into the interface in this reverse order.
             /// </remarks>
+            /// 
+            /// Refresh these variables now to take account of first load code.
+            this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+            this.bResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
+
             if (bResponseTimeColumnEnabled && bExtensionEnabled)
             {
                 calledColumnsUI.EnsureResponseTimeColumn();
@@ -162,6 +182,7 @@ namespace EXOFiddlerInspector
 
             foreach (var session in e.arrSessions)
             {
+
                 // Populate the ResponseTime column on load SAZ, if the column is enabled, and the extension is enabled.
                 if (bResponseTimeColumnEnabled && bExtensionEnabled)
                 {

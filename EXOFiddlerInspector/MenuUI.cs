@@ -10,7 +10,6 @@ namespace EXOFiddlerInspector
 {
     public class MenuUI : IAutoTamper    // Ensure class is public, or Fiddler won't see it!
     {
-
         public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
         public Boolean bResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
         public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
@@ -18,7 +17,7 @@ namespace EXOFiddlerInspector
         public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
         public Boolean bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
         public Boolean bColumnsEnableAllEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAllEnabled", false);
-
+        
         public MenuItem ExchangeOnlineTopMenu;
         public MenuItem miColumnsMenu;
 
@@ -53,6 +52,17 @@ namespace EXOFiddlerInspector
 
         public void InitializeMenu()
         {
+            /// <remarks>
+            /// Start by refreshing these variables to take into account first run code.
+            /// </remarks>
+            bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+            bResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
+            bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
+            bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
+            bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
+            bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
+            bColumnsEnableAllEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAllEnabled", false);
+
             // Setup each menu item name and ordering.
             this.ExchangeOnlineTopMenu = new MenuItem("Exchange Online");
 
@@ -321,40 +331,8 @@ namespace EXOFiddlerInspector
         public void OnLoad()
         {
 
-            /////////////////
-            /// <remarks>
-            /// If this is the first time the extension has been run, make sure all extension options are enabled.
-            /// Beyond do nothing other than keep a running count of the number of extension executions.
-            /// </remarks>
-            /// 
-            if (FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0) == 0)
-            {
-                // Set the preferences up for the extension, enable the extension options as this is the first run.
-                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", true);
-                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAll", true);
-                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", true);
-                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", true);
-                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", true);
-                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", true);
-                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", true);
-                // Increment the int iExecutionCount.
-                iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
-                iExecutionCount++;
-                // Update the Fiddler Application Preference.
-                FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", iExecutionCount);
-            }
-            // If this isn't the first run of the extension, just increnent the running count of executions.
-            else
-            {
-                // Increment the int iExecutionCount.
-                iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
-                iExecutionCount++;
-                // Update the Fiddler Application Preference.
-                FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", iExecutionCount);
-            }
-            ///
-            /////////////////
-                        
+            this.FirstRunEnableMenuOptions();
+
             /////////////////
             /// <remarks>
             /// Initialise menu, called from MenuUI.cs.
@@ -387,15 +365,57 @@ namespace EXOFiddlerInspector
         // for first time users.
         public void FirstRunEnableMenuOptions()
         {
-            // FirstRun will be null on first run. Thereafter it will be set to false.
-            // Light up functionality for first run.
-            //this.bExtensionEnabled = true;
-            //this.bResponseTimeColumnEnabled = true;
-            //this.bResponseServerColumnEnabled = true;
-            //this.bExchangeTypeColumnEnabled = true;
+            /////////////////
+            /// <remarks>
+            /// If this is the first time the extension has been run, make sure all extension options are enabled.
+            /// Beyond do nothing other than keep a running count of the number of extension executions.
+            /// </remarks>
+            /// 
+            if (FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0) == 0)
+            {
+                // Set the preferences up for the extension, enable the extension options as this is the first run.
+                /// <remarks>
+                /// Set the runtime variables up for this execution of Fiddler. 
+                /// Also set the Fiddler Application Preferences for the next execution.
+                /// </remarks>
 
-            // Set this app preference as false so we don't execute the above after first run.
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.FirstRun", false);
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", true);
+                //bExtensionEnabled = true;
+                //this.miEnabled.Checked = true;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAll", true);
+                //bColumnsEnableAllEnabled = true;
+                //this.miColumnsEnableAll.Checked = true;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", true);
+                //bResponseTimeColumnEnabled = true;
+                //this.miResponseTimeColumnEnabled.Checked = true;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", true);
+                //bResponseServerColumnEnabled = true;
+                //this.miResponseServerColumnEnabled.Checked = true;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", true);
+                //bExchangeTypeColumnEnabled = true;
+                //this.miExchangeTypeColumnEnabled.Checked = true;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", true);
+                //bAppLoggingEnabled = true;
+                //this.miAppLoggingEnabled.Checked = true;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", true);
+                //bHighlightOutlookOWAOnlyEnabled = true;
+                // Increment the int iExecutionCount.
+                iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
+                iExecutionCount++;
+                // Update the Fiddler Application Preference.
+                FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", iExecutionCount);
+            }
+            // If this isn't the first run of the extension, just increnent the running count of executions.
+            else
+            {
+                // Increment the int iExecutionCount.
+                iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
+                iExecutionCount++;
+                // Update the Fiddler Application Preference.
+                FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", iExecutionCount);
+            }
+            ///
+            /////////////////
         }
         //
         /////////////////
