@@ -7,6 +7,9 @@ namespace EXOFiddlerInspector
 {
     class CheckForAppUpdate
     {
+        public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+        public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
+
         /////////////////
         //
         // Check for updates.
@@ -17,8 +20,6 @@ namespace EXOFiddlerInspector
 
         public void CheckForUpdate()
         {
-            Boolean boolExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-            Boolean boolAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
 
             // If the Fiddler application is attached as the system proxy and an update check is triggered via menu.
             // First Try detach.
@@ -94,7 +95,7 @@ namespace EXOFiddlerInspector
                 {
                     // Execute the installer MSI URL, which will open in the user's default browser.
                     System.Diagnostics.Process.Start(Properties.Settings.Default.InstallerURL);
-                    if (boolAppLoggingEnabled && boolExtensionEnabled)
+                    if (bAppLoggingEnabled && bExtensionEnabled)
                     {
                         FiddlerApplication.Log.LogString("EXOFiddlerExtention: Version installed. v" + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
                         FiddlerApplication.Log.LogString("EXOFiddlerExtention: New Version Available. v" + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
@@ -103,7 +104,7 @@ namespace EXOFiddlerInspector
             }
             else
             {
-                if (boolAppLoggingEnabled && boolExtensionEnabled)
+                if (bAppLoggingEnabled && bExtensionEnabled)
                 {
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: Latest version installed. v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".");
                 }

@@ -31,12 +31,12 @@ namespace EXOFiddlerInspector
 
         internal Session session { get; set; }
 
-        private bool bExtensionEnabled = false;
-        private bool bResponseTimeColumnEnabled = false;
-        private bool bResponseServerColumnEnabled = false;
-        private bool bExchangeTypeColumnEnabled = false;
-        private bool bAppLoggingEnabled = false;
-        private bool bHighlightOutlookOWAOnlyEnabled = false;
+        public bool bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+        public bool bResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
+        public bool bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
+        public bool bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
+        public bool bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
+        public bool bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
 
         private string searchTerm;
         private string RedirectAddress;
@@ -52,7 +52,7 @@ namespace EXOFiddlerInspector
         //
         public void OnLoad()
         {
-
+            
             // Developer list is actually set in Preferences.cs.
             List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
             Boolean DeveloperDemoMode = calledPreferences.GetDeveloperMode();
@@ -97,66 +97,17 @@ namespace EXOFiddlerInspector
 
             /////////////////
             /// <remarks>
-            /// If the FirstRun application preference is set to false, then the extension has previously run.
-            /// The function FirstRunEnableMenuOptions sets the FirstRun app preference to false.
-            /// If the above ... then collect the column preferences off of last preferences set.
-            /// The below logic check does not work for new installations. Needs a fix.
-            /// </remarks>
-            //if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.FirstRun", false) == false) {
-                this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-                this.bResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
-                this.bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
-                this.bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
-                this.bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
-                this.bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnly", false);
-            //}
-            /// If the FirstRun application preference is not set, then go run the FirstRunEnableMenuOptions function to light up features for first use.
-            //else
-            //{
-                //FirstRunEnableMenuOptions();
-            //}
-
-            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColouriseWebSessions.cs ExtensionEnabled {bExtensionEnabled}.");
-            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColouriseWebSessions.cs bResponseTimeColumnEnabled {bResponseTimeColumnEnabled}.");
-            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColouriseWebSessions.cs bResponseServerColumnEnabled {bResponseServerColumnEnabled}.");
-            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColouriseWebSessions.cs bExchangeTypeColumnEnabled {bExchangeTypeColumnEnabled}.");
-            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColouriseWebSessions.cs bAppLoggingEnabled {bAppLoggingEnabled}.");
-            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColouriseWebSessions.cs bHighlightOutlookOWAOnlyEnabled {bHighlightOutlookOWAOnlyEnabled}.");
-
-            ///
-            /////////////////
-
-            /////////////////
-            /// <remarks>
             /// Call function to start LoadSAZ only if the extension is enabled.
-            /// </remarks> 
-            if (bExtensionEnabled)
+            /// </remarks>
+            /// 
+            this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+
+            if (this.bExtensionEnabled)
             {
                 FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
             }
             ///
             /////////////////
-        }
-        //
-        /////////////////
-        #endregion
-
-        #region FirstRunMenuOptions
-        /////////////////
-        // Read out an application preference and if not set we know this is the first 
-        // time the extension has run on this machine. Enable all options to light up functionality
-        // for first time users.
-        public void FirstRunEnableMenuOptions()
-        {
-            // FirstRun will be null on first run. Thereafter it will be set to false.
-            // Light up functionality for first run.
-            this.bExtensionEnabled = true;
-            this.bResponseTimeColumnEnabled = true;
-            this.bResponseServerColumnEnabled = true;
-            this.bExchangeTypeColumnEnabled = true;
-
-            // Set this app preference as false so we don't execute the above after first run.
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.FirstRun", false);
         }
         //
         /////////////////
@@ -1035,6 +986,7 @@ namespace EXOFiddlerInspector
             }
             else
             {
+                bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
                 // If the menu item Highlight Outlook and OWA Only is enabled then grey out all the other traffic.
                 if (bHighlightOutlookOWAOnlyEnabled == true)
                 {

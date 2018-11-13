@@ -66,6 +66,7 @@
             this.OpenSessionData = new System.Windows.Forms.Button();
             this.DeveloperSessionGroupBox = new System.Windows.Forms.GroupBox();
             this.DeveloperControlsLabel = new System.Windows.Forms.Label();
+            this.SetFirstRunButton = new System.Windows.Forms.Button();
             this.ResponseGroupBox.SuspendLayout();
             this.DeveloperSessionGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -409,6 +410,7 @@
             // 
             // DeveloperSessionGroupBox
             // 
+            this.DeveloperSessionGroupBox.Controls.Add(this.SetFirstRunButton);
             this.DeveloperSessionGroupBox.Controls.Add(this.RequestBodyTextbox);
             this.DeveloperSessionGroupBox.Controls.Add(this.RequestHeadersTextBox);
             this.DeveloperSessionGroupBox.Controls.Add(this.RequestHeadersLabel);
@@ -417,12 +419,13 @@
             this.DeveloperSessionGroupBox.Controls.Add(this.ResponseHeadersTextbox);
             this.DeveloperSessionGroupBox.Controls.Add(this.ResponseBodyLabel);
             this.DeveloperSessionGroupBox.Controls.Add(this.ResponseBodyTextbox);
-            this.DeveloperSessionGroupBox.Location = new System.Drawing.Point(412, 156);
+            this.DeveloperSessionGroupBox.Location = new System.Drawing.Point(412, 3);
             this.DeveloperSessionGroupBox.Name = "DeveloperSessionGroupBox";
-            this.DeveloperSessionGroupBox.Size = new System.Drawing.Size(397, 267);
+            this.DeveloperSessionGroupBox.Size = new System.Drawing.Size(397, 295);
             this.DeveloperSessionGroupBox.TabIndex = 54;
             this.DeveloperSessionGroupBox.TabStop = false;
             this.DeveloperSessionGroupBox.Text = "DeveloperSessionGroupBox";
+            this.DeveloperSessionGroupBox.Visible = false;
             // 
             // DeveloperControlsLabel
             // 
@@ -434,6 +437,16 @@
             this.DeveloperControlsLabel.Text = "Developer mode enabled: Additional controls on the right hand side.";
             this.DeveloperControlsLabel.Visible = false;
             this.DeveloperControlsLabel.Click += new System.EventHandler(this.DeveloperControlsLabel_Click);
+            // 
+            // SetFirstRunButton
+            // 
+            this.SetFirstRunButton.Location = new System.Drawing.Point(7, 262);
+            this.SetFirstRunButton.Name = "SetFirstRunButton";
+            this.SetFirstRunButton.Size = new System.Drawing.Size(94, 23);
+            this.SetFirstRunButton.TabIndex = 44;
+            this.SetFirstRunButton.Text = "Set First Run";
+            this.SetFirstRunButton.UseVisualStyleBackColor = true;
+            this.SetFirstRunButton.Click += new System.EventHandler(this.SetFirstRunButton_Click);
             // 
             // ResponseUserControl
             // 
@@ -518,5 +531,6 @@
         private System.Windows.Forms.Button OpenSessionData;
         private System.Windows.Forms.GroupBox DeveloperSessionGroupBox;
         private System.Windows.Forms.Label DeveloperControlsLabel;
+        private System.Windows.Forms.Button SetFirstRunButton;
     }
 }

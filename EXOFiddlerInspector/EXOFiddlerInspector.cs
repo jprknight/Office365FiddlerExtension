@@ -13,6 +13,13 @@ namespace EXOFiddlerInspector
      /// </summary>
     public class EXOBaseFiddlerInspector : Inspector2
     {
+        // These application preferences are actually set in ColouriseWebSessions.cs, pulling them into variables for use here.
+        public bool bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+        public bool bResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
+        public bool bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
+        public bool bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
+        public bool bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
+        public bool bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
 
         public Boolean Developer;
 
@@ -285,9 +292,6 @@ namespace EXOFiddlerInspector
         // Used in HTTP 503 responses when dealing with Federated domains.
         private string RealmURL;
 
-        // These application preferences are actually set in ColouriseWebSessions.cs, pulling them into variables for use here.
-        private bool boolInspectorAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
-        private bool boolInspectorExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
         private string RedirectAddress;
 
         #region ScoreForSession
@@ -502,7 +506,7 @@ namespace EXOFiddlerInspector
                     "This should not be happening. Consider disabling Root Domain Autodiscover lookups." + Environment.NewLine +
                     "See ExcludeHttpsRootDomain on https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under" + Environment.NewLine +
                     "Beyond this, the customer needs their web administrator responsible for the server answering the calls to stop the Apache web server from answering to Autodiscover.");
-                if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                if (bAppLoggingEnabled && bExtensionEnabled)
                 {
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 405 Method Not Allowed; Apache is answering Autodiscover requests!");
                 }
@@ -632,7 +636,7 @@ namespace EXOFiddlerInspector
                                     "If this is an Office 365 mailbox the targetAddress from On-Premise is not sending Outlook to Office 365!");
                                 // Increment HTTP200SkipLogic so that 99 does not run below.
                                 HTTP200SkipLogic++;
-                                if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                                if (bAppLoggingEnabled && bExtensionEnabled)
                                 {
                                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address doesn't contain .onmicrosoft.com.");
                                 }
@@ -666,7 +670,7 @@ namespace EXOFiddlerInspector
                                 "valid Autodiscover targetAddress from On-Premise in another session in this trace.");
                             // Increment HTTP200SkipLogic so that 99 does not run below.
                             HTTP200SkipLogic++;
-                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address can't be found.");
                             }
@@ -855,7 +859,7 @@ namespace EXOFiddlerInspector
                                             Environment.NewLine + "Keyword 'Error' found " + wordCountErrorText +
                                             Environment.NewLine + "Keyword 'Failed' found " + wordCountFailedText +
                                             Environment.NewLine + "Keyword 'Exception' found " + wordCountExceptionText);
-                                        if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                                        if (bAppLoggingEnabled && bExtensionEnabled)
                                         {
                                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 keyword 'error', 'failed' or 'exception' found in respone body!");
                                         }
@@ -952,7 +956,7 @@ namespace EXOFiddlerInspector
                                 "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml as expected." + Environment.NewLine +
                                 "Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.");
 
-                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
                             }
@@ -998,7 +1002,7 @@ namespace EXOFiddlerInspector
                             _displayControl.SetResponseCommentsRichTextboxText("HTTP 403: Forbidden. Is your firewall or web proxy blocking Outlook connectivity?" + Environment.NewLine +
                                 "To fire this message a HTTP 403 response code was detected and 'Access Denied' was found in the response body." + Environment.NewLine +
                                 "Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked?");
-                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
                             }
@@ -1103,7 +1107,7 @@ namespace EXOFiddlerInspector
                         // Pick up any 500 Internal Server Error and write data into the comments box.
                         _displayControl.SetResponseAlertTextBox("!HTTP 500 Internal Server Error!");
                         _displayControl.SetResponseCommentsRichTextboxText("HTTP 500 Internal Server Error");
-                        if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                        if (bAppLoggingEnabled && bExtensionEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 500 Internal Server Error.");
                         }
@@ -1195,7 +1199,7 @@ namespace EXOFiddlerInspector
                             _displayControl.SetResponseAlertTextBox("!HTTP 502 Bad Gateway!");
                             _displayControl.SetResponseCommentsRichTextboxText("Potential to cause the issue you are investigating. " +
                                 "Do you see expected responses beyond this session in the trace? Is this an Exchange On - Premise, Exchange Online or other device ?");
-                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway.");
                             }
@@ -1248,7 +1252,7 @@ namespace EXOFiddlerInspector
                                 "MEXURL: Normally expected to show long stream of XML data." + Environment.NewLine + Environment.NewLine +
                                 "If any of these show the HTTP 503 Service Unavailable this confirms a consistent failure on the federation service." + Environment.NewLine +
                                 "If however you get the expected responses, this does not neccessarily mean the federation service / everything authentication is healthy. Further investigation is advised.");
-                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
                             }
@@ -1258,7 +1262,7 @@ namespace EXOFiddlerInspector
                             // Pick up any other 503 Service Unavailable and write data into the comments box.
                             _displayControl.SetResponseAlertTextBox("!HTTP 503 Service Unavailable!");
                             _displayControl.SetResponseCommentsRichTextboxText("HTTP 503 Service Unavailable.");
-                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable.");
                             }
@@ -1277,7 +1281,7 @@ namespace EXOFiddlerInspector
                         if ((this.session.utilFindInResponse("access", false) > 1) &&
                             (this.session.utilFindInResponse("internet", false) > 1) &&
                             (this.session.utilFindInResponse("blocked", false) > 1) &&
-                            boolInspectorExtensionEnabled)
+                            bExtensionEnabled)
                         {
                             _displayControl.SetResponseAlertTextBox("!HTTP 504 Gateway Timeout -- Internet Access Blocked!");
                             _displayControl.SetResponseCommentsRichTextboxText("Detected the keywords 'internet' and 'access' and 'blocked'. Potentially the computer this trace was collected " +
@@ -1288,7 +1292,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         // 99. Pick up any other 504 Gateway Timeout and write data into the comments box.
-                        else if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                        else if (bAppLoggingEnabled && bExtensionEnabled)
                         {
                             _displayControl.SetResponseAlertTextBox("!HTTP 504 Gateway Timeout!");
                             _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
@@ -1324,7 +1328,6 @@ namespace EXOFiddlerInspector
             ResponseHeaders = this.session.ResponseHeaders;
 
         }
-
 
         /////////////////////////////
         // Add the EXO Response tab into the inspector tab.

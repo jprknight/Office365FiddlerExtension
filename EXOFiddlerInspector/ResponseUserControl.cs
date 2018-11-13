@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using Fiddler;
 
 namespace EXOFiddlerInspector
 {
@@ -42,23 +43,6 @@ namespace EXOFiddlerInspector
                 Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: Developer mode {Environment.UserName} on {Environment.MachineName}.");
                 DeveloperSessionGroupBox.Visible = true;
                 DeveloperControlsLabel.Visible = true;
-                /*
-                RequestHeadersLabel.Visible = true;
-                RequestHeadersTextBox.Visible = true;
-                RequestBodyLabel.Visible = true;
-                RequestBodyTextbox.Visible = true;
-
-                ResponseHeadersLabel.Visible = true;
-                ResponseHeadersTextbox.Visible = true;
-                ResponseBodyLabel.Visible = true;
-                ResponseBodyTextbox.Visible = true;
-
-                HTTP200FreeBusyLabel.Visible = true;
-                HTTP200FreeBusyTextBox.Visible = true;
-
-                HTTP200SkipLogicLabel.Visible = true;
-                HTTP200SkipLogicTextBox.Visible = true;
-                */
             }
             else
             {
@@ -210,7 +194,7 @@ namespace EXOFiddlerInspector
             // Reset colours.
             HTTPResponseCodeTextBox.BackColor = System.Drawing.Color.White;
             HTTPStatusDescriptionTextBox.BackColor = System.Drawing.Color.White;
-            
+
             // Write HTTP Status code short descriptions in HTTP Status Description TextBox.
             // Standardised codes from https://en.wikipedia.org/wiki/List_of_HTTP_status_codes.
             switch (HTTPResponseCodeTextBox.Text) {
@@ -353,7 +337,7 @@ namespace EXOFiddlerInspector
                     break;
                 default: HTTPStatusDescriptionTextBox.Text = "No known HTTP status.";
                     break;
-            } 
+            }
         }
 
         private void ResponseCommentLabel_Click(object sender, EventArgs e)
@@ -486,6 +470,37 @@ namespace EXOFiddlerInspector
         private void DeveloperControlsLabel_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void SetFirstRunButton_Click(object sender, EventArgs e)
+        {
+
+            MessageBox.Show("Enabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false) + Environment.NewLine +
+                "ColumsEnableAll: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumsEnableAll", false) + Environment.NewLine +
+                "ResponseTimeColumnEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false) + Environment.NewLine +
+                "ResponseServerColumnEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false) + Environment.NewLine +
+                "ExchangeTypeColumnEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false) + Environment.NewLine +
+                "AppLoggingEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false) + Environment.NewLine +
+                "HighlightOutlookOWAOnlyEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false) + Environment.NewLine +
+                "ExecutionCount: " + FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0));
+
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", true);
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ColumsEnableAll", true);
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", true);
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", true);
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", true);
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", true);
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", true);
+            FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
+
+            MessageBox.Show("Enabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false) + Environment.NewLine +
+                "ColumsEnableAll: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumsEnableAll", false) + Environment.NewLine +
+                "ResponseTimeColumnEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false) + Environment.NewLine +
+                "ResponseServerColumnEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false) + Environment.NewLine +
+                "ExchangeTypeColumnEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false) + Environment.NewLine +
+                "AppLoggingEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false) + Environment.NewLine +
+                "HighlightOutlookOWAOnlyEnabled: " + FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false) + Environment.NewLine +
+                "ExecutionCount: " + FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0));
         }
     }
 }
