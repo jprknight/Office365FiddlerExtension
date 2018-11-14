@@ -23,14 +23,6 @@ namespace EXOFiddlerInspector
         {
             Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : CheckForUpdate()");
 
-            // If the Fiddler application is attached as the system proxy and an update check is triggered via menu.
-            // First Try detach.
-            //FiddlerApplication.oProxy.Detach();
-            // Wait some time.
-            //System.Threading.Thread.Sleep(5000);
-            // Continue processing.
-            // FiddlerApplication.OnDetach??
-
             string downloadUrl = "";
             Version newVersion = null;
             string xmlUrl = Properties.Settings.Default.UpdateURL;
@@ -118,6 +110,19 @@ namespace EXOFiddlerInspector
                     }
                 }
                 */
+                /// <remarks>
+                /// Refresh the value of ManualCheckForUpdate and respond with feedback if needed.
+                /// </remarks>
+
+                Boolean ManualCheckForUpdateFeedback = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ManualCheckForUpdate", false);
+
+                // Regardless of extension enabled or not, give the user feedback when they click the 'Check For Update' menu item if no update is available.
+                if (ManualCheckForUpdateFeedback)
+                {
+                    MessageBox.Show("EXOFiddlerExtention: Update available. v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".", "EXO Fiddler Extension");
+                    // return this perference back to false, so we don't give this feedback unintentionally.
+                    FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ManualCheckForUpdate", false);
+                }
             }
             else
             {
@@ -133,8 +138,14 @@ namespace EXOFiddlerInspector
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: Latest version installed. v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".");
                 }
 
+                /// <remarks>
+                /// Refresh the value of ManualCheckForUpdate and respond with feedback if needed.
+                /// </remarks>
+                
+                Boolean ManualCheckForUpdateFeedback = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ManualCheckForUpdate", false);
+
                 // Regardless of extension enabled or not, give the user feedback when they click the 'Check For Update' menu item if no update is available.
-                if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ManualCheckForUpdate", false))
+                if (ManualCheckForUpdateFeedback)
                 {
                     MessageBox.Show("EXOFiddlerExtention: You already have the latest version installed. v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".", "EXO Fiddler Extension");
                     // return this perference back to false, so we don't give this feedback unintentionally.
@@ -142,10 +153,5 @@ namespace EXOFiddlerInspector
                 }
             }
         }
-        //
-        // Check for updates end.
-        //
-        /////////////////
-
     }
 }
