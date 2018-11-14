@@ -195,8 +195,10 @@ namespace EXOFiddlerInspector
             }
         }
         
-        public void SetRequestValues(Session oS)
+        public void SetRequestValues(Session session)
         {
+            this.session = session;
+
             if (Developer)
             {
                 // Store response body in variable for opening in notepad.

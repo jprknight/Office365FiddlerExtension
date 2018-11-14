@@ -65,9 +65,8 @@
             this.SessionIDLabel = new System.Windows.Forms.Label();
             this.OpenSessionData = new System.Windows.Forms.Button();
             this.DeveloperSessionGroupBox = new System.Windows.Forms.GroupBox();
-            this.SetFirstRunButton = new System.Windows.Forms.Button();
-            this.DeveloperControlsLabel = new System.Windows.Forms.Label();
             this.RemoveAllAppPrefsButton = new System.Windows.Forms.Button();
+            this.DeveloperControlsLabel = new System.Windows.Forms.Label();
             this.ResponseGroupBox.SuspendLayout();
             this.DeveloperSessionGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -412,7 +411,6 @@
             // DeveloperSessionGroupBox
             // 
             this.DeveloperSessionGroupBox.Controls.Add(this.RemoveAllAppPrefsButton);
-            this.DeveloperSessionGroupBox.Controls.Add(this.SetFirstRunButton);
             this.DeveloperSessionGroupBox.Controls.Add(this.RequestBodyTextbox);
             this.DeveloperSessionGroupBox.Controls.Add(this.RequestHeadersTextBox);
             this.DeveloperSessionGroupBox.Controls.Add(this.RequestHeadersLabel);
@@ -429,15 +427,15 @@
             this.DeveloperSessionGroupBox.Text = "DeveloperSessionGroupBox";
             this.DeveloperSessionGroupBox.Visible = false;
             // 
-            // SetFirstRunButton
+            // RemoveAllAppPrefsButton
             // 
-            this.SetFirstRunButton.Location = new System.Drawing.Point(7, 262);
-            this.SetFirstRunButton.Name = "SetFirstRunButton";
-            this.SetFirstRunButton.Size = new System.Drawing.Size(94, 23);
-            this.SetFirstRunButton.TabIndex = 44;
-            this.SetFirstRunButton.Text = "Set First Run";
-            this.SetFirstRunButton.UseVisualStyleBackColor = true;
-            this.SetFirstRunButton.Click += new System.EventHandler(this.SetFirstRunButton_Click);
+            this.RemoveAllAppPrefsButton.Location = new System.Drawing.Point(6, 261);
+            this.RemoveAllAppPrefsButton.Name = "RemoveAllAppPrefsButton";
+            this.RemoveAllAppPrefsButton.Size = new System.Drawing.Size(163, 23);
+            this.RemoveAllAppPrefsButton.TabIndex = 45;
+            this.RemoveAllAppPrefsButton.Text = "Remove All Fiddler App Prefs";
+            this.RemoveAllAppPrefsButton.UseVisualStyleBackColor = true;
+            this.RemoveAllAppPrefsButton.Click += new System.EventHandler(this.RemoveAllAppPrefsButton_Click);
             // 
             // DeveloperControlsLabel
             // 
@@ -449,16 +447,6 @@
             this.DeveloperControlsLabel.Text = "Developer mode enabled: Additional controls on the right hand side.";
             this.DeveloperControlsLabel.Visible = false;
             this.DeveloperControlsLabel.Click += new System.EventHandler(this.DeveloperControlsLabel_Click);
-            // 
-            // RemoveAllAppPrefsButton
-            // 
-            this.RemoveAllAppPrefsButton.Location = new System.Drawing.Point(108, 262);
-            this.RemoveAllAppPrefsButton.Name = "RemoveAllAppPrefsButton";
-            this.RemoveAllAppPrefsButton.Size = new System.Drawing.Size(163, 23);
-            this.RemoveAllAppPrefsButton.TabIndex = 45;
-            this.RemoveAllAppPrefsButton.Text = "Remove All Fiddler App Prefs";
-            this.RemoveAllAppPrefsButton.UseVisualStyleBackColor = true;
-            this.RemoveAllAppPrefsButton.Click += new System.EventHandler(this.RemoveAllAppPrefsButton_Click);
             // 
             // ResponseUserControl
             // 
@@ -543,7 +531,6 @@
         private System.Windows.Forms.Button OpenSessionData;
         private System.Windows.Forms.GroupBox DeveloperSessionGroupBox;
         private System.Windows.Forms.Label DeveloperControlsLabel;
-        private System.Windows.Forms.Button SetFirstRunButton;
         private System.Windows.Forms.Button RemoveAllAppPrefsButton;
     }
 }

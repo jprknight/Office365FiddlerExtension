@@ -12,7 +12,6 @@ namespace EXOFiddlerInspector
     /// <summary>
     /// ColouriseWebSessions containing:
     /// -- OnLoad
-    /// -- FirstRunEnableMenuOptions
     /// -- HandleLoadSaz
     /// -- ColouriseRuleSet
     /// -- OnPeekAtResponseHeaders
