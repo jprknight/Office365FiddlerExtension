@@ -52,6 +52,17 @@ namespace EXOFiddlerInspector
         public void OnLoad()
         {
 
+            /// <remarks>
+            /// Check for update. Do this first as we alter the Exchange Online menu title according to
+            /// whether an update is available.
+            /// </remarks>
+            if (bExtensionEnabled)
+            {
+                // Check for app update.
+                CheckForAppUpdate calledCheckForAppUpdate = new CheckForAppUpdate();
+                calledCheckForAppUpdate.CheckForUpdate();
+            }
+
             calledMenuUI.FirstRunEnableMenuOptions();
 
             // Developer list is actually set in Preferences.cs.
@@ -102,9 +113,6 @@ namespace EXOFiddlerInspector
             /// </remarks>
             /// 
 
-            /// Refresh this variable now to take account of first load code.
-            bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-
             if (bExtensionEnabled)
             {
                 FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
@@ -123,16 +131,6 @@ namespace EXOFiddlerInspector
         //
         private void HandleLoadSaz(object sender, FiddlerApplication.ReadSAZEventArgs e)
         {
-            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColouriseWebSessions.cs HandleLoadSaz function.");
-            // At this point in time only checking for updates when SAZ file is loaded.
-            // Doing this on a live trace is problematic and has hung Fiddler in my testing.
-            // Only do this if the extension is enabled.
-            if (bExtensionEnabled)
-            {
-                // Check for app update.
-                CheckForAppUpdate calledCheckForAppUpdate = new CheckForAppUpdate();
-                calledCheckForAppUpdate.CheckForUpdate();
-            }
 
             /// <remarks>
             /// Add in the Response Server column. Due to these columns all being added as in with priority of 2,

@@ -64,7 +64,7 @@ namespace EXOFiddlerInspector
             bColumnsEnableAllEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAllEnabled", false);
 
             // Setup each menu item name and ordering.
-            this.ExchangeOnlineTopMenu = new MenuItem("Exchange Online");
+            this.ExchangeOnlineTopMenu = new MenuItem(FiddlerApplication.Prefs.GetStringPref("extensions.EXOFiddlerInspector.MenuTitle", "Exchange Online"));
 
             this.miEnabled = new MenuItem("&Extension Enabled");
             this.miEnabled.Index = 0;

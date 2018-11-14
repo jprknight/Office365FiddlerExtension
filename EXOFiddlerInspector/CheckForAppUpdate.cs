@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using Fiddler;
 using System.Xml;
+using System.Diagnostics;
 
 namespace EXOFiddlerInspector
 {
@@ -20,6 +21,7 @@ namespace EXOFiddlerInspector
 
         public void CheckForUpdate()
         {
+            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : CheckForUpdate()");
 
             // If the Fiddler application is attached as the system proxy and an update check is triggered via menu.
             // First Try detach.
@@ -77,18 +79,32 @@ namespace EXOFiddlerInspector
             }
 
             Version applicationVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            /// <remarks>
+            /// Update available.
+            /// </remarks>
             if (applicationVersion.CompareTo(newVersion) < 0)
             {
+                /// <remarks>
+                /// Stop showing the message box. Allow user to enter trace without interuption.
+                /// </remarks>
                 // Setup message box options.
+                /*
                 string message = "You are currently using v" + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + "." + Environment.NewLine +
                     "A new version is available v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + "." + Environment.NewLine +
                     "Do you want to download the update?";
 
                 string caption = "EXO Fiddler Extension - Update Available";
+                */
+                /// <remarks>
+                /// Set menu title to show user there is an update available.
+                /// </remarks>
+                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : Update Available.");
+                FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerInspector.MenuTitle", "Exchange Online (Update Available!)");
+                /*
                 MessageBoxButtons buttons = MessageBoxButtons.YesNo;
                 DialogResult result;
 
-                // Display the MessageBox.
+                 Display the MessageBox.
                 result = MessageBox.Show(message, caption, buttons, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
 
                 if (result == DialogResult.Yes)
@@ -101,9 +117,17 @@ namespace EXOFiddlerInspector
                         FiddlerApplication.Log.LogString("EXOFiddlerExtention: New Version Available. v" + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
                     }
                 }
+                */
             }
             else
             {
+                /// <remarks>
+                /// No update available.
+                /// </remarks>
+                /// 
+                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : No update available.");
+                FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerInspector.MenuTitle", "Exchange Online");
+
                 if (bAppLoggingEnabled && bExtensionEnabled)
                 {
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: Latest version installed. v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".");
@@ -112,7 +136,7 @@ namespace EXOFiddlerInspector
                 // Regardless of extension enabled or not, give the user feedback when they click the 'Check For Update' menu item if no update is available.
                 if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ManualCheckForUpdate", false))
                 {
-                    MessageBox.Show("EXOFiddlerExtention: Latest version installed. v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".", "EXO Fiddler Extension");
+                    MessageBox.Show("EXOFiddlerExtention: You already have the latest version installed. v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".", "EXO Fiddler Extension");
                     // return this perference back to false, so we don't give this feedback unintentionally.
                     FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ManualCheckForUpdate", false);
                 }
