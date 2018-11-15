@@ -347,15 +347,15 @@ namespace EXOFiddlerInspector
                 {
                     _displayControl.SetHTTPResponseCodeTextBoxText("DIS");
 
-                    _displayControl.SetRequestBeginDateTextBox("Inspector disabled.");
-                    _displayControl.SetRequestBeginTimeTextBox("Inspector disabled.");
-                    _displayControl.SetRequestEndDateTextBox("Inspector disabled.");
-                    _displayControl.SetRequestEndTimeTextBox("Inspector disabled.");
+                    _displayControl.SetClientRequestBeginDateTextBox("Inspector disabled.");
+                    _displayControl.SetClientRequestBeginTimeTextBox("Inspector disabled.");
+                    _displayControl.SetClientRequestEndDateTextBox("Inspector disabled.");
+                    _displayControl.SetClientRequestEndTimeTextBox("Inspector disabled.");
                     _displayControl.SetResponseAlertTextBox("Inspector disabled.");
-                    _displayControl.SetResponseElapsedTimeTextBox("Inspector disabled");
+                    _displayControl.SetOverallElapsedTextbox("Inspector disabled");
+                    _displayControl.SetServerThinkTimeTextbox("Inspector disabled");
                     _displayControl.SetDataAgeTextBox("Inspector disabled");
                     _displayControl.SetResponseProcessTextBox("Inspector disabled");
-                    _displayControl.SetElapsedTimeCommentTextBoxText("Inspector disabled");
                     _displayControl.SetResponseServerTextBoxText("Inspector disabled");
                     _displayControl.SetResponseCommentsRichTextboxText("Inspector disabled.");
                 }
@@ -381,12 +381,29 @@ namespace EXOFiddlerInspector
             // Clear any previous data.
             _displayControl.SetResponseAlertTextBox("");
             _displayControl.SetResponseCommentsRichTextboxText("");
-            _displayControl.SetElapsedTimeCommentTextBoxText("");
             _displayControl.SetRequestHeadersTextBoxText("");
             _displayControl.SetRequestBodyTextBoxText("");
             _displayControl.SetResponseHeadersTextBoxText("");
             _displayControl.SetResponseBodyTextBoxText("");
             _displayControl.SetExchangeTypeTextBoxText("");
+
+            _displayControl.SetClientRequestBeginDateTextBox("");
+            _displayControl.SetClientRequestBeginTimeTextBox("");
+
+            _displayControl.SetClientRequestEndDateTextBox("");
+            _displayControl.SetClientRequestEndTimeTextBox("");
+
+            _displayControl.SetOverallElapsedTextbox("");
+
+            _displayControl.SetServerGotRequestDateTextbox("");
+            _displayControl.SetServerGotRequestTimeTextbox("");
+
+            _displayControl.SetServerDoneResponseDateTextbox("");
+            _displayControl.SetServerDoneResponseTimeTextbox("");
+
+            _displayControl.SetServerThinkTimeTextbox("");
+
+            _displayControl.SetXHostIPTextBoxText("");
 
             // Write data into hidden fields.
             _displayControl.SetRequestHeadersTextBoxText(this.session.oRequest.headers.ToString());
@@ -401,23 +418,97 @@ namespace EXOFiddlerInspector
             // Write HTTP Status Code Text box, convert int to string.
             _displayControl.SetHTTPResponseCodeTextBoxText(this.session.responseCode.ToString());
 
-            // Write Client Begin Request into textboxes
-            _displayControl.SetRequestBeginDateTextBox(this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd"));
-            _displayControl.SetRequestBeginTimeTextBox(this.session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff"));
+            /// <remarks>
+            /// Client Begin and done response. -- Overall elapsed time.
+            /// </remarks>
 
-            // Write Client End Request into textboxes
-            _displayControl.SetRequestEndDateTextBox(this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd"));
-            _displayControl.SetRequestEndTimeTextBox(this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff"));
+            if (this.session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") == "0:00:00.000" || this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") == "0:00:00.000")
+            {
+                _displayControl.SetClientRequestBeginDateTextBox("No Data");
+                _displayControl.SetClientRequestBeginTimeTextBox("No Data");
+                
+                _displayControl.SetClientRequestEndDateTextBox("No Data");
+                _displayControl.SetClientRequestEndTimeTextBox("No Data");
 
-            // Write Elapsed Time into textbox.
-            // _displayControl.SetResponseElapsedTimeTextBox(this.session.oResponse.iTTLB + "ms");
-            _displayControl.SetResponseElapsedTimeTextBox(Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms");
-            session["X-iTTLB"] = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms";
+                _displayControl.SetOverallElapsedTextbox("No Data");
 
-            //Write response server from headers into textbox.
-            //_displayControl.SetResponseServerTextBoxText(this.session.oResponse["Server"]);
+            }
+            else
+            {
+                _displayControl.SetClientRequestBeginDateTextBox(this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd"));
+                _displayControl.SetClientRequestBeginTimeTextBox(this.session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff"));
+                
+                _displayControl.SetClientRequestEndDateTextBox(this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd"));
+                _displayControl.SetClientRequestEndTimeTextBox(this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff"));
 
-            // Populate Response Server on session in order of preference from common to obsure.
+                _displayControl.SetOverallElapsedTextbox(Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms");
+
+                double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
+                if (ClientMilliseconds <= 1000)
+                {
+                    _displayControl.SetOverallElapsedTextbox(ClientMilliseconds + "ms");
+                }
+                else
+                {
+                    _displayControl.SetResponseAlertTextBox("Long running session!");
+                    _displayControl.SetResponseCommentsRichTextboxText("Found a long running session." + Environment.NewLine + Environment.NewLine +
+                        "ClientBeginRequest == Fiddler is aware of when the traffic is initially passed to it as a proxy server." + Environment.NewLine +
+                        "ClientDoneRequest == Fiddler is aware of when it has finished sending the server response back to the application which made the request." + Environment.NewLine +
+                        "ServerGotRequest == Fiddler is aware of when the server received the request." + Environment.NewLine +
+                        "ServerBeginResponse == Fiddler is aware of when the server started to send the response." + Environment.NewLine +
+                        "ServerDoneResponse == Fiddler is aware of when it was was able to send the server response back to the application which made the request.");
+                    _displayControl.SetOverallElapsedTextbox(Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalSeconds) + "s");
+                }
+            }
+
+            /// <remarks>
+            /// Server Got and Done Response. -- Server Think Time.
+            /// </remarks>
+            /// 
+            if (this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff") == "0:00:00.000" || this.session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff") == "0:00:00.000")
+            {
+                // No data on the session to write or calculate on.
+                _displayControl.SetServerGotRequestDateTextbox("No Data");
+                _displayControl.SetServerGotRequestTimeTextbox("No Data");
+
+                _displayControl.SetServerDoneResponseDateTextbox("No Data");
+                _displayControl.SetServerDoneResponseTimeTextbox("No Data");
+
+                _displayControl.SetServerThinkTimeTextbox("No Data");
+            }
+            else
+            {
+                // Write Server data into textboxes.
+                _displayControl.SetServerGotRequestDateTextbox(this.session.Timers.ServerGotRequest.ToString("yyyy/MM/dd"));
+                _displayControl.SetServerGotRequestTimeTextbox(this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff"));
+
+                _displayControl.SetServerDoneResponseDateTextbox(this.session.Timers.ServerDoneResponse.ToString("yyyy/MM/dd"));
+                _displayControl.SetServerDoneResponseTimeTextbox(this.session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff"));
+
+                //_displayControl.SetServerThinkTimeTextbox(Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds) + "ms");
+
+                double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
+                if (ServerMilliseconds <= 1000)
+                {
+                    _displayControl.SetServerThinkTimeTextbox(ServerMilliseconds + "ms");
+                }
+                else
+                {
+                    _displayControl.SetResponseAlertTextBox("Long running EXO response!");
+                    _displayControl.SetResponseCommentsRichTextboxText("Found a long running session." + Environment.NewLine + Environment.NewLine +
+                        "ClientBeginRequest == Fiddler is aware of when the traffic is initially passed to it as a proxy server." + Environment.NewLine +
+                        "ClientDoneRequest == Fiddler is aware of when it has finished sending the server response back to the application which made the request." + Environment.NewLine +
+                        "ServerGotRequest == Fiddler is aware of when the server received the request." + Environment.NewLine +
+                        "ServerBeginResponse == Fiddler is aware of when the server started to send the response." + Environment.NewLine +
+                        "ServerDoneResponse == Fiddler is aware of when it was was able to send the server response back to the application which made the request.");
+                    _displayControl.SetServerThinkTimeTextbox(Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalSeconds) + "s");
+                }
+            }
+
+            _displayControl.SetServerBeginResponseDateTextbox(this.session.Timers.ServerBeginResponse.ToString("yyyy/MM/dd"));
+            _displayControl.SetServerBeginResponseTimeTextbox(this.session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff"));
+
+            _displayControl.SetXHostIPTextBoxText(this.session["X-HostIP"]);
 
             // If the response server header is not null or blank then populate it into the response server value.
             if (this.session.isTunnel == true)
@@ -449,13 +540,6 @@ namespace EXOFiddlerInspector
             else if ((this.session.oResponse["X-Server-Name"] != null && (this.session.oResponse["X-Server-Name"] != "")))
             {
                 _displayControl.SetResponseServerTextBoxText("X-Server-Name: " + this.session.oResponse["X-Server-Name"]);
-            }
-            
-            // Write Elapsed Time comment into textbox.
-            if (this.session.oResponse.iTTLB > 5000)
-            {
-                // Inaccurate, commented out.
-                _displayControl.SetElapsedTimeCommentTextBoxText("> 5 second response time.");
             }
 
             // Write Data age data into textbox.

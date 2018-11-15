@@ -183,8 +183,27 @@ namespace EXOFiddlerInspector
                 // Populate the ResponseTime column on load SAZ, if the column is enabled, and the extension is enabled.
                 if (bResponseTimeColumnEnabled && bExtensionEnabled)
                 {
-                    //session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
-                    session["X-iTTLB"] = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms";
+                    if (session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") == "0:00:00.000" || session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") == "0:00:00.000")
+                    {
+                        session["X-iTTLB"] = "No Data";
+                    }
+                    /*else if (session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff") == "0:00:00.000" || session.Timers.ServerDoneResponse.ToString("yyyy/MM/dd") == "0001/01/01")
+                    {
+                        session["X-iTTLB"] = "No Data";
+                    }*/
+                    else
+                    {
+                        double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds);
+                        if (Milliseconds <= 1000)
+                        {
+                            session["X-iTTLB"] = Milliseconds + "ms";
+                        }
+                        else
+                        {
+                            session["X-iTTLB"] = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalSeconds) + " seconds";
+                        }
+                        //session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
+                    }
                 }
 
                 // Populate the ExchangeType column on load SAZ, if the column is enabled, and the extension is enabled
@@ -991,11 +1010,25 @@ namespace EXOFiddlerInspector
             // First off if the local process is nullor blank, then we are analysing traffic from a remote client such as a mobile device.
             // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
             // So don't pay any attention to overrides for this type of traffic.
+
+            double TotalSessionTime = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
+
             if (this.session.hostname == "www.fiddler2.com")
             {
                 this.session["ui-backcolor"] = HTMLColourGrey;
                 this.session["ui-color"] = "black";
                 this.session["X-ExchangeType"] = "Not Exchange";
+            }
+            // Long running session.
+            else if (TotalSessionTime > 1000 && TotalSessionTime < 5000)
+            {
+                this.session["ui-backcolor"] = HTMLColourOrange;
+                this.session["ui-color"] = "black";
+            }
+            else if (TotalSessionTime >= 5000)
+            {
+                this.session["ui-backcolor"] = HTMLColourRed;
+                this.session["ui-color"] = "black";
             }
             else if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
             {
