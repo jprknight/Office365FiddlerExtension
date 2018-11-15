@@ -10,32 +10,32 @@ namespace EXOFiddlerInspector
 {
     class ColumnsUI : IAutoTamper
     {
-        private bool bResponseTimeColumnCreated = false;
+        private bool bElapsedTimeColumnCreated = false;
         private bool bResponseServerColumnCreated = false;
         private bool bExchangeTypeColumnCreated = false;
 
         public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
         public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
         public Boolean bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
-        public Boolean bResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
+        public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
 
         internal Session session { get; set; }
 
         /// <summary>
         /// Ensure the Response Time Column has been created, return if it has.
         /// </summary>
-        public void EnsureResponseTimeColumn()
+        public void EnsureElapsedTimeColumn()
         {
             /////////////////
             // Response Time column.
             //
             // If the column is already created exit.
-            if (bResponseTimeColumnCreated)
+            if (bElapsedTimeColumnCreated)
             {
                 return;
             }
-            FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Time", 2, 110, "X-iTTLB");
-            bResponseTimeColumnCreated = true;
+            FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 2, 110, "X-ElapsedTime");
+            bElapsedTimeColumnCreated = true;
             //
             /////////////////
         }
@@ -266,9 +266,9 @@ namespace EXOFiddlerInspector
                     FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
                 }
 
-                if (bResponseTimeColumnEnabled && bExtensionEnabled)
+                if (bElapsedTimeColumnEnabled && bExtensionEnabled)
                 {
-                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Time", 2, -1);
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Elapsed Time", 2, -1);
                 }
             }
 
@@ -341,10 +341,10 @@ namespace EXOFiddlerInspector
             //throw new NotImplementedException();
         }
 
-        // Populate the ResponseTime column on live trace, if the column is enabled.
+        // Populate the ElapsedTime column on live trace, if the column is enabled.
         // Code currently not used / under review.
 
-        // if (boolResponseTimeColumnEnabled && boolExtensionEnabled) {
+        // if (boolElapsedTimeColumnEnabled && boolExtensionEnabled) {
         // Realised this.session.oResponse.iTTLB.ToString() + "ms" is not the value I want to display as Response Time.
         // More desirable figure is created from:
         // Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds)

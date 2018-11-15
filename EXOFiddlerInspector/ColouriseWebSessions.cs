@@ -172,7 +172,7 @@ namespace EXOFiddlerInspector
 
             if (bResponseTimeColumnEnabled && bExtensionEnabled)
             {
-                calledColumnsUI.EnsureResponseTimeColumn();
+                calledColumnsUI.EnsureElapsedTimeColumn();
             }
 
             FiddlerApplication.UI.lvSessions.BeginUpdate();
@@ -185,24 +185,24 @@ namespace EXOFiddlerInspector
                 {
                     if (session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") == "0:00:00.000" || session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") == "0:00:00.000")
                     {
-                        session["X-iTTLB"] = "No Data";
+                        session["X-ElapsedTime"] = "No Data";
                     }
                     /*else if (session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff") == "0:00:00.000" || session.Timers.ServerDoneResponse.ToString("yyyy/MM/dd") == "0001/01/01")
                     {
-                        session["X-iTTLB"] = "No Data";
+                        session["X-ElapsedTime"] = "No Data";
                     }*/
                     else
                     {
                         double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds);
                         if (Milliseconds <= 1000)
                         {
-                            session["X-iTTLB"] = Milliseconds + "ms";
+                            session["X-ElapsedTime"] = Milliseconds + "ms";
                         }
                         else
                         {
-                            session["X-iTTLB"] = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalSeconds) + " seconds";
+                            session["X-ElapsedTime"] = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalSeconds) + " seconds";
                         }
-                        //session["X-iTTLB"] = session.oResponse.iTTLB.ToString() + "ms";
+                        //session["X-ElapsedTime"] = session.oResponse.iTTLB.ToString() + "ms";
                     }
                 }
 
