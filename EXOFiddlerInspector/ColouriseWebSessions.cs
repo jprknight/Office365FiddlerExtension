@@ -194,9 +194,14 @@ namespace EXOFiddlerInspector
                     else
                     {
                         double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds);
-                        if (Milliseconds <= 1000)
+
+                        if (Milliseconds < 1000)
                         {
                             session["X-ElapsedTime"] = Milliseconds + "ms";
+                        }
+                        else if (Milliseconds >= 1000 && Milliseconds < 2000)
+                        {
+                            session["X-ElapsedTime"] = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalSeconds) + " second";
                         }
                         else
                         {

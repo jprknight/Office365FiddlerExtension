@@ -142,6 +142,11 @@ namespace EXOFiddlerInspector
             ServerThinkTimeTextbox.Text = txt;
         }
 
+        internal void SetTransmitTimeTextbox(string txt)
+        {
+            TransmitTimeTextbox.Text = txt;
+        }
+
         // Code to write to ResponseAlertTextBox.Text value.
         internal void SetResponseAlertTextBox(string txt)
         {
@@ -439,7 +444,11 @@ namespace EXOFiddlerInspector
                 "HTTP Response Code: " + HTTPResponseCodeTextBox.Text + Environment.NewLine +
                 "Client Begin Request: " + ClientRequestBeginDateTextBox.Text + " " + ClientRequestBeginTimeTextBox.Text + Environment.NewLine +
                 "Client Done Response: " + ClientRequestEndDateTextBox.Text + " " + ClientRequestEndTimeTextBox.Text + Environment.NewLine +
-                //"Elapsed Time: " + ElapsedTimeTextBox.Text + " " + ElapsedTimeCommentTextBox.Text + Environment.NewLine +
+                "Overall Elapsed Time: " + OverallElapsedTextbox.Text + " " + Environment.NewLine +
+                "Server Got Request: " + ServerGotRequestDateTextbox.Text + " " + ServerGotRequestTimeTextbox.Text + Environment.NewLine +
+                "Server Begin Response: " + ServerBeginResponseDateTextbox.Text + " " + ServerBeginResponseTimeTextbox.Text + Environment.NewLine +
+                "Server Done Response: " + ServerDoneResponseDateTextbox.Text + " " + ServerDoneResponseTimeTextbox.Text + Environment.NewLine +
+                "Server Think Time: " + ServerThinkTimeTextbox.Text + " " + Environment.NewLine +
                 "Local Process: " + ResponseProcessTextBox.Text + Environment.NewLine +
                 "Exchange Type: " + ExchangeTypeTextbox.Text + Environment.NewLine +
                 "Response Server: " + ResponseServerTextBox.Text + Environment.NewLine +
@@ -549,6 +558,11 @@ namespace EXOFiddlerInspector
         }
 
         private void ServerResponseDurationLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TransmitLabel_Click(object sender, EventArgs e)
         {
 
         }
