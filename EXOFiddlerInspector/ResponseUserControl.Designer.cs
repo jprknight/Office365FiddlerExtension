@@ -178,14 +178,14 @@
             this.ResponseAlertTextBox.Location = new System.Drawing.Point(131, 148);
             this.ResponseAlertTextBox.Name = "ResponseAlertTextBox";
             this.ResponseAlertTextBox.ReadOnly = true;
-            this.ResponseAlertTextBox.Size = new System.Drawing.Size(294, 20);
+            this.ResponseAlertTextBox.Size = new System.Drawing.Size(278, 20);
             this.ResponseAlertTextBox.TabIndex = 21;
             // 
             // ResponseProcessTextBox
             // 
             this.ResponseProcessTextBox.Location = new System.Drawing.Point(131, 45);
             this.ResponseProcessTextBox.Name = "ResponseProcessTextBox";
-            this.ResponseProcessTextBox.Size = new System.Drawing.Size(294, 20);
+            this.ResponseProcessTextBox.Size = new System.Drawing.Size(278, 20);
             this.ResponseProcessTextBox.TabIndex = 22;
             // 
             // ResponseProcessLabel
@@ -203,7 +203,7 @@
             this.ResponseCommentsRichTextBox.Location = new System.Drawing.Point(6, 174);
             this.ResponseCommentsRichTextBox.Name = "ResponseCommentsRichTextBox";
             this.ResponseCommentsRichTextBox.ReadOnly = true;
-            this.ResponseCommentsRichTextBox.Size = new System.Drawing.Size(419, 125);
+            this.ResponseCommentsRichTextBox.Size = new System.Drawing.Size(403, 125);
             this.ResponseCommentsRichTextBox.TabIndex = 33;
             this.ResponseCommentsRichTextBox.Text = "";
             this.ResponseCommentsRichTextBox.TextChanged += new System.EventHandler(this.ResponseCommentsRichTextBox_TextChanged);
@@ -223,7 +223,7 @@
             this.DataAgeTextBox.Location = new System.Drawing.Point(131, 19);
             this.DataAgeTextBox.Name = "DataAgeTextBox";
             this.DataAgeTextBox.ReadOnly = true;
-            this.DataAgeTextBox.Size = new System.Drawing.Size(294, 20);
+            this.DataAgeTextBox.Size = new System.Drawing.Size(278, 20);
             this.DataAgeTextBox.TabIndex = 27;
             // 
             // ClientRequestBeginDateTextBox
@@ -259,7 +259,7 @@
             this.ResponseServerTextBox.Location = new System.Drawing.Point(131, 96);
             this.ResponseServerTextBox.Name = "ResponseServerTextBox";
             this.ResponseServerTextBox.ReadOnly = true;
-            this.ResponseServerTextBox.Size = new System.Drawing.Size(294, 20);
+            this.ResponseServerTextBox.Size = new System.Drawing.Size(278, 20);
             this.ResponseServerTextBox.TabIndex = 34;
             this.ResponseServerTextBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
@@ -337,7 +337,7 @@
             // 
             // SaveSessionDataButton
             // 
-            this.SaveSessionDataButton.Location = new System.Drawing.Point(303, 305);
+            this.SaveSessionDataButton.Location = new System.Drawing.Point(287, 305);
             this.SaveSessionDataButton.Name = "SaveSessionDataButton";
             this.SaveSessionDataButton.Size = new System.Drawing.Size(122, 23);
             this.SaveSessionDataButton.TabIndex = 44;
@@ -360,7 +360,7 @@
             this.ExchangeTypeTextbox.Location = new System.Drawing.Point(131, 71);
             this.ExchangeTypeTextbox.Name = "ExchangeTypeTextbox";
             this.ExchangeTypeTextbox.ReadOnly = true;
-            this.ExchangeTypeTextbox.Size = new System.Drawing.Size(294, 20);
+            this.ExchangeTypeTextbox.Size = new System.Drawing.Size(278, 20);
             this.ExchangeTypeTextbox.TabIndex = 46;
             // 
             // SessionIDTextbox
@@ -370,7 +370,7 @@
             this.SessionIDTextbox.Name = "SessionIDTextbox";
             this.SessionIDTextbox.ReadOnly = true;
             this.SessionIDTextbox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.SessionIDTextbox.Size = new System.Drawing.Size(70, 20);
+            this.SessionIDTextbox.Size = new System.Drawing.Size(54, 20);
             this.SessionIDTextbox.TabIndex = 47;
             // 
             // SessionIDLabel
@@ -384,7 +384,7 @@
             // 
             // OpenSessionData
             // 
-            this.OpenSessionData.Location = new System.Drawing.Point(175, 305);
+            this.OpenSessionData.Location = new System.Drawing.Point(159, 305);
             this.OpenSessionData.Name = "OpenSessionData";
             this.OpenSessionData.Size = new System.Drawing.Size(122, 23);
             this.OpenSessionData.TabIndex = 49;
@@ -403,7 +403,7 @@
             this.DeveloperSessionGroupBox.Controls.Add(this.ResponseHeadersTextbox);
             this.DeveloperSessionGroupBox.Controls.Add(this.ResponseBodyLabel);
             this.DeveloperSessionGroupBox.Controls.Add(this.ResponseBodyTextbox);
-            this.DeveloperSessionGroupBox.Location = new System.Drawing.Point(452, 0);
+            this.DeveloperSessionGroupBox.Location = new System.Drawing.Point(439, 3);
             this.DeveloperSessionGroupBox.Name = "DeveloperSessionGroupBox";
             this.DeveloperSessionGroupBox.Size = new System.Drawing.Size(397, 295);
             this.DeveloperSessionGroupBox.TabIndex = 54;
@@ -436,7 +436,7 @@
             this.OverallElapsedTextbox.Location = new System.Drawing.Point(57, 18);
             this.OverallElapsedTextbox.Name = "OverallElapsedTextbox";
             this.OverallElapsedTextbox.ReadOnly = true;
-            this.OverallElapsedTextbox.Size = new System.Drawing.Size(84, 20);
+            this.OverallElapsedTextbox.Size = new System.Drawing.Size(68, 20);
             this.OverallElapsedTextbox.TabIndex = 58;
             // 
             // ServerGotRequestLabel
@@ -501,7 +501,7 @@
             this.ServerThinkTimeTextbox.Location = new System.Drawing.Point(56, 19);
             this.ServerThinkTimeTextbox.Name = "ServerThinkTimeTextbox";
             this.ServerThinkTimeTextbox.ReadOnly = true;
-            this.ServerThinkTimeTextbox.Size = new System.Drawing.Size(85, 20);
+            this.ServerThinkTimeTextbox.Size = new System.Drawing.Size(69, 20);
             this.ServerThinkTimeTextbox.TabIndex = 68;
             this.ServerThinkTimeTextbox.TextChanged += new System.EventHandler(this.ServerResponseDurationTextbox_TextChanged);
             // 
@@ -516,7 +516,7 @@
             this.groupBox1.Controls.Add(this.ClientRequestEndDateTextBox);
             this.groupBox1.Location = new System.Drawing.Point(9, 29);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(437, 77);
+            this.groupBox1.Size = new System.Drawing.Size(424, 77);
             this.groupBox1.TabIndex = 69;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Overall Elapsed Time";
@@ -527,7 +527,7 @@
             this.groupBox4.Controls.Add(this.OverallElapsedTextbox);
             this.groupBox4.Location = new System.Drawing.Point(284, 13);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(147, 52);
+            this.groupBox4.Size = new System.Drawing.Size(132, 52);
             this.groupBox4.TabIndex = 74;
             this.groupBox4.TabStop = false;
             // 
@@ -542,7 +542,7 @@
             this.groupBox2.Controls.Add(this.ServerGotRequestLabel);
             this.groupBox2.Location = new System.Drawing.Point(9, 112);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(437, 75);
+            this.groupBox2.Size = new System.Drawing.Size(424, 75);
             this.groupBox2.TabIndex = 70;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Server Think Time";
@@ -553,7 +553,7 @@
             this.groupBox5.Controls.Add(this.ServerThinkTimeLabel);
             this.groupBox5.Location = new System.Drawing.Point(284, 13);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(147, 52);
+            this.groupBox5.Size = new System.Drawing.Size(132, 52);
             this.groupBox5.TabIndex = 74;
             this.groupBox5.TabStop = false;
             // 
@@ -608,7 +608,7 @@
             // 
             this.XHostIPTextbox.Location = new System.Drawing.Point(131, 122);
             this.XHostIPTextbox.Name = "XHostIPTextbox";
-            this.XHostIPTextbox.Size = new System.Drawing.Size(294, 20);
+            this.XHostIPTextbox.Size = new System.Drawing.Size(278, 20);
             this.XHostIPTextbox.TabIndex = 72;
             // 
             // groupBox3
@@ -630,7 +630,7 @@
             this.groupBox3.Controls.Add(this.ExchangeTypeTextbox);
             this.groupBox3.Location = new System.Drawing.Point(9, 247);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(437, 337);
+            this.groupBox3.Size = new System.Drawing.Size(424, 337);
             this.groupBox3.TabIndex = 73;
             this.groupBox3.TabStop = false;
             // 
@@ -648,7 +648,7 @@
             // 
             this.TransmitTimeTextbox.Location = new System.Drawing.Point(340, 19);
             this.TransmitTimeTextbox.Name = "TransmitTimeTextbox";
-            this.TransmitTimeTextbox.Size = new System.Drawing.Size(85, 20);
+            this.TransmitTimeTextbox.Size = new System.Drawing.Size(69, 20);
             this.TransmitTimeTextbox.TabIndex = 74;
             // 
             // TransmitGroupBox
@@ -660,7 +660,7 @@
             this.TransmitGroupBox.Controls.Add(this.ServerDoneResponseLabel);
             this.TransmitGroupBox.Location = new System.Drawing.Point(9, 193);
             this.TransmitGroupBox.Name = "TransmitGroupBox";
-            this.TransmitGroupBox.Size = new System.Drawing.Size(437, 48);
+            this.TransmitGroupBox.Size = new System.Drawing.Size(424, 48);
             this.TransmitGroupBox.TabIndex = 74;
             this.TransmitGroupBox.TabStop = false;
             this.TransmitGroupBox.Text = "Transmit Time Back to Outlook or Browser (OWA)";
