@@ -377,7 +377,7 @@ namespace EXOFiddlerInspector
             // decode sessions to make sure request/response body can be fully read by logic checks.
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
-            
+
             // Clear any previous data.
             _displayControl.SetResponseAlertTextBox("");
             _displayControl.SetResponseCommentsRichTextboxText("");
@@ -426,26 +426,44 @@ namespace EXOFiddlerInspector
             {
                 _displayControl.SetClientRequestBeginDateTextBox("No Data");
                 _displayControl.SetClientRequestBeginTimeTextBox("No Data");
-                
+
                 _displayControl.SetClientRequestEndDateTextBox("No Data");
                 _displayControl.SetClientRequestEndTimeTextBox("No Data");
 
                 _displayControl.SetOverallElapsedTextbox("No Data");
-
-                _displayControl.SetTransmitTimeTextbox("No Data");
 
             }
             else
             {
                 _displayControl.SetClientRequestBeginDateTextBox(this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd"));
                 _displayControl.SetClientRequestBeginTimeTextBox(this.session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff"));
-                
+
                 _displayControl.SetClientRequestEndDateTextBox(this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd"));
                 _displayControl.SetClientRequestEndTimeTextBox(this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff"));
 
                 _displayControl.SetOverallElapsedTextbox(Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms");
 
-                double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
+                _displayControl.SetResponseAlertTextBox("Long running session!");
+                _displayControl.SetResponseCommentsRichTextboxText("Found a long running session." +
+                    Environment.NewLine +
+                    Environment.NewLine +
+                    "What is Server Think Time? The time the server spent processing the request. (ServerBeginResponse - ServerGotRequest)." +
+                    Environment.NewLine +
+                    "The rest of the time is the time spent sending the response back to the client application which made the request." +
+                    Environment.NewLine +
+                    Environment.NewLine +
+                    "ClientBeginRequest == Fiddler is aware of when the traffic is initially passed to it as a proxy server." +
+                    Environment.NewLine +
+                    "ClientDoneRequest == Fiddler is aware of when it has finished sending the server response back to the application which made the request." +
+                    Environment.NewLine +
+                    "ServerGotRequest == Fiddler is aware of when the server received the request." +
+                    Environment.NewLine +
+                    "ServerBeginResponse == Fiddler is aware of when the server started to send the response." +
+                    Environment.NewLine +
+                    "ServerDoneResponse == Fiddler is aware of when it was was able to complete sending the server response back to the application which made the request.");
+
+
+                /*
                 if (ClientMilliseconds <= 1000)
                 {
                     _displayControl.SetOverallElapsedTextbox(ClientMilliseconds + "ms");
@@ -462,43 +480,31 @@ namespace EXOFiddlerInspector
                     {
                         _displayControl.SetTransmitTimeTextbox(Math.Round((this.session.Timers.ServerDoneResponse - this.session.Timers.ServerBeginResponse).TotalSeconds) + "s");
                     }
-                    
-                    _displayControl.SetResponseAlertTextBox("Long running session!");
-                    _displayControl.SetResponseCommentsRichTextboxText("Found a long running session." + 
-                        Environment.NewLine + 
-                        Environment.NewLine +
-                        "What is Server Think Time? The time the server spent processing the request. (ServerBeginResponse - ServerGotRequest)." +
-                        Environment.NewLine +
-                        "The rest of the time is the time spent sending the response back to the client application which made the request." +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        "ClientBeginRequest == Fiddler is aware of when the traffic is initially passed to it as a proxy server." + 
-                        Environment.NewLine +
-                        "ClientDoneRequest == Fiddler is aware of when it has finished sending the server response back to the application which made the request." + 
-                        Environment.NewLine +
-                        "ServerGotRequest == Fiddler is aware of when the server received the request." + 
-                        Environment.NewLine +
-                        "ServerBeginResponse == Fiddler is aware of when the server started to send the response." + 
-                        Environment.NewLine +
-                        "ServerDoneResponse == Fiddler is aware of when it was was able to complete sending the server response back to the application which made the request.");
-                    
                 }
+                */
             }
 
             /// <remarks>
             /// Server Got and Done Response. -- Server Think Time.
             /// </remarks>
             /// 
-            if (this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff") == "0:00:00.000" || this.session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff") == "0:00:00.000")
+            if (this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff") == "0:00:00.000" ||
+                this.session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff") == "0:00:00.000" ||
+                this.session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff") == "0:00:00.000")
             {
                 // No data on the session to write or calculate on.
                 _displayControl.SetServerGotRequestDateTextbox("No Data");
                 _displayControl.SetServerGotRequestTimeTextbox("No Data");
 
+                _displayControl.SetServerBeginResponseDateTextbox("No Data");
+                _displayControl.SetServerBeginResponseTimeTextbox("No Data");
+
                 _displayControl.SetServerDoneResponseDateTextbox("No Data");
                 _displayControl.SetServerDoneResponseTimeTextbox("No Data");
 
                 _displayControl.SetServerThinkTimeTextbox("No Data");
+
+                _displayControl.SetTransmitTimeTextbox("No Data");
             }
             else
             {
@@ -506,11 +512,35 @@ namespace EXOFiddlerInspector
                 _displayControl.SetServerGotRequestDateTextbox(this.session.Timers.ServerGotRequest.ToString("yyyy/MM/dd"));
                 _displayControl.SetServerGotRequestTimeTextbox(this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff"));
 
+                _displayControl.SetServerBeginResponseDateTextbox(this.session.Timers.ServerBeginResponse.ToString("yyyy/MM/dd"));
+                _displayControl.SetServerBeginResponseTimeTextbox(this.session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff"));
+
                 _displayControl.SetServerDoneResponseDateTextbox(this.session.Timers.ServerDoneResponse.ToString("yyyy/MM/dd"));
                 _displayControl.SetServerDoneResponseTimeTextbox(this.session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff"));
 
-                //_displayControl.SetServerThinkTimeTextbox(Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds) + "ms");
+                _displayControl.SetServerThinkTimeTextbox(Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds) + "ms");
 
+                _displayControl.SetTransmitTimeTextbox(Math.Round((this.session.Timers.ServerDoneResponse - this.session.Timers.ServerBeginResponse).TotalMilliseconds) + "ms");
+
+                _displayControl.SetResponseAlertTextBox("Long running session!");
+                _displayControl.SetResponseCommentsRichTextboxText("Found a long running session." + Environment.NewLine +
+                    Environment.NewLine +
+                    "What is Server Think Time? The time the server spent processing the request. (ServerBeginResponse - ServerGotRequest)." +
+                    Environment.NewLine +
+                    "The rest of the time is the time spent sending the response back to the client application which made the request." +
+                    Environment.NewLine +
+                    Environment.NewLine +
+                    "ClientBeginRequest == Fiddler is aware of when the traffic is initially passed to it as a proxy server." +
+                    Environment.NewLine +
+                    "ClientDoneRequest == Fiddler is aware of when it has finished sending the server response back to the application which made the request." +
+                    Environment.NewLine +
+                    "ServerGotRequest == Fiddler is aware of when the server received the request." +
+                    Environment.NewLine +
+                    "ServerBeginResponse == Fiddler is aware of when the server started to send the response." +
+                    Environment.NewLine +
+                    "ServerDoneResponse == Fiddler is aware of when it was was able to complete sending the server response back to the application which made the request.");
+
+                /*
                 double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
                 if (ServerMilliseconds <= 1000)
                 {
@@ -518,29 +548,11 @@ namespace EXOFiddlerInspector
                 }
                 else
                 {
-                    _displayControl.SetResponseAlertTextBox("Long running EXO response!");
-                    _displayControl.SetResponseCommentsRichTextboxText("Found a long running session." + Environment.NewLine + 
-                        Environment.NewLine +
-                        "What is Server Think Time? The time the server spent processing the request. (ServerBeginResponse - ServerGotRequest)." + 
-                        Environment.NewLine +
-                        "The rest of the time is the time spent sending the response back to the client application which made the request." + 
-                        Environment.NewLine + 
-                        Environment.NewLine +
-                        "ClientBeginRequest == Fiddler is aware of when the traffic is initially passed to it as a proxy server." + 
-                        Environment.NewLine +
-                        "ClientDoneRequest == Fiddler is aware of when it has finished sending the server response back to the application which made the request." + 
-                        Environment.NewLine +
-                        "ServerGotRequest == Fiddler is aware of when the server received the request." + 
-                        Environment.NewLine +
-                        "ServerBeginResponse == Fiddler is aware of when the server started to send the response." + 
-                        Environment.NewLine +
-                        "ServerDoneResponse == Fiddler is aware of when it was was able to complete sending the server response back to the application which made the request.");
+                    
                     _displayControl.SetServerThinkTimeTextbox(Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalSeconds) + "s");
                 }
+                */
             }
-
-            _displayControl.SetServerBeginResponseDateTextbox(this.session.Timers.ServerBeginResponse.ToString("yyyy/MM/dd"));
-            _displayControl.SetServerBeginResponseTimeTextbox(this.session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff"));
 
             _displayControl.SetXHostIPTextBoxText(this.session["X-HostIP"]);
 

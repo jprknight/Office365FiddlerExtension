@@ -31,9 +31,10 @@ namespace EXOFiddlerInspector
         internal Session session { get; set; }
 
         public bool bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-        public bool bResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
+        public bool bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
         public bool bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
         public bool bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
+        public bool bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
         public bool bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
         public bool bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
 
@@ -162,17 +163,31 @@ namespace EXOFiddlerInspector
             }
 
             /// <remarks>
-            /// Add in the Response Time column. Due to these columns all being added as in with priority of 2,
+            /// Add in the Elapsed Time column. Due to these columns all being added as in with priority of 2,
             /// they are added into the interface in this reverse order.
             /// </remarks>
             /// 
             /// Refresh these variables now to take account of first load code.
             this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-            this.bResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
+            this.bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
 
-            if (bResponseTimeColumnEnabled && bExtensionEnabled)
+            if (bElapsedTimeColumnEnabled && bExtensionEnabled)
             {
                 calledColumnsUI.EnsureElapsedTimeColumn();
+            }
+
+            /// <remarks>
+            /// Add in the X-HostIP column. Due to these columns all being added as in with priority of 2,
+            /// they are added into the interface in this reverse order.
+            /// </remarks>
+            /// 
+            /// Refresh these variables now to take account of first load code.
+            this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+            this.bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
+
+            if (bXHostIPColumnEnabled && bExtensionEnabled)
+            {
+                calledColumnsUI.EnsureXHostIPColumn();
             }
 
             FiddlerApplication.UI.lvSessions.BeginUpdate();
@@ -180,8 +195,8 @@ namespace EXOFiddlerInspector
             foreach (var session in e.arrSessions)
             {
 
-                // Populate the ResponseTime column on load SAZ, if the column is enabled, and the extension is enabled.
-                if (bResponseTimeColumnEnabled && bExtensionEnabled)
+                // Populate the ElapsedTime column on load SAZ, if the column is enabled, and the extension is enabled.
+                if (bElapsedTimeColumnEnabled && bExtensionEnabled)
                 {
                     if (session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") == "0:00:00.000" || session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") == "0:00:00.000")
                     {

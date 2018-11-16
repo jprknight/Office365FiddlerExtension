@@ -13,11 +13,13 @@ namespace EXOFiddlerInspector
         private bool bElapsedTimeColumnCreated = false;
         private bool bResponseServerColumnCreated = false;
         private bool bExchangeTypeColumnCreated = false;
+        private bool bXHostIPColumnCreated = false;
 
         public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
         public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
         public Boolean bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
         public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
+        public Boolean bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
 
         internal Session session { get; set; }
 
@@ -51,6 +53,19 @@ namespace EXOFiddlerInspector
             }
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 2, 130, "X-ResponseServer");
             bResponseServerColumnCreated = true;
+        }
+
+        /// <summary>
+        ///  Ensure the X-HostIP column has been created, return if it has.
+        /// </summary>
+        public void EnsureXHostIPColumn()
+        {
+            if (bXHostIPColumnCreated)
+            {
+                return;
+            }
+            FiddlerApplication.UI.lvSessions.AddBoundColumn("X-HostIP", 2, 110, "X-HostIP");
+            bXHostIPColumnCreated = true;
         }
 
         /// <summary>
@@ -228,7 +243,7 @@ namespace EXOFiddlerInspector
             {
                 this.SetResponseServer(this.session);
             }
-
+            
             /////////////////
             //
             // For some reason setting the column ordering when adding the columns did not work.
@@ -264,6 +279,11 @@ namespace EXOFiddlerInspector
                 if (bResponseServerColumnEnabled && bExtensionEnabled)
                 {
                     FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
+                }
+
+                if (bXHostIPColumnEnabled && bExtensionEnabled)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("X-HostIP", 2, -1);
                 }
 
                 if (bElapsedTimeColumnEnabled && bExtensionEnabled)
@@ -331,6 +351,23 @@ namespace EXOFiddlerInspector
             else
             {
                 Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs NOT Adding Exchange Type Column.");
+            }
+            ///
+            /////////////////
+
+            /////////////////
+            /// <remarks>
+            /// Call to function in ColumnsUI.cs to add Exchange Type column if the menu item is checked and if the extension is enabled. 
+            /// </remarks>
+            if (bXHostIPColumnEnabled && bExtensionEnabled)
+            {
+
+                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs Adding X-HostIP Column.");
+                this.EnsureXHostIPColumn();
+            }
+            else
+            {
+                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs NOT Adding X-HostIP Column.");
             }
             ///
             /////////////////

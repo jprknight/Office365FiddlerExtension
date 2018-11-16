@@ -449,6 +449,7 @@ namespace EXOFiddlerInspector
                 "Server Begin Response: " + ServerBeginResponseDateTextbox.Text + " " + ServerBeginResponseTimeTextbox.Text + Environment.NewLine +
                 "Server Done Response: " + ServerDoneResponseDateTextbox.Text + " " + ServerDoneResponseTimeTextbox.Text + Environment.NewLine +
                 "Server Think Time: " + ServerThinkTimeTextbox.Text + " " + Environment.NewLine +
+                "Transmit Time Back to Outlook or Browser (OWA): " + TransmitTimeTextbox.Text + Environment.NewLine + 
                 "Local Process: " + ResponseProcessTextBox.Text + Environment.NewLine +
                 "Exchange Type: " + ExchangeTypeTextbox.Text + Environment.NewLine +
                 "Response Server: " + ResponseServerTextBox.Text + Environment.NewLine +
