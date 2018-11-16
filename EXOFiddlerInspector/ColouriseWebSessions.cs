@@ -148,6 +148,20 @@ namespace EXOFiddlerInspector
             }
 
             /// <remarks>
+            /// Add in the X-HostIP column. Due to these columns all being added as in with priority of 2,
+            /// they are added into the interface in this reverse order.
+            /// </remarks>
+            /// 
+            /// Refresh these variables now to take account of first load code.
+            this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+            this.bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
+
+            if (bXHostIPColumnEnabled && bExtensionEnabled)
+            {
+                calledColumnsUI.EnsureXHostIPColumn();
+            }
+
+            /// <remarks>
             /// Add in the Exchange Type column. Due to these columns all being added as in with priority of 2,
             /// they are added into the interface in this reverse order.
             /// </remarks>
@@ -174,20 +188,6 @@ namespace EXOFiddlerInspector
             if (bElapsedTimeColumnEnabled && bExtensionEnabled)
             {
                 calledColumnsUI.EnsureElapsedTimeColumn();
-            }
-
-            /// <remarks>
-            /// Add in the X-HostIP column. Due to these columns all being added as in with priority of 2,
-            /// they are added into the interface in this reverse order.
-            /// </remarks>
-            /// 
-            /// Refresh these variables now to take account of first load code.
-            this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-            this.bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
-
-            if (bXHostIPColumnEnabled && bExtensionEnabled)
-            {
-                calledColumnsUI.EnsureXHostIPColumn();
             }
 
             FiddlerApplication.UI.lvSessions.BeginUpdate();

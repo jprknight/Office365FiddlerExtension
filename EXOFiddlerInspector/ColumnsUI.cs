@@ -276,14 +276,14 @@ namespace EXOFiddlerInspector
                     FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 2, -1);
                 }
 
-                if (bResponseServerColumnEnabled && bExtensionEnabled)
-                {
-                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
-                }
-
                 if (bXHostIPColumnEnabled && bExtensionEnabled)
                 {
                     FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("X-HostIP", 2, -1);
+                }
+
+                if (bResponseServerColumnEnabled && bExtensionEnabled)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
                 }
 
                 if (bElapsedTimeColumnEnabled && bExtensionEnabled)
@@ -342,23 +342,6 @@ namespace EXOFiddlerInspector
             /// <remarks>
             /// Call to function in ColumnsUI.cs to add Exchange Type column if the menu item is checked and if the extension is enabled. 
             /// </remarks>
-            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
-            {
-
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs Adding Exchange Type Column.");
-                this.EnsureExchangeTypeColumn();
-            }
-            else
-            {
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs NOT Adding Exchange Type Column.");
-            }
-            ///
-            /////////////////
-
-            /////////////////
-            /// <remarks>
-            /// Call to function in ColumnsUI.cs to add Exchange Type column if the menu item is checked and if the extension is enabled. 
-            /// </remarks>
             if (bXHostIPColumnEnabled && bExtensionEnabled)
             {
 
@@ -368,6 +351,23 @@ namespace EXOFiddlerInspector
             else
             {
                 Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs NOT Adding X-HostIP Column.");
+            }
+            ///
+            /////////////////
+
+            /////////////////
+            /// <remarks>
+            /// Call to function in ColumnsUI.cs to add Exchange Type column if the menu item is checked and if the extension is enabled. 
+            /// </remarks>
+            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
+            {
+
+                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs Adding Exchange Type Column.");
+                this.EnsureExchangeTypeColumn();
+            }
+            else
+            {
+                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs NOT Adding Exchange Type Column.");
             }
             ///
             /////////////////
