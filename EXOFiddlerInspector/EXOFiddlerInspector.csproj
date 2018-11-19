@@ -31,11 +31,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Fiddler">
-      <HintPath>..\..\..\..\AppData\Local\Programs\Fiddler\Fiddler.exe</HintPath>
+      <HintPath>C:\Users\brandev\AppData\Local\Programs\Fiddler\Fiddler.exe</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.8.1\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -74,7 +81,7 @@
     <Compile Include="ResponseUserControl.Designer.cs">
       <DependentUpon>ResponseUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Telemetry.cs" />
+    <Compile Include="Services\TelemetryService.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -92,6 +99,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -103,6 +111,12 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetPath)" "%25userprofile%25\AppData\Local\Programs\Fiddler\Scripts\$(TargetFilename)"
-copy "$(TargetPath)" "%25userprofile%25\AppData\Local\Programs\Fiddler\Inspectors\$(TargetFilename)"</PostBuildEvent>
+copy "$(TargetPath)" "%25userprofile%25\AppData\Local\Programs\Fiddler\Inspectors\$(TargetFilename)"
+
+copy "$(TargetDir)\Microsoft.ApplicationInsights.dll" "%25userprofile%25\AppData\Local\Programs\Fiddler\Scripts\Microsoft.ApplicationInsights.dll"
+copy "$(TargetDir)\Microsoft.ApplicationInsights.xml" "%25userprofile%25\AppData\Local\Programs\Fiddler\Scripts\Microsoft.ApplicationInsights.xml"
+
+copy "$(TargetDir)\Microsoft.ApplicationInsights.dll" "%25userprofile%25\AppData\Local\Programs\Fiddler\Inspectors\Microsoft.ApplicationInsights.dll"
+copy "$(TargetDir)\Microsoft.ApplicationInsights.xml" "%25userprofile%25\AppData\Local\Programs\Fiddler\Inspectors\Microsoft.ApplicationInsights.xml"</PostBuildEvent>
   </PropertyGroup>
 </Project>
