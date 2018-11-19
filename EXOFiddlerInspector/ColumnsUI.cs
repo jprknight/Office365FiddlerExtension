@@ -20,6 +20,7 @@ namespace EXOFiddlerInspector
         public Boolean bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
         public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
         public Boolean bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
+        public int iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
 
         internal Session session { get; set; }
 
@@ -316,7 +317,10 @@ namespace EXOFiddlerInspector
         public void OnLoad()
         {
             // Kill extension if not enabled.
-            if (!(bExtensionEnabled)) { return; }
+            if (!(bExtensionEnabled))
+            {
+                if (iExecutionCount > 0) { return; }
+            }
 
             /////////////////
             /// <remarks>

@@ -15,11 +15,12 @@ namespace EXOFiddlerInspector
     {
         // These application preferences are actually set in ColouriseWebSessions.cs, pulling them into variables for use here.
         public bool bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-        public bool bResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
+        public bool bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
         public bool bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
         public bool bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
         public bool bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
         public bool bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
+        public int iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
 
         public Boolean Developer;
 
@@ -50,7 +51,10 @@ namespace EXOFiddlerInspector
         public override void AddToTab(TabPage o)
         {
             // Kill extension if not enabled.
-            if (!(bExtensionEnabled)) { return; }
+            if (!(bExtensionEnabled))
+            {
+                if (iExecutionCount > 0) { return; }
+            }
 
             //throw new System.NotImplementedException();
         }
@@ -63,7 +67,10 @@ namespace EXOFiddlerInspector
         public override void AssignSession(Session oS)
         {
             // Kill extension if not enabled.
-            if (!(bExtensionEnabled)) { return; }
+            if (!(bExtensionEnabled))
+            {
+                if (iExecutionCount > 0) { return; }
+            }
 
             this.session = oS;
 
@@ -125,7 +132,10 @@ namespace EXOFiddlerInspector
         public override void AddToTab(TabPage o)
         {
             // Kill extension if not enabled.
-            if (!(bExtensionEnabled)) { return; }
+            if (!(bExtensionEnabled))
+            {
+                if (iExecutionCount > 0) { return; }
+            }
 
             /////////////////////////////
             //
@@ -170,7 +180,10 @@ namespace EXOFiddlerInspector
         public void SetSessionType(Session oS)
         {
             // Kill extension if not enabled.
-            if (!(bExtensionEnabled)) { return; }
+            if (!(bExtensionEnabled))
+            {
+                if (iExecutionCount > 0) { return; }
+            }
 
             if (Developer)
             {
@@ -204,7 +217,10 @@ namespace EXOFiddlerInspector
         public void SetRequestValues(Session session)
         {
             // Kill extension if not enabled.
-            if (!(bExtensionEnabled)) { return; }
+            if (!(bExtensionEnabled))
+            {
+                if (iExecutionCount > 0) { return; }
+            }
 
             this.session = session;
 
@@ -346,7 +362,10 @@ namespace EXOFiddlerInspector
             set
             {
                 // Kill extension if not enabled.
-                if (!(bExtensionEnabled)) { return; }
+                if (!(bExtensionEnabled))
+                {
+                    if (iExecutionCount > 0) { return; }
+                }
 
                 SetResponseValues(this.session);
             }
@@ -360,7 +379,10 @@ namespace EXOFiddlerInspector
         public void SetResponseValues(Session oS)
         {
             // Kill extension if not enabled.
-            if (!(bExtensionEnabled)) { return; }
+            if (!(bExtensionEnabled))
+            {
+                if (iExecutionCount > 0) { return; }
+            }
 
             Preferences calledPreferences = new Preferences();
 
@@ -1506,7 +1528,10 @@ namespace EXOFiddlerInspector
         public void SaveSessionData(Session oS)
         {
             // Kill extension if not enabled.
-            if (!(bExtensionEnabled)) { return; }
+            if (!(bExtensionEnabled))
+            {
+                if (iExecutionCount > 0) { return; }
+            }
 
             this.session = oS;
 
@@ -1520,7 +1545,10 @@ namespace EXOFiddlerInspector
         public override void AddToTab(TabPage o)
         {
             // Kill extension if not enabled.
-            if (!(bExtensionEnabled)) { return; }
+            if (!(bExtensionEnabled))
+            {
+                if (iExecutionCount > 0) { return; }
+            }
 
             _displayControl = new ResponseUserControl();
             o.Text = "Exchange Online";

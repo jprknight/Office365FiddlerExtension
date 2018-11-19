@@ -37,6 +37,7 @@ namespace EXOFiddlerInspector
         public bool bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
         public bool bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
         public bool bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
+        public int iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
 
         private string searchTerm;
         private string RedirectAddress;
@@ -52,21 +53,22 @@ namespace EXOFiddlerInspector
         //
         public void OnLoad()
         {
+            calledMenuUI.FirstRunEnableMenuOptions();
+
             // Kill extension if not enabled.
-            if (!(bExtensionEnabled)) { return; }
+            if (!(bExtensionEnabled))
+            {
+                if (iExecutionCount > 0) { return; }
+            }
 
             /// <remarks>
             /// Check for update. Do this first as we alter the Exchange Online menu title according to
             /// whether an update is available.
             /// </remarks>
-            if (bExtensionEnabled)
-            {
-                // Check for app update.
-                CheckForAppUpdate calledCheckForAppUpdate = new CheckForAppUpdate();
-                calledCheckForAppUpdate.CheckForUpdate();
-            }
-
-            calledMenuUI.FirstRunEnableMenuOptions();
+            
+            // Check for app update.
+            CheckForAppUpdate calledCheckForAppUpdate = new CheckForAppUpdate();
+            calledCheckForAppUpdate.CheckForUpdate();
 
             // Developer list is actually set in Preferences.cs.
             List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
@@ -112,14 +114,12 @@ namespace EXOFiddlerInspector
 
             /////////////////
             /// <remarks>
-            /// Call function to start LoadSAZ only if the extension is enabled.
+            /// Call function to start LoadSAZ.
             /// </remarks>
             /// 
 
-            if (bExtensionEnabled)
-            {
-                FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
-            }
+            FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
+            
             ///
             /////////////////
         }
@@ -140,8 +140,7 @@ namespace EXOFiddlerInspector
             /// they are added into the interface in this reverse order.
             /// </remarks>
 
-            /// Refresh these variables now to take account of first load code.
-            this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+            /// Refresh these variable now to take account of first load code.
             this.bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
 
             if (bResponseServerColumnEnabled)
@@ -169,8 +168,7 @@ namespace EXOFiddlerInspector
             /// </remarks>
             /// 
 
-            /// Refresh these variables now to take account of first load code.
-            this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+            /// Refresh these variable now to take account of first load code.
             this.bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
 
             if (bExchangeTypeColumnEnabled)
@@ -184,7 +182,6 @@ namespace EXOFiddlerInspector
             /// </remarks>
             /// 
             /// Refresh these variables now to take account of first load code.
-            this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
             this.bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
 
             if (bElapsedTimeColumnEnabled)
@@ -241,11 +238,8 @@ namespace EXOFiddlerInspector
                 }
 
                 // Colourise sessions on load SAZ.
-                if (bExtensionEnabled)
-                {
-                    OnPeekAtResponseHeaders(session); //Run whatever function you use in IAutoTamper
-                    session.RefreshUI();
-                }
+                OnPeekAtResponseHeaders(session); //Run whatever function you use in IAutoTamper
+                session.RefreshUI();
             }
             FiddlerApplication.UI.lvSessions.EndUpdate();
         }
