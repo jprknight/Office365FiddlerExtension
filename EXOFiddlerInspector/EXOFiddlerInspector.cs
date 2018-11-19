@@ -127,7 +127,6 @@ namespace EXOFiddlerInspector
             //
             // Before we go ahead and run the add tab code work out if 
             // the user is a developer or not.
-
             // Developer list is actually set in Preferences.cs.
             Preferences calledPreferences = new Preferences();
             List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
@@ -369,6 +368,8 @@ namespace EXOFiddlerInspector
         // Function which analyses request/response data to provide additional feedback.
         public void SetResponseValues(Session oS)
         {
+            Preferences calledPreferences = new Preferences();
+
             // create this.session for use everywhere in code.
             this.session = oS;
 
@@ -441,47 +442,38 @@ namespace EXOFiddlerInspector
                 _displayControl.SetClientRequestEndDateTextBox(this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd"));
                 _displayControl.SetClientRequestEndTimeTextBox(this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff"));
 
-                _displayControl.SetOverallElapsedTextbox(Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms");
+                double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
 
-                _displayControl.SetResponseAlertTextBox("Long running session!");
-                _displayControl.SetResponseCommentsRichTextboxText("Found a long running session." +
-                    Environment.NewLine +
-                    Environment.NewLine +
-                    "What is Server Think Time? The time the server spent processing the request. (ServerBeginResponse - ServerGotRequest)." +
-                    Environment.NewLine +
-                    "The rest of the time is the time spent sending the response back to the client application which made the request." +
-                    Environment.NewLine +
-                    Environment.NewLine +
-                    "ClientBeginRequest == Fiddler is aware of when the traffic is initially passed to it as a proxy server." +
-                    Environment.NewLine +
-                    "ClientDoneRequest == Fiddler is aware of when it has finished sending the server response back to the application which made the request." +
-                    Environment.NewLine +
-                    "ServerGotRequest == Fiddler is aware of when the server received the request." +
-                    Environment.NewLine +
-                    "ServerBeginResponse == Fiddler is aware of when the server started to send the response." +
-                    Environment.NewLine +
-                    "ServerDoneResponse == Fiddler is aware of when it was was able to complete sending the server response back to the application which made the request.");
+                _displayControl.SetOverallElapsedTextbox(ClientMilliseconds + "ms");
 
+                /// <remarks>
+                /// Notify on slow running session with threshold pulled from Preferences.cs.
+                /// </remarks>
+                /// 
+                int SlowRunningSessionThreshold = calledPreferences.GetSlowRunningSessionThreshold();
 
-                /*
-                if (ClientMilliseconds <= 1000)
+                if (ClientMilliseconds > SlowRunningSessionThreshold)
                 {
-                    _displayControl.SetOverallElapsedTextbox(ClientMilliseconds + "ms");
+                    _displayControl.SetResponseAlertTextBox("Long running session!");
+                    _displayControl.SetResponseCommentsRichTextboxText("Found a long running session." +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        "What is Server Think Time? The time the server spent processing the request. (ServerBeginResponse - ServerGotRequest)." +
+                        Environment.NewLine +
+                        "The rest of the time is the time spent sending the response back to the client application which made the request." +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        "ClientBeginRequest == Fiddler is aware of when the traffic is initially passed to it as a proxy server." +
+                        Environment.NewLine +
+                        "ClientDoneRequest == Fiddler is aware of when it has finished sending the server response back to the application which made the request." +
+                        Environment.NewLine +
+                        "ServerGotRequest == Fiddler is aware of when the server received the request." +
+                        Environment.NewLine +
+                        "ServerBeginResponse == Fiddler is aware of when the server started to send the response." +
+                        Environment.NewLine +
+                        "ServerDoneResponse == Fiddler is aware of when it was was able to complete sending the server response back to the application which made the request.");
                 }
-                else
-                {
-                    _displayControl.SetOverallElapsedTextbox(Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalSeconds) + "s");
-                    double TransmitMilliseconds = Math.Round((this.session.Timers.ServerDoneResponse - this.session.Timers.ServerBeginResponse).TotalMilliseconds);
-                    if (TransmitMilliseconds <= 1000)
-                    {
-                        _displayControl.SetTransmitTimeTextbox(TransmitMilliseconds + "ms");
-                    }
-                    else
-                    {
-                        _displayControl.SetTransmitTimeTextbox(Math.Round((this.session.Timers.ServerDoneResponse - this.session.Timers.ServerBeginResponse).TotalSeconds) + "s");
-                    }
-                }
-                */
+                
             }
 
             /// <remarks>
@@ -518,40 +510,39 @@ namespace EXOFiddlerInspector
                 _displayControl.SetServerDoneResponseDateTextbox(this.session.Timers.ServerDoneResponse.ToString("yyyy/MM/dd"));
                 _displayControl.SetServerDoneResponseTimeTextbox(this.session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff"));
 
-                _displayControl.SetServerThinkTimeTextbox(Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds) + "ms");
+                double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
+
+                _displayControl.SetServerThinkTimeTextbox(ServerMilliseconds + "ms");
 
                 _displayControl.SetTransmitTimeTextbox(Math.Round((this.session.Timers.ServerDoneResponse - this.session.Timers.ServerBeginResponse).TotalMilliseconds) + "ms");
 
-                _displayControl.SetResponseAlertTextBox("Long running session!");
-                _displayControl.SetResponseCommentsRichTextboxText("Found a long running session." + Environment.NewLine +
-                    Environment.NewLine +
-                    "What is Server Think Time? The time the server spent processing the request. (ServerBeginResponse - ServerGotRequest)." +
-                    Environment.NewLine +
-                    "The rest of the time is the time spent sending the response back to the client application which made the request." +
-                    Environment.NewLine +
-                    Environment.NewLine +
-                    "ClientBeginRequest == Fiddler is aware of when the traffic is initially passed to it as a proxy server." +
-                    Environment.NewLine +
-                    "ClientDoneRequest == Fiddler is aware of when it has finished sending the server response back to the application which made the request." +
-                    Environment.NewLine +
-                    "ServerGotRequest == Fiddler is aware of when the server received the request." +
-                    Environment.NewLine +
-                    "ServerBeginResponse == Fiddler is aware of when the server started to send the response." +
-                    Environment.NewLine +
-                    "ServerDoneResponse == Fiddler is aware of when it was was able to complete sending the server response back to the application which made the request.");
+                int SlowRunningSessionThreshold = calledPreferences.GetSlowRunningSessionThreshold();
 
-                /*
-                double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
-                if (ServerMilliseconds <= 1000)
+                if (ServerMilliseconds > SlowRunningSessionThreshold)
                 {
-                    _displayControl.SetServerThinkTimeTextbox(ServerMilliseconds + "ms");
+                    _displayControl.SetResponseAlertTextBox("Long running EXO session!");
+                    _displayControl.SetResponseCommentsRichTextboxText("Found a long running EXO session (> 5 seconds)." + Environment.NewLine +
+                        Environment.NewLine +
+                        "What is Server Think Time? The time the server spent processing the request. (ServerBeginResponse - ServerGotRequest)." +
+                        Environment.NewLine +
+                        "The rest of the time is the time spent sending the response back to the client application which made the request." +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        "ClientBeginRequest == Fiddler is aware of when the traffic is initially passed to it as a proxy server." +
+                        Environment.NewLine +
+                        "ClientDoneRequest == Fiddler is aware of when it has finished sending the server response back to the application which made the request." +
+                        Environment.NewLine +
+                        "ServerGotRequest == Fiddler is aware of when the server received the request." +
+                        Environment.NewLine +
+                        "ServerBeginResponse == Fiddler is aware of when the server started to send the response." +
+                        Environment.NewLine +
+                        "ServerDoneResponse == Fiddler is aware of when it was was able to complete sending the server response back to the application which made the request.");
                 }
-                else
+
+                if (bAppLoggingEnabled && bExtensionEnabled)
                 {
-                    
-                    _displayControl.SetServerThinkTimeTextbox(Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalSeconds) + "s");
+                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address doesn't contain .onmicrosoft.com.");
                 }
-                */
             }
 
             _displayControl.SetXHostIPTextBoxText(this.session["X-HostIP"]);

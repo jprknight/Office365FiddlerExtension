@@ -17,6 +17,8 @@ namespace EXOFiddlerInspector
         Boolean DeveloperDemoModeBreakScenarios = false;
         /////////////////
 
+        int SlowRunningSessionThreshold = 5000; // milliseconds.
+
         /// <summary>
         /// Developer list and return.
         /// </summary>
@@ -42,6 +44,11 @@ namespace EXOFiddlerInspector
         public Boolean GetDeveloperDemoModeBreakScenarios()
         {
             return DeveloperDemoModeBreakScenarios;
+        }
+
+        public int GetSlowRunningSessionThreshold()
+        {
+            return SlowRunningSessionThreshold;
         }
     }
 }

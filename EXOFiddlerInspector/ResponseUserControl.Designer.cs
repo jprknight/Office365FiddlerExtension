@@ -72,9 +72,7 @@
             this.ServerThinkTimeLabel = new System.Windows.Forms.Label();
             this.ServerThinkTimeTextbox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.ServerBeginResponseLabel = new System.Windows.Forms.Label();
             this.ServerBeginResponseTimeTextbox = new System.Windows.Forms.TextBox();
             this.ServerGotRequestTimeTextbox = new System.Windows.Forms.TextBox();
@@ -87,9 +85,7 @@
             this.TransmitGroupBox = new System.Windows.Forms.GroupBox();
             this.DeveloperSessionGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.TransmitGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -424,7 +420,7 @@
             // ClientDurationLabel
             // 
             this.ClientDurationLabel.AutoSize = true;
-            this.ClientDurationLabel.Location = new System.Drawing.Point(6, 16);
+            this.ClientDurationLabel.Location = new System.Drawing.Point(290, 29);
             this.ClientDurationLabel.Name = "ClientDurationLabel";
             this.ClientDurationLabel.Size = new System.Drawing.Size(45, 26);
             this.ClientDurationLabel.TabIndex = 57;
@@ -433,7 +429,7 @@
             // OverallElapsedTextbox
             // 
             this.OverallElapsedTextbox.BackColor = System.Drawing.Color.White;
-            this.OverallElapsedTextbox.Location = new System.Drawing.Point(57, 18);
+            this.OverallElapsedTextbox.Location = new System.Drawing.Point(341, 31);
             this.OverallElapsedTextbox.Name = "OverallElapsedTextbox";
             this.OverallElapsedTextbox.ReadOnly = true;
             this.OverallElapsedTextbox.Size = new System.Drawing.Size(68, 20);
@@ -488,7 +484,7 @@
             // ServerThinkTimeLabel
             // 
             this.ServerThinkTimeLabel.AutoSize = true;
-            this.ServerThinkTimeLabel.Location = new System.Drawing.Point(6, 10);
+            this.ServerThinkTimeLabel.Location = new System.Drawing.Point(290, 22);
             this.ServerThinkTimeLabel.Name = "ServerThinkTimeLabel";
             this.ServerThinkTimeLabel.Size = new System.Drawing.Size(38, 39);
             this.ServerThinkTimeLabel.TabIndex = 67;
@@ -498,7 +494,7 @@
             // ServerThinkTimeTextbox
             // 
             this.ServerThinkTimeTextbox.BackColor = System.Drawing.Color.White;
-            this.ServerThinkTimeTextbox.Location = new System.Drawing.Point(56, 19);
+            this.ServerThinkTimeTextbox.Location = new System.Drawing.Point(340, 31);
             this.ServerThinkTimeTextbox.Name = "ServerThinkTimeTextbox";
             this.ServerThinkTimeTextbox.ReadOnly = true;
             this.ServerThinkTimeTextbox.Size = new System.Drawing.Size(69, 20);
@@ -507,7 +503,8 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.groupBox4);
+            this.groupBox1.Controls.Add(this.ClientDurationLabel);
+            this.groupBox1.Controls.Add(this.OverallElapsedTextbox);
             this.groupBox1.Controls.Add(this.ClientRquestBeginTimeLabel);
             this.groupBox1.Controls.Add(this.ClientRequestBeginTimeTextBox);
             this.groupBox1.Controls.Add(this.ClientRequestEndTimelabel);
@@ -521,21 +518,12 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Overall Elapsed Time";
             // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.ClientDurationLabel);
-            this.groupBox4.Controls.Add(this.OverallElapsedTextbox);
-            this.groupBox4.Location = new System.Drawing.Point(284, 13);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(132, 52);
-            this.groupBox4.TabIndex = 74;
-            this.groupBox4.TabStop = false;
-            // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.groupBox5);
+            this.groupBox2.Controls.Add(this.ServerThinkTimeTextbox);
             this.groupBox2.Controls.Add(this.ServerBeginResponseLabel);
             this.groupBox2.Controls.Add(this.ServerBeginResponseTimeTextbox);
+            this.groupBox2.Controls.Add(this.ServerThinkTimeLabel);
             this.groupBox2.Controls.Add(this.ServerGotRequestTimeTextbox);
             this.groupBox2.Controls.Add(this.ServerBeginResponseDateTextbox);
             this.groupBox2.Controls.Add(this.ServerGotRequestDateTextbox);
@@ -546,16 +534,6 @@
             this.groupBox2.TabIndex = 70;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Server Think Time";
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.ServerThinkTimeTextbox);
-            this.groupBox5.Controls.Add(this.ServerThinkTimeLabel);
-            this.groupBox5.Location = new System.Drawing.Point(284, 13);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(132, 52);
-            this.groupBox5.TabIndex = 74;
-            this.groupBox5.TabStop = false;
             // 
             // ServerBeginResponseLabel
             // 
@@ -681,18 +659,14 @@
             this.Controls.Add(this.HTTPResponseCodeTextBox);
             this.Controls.Add(this.HTTPStatusCodeLinkLabel);
             this.Name = "ResponseUserControl";
-            this.Size = new System.Drawing.Size(858, 592);
+            this.Size = new System.Drawing.Size(844, 592);
             this.Load += new System.EventHandler(this.ResponseUserControl_Load);
             this.DeveloperSessionGroupBox.ResumeLayout(false);
             this.DeveloperSessionGroupBox.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.TransmitGroupBox.ResumeLayout(false);
@@ -752,8 +726,6 @@
         private System.Windows.Forms.TextBox XHostIPTextbox;
         private System.Windows.Forms.TextBox ServerGotRequestTimeTextbox;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label ServerBeginResponseLabel;
         private System.Windows.Forms.TextBox ServerBeginResponseTimeTextbox;
         private System.Windows.Forms.TextBox ServerBeginResponseDateTextbox;
