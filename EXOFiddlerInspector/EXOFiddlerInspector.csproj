@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Fiddler">
-      <HintPath>..\..\..\..\AppData\Local\Programs\Fiddler\Fiddler.exe</HintPath>
+      <HintPath>..\..\..\AppData\Local\Programs\Fiddler\Fiddler.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -97,6 +97,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="update.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EXOFiddlerInspector.Telemetry\EXOFiddlerInspector.Telemetry.csproj">
+      <Project>{16b80eca-f0e2-4f9d-ba9e-e16af45dec02}</Project>
+      <Name>EXOFiddlerInspector.Telemetry</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

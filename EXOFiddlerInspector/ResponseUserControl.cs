@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using EXOFiddlerInspector.Telemetry;
 
 namespace EXOFiddlerInspector
 {
@@ -16,17 +17,21 @@ namespace EXOFiddlerInspector
     {
         public string SessionData;
 
+        public ITelemetry TelemetryClient;
+
         //private DebugConsole DevConsole;
 
         public ResponseUserControl()
         {
             InitializeComponent();
             // Telemtry call goes here. Called once per session.
+            TelemetryClient = new Client();
 
         }
 
-        private void ResponseUserControl_Load(object sender, EventArgs e)
+        private async void ResponseUserControl_Load(object sender, EventArgs e)
         {
+            await Telemetry.Client.Initialize();
             /////////////////////////////
             //
             // Before we go ahead and run the add tab code work out if 
