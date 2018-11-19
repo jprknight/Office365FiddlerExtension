@@ -6,10 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace EXOFiddlerInspector
+namespace EXOFiddlerInspector 
 {
-    public class MenuUI    // Ensure class is public, or Fiddler won't see it!
+    public class MenuUI : IAutoTamper    // Ensure class is public, or Fiddler won't see it!
     {
+        public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+        public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
+        public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
+        public Boolean bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
+        public Boolean bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
+        public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
+        public Boolean bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
+        public Boolean bColumnsEnableAllEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAllEnabled", false);
+        
         public MenuItem ExchangeOnlineTopMenu;
         public MenuItem miColumnsMenu;
 
@@ -23,11 +32,13 @@ namespace EXOFiddlerInspector
 
         public MenuItem miColumnsEnableAll;
 
-        public MenuItem miResponseTimeColumnEnabled;
+        public MenuItem miElapsedTimeColumnEnabled;
 
         public MenuItem miResponseServerColumnEnabled;
 
         public MenuItem miExchangeTypeColumnEnabled;
+
+        public MenuItem miXHostIPColumnEnabled;
 
         public MenuItem miAppLoggingEnabled;
 
@@ -40,11 +51,24 @@ namespace EXOFiddlerInspector
         public MenuItem miWiki;
 
         public MenuItem miReportIssues;
-        
+        private int iExecutionCount;
+
         public void InitializeMenu()
         {
+            /// <remarks>
+            /// Start by refreshing these variables to take into account first run code.
+            /// </remarks>
+            bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+            bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
+            bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
+            bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
+            bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
+            bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
+            bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
+            bColumnsEnableAllEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAllEnabled", false);
+
             // Setup each menu item name and ordering.
-            this.ExchangeOnlineTopMenu = new MenuItem("Exchange Online");
+            this.ExchangeOnlineTopMenu = new MenuItem(FiddlerApplication.Prefs.GetStringPref("extensions.EXOFiddlerInspector.MenuTitle", "Exchange Online"));
 
             this.miEnabled = new MenuItem("&Extension Enabled");
             this.miEnabled.Index = 0;
@@ -106,8 +130,8 @@ namespace EXOFiddlerInspector
             this.miColumnSeperator1 = new MenuItem("-");
             this.miColumnSeperator1.Index = 1;
 
-            this.miResponseTimeColumnEnabled = new MenuItem("Response &Time (Load SAZ only)");
-            this.miResponseTimeColumnEnabled.Index = 2;
+            this.miElapsedTimeColumnEnabled = new MenuItem("Elapsed &Time (Load SAZ only)");
+            this.miElapsedTimeColumnEnabled.Index = 2;
 
             this.miResponseServerColumnEnabled = new MenuItem("Response &Server");
             this.miResponseServerColumnEnabled.Index = 3;
@@ -115,44 +139,43 @@ namespace EXOFiddlerInspector
             this.miExchangeTypeColumnEnabled = new MenuItem("Exchange T&ype");
             this.miExchangeTypeColumnEnabled.Index = 4;
 
+            this.miXHostIPColumnEnabled = new MenuItem("&X-HostIP");
+            this.miXHostIPColumnEnabled.Index = 5;
+
             this.miColumnsMenu.MenuItems.AddRange(new MenuItem[]
             {
                 this.miColumnsEnableAll,
                 this.miColumnSeperator1,
-                this.miResponseTimeColumnEnabled,
+                this.miElapsedTimeColumnEnabled,
                 this.miResponseServerColumnEnabled,
-                this.miExchangeTypeColumnEnabled
+                this.miExchangeTypeColumnEnabled,
+                this.miXHostIPColumnEnabled
             });
-
-            Boolean boolExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-            Boolean boolResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
-            Boolean boolResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
-            Boolean boolExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
-            Boolean boolAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
-            Boolean boolHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnly", false);
-            Boolean boolColumnsEnableAllEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAllEnabled", false);
 
             // Setup event handlers for menu items.
             this.miEnabled.Click += new System.EventHandler(this.miEnabled_Click);
-            this.miEnabled.Checked = boolExtensionEnabled;
+            this.miEnabled.Checked = bExtensionEnabled;
 
             this.miColumnsEnableAll.Click += new System.EventHandler(this.miColumnsEnableAll_Click);
-            this.miColumnsEnableAll.Checked = boolColumnsEnableAllEnabled;
+            this.miColumnsEnableAll.Checked = bColumnsEnableAllEnabled;
 
-            this.miResponseTimeColumnEnabled.Click += new System.EventHandler(this.miResponseTimeColumnEnabled_Click);
-            this.miResponseTimeColumnEnabled.Checked = boolResponseTimeColumnEnabled;
+            this.miElapsedTimeColumnEnabled.Click += new System.EventHandler(this.miElapsedTimeColumnEnabled_Click);
+            this.miElapsedTimeColumnEnabled.Checked = bElapsedTimeColumnEnabled;
 
             this.miResponseServerColumnEnabled.Click += new System.EventHandler(this.miResponseServerColumnEnabled_Click);
-            this.miResponseServerColumnEnabled.Checked = boolResponseServerColumnEnabled;
+            this.miResponseServerColumnEnabled.Checked = bResponseServerColumnEnabled;
 
             this.miExchangeTypeColumnEnabled.Click += new System.EventHandler(this.miExchangeTypeColumnEnabled_Click);
-            this.miExchangeTypeColumnEnabled.Checked = boolExchangeTypeColumnEnabled;
+            this.miExchangeTypeColumnEnabled.Checked = bExchangeTypeColumnEnabled;
+
+            this.miXHostIPColumnEnabled.Click += new System.EventHandler(this.miXHostIPColumnEnabled_Click);
+            this.miXHostIPColumnEnabled.Checked = bXHostIPColumnEnabled;
 
             this.miAppLoggingEnabled.Click += new System.EventHandler(this.miAppLoggingEnabled_Click);
-            this.miAppLoggingEnabled.Checked = boolAppLoggingEnabled;
+            this.miAppLoggingEnabled.Checked = bAppLoggingEnabled;
 
             this.miHighlightOutlookOWAOnly.Click += new System.EventHandler(this.miHighlightOutlookOWAOnly_click);
-            this.miHighlightOutlookOWAOnly.Checked = boolHighlightOutlookOWAOnlyEnabled;
+            this.miHighlightOutlookOWAOnly.Checked = bHighlightOutlookOWAOnlyEnabled;
 
             this.miWiki.Click += new System.EventHandler(this.miWiki_Click);
 
@@ -165,12 +188,7 @@ namespace EXOFiddlerInspector
 
         public void SetEnableAllMenuItem()
         {
-            Boolean boolExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-            Boolean boolResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
-            Boolean boolResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
-            Boolean boolExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
-
-            if (boolResponseTimeColumnEnabled && boolResponseServerColumnEnabled && boolExchangeTypeColumnEnabled)
+            if (bElapsedTimeColumnEnabled && bResponseServerColumnEnabled && bExchangeTypeColumnEnabled && bXHostIPColumnEnabled)
             {
                 miColumnsEnableAll.Checked = true;
             }
@@ -179,7 +197,7 @@ namespace EXOFiddlerInspector
                 miColumnsEnableAll.Checked = false;
             }
             // Regardless of the above, set the application preferences here for function called in OnLoad.
-            //FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", boolResponseTimeColumnEnabled);
+            //FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", boolElapsedTimeColumnEnabled);
             //FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", boolResponseServerColumnEnabled);
             //FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", boolExchangeTypeColumnEnabled);
         }
@@ -187,95 +205,85 @@ namespace EXOFiddlerInspector
         // Menu item event handlers.
         public void miEnabled_Click(object sender, EventArgs e)
         {
-            Boolean boolExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-
             // Invert selection when this menu item is clicked.
             miEnabled.Checked = !miEnabled.Checked;
             // Match boolean variable on whether extension is enabled or not.
-            boolExtensionEnabled = miEnabled.Checked;
+            bExtensionEnabled = miEnabled.Checked;
             // Set the application preference for this option.
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", boolExtensionEnabled);
-
-            // Make sure the menu items are available / not available depending on extension status.
-            // Turned off as this is a PITA.
-            // EnableDisableMenuItemsAccordingToExtensionStatus();
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", bExtensionEnabled);
         }
 
         // Enable/disable all columns.
         public void miColumnsEnableAll_Click(object sender, EventArgs e)
         {
-            // Get the Boolean values from ColouriseWebSessions.cs.
-            ColouriseWebSessions CWS = new ColouriseWebSessions();
-            Boolean boolColumnsEnableAllEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAllEnabled", false);
-            Boolean boolResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
-            Boolean boolResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
-            Boolean boolExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
-            
             // Invert selection when this menu item is clicked.
             miColumnsEnableAll.Checked = !miColumnsEnableAll.Checked;
-            miResponseTimeColumnEnabled.Checked = miColumnsEnableAll.Checked;
+            miElapsedTimeColumnEnabled.Checked = miColumnsEnableAll.Checked;
             miResponseServerColumnEnabled.Checked = miColumnsEnableAll.Checked;
             miExchangeTypeColumnEnabled.Checked = miColumnsEnableAll.Checked;
+
             // Match boolean variable on menu selection.
             // Do it for all colums.
-            boolColumnsEnableAllEnabled = miColumnsEnableAll.Checked;
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAll", boolColumnsEnableAllEnabled);
-            boolResponseTimeColumnEnabled = miColumnsEnableAll.Checked;
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", boolResponseTimeColumnEnabled);
-            boolResponseServerColumnEnabled = miColumnsEnableAll.Checked;
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", boolResponseServerColumnEnabled);
-            boolExchangeTypeColumnEnabled = miExchangeTypeColumnEnabled.Checked;
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", boolExchangeTypeColumnEnabled);
+            bColumnsEnableAllEnabled = miColumnsEnableAll.Checked;
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAll", bColumnsEnableAllEnabled);
+            bElapsedTimeColumnEnabled = miColumnsEnableAll.Checked;
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", bElapsedTimeColumnEnabled);
+            bResponseServerColumnEnabled = miColumnsEnableAll.Checked;
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", bResponseServerColumnEnabled);
+            bExchangeTypeColumnEnabled = miExchangeTypeColumnEnabled.Checked;
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", bExchangeTypeColumnEnabled);
         }
 
-        public void miResponseTimeColumnEnabled_Click(object sender, EventArgs e)
+        public void miElapsedTimeColumnEnabled_Click(object sender, EventArgs e)
         {
-            Boolean boolResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
-
             // Invert selection when this menu item is clicked.
-            miResponseTimeColumnEnabled.Checked = !miResponseTimeColumnEnabled.Checked;
+            miElapsedTimeColumnEnabled.Checked = !miElapsedTimeColumnEnabled.Checked;
             // Match boolean variable on whether column is enabled or not.
-            boolResponseTimeColumnEnabled = miResponseTimeColumnEnabled.Checked;
+            bElapsedTimeColumnEnabled = miElapsedTimeColumnEnabled.Checked;
             // Set the application preference for this option.
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", boolResponseTimeColumnEnabled);
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", bElapsedTimeColumnEnabled);
             // Update the enable all columns UI selection based on a click here.
             SetEnableAllMenuItem();
         }
 
         public void miResponseServerColumnEnabled_Click(object sender, EventArgs e)
         {
-            Boolean boolResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
-            
             // Invert selection when this menu item is clicked.
             miResponseServerColumnEnabled.Checked = !miResponseServerColumnEnabled.Checked;
             // Match boolean variable on whether column is enabled or not.
-            boolResponseServerColumnEnabled = miResponseServerColumnEnabled.Checked;
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", boolResponseServerColumnEnabled);
+            bResponseServerColumnEnabled = miResponseServerColumnEnabled.Checked;
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", bResponseServerColumnEnabled);
             // Update the enable all columns UI selection based on a click here.
             SetEnableAllMenuItem();
         }
 
         public void miExchangeTypeColumnEnabled_Click(object sender, EventArgs e)
         {
-            Boolean boolExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
-            
             // Invert selection when this menu item is clicked.
             miExchangeTypeColumnEnabled.Checked = !miExchangeTypeColumnEnabled.Checked;
             // Match boolean variable on whether column is enabled or not.
-            boolExchangeTypeColumnEnabled = miExchangeTypeColumnEnabled.Checked;
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", boolExchangeTypeColumnEnabled);
+            bExchangeTypeColumnEnabled = miExchangeTypeColumnEnabled.Checked;
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", bExchangeTypeColumnEnabled);
+            SetEnableAllMenuItem();
+        }
+        
+        public void miXHostIPColumnEnabled_Click(object sender, EventArgs e)
+        {
+            // Invert selection when this menu item is clicked.
+            miXHostIPColumnEnabled.Checked = !miXHostIPColumnEnabled.Checked;
+            // Match boolean variable on whether column is enabled or not.
+            bXHostIPColumnEnabled = miXHostIPColumnEnabled.Checked;
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", bXHostIPColumnEnabled);
             SetEnableAllMenuItem();
         }
 
         public void miAppLoggingEnabled_Click(object sender, EventArgs e)
         {
-            Boolean boolAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
-
             // Invert selection when this menu item is clicked.
             miAppLoggingEnabled.Checked = !miAppLoggingEnabled.Checked;
             // Match boolean variable on whether app logging is enabled or not.
-            boolAppLoggingEnabled = miAppLoggingEnabled.Checked;
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", boolAppLoggingEnabled);
+            bAppLoggingEnabled = miAppLoggingEnabled.Checked;
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", bAppLoggingEnabled);
         }
 
         public void miWiki_Click(object sender, EventArgs e)
@@ -309,13 +317,11 @@ namespace EXOFiddlerInspector
 
         public void miHighlightOutlookOWAOnly_click(object sender, EventArgs e)
         {
-            Boolean boolHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
-
             // Invert selection when this menu item is clicked.
             miHighlightOutlookOWAOnly.Checked = !miHighlightOutlookOWAOnly.Checked;
             // Match boolean variable on whether column is enabled or not.
-            boolHighlightOutlookOWAOnlyEnabled = miHighlightOutlookOWAOnly.Checked;
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnly", boolHighlightOutlookOWAOnlyEnabled);
+            bHighlightOutlookOWAOnlyEnabled = miHighlightOutlookOWAOnly.Checked;
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", bHighlightOutlookOWAOnlyEnabled);
         }
 
         public void AutoTamperRequestBefore(Session oSession)
@@ -345,8 +351,97 @@ namespace EXOFiddlerInspector
 
         public void OnLoad()
         {
-            //throw new NotImplementedException();
+
+            this.FirstRunEnableMenuOptions();
+
+            /////////////////
+            /// <remarks>
+            /// Initialise menu, called from MenuUI.cs.
+            /// </remarks> 
+            this.InitializeMenu();
+            ///
+            /////////////////
+
+            /////////////////
+            /// <remarks>
+            /// Add the menu to the Fiddler UI.
+            /// </remarks> 
+            FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExchangeOnlineTopMenu);
+            ///
+            /////////////////
+
+
+
+
+            /// <remarks>
+            /// Call to function in MenuUI.cs to make sure menu items for columns are set per previous preferences.
+            /// </remarks>
+            this.SetEnableAllMenuItem();
+
         }
+
+        /////////////////
+        // Read out an application preference and if not set we know this is the first 
+        // time the extension has run on this machine. Enable all options to light up functionality
+        // for first time users.
+        public void FirstRunEnableMenuOptions()
+        {
+            /////////////////
+            /// <remarks>
+            /// If this is the first time the extension has been run, make sure all extension options are enabled.
+            /// Beyond do nothing other than keep a running count of the number of extension executions.
+            /// </remarks>
+            /// 
+            if (FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0) == 0)
+            {
+                // Set the preferences up for the extension, enable the extension options as this is the first run.
+                /// <remarks>
+                /// Set the runtime variables up for this execution of Fiddler. 
+                /// Also set the Fiddler Application Preferences for the next execution.
+                /// </remarks>
+
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", true);
+                //bExtensionEnabled = true;
+                //this.miEnabled.Checked = true;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAll", true);
+                //bColumnsEnableAllEnabled = true;
+                //this.miColumnsEnableAll.Checked = true;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", true);
+                //bElapsedTimeColumnEnabled = true;
+                //this.miElapsedTimeColumnEnabled.Checked = true;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", true);
+                //bResponseServerColumnEnabled = true;
+                //this.miResponseServerColumnEnabled.Checked = true;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", true);
+                //bExchangeTypeColumnEnabled = true;
+                //this.miExchangeTypeColumnEnabled.Checked = true;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", true);
+
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", true);
+                //bAppLoggingEnabled = true;
+                //this.miAppLoggingEnabled.Checked = true;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", true);
+                //bHighlightOutlookOWAOnlyEnabled = true;
+                // Increment the int iExecutionCount.
+                iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
+                iExecutionCount++;
+                // Update the Fiddler Application Preference.
+                FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", iExecutionCount);
+            }
+            // If this isn't the first run of the extension, just increnent the running count of executions.
+            else
+            {
+                // Increment the int iExecutionCount.
+                iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
+                iExecutionCount++;
+                // Update the Fiddler Application Preference.
+                FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", iExecutionCount);
+            }
+            ///
+            /////////////////
+        }
+        //
+        /////////////////
 
         public void OnBeforeUnload()
         {

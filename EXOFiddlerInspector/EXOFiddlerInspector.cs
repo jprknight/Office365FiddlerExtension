@@ -8,9 +8,18 @@ using System.Diagnostics;
 
 namespace EXOFiddlerInspector
 {
-    // Base class, generic inspector, common between request and response
+    /// <summary>
+    /// Base class, generic inspector, common between request and response
+     /// </summary>
     public class EXOBaseFiddlerInspector : Inspector2
     {
+        // These application preferences are actually set in ColouriseWebSessions.cs, pulling them into variables for use here.
+        public bool bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+        public bool bResponseTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled", false);
+        public bool bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
+        public bool bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
+        public bool bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
+        public bool bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
 
         public Boolean Developer;
 
@@ -58,13 +67,16 @@ namespace EXOFiddlerInspector
 
     #region RequestInspectorNotInProduction
 
-    // 
-    // Request inspector tab not used in production.
-    // Code originally added to work out what was possible with Fiddler, however the inspector part
-    // of the extension has grown out of server responses rather than client requests.
-
-    // Request class, inherits the generic class above, only defines things specific or different from the base class
-
+    /// <summary>
+    /// Request Inspector class, inherits the generic class above, only defines things specific or different from the base class
+    /// Request inspector tab not used in production.
+    /// Code originally added to work out what was possible with Fiddler, however the inspector part
+    /// of the extension has grown out of server responses rather than client requests.
+    /// -- ScoreForSession.
+    /// -- SetSessionType -- for request tab.
+    /// -- SetRequestValues, small rule set.
+    /// -- AddToTab.
+    /// </summary>
     public class RequestInspector : EXOBaseFiddlerInspector, IRequestInspector2
     {
 
@@ -75,7 +87,11 @@ namespace EXOFiddlerInspector
 
         RequestUserControl _displayControl;
 
-        // Double click on a session to highlight inpsector or not.
+        /// <summary>
+        /// Double click or press return for Score For Session.
+        /// </summary>
+        /// <param name="oS"></param>
+        /// <returns></returns>
         public override int ScoreForSession(Session oS)
         {
             // Discussion with EE, not expecting ScoreForSession to be consistent.
@@ -101,7 +117,10 @@ namespace EXOFiddlerInspector
             }
         }
 
-        // Add EXO Request tab into inspectors tab.
+        /// <summary>
+        /// Add Exchange Online Request tab into inspectors tab.
+        /// </summary>
+        /// <param name="o"></param>
         public override void AddToTab(TabPage o)
         {
             /////////////////////////////
@@ -109,9 +128,11 @@ namespace EXOFiddlerInspector
             // Before we go ahead and run the add tab code work out if 
             // the user is a developer or not.
 
-            // Developer list is actually set in ColouriseWebSessions.
-            ColouriseWebSessions CWS = new ColouriseWebSessions();
-            List<string> calledDeveloperList = CWS.GetDeveloperList();
+            // Developer list is actually set in Preferences.cs.
+            Preferences calledPreferences = new Preferences();
+            List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
+
+            Boolean DeveloperDemoMode = calledPreferences.GetDeveloperMode();
 
             // Based on the above set the Boolean Developer for use through the rest of the code.
             if (calledDeveloperList.Any(Environment.UserName.Contains))
@@ -174,8 +195,10 @@ namespace EXOFiddlerInspector
             }
         }
         
-        public void SetRequestValues(Session oS)
+        public void SetRequestValues(Session session)
         {
+            this.session = session;
+
             if (Developer)
             {
                 // Store response body in variable for opening in notepad.
@@ -256,7 +279,12 @@ namespace EXOFiddlerInspector
 
     #endregion
 
-    // Response class, same as request class except for responses
+    /// <summary>
+    /// Response Inspector class.
+    /// -- ScoreForSession.
+    /// -- SetResponseValues containing SessionRuleSet.
+    /// -- AddToTab.
+    /// </summary>
     public class ResponseInspector : EXOBaseFiddlerInspector, IResponseInspector2
     {
         public ResponseUserControl _displayControl;
@@ -266,9 +294,6 @@ namespace EXOFiddlerInspector
         // Used in HTTP 503 responses when dealing with Federated domains.
         private string RealmURL;
 
-        // These application preferences are actually set in ColouriseWebSessions.cs, pulling them into variables for use here.
-        private bool boolInspectorAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
-        private bool boolInspectorExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
         private string RedirectAddress;
 
         #region ScoreForSession
@@ -322,15 +347,15 @@ namespace EXOFiddlerInspector
                 {
                     _displayControl.SetHTTPResponseCodeTextBoxText("DIS");
 
-                    _displayControl.SetRequestBeginDateTextBox("Inspector disabled.");
-                    _displayControl.SetRequestBeginTimeTextBox("Inspector disabled.");
-                    _displayControl.SetRequestEndDateTextBox("Inspector disabled.");
-                    _displayControl.SetRequestEndTimeTextBox("Inspector disabled.");
+                    _displayControl.SetClientRequestBeginDateTextBox("Inspector disabled.");
+                    _displayControl.SetClientRequestBeginTimeTextBox("Inspector disabled.");
+                    _displayControl.SetClientRequestEndDateTextBox("Inspector disabled.");
+                    _displayControl.SetClientRequestEndTimeTextBox("Inspector disabled.");
                     _displayControl.SetResponseAlertTextBox("Inspector disabled.");
-                    _displayControl.SetResponseElapsedTimeTextBox("Inspector disabled");
+                    _displayControl.SetOverallElapsedTextbox("Inspector disabled");
+                    _displayControl.SetServerThinkTimeTextbox("Inspector disabled");
                     _displayControl.SetDataAgeTextBox("Inspector disabled");
                     _displayControl.SetResponseProcessTextBox("Inspector disabled");
-                    _displayControl.SetElapsedTimeCommentTextBoxText("Inspector disabled");
                     _displayControl.SetResponseServerTextBoxText("Inspector disabled");
                     _displayControl.SetResponseCommentsRichTextboxText("Inspector disabled.");
                 }
@@ -352,16 +377,33 @@ namespace EXOFiddlerInspector
             // decode sessions to make sure request/response body can be fully read by logic checks.
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
-            
+
             // Clear any previous data.
             _displayControl.SetResponseAlertTextBox("");
             _displayControl.SetResponseCommentsRichTextboxText("");
-            _displayControl.SetElapsedTimeCommentTextBoxText("");
             _displayControl.SetRequestHeadersTextBoxText("");
             _displayControl.SetRequestBodyTextBoxText("");
             _displayControl.SetResponseHeadersTextBoxText("");
             _displayControl.SetResponseBodyTextBoxText("");
             _displayControl.SetExchangeTypeTextBoxText("");
+
+            _displayControl.SetClientRequestBeginDateTextBox("");
+            _displayControl.SetClientRequestBeginTimeTextBox("");
+
+            _displayControl.SetClientRequestEndDateTextBox("");
+            _displayControl.SetClientRequestEndTimeTextBox("");
+
+            _displayControl.SetOverallElapsedTextbox("");
+
+            _displayControl.SetServerGotRequestDateTextbox("");
+            _displayControl.SetServerGotRequestTimeTextbox("");
+
+            _displayControl.SetServerDoneResponseDateTextbox("");
+            _displayControl.SetServerDoneResponseTimeTextbox("");
+
+            _displayControl.SetServerThinkTimeTextbox("");
+
+            _displayControl.SetXHostIPTextBoxText("");
 
             // Write data into hidden fields.
             _displayControl.SetRequestHeadersTextBoxText(this.session.oRequest.headers.ToString());
@@ -376,23 +418,143 @@ namespace EXOFiddlerInspector
             // Write HTTP Status Code Text box, convert int to string.
             _displayControl.SetHTTPResponseCodeTextBoxText(this.session.responseCode.ToString());
 
-            // Write Client Begin Request into textboxes
-            _displayControl.SetRequestBeginDateTextBox(this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd"));
-            _displayControl.SetRequestBeginTimeTextBox(this.session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff"));
+            /// <remarks>
+            /// Client Begin and done response. -- Overall elapsed time.
+            /// </remarks>
 
-            // Write Client End Request into textboxes
-            _displayControl.SetRequestEndDateTextBox(this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd"));
-            _displayControl.SetRequestEndTimeTextBox(this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff"));
+            if (this.session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") == "0:00:00.000" || this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") == "0:00:00.000")
+            {
+                _displayControl.SetClientRequestBeginDateTextBox("No Data");
+                _displayControl.SetClientRequestBeginTimeTextBox("No Data");
 
-            // Write Elapsed Time into textbox.
-            // _displayControl.SetResponseElapsedTimeTextBox(this.session.oResponse.iTTLB + "ms");
-            _displayControl.SetResponseElapsedTimeTextBox(Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms");
-            session["X-iTTLB"] = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms";
+                _displayControl.SetClientRequestEndDateTextBox("No Data");
+                _displayControl.SetClientRequestEndTimeTextBox("No Data");
 
-            //Write response server from headers into textbox.
-            //_displayControl.SetResponseServerTextBoxText(this.session.oResponse["Server"]);
+                _displayControl.SetOverallElapsedTextbox("No Data");
 
-            // Populate Response Server on session in order of preference from common to obsure.
+            }
+            else
+            {
+                _displayControl.SetClientRequestBeginDateTextBox(this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd"));
+                _displayControl.SetClientRequestBeginTimeTextBox(this.session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff"));
+
+                _displayControl.SetClientRequestEndDateTextBox(this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd"));
+                _displayControl.SetClientRequestEndTimeTextBox(this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff"));
+
+                _displayControl.SetOverallElapsedTextbox(Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds) + "ms");
+
+                _displayControl.SetResponseAlertTextBox("Long running session!");
+                _displayControl.SetResponseCommentsRichTextboxText("Found a long running session." +
+                    Environment.NewLine +
+                    Environment.NewLine +
+                    "What is Server Think Time? The time the server spent processing the request. (ServerBeginResponse - ServerGotRequest)." +
+                    Environment.NewLine +
+                    "The rest of the time is the time spent sending the response back to the client application which made the request." +
+                    Environment.NewLine +
+                    Environment.NewLine +
+                    "ClientBeginRequest == Fiddler is aware of when the traffic is initially passed to it as a proxy server." +
+                    Environment.NewLine +
+                    "ClientDoneRequest == Fiddler is aware of when it has finished sending the server response back to the application which made the request." +
+                    Environment.NewLine +
+                    "ServerGotRequest == Fiddler is aware of when the server received the request." +
+                    Environment.NewLine +
+                    "ServerBeginResponse == Fiddler is aware of when the server started to send the response." +
+                    Environment.NewLine +
+                    "ServerDoneResponse == Fiddler is aware of when it was was able to complete sending the server response back to the application which made the request.");
+
+
+                /*
+                if (ClientMilliseconds <= 1000)
+                {
+                    _displayControl.SetOverallElapsedTextbox(ClientMilliseconds + "ms");
+                }
+                else
+                {
+                    _displayControl.SetOverallElapsedTextbox(Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalSeconds) + "s");
+                    double TransmitMilliseconds = Math.Round((this.session.Timers.ServerDoneResponse - this.session.Timers.ServerBeginResponse).TotalMilliseconds);
+                    if (TransmitMilliseconds <= 1000)
+                    {
+                        _displayControl.SetTransmitTimeTextbox(TransmitMilliseconds + "ms");
+                    }
+                    else
+                    {
+                        _displayControl.SetTransmitTimeTextbox(Math.Round((this.session.Timers.ServerDoneResponse - this.session.Timers.ServerBeginResponse).TotalSeconds) + "s");
+                    }
+                }
+                */
+            }
+
+            /// <remarks>
+            /// Server Got and Done Response. -- Server Think Time.
+            /// </remarks>
+            /// 
+            if (this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff") == "0:00:00.000" ||
+                this.session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff") == "0:00:00.000" ||
+                this.session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff") == "0:00:00.000")
+            {
+                // No data on the session to write or calculate on.
+                _displayControl.SetServerGotRequestDateTextbox("No Data");
+                _displayControl.SetServerGotRequestTimeTextbox("No Data");
+
+                _displayControl.SetServerBeginResponseDateTextbox("No Data");
+                _displayControl.SetServerBeginResponseTimeTextbox("No Data");
+
+                _displayControl.SetServerDoneResponseDateTextbox("No Data");
+                _displayControl.SetServerDoneResponseTimeTextbox("No Data");
+
+                _displayControl.SetServerThinkTimeTextbox("No Data");
+
+                _displayControl.SetTransmitTimeTextbox("No Data");
+            }
+            else
+            {
+                // Write Server data into textboxes.
+                _displayControl.SetServerGotRequestDateTextbox(this.session.Timers.ServerGotRequest.ToString("yyyy/MM/dd"));
+                _displayControl.SetServerGotRequestTimeTextbox(this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff"));
+
+                _displayControl.SetServerBeginResponseDateTextbox(this.session.Timers.ServerBeginResponse.ToString("yyyy/MM/dd"));
+                _displayControl.SetServerBeginResponseTimeTextbox(this.session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff"));
+
+                _displayControl.SetServerDoneResponseDateTextbox(this.session.Timers.ServerDoneResponse.ToString("yyyy/MM/dd"));
+                _displayControl.SetServerDoneResponseTimeTextbox(this.session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff"));
+
+                _displayControl.SetServerThinkTimeTextbox(Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds) + "ms");
+
+                _displayControl.SetTransmitTimeTextbox(Math.Round((this.session.Timers.ServerDoneResponse - this.session.Timers.ServerBeginResponse).TotalMilliseconds) + "ms");
+
+                _displayControl.SetResponseAlertTextBox("Long running session!");
+                _displayControl.SetResponseCommentsRichTextboxText("Found a long running session." + Environment.NewLine +
+                    Environment.NewLine +
+                    "What is Server Think Time? The time the server spent processing the request. (ServerBeginResponse - ServerGotRequest)." +
+                    Environment.NewLine +
+                    "The rest of the time is the time spent sending the response back to the client application which made the request." +
+                    Environment.NewLine +
+                    Environment.NewLine +
+                    "ClientBeginRequest == Fiddler is aware of when the traffic is initially passed to it as a proxy server." +
+                    Environment.NewLine +
+                    "ClientDoneRequest == Fiddler is aware of when it has finished sending the server response back to the application which made the request." +
+                    Environment.NewLine +
+                    "ServerGotRequest == Fiddler is aware of when the server received the request." +
+                    Environment.NewLine +
+                    "ServerBeginResponse == Fiddler is aware of when the server started to send the response." +
+                    Environment.NewLine +
+                    "ServerDoneResponse == Fiddler is aware of when it was was able to complete sending the server response back to the application which made the request.");
+
+                /*
+                double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
+                if (ServerMilliseconds <= 1000)
+                {
+                    _displayControl.SetServerThinkTimeTextbox(ServerMilliseconds + "ms");
+                }
+                else
+                {
+                    
+                    _displayControl.SetServerThinkTimeTextbox(Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalSeconds) + "s");
+                }
+                */
+            }
+
+            _displayControl.SetXHostIPTextBoxText(this.session["X-HostIP"]);
 
             // If the response server header is not null or blank then populate it into the response server value.
             if (this.session.isTunnel == true)
@@ -424,13 +586,6 @@ namespace EXOFiddlerInspector
             else if ((this.session.oResponse["X-Server-Name"] != null && (this.session.oResponse["X-Server-Name"] != "")))
             {
                 _displayControl.SetResponseServerTextBoxText("X-Server-Name: " + this.session.oResponse["X-Server-Name"]);
-            }
-            
-            // Write Elapsed Time comment into textbox.
-            if (this.session.oResponse.iTTLB > 5000)
-            {
-                // Inaccurate, commented out.
-                _displayControl.SetElapsedTimeCommentTextBoxText("> 5 second response time.");
             }
 
             // Write Data age data into textbox.
@@ -483,7 +638,7 @@ namespace EXOFiddlerInspector
                     "This should not be happening. Consider disabling Root Domain Autodiscover lookups." + Environment.NewLine +
                     "See ExcludeHttpsRootDomain on https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under" + Environment.NewLine +
                     "Beyond this, the customer needs their web administrator responsible for the server answering the calls to stop the Apache web server from answering to Autodiscover.");
-                if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                if (bAppLoggingEnabled && bExtensionEnabled)
                 {
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 405 Method Not Allowed; Apache is answering Autodiscover requests!");
                 }
@@ -510,7 +665,7 @@ namespace EXOFiddlerInspector
                         //
 
                         // Thinking a check on this.session["X-ResponseCode"] is needed to eliminate false positives here.
-                        _displayControl.SetResponseAlertTextBox("HTTP 0 No Response!");
+                        _displayControl.SetResponseAlertTextBox("!HTTP 0 No Response!");
                         _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
                         //
                         /////////////////////////////
@@ -603,7 +758,7 @@ namespace EXOFiddlerInspector
                             // Exchange Online such as: contoso.mail.onmicrosoft.com.
                             else
                             {
-                                _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect.");
+                                _displayControl.SetResponseAlertTextBox("!Exchange On-Premise Autodiscover redirect!");
                                 _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." + 
                                     Environment.NewLine + 
                                     Environment.NewLine +
@@ -613,7 +768,7 @@ namespace EXOFiddlerInspector
                                     "If this is an Office 365 mailbox the targetAddress from On-Premise is not sending Outlook to Office 365!");
                                 // Increment HTTP200SkipLogic so that 99 does not run below.
                                 HTTP200SkipLogic++;
-                                if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                                if (bAppLoggingEnabled && bExtensionEnabled)
                                 {
                                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address doesn't contain .onmicrosoft.com.");
                                 }
@@ -642,12 +797,12 @@ namespace EXOFiddlerInspector
                                 </Response>
                             </Autodiscover>
                             */
-                            _displayControl.SetResponseAlertTextBox("Exchange On-Premise Autodiscover redirect: Error Code 500.");
+                            _displayControl.SetResponseAlertTextBox("!Exchange On-Premise Autodiscover redirect: Error Code 500!");
                             _displayControl.SetResponseCommentsRichTextboxText("Exchange On-Premise Autodiscover redirect address can't be found. Look for other On-Premise Autodiscover responses, we may have a " +
                                 "valid Autodiscover targetAddress from On-Premise in another session in this trace.");
                             // Increment HTTP200SkipLogic so that 99 does not run below.
                             HTTP200SkipLogic++;
-                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address can't be found.");
                             }
@@ -677,7 +832,7 @@ namespace EXOFiddlerInspector
                             // If we got this far and those strings do not exist in the response body something is wrong.
                             else
                             {
-                                _displayControl.SetResponseAlertTextBox("Exchange Online Autodiscover - FAILURE!");
+                                _displayControl.SetResponseAlertTextBox("!Exchange Online Autodiscover - FAILURE!");
                                 _displayControl.SetResponseCommentsRichTextboxText("Exchange Online Autodiscover. FAILURE!");
                                 // Don't use skip logic here, we want to dig deeper and see if there are errors, failures, or exceptions.
                                 //HTTP200SkipLogic++;
@@ -731,7 +886,7 @@ namespace EXOFiddlerInspector
                             // Did not see the expected keyword in the response body. This is the error condition.
                             else
                             {
-                                _displayControl.SetResponseAlertTextBox("GetUnifiedGroupsSettings EWS call!");
+                                _displayControl.SetResponseAlertTextBox("!GetUnifiedGroupsSettings EWS call!");
                                 _displayControl.SetResponseCommentsRichTextboxText("Though GetUnifiedGroupsSettings scenario was detected neither <GroupCreationEnabled>true</GroupCreationEnabled> or" +
                                     "<GroupCreationEnabled>false</GroupCreationEnabled> was found in the response body. Check the Raw tab for more details.");
                             }
@@ -828,7 +983,7 @@ namespace EXOFiddlerInspector
                                             wordCountExceptionText = wordCountException + " times.";
                                         }
 
-                                        _displayControl.SetResponseAlertTextBox("'error', 'failed' or 'exception' found in respone body.");
+                                        _displayControl.SetResponseAlertTextBox("!'error', 'failed' or 'exception' found in respone body!");
                                         _displayControl.SetResponseCommentsRichTextboxText("HTTP 200: Errors or failures found in response body. " + 
                                             "Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review." +
                                             Environment.NewLine + Environment.NewLine +
@@ -836,7 +991,7 @@ namespace EXOFiddlerInspector
                                             Environment.NewLine + "Keyword 'Error' found " + wordCountErrorText +
                                             Environment.NewLine + "Keyword 'Failed' found " + wordCountFailedText +
                                             Environment.NewLine + "Keyword 'Exception' found " + wordCountExceptionText);
-                                        if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                                        if (bAppLoggingEnabled && bExtensionEnabled)
                                         {
                                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 keyword 'error', 'failed' or 'exception' found in respone body!");
                                         }
@@ -926,14 +1081,14 @@ namespace EXOFiddlerInspector
                             (this.session.fullUrl.Contains("autodiscover") &&
                             (this.session.ResponseHeaders["Location"] != "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml"))))
                         {
-                            _displayControl.SetResponseAlertTextBox("HTTP 307 Temporary Redirect");
+                            _displayControl.SetResponseAlertTextBox("!HTTP 307 Temporary Redirect!");
                             _displayControl.SetResponseCommentsRichTextboxText("HTTP 307: Temporary Redirects have been seen to redirect Exchange Online Autodiscover " +
                                 "calls back to On-Premise resources, breaking Outlook connectivity." + Environment.NewLine +
                                 "This session has enough data points to be an Autodiscover request for Exchange Online which has not been sent to " +
                                 "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml as expected." + Environment.NewLine +
                                 "Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.");
 
-                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
                             }
@@ -975,11 +1130,11 @@ namespace EXOFiddlerInspector
                         // Specific scenario where a web proxy is blocking traffic.
                         if (this.session.utilFindInResponse("Access Denied", false) > 1)
                         {
-                            _displayControl.SetResponseAlertTextBox("HTTP 403 Access Denied!");
+                            _displayControl.SetResponseAlertTextBox("!HTTP 403 Access Denied!");
                             _displayControl.SetResponseCommentsRichTextboxText("HTTP 403: Forbidden. Is your firewall or web proxy blocking Outlook connectivity?" + Environment.NewLine +
                                 "To fire this message a HTTP 403 response code was detected and 'Access Denied' was found in the response body." + Environment.NewLine +
                                 "Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked?");
-                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
                             }
@@ -987,7 +1142,7 @@ namespace EXOFiddlerInspector
                         else
                         {
                             // Pick up any 403 Forbidden and write data into the comments box.
-                            _displayControl.SetResponseAlertTextBox("HTTP 403 Forbidden!");
+                            _displayControl.SetResponseAlertTextBox("!HTTP 403 Forbidden!");
                             _displayControl.SetResponseCommentsRichTextboxText("While HTTP 403's can be symptomatic of a proxy server blocking traffic, " +
                                 "however the phrase 'Access Denied' was NOT detected in the response body." + 
                                 Environment.NewLine + 
@@ -1009,7 +1164,7 @@ namespace EXOFiddlerInspector
                         //  HTTP 404: Not Found.
                         //
                         // Pick up any 404 Not Found and write data into the comments box.
-                        _displayControl.SetResponseAlertTextBox("HTTP 404 Not Found");
+                        _displayControl.SetResponseAlertTextBox("!HTTP 404 Not Found!");
                         _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
                         //
                         /////////////////////////////
@@ -1019,7 +1174,7 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 405: Method Not Allowed.
                         //
-                        _displayControl.SetResponseAlertTextBox("HTTP 405: Method Not Allowed");
+                        _displayControl.SetResponseAlertTextBox("!HTTP 405: Method Not Allowed!");
                         _displayControl.SetResponseCommentsRichTextboxText("HTTP 405: Method Not Allowed");
                         //
                         /////////////////////////////
@@ -1029,7 +1184,7 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 429: Too Many Requests.
                         //
-                        _displayControl.SetResponseAlertTextBox("HTTP 429 Too Many Requests");
+                        _displayControl.SetResponseAlertTextBox("!HTTP 429 Too Many Requests!");
                         _displayControl.SetResponseCommentsRichTextboxText("HTTP 429: These responses need to be taken into context with the rest of the sessions in the trace. " + 
                             "A small number is probably not an issue, larger numbers of these could be cause for concern.");
                         //
@@ -1064,7 +1219,7 @@ namespace EXOFiddlerInspector
                         }
                         else
                         {
-                            _displayControl.SetResponseAlertTextBox("HTTP 456 Multi-Factor Authentication?");
+                            _displayControl.SetResponseAlertTextBox("!HTTP 456 Multi-Factor Authentication!");
                             _displayControl.SetResponseCommentsRichTextboxText("HTTP 429: See details on Raw tab.");
                         }
                         //
@@ -1082,9 +1237,9 @@ namespace EXOFiddlerInspector
                         // Specific scenario on Outlook and Office 365 invalid DNS lookup.
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
                         // Pick up any 500 Internal Server Error and write data into the comments box.
-                        _displayControl.SetResponseAlertTextBox("HTTP 500 Internal Server Error");
+                        _displayControl.SetResponseAlertTextBox("!HTTP 500 Internal Server Error!");
                         _displayControl.SetResponseCommentsRichTextboxText("HTTP 500 Internal Server Error");
-                        if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                        if (bAppLoggingEnabled && bExtensionEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 500 Internal Server Error.");
                         }
@@ -1104,7 +1259,7 @@ namespace EXOFiddlerInspector
                         if ((this.session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443") &&
                             (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
                         {
-                            _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
+                            _displayControl.SetResponseAlertTextBox("False Positive");
                             _displayControl.SetResponseCommentsRichTextboxText("Unlikely the cause of Outlook / OWA connectivity.");
                         }
 
@@ -1118,7 +1273,7 @@ namespace EXOFiddlerInspector
                             (this.session.utilFindInResponse("DNS Lookup for ", false) > 1) &&
                             (this.session.utilFindInResponse(" failed.", false) > 1))
                         {
-                            _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
+                            _displayControl.SetResponseAlertTextBox("False Positive");
                             _displayControl.SetResponseCommentsRichTextboxText("From the data in the response body this failure is likely due to a Microsoft DNS MX record " + Environment.NewLine +
                                 "which points to an Exchange Online Protection mail host that accepts connections only on port 25. Connection on port 443 will not work by design." + Environment.NewLine +
                                 Environment.NewLine + Environment.NewLine + "To validate this above lookup the record, confirm it is a MX record and attempt to connect to the MX host on ports 25 and 443.");
@@ -1144,7 +1299,7 @@ namespace EXOFiddlerInspector
                             string AutoDFalsePositiveDomain = AutoDFalsePositiveResponseBody.Substring(start, charcount).Replace("'", "");
                             //MessageBox.Show("Test: " + AutoDFalsePositiveDomain);
 
-                            _displayControl.SetResponseAlertTextBox("These aren't the droids your looking for.");
+                            _displayControl.SetResponseAlertTextBox("False Positive");
                             _displayControl.SetResponseCommentsRichTextboxText("HTTP 502: False Positive. By design Office 365 Autodiscover does not respond to " +
                                 AutoDFalsePositiveDomain + " on port 443. " + Environment.NewLine + Environment.NewLine +
                                 "Validate this message by confirming this is an Office 365 Host/IP address and perform a telnet to it on port 80." +
@@ -1162,7 +1317,7 @@ namespace EXOFiddlerInspector
                             (this.session.utilFindInResponse("autodiscover", false) > 1) &&
                             (this.session.utilFindInResponse(":443", false) > 1))
                         {
-                            _displayControl.SetResponseAlertTextBox("Cannot connect to this Autodiscover Endpoint.");
+                            _displayControl.SetResponseAlertTextBox("!Cannot connect to this Autodiscover Endpoint!");
                             _displayControl.SetResponseCommentsRichTextboxText("Cannot connect to this Autodiscover Endpoint.");
                         }
 
@@ -1173,10 +1328,10 @@ namespace EXOFiddlerInspector
                         else
                         {
                             // Pick up any other 502 Bad Gateway and write data into the comments box.
-                            _displayControl.SetResponseAlertTextBox("HTTP 502 Bad Gateway");
+                            _displayControl.SetResponseAlertTextBox("!HTTP 502 Bad Gateway!");
                             _displayControl.SetResponseCommentsRichTextboxText("Potential to cause the issue you are investigating. " +
                                 "Do you see expected responses beyond this session in the trace? Is this an Exchange On - Premise, Exchange Online or other device ?");
-                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway.");
                             }
@@ -1219,7 +1374,7 @@ namespace EXOFiddlerInspector
                                 RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=user@contoso.com&xml=1";
                             }
 
-                            _displayControl.SetResponseAlertTextBox("The federation service is unreachable or unavailable.");
+                            _displayControl.SetResponseAlertTextBox("!FederatedSTSUnreachable!");
                             _displayControl.SetResponseCommentsRichTextboxText("HTTP 503: FederatedSTSUnreachable." + Environment.NewLine +
                                 "The fedeation service is unreachable or unavailable. Check the Raw tab for additional details." + Environment.NewLine +
                                 "Check the realm page for the authenticating domain." + Environment.NewLine + RealmURL + Environment.NewLine + Environment.NewLine +
@@ -1229,7 +1384,7 @@ namespace EXOFiddlerInspector
                                 "MEXURL: Normally expected to show long stream of XML data." + Environment.NewLine + Environment.NewLine +
                                 "If any of these show the HTTP 503 Service Unavailable this confirms a consistent failure on the federation service." + Environment.NewLine +
                                 "If however you get the expected responses, this does not neccessarily mean the federation service / everything authentication is healthy. Further investigation is advised.");
-                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
                             }
@@ -1237,9 +1392,9 @@ namespace EXOFiddlerInspector
                         else
                         {
                             // Pick up any other 503 Service Unavailable and write data into the comments box.
-                            _displayControl.SetResponseAlertTextBox("HTTP 503 Service Unavailable.");
+                            _displayControl.SetResponseAlertTextBox("!HTTP 503 Service Unavailable!");
                             _displayControl.SetResponseCommentsRichTextboxText("HTTP 503 Service Unavailable.");
-                            if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                            if (bAppLoggingEnabled && bExtensionEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable.");
                             }
@@ -1258,9 +1413,9 @@ namespace EXOFiddlerInspector
                         if ((this.session.utilFindInResponse("access", false) > 1) &&
                             (this.session.utilFindInResponse("internet", false) > 1) &&
                             (this.session.utilFindInResponse("blocked", false) > 1) &&
-                            boolInspectorExtensionEnabled)
+                            bExtensionEnabled)
                         {
-                            _displayControl.SetResponseAlertTextBox("HTTP 504 Gateway Timeout -- Internet Access Blocked");
+                            _displayControl.SetResponseAlertTextBox("!HTTP 504 Gateway Timeout -- Internet Access Blocked!");
                             _displayControl.SetResponseCommentsRichTextboxText("Detected the keywords 'internet' and 'access' and 'blocked'. Potentially the computer this trace was collected " +
                                 "from has been quaratined for internet access on the customer's network." + Environment.NewLine + Environment.NewLine +
                                 "Validate this by checking the webview and raw tabs for more information.");
@@ -1269,9 +1424,9 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         // 99. Pick up any other 504 Gateway Timeout and write data into the comments box.
-                        else if (boolInspectorAppLoggingEnabled && boolInspectorExtensionEnabled)
+                        else if (bAppLoggingEnabled && bExtensionEnabled)
                         {
-                            _displayControl.SetResponseAlertTextBox("HTTP 504 Gateway Timeout");
+                            _displayControl.SetResponseAlertTextBox("!HTTP 504 Gateway Timeout!");
                             _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout.");
                         }
@@ -1305,7 +1460,6 @@ namespace EXOFiddlerInspector
             ResponseHeaders = this.session.ResponseHeaders;
 
         }
-
 
         /////////////////////////////
         // Add the EXO Response tab into the inspector tab.

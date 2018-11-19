@@ -11,6 +11,7 @@ using System.IO;
 using System.Diagnostics;
 using Microsoft.ApplicationInsights;
 using EXOFiddlerInspector.Services;
+using Fiddler;
 
 namespace EXOFiddlerInspector
 {
@@ -35,33 +36,15 @@ namespace EXOFiddlerInspector
             // Before we go ahead and run the add tab code work out if 
             // the user is a developer or not.
 
-            // Developer list is actually set in ColouriseWebSessions.
-            ColouriseWebSessions CWS = new ColouriseWebSessions();
-            List<string> calledDeveloperList = CWS.GetDeveloperList();
+            // Developer list is actually set in Preferences.cs.
+            Preferences calledPreferences = new Preferences();
+            List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
 
             // Based on the above set the Boolean Developer for use through the rest of the code.
             if (calledDeveloperList.Any(Environment.UserName.Contains))
             {
                 Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: Developer mode {Environment.UserName} on {Environment.MachineName}.");
                 DeveloperSessionGroupBox.Visible = true;
-                DeveloperControlsLabel.Visible = true;
-                /*
-                RequestHeadersLabel.Visible = true;
-                RequestHeadersTextBox.Visible = true;
-                RequestBodyLabel.Visible = true;
-                RequestBodyTextbox.Visible = true;
-
-                ResponseHeadersLabel.Visible = true;
-                ResponseHeadersTextbox.Visible = true;
-                ResponseBodyLabel.Visible = true;
-                ResponseBodyTextbox.Visible = true;
-
-                HTTP200FreeBusyLabel.Visible = true;
-                HTTP200FreeBusyTextBox.Visible = true;
-
-                HTTP200SkipLogicLabel.Visible = true;
-                HTTP200SkipLogicTextBox.Visible = true;
-                */
             }
             else
             {
@@ -89,34 +72,82 @@ namespace EXOFiddlerInspector
             HTTPStatusDescriptionTextBox.Text = txt;
         }
 
-        // Code to write to RequestBeginTimeTextBox.Text value.
-        internal void SetRequestBeginTimeTextBox(string txt)
+        // Code to write to ClientRequestBeginTimeTextBox.Text value.
+        internal void SetClientRequestBeginTimeTextBox(string txt)
         {
-            RequestBeginTimeTextBox.Text = txt;
+            ClientRequestBeginTimeTextBox.Text = txt;
         }
 
-        // Code to write to RequestBeginDateTextBox.Text value.
-        internal void SetRequestBeginDateTextBox(string txt)
+        // Code to write to ClientRequestBeginDateTextBox.Text value.
+        internal void SetClientRequestBeginDateTextBox(string txt)
         {
-            RequestBeginDateTextBox.Text = txt;
+            ClientRequestBeginDateTextBox.Text = txt;
         }
 
-        // Code to write to RequestEndTimeTextBox.Text value.
-        internal void SetRequestEndTimeTextBox(string txt)
+        // Code to write to ClientRequestEndTimeTextBox.Text value.
+        internal void SetClientRequestEndTimeTextBox(string txt)
         {
-            RequestEndTimeTextBox.Text = txt;
+            ClientRequestEndTimeTextBox.Text = txt;
         }
 
-        // Code to write to RequestEndDateTextBox.Text value.
-        internal void SetRequestEndDateTextBox(string txt)
+        // Code to write to ClientRequestEndDateTextBox.Text value.
+        internal void SetClientRequestEndDateTextBox(string txt)
         {
-            RequestEndDateTextBox.Text = txt;
+            ClientRequestEndDateTextBox.Text = txt;
         }
 
-        // Code to write to TimeElapsedTextBox.Text value.
-        internal void SetResponseElapsedTimeTextBox(string txt)
+        // Code to write to ServerGotRequestDateTextbox.Text value.
+        internal void SetServerGotRequestDateTextbox(string txt)
         {
-            ElapsedTimeTextBox.Text = txt;
+            ServerGotRequestDateTextbox.Text = txt;
+        }
+
+        // Code to write to ServerGotRequestTimeTextbox.Text value.
+        internal void SetServerGotRequestTimeTextbox(string txt)
+        {
+            ServerGotRequestTimeTextbox.Text = txt;
+        }
+
+        // Code to write to ServerBeginResponseDateTextbox.Text value.
+        internal void SetServerBeginResponseDateTextbox(string txt)
+        {
+            ServerBeginResponseDateTextbox.Text = txt;
+        }
+
+        // Code to write to ServerBeginResponseTimeTextbox.Text value.
+        internal void SetServerBeginResponseTimeTextbox(string txt)
+        {
+            ServerBeginResponseTimeTextbox.Text = txt;
+        }
+
+
+        // Code to write to ServerDoneResponseDateTextbox.Text value.
+        internal void SetServerDoneResponseDateTextbox(string txt)
+        {
+            ServerDoneResponseDateTextbox.Text = txt;
+        }
+
+        // Code to write to ServerDoneResponseTimeTextbox.Text value.
+        internal void SetServerDoneResponseTimeTextbox(string txt)
+        {
+            ServerDoneResponseTimeTextbox.Text = txt;
+        }
+
+        // Code to write to ClientBeginRequestDoneResponseDurationTextbox.Text value.
+        internal void SetOverallElapsedTextbox(string txt)
+        {
+            OverallElapsedTextbox.Text = txt;
+        }
+
+        // Code to write to ServerBeginRequestDoneResponseDurationTextbox.Text value.
+        internal void SetServerThinkTimeTextbox(string txt)
+        {
+            ServerThinkTimeTextbox.Text = txt;
+        }
+
+        internal void SetTransmitTimeTextbox(string txt)
+        {
+            TransmitTimeTextbox.Text = txt;
         }
 
         // Code to write to ResponseAlertTextBox.Text value.
@@ -135,12 +166,6 @@ namespace EXOFiddlerInspector
         internal void SetDataAgeTextBox(string txt)
         {
             DataAgeTextBox.Text = txt;
-        }
-
-        // Code to write to ElapsedTimeComemntTextBox.Text value.
-        internal void SetElapsedTimeCommentTextBoxText(string txt)
-        {
-            ElapsedTimeCommentTextBox.Text = txt;
         }
 
         // Code to write to ResponseServerTextBox.Text value.
@@ -185,6 +210,11 @@ namespace EXOFiddlerInspector
             SessionIDTextbox.Text = txt;
         }
 
+        // Code to write to XHostIP textbox.Text value.
+        internal void SetXHostIPTextBoxText(string txt)
+        {
+            XHostIPTextbox.Text = txt;
+        }
 
         private void HTTPStatusCodeLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -213,7 +243,7 @@ namespace EXOFiddlerInspector
             // Reset colours.
             HTTPResponseCodeTextBox.BackColor = System.Drawing.Color.White;
             HTTPStatusDescriptionTextBox.BackColor = System.Drawing.Color.White;
-            
+
             // Write HTTP Status code short descriptions in HTTP Status Description TextBox.
             // Standardised codes from https://en.wikipedia.org/wiki/List_of_HTTP_status_codes.
             switch (HTTPResponseCodeTextBox.Text) {
@@ -356,57 +386,57 @@ namespace EXOFiddlerInspector
                     break;
                 default: HTTPStatusDescriptionTextBox.Text = "No known HTTP status.";
                     break;
-            } 
+            }
         }
 
         private void ResponseCommentLabel_Click(object sender, EventArgs e)
         {
-
+            // Do nothing.
         }
 
         private void ProcessTextBox_TextChanged(object sender, EventArgs e)
         {
-
+            // Do nothing.
         }
 
         private void HTTPStatusDescriptionTextBox_TextChanged(object sender, EventArgs e)
         {
-
+            // Do nothing.
         }
 
         private void RequestBeginTimeTextBox_TextChanged(object sender, EventArgs e)
         {
-
+            // Do nothing.
         }
 
         private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-
+            // Do nothing.
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
         {
-
+            // Do nothing.
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
-
+            // Do nothing.
         }
 
         private void ElapsedTimeComemntTextBox_TextChanged(object sender, EventArgs e)
         {
-
+            // Do nothing.
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-
+            // Do nothing.
         }
 
         private void ResponseCommentsRichTextBox_TextChanged(object sender, EventArgs e)
         {
-
+            // Do nothing.
         }
 
         private void WriteSessionData()
@@ -415,9 +445,14 @@ namespace EXOFiddlerInspector
             SessionData = "HIGH LEVEL SESSION DATA" + Environment.NewLine + Environment.NewLine +
                 "Session ID: " + SessionIDTextbox.Text + Environment.NewLine +
                 "HTTP Response Code: " + HTTPResponseCodeTextBox.Text + Environment.NewLine +
-                "Client Begin Request: " + RequestBeginDateTextBox.Text + " " + RequestBeginTimeTextBox.Text + Environment.NewLine +
-                "Client Done Response: " + RequestEndDateTextBox.Text + " " + RequestEndTimeTextBox.Text + Environment.NewLine +
-                "Elapsed Time: " + ElapsedTimeTextBox.Text + " " + ElapsedTimeCommentTextBox.Text + Environment.NewLine +
+                "Client Begin Request: " + ClientRequestBeginDateTextBox.Text + " " + ClientRequestBeginTimeTextBox.Text + Environment.NewLine +
+                "Client Done Response: " + ClientRequestEndDateTextBox.Text + " " + ClientRequestEndTimeTextBox.Text + Environment.NewLine +
+                "Overall Elapsed Time: " + OverallElapsedTextbox.Text + " " + Environment.NewLine +
+                "Server Got Request: " + ServerGotRequestDateTextbox.Text + " " + ServerGotRequestTimeTextbox.Text + Environment.NewLine +
+                "Server Begin Response: " + ServerBeginResponseDateTextbox.Text + " " + ServerBeginResponseTimeTextbox.Text + Environment.NewLine +
+                "Server Done Response: " + ServerDoneResponseDateTextbox.Text + " " + ServerDoneResponseTimeTextbox.Text + Environment.NewLine +
+                "Server Think Time: " + ServerThinkTimeTextbox.Text + " " + Environment.NewLine +
+                "Transmit Time Back to Outlook or Browser (OWA): " + TransmitTimeTextbox.Text + Environment.NewLine + 
                 "Local Process: " + ResponseProcessTextBox.Text + Environment.NewLine +
                 "Exchange Type: " + ExchangeTypeTextbox.Text + Environment.NewLine +
                 "Response Server: " + ResponseServerTextBox.Text + Environment.NewLine +
@@ -487,6 +522,51 @@ namespace EXOFiddlerInspector
         }
 
         private void DeveloperControlsLabel_Click(object sender, EventArgs e)
+        {
+            // Do nothing.
+        }
+
+        private void RemoveAllAppPrefsButton_Click(object sender, EventArgs e)
+        {
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.enabled");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.ColumnsEnableAll");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.DemoMode");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.DemoModeBreakScenarios");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.AppLoggingEnabled");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.ExecutionCount");
+            MessageBox.Show("Removed extensions.EXOFiddlerInspector Prefs.");
+        }
+
+        private void ServerResponseDurationTextbox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ServerGotRequestLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ServerGotRequestTimeTextbox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ServerResponseDurationLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TransmitLabel_Click(object sender, EventArgs e)
         {
 
         }
