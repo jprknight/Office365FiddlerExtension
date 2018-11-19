@@ -641,7 +641,7 @@
             this.TransmitGroupBox.Size = new System.Drawing.Size(424, 48);
             this.TransmitGroupBox.TabIndex = 74;
             this.TransmitGroupBox.TabStop = false;
-            this.TransmitGroupBox.Text = "Transmit Time Back to Outlook or Browser (OWA)";
+            this.TransmitGroupBox.Text = "Transmit Time Back to Client App";
             // 
             // ResponseUserControl
             // 

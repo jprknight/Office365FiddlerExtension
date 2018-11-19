@@ -753,9 +753,9 @@
             }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_CD695A21C1E34998BBFC8B61993FA9DF"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
+            "DefaultLocation" = "8:[ProgramFilesFolder]\\[ProductName]"
             "Name" = "8:#1925"
-            "AlwaysCreate" = "11:FALSE"
+            "AlwaysCreate" = "11:TRUE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Property" = "8:TARGETDIR"
@@ -824,7 +824,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:EXO Fiddler Extension"
         "ProductCode" = "8:{815A8F05-1AC3-441A-97A5-FE420160A406}"
-        "PackageCode" = "8:{C1ADB020-9A06-402A-BE03-97E47A1EC38B}"
+        "PackageCode" = "8:{CD004621-BB1E-4E2D-AD26-209F7D38953C}"
         "UpgradeCode" = "8:{D1B9286E-21B9-4E30-BEF9-AED7C0C470E9}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
