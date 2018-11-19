@@ -53,6 +53,8 @@ namespace EXOFiddlerInspector
             // Kill extension if not enabled.
             if (!(bExtensionEnabled))
             {
+                // If the Fiddler application preference ExecutionCount exists and has a value, then this
+                // is not a first run scenario. Go ahead and return, extension is not enabled.
                 if (iExecutionCount > 0) { return; }
             }
 
@@ -69,6 +71,8 @@ namespace EXOFiddlerInspector
             // Kill extension if not enabled.
             if (!(bExtensionEnabled))
             {
+                // If the Fiddler application preference ExecutionCount exists and has a value, then this
+                // is not a first run scenario. Go ahead and return, extension is not enabled.
                 if (iExecutionCount > 0) { return; }
             }
 
@@ -134,6 +138,8 @@ namespace EXOFiddlerInspector
             // Kill extension if not enabled.
             if (!(bExtensionEnabled))
             {
+                // If the Fiddler application preference ExecutionCount exists and has a value, then this
+                // is not a first run scenario. Go ahead and return, extension is not enabled.
                 if (iExecutionCount > 0) { return; }
             }
 
@@ -182,6 +188,8 @@ namespace EXOFiddlerInspector
             // Kill extension if not enabled.
             if (!(bExtensionEnabled))
             {
+                // If the Fiddler application preference ExecutionCount exists and has a value, then this
+                // is not a first run scenario. Go ahead and return, extension is not enabled.
                 if (iExecutionCount > 0) { return; }
             }
 
@@ -219,6 +227,8 @@ namespace EXOFiddlerInspector
             // Kill extension if not enabled.
             if (!(bExtensionEnabled))
             {
+                // If the Fiddler application preference ExecutionCount exists and has a value, then this
+                // is not a first run scenario. Go ahead and return, extension is not enabled.
                 if (iExecutionCount > 0) { return; }
             }
 
@@ -364,6 +374,8 @@ namespace EXOFiddlerInspector
                 // Kill extension if not enabled.
                 if (!(bExtensionEnabled))
                 {
+                    // If the Fiddler application preference ExecutionCount exists and has a value, then this
+                    // is not a first run scenario. Go ahead and return, extension is not enabled.
                     if (iExecutionCount > 0) { return; }
                 }
 
@@ -381,6 +393,8 @@ namespace EXOFiddlerInspector
             // Kill extension if not enabled.
             if (!(bExtensionEnabled))
             {
+                // If the Fiddler application preference ExecutionCount exists and has a value, then this
+                // is not a first run scenario. Go ahead and return, extension is not enabled.
                 if (iExecutionCount > 0) { return; }
             }
 
@@ -1530,6 +1544,8 @@ namespace EXOFiddlerInspector
             // Kill extension if not enabled.
             if (!(bExtensionEnabled))
             {
+                // If the Fiddler application preference ExecutionCount exists and has a value, then this
+                // is not a first run scenario. Go ahead and return, extension is not enabled.
                 if (iExecutionCount > 0) { return; }
             }
 
@@ -1547,6 +1563,8 @@ namespace EXOFiddlerInspector
             // Kill extension if not enabled.
             if (!(bExtensionEnabled))
             {
+                // If the Fiddler application preference ExecutionCount exists and has a value, then this
+                // is not a first run scenario. Go ahead and return, extension is not enabled.
                 if (iExecutionCount > 0) { return; }
             }
 

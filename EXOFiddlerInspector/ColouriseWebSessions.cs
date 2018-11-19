@@ -58,6 +58,8 @@ namespace EXOFiddlerInspector
             // Kill extension if not enabled.
             if (!(bExtensionEnabled))
             {
+                // If the Fiddler application preference ExecutionCount exists and has a value, then this
+                // is not a first run scenario. Go ahead and return, extension is not enabled.
                 if (iExecutionCount > 0) { return; }
             }
 
@@ -140,7 +142,7 @@ namespace EXOFiddlerInspector
             /// they are added into the interface in this reverse order.
             /// </remarks>
 
-            /// Refresh these variable now to take account of first load code.
+            /// Refresh variable now to take account of first load code.
             this.bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
 
             if (bResponseServerColumnEnabled)
@@ -153,8 +155,7 @@ namespace EXOFiddlerInspector
             /// they are added into the interface in this reverse order.
             /// </remarks>
             /// 
-            /// Refresh these variables now to take account of first load code.
-            this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+            /// Refresh variable now to take account of first load code.
             this.bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
 
             if (bXHostIPColumnEnabled)
@@ -168,7 +169,7 @@ namespace EXOFiddlerInspector
             /// </remarks>
             /// 
 
-            /// Refresh these variable now to take account of first load code.
+            /// Refresh variable now to take account of first load code.
             this.bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
 
             if (bExchangeTypeColumnEnabled)
@@ -181,7 +182,7 @@ namespace EXOFiddlerInspector
             /// they are added into the interface in this reverse order.
             /// </remarks>
             /// 
-            /// Refresh these variables now to take account of first load code.
+            /// Refresh variable now to take account of first load code.
             this.bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
 
             if (bElapsedTimeColumnEnabled)
@@ -1084,7 +1085,7 @@ namespace EXOFiddlerInspector
             {
                 bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
                 // If the menu item Highlight Outlook and OWA Only is enabled then grey out all the other traffic.
-                if (bHighlightOutlookOWAOnlyEnabled == true)
+                if (bHighlightOutlookOWAOnlyEnabled)
                 {
                     // With that out of the way,  if the traffic is not related to any of the below processes, then mark it as grey to
                     // de-emphasise it.
@@ -1138,11 +1139,10 @@ namespace EXOFiddlerInspector
             // Making sure this is called after SetExchangeType and SetResponseServer, so we can use overrides
             // in OnPeekAtResponseHeaders function.
             //
-            if (bExtensionEnabled)
-            {
-                OnPeekAtResponseHeaders(session);
-                session.RefreshUI();
-            }
+
+            OnPeekAtResponseHeaders(session);
+            session.RefreshUI();
+
             //
             /////////////////
         }
