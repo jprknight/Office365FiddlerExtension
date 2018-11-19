@@ -9,29 +9,27 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
-using EXOFiddlerInspector.Telemetry;
+using Microsoft.ApplicationInsights;
+using EXOFiddlerInspector.Services;
 
 namespace EXOFiddlerInspector
 {
     public partial class ResponseUserControl : UserControl
     {
         public string SessionData;
-
-        public ITelemetry TelemetryClient;
-
+        
         //private DebugConsole DevConsole;
 
         public ResponseUserControl()
         {
             InitializeComponent();
-            // Telemtry call goes here. Called once per session.
-            TelemetryClient = new Client();
 
         }
 
         private async void ResponseUserControl_Load(object sender, EventArgs e)
         {
-            await Telemetry.Client.Initialize();
+            await TelemetryService.InitializeAsync();
+
             /////////////////////////////
             //
             // Before we go ahead and run the add tab code work out if 
@@ -210,7 +208,7 @@ namespace EXOFiddlerInspector
             System.Diagnostics.Process.Start(Properties.Settings.Default.HTTPStatusCodesURL);
         }
 
-        private void HTTPResponseCodeTextBox_TextChanged(object sender, EventArgs e)
+        private async void HTTPResponseCodeTextBox_TextChanged(object sender, EventArgs e)
         {
             // Reset colours.
             HTTPResponseCodeTextBox.BackColor = System.Drawing.Color.White;

@@ -6,10 +6,11 @@ using Microsoft.ApplicationInsights;
 using System.Management;
 using System.Diagnostics;
 using Microsoft.ApplicationInsights.Extensibility;
+using Fiddler;
 
 namespace EXOFiddlerInspector.Telemetry
 {
-    public sealed class Client
+    public sealed class Client : ITelemetry
     {
         private TelemetryClient telemetryClient { get; set; }
 
@@ -18,7 +19,7 @@ namespace EXOFiddlerInspector.Telemetry
         private string UUID { get; set; }
         internal bool IsInitialized { get; set; } = false;
 
-        public void Initialize()
+        public Task Initialize()
         {
             if (!IsInitialized)
             {
@@ -35,6 +36,7 @@ namespace EXOFiddlerInspector.Telemetry
 
                 }
             }
+            return Task.CompletedTask;
         }
 
         public async Task TrackEvent(string EventName, string UserId = null)
