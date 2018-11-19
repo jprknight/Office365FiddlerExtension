@@ -472,6 +472,11 @@ namespace EXOFiddlerInspector
                         "ServerBeginResponse == Fiddler is aware of when the server started to send the response." +
                         Environment.NewLine +
                         "ServerDoneResponse == Fiddler is aware of when it was was able to complete sending the server response back to the application which made the request.");
+
+                    if (bAppLoggingEnabled && bExtensionEnabled)
+                    {
+                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Long running session.");
+                    }
                 }
                 
             }
@@ -537,11 +542,10 @@ namespace EXOFiddlerInspector
                         "ServerBeginResponse == Fiddler is aware of when the server started to send the response." +
                         Environment.NewLine +
                         "ServerDoneResponse == Fiddler is aware of when it was was able to complete sending the server response back to the application which made the request.");
-                }
-
-                if (bAppLoggingEnabled && bExtensionEnabled)
-                {
-                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 On-Prem Autodiscover redirect - Address doesn't contain .onmicrosoft.com.");
+                    if (bAppLoggingEnabled && bExtensionEnabled)
+                    {
+                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Long running EXO session.");
+                    }
                 }
             }
 
