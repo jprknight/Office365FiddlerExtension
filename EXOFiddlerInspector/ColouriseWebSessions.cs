@@ -887,7 +887,33 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 4. Anything else Exchange Autodiscover.
+                        // 4. Vanity domain points to Office 365 autodiscover; false positive.
+                        //
+
+                        /*
+                        HTTP/1.1 502 Fiddler - Connection Failed
+                        Date: Mon, 12 Nov 2018 09:47:06 GMT
+                        Content-Type: text/html; charset=UTF-8
+                        Connection: close
+                        Cache-Control: no-cache, must-revalidate
+                        Timestamp: 04:47:06.295
+
+                        [Fiddler] The connection to 'autodiscover.contoso.com' failed. <br />Error: ConnectionRefused (0x274d). <br />
+                        System.Net.Sockets.SocketException No connection could be made because the target machine actively refused it 40.97.100.8:443                                                                                                                                                                                                                                                                                  
+                        */
+
+                        if ((this.session.utilFindInResponse("autodiscover.", false) > 1) &&
+                                (this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
+                                (this.session.utilFindInResponse("40.97.", false) > 1))
+                        {
+                            this.session["ui-backcolor"] = HTMLColourBlue;
+                            this.session["ui-color"] = "black";
+                            this.session["X-ExchangeType"] = "False Positive";
+                        }
+
+                        /////////////////////////////
+                        //
+                        // 5. Anything else Exchange Autodiscover.
                         //
                         else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
                             (this.session.utilFindInResponse("autodiscover", false) > 1) &&

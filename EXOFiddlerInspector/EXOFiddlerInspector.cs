@@ -521,6 +521,10 @@ namespace EXOFiddlerInspector
 
                 _displayControl.SetTransmitTimeTextbox(Math.Round((this.session.Timers.ServerDoneResponse - this.session.Timers.ServerBeginResponse).TotalMilliseconds) + "ms");
 
+                /// <remarks>
+                /// Notify on slow running session with threshold pulled from Preferences.cs.
+                /// </remarks>
+                /// 
                 int SlowRunningSessionThreshold = calledPreferences.GetSlowRunningSessionThreshold();
 
                 if (ServerMilliseconds > SlowRunningSessionThreshold)
@@ -1272,6 +1276,10 @@ namespace EXOFiddlerInspector
                             _displayControl.SetResponseCommentsRichTextboxText("From the data in the response body this failure is likely due to a Microsoft DNS MX record " + Environment.NewLine +
                                 "which points to an Exchange Online Protection mail host that accepts connections only on port 25. Connection on port 443 will not work by design." + Environment.NewLine +
                                 Environment.NewLine + Environment.NewLine + "To validate this above lookup the record, confirm it is a MX record and attempt to connect to the MX host on ports 25 and 443.");
+                            if (bAppLoggingEnabled && bExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway. EXO DNS lookup false positive.");
+                            }
                         }
 
                         /////////////////////////////
@@ -1300,20 +1308,63 @@ namespace EXOFiddlerInspector
                                 "Validate this message by confirming this is an Office 365 Host/IP address and perform a telnet to it on port 80." +
                                 Environment.NewLine + Environment.NewLine +
                                 "If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects requests to https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml.");
+                            if (bAppLoggingEnabled && bExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway. O365 Autodiscover false positive.");
+                            }
                         }
 
                         /////////////////////////////
                         //
-                        // 4. Autodiscover Failure.
+                        // 4. Vanity domain points to Office 365 autodiscover; false positive.
                         //
-                        // Specific scenario on Outlook & OFffice 365 Autodiscover false positive on connections to:
-                        //      autodiscover.domain.onmicrosoft.com:443
+
+                        /*
+                        HTTP/1.1 502 Fiddler - Connection Failed
+                        Date: Mon, 12 Nov 2018 09:47:06 GMT
+                        Content-Type: text/html; charset=UTF-8
+                        Connection: close
+                        Cache-Control: no-cache, must-revalidate
+                        Timestamp: 04:47:06.295
+
+                        [Fiddler] The connection to 'autodiscover.contoso.com' failed. <br />Error: ConnectionRefused (0x274d). <br />
+                        System.Net.Sockets.SocketException No connection could be made because the target machine actively refused it 40.97.100.8:443                                                                                                                                                                                                                                                                                  
+                        */
+
+                        if ((this.session.utilFindInResponse("autodiscover.", false) > 1) &&
+                                (this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
+                                (this.session.utilFindInResponse("40.97.", false) > 1))
+                        {
+                            _displayControl.SetResponseAlertTextBox("Office 365 Autodiscover False Positive");
+                            _displayControl.SetResponseCommentsRichTextboxText("HTTP 502: False Positive. By design Office 365 certain IP addresses used for " +
+                                "Autodiscover do not respond on port 443. " +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "Validate this message by confirming this is an Office 365 Host/IP address and perform a telnet to it on port 80." +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design " +
+                                "redirects requests to https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml.");
+                            if (bAppLoggingEnabled && bExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway. Vanity domain; O365 Autodiscover false positive.");
+                            }
+                        }
+
+                        /////////////////////////////
+                        //
+                        // 5. Anything else Exchange Autodiscover.
+                        //
                         else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
                             (this.session.utilFindInResponse("autodiscover", false) > 1) &&
                             (this.session.utilFindInResponse(":443", false) > 1))
                         {
-                            _displayControl.SetResponseAlertTextBox("!Cannot connect to this Autodiscover Endpoint!");
-                            _displayControl.SetResponseCommentsRichTextboxText("Cannot connect to this Autodiscover Endpoint.");
+                            _displayControl.SetResponseAlertTextBox("!AUTODISCOVER!");
+                            _displayControl.SetResponseCommentsRichTextboxText("Autodiscover request detected, which failed.");
+                            if (bAppLoggingEnabled && bExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway. Autodiscover failure.");
+                            }
                         }
 
                         /////////////////////////////
@@ -1384,6 +1435,10 @@ namespace EXOFiddlerInspector
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
                             }
                         }
+                        /////////////////////////////
+                        //
+                        // 99. Everything else.
+                        //
                         else
                         {
                             // Pick up any other 503 Service Unavailable and write data into the comments box.
@@ -1414,7 +1469,10 @@ namespace EXOFiddlerInspector
                             _displayControl.SetResponseCommentsRichTextboxText("Detected the keywords 'internet' and 'access' and 'blocked'. Potentially the computer this trace was collected " +
                                 "from has been quaratined for internet access on the customer's network." + Environment.NewLine + Environment.NewLine +
                                 "Validate this by checking the webview and raw tabs for more information.");
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout -- Internet Access Blocked.");
+                            if (bAppLoggingEnabled && bExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout -- Internet Access Blocked.");
+                            }
                         }
 
                         /////////////////////////////
@@ -1423,7 +1481,11 @@ namespace EXOFiddlerInspector
                         {
                             _displayControl.SetResponseAlertTextBox("!HTTP 504 Gateway Timeout!");
                             _displayControl.SetResponseCommentsRichTextboxText(Properties.Settings.Default.HTTPQuantity);
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout.");
+                            if (bAppLoggingEnabled && bExtensionEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout.");
+                            }
+                                
                         }
                         //
                         /////////////////////////////
