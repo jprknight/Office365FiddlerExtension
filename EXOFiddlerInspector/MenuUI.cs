@@ -351,6 +351,9 @@ namespace EXOFiddlerInspector
 
         public void OnLoad()
         {
+            // Kill extension if not enabled.
+            // Allow the menu to load in for re-enabling extension.
+            // if (!(bExtensionEnabled)) { return; }
 
             this.FirstRunEnableMenuOptions();
 
@@ -369,9 +372,6 @@ namespace EXOFiddlerInspector
             FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExchangeOnlineTopMenu);
             ///
             /////////////////
-
-
-
 
             /// <remarks>
             /// Call to function in MenuUI.cs to make sure menu items for columns are set per previous preferences.

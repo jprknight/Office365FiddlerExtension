@@ -103,7 +103,7 @@ namespace EXOFiddlerInspector
                 {
                     // Execute the installer MSI URL, which will open in the user's default browser.
                     System.Diagnostics.Process.Start(Properties.Settings.Default.InstallerURL);
-                    if (bAppLoggingEnabled && bExtensionEnabled)
+                    if (bAppLoggingEnabled)
                     {
                         FiddlerApplication.Log.LogString("EXOFiddlerExtention: Version installed. v" + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
                         FiddlerApplication.Log.LogString("EXOFiddlerExtention: New Version Available. v" + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + ".");
@@ -133,7 +133,7 @@ namespace EXOFiddlerInspector
                 Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : No update available.");
                 FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerInspector.MenuTitle", "Exchange Online");
 
-                if (bAppLoggingEnabled && bExtensionEnabled)
+                if (bAppLoggingEnabled)
                 {
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: Latest version installed. v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".");
                 }

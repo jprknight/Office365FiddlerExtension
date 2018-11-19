@@ -52,6 +52,8 @@ namespace EXOFiddlerInspector
         //
         public void OnLoad()
         {
+            // Kill extension if not enabled.
+            if (!(bExtensionEnabled)) { return; }
 
             /// <remarks>
             /// Check for update. Do this first as we alter the Exchange Online menu title according to
@@ -142,7 +144,7 @@ namespace EXOFiddlerInspector
             this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
             this.bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
 
-            if (bResponseServerColumnEnabled && bExtensionEnabled)
+            if (bResponseServerColumnEnabled)
             {
                 calledColumnsUI.EnsureResponseServerColumn();
             }
@@ -156,7 +158,7 @@ namespace EXOFiddlerInspector
             this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
             this.bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
 
-            if (bXHostIPColumnEnabled && bExtensionEnabled)
+            if (bXHostIPColumnEnabled)
             {
                 calledColumnsUI.EnsureXHostIPColumn();
             }
@@ -171,7 +173,7 @@ namespace EXOFiddlerInspector
             this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
             this.bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
 
-            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
+            if (bExchangeTypeColumnEnabled)
             {
                 calledColumnsUI.EnsureExchangeTypeColumn();
             }
@@ -185,7 +187,7 @@ namespace EXOFiddlerInspector
             this.bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
             this.bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
 
-            if (bElapsedTimeColumnEnabled && bExtensionEnabled)
+            if (bElapsedTimeColumnEnabled)
             {
                 calledColumnsUI.EnsureElapsedTimeColumn();
             }
@@ -196,7 +198,7 @@ namespace EXOFiddlerInspector
             {
 
                 // Populate the ElapsedTime column on load SAZ, if the column is enabled, and the extension is enabled.
-                if (bElapsedTimeColumnEnabled && bExtensionEnabled)
+                if (bElapsedTimeColumnEnabled)
                 {
                     if (session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") == "0:00:00.000" || session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") == "0:00:00.000")
                     {
@@ -227,13 +229,13 @@ namespace EXOFiddlerInspector
                 }
 
                 // Populate the ExchangeType column on load SAZ, if the column is enabled, and the extension is enabled
-                if (bExchangeTypeColumnEnabled && bExtensionEnabled)
+                if (bExchangeTypeColumnEnabled)
                 {
                     calledColumnsUI.SetExchangeType(session);
                 }
 
                 // Populate the ResponseServer column on load SAZ, if the column is enabled, and the extension is enabled
-                if (bResponseServerColumnEnabled && bExtensionEnabled)
+                if (bResponseServerColumnEnabled)
                 {
                     calledColumnsUI.SetResponseServer(session);
                 }
@@ -311,7 +313,7 @@ namespace EXOFiddlerInspector
             {
                 this.session["ui-backcolor"] = HTMLColourRed;
                 this.session["ui-color"] = "black";
-                if (bAppLoggingEnabled && bExtensionEnabled)
+                if (bAppLoggingEnabled)
                 {
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 405 Method Not Allowed; Apache is answering Autodiscover requests!");
                 }
@@ -405,7 +407,7 @@ namespace EXOFiddlerInspector
                                 this.session["ui-color"] = "black";
                                 this.session["X-ExchangeType"] = "On-Prem AutoD Redirect";
                                 HTTP200SkipLogic++;
-                                if (bAppLoggingEnabled && bExtensionEnabled)
+                                if (bAppLoggingEnabled)
                                 {
                                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
                                 }
@@ -419,7 +421,7 @@ namespace EXOFiddlerInspector
                                 this.session["X-ExchangeType"] = "!AUTOD REDIRECT ADDR!";
                                 // Increment HTTP200SkipLogic so that 99 does not run below.
                                 HTTP200SkipLogic++;
-                                if (bAppLoggingEnabled && bExtensionEnabled)
+                                if (bAppLoggingEnabled)
                                 {
                                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD REDIRECT ADDR! : " + RedirectAddress);
                                 }
@@ -450,7 +452,7 @@ namespace EXOFiddlerInspector
                             this.session["X-ExchangeType"] = "!NO AUTOD REDIRECT ADDR!";
                             // Increment HTTP200SkipLogic so that 99 does not run below.
                             HTTP200SkipLogic++;
-                            if (bAppLoggingEnabled && bExtensionEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
                             }
@@ -677,7 +679,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "!UNEXPECTED LOCATION!";
-                            if (bAppLoggingEnabled && bExtensionEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
                             }
@@ -719,7 +721,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "!WEB PROXY BLOCK!";
-                            if (bAppLoggingEnabled && bExtensionEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
                             }
@@ -805,7 +807,7 @@ namespace EXOFiddlerInspector
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
                         this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
-                        if (bAppLoggingEnabled && bExtensionEnabled)
+                        if (bAppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 500 Internal Server Error.");
                         }
@@ -859,7 +861,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "False Positive";
-                            if (bAppLoggingEnabled && bExtensionEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
                             }
@@ -879,7 +881,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "False Positive";
-                            if (bAppLoggingEnabled && bExtensionEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
                             }
@@ -922,7 +924,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "!AUTODISCOVER!";
-                            if (bAppLoggingEnabled && bExtensionEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway.");
                             }
@@ -937,7 +939,7 @@ namespace EXOFiddlerInspector
                             // Pick up any other 502 Bad Gateway call it out.
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            if (bAppLoggingEnabled && bExtensionEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway.");
                             }
@@ -976,7 +978,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "!FEDERATION!";
-                            if (bAppLoggingEnabled && bExtensionEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
                             }
@@ -985,7 +987,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            if (bAppLoggingEnabled && bExtensionEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable.");
                             }
@@ -1008,7 +1010,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "!INTERNET BLOCKED!";
-                            if (bAppLoggingEnabled && bExtensionEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + "  HTTP 504 Gateway Timeout -- Internet Access Blocked.");
                             }
@@ -1020,7 +1022,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            if (bAppLoggingEnabled && bExtensionEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout.");
                             }
@@ -1038,6 +1040,9 @@ namespace EXOFiddlerInspector
                         this.session["ui-backcolor"] = "Yellow";
                         this.session["ui-color"] = "black";
                         this.session["X-ExchangeType"] = "Undefined";
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Session undefined in extension.");
+                        }
                         break;
                         //
                         /////////////////////////////
