@@ -2,6 +2,9 @@
 using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
 using System.Management;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace EXOFiddlerInspector.Services
 {
@@ -27,48 +30,69 @@ namespace EXOFiddlerInspector.Services
         /// </summary>
         public static bool IsInitialized { get; set; } = false;
 
+        private static int ExceptionCounter = 0;
         /// <summary>
         /// Initialize the Azure Application Insights Telemetry Client.
         /// </summary>
         /// <returns>Bool</returns>
-        public static async Task<bool> InitializeAsync()
+        public static async Task InitializeAsync()
         {
-            bool results = false;
             if (!IsInitialized)
             {               
                 try
                 {
+                    ExceptionCounter = 0;
+
                     Client = new TelemetryClient();
+
                     Client.InstrumentationKey = iKey;
-                    UUID = await Task.Run(() => GetComputerUUID());
+
+                    UUID = await GetComputerUUID();
+
+                    Client.Context.User.Id = UUID;
+
+                    Client.Context.Session.Id = Guid.NewGuid().ToString();
+
+                    Client.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
+
+                    TrackEvent("UserSession");
+
                     IsInitialized = true;
-                    Client.TrackEvent("UserSession");
-                    results = true;
                 }
                 catch
                 {
-                    results = false;
+                    // TODO add exception logic
                 }              
             }
-            return results;
         }
 
         /// <summary>
         /// Method to call and track events from other portions of the application.
         /// </summary>
         /// <param name="EventName">Name of the event you want to track. This is required.</param>
-        /// <param name="UserId">Custom user name, else a unique guid is generated. This is not required.</param>
         /// <returns>Task Completion Event.</returns>
-        public static async Task TrackEvent(string EventName, string UserId = null)
+        public async static void TrackEvent(string _value)
         {
             try
             {
-                Client.Context.User.Id = UUID;
-                Client.Context.Session.Id = Guid.NewGuid().ToString();
-                Client.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
-                Client.TrackEvent(EventName);
+                if (await GetClientStatus())
+                {
+                    Client.TrackEvent(_value);
 
-                // Force client to push data to azure.
+                    await FlushClientAsync();
+                }                
+            }
+            catch
+            {
+                // swallow exception and if 5 exceptions, disable telemetry.
+                ExceptionCounter++;
+            }            
+        }
+
+        public async static Task FlushClientAsync()
+        {
+            try
+            {
                 Client.Flush();
 
                 // Allow time for flushing:
@@ -76,27 +100,78 @@ namespace EXOFiddlerInspector.Services
             }
             catch
             {
-                // TODO add exception logic.
+                // swallow exception and if 5 exceptions, disable telemetry.
+                ExceptionCounter++;
             }
-            return;
         }
 
+        private async static Task<bool> GetClientStatus()
+        {
+            bool results = false;
+            if(ExceptionCounter <= 4)
+            {
+                results = true;
+            }
+            else
+            {
+                results = false;
+            }
 
+            return await Task.FromResult(results);
+        }
         /// <summary>
-        /// Generate unique ID based on the motherboards serial number.
+        /// Generate unique ID based on the motherboards serial number and or UserName + MachineName.
         /// </summary>
         /// <returns>String</returns>
-        private static string GetComputerUUID()
+        private static Task<string> GetComputerUUID()
         {
-           
-            ManagementObjectSearcher query = new ManagementObjectSearcher("SELECT * FROM Win32_BaseBoard");
-            ManagementObjectCollection _managementObjects = query.Get();
-
-            foreach (ManagementObject mgmtObject in _managementObjects)
+            string userName = null;
+            try
             {
-                UUID = (string)mgmtObject["SerialNumber"];
+                Preferences calledPreferences = new Preferences();
+
+                List<string> devs = calledPreferences.GetDeveloperList();
+              
+                if (devs.Any(Environment.UserName.Contains))
+                {
+                    userName = CreateMD5(Environment.UserName);
+                }
+                else
+                {
+                    ManagementObjectSearcher query = new ManagementObjectSearcher("SELECT * FROM Win32_BaseBoard");
+
+                    ManagementObjectCollection _managementObjects = query.Get();
+
+                    foreach (ManagementObject mgmtObject in _managementObjects)
+                    {
+                        userName = CreateMD5((string)mgmtObject["SerialNumber"]);
+                    }
+                }
             }
-            return UUID;
+            catch
+            {
+                userName = CreateMD5(Environment.UserName + Environment.MachineName);
+                // TODO add exception logic.
+            }
+            return Task.FromResult(userName);
+        }
+
+        private static string CreateMD5(string input)
+        {
+            // Use input string to calculate MD5 hash
+            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+            {
+                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                // Convert the byte array to hexadecimal string
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("X2"));
+                }
+                return sb.ToString();
+            }
         }
 
     }
