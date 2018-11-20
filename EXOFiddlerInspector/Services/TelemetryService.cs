@@ -5,6 +5,8 @@ using System.Management;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace EXOFiddlerInspector.Services
 {
@@ -54,6 +56,8 @@ namespace EXOFiddlerInspector.Services
                     Client.Context.Session.Id = Guid.NewGuid().ToString();
 
                     Client.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
+
+                    Client.Context.Component.Version = ActivationService.GetAppVersion();
 
                     TrackEvent("UserSession");
 

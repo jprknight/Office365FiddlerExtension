@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace EXOFiddlerInspector.Services
     /// <summary>
     /// Global application initializer.
     /// </summary>
-    public class ActivationService : IAutoTamper
+    public partial class ActivationService : IAutoTamper
     {
         internal Session session { get; set; }
 
@@ -73,5 +74,12 @@ namespace EXOFiddlerInspector.Services
 
         public void OnBeforeReturningError(Session oSession) { }
 
+        public static string GetAppVersion()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+
+            FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+            return fileVersionInfo.FileVersion;
+        }
     }
 }
