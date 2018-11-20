@@ -135,7 +135,7 @@ namespace EXOFiddlerInspector
 
                 if (bAppLoggingEnabled)
                 {
-                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Latest version installed. v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".");
+                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Latest version installed.");
                 }
 
                 /// <remarks>

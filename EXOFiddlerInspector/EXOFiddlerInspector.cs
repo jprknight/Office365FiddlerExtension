@@ -51,14 +51,6 @@ namespace EXOFiddlerInspector
 
         public override void AddToTab(TabPage o)
         {
-            // Kill extension if not enabled.
-            if (!(bExtensionEnabled))
-            {
-                // If the Fiddler application preference ExecutionCount exists and has a value, then this
-                // is not a first run scenario. Go ahead and return, extension is not enabled.
-                if (iExecutionCount > 0) { return; }
-            }
-
             //throw new System.NotImplementedException();
         }
 
@@ -69,14 +61,6 @@ namespace EXOFiddlerInspector
 
         public override void AssignSession(Session oS)
         {
-            // Kill extension if not enabled.
-            if (!(bExtensionEnabled))
-            {
-                // If the Fiddler application preference ExecutionCount exists and has a value, then this
-                // is not a first run scenario. Go ahead and return, extension is not enabled.
-                if (iExecutionCount > 0) { return; }
-            }
-
             this.session = oS;
 
             base.AssignSession(oS);   
@@ -136,14 +120,6 @@ namespace EXOFiddlerInspector
         /// <param name="o"></param>
         public override void AddToTab(TabPage o)
         {
-            // Kill extension if not enabled.
-            if (!(bExtensionEnabled))
-            {
-                // If the Fiddler application preference ExecutionCount exists and has a value, then this
-                // is not a first run scenario. Go ahead and return, extension is not enabled.
-                if (iExecutionCount > 0) { return; }
-            }
-
             /////////////////////////////
             //
             // Before we go ahead and run the add tab code work out if 
@@ -186,14 +162,6 @@ namespace EXOFiddlerInspector
         
         public void SetSessionType(Session oS)
         {
-            // Kill extension if not enabled.
-            if (!(bExtensionEnabled))
-            {
-                // If the Fiddler application preference ExecutionCount exists and has a value, then this
-                // is not a first run scenario. Go ahead and return, extension is not enabled.
-                if (iExecutionCount > 0) { return; }
-            }
-
             if (Developer)
             {
                 // Earlier version of Exchange Type.
@@ -225,14 +193,6 @@ namespace EXOFiddlerInspector
         
         public void SetRequestValues(Session session)
         {
-            // Kill extension if not enabled.
-            if (!(bExtensionEnabled))
-            {
-                // If the Fiddler application preference ExecutionCount exists and has a value, then this
-                // is not a first run scenario. Go ahead and return, extension is not enabled.
-                if (iExecutionCount > 0) { return; }
-            }
-
             this.session = session;
 
             if (Developer)
@@ -372,14 +332,6 @@ namespace EXOFiddlerInspector
             get { return rawBody; }
             set
             {
-                // Kill extension if not enabled.
-                if (!(bExtensionEnabled))
-                {
-                    // If the Fiddler application preference ExecutionCount exists and has a value, then this
-                    // is not a first run scenario. Go ahead and return, extension is not enabled.
-                    if (iExecutionCount > 0) { return; }
-                }
-
                 SetResponseValues(this.session);
             }
         }
@@ -391,14 +343,6 @@ namespace EXOFiddlerInspector
         // Function which analyses request/response data to provide additional feedback.
         public void SetResponseValues(Session oS)
         {
-            // Kill extension if not enabled.
-            if (!(bExtensionEnabled))
-            {
-                // If the Fiddler application preference ExecutionCount exists and has a value, then this
-                // is not a first run scenario. Go ahead and return, extension is not enabled.
-                if (iExecutionCount > 0) { return; }
-            }
-
             Preferences calledPreferences = new Preferences();
 
             // create this.session for use everywhere in code.
@@ -1542,14 +1486,6 @@ namespace EXOFiddlerInspector
 
         public void SaveSessionData(Session oS)
         {
-            // Kill extension if not enabled.
-            if (!(bExtensionEnabled))
-            {
-                // If the Fiddler application preference ExecutionCount exists and has a value, then this
-                // is not a first run scenario. Go ahead and return, extension is not enabled.
-                if (iExecutionCount > 0) { return; }
-            }
-
             this.session = oS;
 
             RequestHeaders = this.session.RequestHeaders;
@@ -1561,14 +1497,6 @@ namespace EXOFiddlerInspector
         // Add the EXO Response tab into the inspector tab.
         public override void AddToTab(TabPage o)
         {
-            // Kill extension if not enabled.
-            if (!(bExtensionEnabled))
-            {
-                // If the Fiddler application preference ExecutionCount exists and has a value, then this
-                // is not a first run scenario. Go ahead and return, extension is not enabled.
-                if (iExecutionCount > 0) { return; }
-            }
-
             _displayControl = new ResponseUserControl();
             o.Text = "Exchange Online";
             o.ToolTipText = "Exchange Online Inspector";

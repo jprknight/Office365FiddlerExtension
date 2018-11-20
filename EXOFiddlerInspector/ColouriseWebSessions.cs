@@ -12,7 +12,6 @@ namespace EXOFiddlerInspector
     /// <summary>
     /// ColouriseWebSessions containing:
     /// -- OnLoad
-    /// -- HandleLoadSaz
     /// -- ColouriseRuleSet
     /// -- OnPeekAtResponseHeaders
     /// </summary>
@@ -53,18 +52,21 @@ namespace EXOFiddlerInspector
         //
         public void OnLoad()
         {
-            // Remove this previously used Fiddler Application Preference.
-            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled");
-
-            calledMenuUI.FirstRunEnableMenuOptions();
-
+            bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+            
             // Kill extension if not enabled.
             if (!(bExtensionEnabled))
             {
                 // If the Fiddler application preference ExecutionCount exists and has a value, then this
                 // is not a first run scenario. Go ahead and return, extension is not enabled.
-                if (iExecutionCount > 0) { return; }
+                if (iExecutionCount > 0)
+                {
+                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: ColouriseWebSessions.cs OnLoad Extension Return.");
+                    return;
+                }
             }
+            
+            calledMenuUI.FirstRunEnableMenuOptions();
 
             /// <remarks>
             /// Check for update. Do this first as we alter the Exchange Online menu title according to
@@ -139,6 +141,7 @@ namespace EXOFiddlerInspector
         //
         private void HandleLoadSaz(object sender, FiddlerApplication.ReadSAZEventArgs e)
         {
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.LoadSaz", true);
 
             /// <remarks>
             /// Add in the Response Server column. Due to these columns all being added as in with priority of 2,
@@ -146,7 +149,7 @@ namespace EXOFiddlerInspector
             /// </remarks>
 
             /// Refresh variable now to take account of first load code.
-            this.bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
+            bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
 
             if (bResponseServerColumnEnabled)
             {
@@ -159,7 +162,7 @@ namespace EXOFiddlerInspector
             /// </remarks>
             /// 
             /// Refresh variable now to take account of first load code.
-            this.bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
+            bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
 
             if (bXHostIPColumnEnabled)
             {
@@ -173,7 +176,7 @@ namespace EXOFiddlerInspector
             /// 
 
             /// Refresh variable now to take account of first load code.
-            this.bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
+            bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
 
             if (bExchangeTypeColumnEnabled)
             {
@@ -185,8 +188,9 @@ namespace EXOFiddlerInspector
             /// they are added into the interface in this reverse order.
             /// </remarks>
             /// 
+            
             /// Refresh variable now to take account of first load code.
-            this.bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
+            bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
 
             if (bElapsedTimeColumnEnabled)
             {
