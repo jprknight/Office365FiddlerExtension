@@ -224,6 +224,7 @@ namespace EXOFiddlerInspector
             miElapsedTimeColumnEnabled.Checked = miColumnsEnableAll.Checked;
             miResponseServerColumnEnabled.Checked = miColumnsEnableAll.Checked;
             miExchangeTypeColumnEnabled.Checked = miColumnsEnableAll.Checked;
+            miXHostIPColumnEnabled.Checked = miColumnsEnableAll.Checked;
 
             // Match boolean variable on menu selection.
             // Do it for all colums.
@@ -235,6 +236,8 @@ namespace EXOFiddlerInspector
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", bResponseServerColumnEnabled);
             bExchangeTypeColumnEnabled = miExchangeTypeColumnEnabled.Checked;
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", bExchangeTypeColumnEnabled);
+            bXHostIPColumnEnabled = miXHostIPColumnEnabled.Checked;
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", bXHostIPColumnEnabled);
         }
 
         public void miElapsedTimeColumnEnabled_Click(object sender, EventArgs e)
@@ -354,6 +357,13 @@ namespace EXOFiddlerInspector
 
         public void OnLoad()
         {
+            // Kill extension if not enabled.
+            // Allow the menu to load in for re-enabling extension.
+            // Kill extension if not enabled.
+            //if (!(bExtensionEnabled))
+            //{
+            //    if (iExecutionCount > 0) { return; }
+            //}
 
             this.FirstRunEnableMenuOptions();
 
@@ -372,9 +382,6 @@ namespace EXOFiddlerInspector
             FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExchangeOnlineTopMenu);
             ///
             /////////////////
-
-
-
 
             /// <remarks>
             /// Call to function in MenuUI.cs to make sure menu items for columns are set per previous preferences.

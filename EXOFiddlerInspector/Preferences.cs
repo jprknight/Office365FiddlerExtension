@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace EXOFiddlerInspector
 {
+    /// <summary>
+    /// Why preferences.cs? There are also Fiddler application preferences, why does this exist?
+    /// Fiddler application preferences are set with for example:
+    ///     FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false);
+    /// The preferences here are developer created preferences. These preferences are set here, are not changed
+    /// at runtime, and are hardcoded in compiled code.
+    /// </summary>
     class Preferences
     {
         /////////////////
@@ -16,6 +23,8 @@ namespace EXOFiddlerInspector
         Boolean DeveloperDemoMode = false;
         Boolean DeveloperDemoModeBreakScenarios = false;
         /////////////////
+
+        int SlowRunningSessionThreshold = 5000; // milliseconds.
 
         /// <summary>
         /// Developer list and return.
@@ -42,6 +51,11 @@ namespace EXOFiddlerInspector
         public Boolean GetDeveloperDemoModeBreakScenarios()
         {
             return DeveloperDemoModeBreakScenarios;
+        }
+
+        public int GetSlowRunningSessionThreshold()
+        {
+            return SlowRunningSessionThreshold;
         }
     }
 }
