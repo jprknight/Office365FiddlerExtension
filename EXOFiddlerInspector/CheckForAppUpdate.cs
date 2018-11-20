@@ -11,6 +11,8 @@ namespace EXOFiddlerInspector
         public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
         public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
 
+        Preferences calledPreferences = new Preferences();
+
         /////////////////
         //
         // Check for updates.
@@ -74,20 +76,14 @@ namespace EXOFiddlerInspector
             /// <remarks>
             /// Update available.
             /// </remarks>
+            /// 
+            Boolean DeveloperDemoMode = calledPreferences.GetDeveloperMode();
+
             if (applicationVersion.CompareTo(newVersion) < 0)
             {
-                /// <remarks>
-                /// Stop showing the message box. Allow user to enter trace without interuption.
-                /// </remarks>
-                // Setup message box options.
-                /*
-                
-                */
-                /// <remarks>
-                /// Set menu title to show user there is an update available.
-                /// </remarks>
+   
                 Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : Update Available.");
-                FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerInspector.MenuTitle", "Exchange Online (Update Available!)");
+                FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerInspector.MenuTitle", "Exchange Online (Update Available)");
 
                 /// <remarks>
                 /// Refresh the value of ManualCheckForUpdate and respond with feedback if needed.
@@ -105,6 +101,10 @@ namespace EXOFiddlerInspector
                     "Do you want to download the update?";
 
                     string caption = "EXO Fiddler Extension - Update Available";
+
+                    /// <remarks>
+                    /// Set menu title to show user there is an update available.
+                    /// </remarks>
 
                     MessageBoxButtons buttons = MessageBoxButtons.YesNo;
                     DialogResult result;
@@ -154,6 +154,15 @@ namespace EXOFiddlerInspector
                     FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ManualCheckForUpdate", false);
                 }
             }
+
+            /// <remarks>
+            /// If DeveloperDemoMode set the menu title regardless of the availability of an update.
+            /// </remarks>
+            if (DeveloperDemoMode)
+            {
+                FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerInspector.MenuTitle", "Exchange Online (Update Available)");
+            }
+
         }
     }
 }
