@@ -278,12 +278,8 @@ namespace EXOFiddlerInspector
             // Colour codes for sessions. Softer tones, easier on the eye than standard red, orange and green.
             string HTMLColourBlue = "#81BEF7";
             string HTMLColourGreen = "#81f7ba";
-            // Previous red and orange values too similar when not shown in the same trace.
-            //string HTMLColourRed = "#f78f81";
             string HTMLColourRed = "#f06141";
             string HTMLColourGrey = "#BDBDBD";
-            // Previous red and orange values too similar when not shown in the same trace.
-            //string HTMLColourOrange = "#f7ac81";
             string HTMLColourOrange = "#f59758";
 
             this.session.utilDecodeRequest(true);
@@ -525,6 +521,9 @@ namespace EXOFiddlerInspector
                                 this.session["X-ExchangeType"] = "!EWS GetUnifiedGroupsSettings!";
                                 // Do not do HTTP200SkipLogic here, expected response not found. Run keyword search on response for deeper inpsection of response.
                                 // HTTP200SkipLogic++;
+                                {
+                                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 GetUnifiedGroupsSettings!");
+                                }
                             }
                         }
                         
@@ -581,6 +580,10 @@ namespace EXOFiddlerInspector
                                     this.session["ui-backcolor"] = "black";
                                     this.session["ui-color"] = "red";
                                     this.session["X-ExchangeType"] = "!FAILURE LURKING!";
+                                    {
+                                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 FAILURE LURKING!");
+                                    }
+
                                 }
                                 else
                                 {
@@ -597,6 +600,9 @@ namespace EXOFiddlerInspector
                                 if (string.IsNullOrEmpty(this.session["UI-BACKCOLOR"]) && string.IsNullOrEmpty(this.session["UI-COLOR"])) {
                                     this.session["ui-backcolor"] = "Yellow";
                                     this.session["ui-color"] = "black";
+                                    {
+                                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 ; 99 Undefined.");
+                                    }
                                 }
                             }
                         }
@@ -619,8 +625,11 @@ namespace EXOFiddlerInspector
                         //  HTTP 204: No Content.
                         //
                         // Somewhat highlight these.
-                        this.session["ui-backcolor"] = "Yellow";
+                        this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 204 No content.");
+                        }
                         //
                         /////////////////////////////
                         break;
@@ -685,6 +694,9 @@ namespace EXOFiddlerInspector
                             // Highlight as a warning.
                             this.session["ui-backcolor"] = HTMLColourOrange;
                             this.session["ui-color"] = "black";
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 307 Temp Redirect.");
+                            }
                         }
                         //
                         /////////////////////////////
@@ -701,6 +713,9 @@ namespace EXOFiddlerInspector
                         this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
                         this.session["X-ExchangeType"] = "Auth Challenge";
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 401 Auth Challenge.");
+                        }
                         //
                         /////////////////////////////
                         break;
@@ -723,9 +738,12 @@ namespace EXOFiddlerInspector
                         }
                         else
                         {
-                            // Potentially nothing to worry about. Not marking in log.
+                            // All other HTTP 403's.
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 403 Forbidden.");
+                            }
                         }
                         //
                         /////////////////////////////
@@ -737,6 +755,9 @@ namespace EXOFiddlerInspector
                         //
                         this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 404 Not found.");
+                        }
                         //
                         /////////////////////////////
                         break;
@@ -747,6 +768,9 @@ namespace EXOFiddlerInspector
                         //
                         this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 405 Method not allowed.");
+                        }
                         //
                         /////////////////////////////
                         break;
@@ -757,6 +781,9 @@ namespace EXOFiddlerInspector
                         //
                         this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 429 Too many requests.");
+                        }
                         //
                         /////////////////////////////
                         break;
@@ -766,6 +793,11 @@ namespace EXOFiddlerInspector
                         // HTTP 440: Need to know more about these.
                         // For the moment do nothing.
                         //
+                        this.session["ui-backcolor"] = HTMLColourOrange;
+                        this.session["ui-color"] = "black";
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 440.");
+                        }
                         /////////////////////////////
                         break;
                     case 456:
@@ -779,12 +811,18 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "!Multi-Factor Auth!";
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 456 Multi-Factor Required!");
+                            }
                         }
                         else
                         {
                             this.session["ui-backcolor"] = HTMLColourOrange;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "Multi-Factor Auth?";
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 456 Multi-Factor Required.");
+                            }
                         }
                         //
                         /////////////////////////////
@@ -841,6 +879,9 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "False Positive";
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway. Telemetry False Positive.");
+                            }
                         }
 
                         /////////////////////////////
@@ -858,7 +899,7 @@ namespace EXOFiddlerInspector
                             this.session["X-ExchangeType"] = "False Positive";
                             if (bAppLoggingEnabled)
                             {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway. EXO DNS False Positive.");
                             }
                         }
 
@@ -878,7 +919,7 @@ namespace EXOFiddlerInspector
                             this.session["X-ExchangeType"] = "False Positive";
                             if (bAppLoggingEnabled)
                             {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway - False Positive.");
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway. O365 AutoD onmicrosoft.com False Positive.");
                             }
                         }
 
@@ -906,6 +947,9 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "False Positive";
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway. Vanity domain AutoD False Positive.");
+                            }
                         }
 
                         /////////////////////////////
@@ -921,7 +965,7 @@ namespace EXOFiddlerInspector
                             this.session["X-ExchangeType"] = "!AUTODISCOVER!";
                             if (bAppLoggingEnabled)
                             {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway.");
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway. Exchange Autodiscover.");
                             }
                         }
 
@@ -936,7 +980,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-color"] = "black";
                             if (bAppLoggingEnabled)
                             {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway.");
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway (99).");
                             }
                         }
                         //
@@ -975,7 +1019,7 @@ namespace EXOFiddlerInspector
                             this.session["X-ExchangeType"] = "!FEDERATION!";
                             if (bAppLoggingEnabled)
                             {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable. Found keyword 'FederatedStsUnreachable' in response body!");
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable. FederatedStsUnreachable in response body!");
                             }
                         }
                         else
@@ -984,7 +1028,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-color"] = "black";
                             if (bAppLoggingEnabled)
                             {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable.");
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable (99).");
                             }
                         }
                         //
@@ -1019,7 +1063,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-color"] = "black";
                             if (bAppLoggingEnabled)
                             {
-                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout.");
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout (99).");
                             }
                             //
                             /////////////////////////////
@@ -1057,29 +1101,16 @@ namespace EXOFiddlerInspector
             // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
             // So don't pay any attention to overrides for this type of traffic.
 
-            double TotalSessionTime = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
-
             if (this.session.hostname == "www.fiddler2.com")
             {
                 this.session["ui-backcolor"] = HTMLColourGrey;
                 this.session["ui-color"] = "black";
                 this.session["X-ExchangeType"] = "Not Exchange";
             }
-            // Long running session.
-            else if (TotalSessionTime > 1000 && TotalSessionTime < 5000)
-            {
-                this.session["ui-backcolor"] = HTMLColourOrange;
-                this.session["ui-color"] = "black";
-            }
-            else if (TotalSessionTime >= 5000)
-            {
-                this.session["ui-backcolor"] = HTMLColourRed;
-                this.session["ui-color"] = "black";
-            }
             else if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
             {
                 // Traffic has a null or blank local process value.
-                // No overrides needed in this scenario.
+                // No overrides needed in this scenario right now.
             }
             else
             {

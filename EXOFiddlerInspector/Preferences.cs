@@ -24,35 +24,53 @@ namespace EXOFiddlerInspector
         Boolean DeveloperDemoModeBreakScenarios = false;
         /////////////////
 
+        /////////////////
+        /// <summary>
+        /// This is the low water mark for what is considered a slow running session, considering a number of factors.
+        /// Exchange response times are typically going to be much quicker than this. In the < 300ms range.
+        /// </summary>
         int SlowRunningSessionThreshold = 5000; // milliseconds.
+        /////////////////
 
+        /////////////////
+        List<string> Developers = new List<string>(new string[] { "jeknight", "brandev", "jasonsla" });
         /// <summary>
         /// Developer list and return.
         /// </summary>
-        List<string> Developers = new List<string>(new string[] { "jeknight", "brandev", "jasonsla" });
+        /// <returns>Developers</returns>
         public List<string> GetDeveloperList()
         {
             return Developers;
         }
+        /////////////////
 
+        /////////////////
         /// <summary>
         /// Return DeveloperDemoMode value.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>DeveloperDemoMode</returns>
         public Boolean GetDeveloperMode()
         {
             return DeveloperDemoMode;
         }
+        /////////////////
 
+        /////////////////
         /// <summary>
         /// Return DeveloperDemoModeBreakScenarios value.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>DeveloperDemoModeBreakScenarios</returns>
         public Boolean GetDeveloperDemoModeBreakScenarios()
         {
             return DeveloperDemoModeBreakScenarios;
         }
+        /////////////////
 
+        /////////////////
+        ///<summary>
+        /// Return SlowRunningSessionThreshold value.
+        /// </summary>
+        /// <return>SlowRunningSessionThreshold</return>
         public int GetSlowRunningSessionThreshold()
         {
             return SlowRunningSessionThreshold;
