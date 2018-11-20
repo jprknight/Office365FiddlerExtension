@@ -53,6 +53,9 @@ namespace EXOFiddlerInspector
         //
         public void OnLoad()
         {
+            // Remove this previously used Fiddler Application Preference.
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.ResponseTimeColumnEnabled");
+
             calledMenuUI.FirstRunEnableMenuOptions();
 
             // Kill extension if not enabled.
