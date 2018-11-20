@@ -20,7 +20,7 @@ namespace EXOFiddlerInspector
         /// <summary>
         /// Developer list and return.
         /// </summary>
-        List<string> Developers = new List<string>(new string[] { "jeknight", "brandev", "jasonsla" });
+        List<string> Developers = new List<string>(new string[] { "jeknight", "brandev", "bever", "jasonsla" });
         public List<string> GetDeveloperList()
         {
             return Developers;

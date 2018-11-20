@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\ActivationService.cs" />
     <Compile Include="CheckForAppUpdate.cs" />
     <Compile Include="ColouriseWebSessions.cs" />
     <Compile Include="ColumnsUI.cs" />

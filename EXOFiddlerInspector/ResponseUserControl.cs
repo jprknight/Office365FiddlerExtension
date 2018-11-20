@@ -24,13 +24,10 @@ namespace EXOFiddlerInspector
         public ResponseUserControl()
         {
             InitializeComponent();
-
         }
 
-        private async void ResponseUserControl_Load(object sender, EventArgs e)
+        private void ResponseUserControl_Load(object sender, EventArgs e)
         {
-            await TelemetryService.InitializeAsync();
-
             /////////////////////////////
             //
             // Before we go ahead and run the add tab code work out if 

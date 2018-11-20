@@ -1,4 +1,5 @@
-﻿using Fiddler;
+﻿using EXOFiddlerInspector.Services;
+using Fiddler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -211,6 +212,8 @@ namespace EXOFiddlerInspector
             bExtensionEnabled = miEnabled.Checked;
             // Set the application preference for this option.
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", bExtensionEnabled);
+
+            TelemetryService.TrackEvent($"ExtensionIsEnabled_{miEnabled.Checked}");
         }
 
         // Enable/disable all columns.
