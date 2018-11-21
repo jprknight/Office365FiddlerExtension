@@ -590,7 +590,6 @@ namespace EXOFiddlerInspector
                                     {
                                         FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 FAILURE LURKING!");
                                     }
-
                                 }
                                 else
                                 {
