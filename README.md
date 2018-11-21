@@ -3,9 +3,10 @@ The Exchange Online Fiddler Extension
 
 This inspector is intended to help with troubleshooting issues with Outlook and Office 365 / Exchange Online. With Fiddler installed, install this extension to alter the standard Fiddler UI:
 
-* Add a 'Response Time' column.
-* Add a 'Response Server' column.
-* Add an 'Exchange Type' column.
+* Add column 'Response Time'.
+* Add column'Response Server'.
+* Add column 'Exchange Type'.
+* Add column 'XP-HostIP'.
 * Add an 'Exchange Online' response inspector tab.
 * Add an 'Exchange Online' menu to turn off/on extension, extension features and other options.
 * Colourisation of sessions upon loading a .SAZ file.
