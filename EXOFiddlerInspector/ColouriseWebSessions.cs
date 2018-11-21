@@ -52,6 +52,8 @@ namespace EXOFiddlerInspector
         //
         public void OnLoad()
         {
+            // We need to through some code to restore vanilla Fiddler configuration.
+            /*
             bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
             
             // Kill extension if not enabled.
@@ -65,6 +67,7 @@ namespace EXOFiddlerInspector
                     return;
                 }
             }
+            */
             
             calledMenuUI.FirstRunEnableMenuOptions();
 
@@ -124,8 +127,15 @@ namespace EXOFiddlerInspector
             /// Call function to start LoadSAZ.
             /// </remarks>
             /// 
+            if (bExtensionEnabled)
+            {
+                FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
+            }
+            else
+            {
+                calledColumnsUI.OrderColumns();
+            }
 
-            FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
             
             ///
             /////////////////
@@ -149,9 +159,9 @@ namespace EXOFiddlerInspector
             /// </remarks>
 
             /// Refresh variable now to take account of first load code.
-            bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
+            //bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
 
-            if (bResponseServerColumnEnabled)
+            if (bResponseServerColumnEnabled && bExtensionEnabled)
             {
                 calledColumnsUI.EnsureResponseServerColumn();
             }
@@ -162,9 +172,9 @@ namespace EXOFiddlerInspector
             /// </remarks>
             /// 
             /// Refresh variable now to take account of first load code.
-            bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
+            //bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
 
-            if (bXHostIPColumnEnabled)
+            if (bXHostIPColumnEnabled && bExtensionEnabled)
             {
                 calledColumnsUI.EnsureXHostIPColumn();
             }
@@ -176,9 +186,9 @@ namespace EXOFiddlerInspector
             /// 
 
             /// Refresh variable now to take account of first load code.
-            bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
+            //bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
 
-            if (bExchangeTypeColumnEnabled)
+            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
             {
                 calledColumnsUI.EnsureExchangeTypeColumn();
             }
@@ -190,9 +200,9 @@ namespace EXOFiddlerInspector
             /// 
             
             /// Refresh variable now to take account of first load code.
-            bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
+            //bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
 
-            if (bElapsedTimeColumnEnabled)
+            if (bElapsedTimeColumnEnabled && bExtensionEnabled)
             {
                 calledColumnsUI.EnsureElapsedTimeColumn();
             }
@@ -234,20 +244,23 @@ namespace EXOFiddlerInspector
                 }
 
                 // Populate the ExchangeType column on load SAZ, if the column is enabled, and the extension is enabled
-                if (bExchangeTypeColumnEnabled)
+                if (bExchangeTypeColumnEnabled && bExtensionEnabled)
                 {
                     calledColumnsUI.SetExchangeType(session);
                 }
 
                 // Populate the ResponseServer column on load SAZ, if the column is enabled, and the extension is enabled
-                if (bResponseServerColumnEnabled)
+                if (bResponseServerColumnEnabled && bExtensionEnabled)
                 {
                     calledColumnsUI.SetResponseServer(session);
                 }
 
-                // Colourise sessions on load SAZ.
-                OnPeekAtResponseHeaders(session); //Run whatever function you use in IAutoTamper
-                session.RefreshUI();
+                if (bExtensionEnabled)
+                {
+                    // Colourise sessions on load SAZ.
+                    OnPeekAtResponseHeaders(session); //Run whatever function you use in IAutoTamper
+                    session.RefreshUI();
+                }
             }
             FiddlerApplication.UI.lvSessions.EndUpdate();
         }
@@ -1192,12 +1205,22 @@ namespace EXOFiddlerInspector
             // Making sure this is called after SetExchangeType and SetResponseServer, so we can use overrides
             // in OnPeekAtResponseHeaders function.
             //
-
-            OnPeekAtResponseHeaders(session);
-            session.RefreshUI();
-
+            if (bExtensionEnabled)
+            {
+                OnPeekAtResponseHeaders(session);
+                session.RefreshUI();
+            }
             //
             /////////////////
+
+            // These get called on each session, seen strange behaviour on reordering on live trace due 
+            // to setting each of these as ordering 2 to ensure column positions regardless of column enabled selections.
+            // Use an if statement to fire these once per Fiddler application session.
+            if (this.session.id == 1)
+            {
+                calledColumnsUI.OrderColumns();
+            }
+
         }
         //
         /////////////////////////////

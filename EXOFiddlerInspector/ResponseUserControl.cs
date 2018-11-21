@@ -18,16 +18,27 @@ namespace EXOFiddlerInspector
     public partial class ResponseUserControl : UserControl
     {
         public string SessionData;
-        
+
+        public bool bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+
         //private DebugConsole DevConsole;
 
         public ResponseUserControl()
         {
-            InitializeComponent();
+            // If the extension is not enabled, don't build the user controls.
+            if (bExtensionEnabled)
+            {
+                InitializeComponent();
+            }
+            else
+            {
+                return;
+            }
         }
 
         private void ResponseUserControl_Load(object sender, EventArgs e)
         {
+
             /////////////////////////////
             //
             // Before we go ahead and run the add tab code work out if 

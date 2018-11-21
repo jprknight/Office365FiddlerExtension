@@ -31,18 +31,21 @@ namespace EXOFiddlerInspector
         {
             Boolean LoadSaz = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.LoadSaz", false);
 
-            if (bElapsedTimeColumnCreated)
+            if (bElapsedTimeColumnCreated && bExtensionEnabled)
             {
                 return;
             }
-            else if (LoadSaz)
+            else if (LoadSaz && bExtensionEnabled)
             {
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 2, 110, "X-ElapsedTime");
                 bElapsedTimeColumnCreated = true;
             }
-            else
+            else if (bExtensionEnabled)
             {
                 // live trace, don't load this column.
+                // Testing.
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 2, 110, "X-ElapsedTime");
+                bElapsedTimeColumnCreated = true;
             }
         }
 
@@ -51,11 +54,11 @@ namespace EXOFiddlerInspector
         /// </summary>
         public void EnsureResponseServerColumn()
         {
-            if (bResponseServerColumnCreated)
+            if (bResponseServerColumnCreated && bExtensionEnabled)
             {
                 return;
             }
-            else
+            else if (bExtensionEnabled)
             {
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 2, 130, "X-ResponseServer");
                 bResponseServerColumnCreated = true;
@@ -68,11 +71,11 @@ namespace EXOFiddlerInspector
         /// </summary>
         public void EnsureXHostIPColumn()
         {
-            if (bXHostIPColumnCreated)
+            if (bXHostIPColumnCreated && bExtensionEnabled)
             {
                 return;
             }
-            else
+            else if (bExtensionEnabled)
             {
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("X-HostIP", 2, 110, "X-HostIP");
                 bXHostIPColumnCreated = true;
@@ -88,7 +91,7 @@ namespace EXOFiddlerInspector
             {
                 return;
             }
-            else
+            else if (bExtensionEnabled)
             {
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 2, 150, "X-ExchangeType");
                 bExchangeTypeColumnCreated = true;
@@ -245,7 +248,7 @@ namespace EXOFiddlerInspector
             /////////////////
             //
             // Call the function to populate the session type column on live trace, if the column is enabled.
-            if (bExchangeTypeColumnEnabled)
+            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
             {
                 this.SetExchangeType(this.session);
             }
@@ -253,11 +256,11 @@ namespace EXOFiddlerInspector
             /////////////////
             //
             // Call the function to populate the session type column on live trace, if the column is enabled.
-            if (bResponseServerColumnEnabled)
+            if (bResponseServerColumnEnabled && bExtensionEnabled)
             {
                 this.SetResponseServer(this.session);
             }
-            
+
             /////////////////
             //
             // For some reason setting the column ordering when adding the columns did not work.
@@ -277,6 +280,9 @@ namespace EXOFiddlerInspector
                 OrderColumns();
             }
 
+            
+            
+
             /*
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Protocol", 5, -1);
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host", 6, -1);
@@ -295,6 +301,8 @@ namespace EXOFiddlerInspector
 
         public void OrderColumns()
         {
+            bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+
             if (bExtensionEnabled)
             {
                 // Move the process column further to the left for visibility.
@@ -305,22 +313,23 @@ namespace EXOFiddlerInspector
                 // Since the extension is not enabled return the process column back to its original location.
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 8, -1);
             }
-            if (bExchangeTypeColumnEnabled)
+
+            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
             {
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 2, -1);
             }
 
-            if (bXHostIPColumnEnabled)
+            if (bXHostIPColumnEnabled && bExtensionEnabled)
             {
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("X-HostIP", 2, -1);
             }
 
-            if (bResponseServerColumnEnabled)
+            if (bResponseServerColumnEnabled && bExtensionEnabled)
             {
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
             }
 
-            if (bElapsedTimeColumnEnabled && FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.LoadSaz", false))
+            if (bElapsedTimeColumnEnabled && bExtensionEnabled)
             {
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Elapsed Time", 2, -1);
             }
@@ -333,6 +342,9 @@ namespace EXOFiddlerInspector
 
         public void OnLoad()
         {
+
+            // We need to through some code to restore vanilla Fiddler configuration.
+            /*
             bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
 
             // Kill extension if not enabled.
@@ -346,6 +358,7 @@ namespace EXOFiddlerInspector
                     return;
                 }
             }
+            */
             
             /////////////////
             /// <remarks>
@@ -358,9 +371,9 @@ namespace EXOFiddlerInspector
             /// Call to function in ColumnsUI.cs to add Server Response column if the menu item is checked and if the extension is enabled.
             /// </remarks> 
             /// Refresh variable now to take account of first load code.
-            bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
+            //bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
 
-            if (bResponseServerColumnEnabled)
+            if (bResponseServerColumnEnabled && bExtensionEnabled)
             {
                 Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs Adding Response Server Column.");
                 EnsureResponseServerColumn();
@@ -377,8 +390,8 @@ namespace EXOFiddlerInspector
             /// Call to function in ColumnsUI.cs to add Exchange Type column if the menu item is checked and if the extension is enabled. 
             /// </remarks>
             /// Refresh variable now to take account of first load code.
-            bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
-            if (bXHostIPColumnEnabled)
+            //bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
+            if (bXHostIPColumnEnabled && bExtensionEnabled)
             {
 
                 Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs Adding X-HostIP Column.");
@@ -396,7 +409,7 @@ namespace EXOFiddlerInspector
             /// Call to function in ColumnsUI.cs to add Exchange Type column if the menu item is checked and if the extension is enabled. 
             /// </remarks>
             /// Refresh variable now to take account of first load code.
-            bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
+            //bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
             if (bExchangeTypeColumnEnabled)
             {
 

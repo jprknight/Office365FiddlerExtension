@@ -50,7 +50,7 @@ namespace EXOFiddlerInspector.Services
             /////////////////
             //
             // Call the function to populate the session type column on live trace, if the column is enabled.
-            if (bExchangeTypeColumnEnabled)
+            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
             {
                 calledColumnsUI.SetExchangeType(this.session);
             }
@@ -58,7 +58,7 @@ namespace EXOFiddlerInspector.Services
             /////////////////
             //
             // Call the function to populate the session type column on live trace, if the column is enabled.
-            if (bResponseServerColumnEnabled)
+            if (bResponseServerColumnEnabled && bExtensionEnabled)
             {
                 calledColumnsUI.SetResponseServer(this.session);
             }

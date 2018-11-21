@@ -299,25 +299,30 @@ namespace EXOFiddlerInspector
         // Not expected to work 100% of the time per logic below.
         public override int ScoreForSession(Session oS)
         {
-            this.session = oS;
-
-            this.session.utilDecodeRequest(true);
-            this.session.utilDecodeResponse(true);
-
-            if (this.session.LocalProcess.Contains("outlook") ||
-            this.session.LocalProcess.Contains("searchprotocolhost") ||
-            this.session.LocalProcess.Contains("iexplore") ||
-            this.session.LocalProcess.Contains("chrome") ||
-            this.session.LocalProcess.Contains("firefox") ||
-            this.session.LocalProcess.Contains("edge") ||
-            this.session.LocalProcess.Contains("w3wp"))
+            if (bExtensionEnabled)
             {
-                return 100;
+                this.session = oS;
+
+                this.session.utilDecodeRequest(true);
+                this.session.utilDecodeResponse(true);
+
+                if (this.session.LocalProcess.Contains("outlook") ||
+                this.session.LocalProcess.Contains("searchprotocolhost") ||
+                this.session.LocalProcess.Contains("iexplore") ||
+                this.session.LocalProcess.Contains("chrome") ||
+                this.session.LocalProcess.Contains("firefox") ||
+                this.session.LocalProcess.Contains("edge") ||
+                this.session.LocalProcess.Contains("w3wp"))
+                {
+                    return 100;
+                }
+                else
+                {
+                    return 0;
+                }
             }
-            else
-            {
-                return 0;
-            }
+            // Not all path return a value. Well throw a zero.
+            return 0;
         }
         #endregion
 
@@ -333,7 +338,11 @@ namespace EXOFiddlerInspector
             get { return rawBody; }
             set
             {
-                SetResponseValues(this.session);
+                if (bExtensionEnabled)
+                {
+                    SetResponseValues(this.session);
+                }
+                
             }
         }
 
