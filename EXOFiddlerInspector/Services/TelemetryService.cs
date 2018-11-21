@@ -39,7 +39,16 @@ namespace EXOFiddlerInspector.Services
         /// <returns>Bool</returns>
         public static async Task InitializeAsync()
         {
-            if (!IsInitialized)
+            Preferences calledPreferences = new Preferences();
+
+            List<string> devs = calledPreferences.GetDeveloperList();
+
+            if (devs.Any(Environment.UserName.Contains))
+            {
+                return;
+            }
+
+            else if (!IsInitialized)
             {               
                 try
                 {
@@ -132,16 +141,6 @@ namespace EXOFiddlerInspector.Services
             string userName = null;
             try
             {
-                Preferences calledPreferences = new Preferences();
-
-                List<string> devs = calledPreferences.GetDeveloperList();
-              
-                if (devs.Any(Environment.UserName.Contains))
-                {
-                    userName = CreateMD5(Environment.UserName);
-                }
-                else
-                {
                     ManagementObjectSearcher query = new ManagementObjectSearcher("SELECT * FROM Win32_BaseBoard");
 
                     ManagementObjectCollection _managementObjects = query.Get();
@@ -150,7 +149,6 @@ namespace EXOFiddlerInspector.Services
                     {
                         userName = CreateMD5((string)mgmtObject["SerialNumber"]);
                     }
-                }
             }
             catch
             {
