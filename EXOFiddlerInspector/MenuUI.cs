@@ -71,8 +71,16 @@ namespace EXOFiddlerInspector
             bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
             bColumnsEnableAllEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAllEnabled", false);
 
-            // Setup each menu item name and ordering.
-            this.ExchangeOnlineTopMenu = new MenuItem(FiddlerApplication.Prefs.GetStringPref("extensions.EXOFiddlerInspector.MenuTitle", "Exchange Online"));
+            // If the extension is enabled then take the menu title from the Fiddler application preference.
+            if (bExtensionEnabled)
+            {
+                this.ExchangeOnlineTopMenu = new MenuItem(FiddlerApplication.Prefs.GetStringPref("extensions.EXOFiddlerInspector.MenuTitle", "Exchange Online"));
+            }
+            // If th extension is disabled then use this instead.
+            else
+            {
+                this.ExchangeOnlineTopMenu = new MenuItem("Exchange Online (Disabled)");
+            }
 
             this.miEnabled = new MenuItem("&Extension Enabled");
             this.miEnabled.Index = 0;
