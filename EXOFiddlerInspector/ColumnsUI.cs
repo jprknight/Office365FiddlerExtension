@@ -30,14 +30,13 @@ namespace EXOFiddlerInspector
         public void EnsureElapsedTimeColumn()
         {
             Boolean LoadSaz = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.LoadSaz", false);
+
             if (bElapsedTimeColumnCreated)
             {
-                FiddlerApplication.Log.LogString("EXOFiddlerExtention: ColumnsUI.cs Elapsed Time column already created.");
                 return;
             }
             else if (LoadSaz)
             {
-                FiddlerApplication.Log.LogString("EXOFiddlerExtention: ColumnsUI.cs creating Elapsed Time column.");
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 2, 110, "X-ElapsedTime");
                 bElapsedTimeColumnCreated = true;
             }
@@ -54,12 +53,10 @@ namespace EXOFiddlerInspector
         {
             if (bResponseServerColumnCreated)
             {
-                FiddlerApplication.Log.LogString("EXOFiddlerExtention: ColumnsUI.cs Response Server column already created.");
                 return;
             }
             else
             {
-                FiddlerApplication.Log.LogString("EXOFiddlerExtention: ColumnsUI.cs creating Response Server column.");
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 2, 130, "X-ResponseServer");
                 bResponseServerColumnCreated = true;
             }
@@ -73,12 +70,10 @@ namespace EXOFiddlerInspector
         {
             if (bXHostIPColumnCreated)
             {
-                FiddlerApplication.Log.LogString("EXOFiddlerExtention: ColumnsUI.cs X-HostIP column already created.");
                 return;
             }
             else
             {
-                FiddlerApplication.Log.LogString("EXOFiddlerExtention: ColumnsUI.cs creating X-HostIP column.");
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("X-HostIP", 2, 110, "X-HostIP");
                 bXHostIPColumnCreated = true;
             }
@@ -91,12 +86,10 @@ namespace EXOFiddlerInspector
         {
             if (bExchangeTypeColumnCreated)
             {
-                FiddlerApplication.Log.LogString("EXOFiddlerExtention: ColumnsUI.cs Exchange Type column already created.");
                 return;
             }
             else
             {
-                FiddlerApplication.Log.LogString("EXOFiddlerExtention: ColumnsUI.cs creating Exchange Type column.");
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 2, 150, "X-ExchangeType");
                 bExchangeTypeColumnCreated = true;
             }

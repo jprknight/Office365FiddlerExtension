@@ -68,7 +68,7 @@ namespace EXOFiddlerInspector
     }
 
     #region RequestInspectorNotInProduction
-
+    
     /// <summary>
     /// Request Inspector class, inherits the generic class above, only defines things specific or different from the base class
     /// Request inspector tab not used in production.
@@ -79,6 +79,7 @@ namespace EXOFiddlerInspector
     /// -- SetRequestValues, small rule set.
     /// -- AddToTab.
     /// </summary>
+    /*
     public class RequestInspector : EXOBaseFiddlerInspector, IRequestInspector2
     {
         private bool _readOnly;
@@ -272,7 +273,7 @@ namespace EXOFiddlerInspector
 
         public string EXOResponseBody { get; set; }
     }
-
+    */
     #endregion
 
     /// <summary>

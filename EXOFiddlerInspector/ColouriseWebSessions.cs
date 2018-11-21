@@ -1108,6 +1108,12 @@ namespace EXOFiddlerInspector
             // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
             // So don't pay any attention to overrides for this type of traffic.
 
+            double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
+
+            double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
+
+            int SlowRunningSessionThreshold = calledPreferences.GetSlowRunningSessionThreshold();
+
             if (this.session.hostname == "www.fiddler2.com")
             {
                 this.session["ui-backcolor"] = HTMLColourGrey;
@@ -1118,6 +1124,16 @@ namespace EXOFiddlerInspector
             {
                 // Traffic has a null or blank local process value.
                 // No overrides needed in this scenario right now.
+            }
+            else if (ClientMilliseconds > SlowRunningSessionThreshold)
+            {
+                this.session["ui-backcolor"] = HTMLColourOrange;
+                this.session["ui-color"] = "black";
+            }
+            else if (ServerMilliseconds > SlowRunningSessionThreshold)
+            {
+                this.session["ui-backcolor"] = HTMLColourOrange;
+                this.session["ui-color"] = "black";
             }
             else
             {
