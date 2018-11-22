@@ -7,14 +7,14 @@ using Fiddler;
 
 namespace EXOFiddlerInspector
 {
+    /// <summary>
+    /// SessionRuleSet class. All extension session logic lives here.
+    /// </summary>
     public class SessionRuleSet : IAutoTamper
     {
-        /// <summary>
-        /// References to other classes.
-        /// </summary>
+        // References to other classes.
         MenuUI calledMenuUI = new MenuUI();
         ColumnsUI calledColumnsUI = new ColumnsUI();
-        // Developer list is actually set in Preferences.cs.
         Preferences calledPreferences = new Preferences();
 
         internal Session session { get; set; }
@@ -35,40 +35,45 @@ namespace EXOFiddlerInspector
 
         public void AutoTamperRequestAfter(Session oSession)
         {
+            // Not used here.
             //throw new NotImplementedException();
         }
 
         public void AutoTamperRequestBefore(Session oSession)
         {
+            // Not used here.
             //throw new NotImplementedException();
         }
 
         public void AutoTamperResponseAfter(Session oSession)
         {
+            // Not used here.
             //throw new NotImplementedException();
         }
 
         public void AutoTamperResponseBefore(Session oSession)
         {
+            // Not used here.
             //throw new NotImplementedException();
         }
 
         public void OnBeforeReturningError(Session oSession)
         {
+            // Not used here.
             //throw new NotImplementedException();
         }
 
         public void OnBeforeUnload()
         {
+            // Not used here.
             //throw new NotImplementedException();
         }
 
         public void OnLoad()
         {
+            // Not used here.
             //throw new NotImplementedException();
         }
-
-        #region ColouriseRuleSet
 
         /////////////////////////////
         //
@@ -152,6 +157,12 @@ namespace EXOFiddlerInspector
 
                         this.session["X-ResponseAlertTextBox"] = "!HTTP 0 No Response!";
                         this.session["X-ResponseCommentsRichTextboxText"] = (Properties.Settings.Default.HTTPQuantity);
+
+                        if (bAppLoggingEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 0 No response");
+                        }
+
                         //
                         /////////////////////////////
                         break;
@@ -302,6 +313,7 @@ namespace EXOFiddlerInspector
 
                             // Increment HTTP200SkipLogic so that 99 does not run below.
                             HTTP200SkipLogic++;
+
                             if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
@@ -323,6 +335,7 @@ namespace EXOFiddlerInspector
                             {
                                 this.session["ui-backcolor"] = HTMLColourGreen;
                                 this.session["ui-color"] = "black";
+
                                 // Increment HTTP200SkipLogic so that 99 does not run below.
                                 HTTP200SkipLogic++;
                             }
@@ -496,11 +509,16 @@ namespace EXOFiddlerInspector
                                     this.session["X-ResponseAlertTextBox"] = "!'error', 'failed' or 'exception' found in respone body!";
                                     this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 200: Errors or failures found in response body. " +
                                         "Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review." +
-                                        Environment.NewLine + Environment.NewLine +
-                                        "After splitting all words in the response body the following were found:" + Environment.NewLine +
-                                        Environment.NewLine + "Keyword 'Error' found " + wordCountErrorText +
-                                        Environment.NewLine + "Keyword 'Failed' found " + wordCountFailedText +
-                                        Environment.NewLine + "Keyword 'Exception' found " + wordCountExceptionText;
+                                        Environment.NewLine + 
+                                        Environment.NewLine +
+                                        "After splitting all words in the response body the following were found:" + 
+                                        Environment.NewLine +
+                                        Environment.NewLine + 
+                                        "Keyword 'Error' found " + wordCountErrorText +
+                                        Environment.NewLine + 
+                                        "Keyword 'Failed' found " + wordCountFailedText +
+                                        Environment.NewLine + 
+                                        "Keyword 'Exception' found " + wordCountExceptionText;
 
                                     if (bAppLoggingEnabled)
                                     {
@@ -551,6 +569,10 @@ namespace EXOFiddlerInspector
                         this.session["X-ResponseAlertTextBox"] = "HTTP 201 Created.";
                         this.session["X-ResponseCommentsRichTextboxText"] = "Not expecting this to be anything which needs attention for troubleshooting.";
 
+                        if (bAppLoggingEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 201 Created.");
+                        }
                         //
                         /////////////////////////////
                         break;
@@ -604,6 +626,11 @@ namespace EXOFiddlerInspector
 
                         this.session["X-ResponseAlertTextBox"] = "Exchange On-Premise Autodiscover redirect to Exchange Online.";
                         this.session["X-ResponseCommentsRichTextboxText"] = "Exchange On-Premise Autodiscover redirect to Exchange Online.";
+
+                        if (bAppLoggingEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 302 Found / Redirect.");
+                        }
                         //
                         /////////////////////////////
                         break;
@@ -617,6 +644,11 @@ namespace EXOFiddlerInspector
 
                         this.session["X-ResponseAlertTextBox"] = "HTTP 304 Not Modified";
                         this.session["X-ResponseCommentsRichTextboxText"] = "Nothing of concern here at this time.";
+
+                        if (bAppLoggingEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 304 Not modified.");
+                        }
                         //
                         /////////////////////////////
                         break;
@@ -1232,11 +1264,7 @@ namespace EXOFiddlerInspector
             /////////////////////////////
 
             /////////////////////////////
-            //
-            #region ColouriseSessionsOverrides
-            // First off if the local process is nullor blank, then we are analysing traffic from a remote client such as a mobile device.
-            // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
-            // So don't pay any attention to overrides for this type of traffic.
+            // ColouriseSessionsOverrides
 
             double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
 
@@ -1244,30 +1272,35 @@ namespace EXOFiddlerInspector
 
             int SlowRunningSessionThreshold = calledPreferences.GetSlowRunningSessionThreshold();
 
+
+            // Very likely the first session captured when running Fiddler.
             if (this.session.hostname == "www.fiddler2.com")
             {
                 this.session["ui-backcolor"] = HTMLColourGrey;
                 this.session["ui-color"] = "black";
                 this.session["X-ExchangeType"] = "Not Exchange";
             }
+            // If the local process is nullor blank, then we are analysing traffic from a remote client such as a mobile device.
+            // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
+            // So don't pay any attention to overrides for this type of traffic.
             else if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
             {
                 // Traffic has a null or blank local process value.
-                // No overrides needed in this scenario right now.
+                // No overrides needed in this scenario.
             }
             else if (ClientMilliseconds > SlowRunningSessionThreshold)
             {
-                this.session["ui-backcolor"] = HTMLColourOrange;
+                this.session["ui-backcolor"] = HTMLColourRed;
                 this.session["ui-color"] = "black";
             }
             else if (ServerMilliseconds > SlowRunningSessionThreshold)
             {
-                this.session["ui-backcolor"] = HTMLColourOrange;
+                this.session["ui-backcolor"] = HTMLColourRed;
                 this.session["ui-color"] = "black";
             }
             else
             {
-                bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
+                //bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
                 // If the menu item Highlight Outlook and OWA Only is enabled then grey out all the other traffic.
                 if (bHighlightOutlookOWAOnlyEnabled)
                 {
@@ -1289,12 +1322,8 @@ namespace EXOFiddlerInspector
                     }
                 }
             }
-            #endregion
             //
             /////////////////////////////
         }
-        //
-        /////////////////////////////
-        #endregion
     }
 }

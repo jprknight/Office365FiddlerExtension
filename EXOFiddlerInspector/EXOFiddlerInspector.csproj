@@ -54,9 +54,9 @@
   <ItemGroup>
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="CheckForAppUpdate.cs" />
-    <Compile Include="ColouriseWebSessions.cs" />
+    <Compile Include="SessionProcessor.cs" />
     <Compile Include="ColumnsUI.cs" />
-    <Compile Include="EXOFiddlerInspector.cs" />
+    <Compile Include="InspectorTabUI.cs" />
     <Compile Include="MenuUI.cs" />
     <Compile Include="Preferences.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
