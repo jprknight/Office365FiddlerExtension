@@ -83,6 +83,7 @@
       <DependentUpon>ResponseUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\TelemetryService.cs" />
+    <Compile Include="SessionRuleSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
