@@ -593,6 +593,9 @@ namespace EXOFiddlerInspector
             // Write Process into textbox.
             _displayControl.SetResponseProcessTextBox(this.session.LocalProcess);
 
+            // Session rule set used to live here.
+            // Now all the logic is ran in SessionRuleSet.cs.
+            // Data for these two textboxes on the inspector tab is now written into session tags.
             _displayControl.SetResponseAlertTextBox(this.session["X-ResponseAlertTextBox"]);
             _displayControl.SetResponseCommentsRichTextboxText(this.session["X-ResponseCommentsRichTextboxText"]);
             
