@@ -44,8 +44,8 @@ namespace EXOFiddlerInspector
             {
                 // live trace, don't load this column.
                 // Testing.
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 2, 110, "X-ElapsedTime");
-                bElapsedTimeColumnCreated = true;
+                //FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 2, 110, "X-ElapsedTime");
+                //bElapsedTimeColumnCreated = true;
             }
         }
 
@@ -301,12 +301,10 @@ namespace EXOFiddlerInspector
 
         public void OrderColumns()
         {
-            bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-
             if (bExtensionEnabled)
             {
                 // Move the process column further to the left for visibility.
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 2, 100);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 2, -1);
             }
             else
             {
