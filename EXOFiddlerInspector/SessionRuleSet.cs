@@ -23,6 +23,7 @@ namespace EXOFiddlerInspector
         private string RedirectAddress;
         private int HTTP200SkipLogic;
         private int HTTP200FreeBusy;
+        private int FalsePositive;
 
         public bool bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
         public bool bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
@@ -89,6 +90,7 @@ namespace EXOFiddlerInspector
             // Reset these session counters.
             HTTP200SkipLogic = 0;
             HTTP200FreeBusy = 0;
+            FalsePositive = 0;
 
             this.session = session;
 
@@ -954,6 +956,9 @@ namespace EXOFiddlerInspector
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "False Positive";
 
+                            // Increment false positive count to prevent long running session overrides.
+                            FalsePositive++;
+
                             this.session["X-ResponseAlertTextBox"] = "False Positive";
                             this.session["X-ResponseCommentsRichTextboxText"] = "Telemetry failing is unlikely the cause of Outlook / OWA connectivity or other issues.";
 
@@ -976,6 +981,9 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "False Positive";
+
+                            // Increment false positive count to prevent long running session overrides.
+                            FalsePositive++;
 
                             this.session["X-ResponseAlertTextBox"] = "False Positive";
                             this.session["X-ResponseCommentsRichTextboxText"] = "From the data in the response body this failure is likely due to a Microsoft DNS MX record " +
@@ -1005,6 +1013,9 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "False Positive";
+
+                            // Increment false positive count to prevent long running session overrides.
+                            FalsePositive++;
 
                             string AutoDFalsePositiveResponseBody = this.session.GetResponseBodyAsString();
                             int start = this.session.GetResponseBodyAsString().IndexOf("'");
@@ -1053,6 +1064,9 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "False Positive";
+
+                            // Increment false positive count to prevent long running session overrides.
+                            FalsePositive++;
 
                             this.session["X-ResponseAlertTextBox"] = "Office 365 Autodiscover False Positive";
                             this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 502: False Positive. By design Office 365 certain IP addresses used for " +
@@ -1278,7 +1292,6 @@ namespace EXOFiddlerInspector
             {
                 this.session["ui-backcolor"] = HTMLColourGrey;
                 this.session["ui-color"] = "black";
-                this.session["X-ExchangeType"] = "Not Exchange";
             }
             // If the local process is nullor blank, then we are analysing traffic from a remote client such as a mobile device.
             // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
@@ -1288,15 +1301,41 @@ namespace EXOFiddlerInspector
                 // Traffic has a null or blank local process value.
                 // No overrides needed in this scenario.
             }
-            else if (ClientMilliseconds > SlowRunningSessionThreshold)
+            // If the overall session time runs longer than 5,000ms or 5 seconds 
+            //  AND this is not determined to be a false positive.
+            else if (ClientMilliseconds > SlowRunningSessionThreshold && FalsePositive == 0)
             {
                 this.session["ui-backcolor"] = HTMLColourRed;
                 this.session["ui-color"] = "black";
+
+                this.session["X-ExchangeType"] = "Long Running Session";
+
+                this.session["X-ResponseAlertTextBox"] = "!Long Running Session!";
+                this.session["X-ResponseCommentsRichTextboxText"] = "Long running session found. A small number of long running sessions in the < 10 " +
+                    "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue.";
+
+                if (bAppLoggingEnabled)
+                {
+                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Long running session.");
+                }
             }
-            else if (ServerMilliseconds > SlowRunningSessionThreshold)
+            // If the EXO server think time runs longer than 5,000ms or 5 seconds 
+            //  AND this is not determined to be a false positive.
+            else if (ServerMilliseconds > SlowRunningSessionThreshold && FalsePositive == 0)
             {
                 this.session["ui-backcolor"] = HTMLColourRed;
                 this.session["ui-color"] = "black";
+
+                this.session["X-ExchangeType"] = "Long Running EXO Session";
+
+                this.session["X-ResponseAlertTextBox"] = "!Long Running EXO Session!";
+                this.session["X-ResponseCommentsRichTextboxText"] = "Long running EXO session found. A small number of long running sessions in the < 10 " +
+                    "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue.";
+
+                if (bAppLoggingEnabled)
+                {
+                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Long running EXO session.");
+                }
             }
             else
             {
