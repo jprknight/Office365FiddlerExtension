@@ -131,7 +131,7 @@ namespace EXOFiddlerInspector
                     Environment.NewLine +
                     "See ExcludeHttpsRootDomain on https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under" +
                     Environment.NewLine +
-                    "Beyond this, the customer needs their web administrator responsible for the server answering the calls to stop the Apache web server from answering to Autodiscover.";
+                    "Beyond this the web administrator responsible for the server needs to stop the Apache web server from answering these requests.";
 
                 if (bAppLoggingEnabled)
                 {
