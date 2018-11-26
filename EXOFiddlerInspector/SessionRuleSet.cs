@@ -1046,7 +1046,7 @@ namespace EXOFiddlerInspector
                         System.Net.Sockets.SocketException No connection could be made because the target machine actively refused it 40.97.100.8:443                                                                                                                                                                                                                                                                                  
                         */
 
-                        if ((this.session.utilFindInResponse("autodiscover.", false) > 1) &&
+                        else if ((this.session.utilFindInResponse("autodiscover.", false) > 1) &&
                                 (this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
                                 (this.session.utilFindInResponse("40.97.", false) > 1))
                         {
