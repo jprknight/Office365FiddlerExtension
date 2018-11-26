@@ -138,6 +138,46 @@ namespace EXOFiddlerInspector
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 405 Method Not Allowed; Apache is answering Autodiscover requests!");
                 }
             }
+
+            /////////////////////////////
+            //
+            // Authentication
+            //
+            // 1. Modern Authentication is not enabled in Exchange Online.
+            //
+            // "x-ms-diagnostics: 4000000;reason="Flighting is not enabled for domain 'user@contoso.com'.";error_category="oauth_not_available"" 
+            //
+            else if ((this.session.utilFindInResponse("Flighting is not enabled for domain", false) > 1) &&
+                    (this.session.utilFindInResponse("oauth_not_available", false) > 1))
+            {
+                this.session["ui-backcolor"] = HTMLColourOrange;
+                this.session["ui-color"] = "black";
+
+                this.session["X-ExchangeType"] = "Auth: MA Disabled in EXO";
+
+                this.session["X-ResponseAlertTextBox"] = "Modern Auth not enabled.";
+                this.session["X-ResponseCommentsRichTextboxText"] = "Modern Auth not enabled. This is not necessarily a bad thing, but something to note when troubleshooting.";
+
+                if (bAppLoggingEnabled)
+                {
+                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Modern Authentication NOT enabled.");
+                }
+
+            }
+
+            // 2. Client sending Basic Auth Token.
+
+            // Authorization: Basic Base 64 encoded username/password. 40 characters.
+
+            // 3. Client sending Modern Authentication Token.
+
+            // Authorization: Bearer + a long alpanumeric token
+
+            // 4. Client supports Modern Authentication.
+
+            // Authorization: Bearer
+
+            /////////////////////////////
             // If the above is not true, then drop into the switch statement based on individual response codes.
             else
             {
