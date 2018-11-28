@@ -287,9 +287,9 @@ namespace EXOFiddlerInspector
         public ResponseUserControl _displayControl;
         private HTTPResponseHeaders responseHeaders;
         // Used with Linq word split, looking for particular search terms in response body.
-        private string searchTerm;
+        //private string searchTerm;
 
-        private string RedirectAddress;
+        //private string RedirectAddress;
 
         #region ScoreForSession
         // Double click or hit return with session selected.

@@ -588,5 +588,10 @@ namespace EXOFiddlerInspector
         {
 
         }
+
+        public static implicit operator ResponseUserControl(Office365AuthUserControl v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
