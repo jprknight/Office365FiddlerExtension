@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Fiddler;
 
 namespace EXOFiddlerInspector
@@ -14,13 +15,19 @@ namespace EXOFiddlerInspector
         public bool bResponseServerColumnCreated = false;
         public bool bExchangeTypeColumnCreated = false;
         public bool bXHostIPColumnCreated = false;
+        public bool bAuthColumnCreated = false;
 
         public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+        public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
         public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
         public Boolean bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
-        public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
         public Boolean bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
+        public Boolean bAuthColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AuthColumnEnabled", false);
+        public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
+        public Boolean bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
         public int iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
+
+        public int wordCount = 0;
 
         internal Session session { get; set; }
 
@@ -95,6 +102,19 @@ namespace EXOFiddlerInspector
             {
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 2, 150, "X-ExchangeType");
                 bExchangeTypeColumnCreated = true;
+            }
+        }
+
+        public void EnsureAuthColumn()
+        {
+            if (bAuthColumnCreated)
+            {
+                return;
+            }
+            else if (bExtensionEnabled)
+            {
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 2, 150, "X-Authentication");
+                bAuthColumnCreated = true;
             }
         }
 
@@ -226,6 +246,187 @@ namespace EXOFiddlerInspector
             }
         }
 
+        /// <summary>
+        /// Used specifically for Authentication sessions.
+        /// Inclusion of '"' may not be compatible with say HTTP 503 response body word split.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="searchTerm"></param>
+        /// <returns>wordCount</returns>
+        public int SearchSessionForWord(Session session, string searchTerm)
+        {
+            this.session = session;
+
+            // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
+            //
+            // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
+            //
+
+            string text = this.session.ToString();
+
+            //Convert the string into an array of words  
+            string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',', '"' }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Create the query. Use ToLowerInvariant to match "data" and "Data"   
+            var matchQuery = from word in source
+                             where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
+                             select word;
+
+            // Count the matches, which executes the query.  
+            int wordCount = matchQuery.Count();
+            
+            //MessageBox.Show(this.session.id + " " + searchTerm + " " + wordCount);
+
+            return wordCount;
+        }
+
+        /// <summary>
+        /// Set Authentication column values.
+        /// </summary>
+        /// <param name="session"></param>
+        public void SetAuthentication(Session session)
+        {
+            Boolean OverrideFurtherAuthChecking = false;
+
+            this.session = session;
+
+            // Start by determining if Modern Authentication is enabled in Exchange Online.
+            if (this.session.oRequest["Authorization"] == "Bearer" || this.session.oRequest["Authorization"] == "Basic")
+            {
+                // Looking for the following in a response body:
+
+                // x-ms-diagnostics: 4000000;reason="Flighting is not enabled for domain 'user@contoso.com'.";error_category="oauth_not_available"
+
+                int KeywordFourMillion = SearchSessionForWord(this.session, "4000000");
+                int KeywordFlighting = SearchSessionForWord(this.session, "Flighting");
+                int Keywordenabled = SearchSessionForWord(this.session, "enabled");
+                int Keyworddomain = SearchSessionForWord(this.session, "domain");
+                int Keywordoauth_not_available = SearchSessionForWord(this.session, "oauth_not_available");
+
+                // Check if all the above checks have a value of at least 1. 
+                // If they do, then Exchange Online is configured with Modern Authentication disabled.
+                if (KeywordFourMillion > 0 && KeywordFlighting > 0 && Keywordenabled > 0 && Keyworddomain > 0 && Keywordoauth_not_available > 0)
+                {
+                    this.session["X-Authentication"] = "EXO Modern Auth Disabled";
+
+                    this.session["X-AuthenticationDesc"] = Environment.NewLine +
+                        Environment.NewLine +
+                        "Authentication" +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        "Exchange Online has Modern Authentication disabled. " +
+                        "This is not necessarily a bad thing, but something to make note of during troubleshooting." +
+                        Environment.NewLine +
+                        "Do not expect good things to happen with MutiFactor Authentication enabled while Modern Authentication " +
+                        "is disabled in Exchange Online" +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        "Outlook 2010 and older do not support Modern Authentication and by extension MutliFactor Authentication." +
+                        Environment.NewLine +
+                        "Outlook 2013 supports modern authentication with updates and the EnableADAL registry key set to 1." +
+                        Environment.NewLine +
+                        "See https://support.microsoft.com/en-us/help/4041439/modern-authentication-configuration-requirements-for-transition-from-o" +
+                        Environment.NewLine +
+                        "Outlook 2016 or newer. No updates or registry keys needed for Modern Authentication.";
+
+                    // Set the OverrideFurtherAuthChecking to true; EXO Modern Auth Disabled is a more important message in these sessions,
+                    // than Outlook client auth capabilities. Other sessions are expected to show client auth capabilities.
+                    OverrideFurtherAuthChecking = true;
+                    if (bAppLoggingEnabled)
+                    {
+                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " EXO Modern Auth Disabled.");
+                    }
+                }
+                else
+                {
+                    // Do nothing right now.
+                }
+
+                // Now get specific to find out what the client can do.
+                // If the session request header Authorization equals Bearer this is a Modern Auth capable client.
+                if (this.session.oRequest["Authorization"] == "Bearer" && !(OverrideFurtherAuthChecking))
+                {
+                    this.session["X-Authentication"] = "Outlook Modern Auth";
+
+                    this.session["X-AuthenticationDesc"] = Environment.NewLine +
+                        Environment.NewLine +
+                        "Authentication" +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        "Outlook is stating it can do Modern Authentication." +
+                        "Whether it is used or not will depend on whether Modern Authentication is enabled in Exchange Online.";
+
+                    if (bAppLoggingEnabled)
+                    {
+                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Outlook Modern Auth.");
+                    }
+                }
+                // If the session request header Authorization equals Basic this is a Basic Auth capable client.
+                else if (this.session.oRequest["Authorization"] == "Basic" && !(OverrideFurtherAuthChecking))
+                {
+                    this.session["X-Authentication"] = "Outlook Basic Auth";
+
+                    this.session["X-AuthenticationDesc"] = Environment.NewLine +
+                        Environment.NewLine +
+                        "Authentication" +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        "Outlook is stating it can do Basic Authentication." +
+                        "Whether or not Modern Authentication is enabled in Exchange Online this client session will use Basic Authentication." +
+                        Environment.NewLine +
+                        "In all likelihood this is an Outlook 2013 (updated prior to Modern Auth), Outlook 2010 or an older Outlook client, " +
+                        "which does not support Modern Authentication." +
+                        "Do not expect good things to happen with MutiFactor Authentication enabled and this Outlook client";
+
+                    if (bAppLoggingEnabled)
+                    {
+                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Outlook Basic Auth.");
+                    }
+                }
+            }
+            // Now we can check for Authorization headers which contain Bearer or Basic, signifying security tokens are being passed
+            // from the Outlook client to Office 365 for resource access.
+            //
+            // Bearer == Modern Authentication.
+            else if (this.session.oRequest["Authorization"].Contains("Bearer"))
+            {
+                this.session["X-Authentication"] = "Modern Auth Token";
+
+                this.session["X-AuthenticationDesc"] = Environment.NewLine +
+                        Environment.NewLine +
+                        "Authentication" +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        "Outlook accessing resources with a Modern Authentication security token.";
+
+                if (bAppLoggingEnabled)
+                {
+                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Modern Auth Token.");
+                }
+            }
+            // Basic == Basic Authentication.
+            else if (this.session.oRequest["Authorization"].Contains("Basic"))
+            {
+                this.session["X-Authentication"] = "Basic Auth Token";
+
+                this.session["X-AuthenticationDesc"] = Environment.NewLine +
+                    Environment.NewLine +
+                    "Authentication" +
+                    Environment.NewLine +
+                    Environment.NewLine +
+                    "Outlook accessing resources with a Basic Authentication security token.";
+
+                if (bAppLoggingEnabled)
+                {
+                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Basic Auth Token.");
+                }
+            }
+            else
+            {
+                this.session["X-Authentication"] = "--No Auth Headers";
+            }
+        }
+
         public void AutoTamperRequestBefore(Session oSession)
         {
             //throw new NotImplementedException();
@@ -261,6 +462,10 @@ namespace EXOFiddlerInspector
                 this.SetResponseServer(this.session);
             }
 
+            if (bAuthColumnEnabled && bExtensionEnabled)
+            {
+                this.SetAuthentication(this.session);
+            }
             /////////////////
             //
             // For some reason setting the column ordering when adding the columns did not work.
@@ -315,6 +520,11 @@ namespace EXOFiddlerInspector
             if (bExchangeTypeColumnEnabled && bExtensionEnabled)
             {
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 2, -1);
+            }
+
+            if (bAuthColumnEnabled && bExtensionEnabled)
+            {
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Authentication", 2, -1);
             }
 
             if (bXHostIPColumnEnabled && bExtensionEnabled)
@@ -417,6 +627,23 @@ namespace EXOFiddlerInspector
             else
             {
                 Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs NOT Adding Exchange Type Column.");
+            }
+            ///
+            /////////////////
+
+            /////////////////
+            /// <remarks>
+            /// Call to function in ColumnsUI.cs to add Authentication column if the menu item is checked and if the extension is enabled. 
+            /// </remarks>
+            if (bAuthColumnEnabled)
+            {
+
+                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs Adding Auth Column.");
+                EnsureAuthColumn();
+            }
+            else
+            {
+                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs NOT Adding Auth Column.");
             }
             ///
             /////////////////

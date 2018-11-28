@@ -19,6 +19,7 @@ namespace EXOFiddlerInspector
         public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
         public Boolean bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
         public Boolean bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
+        public Boolean bAuthColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AuthColumnEnabled", false);
         public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
         public Boolean bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
         public Boolean bColumnsEnableAllEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAllEnabled", false);
@@ -44,6 +45,8 @@ namespace EXOFiddlerInspector
 
         public MenuItem miXHostIPColumnEnabled;
 
+        public MenuItem miAuthColumnEnabled;
+
         public MenuItem miAppLoggingEnabled;
 
         public MenuItem miCheckForUpdate;
@@ -67,6 +70,7 @@ namespace EXOFiddlerInspector
             bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
             bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
             bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
+            bAuthColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AuthColumnEnabled", false);
             bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
             bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
             bColumnsEnableAllEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ColumnsEnableAllEnabled", false);
@@ -154,6 +158,9 @@ namespace EXOFiddlerInspector
             this.miXHostIPColumnEnabled = new MenuItem("&X-HostIP");
             this.miXHostIPColumnEnabled.Index = 5;
 
+            this.miAuthColumnEnabled = new MenuItem("A&uthentication");
+            this.miAuthColumnEnabled.Index = 6;
+
             this.miColumnsMenu.MenuItems.AddRange(new MenuItem[]
             {
                 this.miColumnsEnableAll,
@@ -161,7 +168,8 @@ namespace EXOFiddlerInspector
                 this.miElapsedTimeColumnEnabled,
                 this.miResponseServerColumnEnabled,
                 this.miExchangeTypeColumnEnabled,
-                this.miXHostIPColumnEnabled
+                this.miXHostIPColumnEnabled,
+                this.miAuthColumnEnabled
             });
 
             // Setup event handlers for menu items.
@@ -182,6 +190,9 @@ namespace EXOFiddlerInspector
 
             this.miXHostIPColumnEnabled.Click += new System.EventHandler(this.miXHostIPColumnEnabled_Click);
             this.miXHostIPColumnEnabled.Checked = bXHostIPColumnEnabled;
+
+            this.miAuthColumnEnabled.Click += new System.EventHandler(this.miAuthColumnEnabled_Click);
+            this.miAuthColumnEnabled.Checked = bAuthColumnEnabled;
 
             this.miAppLoggingEnabled.Click += new System.EventHandler(this.miAppLoggingEnabled_Click);
             this.miAppLoggingEnabled.Checked = bAppLoggingEnabled;
@@ -291,6 +302,16 @@ namespace EXOFiddlerInspector
             // Match boolean variable on whether column is enabled or not.
             bXHostIPColumnEnabled = miXHostIPColumnEnabled.Checked;
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", bXHostIPColumnEnabled);
+            SetEnableAllMenuItem();
+        }
+
+        public void miAuthColumnEnabled_Click(object sender, EventArgs e)
+        {
+            // Invert selection when this menu item is clicked.
+            miAuthColumnEnabled.Checked = !miAuthColumnEnabled.Checked;
+            // Match boolean variable on whether column is enabled or not.
+            bAuthColumnEnabled = miAuthColumnEnabled.Checked;
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.AuthColumnEnabled", bAuthColumnEnabled);
             SetEnableAllMenuItem();
         }
 
@@ -509,6 +530,10 @@ namespace EXOFiddlerInspector
                 calledColumnsUI.EnsureElapsedTimeColumn();
             }
 
+            if (bAuthColumnEnabled && bExtensionEnabled)
+            {
+                calledColumnsUI.EnsureAuthColumn();
+            }
         }
 
         /////////////////
@@ -545,6 +570,7 @@ namespace EXOFiddlerInspector
                 //this.miResponseServerColumnEnabled.Checked = true;
                 FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", true);
                 //bExchangeTypeColumnEnabled = true;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.AuthColumnEnabled", true);
                 //this.miExchangeTypeColumnEnabled.Checked = true;
                 FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", true);
 

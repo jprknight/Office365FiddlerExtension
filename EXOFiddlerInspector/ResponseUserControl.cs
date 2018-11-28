@@ -224,6 +224,12 @@ namespace EXOFiddlerInspector
             XHostIPTextbox.Text = txt;
         }
 
+        // Code to write to Auth textbox.text value.
+        internal void SetAuthTextboxText(string txt)
+        {
+            AuthTextBox.Text = txt;
+        }
+
         private void HTTPStatusCodeLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
@@ -549,6 +555,7 @@ namespace EXOFiddlerInspector
             FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.ManualCheckForUpdate");
             FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.MenuTitle");
             FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerInspector.AuthColumnEnabled");
             MessageBox.Show("Removed extensions.EXOFiddlerInspector Prefs.");
         }
 
