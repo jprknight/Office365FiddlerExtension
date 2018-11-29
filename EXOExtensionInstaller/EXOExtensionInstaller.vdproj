@@ -382,6 +382,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
             }
         }
     }
@@ -873,15 +881,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:EXO Fiddler Extension"
-        "ProductCode" = "8:{815A8F05-1AC3-441A-97A5-FE420160A406}"
-        "PackageCode" = "8:{425CCBD3-6682-407F-B009-C0A34670C949}"
+        "ProductCode" = "8:{172EC9D9-FEC7-4491-A709-A61E7DB96555}"
+        "PackageCode" = "8:{E8B6AD9D-61F1-4D9D-982F-17C94982F59F}"
         "UpgradeCode" = "8:{D1B9286E-21B9-4E30-BEF9-AED7C0C470E9}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.50"
+        "ProductVersion" = "8:1.0.55"
         "Manufacturer" = "8:Jeremy Knight"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
