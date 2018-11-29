@@ -113,7 +113,7 @@ namespace EXOFiddlerInspector
             }
             else if (bExtensionEnabled)
             {
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 2, 150, "X-Authentication");
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 2, 140, "X-Authentication");
                 bAuthColumnCreated = true;
             }
         }
