@@ -137,6 +137,14 @@ namespace EXOFiddlerInspector
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.LoadSaz", true);
 
             /////////////////
+            // Add in the Auth column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
+            if (bAuthColumnEnabled && bExtensionEnabled)
+            {
+                calledColumnsUI.EnsureAuthColumn();
+            }
+
+            /////////////////
             // Add in the Response Server column. Due to these columns all being added as in with priority of 2,
             // they are added into the interface in this reverse order.
             if (bResponseServerColumnEnabled && bExtensionEnabled)

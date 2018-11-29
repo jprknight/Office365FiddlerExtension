@@ -16,6 +16,8 @@ namespace EXOFiddlerInspector.Services
     {
         internal Session session { get; set; }
 
+        ColumnsUI calledColumnsUI = new ColumnsUI();
+
         public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
         public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
         public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
@@ -46,32 +48,45 @@ namespace EXOFiddlerInspector.Services
 
             this.session = session;
 
-            ColumnsUI calledColumnsUI = new ColumnsUI();
-
             /////////////////
-            //
-            // Call the function to populate the session type column on live trace, if the column is enabled.
-            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
-            {
-                calledColumnsUI.SetExchangeType(this.session);
-            }
-
-            /////////////////
-            //
-            // Call the function to populate the session type column on live trace, if the column is enabled.
-            if (bResponseServerColumnEnabled && bExtensionEnabled)
-            {
-                calledColumnsUI.SetResponseServer(this.session);
-            }
-
-            /////////////////
-            //
-            // Call the function to populate the auth column on live trace, if the column is enabled.
+            // Add in the Auth column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
             if (bAuthColumnEnabled && bExtensionEnabled)
             {
-                calledColumnsUI.SetAuthentication(this.session);
+                calledColumnsUI.EnsureAuthColumn();
             }
 
+            /////////////////
+            // Add in the Response Server column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
+            if (bResponseServerColumnEnabled && bExtensionEnabled)
+            {
+                calledColumnsUI.EnsureResponseServerColumn();
+            }
+
+            /////////////////
+            // Add in the X-HostIP column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
+            if (bXHostIPColumnEnabled && bExtensionEnabled)
+            {
+                calledColumnsUI.EnsureXHostIPColumn();
+            }
+
+            /////////////////
+            // Add in the Exchange Type column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
+            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
+            {
+                calledColumnsUI.EnsureExchangeTypeColumn();
+            }
+
+            /////////////////
+            // Add in the Elapsed Time column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
+            if (bElapsedTimeColumnEnabled && bExtensionEnabled)
+            {
+                calledColumnsUI.EnsureElapsedTimeColumn();
+            }
 
             // These get called on each session, seen strange behaviour on reordering on live trace due 
             // to setting each of these as ordering 2 to ensure column positions regardless of column enabled selections.

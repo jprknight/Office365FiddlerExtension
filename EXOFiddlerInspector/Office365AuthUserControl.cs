@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Fiddler;
 
 namespace EXOFiddlerInspector
 {
@@ -15,9 +16,19 @@ namespace EXOFiddlerInspector
     {
         public string SessionData;
 
+        public bool bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+
         public Office365AuthUserControl()
         {
-            InitializeComponent();
+            // If the extension is not enabled, don't build the user controls.
+            if (bExtensionEnabled)
+            {
+                InitializeComponent();
+            }
+            else
+            {
+                return;
+            }
         }
 
         internal void SetAuthenticationResponseComments(string txt)

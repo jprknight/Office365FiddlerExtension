@@ -48,10 +48,59 @@ namespace EXOFiddlerInspector
             //throw new NotImplementedException();
         }
 
-        public void AutoTamperResponseAfter(Session oSession)
+        public void AutoTamperResponseAfter(Session session)
         {
-            // Not used here.
-            //throw new NotImplementedException();
+            this.session = session;
+
+            /////////////////
+            // Add in the Auth column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
+            if (bAuthColumnEnabled && bExtensionEnabled)
+            {
+                calledColumnsUI.EnsureAuthColumn();
+            }
+
+            /////////////////
+            // Add in the Response Server column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
+            if (bResponseServerColumnEnabled && bExtensionEnabled)
+            {
+                calledColumnsUI.EnsureResponseServerColumn();
+            }
+
+            /////////////////
+            // Add in the X-HostIP column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
+            if (bXHostIPColumnEnabled && bExtensionEnabled)
+            {
+                calledColumnsUI.EnsureXHostIPColumn();
+            }
+
+            /////////////////
+            // Add in the Exchange Type column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
+            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
+            {
+                calledColumnsUI.EnsureExchangeTypeColumn();
+            }
+
+            /////////////////
+            // Add in the Elapsed Time column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
+            if (bElapsedTimeColumnEnabled && bExtensionEnabled)
+            {
+                calledColumnsUI.EnsureElapsedTimeColumn();
+            }
+
+            // These get called on each session, seen strange behaviour on reordering on live trace due 
+            // to setting each of these as ordering 2 to ensure column positions regardless of column enabled selections.
+            // Use an if statement to fire these once per Fiddler application session.
+            if (this.session.id == 1)
+            {
+                calledColumnsUI.OrderColumns();
+            }
+
+
         }
 
         public void AutoTamperResponseBefore(Session oSession)

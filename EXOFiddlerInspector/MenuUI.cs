@@ -484,55 +484,44 @@ namespace EXOFiddlerInspector
             /// Refresh variable now to take account of first load code.
             //bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
 
+            /////////////////
+            // Add in the Auth column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
+            if (bAuthColumnEnabled && bExtensionEnabled)
+            {
+                calledColumnsUI.EnsureAuthColumn();
+            }
+
+            /////////////////
+            // Add in the Response Server column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
             if (bResponseServerColumnEnabled && bExtensionEnabled)
             {
                 calledColumnsUI.EnsureResponseServerColumn();
             }
 
-            /// <remarks>
-            /// Add in the X-HostIP column. Due to these columns all being added as in with priority of 2,
-            /// they are added into the interface in this reverse order.
-            /// </remarks>
-            /// 
-            /// Refresh variable now to take account of first load code.
-            //bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
-
+            /////////////////
+            // Add in the X-HostIP column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
             if (bXHostIPColumnEnabled && bExtensionEnabled)
             {
                 calledColumnsUI.EnsureXHostIPColumn();
             }
 
-            /// <remarks>
-            /// Add in the Exchange Type column. Due to these columns all being added as in with priority of 2,
-            /// they are added into the interface in this reverse order.
-            /// </remarks>
-            /// 
-
-            /// Refresh variable now to take account of first load code.
-            bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
-
+            /////////////////
+            // Add in the Exchange Type column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
             if (bExchangeTypeColumnEnabled && bExtensionEnabled)
             {
                 calledColumnsUI.EnsureExchangeTypeColumn();
             }
 
-            /// <remarks>
-            /// Add in the Elapsed Time column. Due to these columns all being added as in with priority of 2,
-            /// they are added into the interface in this reverse order.
-            /// </remarks>
-            /// 
-
-            /// Refresh variable now to take account of first load code.
-            //bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
-
+            /////////////////
+            // Add in the Elapsed Time column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
             if (bElapsedTimeColumnEnabled && bExtensionEnabled)
             {
                 calledColumnsUI.EnsureElapsedTimeColumn();
-            }
-
-            if (bAuthColumnEnabled && bExtensionEnabled)
-            {
-                calledColumnsUI.EnsureAuthColumn();
             }
         }
 

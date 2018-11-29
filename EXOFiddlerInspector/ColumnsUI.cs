@@ -323,10 +323,10 @@ namespace EXOFiddlerInspector
                 AttributeNameUPN = AttributeNameUPN.Replace("&quot;", "\"");
                 AttributeNameUPN = AttributeNameUPN.Replace("&lt;", "<");
                 // Now split the two lines with a new line for easier reading in the user control.
-                int SplitStartIndex = AttributeNameUPN.IndexOf("><") + 1;
-                string FirstLine = AttributeNameUPN.Substring(0, SplitStartIndex);
-                string SecondLine = AttributeNameUPN.Substring(SplitStartIndex);
-                AttributeNameUPN = FirstLine + Environment.NewLine + SecondLine;
+                int SplitAttributeNameUPNStartIndex = AttributeNameUPN.IndexOf("><") + 1;
+                string AttributeNameUPNFirstLine = AttributeNameUPN.Substring(0, SplitAttributeNameUPNStartIndex);
+                string AttributeNameUPNSecondLine = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex);
+                AttributeNameUPN = AttributeNameUPNFirstLine + Environment.NewLine + AttributeNameUPNSecondLine;
 
                 // NameIdentifierFormat.
 
@@ -344,6 +344,16 @@ namespace EXOFiddlerInspector
                 string AttributeNameImmutibleID = SessionBody.Substring(AttributeNameImmutableIDStartIndex, AttributeNameImmutibleIDLength);
                 AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&quot;", "\"");
                 AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&lt;", "<");
+                // Now split out response with a newline for easier reading.
+                int SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("<saml:AttributeValue>") + 21; // Add 21 characters to shift where the newline is placed.
+                string AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
+                string AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
+                AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
+                // Second split
+                SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("</saml:AttributeValue></saml:Attribute>");
+                AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
+                AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
+                AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
 
                 this.session["X-Issuer"] = Issuer;
                 this.session["X-AttributeNameUPNTextBox"] = AttributeNameUPN;
@@ -507,35 +517,44 @@ namespace EXOFiddlerInspector
             this.session = session;
 
             /////////////////
-            //
-            // Call the function to populate the session type column on live trace, if the column is enabled.
-            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
-            {
-                this.SetExchangeType(this.session);
-            }
-
-            /////////////////
-            //
-            // Call the function to populate the session type column on live trace, if the column is enabled.
-            if (bResponseServerColumnEnabled && bExtensionEnabled)
-            {
-                this.SetResponseServer(this.session);
-            }
-
+            // Add in the Auth column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
             if (bAuthColumnEnabled && bExtensionEnabled)
             {
-                this.SetAuthentication(this.session);
+                this.EnsureAuthColumn();
             }
-            /////////////////
-            //
-            // For some reason setting the column ordering when adding the columns did not work.
-            // Adding the ordering here instead does work.
-            // For column ordering to work on disabe/enable it seems neccessary to set ordering here
-            // in reverse order for my preference on column order as I want each to be set to priority 2
-            // so that other standard columns do not get put into the Exchange Online column grouping.
 
-            //FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("#", 0, -1);
-            //FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Result", 1, -1);
+            /////////////////
+            // Add in the Response Server column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
+            if (bResponseServerColumnEnabled && bExtensionEnabled)
+            {
+                this.EnsureResponseServerColumn();
+            }
+
+            /////////////////
+            // Add in the X-HostIP column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
+            if (bXHostIPColumnEnabled && bExtensionEnabled)
+            {
+                this.EnsureXHostIPColumn();
+            }
+
+            /////////////////
+            // Add in the Exchange Type column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
+            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
+            {
+                this.EnsureExchangeTypeColumn();
+            }
+
+            /////////////////
+            // Add in the Elapsed Time column. Due to these columns all being added as in with priority of 2,
+            // they are added into the interface in this reverse order.
+            if (bElapsedTimeColumnEnabled && bExtensionEnabled)
+            {
+                this.EnsureElapsedTimeColumn();
+            }
 
             // These get called on each session, seen strange behaviour on reordering on live trace due 
             // to setting each of these as ordering 2 to ensure column positions regardless of column enabled selections.
@@ -640,16 +659,7 @@ namespace EXOFiddlerInspector
             /// </remarks> 
             /// Refresh variable now to take account of first load code.
             //bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
-
-            if (bResponseServerColumnEnabled && bExtensionEnabled)
-            {
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs Adding Response Server Column.");
-                EnsureResponseServerColumn();
-            }
-            else
-            {
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs NOT Adding Response Server Column.");
-            }
+            EnsureResponseServerColumn();
             ///
             /////////////////
 
@@ -659,16 +669,7 @@ namespace EXOFiddlerInspector
             /// </remarks>
             /// Refresh variable now to take account of first load code.
             //bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
-            if (bXHostIPColumnEnabled && bExtensionEnabled)
-            {
-
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs Adding X-HostIP Column.");
-                EnsureXHostIPColumn();
-            }
-            else
-            {
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs NOT Adding X-HostIP Column.");
-            }
+            EnsureXHostIPColumn();
             ///
             /////////////////
 
@@ -677,17 +678,7 @@ namespace EXOFiddlerInspector
             /// Call to function in ColumnsUI.cs to add Exchange Type column if the menu item is checked and if the extension is enabled. 
             /// </remarks>
             /// Refresh variable now to take account of first load code.
-            //bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
-            if (bExchangeTypeColumnEnabled)
-            {
-
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs Adding Exchange Type Column.");
-                EnsureExchangeTypeColumn();
-            }
-            else
-            {
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs NOT Adding Exchange Type Column.");
-            }
+            EnsureExchangeTypeColumn();
             ///
             /////////////////
 
@@ -695,16 +686,7 @@ namespace EXOFiddlerInspector
             /// <remarks>
             /// Call to function in ColumnsUI.cs to add Authentication column if the menu item is checked and if the extension is enabled. 
             /// </remarks>
-            if (bAuthColumnEnabled)
-            {
-
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs Adding Auth Column.");
-                EnsureAuthColumn();
-            }
-            else
-            {
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs NOT Adding Auth Column.");
-            }
+            EnsureAuthColumn();
             ///
             /////////////////
         }
