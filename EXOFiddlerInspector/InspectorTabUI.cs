@@ -597,9 +597,7 @@ namespace EXOFiddlerInspector
             // Now all the logic is ran in SessionRuleSet.cs.
             // Data for these two textboxes on the inspector tab is now written into session tags.
             _displayControl.SetResponseAlertTextBox(this.session["X-ResponseAlertTextBox"]);
-            _displayControl.SetResponseCommentsRichTextboxText(this.session["X-ResponseCommentsRichTextboxText"] + this.session["X-AuthenticationDesc"]);
-
-            _displayControl.SetAuthTextboxText(this.session["X-Authentication"]);
+            _displayControl.SetResponseCommentsRichTextboxText(this.session["X-ResponseCommentsRichTextboxText"]);
 
         }
         //

@@ -58,10 +58,12 @@ namespace EXOFiddlerInspector
         {
             this.session = session;
 
-            _Office365AuthUserControl.SetAuthTextBox(this.session["X-Authentication"]);
-
             _Office365AuthUserControl.SetAuthenticationResponseComments(this.session["X-AuthenticationDesc"]);
 
+            _Office365AuthUserControl.SetIssuerTextBox(this.session["X-Issuer"]);
+            _Office365AuthUserControl.SetAttributeNameUPNTextBox(this.session["X-AttributeNameUPNTextBox"]);
+            _Office365AuthUserControl.SetNameIdentifierFormatTextBox(this.session["X-NameIdentifierFormatTextBox"]);
+            _Office365AuthUserControl.SetAttributeNameImmutableIDTextBox(this.session["X-AttributeNameImmutableIDTextBox"]);
         }
     }
 }

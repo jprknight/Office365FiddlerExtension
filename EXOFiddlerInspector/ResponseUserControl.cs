@@ -224,12 +224,6 @@ namespace EXOFiddlerInspector
             XHostIPTextbox.Text = txt;
         }
 
-        // Code to write to Auth textbox.text value.
-        internal void SetAuthTextboxText(string txt)
-        {
-            AuthTextBox.Text = txt;
-        }
-
         private void HTTPStatusCodeLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try

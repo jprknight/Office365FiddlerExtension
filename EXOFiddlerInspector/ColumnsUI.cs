@@ -280,6 +280,14 @@ namespace EXOFiddlerInspector
             return wordCount;
         }
 
+        public void SAMLParserFieldsNoData()
+        {
+            this.session["X-Issuer"] = "No SAML Data in session";
+            this.session["X-AttributeNameUPNTextBox"] = "No SAML Data in session";
+            this.session["X-NameIdentifierFormatTextBox"] = "No SAML Data in session";
+            this.session["X-AttributeNameImmutableIDTextBox"] = "No SAML Data in session";
+        }
+
         /// <summary>
         /// Set Authentication column values.
         /// </summary>
@@ -290,9 +298,63 @@ namespace EXOFiddlerInspector
 
             this.session = session;
 
-            // Start by determining if Modern Authentication is enabled in Exchange Online.
-            if (this.session.oRequest["Authorization"] == "Bearer" || this.session.oRequest["Authorization"] == "Basic")
+            // Determine if this session contains a SAML response.
+            if (this.session.utilFindInResponse("Issuer=", false) > 1 && 
+                this.session.utilFindInResponse("Attribute AttributeName=", false) > 1 &&
+                this.session.utilFindInResponse("NameIdentifier Format=", false) > 1 &&
+                this.session.utilFindInResponse("Attribute AttributeName=", false) > 1)
             {
+                this.session["X-Authentication"] = "SAML Request/Response";
+                this.session["X-AuthenticationDesc"] = "See below for SAML response parser.";
+
+                // Pull issuer data from response.
+                string SessionBody = this.session.ToString();
+                int IssuerStartIndex = SessionBody.IndexOf("Issuer=");
+                int IssuerEndIndex = SessionBody.IndexOf("IssueInstant=");
+                int IssuerLength = IssuerEndIndex - IssuerStartIndex;
+                string Issuer = SessionBody.Substring(IssuerStartIndex, IssuerLength);
+                Issuer = Issuer.Replace("&quot;", "\"");
+
+                // AttributeNameUPN.
+                int AttributeNameUPNStartIndex = SessionBody.IndexOf("&lt;saml:Attribute AttributeName=&quot;UPN");
+                int AttributeNameUPNEndIndex = SessionBody.IndexOf("&lt;/saml:Attribute>");
+                int AttributeNameUPNLength = AttributeNameUPNEndIndex - AttributeNameUPNStartIndex;
+                string AttributeNameUPN = SessionBody.Substring(AttributeNameUPNStartIndex, AttributeNameUPNLength);
+                AttributeNameUPN = AttributeNameUPN.Replace("&quot;", "\"");
+                AttributeNameUPN = AttributeNameUPN.Replace("&lt;", "<");
+                // Now split the two lines with a new line for easier reading in the user control.
+                int SplitStartIndex = AttributeNameUPN.IndexOf("><") + 1;
+                string FirstLine = AttributeNameUPN.Substring(0, SplitStartIndex);
+                string SecondLine = AttributeNameUPN.Substring(SplitStartIndex);
+                AttributeNameUPN = FirstLine + Environment.NewLine + SecondLine;
+
+                // NameIdentifierFormat.
+
+                int NameIdentifierFormatStartIndex = SessionBody.IndexOf("&lt;saml:NameIdentifier Format");
+                int NameIdentifierFormatEndIndex = SessionBody.IndexOf("&lt;saml:SubjectConfirmation>");
+                int NameIdentifierFormatLength = NameIdentifierFormatEndIndex - NameIdentifierFormatStartIndex;
+                string NameIdentifierFormat = SessionBody.Substring(NameIdentifierFormatStartIndex, NameIdentifierFormatLength);
+                NameIdentifierFormat = NameIdentifierFormat.Replace("&quot;", "\"");
+                NameIdentifierFormat = NameIdentifierFormat.Replace("&lt;", "<");
+
+                // AttributeNameImmutableID.
+                int AttributeNameImmutableIDStartIndex = SessionBody.IndexOf("AttributeName=&quot;ImmutableID");
+                int AttributeNameImmutibleIDEndIndex = SessionBody.IndexOf("&lt;/saml:AttributeStatement>");
+                int AttributeNameImmutibleIDLength = AttributeNameImmutibleIDEndIndex - AttributeNameImmutableIDStartIndex;
+                string AttributeNameImmutibleID = SessionBody.Substring(AttributeNameImmutableIDStartIndex, AttributeNameImmutibleIDLength);
+                AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&quot;", "\"");
+                AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&lt;", "<");
+
+                this.session["X-Issuer"] = Issuer;
+                this.session["X-AttributeNameUPNTextBox"] = AttributeNameUPN;
+                this.session["X-NameIdentifierFormatTextBox"] = NameIdentifierFormat;
+                this.session["X-AttributeNameImmutableIDTextBox"] = AttributeNameImmutibleID;
+            }
+            // Determine if Modern Authentication is enabled in Exchange Online.
+            else if (this.session.oRequest["Authorization"] == "Bearer" || this.session.oRequest["Authorization"] == "Basic")
+            {
+                SAMLParserFieldsNoData();
+
                 // Looking for the following in a response body:
 
                 // x-ms-diagnostics: 4000000;reason="Flighting is not enabled for domain 'user@contoso.com'.";error_category="oauth_not_available"
@@ -309,15 +371,13 @@ namespace EXOFiddlerInspector
                 {
                     this.session["X-Authentication"] = "EXO Modern Auth Disabled";
 
-                    this.session["X-AuthenticationDesc"] = Environment.NewLine +
-                        Environment.NewLine +
-                        "Authentication" +
+                    this.session["X-AuthenticationDesc"] = "EXO Modern Auth Disabled" +
                         Environment.NewLine +
                         Environment.NewLine +
                         "Exchange Online has Modern Authentication disabled. " +
                         "This is not necessarily a bad thing, but something to make note of during troubleshooting." +
                         Environment.NewLine +
-                        "Do not expect good things to happen with MutiFactor Authentication enabled while Modern Authentication " +
+                        "MutiFactor Authentication will not work as expected while Modern Authentication " +
                         "is disabled in Exchange Online" +
                         Environment.NewLine +
                         Environment.NewLine +
@@ -332,6 +392,7 @@ namespace EXOFiddlerInspector
                     // Set the OverrideFurtherAuthChecking to true; EXO Modern Auth Disabled is a more important message in these sessions,
                     // than Outlook client auth capabilities. Other sessions are expected to show client auth capabilities.
                     OverrideFurtherAuthChecking = true;
+
                     if (bAppLoggingEnabled)
                     {
                         FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " EXO Modern Auth Disabled.");
@@ -348,12 +409,10 @@ namespace EXOFiddlerInspector
                 {
                     this.session["X-Authentication"] = "Outlook Modern Auth";
 
-                    this.session["X-AuthenticationDesc"] = Environment.NewLine +
-                        Environment.NewLine +
-                        "Authentication" +
+                    this.session["X-AuthenticationDesc"] = "Outlook Modern Auth" +
                         Environment.NewLine +
                         Environment.NewLine +
-                        "Outlook is stating it can do Modern Authentication." +
+                        "Outlook is stating it can do Modern Authentication. " +
                         "Whether it is used or not will depend on whether Modern Authentication is enabled in Exchange Online.";
 
                     if (bAppLoggingEnabled)
@@ -366,17 +425,15 @@ namespace EXOFiddlerInspector
                 {
                     this.session["X-Authentication"] = "Outlook Basic Auth";
 
-                    this.session["X-AuthenticationDesc"] = Environment.NewLine +
-                        Environment.NewLine +
-                        "Authentication" +
+                    this.session["X-AuthenticationDesc"] = "Outlook Basic Auth" +
                         Environment.NewLine +
                         Environment.NewLine +
-                        "Outlook is stating it can do Basic Authentication." +
+                        "Outlook is stating it can do Basic Authentication. " +
                         "Whether or not Modern Authentication is enabled in Exchange Online this client session will use Basic Authentication." +
                         Environment.NewLine +
                         "In all likelihood this is an Outlook 2013 (updated prior to Modern Auth), Outlook 2010 or an older Outlook client, " +
                         "which does not support Modern Authentication." +
-                        "Do not expect good things to happen with MutiFactor Authentication enabled and this Outlook client";
+                        "MutiFactor Authentication will not work as expected with Basic Authentication only capable Outlook clients";
 
                     if (bAppLoggingEnabled)
                     {
@@ -390,11 +447,11 @@ namespace EXOFiddlerInspector
             // Bearer == Modern Authentication.
             else if (this.session.oRequest["Authorization"].Contains("Bearer"))
             {
+                SAMLParserFieldsNoData();
+
                 this.session["X-Authentication"] = "Modern Auth Token";
 
-                this.session["X-AuthenticationDesc"] = Environment.NewLine +
-                        Environment.NewLine +
-                        "Authentication" +
+                this.session["X-AuthenticationDesc"] = "Modern Auth Token" +
                         Environment.NewLine +
                         Environment.NewLine +
                         "Outlook accessing resources with a Modern Authentication security token.";
@@ -407,11 +464,11 @@ namespace EXOFiddlerInspector
             // Basic == Basic Authentication.
             else if (this.session.oRequest["Authorization"].Contains("Basic"))
             {
+                SAMLParserFieldsNoData();
+
                 this.session["X-Authentication"] = "Basic Auth Token";
 
-                this.session["X-AuthenticationDesc"] = Environment.NewLine +
-                    Environment.NewLine +
-                    "Authentication" +
+                this.session["X-AuthenticationDesc"] = "Basic Auth Token" +
                     Environment.NewLine +
                     Environment.NewLine +
                     "Outlook accessing resources with a Basic Authentication security token.";
@@ -423,7 +480,10 @@ namespace EXOFiddlerInspector
             }
             else
             {
+                SAMLParserFieldsNoData();
+
                 this.session["X-Authentication"] = "--No Auth Headers";
+                this.session["X-AuthenticationDesc"] = "--No Auth Headers";
             }
         }
 
