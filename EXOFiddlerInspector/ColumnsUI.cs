@@ -377,7 +377,8 @@ namespace EXOFiddlerInspector
 
                 // Check if all the above checks have a value of at least 1. 
                 // If they do, then Exchange Online is configured with Modern Authentication disabled.
-                if (KeywordFourMillion > 0 && KeywordFlighting > 0 && Keywordenabled > 0 && Keyworddomain > 0 && Keywordoauth_not_available > 0)
+                if (KeywordFourMillion > 0 && KeywordFlighting > 0 && Keywordenabled > 0 &&
+                    Keyworddomain > 0 && Keywordoauth_not_available > 0 && this.session.HostnameIs("autodiscover-s.outlook.com"))
                 {
                     this.session["X-Authentication"] = "EXO Modern Auth Disabled";
 
@@ -563,24 +564,6 @@ namespace EXOFiddlerInspector
             {
                 OrderColumns();
             }
-
-            
-            
-
-            /*
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Protocol", 5, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host", 6, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("URL", 7, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Body", 8, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Caching", 9, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Content-Type", 10, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", 12, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 13, -1);
-            */
-            //
-            /////////////////
-
-
         }
 
         public void OrderColumns()
