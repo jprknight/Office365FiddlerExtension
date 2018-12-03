@@ -215,19 +215,19 @@ namespace EXOFiddlerInspector
                 // Populate the ExchangeType column on load SAZ, if the column is enabled, and the extension is enabled
                 if (bExchangeTypeColumnEnabled && bExtensionEnabled)
                 {
-                    calledColumnsUI.SetExchangeType(session);
+                    calledSessionRuleSet.SetExchangeType(session);
                 }
 
                 // Populate the ResponseServer column on load SAZ, if the column is enabled, and the extension is enabled
                 if (bResponseServerColumnEnabled && bExtensionEnabled)
                 {
-                    calledColumnsUI.SetResponseServer(session);
+                    calledSessionRuleSet.SetResponseServer(session);
                 }
 
                 // Populate the Authentication column on load SAZ, if the column is enabled, and the extension is enabled
                 if (bAuthColumnEnabled && bExtensionEnabled)
                 {
-                    calledColumnsUI.SetAuthentication(session);
+                    calledSessionRuleSet.SetAuthentication(session);
                 }
 
                 if (bExtensionEnabled)

@@ -14,6 +14,8 @@ namespace EXOFiddlerInspector
     {
         internal Session session { get; set; }
 
+        SessionRuleSet calledSessionRuleSet = new SessionRuleSet();
+
         public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
         public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
         public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
@@ -396,7 +398,7 @@ namespace EXOFiddlerInspector
             // Call the function to populate the session type column on live trace, if the column is enabled.
             if (bResponseServerColumnEnabled && bExtensionEnabled)
             {
-                calledColumnsUI.SetResponseServer(this.session);
+                calledSessionRuleSet.SetResponseServer(this.session);
             }
 
             // These get called on each session, seen strange behaviour on reordering on live trace due 
