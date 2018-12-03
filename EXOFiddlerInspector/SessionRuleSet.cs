@@ -1595,14 +1595,8 @@ namespace EXOFiddlerInspector
         public void SetAuthentication(Session session)
         {
             Boolean OverrideFurtherAuthChecking = false;
-            Boolean bIssuer = false;
-            Boolean bAttributeNameUPN = false;
-
-
 
             this.session = session;
-
-            
 
             // Determine if this session contains a SAML response.
             if (this.session.utilFindInResponse("Issuer=", false) > 1 &&
@@ -1624,8 +1618,7 @@ namespace EXOFiddlerInspector
                     int IssuerLength = IssuerEndIndex - IssuerStartIndex;
                     string Issuer = IssuerSessionBody.Substring(IssuerStartIndex, IssuerLength);
                     Issuer = Issuer.Replace("&quot;", "\"");
-                    // flag we have issuer processed in string.
-                    bIssuer = true;
+
                     // Populate X flag on session.
                     this.session["X-Issuer"] = Issuer;
                 }
@@ -1652,8 +1645,7 @@ namespace EXOFiddlerInspector
                     string AttributeNameUPNFirstLine = AttributeNameUPN.Substring(0, SplitAttributeNameUPNStartIndex);
                     string AttributeNameUPNSecondLine = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex);
                     AttributeNameUPN = AttributeNameUPNFirstLine + Environment.NewLine + AttributeNameUPNSecondLine;
-                    // flag we have AttributeNameUPN processed in string.
-                    bAttributeNameUPN = true;
+
                     // Populate X flag on session.
                     this.session["X-AttributeNameUPNTextBox"] = AttributeNameUPN;
                 }
@@ -1674,8 +1666,7 @@ namespace EXOFiddlerInspector
                     string NameIdentifierFormat = NameIdentifierFormatSessionBody.Substring(NameIdentifierFormatStartIndex, NameIdentifierFormatLength);
                     NameIdentifierFormat = NameIdentifierFormat.Replace("&quot;", "\"");
                     NameIdentifierFormat = NameIdentifierFormat.Replace("&lt;", "<");
-                    // flag we have AttributeNameUPN processed in string.
-                    bAttributeNameUPN = true;
+
                     // Populate X flag on session.
                     this.session["X-NameIdentifierFormatTextBox"] = NameIdentifierFormat;
                 }
@@ -1705,8 +1696,7 @@ namespace EXOFiddlerInspector
                     AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
                     AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
                     AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
-                    // flag we have AttributeNameUPN processed in string.
-                    bAttributeNameUPN = true;
+
                     // Populate X flag on session.
                     this.session["X-AttributeNameImmutableIDTextBox"] = AttributeNameImmutibleID;
                 }
