@@ -390,7 +390,7 @@ namespace EXOFiddlerInspector
             // Call the function to populate the session type column on live trace, if the column is enabled.
             if (bExchangeTypeColumnEnabled && bExtensionEnabled)
             {
-                calledColumnsUI.SetExchangeType(this.session);
+                calledSessionRuleSet.SetExchangeType(this.session);
             }
 
             /////////////////

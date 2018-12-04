@@ -64,6 +64,22 @@ namespace EXOFiddlerInspector
             _Office365AuthUserControl.SetAttributeNameUPNTextBox(this.session["X-AttributeNameUPNTextBox"]);
             _Office365AuthUserControl.SetNameIdentifierFormatTextBox(this.session["X-NameIdentifierFormatTextBox"]);
             _Office365AuthUserControl.SetAttributeNameImmutableIDTextBox(this.session["X-AttributeNameImmutableIDTextBox"]);
+
+            // Make the Office365 Authentication Groupbox visible on the Office365 Auth inspector tab.
+            if (this.session["X-Office365AuthType"] == "SAMLResponseParser")
+            {
+                _Office365AuthUserControl.SetSAMLResponseParserGroupboxVisible(true);
+                _Office365AuthUserControl.SetOffice365AuthenticationGroupboxVisible(false);
+            }
+            // Make the SAML Response Parser visible on the Office365 Auth inspector tab.
+            else
+            {
+                _Office365AuthUserControl.SetSAMLResponseParserGroupboxVisible(false);
+                _Office365AuthUserControl.SetOffice365AuthenticationGroupboxVisible(true);
+            }
+
+            _Office365AuthUserControl.SetSigningCertificateTextbox(this.session["X-SigningCertificate"]);
+
         }
     }
 }

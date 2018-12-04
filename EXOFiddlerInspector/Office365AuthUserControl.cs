@@ -33,7 +33,7 @@ namespace EXOFiddlerInspector
 
         internal void SetAuthenticationResponseComments(string txt)
         {
-            AuthenticationResponseComments.Text = txt;
+            AuthenticationResponseCommentsTextbox.Text = txt;
         }
 
         internal void SetIssuerTextBox(string txt)
@@ -54,6 +54,21 @@ namespace EXOFiddlerInspector
         internal void SetAttributeNameImmutableIDTextBox(string txt)
         {
             AttributeNameImmutableIDTextBox.Text = txt;
+        }
+
+        internal void SetOffice365AuthenticationGroupboxVisible(bool txt)
+        {
+            Office365AuthenticationGroupbox.Visible = txt;
+        }
+
+        internal void SetSAMLResponseParserGroupboxVisible(bool txt)
+        {
+            SAMLResponseParserGroupbox.Visible = txt;
+        }
+
+        internal void SetSigningCertificateTextbox(string txt)
+        {
+            SigningCertificateTextbox.Text = txt;
         }
 
         private void OpenSAMLDataButton_Click(object sender, EventArgs e)
@@ -93,7 +108,6 @@ namespace EXOFiddlerInspector
                 writer.Dispose();
                 writer.Close();
             }
-
         }
 
         private void WriteSessionData()
@@ -111,6 +125,66 @@ namespace EXOFiddlerInspector
                 Environment.NewLine +
                 Environment.NewLine +
                 AttributeNameImmutableIDTextBox.Text;
+        }
+
+        private void OpenSigningCertificateButton_Click(object sender, EventArgs e)
+        {
+            // As the user has elected to open the file instead of save somewhere specific, write data out to a text file in %TEMP% environment variable and open it up in Notepad.
+            System.IO.File.WriteAllText(Environment.GetEnvironmentVariable("temp") + "\\FiddlerTrace-SAML-Signing-Certificate.cer", SigningCertificateTextbox.Text);
+            System.Diagnostics.Process.Start(Environment.GetEnvironmentVariable("temp") + "\\FiddlerTrace-SAML-Signing-Certificate.cer");
+        }
+
+        private void SaveSigningCertificateButton_Click(object sender, EventArgs e)
+        {
+            // Initialise new SaveFileDialog.
+            SaveFileDialog save = new SaveFileDialog();
+
+            // Use the user setting PreviousPath to determine if we open %USERPROFILE%\Documents or some other previous path.
+            if (string.IsNullOrEmpty(Properties.Settings.Default.PreviousPath))
+            {
+                save.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            }
+            else
+            {
+                save.InitialDirectory = Properties.Settings.Default.PreviousPath;
+            }
+
+            // Setup dialog.
+            save.FileName = "Fiddler-SAML-Signing-Certificate.cer";
+            save.RestoreDirectory = true;
+            save.Filter = "SSL Certificate|*.txt,*.cer";
+
+            if (save.ShowDialog() == DialogResult.OK)
+            {
+                StreamWriter writer = new StreamWriter(save.OpenFile());
+                writer.Write(SigningCertificateTextbox.Text);
+                writer.Dispose();
+                writer.Close();
+            }
+        }
+
+        private void SAMLResponseParserGroupbox_VisibleChanged(object sender, EventArgs e)
+        {
+            if (SAMLResponseParserGroupbox.Visible == true)
+            {
+                SAMLResponseParserGroupbox.Location = new Point(3, 3);
+            }
+            else
+            {
+                SAMLResponseParserGroupbox.Location = new Point(3, 300);
+            }
+        }
+
+        private void Office365AuthenticationGroupbox_VisibleChanged(object sender, EventArgs e)
+        {
+            if (Office365AuthenticationGroupbox.Visible == true)
+            {
+                Office365AuthenticationGroupbox.Location = new Point(3, 3);
+            }
+            else
+            {
+                Office365AuthenticationGroupbox.Location = new Point(3, 300);
+            }
         }
     }
 }

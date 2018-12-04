@@ -15,7 +15,7 @@ namespace EXOFiddlerInspector
     public class SessionRuleSet : IAutoTamper
     {
         // References to other classes.
-        MenuUI calledMenuUI = new MenuUI();
+        //MenuUI calledMenuUI = new MenuUI();
         ColumnsUI calledColumnsUI = new ColumnsUI();
         Preferences calledPreferences = new Preferences();
 
@@ -1594,6 +1594,8 @@ namespace EXOFiddlerInspector
         {
             Boolean OverrideFurtherAuthChecking = false;
 
+            this.session["X-Office365AuthType"] = "";
+
             this.session = session;
 
             // Determine if this session contains a SAML response.
@@ -1605,6 +1607,9 @@ namespace EXOFiddlerInspector
                 // Used in Auth column and Office365 Auth inspector tab.
                 this.session["X-Authentication"] = "SAML Request/Response";
                 this.session["X-AuthenticationDesc"] = "See below for SAML response parser.";
+
+                // Change which control appears for this session on the Office365 Auth inspector tab.
+                this.session["X-Office365AuthType"] = "SAMLResponseParser";
 
                 // Error handling, if we don't have the expected values in the session body, don't do this work.
                 // Avoid null object reference errors at runtime.
@@ -1625,6 +1630,19 @@ namespace EXOFiddlerInspector
                 {
                     this.session["X-Issuer"] = "Data points not found for issuer";
                 }
+
+                // Pull the x509 signing certificate data.
+                if ((this.session.utilFindInResponse("&lt;X509Certificate>", false) > 1) && (this.session.utilFindInResponse("&lt;/X509Certificate>", false) > 1))
+                {
+                    string x509SigningCertSessionBody = this.session.ToString();
+                    int x509SigningCertificateStartIndex = x509SigningCertSessionBody.IndexOf("&lt;X509Certificate>") + 20; // 20 to shift to start of the selection.
+                    int x509SigningCertificateEndIndex = x509SigningCertSessionBody.IndexOf("&lt;/X509Certificate>");
+                    int x509SigningCertificateLength = x509SigningCertificateEndIndex - x509SigningCertificateStartIndex;
+                    string x509SigningCertificate = x509SigningCertSessionBody.Substring(x509SigningCertificateStartIndex, x509SigningCertificateLength);
+
+                    this.session["X-SigningCertificate"] = x509SigningCertificate;
+                }
+                
 
                 // Error handling, if we don't have the expected values in the session body, don't do this work.
                 // Avoid null object reference errors at runtime.
@@ -1708,6 +1726,9 @@ namespace EXOFiddlerInspector
             else if (this.session.oRequest["Authorization"] == "Bearer" || this.session.oRequest["Authorization"] == "Basic")
             {
                 SAMLParserFieldsNoData();
+
+                // Change which control appears for this session on the Office365 Auth inspector tab.
+                this.session["X-Office365AuthType"] = "Office365Auth";
 
                 // Looking for the following in a response body:
 
@@ -1838,6 +1859,8 @@ namespace EXOFiddlerInspector
             else
             {
                 SAMLParserFieldsNoData();
+                // Change which control appears for this session on the Office365 Auth inspector tab.
+                this.session["X-Office365AuthType"] = "Office365Auth";
 
                 this.session["X-Authentication"] = "--No Auth Headers";
                 this.session["X-AuthenticationDesc"] = "--No Auth Headers";

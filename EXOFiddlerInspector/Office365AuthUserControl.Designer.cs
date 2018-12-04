@@ -28,33 +28,62 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SAMLResponseParser = new System.Windows.Forms.GroupBox();
+            this.SAMLResponseParserGroupbox = new System.Windows.Forms.GroupBox();
+            this.SaveSigningCertificateButton = new System.Windows.Forms.Button();
+            this.OpenSigningCertificateButton = new System.Windows.Forms.Button();
             this.AttributeNameImmutableIDTextBox = new System.Windows.Forms.TextBox();
             this.NameIdentifierFormatTextBox = new System.Windows.Forms.TextBox();
-            this.AttributeNameUPNTextBox = new System.Windows.Forms.TextBox();
-            this.IssuerTextBox = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.AuthenticationResponseComments = new System.Windows.Forms.TextBox();
             this.SaveSAMLDataButton = new System.Windows.Forms.Button();
+            this.AttributeNameUPNTextBox = new System.Windows.Forms.TextBox();
             this.OpenSAMLDataButton = new System.Windows.Forms.Button();
-            this.SAMLResponseParser.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.IssuerTextBox = new System.Windows.Forms.TextBox();
+            this.Office365AuthenticationGroupbox = new System.Windows.Forms.GroupBox();
+            this.AuthenticationResponseCommentsTextbox = new System.Windows.Forms.TextBox();
+            this.SigningCertificateGroupbox = new System.Windows.Forms.GroupBox();
+            this.SigningCertificateTextbox = new System.Windows.Forms.TextBox();
+            this.SAMLResponseParserGroupbox.SuspendLayout();
+            this.Office365AuthenticationGroupbox.SuspendLayout();
+            this.SigningCertificateGroupbox.SuspendLayout();
             this.SuspendLayout();
             // 
-            // SAMLResponseParser
+            // SAMLResponseParserGroupbox
             // 
-            this.SAMLResponseParser.Controls.Add(this.OpenSAMLDataButton);
-            this.SAMLResponseParser.Controls.Add(this.SaveSAMLDataButton);
-            this.SAMLResponseParser.Controls.Add(this.AttributeNameImmutableIDTextBox);
-            this.SAMLResponseParser.Controls.Add(this.NameIdentifierFormatTextBox);
-            this.SAMLResponseParser.Controls.Add(this.AttributeNameUPNTextBox);
-            this.SAMLResponseParser.Controls.Add(this.IssuerTextBox);
-            this.SAMLResponseParser.Location = new System.Drawing.Point(3, 178);
-            this.SAMLResponseParser.Name = "SAMLResponseParser";
-            this.SAMLResponseParser.Size = new System.Drawing.Size(424, 275);
-            this.SAMLResponseParser.TabIndex = 0;
-            this.SAMLResponseParser.TabStop = false;
-            this.SAMLResponseParser.Text = "SAML Response Parser";
+            this.SAMLResponseParserGroupbox.Controls.Add(this.SaveSigningCertificateButton);
+            this.SAMLResponseParserGroupbox.Controls.Add(this.OpenSigningCertificateButton);
+            this.SAMLResponseParserGroupbox.Controls.Add(this.AttributeNameImmutableIDTextBox);
+            this.SAMLResponseParserGroupbox.Controls.Add(this.NameIdentifierFormatTextBox);
+            this.SAMLResponseParserGroupbox.Controls.Add(this.SaveSAMLDataButton);
+            this.SAMLResponseParserGroupbox.Controls.Add(this.AttributeNameUPNTextBox);
+            this.SAMLResponseParserGroupbox.Controls.Add(this.OpenSAMLDataButton);
+            this.SAMLResponseParserGroupbox.Controls.Add(this.IssuerTextBox);
+            this.SAMLResponseParserGroupbox.Location = new System.Drawing.Point(3, 178);
+            this.SAMLResponseParserGroupbox.Name = "SAMLResponseParserGroupbox";
+            this.SAMLResponseParserGroupbox.Size = new System.Drawing.Size(424, 303);
+            this.SAMLResponseParserGroupbox.TabIndex = 0;
+            this.SAMLResponseParserGroupbox.TabStop = false;
+            this.SAMLResponseParserGroupbox.Text = "SAML Response Parser";
+            this.SAMLResponseParserGroupbox.Visible = false;
+            this.SAMLResponseParserGroupbox.VisibleChanged += new System.EventHandler(this.SAMLResponseParserGroupbox_VisibleChanged);
+            // 
+            // SaveSigningCertificateButton
+            // 
+            this.SaveSigningCertificateButton.Location = new System.Drawing.Point(126, 272);
+            this.SaveSigningCertificateButton.Name = "SaveSigningCertificateButton";
+            this.SaveSigningCertificateButton.Size = new System.Drawing.Size(143, 23);
+            this.SaveSigningCertificateButton.TabIndex = 8;
+            this.SaveSigningCertificateButton.Text = "Save Signing Certificate";
+            this.SaveSigningCertificateButton.UseVisualStyleBackColor = true;
+            this.SaveSigningCertificateButton.Click += new System.EventHandler(this.SaveSigningCertificateButton_Click);
+            // 
+            // OpenSigningCertificateButton
+            // 
+            this.OpenSigningCertificateButton.Location = new System.Drawing.Point(126, 243);
+            this.OpenSigningCertificateButton.Name = "OpenSigningCertificateButton";
+            this.OpenSigningCertificateButton.Size = new System.Drawing.Size(143, 23);
+            this.OpenSigningCertificateButton.TabIndex = 3;
+            this.OpenSigningCertificateButton.Text = "Open Signing Certificate";
+            this.OpenSigningCertificateButton.UseVisualStyleBackColor = true;
+            this.OpenSigningCertificateButton.Click += new System.EventHandler(this.OpenSigningCertificateButton_Click);
             // 
             // AttributeNameImmutableIDTextBox
             // 
@@ -78,6 +107,16 @@
             this.NameIdentifierFormatTextBox.Size = new System.Drawing.Size(412, 60);
             this.NameIdentifierFormatTextBox.TabIndex = 4;
             // 
+            // SaveSAMLDataButton
+            // 
+            this.SaveSAMLDataButton.Location = new System.Drawing.Point(275, 272);
+            this.SaveSAMLDataButton.Name = "SaveSAMLDataButton";
+            this.SaveSAMLDataButton.Size = new System.Drawing.Size(143, 23);
+            this.SaveSAMLDataButton.TabIndex = 6;
+            this.SaveSAMLDataButton.Text = "Save SAML Data";
+            this.SaveSAMLDataButton.UseVisualStyleBackColor = true;
+            this.SaveSAMLDataButton.Click += new System.EventHandler(this.SaveSAMLDataButton_Click);
+            // 
             // AttributeNameUPNTextBox
             // 
             this.AttributeNameUPNTextBox.BackColor = System.Drawing.Color.White;
@@ -89,6 +128,16 @@
             this.AttributeNameUPNTextBox.Size = new System.Drawing.Size(412, 60);
             this.AttributeNameUPNTextBox.TabIndex = 2;
             // 
+            // OpenSAMLDataButton
+            // 
+            this.OpenSAMLDataButton.Location = new System.Drawing.Point(275, 243);
+            this.OpenSAMLDataButton.Name = "OpenSAMLDataButton";
+            this.OpenSAMLDataButton.Size = new System.Drawing.Size(143, 23);
+            this.OpenSAMLDataButton.TabIndex = 7;
+            this.OpenSAMLDataButton.Text = "Open SAML Data";
+            this.OpenSAMLDataButton.UseVisualStyleBackColor = true;
+            this.OpenSAMLDataButton.Click += new System.EventHandler(this.OpenSAMLDataButton_Click);
+            // 
             // IssuerTextBox
             // 
             this.IssuerTextBox.BackColor = System.Drawing.Color.White;
@@ -99,73 +148,80 @@
             this.IssuerTextBox.Size = new System.Drawing.Size(412, 20);
             this.IssuerTextBox.TabIndex = 0;
             // 
-            // groupBox1
+            // Office365AuthenticationGroupbox
             // 
-            this.groupBox1.Controls.Add(this.AuthenticationResponseComments);
-            this.groupBox1.Location = new System.Drawing.Point(3, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(424, 169);
-            this.groupBox1.TabIndex = 1;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Office365 Authentication";
+            this.Office365AuthenticationGroupbox.Controls.Add(this.AuthenticationResponseCommentsTextbox);
+            this.Office365AuthenticationGroupbox.Location = new System.Drawing.Point(3, 3);
+            this.Office365AuthenticationGroupbox.Name = "Office365AuthenticationGroupbox";
+            this.Office365AuthenticationGroupbox.Size = new System.Drawing.Size(424, 169);
+            this.Office365AuthenticationGroupbox.TabIndex = 1;
+            this.Office365AuthenticationGroupbox.TabStop = false;
+            this.Office365AuthenticationGroupbox.Text = "Office365 Authentication";
+            this.Office365AuthenticationGroupbox.VisibleChanged += new System.EventHandler(this.Office365AuthenticationGroupbox_VisibleChanged);
             // 
-            // AuthenticationResponseComments
+            // AuthenticationResponseCommentsTextbox
             // 
-            this.AuthenticationResponseComments.BackColor = System.Drawing.Color.White;
-            this.AuthenticationResponseComments.Location = new System.Drawing.Point(9, 19);
-            this.AuthenticationResponseComments.Multiline = true;
-            this.AuthenticationResponseComments.Name = "AuthenticationResponseComments";
-            this.AuthenticationResponseComments.ReadOnly = true;
-            this.AuthenticationResponseComments.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.AuthenticationResponseComments.Size = new System.Drawing.Size(409, 140);
-            this.AuthenticationResponseComments.TabIndex = 2;
+            this.AuthenticationResponseCommentsTextbox.BackColor = System.Drawing.Color.White;
+            this.AuthenticationResponseCommentsTextbox.Location = new System.Drawing.Point(9, 19);
+            this.AuthenticationResponseCommentsTextbox.Multiline = true;
+            this.AuthenticationResponseCommentsTextbox.Name = "AuthenticationResponseCommentsTextbox";
+            this.AuthenticationResponseCommentsTextbox.ReadOnly = true;
+            this.AuthenticationResponseCommentsTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.AuthenticationResponseCommentsTextbox.Size = new System.Drawing.Size(409, 150);
+            this.AuthenticationResponseCommentsTextbox.TabIndex = 2;
             // 
-            // SaveSAMLDataButton
+            // SigningCertificateGroupbox
             // 
-            this.SaveSAMLDataButton.Location = new System.Drawing.Point(296, 243);
-            this.SaveSAMLDataButton.Name = "SaveSAMLDataButton";
-            this.SaveSAMLDataButton.Size = new System.Drawing.Size(122, 23);
-            this.SaveSAMLDataButton.TabIndex = 6;
-            this.SaveSAMLDataButton.Text = "Save SAML Data";
-            this.SaveSAMLDataButton.UseVisualStyleBackColor = true;
-            this.SaveSAMLDataButton.Click += new System.EventHandler(this.SaveSAMLDataButton_Click);
+            this.SigningCertificateGroupbox.Controls.Add(this.SigningCertificateTextbox);
+            this.SigningCertificateGroupbox.Location = new System.Drawing.Point(433, 3);
+            this.SigningCertificateGroupbox.Name = "SigningCertificateGroupbox";
+            this.SigningCertificateGroupbox.Size = new System.Drawing.Size(424, 248);
+            this.SigningCertificateGroupbox.TabIndex = 2;
+            this.SigningCertificateGroupbox.TabStop = false;
+            this.SigningCertificateGroupbox.Text = "Signing Certificate";
+            this.SigningCertificateGroupbox.Visible = false;
             // 
-            // OpenSAMLDataButton
+            // SigningCertificateTextbox
             // 
-            this.OpenSAMLDataButton.Location = new System.Drawing.Point(170, 243);
-            this.OpenSAMLDataButton.Name = "OpenSAMLDataButton";
-            this.OpenSAMLDataButton.Size = new System.Drawing.Size(120, 23);
-            this.OpenSAMLDataButton.TabIndex = 7;
-            this.OpenSAMLDataButton.Text = "Open SAML Data";
-            this.OpenSAMLDataButton.UseVisualStyleBackColor = true;
-            this.OpenSAMLDataButton.Click += new System.EventHandler(this.OpenSAMLDataButton_Click);
+            this.SigningCertificateTextbox.Location = new System.Drawing.Point(6, 19);
+            this.SigningCertificateTextbox.Multiline = true;
+            this.SigningCertificateTextbox.Name = "SigningCertificateTextbox";
+            this.SigningCertificateTextbox.Size = new System.Drawing.Size(412, 218);
+            this.SigningCertificateTextbox.TabIndex = 0;
             // 
             // Office365AuthUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.SAMLResponseParser);
+            this.Controls.Add(this.SigningCertificateGroupbox);
+            this.Controls.Add(this.SAMLResponseParserGroupbox);
+            this.Controls.Add(this.Office365AuthenticationGroupbox);
             this.Name = "Office365AuthUserControl";
-            this.Size = new System.Drawing.Size(441, 465);
-            this.SAMLResponseParser.ResumeLayout(false);
-            this.SAMLResponseParser.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.Size = new System.Drawing.Size(869, 493);
+            this.SAMLResponseParserGroupbox.ResumeLayout(false);
+            this.SAMLResponseParserGroupbox.PerformLayout();
+            this.Office365AuthenticationGroupbox.ResumeLayout(false);
+            this.Office365AuthenticationGroupbox.PerformLayout();
+            this.SigningCertificateGroupbox.ResumeLayout(false);
+            this.SigningCertificateGroupbox.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox SAMLResponseParser;
+        private System.Windows.Forms.GroupBox SAMLResponseParserGroupbox;
         private System.Windows.Forms.TextBox AttributeNameImmutableIDTextBox;
         private System.Windows.Forms.TextBox NameIdentifierFormatTextBox;
         private System.Windows.Forms.TextBox AttributeNameUPNTextBox;
         private System.Windows.Forms.TextBox IssuerTextBox;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox AuthenticationResponseComments;
+        private System.Windows.Forms.GroupBox Office365AuthenticationGroupbox;
+        private System.Windows.Forms.TextBox AuthenticationResponseCommentsTextbox;
         private System.Windows.Forms.Button SaveSAMLDataButton;
         private System.Windows.Forms.Button OpenSAMLDataButton;
+        private System.Windows.Forms.GroupBox SigningCertificateGroupbox;
+        private System.Windows.Forms.TextBox SigningCertificateTextbox;
+        private System.Windows.Forms.Button OpenSigningCertificateButton;
+        private System.Windows.Forms.Button SaveSigningCertificateButton;
     }
 }
