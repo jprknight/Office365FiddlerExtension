@@ -100,8 +100,6 @@ namespace EXOFiddlerInspector
             {
                 calledColumnsUI.OrderColumns();
             }
-
-
         }
 
         public void AutoTamperResponseBefore(Session oSession)
@@ -1604,6 +1602,7 @@ namespace EXOFiddlerInspector
                 this.session.utilFindInResponse("NameIdentifier Format=", false) > 1 &&
                 this.session.utilFindInResponse("Attribute AttributeName=", false) > 1)
             {
+                // Used in Auth column and Office365 Auth inspector tab.
                 this.session["X-Authentication"] = "SAML Request/Response";
                 this.session["X-AuthenticationDesc"] = "See below for SAML response parser.";
 
@@ -1761,6 +1760,7 @@ namespace EXOFiddlerInspector
 
                 // Now get specific to find out what the client can do.
                 // If the session request header Authorization equals Bearer this is a Modern Auth capable client.
+                // Note OverrideFurtherAuthChecking which is set above if we detected EXO has Modern Auth disabled.
                 if (this.session.oRequest["Authorization"] == "Bearer" && !(OverrideFurtherAuthChecking))
                 {
                     this.session["X-Authentication"] = "Outlook Modern Auth";
@@ -1777,6 +1777,7 @@ namespace EXOFiddlerInspector
                     }
                 }
                 // If the session request header Authorization equals Basic this is a Basic Auth capable client.
+                // Note OverrideFurtherAuthChecking which is set above if we detected EXO has Modern Auth disabled.
                 else if (this.session.oRequest["Authorization"] == "Basic" && !(OverrideFurtherAuthChecking))
                 {
                     this.session["X-Authentication"] = "Outlook Basic Auth";
