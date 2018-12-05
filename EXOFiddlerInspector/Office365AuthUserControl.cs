@@ -152,7 +152,7 @@ namespace EXOFiddlerInspector
             // Setup dialog.
             save.FileName = "Fiddler-SAML-Signing-Certificate.cer";
             save.RestoreDirectory = true;
-            save.Filter = "SSL Certificate|*.txt,*.cer";
+            save.Filter = "SSL Certificate|*.cer";
 
             if (save.ShowDialog() == DialogResult.OK)
             {

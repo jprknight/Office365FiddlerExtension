@@ -1543,6 +1543,10 @@ namespace EXOFiddlerInspector
         {
             Boolean OverrideFurtherAuthChecking = false;
 
+            List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
+            Boolean DeveloperDemoMode = calledPreferences.GetDeveloperMode();
+            Boolean DeveloperDemoModeBreakScenarios = calledPreferences.GetDeveloperDemoModeBreakScenarios();
+
             this.session["X-Office365AuthType"] = "";
 
             this.session = session;
@@ -1564,16 +1568,23 @@ namespace EXOFiddlerInspector
                 // Avoid null object reference errors at runtime.
                 if ((this.session.utilFindInResponse("Issuer=", false) > 1) && (this.session.utilFindInResponse("IssueInstant=", false) > 1)) 
                 {
-                    // Pull issuer data from response.
-                    string IssuerSessionBody = this.session.ToString();
-                    int IssuerStartIndex = IssuerSessionBody.IndexOf("Issuer=");
-                    int IssuerEndIndex = IssuerSessionBody.IndexOf("IssueInstant=");
-                    int IssuerLength = IssuerEndIndex - IssuerStartIndex;
-                    string Issuer = IssuerSessionBody.Substring(IssuerStartIndex, IssuerLength);
-                    Issuer = Issuer.Replace("&quot;", "\"");
+                    if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
+                    {
+                        this.session["X-Issuer"] = "Issuer = \"http://sts.contoso.com/adfs/services/trust\"";
+                    }
+                    else
+                    {
+                        // Pull issuer data from response.
+                        string IssuerSessionBody = this.session.ToString();
+                        int IssuerStartIndex = IssuerSessionBody.IndexOf("Issuer=");
+                        int IssuerEndIndex = IssuerSessionBody.IndexOf("IssueInstant=");
+                        int IssuerLength = IssuerEndIndex - IssuerStartIndex;
+                        string Issuer = IssuerSessionBody.Substring(IssuerStartIndex, IssuerLength);
+                        Issuer = Issuer.Replace("&quot;", "\"");
 
-                    // Populate X flag on session.
-                    this.session["X-Issuer"] = Issuer;
+                        // Populate X flag on session.
+                        this.session["X-Issuer"] = Issuer;
+                    }
                 }
                 else
                 {
@@ -1583,13 +1594,75 @@ namespace EXOFiddlerInspector
                 // Pull the x509 signing certificate data.
                 if ((this.session.utilFindInResponse("&lt;X509Certificate>", false) > 1) && (this.session.utilFindInResponse("&lt;/X509Certificate>", false) > 1))
                 {
-                    string x509SigningCertSessionBody = this.session.ToString();
-                    int x509SigningCertificateStartIndex = x509SigningCertSessionBody.IndexOf("&lt;X509Certificate>") + 20; // 20 to shift to start of the selection.
-                    int x509SigningCertificateEndIndex = x509SigningCertSessionBody.IndexOf("&lt;/X509Certificate>");
-                    int x509SigningCertificateLength = x509SigningCertificateEndIndex - x509SigningCertificateStartIndex;
-                    string x509SigningCertificate = x509SigningCertSessionBody.Substring(x509SigningCertificateStartIndex, x509SigningCertificateLength);
+                    if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
+                    {
+                        // portal.office.com certificate for demo.
+                        this.session["X-SigningCertificate"] = "-----BEGIN CERTIFICATE-----" +
+                            "MIIJyTCCB7GgAwIBAgITFgAC+95Ht0cIYnGqEwAAAAL73jANBgkqhkiG9w0BAQsF" +
+                            "ADCBizELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcT" +
+                            "B1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEVMBMGA1UE" +
+                            "CxMMTWljcm9zb2Z0IElUMR4wHAYDVQQDExVNaWNyb3NvZnQgSVQgVExTIENBIDQw" +
+                            "HhcNMTgwOTI0MjExNTQwWhcNMjAwOTI0MjExNTQwWjArMSkwJwYDVQQDEyBzdGFt" +
+                            "cDIubG9naW4ubWljcm9zb2Z0b25saW5lLmNvbTCCASIwDQYJKoZIhvcNAQEBBQAD" +
+                            "ggEPADCCAQoCggEBAKXmyCmQ9dko2PQkmJE1Rd4oEE92VcoYWTKqnoiKfxz4yNAY" +
+                            "ATTLWyKH+SId+YeQw/aqVIwFZbeuAUocpWszyisOAEh76cgc7nZgh9mqzaMBVClb" +
+                            "VVoTNvhVoauh1ovbZ6yDOJhXgVDP2NODJKxi7ThbpfJwCXt78OzI+Z0EvzpdZxk9" +
+                            "PAVAveXf+bHRaD7ctsvyheuOjE/fVkUTotBppLsrKadc5mO+nvi6RYvO0h+ExLYL" +
+                            "WKLBtFXOB9xo85b2CxnuMoRGVDKWI+H3HYddKCC3EldFHHj2TOA/y0otK3xHFnNg" +
+                            "AMpKowBBBZJziUXw611AfGqKZVQE4Rzwoe5vxRsCAwEAAaOCBYMwggV/MIIB9gYK" +
+                            "KwYBBAHWeQIEAgSCAeYEggHiAeAAdgCkuQmQtBhYFIe7E6LMZ3AKPDWYBPkb37jj" +
+                            "d80OyA3cEAAAAWYNeUqlAAAEAwBHMEUCIQCPEAlU1m5COhI5vsyrbPIXgpCWjj2L" +
+                            "uXKm+xI8eHPxGQIgDx3QiH5hCQB+jc6h12fuY8GzLOk1kzb8oDMRZ3FyeD0AdgC7" +
+                            "2d+8H4pxtZOUI5eqkntHOFeVCqtS6BqQlmQ2jh7RhQAAAWYNeUvwAAAEAwBHMEUC" +
+                            "IQCaTXkt9/yf1PLY9o8k1lYbBxmKJzxxXFSQCNt0n9HbNwIgRRCY4Ge+DMCOKtqZ" +
+                            "2dSPY+WdEiimhily0qjQaDr451sAdgBWFAaaL9fC7NP14b1Esj7HRna5vJkRXMDv" +
+                            "lJhV1onQ3QAAAWYNeUtnAAAEAwBHMEUCIGt3YAa3D4OQLD7Jne2CZp1W/NVW9AQs" +
+                            "ZVJKl97FXF7jAiEAtGM91DzsBYv4Udh3QtI0FouhQ4rUZ0TSPwrjTcn+XIQAdgBe" +
+                            "p3P531bA57U2SH3QSeAyepGaDIShEhKEGHWWgXFFWAAAAWYNeUuCAAAEAwBHMEUC" +
+                            "IHcT7a0iybDc0TFFQWi6cWLzTyfILxjWFnEJgD44j/paAiEA6dKc86wqUV+xGyCb" +
+                            "CM1BqR2IwmrlxtAiByG956kduYUwJwYJKwYBBAGCNxUKBBowGDAKBggrBgEFBQcD" +
+                            "AjAKBggrBgEFBQcDATA+BgkrBgEEAYI3FQcEMTAvBicrBgEEAYI3FQiH2oZ1g+7Z" +
+                            "AYLJhRuBtZ5hhfTrYIFdhNLfQoLnk3oCAWQCAR0wgYUGCCsGAQUFBwEBBHkwdzBR" +
+                            "BggrBgEFBQcwAoZFaHR0cDovL3d3dy5taWNyb3NvZnQuY29tL3BraS9tc2NvcnAv" +
+                            "TWljcm9zb2Z0JTIwSVQlMjBUTFMlMjBDQSUyMDQuY3J0MCIGCCsGAQUFBzABhhZo" +
+                            "dHRwOi8vb2NzcC5tc29jc3AuY29tMB0GA1UdDgQWBBSUvDb8x1PhIWg2aXbaJeBh" +
+                            "RQEjoTALBgNVHQ8EBAMCBLAwggEmBgNVHREEggEdMIIBGYIZbG9naW4ubWljcm9z" +
+                            "b2Z0b25saW5lLmNvbYIbbG9naW4ubWljcm9zb2Z0b25saW5lLXAuY29tghtsb2dp" +
+                            "bmV4Lm1pY3Jvc29mdG9ubGluZS5jb22CGmxvZ2luMi5taWNyb3NvZnRvbmxpbmUu" +
+                            "Y29tgiRzdGFtcDIubG9naW4ubWljcm9zb2Z0b25saW5lLWludC5jb22CHWxvZ2lu" +
+                            "Lm1pY3Jvc29mdG9ubGluZS1pbnQuY29tgh9sb2dpbmV4Lm1pY3Jvc29mdG9ubGlu" +
+                            "ZS1pbnQuY29tgh5sb2dpbjIubWljcm9zb2Z0b25saW5lLWludC5jb22CIHN0YW1w" +
+                            "Mi5sb2dpbi5taWNyb3NvZnRvbmxpbmUuY29tMIGsBgNVHR8EgaQwgaEwgZ6ggZug" +
+                            "gZiGS2h0dHA6Ly9tc2NybC5taWNyb3NvZnQuY29tL3BraS9tc2NvcnAvY3JsL01p" +
+                            "Y3Jvc29mdCUyMElUJTIwVExTJTIwQ0ElMjA0LmNybIZJaHR0cDovL2NybC5taWNy" +
+                            "b3NvZnQuY29tL3BraS9tc2NvcnAvY3JsL01pY3Jvc29mdCUyMElUJTIwVExTJTIw" +
+                            "Q0ElMjA0LmNybDBNBgNVHSAERjBEMEIGCSsGAQQBgjcqATA1MDMGCCsGAQUFBwIB" +
+                            "FidodHRwOi8vd3d3Lm1pY3Jvc29mdC5jb20vcGtpL21zY29ycC9jcHMwHwYDVR0j" +
+                            "BBgwFoAUenuMwc/noMoc1Gv6++Ezww8aop0wHQYDVR0lBBYwFAYIKwYBBQUHAwIG" +
+                            "CCsGAQUFBwMBMA0GCSqGSIb3DQEBCwUAA4ICAQAKbW1c/c8p8Y6F79AxCcVV8DRq" +
+                            "kndFgBans8sOJmOVvLurpIsMvd4C6JKrB6yDK8fYxS5PtwQDVXW6b2C6EDPUrOQm" +
+                            "4Fkj4hApQMOyOxKcaUnfRDLZqEpbZ4oIxQ2rnxY9yEmegHBJ4+5qnlTLY+hlODpK" +
+                            "oiTkNKSpwj7rzIBnhTTSW4E2TI9RiG1KgviiJFVDdLQKH4/aPou0YBUXf6JNLX6X" +
+                            "wFFKWm/AYHZ9E4W97AQ7BQw9fvEZ0uE8bmsV6Y1dJrFl3/KmxDYDyJ4nFPhY0vHR" +
+                            "Kb9/H9/W6qb++j0zGejSGeVSmj/Xr1Y3Py9BL9unkKHx77ERycJS0WQGMDA7BEju" +
+                            "sZI1MQhzQe+vm/5Kn68ETPC1bI7o370wluf6ZoRHYPJtpD8WBceamoCMALUnyKe2" +
+                            "RzD8ZMOY0L8VHr0b8hNcCJaCRpiAGxkmbGu3v/dHRQ9YVddZa+7ROYH4teFhs7Bp" +
+                            "ffVM+zeHhD/oJ2q1iMKwhvXUL5aiBOkg+TpZC4YrWsNeNPdMIOKTMkR0yi3z1WSF" +
+                            "xxTfQPX0tmTagQKFUv3fATLnY47gt4UfUgOeGyfkV7r4K3clO/Vyj840fzCqtlro" +
+                            "vXcEStLU744fvnFYyvwvJCY2NRN7ByFKoPaG8E5tto7eYmyZbYd5SyIZ5X+1V+N5" +
+                            "8KdwU29EM46onpLRnQ==" +
+                            "-----END CERTIFICATE-----";
+                    }
+                    else
+                    {
+                        string x509SigningCertSessionBody = this.session.ToString();
+                        int x509SigningCertificateStartIndex = x509SigningCertSessionBody.IndexOf("&lt;X509Certificate>") + 20; // 20 to shift to start of the selection.
+                        int x509SigningCertificateEndIndex = x509SigningCertSessionBody.IndexOf("&lt;/X509Certificate>");
+                        int x509SigningCertificateLength = x509SigningCertificateEndIndex - x509SigningCertificateStartIndex;
+                        string x509SigningCertificate = x509SigningCertSessionBody.Substring(x509SigningCertificateStartIndex, x509SigningCertificateLength);
 
-                    this.session["X-SigningCertificate"] = x509SigningCertificate;
+                        this.session["X-SigningCertificate"] = x509SigningCertificate;
+                    }
                 }
                 
 
@@ -1598,22 +1671,31 @@ namespace EXOFiddlerInspector
                 if ((this.session.utilFindInResponse("&lt;saml:Attribute AttributeName=&quot;UPN", false) > 1) && 
                     (this.session.utilFindInResponse("&lt;/saml:Attribute>", false) > 1))
                 {
-                    // AttributeNameUPN.
-                    string AttributeNameUPNSessionBody = this.session.ToString();
-                    int AttributeNameUPNStartIndex = AttributeNameUPNSessionBody.IndexOf("&lt;saml:Attribute AttributeName=&quot;UPN");
-                    int AttributeNameUPNEndIndex = AttributeNameUPNSessionBody.IndexOf("&lt;/saml:Attribute>");
-                    int AttributeNameUPNLength = AttributeNameUPNEndIndex - AttributeNameUPNStartIndex;
-                    string AttributeNameUPN = AttributeNameUPNSessionBody.Substring(AttributeNameUPNStartIndex, AttributeNameUPNLength);
-                    AttributeNameUPN = AttributeNameUPN.Replace("&quot;", "\"");
-                    AttributeNameUPN = AttributeNameUPN.Replace("&lt;", "<");
-                    // Now split the two lines with a new line for easier reading in the user control.
-                    int SplitAttributeNameUPNStartIndex = AttributeNameUPN.IndexOf("><") + 1;
-                    string AttributeNameUPNFirstLine = AttributeNameUPN.Substring(0, SplitAttributeNameUPNStartIndex);
-                    string AttributeNameUPNSecondLine = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex);
-                    AttributeNameUPN = AttributeNameUPNFirstLine + Environment.NewLine + AttributeNameUPNSecondLine;
+                    if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
+                    {
+                        this.session["X-AttributeNameUPNTextBox"] = "<saml:Attribute AttributeName=\"UPN\"" +
+                            "AttributeNamespace=\"http://schemas.xmlsoap.org/claims\">" +
+                            "<saml:AttributeValue>user@contoso.com</saml:AttributeValue></saml:Attribute>";
+                    }
+                    else
+                    {
+                        // AttributeNameUPN.
+                        string AttributeNameUPNSessionBody = this.session.ToString();
+                        int AttributeNameUPNStartIndex = AttributeNameUPNSessionBody.IndexOf("&lt;saml:Attribute AttributeName=&quot;UPN");
+                        int AttributeNameUPNEndIndex = AttributeNameUPNSessionBody.IndexOf("&lt;/saml:Attribute>");
+                        int AttributeNameUPNLength = AttributeNameUPNEndIndex - AttributeNameUPNStartIndex;
+                        string AttributeNameUPN = AttributeNameUPNSessionBody.Substring(AttributeNameUPNStartIndex, AttributeNameUPNLength);
+                        AttributeNameUPN = AttributeNameUPN.Replace("&quot;", "\"");
+                        AttributeNameUPN = AttributeNameUPN.Replace("&lt;", "<");
+                        // Now split the two lines with a new line for easier reading in the user control.
+                        int SplitAttributeNameUPNStartIndex = AttributeNameUPN.IndexOf("><") + 1;
+                        string AttributeNameUPNFirstLine = AttributeNameUPN.Substring(0, SplitAttributeNameUPNStartIndex);
+                        string AttributeNameUPNSecondLine = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex);
+                        AttributeNameUPN = AttributeNameUPNFirstLine + Environment.NewLine + AttributeNameUPNSecondLine;
 
-                    // Populate X flag on session.
-                    this.session["X-AttributeNameUPNTextBox"] = AttributeNameUPN;
+                        // Populate X flag on session.
+                        this.session["X-AttributeNameUPNTextBox"] = AttributeNameUPN;
+                    }
                 }
                 else
                 {
@@ -1624,17 +1706,25 @@ namespace EXOFiddlerInspector
                 if ((this.session.utilFindInResponse("&lt;saml:NameIdentifier Format", false) > 1) &&
                     (this.session.utilFindInResponse("&lt;saml:SubjectConfirmation>", false) > 1))
                 {
-                    // NameIdentifierFormat.
-                    string NameIdentifierFormatSessionBody = this.session.ToString();
-                    int NameIdentifierFormatStartIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:NameIdentifier Format");
-                    int NameIdentifierFormatEndIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:SubjectConfirmation>");
-                    int NameIdentifierFormatLength = NameIdentifierFormatEndIndex - NameIdentifierFormatStartIndex;
-                    string NameIdentifierFormat = NameIdentifierFormatSessionBody.Substring(NameIdentifierFormatStartIndex, NameIdentifierFormatLength);
-                    NameIdentifierFormat = NameIdentifierFormat.Replace("&quot;", "\"");
-                    NameIdentifierFormat = NameIdentifierFormat.Replace("&lt;", "<");
+                    if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
+                    {
+                        this.session["X-NameIdentifierFormatTextBox"] = "<saml:NameIdentifier Format=\"urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified\">" +
+                            "+qwerty123456789qwerty==</saml:NameIdentifier>";
+                    }
+                    else
+                    {
+                        // NameIdentifierFormat.
+                        string NameIdentifierFormatSessionBody = this.session.ToString();
+                        int NameIdentifierFormatStartIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:NameIdentifier Format");
+                        int NameIdentifierFormatEndIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:SubjectConfirmation>");
+                        int NameIdentifierFormatLength = NameIdentifierFormatEndIndex - NameIdentifierFormatStartIndex;
+                        string NameIdentifierFormat = NameIdentifierFormatSessionBody.Substring(NameIdentifierFormatStartIndex, NameIdentifierFormatLength);
+                        NameIdentifierFormat = NameIdentifierFormat.Replace("&quot;", "\"");
+                        NameIdentifierFormat = NameIdentifierFormat.Replace("&lt;", "<");
 
-                    // Populate X flag on session.
-                    this.session["X-NameIdentifierFormatTextBox"] = NameIdentifierFormat;
+                        // Populate X flag on session.
+                        this.session["X-NameIdentifierFormatTextBox"] = NameIdentifierFormat;
+                    } 
                 }
                 else
                 {
@@ -1644,27 +1734,36 @@ namespace EXOFiddlerInspector
                 if ((this.session.utilFindInResponse("&lt;saml:NameIdentifier Format", false) > 1) &&
                     (this.session.utilFindInResponse("&lt;saml:SubjectConfirmation>", false) > 1))
                 {
-                    // AttributeNameImmutableID.
-                    string AttributeNameImmutableIDSessionBody = this.session.ToString();
-                    int AttributeNameImmutableIDStartIndex = AttributeNameImmutableIDSessionBody.IndexOf("AttributeName=&quot;ImmutableID");
-                    int AttributeNameImmutibleIDEndIndex = AttributeNameImmutableIDSessionBody.IndexOf("&lt;/saml:AttributeStatement>");
-                    int AttributeNameImmutibleIDLength = AttributeNameImmutibleIDEndIndex - AttributeNameImmutableIDStartIndex;
-                    string AttributeNameImmutibleID = AttributeNameImmutableIDSessionBody.Substring(AttributeNameImmutableIDStartIndex, AttributeNameImmutibleIDLength);
-                    AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&quot;", "\"");
-                    AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&lt;", "<");
-                    // Now split out response with a newline for easier reading.
-                    int SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("<saml:AttributeValue>") + 21; // Add 21 characters to shift where the newline is placed.
-                    string AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
-                    string AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
-                    AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
-                    // Second split
-                    SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("</saml:AttributeValue></saml:Attribute>");
-                    AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
-                    AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
-                    AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
+                    if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
+                    {
+                        this.session["X-AttributeNameImmutableIDTextBox"] = "<saml:Attribute AttributeName=\"ImmutableID\" " +
+                            "AttributeNamespace=\"http://schemas.microsoft.com/LiveID/Federation/2008/05\">" +
+                            "<saml:AttributeValue>+qwerty123456789qwerty==</saml:AttributeValue>";
+                    }
+                    else
+                    {
+                        // AttributeNameImmutableID.
+                        string AttributeNameImmutableIDSessionBody = this.session.ToString();
+                        int AttributeNameImmutableIDStartIndex = AttributeNameImmutableIDSessionBody.IndexOf("AttributeName=&quot;ImmutableID");
+                        int AttributeNameImmutibleIDEndIndex = AttributeNameImmutableIDSessionBody.IndexOf("&lt;/saml:AttributeStatement>");
+                        int AttributeNameImmutibleIDLength = AttributeNameImmutibleIDEndIndex - AttributeNameImmutableIDStartIndex;
+                        string AttributeNameImmutibleID = AttributeNameImmutableIDSessionBody.Substring(AttributeNameImmutableIDStartIndex, AttributeNameImmutibleIDLength);
+                        AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&quot;", "\"");
+                        AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&lt;", "<");
+                        // Now split out response with a newline for easier reading.
+                        int SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("<saml:AttributeValue>") + 21; // Add 21 characters to shift where the newline is placed.
+                        string AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
+                        string AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
+                        AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
+                        // Second split
+                        SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("</saml:AttributeValue></saml:Attribute>");
+                        AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
+                        AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
+                        AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
 
-                    // Populate X flag on session.
-                    this.session["X-AttributeNameImmutableIDTextBox"] = AttributeNameImmutibleID;
+                        // Populate X flag on session.
+                        this.session["X-AttributeNameImmutableIDTextBox"] = AttributeNameImmutibleID;
+                    } 
                 }
                 else
                 {
