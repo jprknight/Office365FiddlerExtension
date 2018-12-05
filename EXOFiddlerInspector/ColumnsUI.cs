@@ -38,11 +38,9 @@ namespace EXOFiddlerInspector
         {
             Boolean LoadSaz = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.LoadSaz", false);
 
-            if (bElapsedTimeColumnCreated && bExtensionEnabled)
-            {
-                return;
-            }
-            else if (LoadSaz && bExtensionEnabled)
+            if (bElapsedTimeColumnCreated) return;
+
+            if (LoadSaz && bExtensionEnabled)
             {
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 2, 110, "X-ElapsedTime");
                 bElapsedTimeColumnCreated = true;
@@ -61,11 +59,9 @@ namespace EXOFiddlerInspector
         /// </summary>
         public void EnsureResponseServerColumn()
         {
-            if (bResponseServerColumnCreated && bExtensionEnabled)
-            {
-                return;
-            }
-            else if (bExtensionEnabled)
+            if (bResponseServerColumnCreated) return;
+            
+            if (bExtensionEnabled)
             {
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 2, 130, "X-ResponseServer");
                 bResponseServerColumnCreated = true;
@@ -78,11 +74,9 @@ namespace EXOFiddlerInspector
         /// </summary>
         public void EnsureXHostIPColumn()
         {
-            if (bXHostIPColumnCreated && bExtensionEnabled)
-            {
-                return;
-            }
-            else if (bExtensionEnabled)
+            if (bXHostIPColumnCreated) return;
+
+            if (bExtensionEnabled)
             {
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("X-HostIP", 2, 110, "X-HostIP");
                 bXHostIPColumnCreated = true;
@@ -94,11 +88,9 @@ namespace EXOFiddlerInspector
         /// </summary>
         public void EnsureExchangeTypeColumn()
         {
-            if (bExchangeTypeColumnCreated)
-            {
-                return;
-            }
-            else if (bExtensionEnabled)
+            if (bExchangeTypeColumnCreated) return;
+            
+            if (bExtensionEnabled)
             {
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 2, 150, "X-ExchangeType");
                 bExchangeTypeColumnCreated = true;
@@ -107,11 +99,9 @@ namespace EXOFiddlerInspector
 
         public void EnsureAuthColumn()
         {
-            if (bAuthColumnCreated)
-            {
-                return;
-            }
-            else if (bExtensionEnabled)
+            if (bAuthColumnCreated) return;
+            
+            if (bExtensionEnabled)
             {
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 2, 140, "X-Authentication");
                 bAuthColumnCreated = true;

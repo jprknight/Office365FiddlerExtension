@@ -491,7 +491,7 @@ namespace EXOFiddlerInspector
             // they are added into the interface in this reverse order.
             if (bAuthColumnEnabled && bExtensionEnabled)
             {
-                calledColumnsUI.EnsureAuthColumn();
+                //calledColumnsUI.EnsureAuthColumn();
             }
 
             /////////////////
@@ -499,7 +499,7 @@ namespace EXOFiddlerInspector
             // they are added into the interface in this reverse order.
             if (bResponseServerColumnEnabled && bExtensionEnabled)
             {
-                calledColumnsUI.EnsureResponseServerColumn();
+                //calledColumnsUI.EnsureResponseServerColumn();
             }
 
             /////////////////
@@ -507,7 +507,7 @@ namespace EXOFiddlerInspector
             // they are added into the interface in this reverse order.
             if (bXHostIPColumnEnabled && bExtensionEnabled)
             {
-                calledColumnsUI.EnsureXHostIPColumn();
+                //calledColumnsUI.EnsureXHostIPColumn();
             }
 
             /////////////////
@@ -515,7 +515,7 @@ namespace EXOFiddlerInspector
             // they are added into the interface in this reverse order.
             if (bExchangeTypeColumnEnabled && bExtensionEnabled)
             {
-                calledColumnsUI.EnsureExchangeTypeColumn();
+                //calledColumnsUI.EnsureExchangeTypeColumn();
             }
 
             /////////////////
@@ -523,7 +523,7 @@ namespace EXOFiddlerInspector
             // they are added into the interface in this reverse order.
             if (bElapsedTimeColumnEnabled && bExtensionEnabled)
             {
-                calledColumnsUI.EnsureElapsedTimeColumn();
+                //calledColumnsUI.EnsureElapsedTimeColumn();
             }
         }
 
