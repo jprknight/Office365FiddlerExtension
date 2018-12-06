@@ -18,15 +18,22 @@ namespace EXOFiddlerInspector
         public bool bAuthColumnCreated = false;
         public bool bColumnsOrdered = false;
 
-        public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-        public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
-        public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
-        public Boolean bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
-        public Boolean bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
-        public Boolean bAuthColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AuthColumnEnabled", false);
-        public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
-        public Boolean bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
-        public int iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
+        int iResponseServerColumnEnabled = 0;
+        int iXHostIPColumnEnabled = 0;
+        int iAuthColumnEnabled = 0;
+        int iExchangeTypeColumnEnabled = 0;
+        int iElapsedTimeColumnEnabled = 0;
+        int iColumnOrderingThreshold = 5;
+
+        public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
+        public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ElapsedTimeColumnEnabled", false);
+        public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ResponseServerColumnEnabled", false);
+        public Boolean bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ExchangeTypeColumnEnabled", false);
+        public Boolean bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.XHostIPColumnEnabled", false);
+        public Boolean bAuthColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AuthColumnEnabled", false);
+        public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", false);
+        public Boolean bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", false);
+        public int iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerExtension.ExecutionCount", 0);
 
         public int wordCount = 0;
 
@@ -35,7 +42,6 @@ namespace EXOFiddlerInspector
         public void AddAllEnabledColumns()
         {
             this.EnsureElapsedTimeColumn();
-            this.EnsureResponseServerColumn();
             this.EnsureResponseServerColumn();
             this.EnsureXHostIPColumn();
             this.EnsureExchangeTypeColumn();
@@ -47,13 +53,13 @@ namespace EXOFiddlerInspector
         /// </summary>
         public void EnsureElapsedTimeColumn()
         {
-            Boolean LoadSaz = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.LoadSaz", false);
+            Boolean LoadSaz = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
 
             if (bElapsedTimeColumnCreated) return;
 
-            if (LoadSaz && bExtensionEnabled)
+            if (LoadSaz && bElapsedTimeColumnEnabled && bExtensionEnabled)
             {
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 2, 110, "X-ElapsedTime");
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
                 bElapsedTimeColumnCreated = true;
             }
             else if (bExtensionEnabled)
@@ -72,9 +78,9 @@ namespace EXOFiddlerInspector
         {
             if (bResponseServerColumnCreated) return;
             
-            if (bExtensionEnabled)
+            if (bResponseServerColumnEnabled && bExtensionEnabled)
             {
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 2, 130, "X-ResponseServer");
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 130, "X-ResponseServer");
                 bResponseServerColumnCreated = true;
             }
             
@@ -87,9 +93,9 @@ namespace EXOFiddlerInspector
         {
             if (bXHostIPColumnCreated) return;
 
-            if (bExtensionEnabled)
+            if (bXHostIPColumnEnabled && bExtensionEnabled)
             {
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("X-HostIP", 2, 110, "X-HostIP");
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("HostIP", 110, "X-HostIP");
                 bXHostIPColumnCreated = true;
             }
         }
@@ -103,7 +109,7 @@ namespace EXOFiddlerInspector
             
             if (bExtensionEnabled)
             {
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 2, 150, "X-ExchangeType");
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 150, "X-ExchangeType");
                 bExchangeTypeColumnCreated = true;
             }
         }
@@ -114,7 +120,7 @@ namespace EXOFiddlerInspector
             
             if (bExtensionEnabled)
             {
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 2, 140, "X-Authentication");
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 140, "X-Authentication");
                 bAuthColumnCreated = true;
             }
         }
@@ -136,55 +142,74 @@ namespace EXOFiddlerInspector
 
         public void AutoTamperResponseAfter(Session session)
         {
-            this.session = session;
-
             this.AddAllEnabledColumns();
             this.OrderColumns();
-            
         }
 
         public void OrderColumns()
         {
-            if (bColumnsOrdered) return;
+            // The below was being used to control only one execution per session.
+            // However on testing it seems like this does need to be run multiple times in IAutoTamper for proper
+            // column ordering.
+            // Further testing on client machine and I see the columns are jumping all over the place.
+            // Throwing an execution limit around the custom columns all being added in column position "2".
+            // if (bColumnsOrdered) return;
 
             if (bExtensionEnabled)
             {
-                // Move the process column further to the left for visibility.
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 2, -1);
+                // Count the columns
+                int iColumnsCount = FiddlerApplication.UI.lvSessions.Columns.Count;
+
+                // Keep session id and result in the standard location on the left.
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("#", 0, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Result", 1, -1);
+
+                // Set extension added columns here all with a calue of 2 to account for some being enabled.
+                if (bResponseServerColumnEnabled && bExtensionEnabled && iResponseServerColumnEnabled <= iColumnOrderingThreshold)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
+                    iResponseServerColumnEnabled++;
+                }
+                if (bXHostIPColumnEnabled && bExtensionEnabled && iXHostIPColumnEnabled <= iColumnOrderingThreshold)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("HostIP", 2, -1);
+                }
+                if (bAuthColumnEnabled && bExtensionEnabled && iAuthColumnEnabled <= iColumnOrderingThreshold)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Authentication", 2, -1);
+                }
+                if (bExchangeTypeColumnEnabled && bExtensionEnabled && iExchangeTypeColumnEnabled <= iColumnOrderingThreshold)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 2, -1);
+                }
+                if (bElapsedTimeColumnEnabled && bExtensionEnabled && iElapsedTimeColumnEnabled <= iColumnOrderingThreshold)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Elapsed Time", 2, -1);
+                }
+                
+                // Tack the rest on the end using iColumnsCount to avoid out of bounds errors when some columns are disabled.
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", iColumnsCount -9, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Protocol", iColumnsCount - 8, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host", iColumnsCount - 7, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("URL", iColumnsCount - 6, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Body", iColumnsCount - 5, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Caching", iColumnsCount - 4, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Content-Type", iColumnsCount - 3, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", iColumnsCount - 2, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", iColumnsCount - 1, -1);
             }
+            // If the extension is disabled, return the UI to the defaults.
             else
             {
-                // Since the extension is not enabled return the process column back to its original location.
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 8, -1);
+
+                // Count the columns
+                int iColumnsCount = FiddlerApplication.UI.lvSessions.Columns.Count;
+
+                // Move the process column further to the left for visibility.
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", iColumnsCount - 2, -1);
             }
 
-            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 2, -1);
-            }
-
-            if (bAuthColumnEnabled && bExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Authentication", 2, -1);
-            }
-
-            if (bXHostIPColumnEnabled && bExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("X-HostIP", 2, -1);
-            }
-
-            if (bResponseServerColumnEnabled && bExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
-            }
-
-            if (bElapsedTimeColumnEnabled && bExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Elapsed Time", 2, -1);
-            }
-
-            bColumnsOrdered = true;
-
+            //bColumnsOrdered = true;
         }
 
         public void OnBeforeReturningError(Session oSession)
@@ -195,7 +220,8 @@ namespace EXOFiddlerInspector
         public void OnLoad()
         {
             this.AddAllEnabledColumns();
-            this.OrderColumns();
+            // Comment out, do not think ordering columns works in OnLoad, needed in IAutoTamper.
+            //this.OrderColumns();
         }
 
         public void OnBeforeUnload()

@@ -16,7 +16,7 @@ namespace EXOFiddlerInspector
     {
         public string SessionData;
 
-        public bool bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+        public bool bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
 
         public Office365AuthUserControl()
         {
