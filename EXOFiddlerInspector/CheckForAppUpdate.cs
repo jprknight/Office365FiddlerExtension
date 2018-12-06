@@ -23,7 +23,7 @@ namespace EXOFiddlerInspector
 
         public void CheckForUpdate()
         {
-            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : CheckForUpdate()");
+            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : CheckForUpdate begin.");
 
             string downloadUrl = "";
             Version newVersion = null;
@@ -160,9 +160,9 @@ namespace EXOFiddlerInspector
             /// </remarks>
             if (DeveloperDemoMode)
             {
-                FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerInspector.MenuTitle", "Exchange Online (Update Available)");
+                FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerInspector.MenuTitle", "Exchange Online (Update Available!)");
             }
-
+            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : CheckForUpdate done.");
         }
     }
 }

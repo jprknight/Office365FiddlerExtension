@@ -31,6 +31,8 @@ namespace EXOFiddlerInspector.Services
         public async void OnLoad()
         {
             await TelemetryService.InitializeAsync();
+            calledColumnsUI.AddAllEnabledColumns();
+            calledColumnsUI.OrderColumns();
         }
 
         public async void OnBeforeUnload()
@@ -42,7 +44,11 @@ namespace EXOFiddlerInspector.Services
 
         public void AutoTamperRequestBefore(Session oSession) { }
 
-        public void AutoTamperResponseAfter(Session oSession) { }
+        public void AutoTamperResponseAfter(Session oSession)
+        {
+            calledColumnsUI.AddAllEnabledColumns();
+            calledColumnsUI.OrderColumns();
+        }
 
         public void AutoTamperResponseBefore(Session session) { }
 

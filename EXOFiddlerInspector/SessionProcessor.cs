@@ -48,6 +48,8 @@ namespace EXOFiddlerInspector
         //
         public void OnLoad()
         {
+            calledColumnsUI.AddAllEnabledColumns();
+            calledColumnsUI.OrderColumns();
             // We need to through some code to restore vanilla Fiddler configuration.
             /*
             bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
@@ -64,14 +66,17 @@ namespace EXOFiddlerInspector
                 }
             }
             */
-            
+
             // Check if this is the first run of the extension and if so hight up all features.
             calledMenuUI.FirstRunEnableMenuOptions();
 
             // Check for update. Do this first as we alter the Exchange Online menu title according to
             // whether an update is available.
-            CheckForAppUpdate calledCheckForAppUpdate = new CheckForAppUpdate();
-            calledCheckForAppUpdate.CheckForUpdate();
+            // -- Still running into issues with checking for an update on live trace.
+            // -- This could be due my system proxy changing on my corp machine.
+            // -- Disabling this for now.
+            //CheckForAppUpdate calledCheckForAppUpdate = new CheckForAppUpdate();
+            //calledCheckForAppUpdate.CheckForUpdate();
 
             // Developer list is actually set in Preferences.cs.
             List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
@@ -136,45 +141,8 @@ namespace EXOFiddlerInspector
         {
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.LoadSaz", true);
 
-            /////////////////
-            // Add in the Auth column. Due to these columns all being added as in with priority of 2,
-            // they are added into the interface in this reverse order.
-            if (bAuthColumnEnabled && bExtensionEnabled)
-            {
-                calledColumnsUI.EnsureAuthColumn();
-            }
-
-            /////////////////
-            // Add in the Response Server column. Due to these columns all being added as in with priority of 2,
-            // they are added into the interface in this reverse order.
-            if (bResponseServerColumnEnabled && bExtensionEnabled)
-            {
-                calledColumnsUI.EnsureResponseServerColumn();
-            }
-
-            /////////////////
-            // Add in the X-HostIP column. Due to these columns all being added as in with priority of 2,
-            // they are added into the interface in this reverse order.
-            if (bXHostIPColumnEnabled && bExtensionEnabled)
-            {
-                calledColumnsUI.EnsureXHostIPColumn();
-            }
-
-            /////////////////
-            // Add in the Exchange Type column. Due to these columns all being added as in with priority of 2,
-            // they are added into the interface in this reverse order.
-            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
-            {
-                calledColumnsUI.EnsureExchangeTypeColumn();
-            }
-
-            /////////////////
-            // Add in the Elapsed Time column. Due to these columns all being added as in with priority of 2,
-            // they are added into the interface in this reverse order.
-            if (bElapsedTimeColumnEnabled && bExtensionEnabled)
-            {
-                calledColumnsUI.EnsureElapsedTimeColumn();
-            }
+            calledColumnsUI.AddAllEnabledColumns();
+            calledColumnsUI.OrderColumns();
 
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
@@ -257,8 +225,9 @@ namespace EXOFiddlerInspector
         /// <param name="session"></param>
         public void AutoTamperResponseAfter(Session session)
         {
-
             this.session = session;
+
+            calledColumnsUI.AddAllEnabledColumns();
 
             /////////////////
             //
@@ -278,11 +247,7 @@ namespace EXOFiddlerInspector
             // These get called on each session, seen strange behaviour on reordering on live trace due 
             // to setting each of these as ordering 2 to ensure column positions regardless of column enabled selections.
             // Use an if statement to fire these once per Fiddler application session.
-            if (this.session.id == 1)
-            {
-                calledColumnsUI.OrderColumns();
-            }
-
+            calledColumnsUI.OrderColumns();
         }
         //
         /////////////////////////////

@@ -9,13 +9,14 @@ using Fiddler;
 
 namespace EXOFiddlerInspector
 {
-    class ColumnsUI : IAutoTamper
+    public class ColumnsUI : IAutoTamper
     {
         public bool bElapsedTimeColumnCreated = false;
         public bool bResponseServerColumnCreated = false;
         public bool bExchangeTypeColumnCreated = false;
         public bool bXHostIPColumnCreated = false;
         public bool bAuthColumnCreated = false;
+        public bool bColumnsOrdered = false;
 
         public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
         public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
@@ -30,6 +31,16 @@ namespace EXOFiddlerInspector
         public int wordCount = 0;
 
         internal Session session { get; set; }
+
+        public void AddAllEnabledColumns()
+        {
+            this.EnsureElapsedTimeColumn();
+            this.EnsureResponseServerColumn();
+            this.EnsureResponseServerColumn();
+            this.EnsureXHostIPColumn();
+            this.EnsureExchangeTypeColumn();
+            this.EnsureAuthColumn();
+        }
 
         /// <summary>
         /// Ensure the Response Time Column has been created, return if it has.
@@ -127,57 +138,15 @@ namespace EXOFiddlerInspector
         {
             this.session = session;
 
-            /////////////////
-            // Add in the Auth column. Due to these columns all being added as in with priority of 2,
-            // they are added into the interface in this reverse order.
-            if (bAuthColumnEnabled && bExtensionEnabled)
-            {
-                this.EnsureAuthColumn();
-            }
-
-            /////////////////
-            // Add in the Response Server column. Due to these columns all being added as in with priority of 2,
-            // they are added into the interface in this reverse order.
-            if (bResponseServerColumnEnabled && bExtensionEnabled)
-            {
-                this.EnsureResponseServerColumn();
-            }
-
-            /////////////////
-            // Add in the X-HostIP column. Due to these columns all being added as in with priority of 2,
-            // they are added into the interface in this reverse order.
-            if (bXHostIPColumnEnabled && bExtensionEnabled)
-            {
-                this.EnsureXHostIPColumn();
-            }
-
-            /////////////////
-            // Add in the Exchange Type column. Due to these columns all being added as in with priority of 2,
-            // they are added into the interface in this reverse order.
-            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
-            {
-                this.EnsureExchangeTypeColumn();
-            }
-
-            /////////////////
-            // Add in the Elapsed Time column. Due to these columns all being added as in with priority of 2,
-            // they are added into the interface in this reverse order.
-            if (bElapsedTimeColumnEnabled && bExtensionEnabled)
-            {
-                this.EnsureElapsedTimeColumn();
-            }
-
-            // These get called on each session, seen strange behaviour on reordering on live trace due 
-            // to setting each of these as ordering 2 to ensure column positions regardless of column enabled selections.
-            // Use an if statement to fire these once per Fiddler application session.
-            if (this.session.id == 1)
-            {
-                OrderColumns();
-            }
+            this.AddAllEnabledColumns();
+            this.OrderColumns();
+            
         }
 
         public void OrderColumns()
         {
+            if (bColumnsOrdered) return;
+
             if (bExtensionEnabled)
             {
                 // Move the process column further to the left for visibility.
@@ -213,6 +182,9 @@ namespace EXOFiddlerInspector
             {
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Elapsed Time", 2, -1);
             }
+
+            bColumnsOrdered = true;
+
         }
 
         public void OnBeforeReturningError(Session oSession)
@@ -222,66 +194,8 @@ namespace EXOFiddlerInspector
 
         public void OnLoad()
         {
-
-            // We need to through some code to restore vanilla Fiddler configuration.
-            /*
-            bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-
-            // Kill extension if not enabled.
-            if (!(bExtensionEnabled))
-            {
-                // If the Fiddler application preference ExecutionCount exists and has a value, then this
-                // is not a first run scenario. Go ahead and return, extension is not enabled.
-                if (iExecutionCount > 0)
-                {
-                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: ColumnsUI.cs OnLoad Extension Return.");
-                    return;
-                }
-            }
-            */
-            
-            /////////////////
-            /// <remarks>
-            /// Response Time column function is no longer called here. Only in OnLoadSAZ.
-            /// </remarks>
-            /////////////////
-
-            /////////////////
-            /// <remarks>
-            /// Call to function in ColumnsUI.cs to add Server Response column if the menu item is checked and if the extension is enabled.
-            /// </remarks> 
-            /// Refresh variable now to take account of first load code.
-            //bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
-            EnsureResponseServerColumn();
-            ///
-            /////////////////
-
-            /////////////////
-            /// <remarks>
-            /// Call to function in ColumnsUI.cs to add Exchange Type column if the menu item is checked and if the extension is enabled. 
-            /// </remarks>
-            /// Refresh variable now to take account of first load code.
-            //bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
-            EnsureXHostIPColumn();
-            ///
-            /////////////////
-
-            /////////////////
-            /// <remarks>
-            /// Call to function in ColumnsUI.cs to add Exchange Type column if the menu item is checked and if the extension is enabled. 
-            /// </remarks>
-            /// Refresh variable now to take account of first load code.
-            EnsureExchangeTypeColumn();
-            ///
-            /////////////////
-
-            /////////////////
-            /// <remarks>
-            /// Call to function in ColumnsUI.cs to add Authentication column if the menu item is checked and if the extension is enabled. 
-            /// </remarks>
-            EnsureAuthColumn();
-            ///
-            /////////////////
+            this.AddAllEnabledColumns();
+            this.OrderColumns();
         }
 
         public void OnBeforeUnload()

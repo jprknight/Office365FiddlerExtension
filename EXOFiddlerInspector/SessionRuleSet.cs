@@ -49,7 +49,11 @@ namespace EXOFiddlerInspector
             //throw new NotImplementedException();
         }
 
-        public void AutoTamperResponseAfter(Session session) { }
+        public void AutoTamperResponseAfter(Session session)
+        {
+            calledColumnsUI.AddAllEnabledColumns();
+            calledColumnsUI.OrderColumns();
+        }
 
         public void AutoTamperResponseBefore(Session oSession)
         {
@@ -71,6 +75,8 @@ namespace EXOFiddlerInspector
 
         public void OnLoad()
         {
+            calledColumnsUI.AddAllEnabledColumns();
+            calledColumnsUI.OrderColumns();
             // Not used here.
             //throw new NotImplementedException();
         }
