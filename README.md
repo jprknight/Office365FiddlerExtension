@@ -8,7 +8,8 @@ This inspector is intended to help with troubleshooting issues with Outlook and 
 * Add column 'Exchange Type'.
 * Add column 'XP-HostIP'.
 * Add column 'Authentication'.
-* Add an 'Exchange Online' response inspector tab.
+* Add an 'Exchange Online' response inspector tab -- Exchange related information.
+* Add an 'Office365 Auth' response inspector tab -- Authentication related information.
 * Add an 'Exchange Online' menu to turn off/on extension, extension features and other options.
 * Colourisation of sessions upon loading a .SAZ file.
 * Colourisation of sessions upon live tracing.
