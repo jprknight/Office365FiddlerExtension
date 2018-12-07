@@ -9,7 +9,7 @@ namespace EXOFiddlerInspector
     /// <summary>
     /// Why preferences.cs? There are also Fiddler application preferences, why does this exist?
     /// Fiddler application preferences are set with for example:
-    ///     FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.DemoMode", false);
+    ///     FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.DemoMode", false);
     /// The preferences here are developer created preferences. These preferences are set here, are not changed
     /// at runtime, and are hardcoded in compiled code.
     /// </summary>
@@ -33,7 +33,7 @@ namespace EXOFiddlerInspector
         /////////////////
 
         /////////////////
-        List<string> Developers = new List<string>(new string[] { "jeknight", "brandev", "bever", "jasonsla" });
+        List<string> Developers = new List<string>(new string[] { "jeknight", "brandev", "bever", "jasonsla", "nick", "jeremy" });
         /// <summary>
         /// Developer list and return.
         /// </summary>

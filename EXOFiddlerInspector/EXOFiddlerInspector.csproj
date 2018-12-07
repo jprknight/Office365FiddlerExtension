@@ -52,6 +52,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Office365Auth.cs" />
+    <Compile Include="Office365AuthUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Office365AuthUserControl.Designer.cs">
+      <DependentUpon>Office365AuthUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="CheckForAppUpdate.cs" />
     <Compile Include="SessionProcessor.cs" />
@@ -95,6 +102,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ResponseUserControl.resx">
       <DependentUpon>ResponseUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Office365AuthUserControl.resx">
+      <DependentUpon>Office365AuthUserControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
