@@ -6,7 +6,7 @@ This inspector is intended to help with troubleshooting issues with Outlook and 
 * Add column 'Response Time'.
 * Add column'Response Server'.
 * Add column 'Exchange Type'.
-* Add column 'XP-HostIP'.
+* Add column 'HostIP'.
 * Add column 'Authentication'.
 * Add an 'Exchange Online' response inspector tab -- Exchange related information.
 * Add an 'Office365 Auth' response inspector tab -- Authentication related information.
