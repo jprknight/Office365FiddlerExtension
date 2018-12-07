@@ -548,7 +548,7 @@ namespace EXOFiddlerInspector
             FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerExtension.ExecutionCount");
             FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerExtension.ManualCheckForUpdate");
             FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerExtension.MenuTitle");
-            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerExtension.XHostIPColumnEnabled");
+            FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerExtension.HostIPColumnEnabled");
             FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerExtension.AuthColumnEnabled");
             MessageBox.Show("Removed extensions.EXOFiddlerInspector Prefs.");
         }

@@ -14,12 +14,12 @@ namespace EXOFiddlerInspector
         public bool bElapsedTimeColumnCreated = false;
         public bool bResponseServerColumnCreated = false;
         public bool bExchangeTypeColumnCreated = false;
-        public bool bXHostIPColumnCreated = false;
+        public bool bHostIPColumnCreated = false;
         public bool bAuthColumnCreated = false;
         public bool bColumnsOrdered = false;
 
         int iResponseServerColumnOrderCount = 0;
-        int iXHostIPColumnOrderCount = 0;
+        int iHostIPColumnOrderCount = 0;
         int iAuthColumnOrderCount = 0;
         int iExchangeTypeColumnOrderCount = 0;
         int iElapsedTimeColumnOrderCount = 0;
@@ -28,7 +28,7 @@ namespace EXOFiddlerInspector
         public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ElapsedTimeColumnEnabled", false);
         public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ResponseServerColumnEnabled", false);
         public Boolean bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ExchangeTypeColumnEnabled", false);
-        public Boolean bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.XHostIPColumnEnabled", false);
+        public Boolean bHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HostIPColumnEnabled", false);
         public Boolean bAuthColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AuthColumnEnabled", false);
         public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", false);
         public Boolean bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", false);
@@ -42,7 +42,7 @@ namespace EXOFiddlerInspector
         {
             this.EnsureElapsedTimeColumn();
             this.EnsureResponseServerColumn();
-            this.EnsureXHostIPColumn();
+            this.EnsureHostIPColumn();
             this.EnsureExchangeTypeColumn();
             this.EnsureAuthColumn();
         }
@@ -86,16 +86,16 @@ namespace EXOFiddlerInspector
         }
 
         /// <summary>
-        ///  Ensure the X-HostIP column has been created, return if it has.
+        ///  Ensure the HostIP column has been created, return if it has.
         /// </summary>
-        public void EnsureXHostIPColumn()
+        public void EnsureHostIPColumn()
         {
-            if (bXHostIPColumnCreated) return;
+            if (bHostIPColumnCreated) return;
 
-            if (bXHostIPColumnEnabled && bExtensionEnabled)
+            if (bHostIPColumnEnabled && bExtensionEnabled)
             {
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("HostIP", 110, "X-HostIP");
-                bXHostIPColumnCreated = true;
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 110, "X-HostIP");
+                bHostIPColumnCreated = true;
             }
         }
 
@@ -173,10 +173,10 @@ namespace EXOFiddlerInspector
                     FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
                     iResponseServerColumnOrderCount++;
                 }
-                if (bXHostIPColumnEnabled && bExtensionEnabled && iXHostIPColumnOrderCount <= iColumnOrderingThreshold)
+                if (bHostIPColumnEnabled && bExtensionEnabled && iHostIPColumnOrderCount <= iColumnOrderingThreshold)
                 {
-                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("HostIP", 2, -1);
-                    iXHostIPColumnOrderCount++;
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host IP", 2, -1);
+                    iHostIPColumnOrderCount++;
                 }
                 if (bAuthColumnEnabled && bExtensionEnabled && iAuthColumnOrderCount <= iColumnOrderingThreshold)
                 {

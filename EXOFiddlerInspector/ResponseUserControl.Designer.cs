@@ -77,7 +77,7 @@
             this.ServerBeginResponseTimeTextbox = new System.Windows.Forms.TextBox();
             this.ServerGotRequestTimeTextbox = new System.Windows.Forms.TextBox();
             this.ServerBeginResponseDateTextbox = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.HostIPLabel = new System.Windows.Forms.Label();
             this.XHostIPTextbox = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.TransmitLabel = new System.Windows.Forms.Label();
@@ -574,15 +574,15 @@
             this.ServerBeginResponseDateTextbox.Size = new System.Drawing.Size(68, 20);
             this.ServerBeginResponseDateTextbox.TabIndex = 76;
             // 
-            // label2
+            // HostIPLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 125);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(49, 13);
-            this.label2.TabIndex = 71;
-            this.label2.Text = "X-HostIP";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
+            this.HostIPLabel.AutoSize = true;
+            this.HostIPLabel.Location = new System.Drawing.Point(6, 125);
+            this.HostIPLabel.Name = "HostIPLabel";
+            this.HostIPLabel.Size = new System.Drawing.Size(42, 13);
+            this.HostIPLabel.TabIndex = 71;
+            this.HostIPLabel.Text = "Host IP";
+            this.HostIPLabel.Click += new System.EventHandler(this.label2_Click);
             // 
             // XHostIPTextbox
             // 
@@ -602,7 +602,7 @@
             this.groupBox3.Controls.Add(this.XHostIPTextbox);
             this.groupBox3.Controls.Add(this.ResponseProcessLabel);
             this.groupBox3.Controls.Add(this.SaveSessionDataButton);
-            this.groupBox3.Controls.Add(this.label2);
+            this.groupBox3.Controls.Add(this.HostIPLabel);
             this.groupBox3.Controls.Add(this.DataAgeLabel);
             this.groupBox3.Controls.Add(this.ResponseServerLabel);
             this.groupBox3.Controls.Add(this.ResponseServerTextBox);
@@ -734,7 +734,7 @@
         private System.Windows.Forms.TextBox ServerThinkTimeTextbox;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label HostIPLabel;
         private System.Windows.Forms.TextBox XHostIPTextbox;
         private System.Windows.Forms.TextBox ServerGotRequestTimeTextbox;
         private System.Windows.Forms.GroupBox groupBox3;
