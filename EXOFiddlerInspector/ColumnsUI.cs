@@ -18,12 +18,11 @@ namespace EXOFiddlerInspector
         public bool bAuthColumnCreated = false;
         public bool bColumnsOrdered = false;
 
-        int iResponseServerColumnEnabled = 0;
-        int iXHostIPColumnEnabled = 0;
-        int iAuthColumnEnabled = 0;
-        int iExchangeTypeColumnEnabled = 0;
-        int iElapsedTimeColumnEnabled = 0;
-        int iColumnOrderingThreshold = 5;
+        int iResponseServerColumnOrderCount = 0;
+        int iXHostIPColumnOrderCount = 0;
+        int iAuthColumnOrderCount = 0;
+        int iExchangeTypeColumnOrderCount = 0;
+        int iElapsedTimeColumnOrderCount = 0;
 
         public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
         public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ElapsedTimeColumnEnabled", false);
@@ -153,38 +152,46 @@ namespace EXOFiddlerInspector
             // column ordering.
             // Further testing on client machine and I see the columns are jumping all over the place.
             // Throwing an execution limit around the custom columns all being added in column position "2".
-            // if (bColumnsOrdered) return;
+
+            // Column ordering threshold. For some reason we need IAutoTamper AutoTamperResponseAfter to hit this function
+            // more than just once to get consistent column positioning.
+            // Setting a threshold here.
+            int iColumnOrderingThreshold = 5;
 
             if (bExtensionEnabled)
             {
                 // Count the columns
                 int iColumnsCount = FiddlerApplication.UI.lvSessions.Columns.Count;
-
+                
                 // Keep session id and result in the standard location on the left.
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("#", 0, -1);
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Result", 1, -1);
 
                 // Set extension added columns here all with a calue of 2 to account for some being enabled.
-                if (bResponseServerColumnEnabled && bExtensionEnabled && iResponseServerColumnEnabled <= iColumnOrderingThreshold)
+                if (bResponseServerColumnEnabled && bExtensionEnabled && iResponseServerColumnOrderCount <= iColumnOrderingThreshold)
                 {
                     FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
-                    iResponseServerColumnEnabled++;
+                    iResponseServerColumnOrderCount++;
                 }
-                if (bXHostIPColumnEnabled && bExtensionEnabled && iXHostIPColumnEnabled <= iColumnOrderingThreshold)
+                if (bXHostIPColumnEnabled && bExtensionEnabled && iXHostIPColumnOrderCount <= iColumnOrderingThreshold)
                 {
                     FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("HostIP", 2, -1);
+                    iXHostIPColumnOrderCount++;
                 }
-                if (bAuthColumnEnabled && bExtensionEnabled && iAuthColumnEnabled <= iColumnOrderingThreshold)
+                if (bAuthColumnEnabled && bExtensionEnabled && iAuthColumnOrderCount <= iColumnOrderingThreshold)
                 {
                     FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Authentication", 2, -1);
+                    iAuthColumnOrderCount++;
                 }
-                if (bExchangeTypeColumnEnabled && bExtensionEnabled && iExchangeTypeColumnEnabled <= iColumnOrderingThreshold)
+                if (bExchangeTypeColumnEnabled && bExtensionEnabled && iExchangeTypeColumnOrderCount <= iColumnOrderingThreshold)
                 {
                     FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 2, -1);
+                    iExchangeTypeColumnOrderCount++;
                 }
-                if (bElapsedTimeColumnEnabled && bExtensionEnabled && iElapsedTimeColumnEnabled <= iColumnOrderingThreshold)
+                if (bElapsedTimeColumnEnabled && bExtensionEnabled && iElapsedTimeColumnOrderCount <= iColumnOrderingThreshold)
                 {
                     FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Elapsed Time", 2, -1);
+                    iElapsedTimeColumnOrderCount++;
                 }
                 
                 // Tack the rest on the end using iColumnsCount to avoid out of bounds errors when some columns are disabled.
@@ -205,7 +212,7 @@ namespace EXOFiddlerInspector
                 // Count the columns
                 int iColumnsCount = FiddlerApplication.UI.lvSessions.Columns.Count;
 
-                // Move the process column further to the left for visibility.
+                // Move the process column back to its standard position when extension is not enabled.
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", iColumnsCount - 2, -1);
             }
 
