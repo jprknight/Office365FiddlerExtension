@@ -9,42 +9,56 @@ using Fiddler;
 
 namespace EXOFiddlerInspector
 {
-    class ColumnsUI : IAutoTamper
+    public class ColumnsUI : IAutoTamper
     {
         public bool bElapsedTimeColumnCreated = false;
         public bool bResponseServerColumnCreated = false;
         public bool bExchangeTypeColumnCreated = false;
         public bool bXHostIPColumnCreated = false;
         public bool bAuthColumnCreated = false;
+        public bool bColumnsOrdered = false;
 
-        public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-        public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
-        public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
-        public Boolean bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
-        public Boolean bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
-        public Boolean bAuthColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AuthColumnEnabled", false);
-        public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
-        public Boolean bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
-        public int iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
+        int iResponseServerColumnOrderCount = 0;
+        int iXHostIPColumnOrderCount = 0;
+        int iAuthColumnOrderCount = 0;
+        int iExchangeTypeColumnOrderCount = 0;
+        int iElapsedTimeColumnOrderCount = 0;
+
+        public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
+        public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ElapsedTimeColumnEnabled", false);
+        public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ResponseServerColumnEnabled", false);
+        public Boolean bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ExchangeTypeColumnEnabled", false);
+        public Boolean bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.XHostIPColumnEnabled", false);
+        public Boolean bAuthColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AuthColumnEnabled", false);
+        public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", false);
+        public Boolean bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", false);
+        public int iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerExtension.ExecutionCount", 0);
 
         public int wordCount = 0;
 
         internal Session session { get; set; }
+
+        public void AddAllEnabledColumns()
+        {
+            this.EnsureElapsedTimeColumn();
+            this.EnsureResponseServerColumn();
+            this.EnsureXHostIPColumn();
+            this.EnsureExchangeTypeColumn();
+            this.EnsureAuthColumn();
+        }
 
         /// <summary>
         /// Ensure the Response Time Column has been created, return if it has.
         /// </summary>
         public void EnsureElapsedTimeColumn()
         {
-            Boolean LoadSaz = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.LoadSaz", false);
+            Boolean LoadSaz = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
 
-            if (bElapsedTimeColumnCreated && bExtensionEnabled)
+            if (bElapsedTimeColumnCreated) return;
+
+            if (LoadSaz && bElapsedTimeColumnEnabled && bExtensionEnabled)
             {
-                return;
-            }
-            else if (LoadSaz && bExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 2, 110, "X-ElapsedTime");
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
                 bElapsedTimeColumnCreated = true;
             }
             else if (bExtensionEnabled)
@@ -61,13 +75,11 @@ namespace EXOFiddlerInspector
         /// </summary>
         public void EnsureResponseServerColumn()
         {
-            if (bResponseServerColumnCreated && bExtensionEnabled)
+            if (bResponseServerColumnCreated) return;
+            
+            if (bResponseServerColumnEnabled && bExtensionEnabled)
             {
-                return;
-            }
-            else if (bExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 2, 130, "X-ResponseServer");
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 130, "X-ResponseServer");
                 bResponseServerColumnCreated = true;
             }
             
@@ -78,13 +90,11 @@ namespace EXOFiddlerInspector
         /// </summary>
         public void EnsureXHostIPColumn()
         {
-            if (bXHostIPColumnCreated && bExtensionEnabled)
+            if (bXHostIPColumnCreated) return;
+
+            if (bXHostIPColumnEnabled && bExtensionEnabled)
             {
-                return;
-            }
-            else if (bExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("X-HostIP", 2, 110, "X-HostIP");
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("HostIP", 110, "X-HostIP");
                 bXHostIPColumnCreated = true;
             }
         }
@@ -94,336 +104,23 @@ namespace EXOFiddlerInspector
         /// </summary>
         public void EnsureExchangeTypeColumn()
         {
-            if (bExchangeTypeColumnCreated)
+            if (bExchangeTypeColumnCreated) return;
+            
+            if (bExtensionEnabled)
             {
-                return;
-            }
-            else if (bExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 2, 150, "X-ExchangeType");
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 150, "X-ExchangeType");
                 bExchangeTypeColumnCreated = true;
             }
         }
 
         public void EnsureAuthColumn()
         {
-            if (bAuthColumnCreated)
-            {
-                return;
-            }
-            else if (bExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 2, 150, "X-Authentication");
-                bAuthColumnCreated = true;
-            }
-        }
-
-        /// <summary>
-        /// Function where the Response Server column is populated.
-        /// </summary>
-        /// <param name="session"></param>
-        public void SetResponseServer(Session session)
-        {
-            this.session = session;
-
-            // Populate Response Server on session in order of preference from common to obsure.
-
-            // If the response server header is not null or blank then populate it into the response server value.
-            if ((this.session.oResponse["Server"] != null) && (this.session.oResponse["Server"] != ""))
-            {
-                this.session["X-ResponseServer"] = this.session.oResponse["Server"];
-            }
-            // Else if the reponnse Host header is not null or blank then populate it into the response server value
-            // Some traffic identifies a host rather than a response server.
-            else if ((this.session.oResponse["Host"] != null && (this.session.oResponse["Host"] != "")))
-            {
-                this.session["X-ResponseServer"] = "Host: " + this.session.oResponse["Host"];
-            }
-            // Else if the response PoweredBy header is not null or blank then populate it into the response server value.
-            // Some Office 365 servers respond as X-Powered-By ASP.NET.
-            else if ((this.session.oResponse["X-Powered-By"] != null) && (this.session.oResponse["X-Powered-By"] != ""))
-            {
-                this.session["X-ResponseServer"] = "X-Powered-By: " + this.session.oResponse["X-Powered-By"];
-            }
-            // Else if the response X-Served-By header is not null or blank then populate it into the response server value.
-            else if ((this.session.oResponse["X-Served-By"] != null && (this.session.oResponse["X-Served-By"] != "")))
-            {
-                this.session["X-ResponseServer"] = "X-Served-By: " + this.session.oResponse["X-Served-By"];
-            }
-            // Else if the response X-Served-By header is not null or blank then populate it into the response server value.
-            else if ((this.session.oResponse["X-Server-Name"] != null && (this.session.oResponse["X-Server-Name"] != "")))
-            {
-                this.session["X-ResponseServer"] = "X-Served-Name: " + this.session.oResponse["X-Server-Name"];
-            }
-            else if (this.session.isTunnel == true)
-            {
-                this.session["X-ResponseServer"] = "Connect Tunnel";
-            }
-        }
-
-        /// <summary>
-        /// Function where the Exchange Type column is populated.
-        /// </summary>
-        /// <param name="session"></param>
-        public void SetExchangeType(Session session)
-        {
-            this.session = session;
-
-            // Outlook Connections.
-            if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) { this.session["X-ExchangeType"] = "EXO MAPI"; }
-            // Exchange Online Autodiscover.
-            else if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { this.session["X-ExchangeType"] = "EXO Autodiscover"; }
-            else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { this.session["X-ExchangeType"] = "EXO Autodiscover"; }
-            else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { this.session["X-ExchangeType"] = "EXO Autodiscover"; }
-            else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { this.session["X-ExchangeType"] = "EXO Autodiscover"; }
-            // Autodiscover.     
-            else if ((this.session.fullUrl.Contains("autodiscover") && (!(this.session.hostname == "outlook.office365.com")))) { this.session["X-ExchangeType"] = "On-Prem Autodiscover"; }
-            else if (this.session.hostname.Contains("autodiscover")) { this.session["X-ExchangeType"] = "On-Prem Autodiscover"; }
-            // Free/Busy.
-            else if (this.session.fullUrl.Contains("WSSecurity"))
-            {
-                this.session["X-ExchangeType"] = "Free/Busy";
-                // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
-            }
-            else if (this.session.fullUrl.Contains("GetUserAvailability"))
-            {
-                this.session["X-ExchangeType"] = "Free/Busy";
-                // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
-            }
-            else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1)
-            {
-                this.session["X-ExchangeType"] = "Free/Busy";
-                // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
-            }
-            // EWS.
-            else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { this.session["X-ExchangeType"] = "EXO EWS"; }
-            // Generic Office 365.
-            else if (this.session.fullUrl.Contains(".onmicrosoft.com") && (!(this.session.hostname.Contains("live.com")))) { this.session["X -ExchangeType"] = "Exchange Online"; }
-            else if (this.session.fullUrl.Contains("outlook.office365.com")) { this.session["X-ExchangeType"] = "Office 365"; }
-            else if (this.session.fullUrl.Contains("outlook.office.com")) { this.session["X-ExchangeType"] = "Office 365"; }
-            // Office 365 Authentication.
-            else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { this.session["X-ExchangeType"] = "Office 365 Authentication"; }
-            // ADFS Authentication.
-            else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { this.session["X-ExchangeType"] = "ADFS Authentication"; }
-            // Undetermined, but related to local process.
-            else if (this.session.LocalProcess.Contains("outlook")) { this.session["X-ExchangeType"] = "Outlook"; }
-            else if (this.session.LocalProcess.Contains("iexplore")) { this.session["X-ExchangeType"] = "Internet Explorer"; }
-            else if (this.session.LocalProcess.Contains("chrome")) { this.session["X-ExchangeType"] = "Chrome"; }
-            else if (this.session.LocalProcess.Contains("firefox")) { this.session["X-ExchangeType"] = "Firefox"; }
-            // Everything else.
-            else { this.session["X-ExchangeType"] = "Not Exchange"; }
-
-            /////////////////////////////
-            //
-            // Exchange Type overrides
-            //
-            // First off if the local process is null or blank, then we are analysing traffic from a remote client such as a mobile device.
-            // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
-            // So don't pay any attention to overrides for this type of traffic.
-            if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
-            {
-                // Traffic has a null or blank local process value.
-                this.session["X-ExchangeType"] = "Remote Capture";
-            }
-            else
-            {
-                // With that out of the way,  if the traffic is not related to any of the below processes call it out.
-                // So if for example lync.exe is the process write that to the Exchange Type column.
-                if (!(this.session.LocalProcess.Contains("outlook") ||
-                    this.session.LocalProcess.Contains("searchprotocolhost") ||
-                    this.session.LocalProcess.Contains("iexplore") ||
-                    this.session.LocalProcess.Contains("chrome") ||
-                    this.session.LocalProcess.Contains("firefox") ||
-                    this.session.LocalProcess.Contains("edge") ||
-                    this.session.LocalProcess.Contains("w3wp")))
-                {
-                    // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
-                    { this.session["X-ExchangeType"] = this.session.LocalProcess; }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Used specifically for Authentication sessions.
-        /// Inclusion of '"' may not be compatible with say HTTP 503 response body word split.
-        /// </summary>
-        /// <param name="session"></param>
-        /// <param name="searchTerm"></param>
-        /// <returns>wordCount</returns>
-        public int SearchSessionForWord(Session session, string searchTerm)
-        {
-            this.session = session;
-
-            // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
-            //
-            // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
-            //
-
-            string text = this.session.ToString();
-
-            //Convert the string into an array of words  
-            string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',', '"' }, StringSplitOptions.RemoveEmptyEntries);
-
-            // Create the query. Use ToLowerInvariant to match "data" and "Data"   
-            var matchQuery = from word in source
-                             where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
-                             select word;
-
-            // Count the matches, which executes the query.  
-            int wordCount = matchQuery.Count();
+            if (bAuthColumnCreated) return;
             
-            //MessageBox.Show(this.session.id + " " + searchTerm + " " + wordCount);
-
-            return wordCount;
-        }
-
-        /// <summary>
-        /// Set Authentication column values.
-        /// </summary>
-        /// <param name="session"></param>
-        public void SetAuthentication(Session session)
-        {
-            Boolean OverrideFurtherAuthChecking = false;
-
-            this.session = session;
-
-            // Start by determining if Modern Authentication is enabled in Exchange Online.
-            if (this.session.oRequest["Authorization"] == "Bearer" || this.session.oRequest["Authorization"] == "Basic")
+            if (bExtensionEnabled)
             {
-                // Looking for the following in a response body:
-
-                // x-ms-diagnostics: 4000000;reason="Flighting is not enabled for domain 'user@contoso.com'.";error_category="oauth_not_available"
-
-                int KeywordFourMillion = SearchSessionForWord(this.session, "4000000");
-                int KeywordFlighting = SearchSessionForWord(this.session, "Flighting");
-                int Keywordenabled = SearchSessionForWord(this.session, "enabled");
-                int Keyworddomain = SearchSessionForWord(this.session, "domain");
-                int Keywordoauth_not_available = SearchSessionForWord(this.session, "oauth_not_available");
-
-                // Check if all the above checks have a value of at least 1. 
-                // If they do, then Exchange Online is configured with Modern Authentication disabled.
-                if (KeywordFourMillion > 0 && KeywordFlighting > 0 && Keywordenabled > 0 && Keyworddomain > 0 && Keywordoauth_not_available > 0)
-                {
-                    this.session["X-Authentication"] = "EXO Modern Auth Disabled";
-
-                    this.session["X-AuthenticationDesc"] = Environment.NewLine +
-                        Environment.NewLine +
-                        "Authentication" +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        "Exchange Online has Modern Authentication disabled. " +
-                        "This is not necessarily a bad thing, but something to make note of during troubleshooting." +
-                        Environment.NewLine +
-                        "Do not expect good things to happen with MutiFactor Authentication enabled while Modern Authentication " +
-                        "is disabled in Exchange Online" +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        "Outlook 2010 and older do not support Modern Authentication and by extension MutliFactor Authentication." +
-                        Environment.NewLine +
-                        "Outlook 2013 supports modern authentication with updates and the EnableADAL registry key set to 1." +
-                        Environment.NewLine +
-                        "See https://support.microsoft.com/en-us/help/4041439/modern-authentication-configuration-requirements-for-transition-from-o" +
-                        Environment.NewLine +
-                        "Outlook 2016 or newer. No updates or registry keys needed for Modern Authentication.";
-
-                    // Set the OverrideFurtherAuthChecking to true; EXO Modern Auth Disabled is a more important message in these sessions,
-                    // than Outlook client auth capabilities. Other sessions are expected to show client auth capabilities.
-                    OverrideFurtherAuthChecking = true;
-                    if (bAppLoggingEnabled)
-                    {
-                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " EXO Modern Auth Disabled.");
-                    }
-                }
-                else
-                {
-                    // Do nothing right now.
-                }
-
-                // Now get specific to find out what the client can do.
-                // If the session request header Authorization equals Bearer this is a Modern Auth capable client.
-                if (this.session.oRequest["Authorization"] == "Bearer" && !(OverrideFurtherAuthChecking))
-                {
-                    this.session["X-Authentication"] = "Outlook Modern Auth";
-
-                    this.session["X-AuthenticationDesc"] = Environment.NewLine +
-                        Environment.NewLine +
-                        "Authentication" +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        "Outlook is stating it can do Modern Authentication." +
-                        "Whether it is used or not will depend on whether Modern Authentication is enabled in Exchange Online.";
-
-                    if (bAppLoggingEnabled)
-                    {
-                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Outlook Modern Auth.");
-                    }
-                }
-                // If the session request header Authorization equals Basic this is a Basic Auth capable client.
-                else if (this.session.oRequest["Authorization"] == "Basic" && !(OverrideFurtherAuthChecking))
-                {
-                    this.session["X-Authentication"] = "Outlook Basic Auth";
-
-                    this.session["X-AuthenticationDesc"] = Environment.NewLine +
-                        Environment.NewLine +
-                        "Authentication" +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        "Outlook is stating it can do Basic Authentication." +
-                        "Whether or not Modern Authentication is enabled in Exchange Online this client session will use Basic Authentication." +
-                        Environment.NewLine +
-                        "In all likelihood this is an Outlook 2013 (updated prior to Modern Auth), Outlook 2010 or an older Outlook client, " +
-                        "which does not support Modern Authentication." +
-                        "Do not expect good things to happen with MutiFactor Authentication enabled and this Outlook client";
-
-                    if (bAppLoggingEnabled)
-                    {
-                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Outlook Basic Auth.");
-                    }
-                }
-            }
-            // Now we can check for Authorization headers which contain Bearer or Basic, signifying security tokens are being passed
-            // from the Outlook client to Office 365 for resource access.
-            //
-            // Bearer == Modern Authentication.
-            else if (this.session.oRequest["Authorization"].Contains("Bearer"))
-            {
-                this.session["X-Authentication"] = "Modern Auth Token";
-
-                this.session["X-AuthenticationDesc"] = Environment.NewLine +
-                        Environment.NewLine +
-                        "Authentication" +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        "Outlook accessing resources with a Modern Authentication security token.";
-
-                if (bAppLoggingEnabled)
-                {
-                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Modern Auth Token.");
-                }
-            }
-            // Basic == Basic Authentication.
-            else if (this.session.oRequest["Authorization"].Contains("Basic"))
-            {
-                this.session["X-Authentication"] = "Basic Auth Token";
-
-                this.session["X-AuthenticationDesc"] = Environment.NewLine +
-                    Environment.NewLine +
-                    "Authentication" +
-                    Environment.NewLine +
-                    Environment.NewLine +
-                    "Outlook accessing resources with a Basic Authentication security token.";
-
-                if (bAppLoggingEnabled)
-                {
-                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Basic Auth Token.");
-                }
-            }
-            else
-            {
-                this.session["X-Authentication"] = "--No Auth Headers";
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 140, "X-Authentication");
+                bAuthColumnCreated = true;
             }
         }
 
@@ -444,103 +141,82 @@ namespace EXOFiddlerInspector
 
         public void AutoTamperResponseAfter(Session session)
         {
-            this.session = session;
-
-            /////////////////
-            //
-            // Call the function to populate the session type column on live trace, if the column is enabled.
-            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
-            {
-                this.SetExchangeType(this.session);
-            }
-
-            /////////////////
-            //
-            // Call the function to populate the session type column on live trace, if the column is enabled.
-            if (bResponseServerColumnEnabled && bExtensionEnabled)
-            {
-                this.SetResponseServer(this.session);
-            }
-
-            if (bAuthColumnEnabled && bExtensionEnabled)
-            {
-                this.SetAuthentication(this.session);
-            }
-            /////////////////
-            //
-            // For some reason setting the column ordering when adding the columns did not work.
-            // Adding the ordering here instead does work.
-            // For column ordering to work on disabe/enable it seems neccessary to set ordering here
-            // in reverse order for my preference on column order as I want each to be set to priority 2
-            // so that other standard columns do not get put into the Exchange Online column grouping.
-
-            //FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("#", 0, -1);
-            //FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Result", 1, -1);
-
-            // These get called on each session, seen strange behaviour on reordering on live trace due 
-            // to setting each of these as ordering 2 to ensure column positions regardless of column enabled selections.
-            // Use an if statement to fire these once per Fiddler application session.
-            if (this.session.id == 1)
-            {
-                OrderColumns();
-            }
-
-            
-            
-
-            /*
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Protocol", 5, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host", 6, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("URL", 7, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Body", 8, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Caching", 9, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Content-Type", 10, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", 12, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 13, -1);
-            */
-            //
-            /////////////////
-
-
+            this.AddAllEnabledColumns();
+            this.OrderColumns();
         }
 
         public void OrderColumns()
         {
+            // The below was being used to control only one execution per session.
+            // However on testing it seems like this does need to be run multiple times in IAutoTamper for proper
+            // column ordering.
+            // Further testing on client machine and I see the columns are jumping all over the place.
+            // Throwing an execution limit around the custom columns all being added in column position "2".
+
+            // Column ordering threshold. For some reason we need IAutoTamper AutoTamperResponseAfter to hit this function
+            // more than just once to get consistent column positioning.
+            // Setting a threshold here.
+            int iColumnOrderingThreshold = 5;
+
             if (bExtensionEnabled)
             {
-                // Move the process column further to the left for visibility.
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 2, -1);
+                // Count the columns
+                int iColumnsCount = FiddlerApplication.UI.lvSessions.Columns.Count;
+                
+                // Keep session id and result in the standard location on the left.
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("#", 0, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Result", 1, -1);
+
+                // Set extension added columns here all with a calue of 2 to account for some being enabled.
+                if (bResponseServerColumnEnabled && bExtensionEnabled && iResponseServerColumnOrderCount <= iColumnOrderingThreshold)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
+                    iResponseServerColumnOrderCount++;
+                }
+                if (bXHostIPColumnEnabled && bExtensionEnabled && iXHostIPColumnOrderCount <= iColumnOrderingThreshold)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("HostIP", 2, -1);
+                    iXHostIPColumnOrderCount++;
+                }
+                if (bAuthColumnEnabled && bExtensionEnabled && iAuthColumnOrderCount <= iColumnOrderingThreshold)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Authentication", 2, -1);
+                    iAuthColumnOrderCount++;
+                }
+                if (bExchangeTypeColumnEnabled && bExtensionEnabled && iExchangeTypeColumnOrderCount <= iColumnOrderingThreshold)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 2, -1);
+                    iExchangeTypeColumnOrderCount++;
+                }
+                if (bElapsedTimeColumnEnabled && bExtensionEnabled && iElapsedTimeColumnOrderCount <= iColumnOrderingThreshold)
+                {
+                    FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Elapsed Time", 2, -1);
+                    iElapsedTimeColumnOrderCount++;
+                }
+                
+                // Tack the rest on the end using iColumnsCount to avoid out of bounds errors when some columns are disabled.
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", iColumnsCount -9, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Protocol", iColumnsCount - 8, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host", iColumnsCount - 7, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("URL", iColumnsCount - 6, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Body", iColumnsCount - 5, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Caching", iColumnsCount - 4, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Content-Type", iColumnsCount - 3, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", iColumnsCount - 2, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", iColumnsCount - 1, -1);
             }
+            // If the extension is disabled, return the UI to the defaults.
             else
             {
-                // Since the extension is not enabled return the process column back to its original location.
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 8, -1);
+
+                // Count the columns
+                int iColumnsCount = FiddlerApplication.UI.lvSessions.Columns.Count;
+
+                // Move the process column back to its standard position when extension is not enabled.
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", iColumnsCount - 2, -1);
             }
 
-            if (bExchangeTypeColumnEnabled && bExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 2, -1);
-            }
-
-            if (bAuthColumnEnabled && bExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Authentication", 2, -1);
-            }
-
-            if (bXHostIPColumnEnabled && bExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("X-HostIP", 2, -1);
-            }
-
-            if (bResponseServerColumnEnabled && bExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
-            }
-
-            if (bElapsedTimeColumnEnabled && bExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Elapsed Time", 2, -1);
-            }
+            //bColumnsOrdered = true;
         }
 
         public void OnBeforeReturningError(Session oSession)
@@ -550,103 +226,9 @@ namespace EXOFiddlerInspector
 
         public void OnLoad()
         {
-
-            // We need to through some code to restore vanilla Fiddler configuration.
-            /*
-            bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-
-            // Kill extension if not enabled.
-            if (!(bExtensionEnabled))
-            {
-                // If the Fiddler application preference ExecutionCount exists and has a value, then this
-                // is not a first run scenario. Go ahead and return, extension is not enabled.
-                if (iExecutionCount > 0)
-                {
-                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: ColumnsUI.cs OnLoad Extension Return.");
-                    return;
-                }
-            }
-            */
-            
-            /////////////////
-            /// <remarks>
-            /// Response Time column function is no longer called here. Only in OnLoadSAZ.
-            /// </remarks>
-            /////////////////
-
-            /////////////////
-            /// <remarks>
-            /// Call to function in ColumnsUI.cs to add Server Response column if the menu item is checked and if the extension is enabled.
-            /// </remarks> 
-            /// Refresh variable now to take account of first load code.
-            //bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
-
-            if (bResponseServerColumnEnabled && bExtensionEnabled)
-            {
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs Adding Response Server Column.");
-                EnsureResponseServerColumn();
-            }
-            else
-            {
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs NOT Adding Response Server Column.");
-            }
-            ///
-            /////////////////
-
-            /////////////////
-            /// <remarks>
-            /// Call to function in ColumnsUI.cs to add Exchange Type column if the menu item is checked and if the extension is enabled. 
-            /// </remarks>
-            /// Refresh variable now to take account of first load code.
-            //bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
-            if (bXHostIPColumnEnabled && bExtensionEnabled)
-            {
-
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs Adding X-HostIP Column.");
-                EnsureXHostIPColumn();
-            }
-            else
-            {
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs NOT Adding X-HostIP Column.");
-            }
-            ///
-            /////////////////
-
-            /////////////////
-            /// <remarks>
-            /// Call to function in ColumnsUI.cs to add Exchange Type column if the menu item is checked and if the extension is enabled. 
-            /// </remarks>
-            /// Refresh variable now to take account of first load code.
-            //bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
-            if (bExchangeTypeColumnEnabled)
-            {
-
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs Adding Exchange Type Column.");
-                EnsureExchangeTypeColumn();
-            }
-            else
-            {
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs NOT Adding Exchange Type Column.");
-            }
-            ///
-            /////////////////
-
-            /////////////////
-            /// <remarks>
-            /// Call to function in ColumnsUI.cs to add Authentication column if the menu item is checked and if the extension is enabled. 
-            /// </remarks>
-            if (bAuthColumnEnabled)
-            {
-
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs Adding Auth Column.");
-                EnsureAuthColumn();
-            }
-            else
-            {
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: ColumnsUI.cs NOT Adding Auth Column.");
-            }
-            ///
-            /////////////////
+            this.AddAllEnabledColumns();
+            // Comment out, do not think ordering columns works in OnLoad, needed in IAutoTamper.
+            //this.OrderColumns();
         }
 
         public void OnBeforeUnload()

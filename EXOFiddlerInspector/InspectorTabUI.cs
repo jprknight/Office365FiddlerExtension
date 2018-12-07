@@ -14,14 +14,15 @@ namespace EXOFiddlerInspector
     public class EXOBaseFiddlerInspector : Inspector2
     {
         // These application preferences are actually set in ColouriseWebSessions.cs, pulling them into variables for use here.
-        public bool bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
-        public bool bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ElapsedTimeColumnEnabled", false);
-        public bool bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ResponseServerColumnEnabled", false);
-        public bool bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ExchangeTypeColumnEnabled", false);
-        public bool bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.XHostIPColumnEnabled", false);
-        public bool bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
-        public bool bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
-        public int iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
+        public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
+        public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ElapsedTimeColumnEnabled", false);
+        public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ResponseServerColumnEnabled", false);
+        public Boolean bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ExchangeTypeColumnEnabled", false);
+        public Boolean bXHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.XHostIPColumnEnabled", false);
+        public Boolean bAuthColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AuthColumnEnabled", false);
+        public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", false);
+        public Boolean bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", false);
+        public int iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerExtension.ExecutionCount", 0);
 
         public Boolean Developer;
 
@@ -287,9 +288,9 @@ namespace EXOFiddlerInspector
         public ResponseUserControl _displayControl;
         private HTTPResponseHeaders responseHeaders;
         // Used with Linq word split, looking for particular search terms in response body.
-        private string searchTerm;
+        //private string searchTerm;
 
-        private string RedirectAddress;
+        //private string RedirectAddress;
 
         #region ScoreForSession
         // Double click or hit return with session selected.
@@ -597,9 +598,7 @@ namespace EXOFiddlerInspector
             // Now all the logic is ran in SessionRuleSet.cs.
             // Data for these two textboxes on the inspector tab is now written into session tags.
             _displayControl.SetResponseAlertTextBox(this.session["X-ResponseAlertTextBox"]);
-            _displayControl.SetResponseCommentsRichTextboxText(this.session["X-ResponseCommentsRichTextboxText"] + this.session["X-AuthenticationDesc"]);
-
-            _displayControl.SetAuthTextboxText(this.session["X-Authentication"]);
+            _displayControl.SetResponseCommentsRichTextboxText(this.session["X-ResponseCommentsRichTextboxText"]);
 
         }
         //

@@ -84,8 +84,6 @@
             this.TransmitTimeTextbox = new System.Windows.Forms.TextBox();
             this.TransmitGroupBox = new System.Windows.Forms.GroupBox();
             this.HTTPResponseCodeIDGroupBox = new System.Windows.Forms.GroupBox();
-            this.AuthTextBox = new System.Windows.Forms.TextBox();
-            this.AuthLabel = new System.Windows.Forms.Label();
             this.DeveloperSessionGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -165,7 +163,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 177);
+            this.label1.Location = new System.Drawing.Point(6, 151);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(79, 13);
             this.label1.TabIndex = 20;
@@ -175,7 +173,7 @@
             // ResponseAlertTextBox
             // 
             this.ResponseAlertTextBox.BackColor = System.Drawing.Color.White;
-            this.ResponseAlertTextBox.Location = new System.Drawing.Point(131, 174);
+            this.ResponseAlertTextBox.Location = new System.Drawing.Point(131, 148);
             this.ResponseAlertTextBox.Name = "ResponseAlertTextBox";
             this.ResponseAlertTextBox.ReadOnly = true;
             this.ResponseAlertTextBox.Size = new System.Drawing.Size(278, 20);
@@ -200,7 +198,7 @@
             // ResponseCommentsRichTextBox
             // 
             this.ResponseCommentsRichTextBox.BackColor = System.Drawing.Color.White;
-            this.ResponseCommentsRichTextBox.Location = new System.Drawing.Point(6, 200);
+            this.ResponseCommentsRichTextBox.Location = new System.Drawing.Point(6, 174);
             this.ResponseCommentsRichTextBox.Name = "ResponseCommentsRichTextBox";
             this.ResponseCommentsRichTextBox.ReadOnly = true;
             this.ResponseCommentsRichTextBox.Size = new System.Drawing.Size(403, 125);
@@ -337,9 +335,9 @@
             // 
             // SaveSessionDataButton
             // 
-            this.SaveSessionDataButton.Location = new System.Drawing.Point(287, 331);
+            this.SaveSessionDataButton.Location = new System.Drawing.Point(289, 305);
             this.SaveSessionDataButton.Name = "SaveSessionDataButton";
-            this.SaveSessionDataButton.Size = new System.Drawing.Size(122, 23);
+            this.SaveSessionDataButton.Size = new System.Drawing.Size(120, 23);
             this.SaveSessionDataButton.TabIndex = 44;
             this.SaveSessionDataButton.Text = "Save Session Data";
             this.SaveSessionDataButton.UseVisualStyleBackColor = true;
@@ -384,9 +382,9 @@
             // 
             // OpenSessionData
             // 
-            this.OpenSessionData.Location = new System.Drawing.Point(159, 331);
+            this.OpenSessionData.Location = new System.Drawing.Point(163, 305);
             this.OpenSessionData.Name = "OpenSessionData";
-            this.OpenSessionData.Size = new System.Drawing.Size(122, 23);
+            this.OpenSessionData.Size = new System.Drawing.Size(120, 23);
             this.OpenSessionData.TabIndex = 49;
             this.OpenSessionData.Text = "Open Session Data";
             this.OpenSessionData.UseVisualStyleBackColor = true;
@@ -595,8 +593,6 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.AuthLabel);
-            this.groupBox3.Controls.Add(this.AuthTextBox);
             this.groupBox3.Controls.Add(this.ResponseCommentsRichTextBox);
             this.groupBox3.Controls.Add(this.DataAgeTextBox);
             this.groupBox3.Controls.Add(this.label1);
@@ -614,7 +610,7 @@
             this.groupBox3.Controls.Add(this.ExchangeTypeTextbox);
             this.groupBox3.Location = new System.Drawing.Point(9, 268);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(424, 364);
+            this.groupBox3.Size = new System.Drawing.Size(424, 336);
             this.groupBox3.TabIndex = 73;
             this.groupBox3.TabStop = false;
             // 
@@ -662,22 +658,6 @@
             this.HTTPResponseCodeIDGroupBox.TabIndex = 75;
             this.HTTPResponseCodeIDGroupBox.TabStop = false;
             // 
-            // AuthTextBox
-            // 
-            this.AuthTextBox.Location = new System.Drawing.Point(131, 148);
-            this.AuthTextBox.Name = "AuthTextBox";
-            this.AuthTextBox.Size = new System.Drawing.Size(278, 20);
-            this.AuthTextBox.TabIndex = 76;
-            // 
-            // AuthLabel
-            // 
-            this.AuthLabel.AutoSize = true;
-            this.AuthLabel.Location = new System.Drawing.Point(6, 151);
-            this.AuthLabel.Name = "AuthLabel";
-            this.AuthLabel.Size = new System.Drawing.Size(75, 13);
-            this.AuthLabel.TabIndex = 76;
-            this.AuthLabel.Text = "Authentication";
-            // 
             // ResponseUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -690,7 +670,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.DeveloperSessionGroupBox);
             this.Name = "ResponseUserControl";
-            this.Size = new System.Drawing.Size(847, 642);
+            this.Size = new System.Drawing.Size(847, 611);
             this.Load += new System.EventHandler(this.ResponseUserControl_Load);
             this.DeveloperSessionGroupBox.ResumeLayout(false);
             this.DeveloperSessionGroupBox.PerformLayout();
@@ -765,7 +745,5 @@
         private System.Windows.Forms.Label TransmitLabel;
         private System.Windows.Forms.GroupBox TransmitGroupBox;
         private System.Windows.Forms.GroupBox HTTPResponseCodeIDGroupBox;
-        private System.Windows.Forms.Label AuthLabel;
-        private System.Windows.Forms.TextBox AuthTextBox;
     }
 }
