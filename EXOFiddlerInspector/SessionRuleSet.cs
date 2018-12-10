@@ -1671,7 +1671,10 @@ namespace EXOFiddlerInspector
                         this.session["X-SigningCertificate"] = x509SigningCertificate;
                     }
                 }
-                
+
+                /////////////////////////////
+                //
+                // AttributeNameUPN.
 
                 // Error handling, if we don't have the expected values in the session body, don't do this work.
                 // Avoid null object reference errors at runtime.
@@ -1686,7 +1689,6 @@ namespace EXOFiddlerInspector
                     }
                     else
                     {
-                        // AttributeNameUPN.
                         string AttributeNameUPNSessionBody = this.session.ToString();
                         int AttributeNameUPNStartIndex = AttributeNameUPNSessionBody.IndexOf("&lt;saml:Attribute AttributeName=&quot;UPN");
                         int AttributeNameUPNEndIndex = AttributeNameUPNSessionBody.IndexOf("&lt;/saml:Attribute>");
@@ -1709,6 +1711,9 @@ namespace EXOFiddlerInspector
                     this.session["X-AttributeNameUPNTextBox"] = "Data points not found for AttributeNameUPN";
                 }
 
+                /////////////////////////////
+                //
+                // NameIdentifierFormat.
 
                 if ((this.session.utilFindInResponse("&lt;saml:NameIdentifier Format", false) > 1) &&
                     (this.session.utilFindInResponse("&lt;saml:SubjectConfirmation>", false) > 1))
@@ -1720,7 +1725,6 @@ namespace EXOFiddlerInspector
                     }
                     else
                     {
-                        // NameIdentifierFormat.
                         string NameIdentifierFormatSessionBody = this.session.ToString();
                         int NameIdentifierFormatStartIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:NameIdentifier Format");
                         int NameIdentifierFormatEndIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:SubjectConfirmation>");
@@ -1738,6 +1742,10 @@ namespace EXOFiddlerInspector
                     this.session["X-NameIdentifierFormatTextBox"] = "Data points not found for NameIdentifierFormat";
                 }
 
+                /////////////////////////////
+                //
+                // AttributeNameImmutableID.
+
                 if ((this.session.utilFindInResponse("&lt;saml:NameIdentifier Format", false) > 1) &&
                     (this.session.utilFindInResponse("&lt;saml:SubjectConfirmation>", false) > 1))
                 {
@@ -1749,7 +1757,6 @@ namespace EXOFiddlerInspector
                     }
                     else
                     {
-                        // AttributeNameImmutableID.
                         string AttributeNameImmutableIDSessionBody = this.session.ToString();
                         int AttributeNameImmutableIDStartIndex = AttributeNameImmutableIDSessionBody.IndexOf("AttributeName=&quot;ImmutableID");
                         int AttributeNameImmutibleIDEndIndex = AttributeNameImmutableIDSessionBody.IndexOf("&lt;/saml:AttributeStatement>");
@@ -1786,7 +1793,6 @@ namespace EXOFiddlerInspector
                 this.session["X-Office365AuthType"] = "Office365Auth";
 
                 // Looking for the following in a response body:
-
                 // x-ms-diagnostics: 4000000;reason="Flighting is not enabled for domain 'user@contoso.com'.";error_category="oauth_not_available"
 
                 int KeywordFourMillion = SearchSessionForWord(this.session, "4000000");
