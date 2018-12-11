@@ -21,3 +21,5 @@ To submit issues or suggestions click here: https://github.com/jprknight/EXOFidd
 To download the extension click here: https://github.com/jprknight/EXOFiddlerExtension/releases
 
 Technet Blog: https://blogs.technet.microsoft.com/jeremyknight/2018/10/01/introducing-the-exchange-online-fiddler-extension/
+
+Wordpress (mirror) blog: https://exofiddlerextension.wordpress.com/
