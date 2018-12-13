@@ -17,6 +17,7 @@ namespace EXOFiddlerInspector.Services
         internal Session session { get; set; }
 
         ColumnsUI calledColumnsUI = new ColumnsUI();
+        Preferences calledPreferences = new Preferences();
 
         public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
         public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ElapsedTimeColumnEnabled", false);
@@ -31,6 +32,12 @@ namespace EXOFiddlerInspector.Services
         public async void OnLoad()
         {
             await TelemetryService.InitializeAsync();
+
+            // Set this to false to start in a neutral position.
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
+            // Now work out if we are loading a SAZ file or not.
+            FiddlerApplication.OnLoadSAZ += calledPreferences.MakeLoadSaz;
+
             calledColumnsUI.AddAllEnabledColumns();
             // Comment out, do not think ordering columns works in OnLoad, needed in IAutoTamper.
             //this.OrderColumns();

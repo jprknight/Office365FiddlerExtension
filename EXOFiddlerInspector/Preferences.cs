@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fiddler;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -75,6 +76,13 @@ namespace EXOFiddlerInspector
         public int GetSlowRunningSessionThreshold()
         {
             return SlowRunningSessionThreshold;
+        }
+
+        public void MakeLoadSaz(object sender, FiddlerApplication.ReadSAZEventArgs e)
+        {
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", true);
+            FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.sFileName", e.sFilename);
+            FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.sContext", e.sContext);
         }
     }
 }

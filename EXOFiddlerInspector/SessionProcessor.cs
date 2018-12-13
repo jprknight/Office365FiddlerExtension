@@ -48,8 +48,10 @@ namespace EXOFiddlerInspector
         //
         public void OnLoad()
         {
-            // Set this to false, LoadSaz will set it to true as needed.
+            // Set this to false to start in a neutral position.
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
+            // Now work out if we are loading a SAZ file or not.
+            FiddlerApplication.OnLoadSAZ += calledPreferences.MakeLoadSaz;
 
             calledColumnsUI.AddAllEnabledColumns();
             // Comment out, do not think ordering columns works in OnLoad, needed in IAutoTamper.

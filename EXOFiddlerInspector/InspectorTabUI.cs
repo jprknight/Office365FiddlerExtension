@@ -352,6 +352,8 @@ namespace EXOFiddlerInspector
         // Function which analyses request/response data to provide additional feedback.
         public void SetResponseValues(Session oS)
         {
+            if (!(FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))) return;
+
             Preferences calledPreferences = new Preferences();
 
             // create this.session for use everywhere in code.

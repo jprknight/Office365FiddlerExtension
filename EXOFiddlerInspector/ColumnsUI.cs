@@ -11,6 +11,8 @@ namespace EXOFiddlerInspector
 {
     public class ColumnsUI : IAutoTamper
     {
+        Preferences calledPreferences = new Preferences();
+
         public bool bElapsedTimeColumnCreated = false;
         public bool bResponseServerColumnCreated = false;
         public bool bExchangeTypeColumnCreated = false;
@@ -40,11 +42,14 @@ namespace EXOFiddlerInspector
 
         public void AddAllEnabledColumns()
         {
-            this.EnsureElapsedTimeColumn();
-            this.EnsureResponseServerColumn();
-            this.EnsureHostIPColumn();
-            this.EnsureExchangeTypeColumn();
-            this.EnsureAuthColumn();
+            if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))
+            {
+                this.EnsureElapsedTimeColumn();
+                this.EnsureResponseServerColumn();
+                this.EnsureHostIPColumn();
+                this.EnsureExchangeTypeColumn();
+                this.EnsureAuthColumn();
+            }
         }
 
         /// <summary>
@@ -52,6 +57,8 @@ namespace EXOFiddlerInspector
         /// </summary>
         public void EnsureElapsedTimeColumn()
         {
+            if (!(FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))) return;
+
             Boolean LoadSaz = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
 
             if (bElapsedTimeColumnCreated) return;
@@ -75,6 +82,8 @@ namespace EXOFiddlerInspector
         /// </summary>
         public void EnsureResponseServerColumn()
         {
+            if (!(FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))) return;
+
             if (bResponseServerColumnCreated) return;
             
             if (bResponseServerColumnEnabled && bExtensionEnabled)
@@ -90,6 +99,8 @@ namespace EXOFiddlerInspector
         /// </summary>
         public void EnsureHostIPColumn()
         {
+            if (!(FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))) return;
+
             if (bHostIPColumnCreated) return;
 
             if (bHostIPColumnEnabled && bExtensionEnabled)
@@ -104,6 +115,8 @@ namespace EXOFiddlerInspector
         /// </summary>
         public void EnsureExchangeTypeColumn()
         {
+            if (!(FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))) return;
+
             if (bExchangeTypeColumnCreated) return;
             
             if (bExtensionEnabled)
@@ -115,6 +128,8 @@ namespace EXOFiddlerInspector
 
         public void EnsureAuthColumn()
         {
+            if (!(FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))) return;
+
             if (bAuthColumnCreated) return;
             
             if (bExtensionEnabled)
@@ -158,7 +173,8 @@ namespace EXOFiddlerInspector
             // Setting a threshold here.
             int iColumnOrderingThreshold = 5;
 
-            if (bExtensionEnabled)
+            // 1.0.61 Require LoadSaz for session ordering.
+            if (bExtensionEnabled && FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))
             {
                 // Count the columns
                 int iColumnsCount = FiddlerApplication.UI.lvSessions.Columns.Count;
@@ -226,7 +242,16 @@ namespace EXOFiddlerInspector
 
         public void OnLoad()
         {
-            this.AddAllEnabledColumns();
+            // Set this to false to start in a neutral position.
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
+            // Now work out if we are loading a SAZ file or not.
+            FiddlerApplication.OnLoadSAZ += calledPreferences.MakeLoadSaz;
+
+            if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))
+            {
+                this.AddAllEnabledColumns();
+            }
+
             // Comment out, do not think ordering columns works in OnLoad, needed in IAutoTamper.
             //this.OrderColumns();
         }

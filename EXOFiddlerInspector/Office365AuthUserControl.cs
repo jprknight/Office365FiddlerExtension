@@ -16,21 +16,40 @@ namespace EXOFiddlerInspector
     {
         public string SessionData;
 
-        public bool bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
+        Preferences calledPreferences = new Preferences();
+
+        public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
 
         public Office365AuthUserControl()
         {
-            // If the extension is not enabled, don't build the user controls.
-            if (bExtensionEnabled)
+            // Set this to false to start in a neutral position.
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
+            FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.sFileName", "");
+            FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.sContext", "");
+
+            // Now work out if we are loading a SAZ file or not.
+            // Call a local function MakeLoadSAZ to control whether or not we initialise the user controls.
+            FiddlerApplication.OnLoadSAZ += this.MakeLoadSaz;
+        }
+
+        public void MakeLoadSaz(object sender, FiddlerApplication.ReadSAZEventArgs e)
+        {
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", true);
+            FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.sFileName", e.sFilename);
+            FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.sContext", e.sContext);
+
+            // If the extension is enabled and we got here because we loaded a SAZ file, build the user controls.
+            if (bExtensionEnabled && FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))
             {
                 InitializeComponent();
             }
+            // Otherwise the extension is disbaled, don't build the controls.
             else
             {
                 return;
             }
         }
-
+        
         internal void SetAuthenticationResponseComments(string txt)
         {
             AuthenticationResponseCommentsTextbox.Text = txt;

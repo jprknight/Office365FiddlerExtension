@@ -15,7 +15,7 @@ namespace EXOFiddlerInspector
         internal Session session { get; set; }
 
         ColumnsUI calledColumnsUI = new ColumnsUI();
-
+        Preferences calledPreferences = new Preferences();
         SessionRuleSet calledSessionRuleSet = new SessionRuleSet();
 
         public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
@@ -420,9 +420,10 @@ namespace EXOFiddlerInspector
 
         public void OnLoad()
         {
-            // Make sure to set LoadSAZ to false on each startup.
-            // Will be set to true if the HandleLoadSaz function is called in ColouriseWebSessions.
+            // Set this to false to start in a neutral position.
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
+            // Now work out if we are loading a SAZ file or not.
+            FiddlerApplication.OnLoadSAZ += calledPreferences.MakeLoadSaz;
 
             calledColumnsUI.AddAllEnabledColumns();
             // Comment out, do not think ordering columns works in OnLoad, needed in IAutoTamper.

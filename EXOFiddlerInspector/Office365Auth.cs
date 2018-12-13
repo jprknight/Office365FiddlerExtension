@@ -56,6 +56,8 @@ namespace EXOFiddlerInspector
 
         public void SetOffice365AuthenticationValues(Session session)
         {
+            if (!(FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))) return;
+
             this.session = session;
 
             _Office365AuthUserControl.SetAuthenticationResponseComments(this.session["X-AuthenticationDesc"]);

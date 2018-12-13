@@ -75,6 +75,11 @@ namespace EXOFiddlerInspector
 
         public void OnLoad()
         {
+            // Set this to false to start in a neutral position.
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
+            // Now work out if we are loading a SAZ file or not.
+            FiddlerApplication.OnLoadSAZ += calledPreferences.MakeLoadSaz;
+
             calledColumnsUI.AddAllEnabledColumns();
             // Comment out, do not think ordering columns works in OnLoad, needed in IAutoTamper.
             //this.OrderColumns();
@@ -88,6 +93,9 @@ namespace EXOFiddlerInspector
         //
         public void OnPeekAtResponseHeaders(Session session)
         {
+            // 1.0.61 If bLoadSaz is not true return and prevent this function from running.
+            if (!(FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))) return;
+
             // Developer list is actually set in Preferences.cs.
             List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
             Boolean DeveloperDemoMode = calledPreferences.GetDeveloperMode();
@@ -1378,6 +1386,9 @@ namespace EXOFiddlerInspector
         /// <param name="session"></param>
         public void SetResponseServer(Session session)
         {
+            // 1.0.61 If bLoadSaz is not true return and prevent this function from running.
+            if (!(FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))) return;
+
             this.session = session;
 
             // Populate Response Server on session in order of preference from common to obsure.
@@ -1421,6 +1432,9 @@ namespace EXOFiddlerInspector
         /// <param name="session"></param>
         public void SetExchangeType(Session session)
         {
+            // 1.0.61 If bLoadSaz is not true return and prevent this function from running.
+            if (!(FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))) return;
+
             this.session = session;
 
             // Outlook Connections.
@@ -1548,6 +1562,9 @@ namespace EXOFiddlerInspector
         /// <param name="session"></param>
         public void SetAuthentication(Session session)
         {
+            // 1.0.61 If bLoadSaz is not true return and prevent this function from running.
+            if (!(FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))) return;
+
             Boolean OverrideFurtherAuthChecking = false;
 
             List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
