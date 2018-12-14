@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ResponseUserControl));
             this.HTTPStatusCodeLinkLabel = new System.Windows.Forms.LinkLabel();
             this.HTTPResponseCodeTextBox = new System.Windows.Forms.TextBox();
             this.HTTPStatusDescriptionTextBox = new System.Windows.Forms.TextBox();
@@ -71,25 +72,34 @@
             this.ServerDoneResponseTimeTextbox = new System.Windows.Forms.TextBox();
             this.ServerThinkTimeLabel = new System.Windows.Forms.Label();
             this.ServerThinkTimeTextbox = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.OverallElapsedTimeGroupBox = new System.Windows.Forms.GroupBox();
+            this.ServerThinkTimeGroupBox = new System.Windows.Forms.GroupBox();
             this.ServerBeginResponseLabel = new System.Windows.Forms.Label();
             this.ServerBeginResponseTimeTextbox = new System.Windows.Forms.TextBox();
             this.ServerGotRequestTimeTextbox = new System.Windows.Forms.TextBox();
             this.ServerBeginResponseDateTextbox = new System.Windows.Forms.TextBox();
             this.HostIPLabel = new System.Windows.Forms.Label();
             this.XHostIPTextbox = new System.Windows.Forms.TextBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.OtherSessionDataGroupBox = new System.Windows.Forms.GroupBox();
             this.TransmitLabel = new System.Windows.Forms.Label();
             this.TransmitTimeTextbox = new System.Windows.Forms.TextBox();
-            this.TransmitGroupBox = new System.Windows.Forms.GroupBox();
+            this.TransmitTimeGroupBox = new System.Windows.Forms.GroupBox();
             this.HTTPResponseCodeIDGroupBox = new System.Windows.Forms.GroupBox();
+            this.LiveTraceHelperGroupBox = new System.Windows.Forms.GroupBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.LiveTraceLabel1 = new System.Windows.Forms.Label();
+            this.SessionDataGroupBox = new System.Windows.Forms.GroupBox();
             this.DeveloperSessionGroupBox.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.TransmitGroupBox.SuspendLayout();
+            this.OverallElapsedTimeGroupBox.SuspendLayout();
+            this.ServerThinkTimeGroupBox.SuspendLayout();
+            this.OtherSessionDataGroupBox.SuspendLayout();
+            this.TransmitTimeGroupBox.SuspendLayout();
             this.HTTPResponseCodeIDGroupBox.SuspendLayout();
+            this.LiveTraceHelperGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.SessionDataGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // HTTPStatusCodeLinkLabel
@@ -119,7 +129,7 @@
             this.HTTPStatusDescriptionTextBox.Location = new System.Drawing.Point(161, 13);
             this.HTTPStatusDescriptionTextBox.Name = "HTTPStatusDescriptionTextBox";
             this.HTTPStatusDescriptionTextBox.ReadOnly = true;
-            this.HTTPStatusDescriptionTextBox.Size = new System.Drawing.Size(164, 20);
+            this.HTTPStatusDescriptionTextBox.Size = new System.Drawing.Size(161, 20);
             this.HTTPStatusDescriptionTextBox.TabIndex = 11;
             this.HTTPStatusDescriptionTextBox.TextChanged += new System.EventHandler(this.HTTPStatusDescriptionTextBox_TextChanged);
             // 
@@ -135,10 +145,10 @@
             // ClientRequestBeginTimeTextBox
             // 
             this.ClientRequestBeginTimeTextBox.BackColor = System.Drawing.Color.White;
-            this.ClientRequestBeginTimeTextBox.Location = new System.Drawing.Point(205, 19);
+            this.ClientRequestBeginTimeTextBox.Location = new System.Drawing.Point(212, 19);
             this.ClientRequestBeginTimeTextBox.Name = "ClientRequestBeginTimeTextBox";
             this.ClientRequestBeginTimeTextBox.ReadOnly = true;
-            this.ClientRequestBeginTimeTextBox.Size = new System.Drawing.Size(73, 20);
+            this.ClientRequestBeginTimeTextBox.Size = new System.Drawing.Size(69, 20);
             this.ClientRequestBeginTimeTextBox.TabIndex = 15;
             this.ClientRequestBeginTimeTextBox.TextChanged += new System.EventHandler(this.RequestBeginTimeTextBox_TextChanged);
             // 
@@ -154,10 +164,10 @@
             // ClientRequestEndTimeTextBox
             // 
             this.ClientRequestEndTimeTextBox.BackColor = System.Drawing.Color.White;
-            this.ClientRequestEndTimeTextBox.Location = new System.Drawing.Point(205, 45);
+            this.ClientRequestEndTimeTextBox.Location = new System.Drawing.Point(212, 45);
             this.ClientRequestEndTimeTextBox.Name = "ClientRequestEndTimeTextBox";
             this.ClientRequestEndTimeTextBox.ReadOnly = true;
-            this.ClientRequestEndTimeTextBox.Size = new System.Drawing.Size(73, 20);
+            this.ClientRequestEndTimeTextBox.Size = new System.Drawing.Size(69, 20);
             this.ClientRequestEndTimeTextBox.TabIndex = 17;
             // 
             // label1
@@ -176,14 +186,14 @@
             this.ResponseAlertTextBox.Location = new System.Drawing.Point(131, 148);
             this.ResponseAlertTextBox.Name = "ResponseAlertTextBox";
             this.ResponseAlertTextBox.ReadOnly = true;
-            this.ResponseAlertTextBox.Size = new System.Drawing.Size(278, 20);
+            this.ResponseAlertTextBox.Size = new System.Drawing.Size(275, 20);
             this.ResponseAlertTextBox.TabIndex = 21;
             // 
             // ResponseProcessTextBox
             // 
             this.ResponseProcessTextBox.Location = new System.Drawing.Point(131, 45);
             this.ResponseProcessTextBox.Name = "ResponseProcessTextBox";
-            this.ResponseProcessTextBox.Size = new System.Drawing.Size(278, 20);
+            this.ResponseProcessTextBox.Size = new System.Drawing.Size(275, 20);
             this.ResponseProcessTextBox.TabIndex = 22;
             // 
             // ResponseProcessLabel
@@ -201,7 +211,7 @@
             this.ResponseCommentsRichTextBox.Location = new System.Drawing.Point(6, 174);
             this.ResponseCommentsRichTextBox.Name = "ResponseCommentsRichTextBox";
             this.ResponseCommentsRichTextBox.ReadOnly = true;
-            this.ResponseCommentsRichTextBox.Size = new System.Drawing.Size(403, 125);
+            this.ResponseCommentsRichTextBox.Size = new System.Drawing.Size(400, 102);
             this.ResponseCommentsRichTextBox.TabIndex = 33;
             this.ResponseCommentsRichTextBox.Text = "";
             this.ResponseCommentsRichTextBox.TextChanged += new System.EventHandler(this.ResponseCommentsRichTextBox_TextChanged);
@@ -221,7 +231,7 @@
             this.DataAgeTextBox.Location = new System.Drawing.Point(131, 19);
             this.DataAgeTextBox.Name = "DataAgeTextBox";
             this.DataAgeTextBox.ReadOnly = true;
-            this.DataAgeTextBox.Size = new System.Drawing.Size(278, 20);
+            this.DataAgeTextBox.Size = new System.Drawing.Size(275, 20);
             this.DataAgeTextBox.TabIndex = 27;
             // 
             // ClientRequestBeginDateTextBox
@@ -230,7 +240,7 @@
             this.ClientRequestBeginDateTextBox.Location = new System.Drawing.Point(131, 19);
             this.ClientRequestBeginDateTextBox.Name = "ClientRequestBeginDateTextBox";
             this.ClientRequestBeginDateTextBox.ReadOnly = true;
-            this.ClientRequestBeginDateTextBox.Size = new System.Drawing.Size(68, 20);
+            this.ClientRequestBeginDateTextBox.Size = new System.Drawing.Size(75, 20);
             this.ClientRequestBeginDateTextBox.TabIndex = 31;
             // 
             // ClientRequestEndDateTextBox
@@ -239,7 +249,7 @@
             this.ClientRequestEndDateTextBox.Location = new System.Drawing.Point(131, 45);
             this.ClientRequestEndDateTextBox.Name = "ClientRequestEndDateTextBox";
             this.ClientRequestEndDateTextBox.ReadOnly = true;
-            this.ClientRequestEndDateTextBox.Size = new System.Drawing.Size(68, 20);
+            this.ClientRequestEndDateTextBox.Size = new System.Drawing.Size(75, 20);
             this.ClientRequestEndDateTextBox.TabIndex = 32;
             // 
             // ResponseServerLabel
@@ -257,7 +267,7 @@
             this.ResponseServerTextBox.Location = new System.Drawing.Point(131, 96);
             this.ResponseServerTextBox.Name = "ResponseServerTextBox";
             this.ResponseServerTextBox.ReadOnly = true;
-            this.ResponseServerTextBox.Size = new System.Drawing.Size(278, 20);
+            this.ResponseServerTextBox.Size = new System.Drawing.Size(275, 20);
             this.ResponseServerTextBox.TabIndex = 34;
             this.ResponseServerTextBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
@@ -335,7 +345,7 @@
             // 
             // SaveSessionDataButton
             // 
-            this.SaveSessionDataButton.Location = new System.Drawing.Point(289, 305);
+            this.SaveSessionDataButton.Location = new System.Drawing.Point(286, 282);
             this.SaveSessionDataButton.Name = "SaveSessionDataButton";
             this.SaveSessionDataButton.Size = new System.Drawing.Size(120, 23);
             this.SaveSessionDataButton.TabIndex = 44;
@@ -358,13 +368,13 @@
             this.ExchangeTypeTextbox.Location = new System.Drawing.Point(131, 71);
             this.ExchangeTypeTextbox.Name = "ExchangeTypeTextbox";
             this.ExchangeTypeTextbox.ReadOnly = true;
-            this.ExchangeTypeTextbox.Size = new System.Drawing.Size(278, 20);
+            this.ExchangeTypeTextbox.Size = new System.Drawing.Size(275, 20);
             this.ExchangeTypeTextbox.TabIndex = 46;
             // 
             // SessionIDTextbox
             // 
             this.SessionIDTextbox.BackColor = System.Drawing.Color.White;
-            this.SessionIDTextbox.Location = new System.Drawing.Point(355, 13);
+            this.SessionIDTextbox.Location = new System.Drawing.Point(352, 13);
             this.SessionIDTextbox.Name = "SessionIDTextbox";
             this.SessionIDTextbox.ReadOnly = true;
             this.SessionIDTextbox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -374,7 +384,7 @@
             // SessionIDLabel
             // 
             this.SessionIDLabel.AutoSize = true;
-            this.SessionIDLabel.Location = new System.Drawing.Point(331, 16);
+            this.SessionIDLabel.Location = new System.Drawing.Point(328, 16);
             this.SessionIDLabel.Name = "SessionIDLabel";
             this.SessionIDLabel.Size = new System.Drawing.Size(18, 13);
             this.SessionIDLabel.TabIndex = 48;
@@ -382,7 +392,7 @@
             // 
             // OpenSessionData
             // 
-            this.OpenSessionData.Location = new System.Drawing.Point(163, 305);
+            this.OpenSessionData.Location = new System.Drawing.Point(161, 282);
             this.OpenSessionData.Name = "OpenSessionData";
             this.OpenSessionData.Size = new System.Drawing.Size(120, 23);
             this.OpenSessionData.TabIndex = 49;
@@ -401,7 +411,7 @@
             this.DeveloperSessionGroupBox.Controls.Add(this.ResponseHeadersTextbox);
             this.DeveloperSessionGroupBox.Controls.Add(this.ResponseBodyLabel);
             this.DeveloperSessionGroupBox.Controls.Add(this.ResponseBodyTextbox);
-            this.DeveloperSessionGroupBox.Location = new System.Drawing.Point(439, 8);
+            this.DeveloperSessionGroupBox.Location = new System.Drawing.Point(438, 8);
             this.DeveloperSessionGroupBox.Name = "DeveloperSessionGroupBox";
             this.DeveloperSessionGroupBox.Size = new System.Drawing.Size(397, 295);
             this.DeveloperSessionGroupBox.TabIndex = 54;
@@ -422,7 +432,7 @@
             // ClientDurationLabel
             // 
             this.ClientDurationLabel.AutoSize = true;
-            this.ClientDurationLabel.Location = new System.Drawing.Point(290, 29);
+            this.ClientDurationLabel.Location = new System.Drawing.Point(287, 31);
             this.ClientDurationLabel.Name = "ClientDurationLabel";
             this.ClientDurationLabel.Size = new System.Drawing.Size(45, 26);
             this.ClientDurationLabel.TabIndex = 57;
@@ -431,7 +441,7 @@
             // OverallElapsedTextbox
             // 
             this.OverallElapsedTextbox.BackColor = System.Drawing.Color.White;
-            this.OverallElapsedTextbox.Location = new System.Drawing.Point(341, 31);
+            this.OverallElapsedTextbox.Location = new System.Drawing.Point(338, 31);
             this.OverallElapsedTextbox.Name = "OverallElapsedTextbox";
             this.OverallElapsedTextbox.ReadOnly = true;
             this.OverallElapsedTextbox.Size = new System.Drawing.Size(68, 20);
@@ -445,7 +455,6 @@
             this.ServerGotRequestLabel.Size = new System.Drawing.Size(101, 13);
             this.ServerGotRequestLabel.TabIndex = 59;
             this.ServerGotRequestLabel.Text = "Server Got Request";
-            this.ServerGotRequestLabel.Click += new System.EventHandler(this.ServerGotRequestLabel_Click);
             // 
             // ServerGotRequestDateTextbox
             // 
@@ -491,7 +500,6 @@
             this.ServerThinkTimeLabel.Size = new System.Drawing.Size(38, 39);
             this.ServerThinkTimeLabel.TabIndex = 67;
             this.ServerThinkTimeLabel.Text = "Server\r\nThink\r\nTime";
-            this.ServerThinkTimeLabel.Click += new System.EventHandler(this.ServerResponseDurationLabel_Click);
             // 
             // ServerThinkTimeTextbox
             // 
@@ -499,43 +507,42 @@
             this.ServerThinkTimeTextbox.Location = new System.Drawing.Point(340, 31);
             this.ServerThinkTimeTextbox.Name = "ServerThinkTimeTextbox";
             this.ServerThinkTimeTextbox.ReadOnly = true;
-            this.ServerThinkTimeTextbox.Size = new System.Drawing.Size(69, 20);
+            this.ServerThinkTimeTextbox.Size = new System.Drawing.Size(66, 20);
             this.ServerThinkTimeTextbox.TabIndex = 68;
-            this.ServerThinkTimeTextbox.TextChanged += new System.EventHandler(this.ServerResponseDurationTextbox_TextChanged);
             // 
-            // groupBox1
+            // OverallElapsedTimeGroupBox
             // 
-            this.groupBox1.Controls.Add(this.ClientDurationLabel);
-            this.groupBox1.Controls.Add(this.OverallElapsedTextbox);
-            this.groupBox1.Controls.Add(this.ClientRquestBeginTimeLabel);
-            this.groupBox1.Controls.Add(this.ClientRequestBeginTimeTextBox);
-            this.groupBox1.Controls.Add(this.ClientRequestEndTimelabel);
-            this.groupBox1.Controls.Add(this.ClientRequestEndTimeTextBox);
-            this.groupBox1.Controls.Add(this.ClientRequestBeginDateTextBox);
-            this.groupBox1.Controls.Add(this.ClientRequestEndDateTextBox);
-            this.groupBox1.Location = new System.Drawing.Point(9, 50);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(424, 77);
-            this.groupBox1.TabIndex = 69;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Overall Elapsed Time";
+            this.OverallElapsedTimeGroupBox.Controls.Add(this.ClientDurationLabel);
+            this.OverallElapsedTimeGroupBox.Controls.Add(this.OverallElapsedTextbox);
+            this.OverallElapsedTimeGroupBox.Controls.Add(this.ClientRequestBeginTimeTextBox);
+            this.OverallElapsedTimeGroupBox.Controls.Add(this.ClientRquestBeginTimeLabel);
+            this.OverallElapsedTimeGroupBox.Controls.Add(this.ClientRequestEndTimelabel);
+            this.OverallElapsedTimeGroupBox.Controls.Add(this.ClientRequestEndTimeTextBox);
+            this.OverallElapsedTimeGroupBox.Controls.Add(this.ClientRequestBeginDateTextBox);
+            this.OverallElapsedTimeGroupBox.Controls.Add(this.ClientRequestEndDateTextBox);
+            this.OverallElapsedTimeGroupBox.Location = new System.Drawing.Point(6, 63);
+            this.OverallElapsedTimeGroupBox.Name = "OverallElapsedTimeGroupBox";
+            this.OverallElapsedTimeGroupBox.Size = new System.Drawing.Size(412, 77);
+            this.OverallElapsedTimeGroupBox.TabIndex = 69;
+            this.OverallElapsedTimeGroupBox.TabStop = false;
+            this.OverallElapsedTimeGroupBox.Text = "Overall Elapsed Time";
             // 
-            // groupBox2
+            // ServerThinkTimeGroupBox
             // 
-            this.groupBox2.Controls.Add(this.ServerThinkTimeTextbox);
-            this.groupBox2.Controls.Add(this.ServerBeginResponseLabel);
-            this.groupBox2.Controls.Add(this.ServerBeginResponseTimeTextbox);
-            this.groupBox2.Controls.Add(this.ServerThinkTimeLabel);
-            this.groupBox2.Controls.Add(this.ServerGotRequestTimeTextbox);
-            this.groupBox2.Controls.Add(this.ServerBeginResponseDateTextbox);
-            this.groupBox2.Controls.Add(this.ServerGotRequestDateTextbox);
-            this.groupBox2.Controls.Add(this.ServerGotRequestLabel);
-            this.groupBox2.Location = new System.Drawing.Point(9, 133);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(424, 75);
-            this.groupBox2.TabIndex = 70;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Server Think Time";
+            this.ServerThinkTimeGroupBox.Controls.Add(this.ServerThinkTimeTextbox);
+            this.ServerThinkTimeGroupBox.Controls.Add(this.ServerBeginResponseLabel);
+            this.ServerThinkTimeGroupBox.Controls.Add(this.ServerBeginResponseTimeTextbox);
+            this.ServerThinkTimeGroupBox.Controls.Add(this.ServerThinkTimeLabel);
+            this.ServerThinkTimeGroupBox.Controls.Add(this.ServerGotRequestTimeTextbox);
+            this.ServerThinkTimeGroupBox.Controls.Add(this.ServerBeginResponseDateTextbox);
+            this.ServerThinkTimeGroupBox.Controls.Add(this.ServerGotRequestDateTextbox);
+            this.ServerThinkTimeGroupBox.Controls.Add(this.ServerGotRequestLabel);
+            this.ServerThinkTimeGroupBox.Location = new System.Drawing.Point(6, 146);
+            this.ServerThinkTimeGroupBox.Name = "ServerThinkTimeGroupBox";
+            this.ServerThinkTimeGroupBox.Size = new System.Drawing.Size(412, 75);
+            this.ServerThinkTimeGroupBox.TabIndex = 70;
+            this.ServerThinkTimeGroupBox.TabStop = false;
+            this.ServerThinkTimeGroupBox.Text = "Server Think Time";
             // 
             // ServerBeginResponseLabel
             // 
@@ -563,7 +570,6 @@
             this.ServerGotRequestTimeTextbox.ReadOnly = true;
             this.ServerGotRequestTimeTextbox.Size = new System.Drawing.Size(73, 20);
             this.ServerGotRequestTimeTextbox.TabIndex = 73;
-            this.ServerGotRequestTimeTextbox.TextChanged += new System.EventHandler(this.ServerGotRequestTimeTextbox_TextChanged);
             // 
             // ServerBeginResponseDateTextbox
             // 
@@ -582,37 +588,36 @@
             this.HostIPLabel.Size = new System.Drawing.Size(42, 13);
             this.HostIPLabel.TabIndex = 71;
             this.HostIPLabel.Text = "Host IP";
-            this.HostIPLabel.Click += new System.EventHandler(this.label2_Click);
             // 
             // XHostIPTextbox
             // 
             this.XHostIPTextbox.Location = new System.Drawing.Point(131, 122);
             this.XHostIPTextbox.Name = "XHostIPTextbox";
-            this.XHostIPTextbox.Size = new System.Drawing.Size(278, 20);
+            this.XHostIPTextbox.Size = new System.Drawing.Size(275, 20);
             this.XHostIPTextbox.TabIndex = 72;
             // 
-            // groupBox3
+            // OtherSessionDataGroupBox
             // 
-            this.groupBox3.Controls.Add(this.ResponseCommentsRichTextBox);
-            this.groupBox3.Controls.Add(this.DataAgeTextBox);
-            this.groupBox3.Controls.Add(this.label1);
-            this.groupBox3.Controls.Add(this.ResponseAlertTextBox);
-            this.groupBox3.Controls.Add(this.OpenSessionData);
-            this.groupBox3.Controls.Add(this.ResponseProcessTextBox);
-            this.groupBox3.Controls.Add(this.XHostIPTextbox);
-            this.groupBox3.Controls.Add(this.ResponseProcessLabel);
-            this.groupBox3.Controls.Add(this.SaveSessionDataButton);
-            this.groupBox3.Controls.Add(this.HostIPLabel);
-            this.groupBox3.Controls.Add(this.DataAgeLabel);
-            this.groupBox3.Controls.Add(this.ResponseServerLabel);
-            this.groupBox3.Controls.Add(this.ResponseServerTextBox);
-            this.groupBox3.Controls.Add(this.ExchangeTypeLabel);
-            this.groupBox3.Controls.Add(this.ExchangeTypeTextbox);
-            this.groupBox3.Location = new System.Drawing.Point(9, 268);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(424, 336);
-            this.groupBox3.TabIndex = 73;
-            this.groupBox3.TabStop = false;
+            this.OtherSessionDataGroupBox.Controls.Add(this.ResponseCommentsRichTextBox);
+            this.OtherSessionDataGroupBox.Controls.Add(this.DataAgeTextBox);
+            this.OtherSessionDataGroupBox.Controls.Add(this.label1);
+            this.OtherSessionDataGroupBox.Controls.Add(this.ResponseAlertTextBox);
+            this.OtherSessionDataGroupBox.Controls.Add(this.OpenSessionData);
+            this.OtherSessionDataGroupBox.Controls.Add(this.ResponseProcessTextBox);
+            this.OtherSessionDataGroupBox.Controls.Add(this.XHostIPTextbox);
+            this.OtherSessionDataGroupBox.Controls.Add(this.ResponseProcessLabel);
+            this.OtherSessionDataGroupBox.Controls.Add(this.SaveSessionDataButton);
+            this.OtherSessionDataGroupBox.Controls.Add(this.HostIPLabel);
+            this.OtherSessionDataGroupBox.Controls.Add(this.DataAgeLabel);
+            this.OtherSessionDataGroupBox.Controls.Add(this.ResponseServerLabel);
+            this.OtherSessionDataGroupBox.Controls.Add(this.ResponseServerTextBox);
+            this.OtherSessionDataGroupBox.Controls.Add(this.ExchangeTypeLabel);
+            this.OtherSessionDataGroupBox.Controls.Add(this.ExchangeTypeTextbox);
+            this.OtherSessionDataGroupBox.Location = new System.Drawing.Point(6, 281);
+            this.OtherSessionDataGroupBox.Name = "OtherSessionDataGroupBox";
+            this.OtherSessionDataGroupBox.Size = new System.Drawing.Size(412, 314);
+            this.OtherSessionDataGroupBox.TabIndex = 73;
+            this.OtherSessionDataGroupBox.TabStop = false;
             // 
             // TransmitLabel
             // 
@@ -622,28 +627,27 @@
             this.TransmitLabel.Size = new System.Drawing.Size(47, 26);
             this.TransmitLabel.TabIndex = 74;
             this.TransmitLabel.Text = "Transmit\r\nTime";
-            this.TransmitLabel.Click += new System.EventHandler(this.TransmitLabel_Click);
             // 
             // TransmitTimeTextbox
             // 
             this.TransmitTimeTextbox.Location = new System.Drawing.Point(340, 19);
             this.TransmitTimeTextbox.Name = "TransmitTimeTextbox";
-            this.TransmitTimeTextbox.Size = new System.Drawing.Size(69, 20);
+            this.TransmitTimeTextbox.Size = new System.Drawing.Size(66, 20);
             this.TransmitTimeTextbox.TabIndex = 74;
             // 
-            // TransmitGroupBox
+            // TransmitTimeGroupBox
             // 
-            this.TransmitGroupBox.Controls.Add(this.TransmitTimeTextbox);
-            this.TransmitGroupBox.Controls.Add(this.ServerDoneResponseDateTextbox);
-            this.TransmitGroupBox.Controls.Add(this.ServerDoneResponseTimeTextbox);
-            this.TransmitGroupBox.Controls.Add(this.TransmitLabel);
-            this.TransmitGroupBox.Controls.Add(this.ServerDoneResponseLabel);
-            this.TransmitGroupBox.Location = new System.Drawing.Point(9, 214);
-            this.TransmitGroupBox.Name = "TransmitGroupBox";
-            this.TransmitGroupBox.Size = new System.Drawing.Size(424, 48);
-            this.TransmitGroupBox.TabIndex = 74;
-            this.TransmitGroupBox.TabStop = false;
-            this.TransmitGroupBox.Text = "Transmit Time Back to Client App";
+            this.TransmitTimeGroupBox.Controls.Add(this.TransmitTimeTextbox);
+            this.TransmitTimeGroupBox.Controls.Add(this.ServerDoneResponseDateTextbox);
+            this.TransmitTimeGroupBox.Controls.Add(this.ServerDoneResponseTimeTextbox);
+            this.TransmitTimeGroupBox.Controls.Add(this.TransmitLabel);
+            this.TransmitTimeGroupBox.Controls.Add(this.ServerDoneResponseLabel);
+            this.TransmitTimeGroupBox.Location = new System.Drawing.Point(6, 227);
+            this.TransmitTimeGroupBox.Name = "TransmitTimeGroupBox";
+            this.TransmitTimeGroupBox.Size = new System.Drawing.Size(412, 48);
+            this.TransmitTimeGroupBox.TabIndex = 74;
+            this.TransmitTimeGroupBox.TabStop = false;
+            this.TransmitTimeGroupBox.Text = "Transmit Time Back to Client App";
             // 
             // HTTPResponseCodeIDGroupBox
             // 
@@ -652,38 +656,96 @@
             this.HTTPResponseCodeIDGroupBox.Controls.Add(this.HTTPStatusDescriptionTextBox);
             this.HTTPResponseCodeIDGroupBox.Controls.Add(this.SessionIDTextbox);
             this.HTTPResponseCodeIDGroupBox.Controls.Add(this.SessionIDLabel);
-            this.HTTPResponseCodeIDGroupBox.Location = new System.Drawing.Point(9, 3);
+            this.HTTPResponseCodeIDGroupBox.Location = new System.Drawing.Point(6, 16);
             this.HTTPResponseCodeIDGroupBox.Name = "HTTPResponseCodeIDGroupBox";
-            this.HTTPResponseCodeIDGroupBox.Size = new System.Drawing.Size(424, 41);
+            this.HTTPResponseCodeIDGroupBox.Size = new System.Drawing.Size(412, 41);
             this.HTTPResponseCodeIDGroupBox.TabIndex = 75;
             this.HTTPResponseCodeIDGroupBox.TabStop = false;
+            // 
+            // LiveTraceHelperGroupBox
+            // 
+            this.LiveTraceHelperGroupBox.Controls.Add(this.pictureBox2);
+            this.LiveTraceHelperGroupBox.Controls.Add(this.pictureBox1);
+            this.LiveTraceHelperGroupBox.Controls.Add(this.LiveTraceLabel1);
+            this.LiveTraceHelperGroupBox.Location = new System.Drawing.Point(8, 8);
+            this.LiveTraceHelperGroupBox.Name = "LiveTraceHelperGroupBox";
+            this.LiveTraceHelperGroupBox.Size = new System.Drawing.Size(424, 601);
+            this.LiveTraceHelperGroupBox.TabIndex = 76;
+            this.LiveTraceHelperGroupBox.TabStop = false;
+            this.LiveTraceHelperGroupBox.Text = "Live Trace";
+            this.LiveTraceHelperGroupBox.VisibleChanged += new System.EventHandler(this.LiveTraceHelperGroupBox_VisibleChanged);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(9, 388);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(207, 207);
+            this.pictureBox2.TabIndex = 2;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(9, 140);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(382, 242);
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            // 
+            // LiveTraceLabel1
+            // 
+            this.LiveTraceLabel1.AutoSize = true;
+            this.LiveTraceLabel1.Location = new System.Drawing.Point(6, 16);
+            this.LiveTraceLabel1.Name = "LiveTraceLabel1";
+            this.LiveTraceLabel1.Size = new System.Drawing.Size(288, 117);
+            this.LiveTraceLabel1.TabIndex = 0;
+            this.LiveTraceLabel1.Text = resources.GetString("LiveTraceLabel1.Text");
+            // 
+            // SessionDataGroupBox
+            // 
+            this.SessionDataGroupBox.Controls.Add(this.HTTPResponseCodeIDGroupBox);
+            this.SessionDataGroupBox.Controls.Add(this.OverallElapsedTimeGroupBox);
+            this.SessionDataGroupBox.Controls.Add(this.OtherSessionDataGroupBox);
+            this.SessionDataGroupBox.Controls.Add(this.TransmitTimeGroupBox);
+            this.SessionDataGroupBox.Controls.Add(this.ServerThinkTimeGroupBox);
+            this.SessionDataGroupBox.Location = new System.Drawing.Point(841, 8);
+            this.SessionDataGroupBox.Name = "SessionDataGroupBox";
+            this.SessionDataGroupBox.Size = new System.Drawing.Size(424, 601);
+            this.SessionDataGroupBox.TabIndex = 77;
+            this.SessionDataGroupBox.TabStop = false;
+            this.SessionDataGroupBox.Text = "Load Saz Archive";
+            this.SessionDataGroupBox.Visible = false;
+            this.SessionDataGroupBox.VisibleChanged += new System.EventHandler(this.SessionDataGroupBox_VisibleChanged);
             // 
             // ResponseUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.Controls.Add(this.HTTPResponseCodeIDGroupBox);
-            this.Controls.Add(this.TransmitGroupBox);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.SessionDataGroupBox);
+            this.Controls.Add(this.LiveTraceHelperGroupBox);
             this.Controls.Add(this.DeveloperSessionGroupBox);
             this.Name = "ResponseUserControl";
-            this.Size = new System.Drawing.Size(847, 611);
+            this.Size = new System.Drawing.Size(1273, 616);
             this.Load += new System.EventHandler(this.ResponseUserControl_Load);
             this.DeveloperSessionGroupBox.ResumeLayout(false);
             this.DeveloperSessionGroupBox.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.TransmitGroupBox.ResumeLayout(false);
-            this.TransmitGroupBox.PerformLayout();
+            this.OverallElapsedTimeGroupBox.ResumeLayout(false);
+            this.OverallElapsedTimeGroupBox.PerformLayout();
+            this.ServerThinkTimeGroupBox.ResumeLayout(false);
+            this.ServerThinkTimeGroupBox.PerformLayout();
+            this.OtherSessionDataGroupBox.ResumeLayout(false);
+            this.OtherSessionDataGroupBox.PerformLayout();
+            this.TransmitTimeGroupBox.ResumeLayout(false);
+            this.TransmitTimeGroupBox.PerformLayout();
             this.HTTPResponseCodeIDGroupBox.ResumeLayout(false);
             this.HTTPResponseCodeIDGroupBox.PerformLayout();
+            this.LiveTraceHelperGroupBox.ResumeLayout(false);
+            this.LiveTraceHelperGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.SessionDataGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -732,18 +794,23 @@
         private System.Windows.Forms.TextBox ServerDoneResponseTimeTextbox;
         private System.Windows.Forms.Label ServerThinkTimeLabel;
         private System.Windows.Forms.TextBox ServerThinkTimeTextbox;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox OverallElapsedTimeGroupBox;
+        private System.Windows.Forms.GroupBox ServerThinkTimeGroupBox;
         private System.Windows.Forms.Label HostIPLabel;
         private System.Windows.Forms.TextBox XHostIPTextbox;
         private System.Windows.Forms.TextBox ServerGotRequestTimeTextbox;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox OtherSessionDataGroupBox;
         private System.Windows.Forms.Label ServerBeginResponseLabel;
         private System.Windows.Forms.TextBox ServerBeginResponseTimeTextbox;
         private System.Windows.Forms.TextBox ServerBeginResponseDateTextbox;
         private System.Windows.Forms.TextBox TransmitTimeTextbox;
         private System.Windows.Forms.Label TransmitLabel;
-        private System.Windows.Forms.GroupBox TransmitGroupBox;
+        private System.Windows.Forms.GroupBox TransmitTimeGroupBox;
         private System.Windows.Forms.GroupBox HTTPResponseCodeIDGroupBox;
+        private System.Windows.Forms.GroupBox LiveTraceHelperGroupBox;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label LiveTraceLabel1;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.GroupBox SessionDataGroupBox;
     }
 }

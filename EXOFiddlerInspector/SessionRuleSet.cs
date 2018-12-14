@@ -94,7 +94,8 @@ namespace EXOFiddlerInspector
         public void OnPeekAtResponseHeaders(Session session)
         {
             // 1.0.61 If bLoadSaz is not true return and prevent this function from running.
-            if (!(FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))) return;
+            // 1.0.62 Allow colourisation of session on a live trace.
+            //if (!(FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))) return;
 
             // Developer list is actually set in Preferences.cs.
             List<string> calledDeveloperList = calledPreferences.GetDeveloperList();

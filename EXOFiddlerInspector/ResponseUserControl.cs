@@ -29,7 +29,11 @@ namespace EXOFiddlerInspector
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
             FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.sFileName", "");
             FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.sContext", "");
-
+            if (bExtensionEnabled)
+            {
+                InitializeComponent();
+            }
+            
             // Now work out if we are loading a SAZ file or not.
             // Call a local function MakeLoadSAZ to control whether or not we initialise the user controls.
             FiddlerApplication.OnLoadSAZ += this.MakeLoadSaz;
@@ -40,17 +44,10 @@ namespace EXOFiddlerInspector
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", true);
             FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.sFileName", e.sFilename);
             FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.sContext", e.sContext);
+            
+            LiveTraceHelperGroupBox.Visible = false;
 
-            // If the extension is enabled and we got here because we loaded a SAZ file, build the user controls.
-            if (bExtensionEnabled)
-            {
-                InitializeComponent();
-            }
-            // Otherwise the extension is disbaled, don't build the controls.
-            else
-            {
-                return;
-            }
+            SessionDataGroupBox.Visible = true;
         }
 
         private void ResponseUserControl_Load(object sender, EventArgs e)
@@ -570,39 +567,33 @@ namespace EXOFiddlerInspector
             MessageBox.Show("Removed extensions.EXOFiddlerInspector Prefs.");
         }
 
-        private void ServerResponseDurationTextbox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ServerGotRequestLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ServerGotRequestTimeTextbox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ServerResponseDurationLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TransmitLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
         public static implicit operator ResponseUserControl(Office365AuthUserControl v)
         {
             throw new NotImplementedException();
+        }
+
+        private void LiveTraceHelperGroupBox_VisibleChanged(object sender, EventArgs e)
+        {
+            if (LiveTraceHelperGroupBox.Visible == true)
+            {
+                LiveTraceHelperGroupBox.Location = new Point(8, 8);
+            }
+            else
+            {
+                LiveTraceHelperGroupBox.Location = new Point(8, 841);
+            }
+        }
+
+        private void SessionDataGroupBox_VisibleChanged(object sender, EventArgs e)
+        {
+            if (SessionDataGroupBox.Visible == true)
+            {
+                SessionDataGroupBox.Location = new Point(8, 8);
+            }
+            else
+            {
+                SessionDataGroupBox.Location = new Point(8, 841);
+            }
         }
     }
 }

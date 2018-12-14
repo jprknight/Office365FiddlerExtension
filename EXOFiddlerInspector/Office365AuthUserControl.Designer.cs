@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Office365AuthUserControl));
             this.SAMLResponseParserGroupbox = new System.Windows.Forms.GroupBox();
             this.SaveSigningCertificateButton = new System.Windows.Forms.Button();
             this.OpenSigningCertificateButton = new System.Windows.Forms.Button();
@@ -42,9 +43,16 @@
             this.AuthenticationResponseCommentsTextbox = new System.Windows.Forms.TextBox();
             this.SigningCertificateGroupbox = new System.Windows.Forms.GroupBox();
             this.SigningCertificateTextbox = new System.Windows.Forms.TextBox();
+            this.LiveTraceHelperGroupBox = new System.Windows.Forms.GroupBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.LiveTraceLabel1 = new System.Windows.Forms.Label();
             this.SAMLResponseParserGroupbox.SuspendLayout();
             this.Office365AuthenticationGroupbox.SuspendLayout();
             this.SigningCertificateGroupbox.SuspendLayout();
+            this.LiveTraceHelperGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // SAMLResponseParserGroupbox
@@ -57,7 +65,7 @@
             this.SAMLResponseParserGroupbox.Controls.Add(this.AttributeNameUPNTextBox);
             this.SAMLResponseParserGroupbox.Controls.Add(this.OpenSAMLDataButton);
             this.SAMLResponseParserGroupbox.Controls.Add(this.IssuerTextBox);
-            this.SAMLResponseParserGroupbox.Location = new System.Drawing.Point(3, 244);
+            this.SAMLResponseParserGroupbox.Location = new System.Drawing.Point(868, 251);
             this.SAMLResponseParserGroupbox.Name = "SAMLResponseParserGroupbox";
             this.SAMLResponseParserGroupbox.Size = new System.Drawing.Size(424, 323);
             this.SAMLResponseParserGroupbox.TabIndex = 0;
@@ -150,9 +158,9 @@
             // 
             this.Office365AuthenticationGroupbox.Controls.Add(this.label1);
             this.Office365AuthenticationGroupbox.Controls.Add(this.AuthenticationResponseCommentsTextbox);
-            this.Office365AuthenticationGroupbox.Location = new System.Drawing.Point(3, 3);
+            this.Office365AuthenticationGroupbox.Location = new System.Drawing.Point(868, 8);
             this.Office365AuthenticationGroupbox.Name = "Office365AuthenticationGroupbox";
-            this.Office365AuthenticationGroupbox.Size = new System.Drawing.Size(424, 207);
+            this.Office365AuthenticationGroupbox.Size = new System.Drawing.Size(424, 235);
             this.Office365AuthenticationGroupbox.TabIndex = 1;
             this.Office365AuthenticationGroupbox.TabStop = false;
             this.Office365AuthenticationGroupbox.Text = "Office365 Authentication";
@@ -161,7 +169,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 171);
+            this.label1.Location = new System.Drawing.Point(5, 206);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(412, 26);
@@ -183,7 +191,7 @@
             // SigningCertificateGroupbox
             // 
             this.SigningCertificateGroupbox.Controls.Add(this.SigningCertificateTextbox);
-            this.SigningCertificateGroupbox.Location = new System.Drawing.Point(433, 3);
+            this.SigningCertificateGroupbox.Location = new System.Drawing.Point(438, 8);
             this.SigningCertificateGroupbox.Name = "SigningCertificateGroupbox";
             this.SigningCertificateGroupbox.Size = new System.Drawing.Size(424, 248);
             this.SigningCertificateGroupbox.TabIndex = 2;
@@ -199,21 +207,66 @@
             this.SigningCertificateTextbox.Size = new System.Drawing.Size(412, 218);
             this.SigningCertificateTextbox.TabIndex = 0;
             // 
+            // LiveTraceHelperGroupBox
+            // 
+            this.LiveTraceHelperGroupBox.Controls.Add(this.pictureBox2);
+            this.LiveTraceHelperGroupBox.Controls.Add(this.pictureBox1);
+            this.LiveTraceHelperGroupBox.Controls.Add(this.LiveTraceLabel1);
+            this.LiveTraceHelperGroupBox.Location = new System.Drawing.Point(8, 8);
+            this.LiveTraceHelperGroupBox.Name = "LiveTraceHelperGroupBox";
+            this.LiveTraceHelperGroupBox.Size = new System.Drawing.Size(424, 601);
+            this.LiveTraceHelperGroupBox.TabIndex = 77;
+            this.LiveTraceHelperGroupBox.TabStop = false;
+            this.LiveTraceHelperGroupBox.Text = "Live Trace";
+            this.LiveTraceHelperGroupBox.VisibleChanged += new System.EventHandler(this.LiveTraceHelperGroupBox_VisibleChanged);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(9, 388);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(207, 207);
+            this.pictureBox2.TabIndex = 2;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(9, 140);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(382, 242);
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            // 
+            // LiveTraceLabel1
+            // 
+            this.LiveTraceLabel1.AutoSize = true;
+            this.LiveTraceLabel1.Location = new System.Drawing.Point(6, 16);
+            this.LiveTraceLabel1.Name = "LiveTraceLabel1";
+            this.LiveTraceLabel1.Size = new System.Drawing.Size(288, 117);
+            this.LiveTraceLabel1.TabIndex = 0;
+            this.LiveTraceLabel1.Text = resources.GetString("LiveTraceLabel1.Text");
+            // 
             // Office365AuthUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.LiveTraceHelperGroupBox);
             this.Controls.Add(this.SigningCertificateGroupbox);
             this.Controls.Add(this.SAMLResponseParserGroupbox);
             this.Controls.Add(this.Office365AuthenticationGroupbox);
             this.Name = "Office365AuthUserControl";
-            this.Size = new System.Drawing.Size(869, 577);
+            this.Size = new System.Drawing.Size(1307, 620);
             this.SAMLResponseParserGroupbox.ResumeLayout(false);
             this.SAMLResponseParserGroupbox.PerformLayout();
             this.Office365AuthenticationGroupbox.ResumeLayout(false);
             this.Office365AuthenticationGroupbox.PerformLayout();
             this.SigningCertificateGroupbox.ResumeLayout(false);
             this.SigningCertificateGroupbox.PerformLayout();
+            this.LiveTraceHelperGroupBox.ResumeLayout(false);
+            this.LiveTraceHelperGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -234,5 +287,9 @@
         private System.Windows.Forms.Button OpenSigningCertificateButton;
         private System.Windows.Forms.Button SaveSigningCertificateButton;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.GroupBox LiveTraceHelperGroupBox;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label LiveTraceLabel1;
     }
 }
