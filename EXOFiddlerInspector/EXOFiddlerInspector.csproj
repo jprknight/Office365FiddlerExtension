@@ -52,20 +52,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Office365Auth.cs" />
-    <Compile Include="Office365AuthUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Office365AuthUserControl.Designer.cs">
-      <DependentUpon>Office365AuthUserControl.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Inspectors\EXOResponseInspector.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="CheckForAppUpdate.cs" />
     <Compile Include="SessionProcessor.cs" />
     <Compile Include="ColumnsUI.cs" />
-    <Compile Include="InspectorTabUI.cs" />
+    <Compile Include="Inspectors\EXOInspector.cs" />
     <Compile Include="MenuUI.cs" />
-    <Compile Include="Preferences.cs" />
+    <Compile Include="Services\Preferences.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -77,17 +71,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="RequestUserControl.cs">
+    <Compile Include="UI\EXOResponseControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="RequestUserControl.Designer.cs">
-      <DependentUpon>RequestUserControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ResponseUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ResponseUserControl.Designer.cs">
-      <DependentUpon>ResponseUserControl.cs</DependentUpon>
+    <Compile Include="UI\EXOResponseControl.Designer.cs">
+      <DependentUpon>EXOResponseControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\TelemetryService.cs" />
     <Compile Include="SessionRuleSet.cs" />
@@ -97,14 +85,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="RequestUserControl.resx">
-      <DependentUpon>RequestUserControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ResponseUserControl.resx">
-      <DependentUpon>ResponseUserControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Office365AuthUserControl.resx">
-      <DependentUpon>Office365AuthUserControl.cs</DependentUpon>
+    <EmbeddedResource Include="UI\EXOResponseControl.resx">
+      <DependentUpon>EXOResponseControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

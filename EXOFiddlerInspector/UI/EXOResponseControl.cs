@@ -15,7 +15,7 @@ using Fiddler;
 
 namespace EXOFiddlerInspector
 {
-    public partial class ResponseUserControl : UserControl
+    public partial class EXOResponseControl : UserControl
     {
         public string SessionData;
 
@@ -23,7 +23,7 @@ namespace EXOFiddlerInspector
 
         //private DebugConsole DevConsole;
 
-        public ResponseUserControl()
+        public EXOResponseControl()
         {
             // If the extension is not enabled, don't build the user controls.
             if (bExtensionEnabled)
@@ -39,17 +39,9 @@ namespace EXOFiddlerInspector
         private void ResponseUserControl_Load(object sender, EventArgs e)
         {
 
-            /////////////////////////////
-            //
-            // Before we go ahead and run the add tab code work out if 
-            // the user is a developer or not.
-
-            // Developer list is actually set in Preferences.cs.
-            Preferences calledPreferences = new Preferences();
-            List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
-
+           
             // Based on the above set the Boolean Developer for use through the rest of the code.
-            if (calledDeveloperList.Any(Environment.UserName.Contains))
+            if (Preferences.GetDeveloperMode())
             {
                 Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: Developer mode {Environment.UserName} on {Environment.MachineName}.");
                 DeveloperSessionGroupBox.Visible = true;
@@ -62,188 +54,79 @@ namespace EXOFiddlerInspector
 
         }
 
-        // Code to write to ResponseProcessTextBox.Text value.
-        internal void SetResponseProcessTextBox(string txt)
-        {
-            ResponseProcessTextBox.Text = txt;
-        }
+        public TextBox ResponseProcessTextbox { get { return this.ResponseProcessTextBox; } }
 
-        // Code to write to HTTPResponseCodeTextBox.Text value.
-        internal void SetHTTPResponseCodeTextBoxText(string txt)
-        {
-            HTTPResponseCodeTextBox.Text = txt;
-        }
+        public TextBox HTTPResponseCodeTextbox { get { return this.HTTPResponseCodeTextBox; } }
+      
+        public TextBox HTTPStatusDescriptionTextbox { get { return this.HTTPStatusDescriptionTextBox; } }
 
-        // Code to write to HTTPStatusDescriptionTextBox.Text value.
-        internal void SetHTTPStatusDescriptionTextBox(string txt)
-        {
-            HTTPStatusDescriptionTextBox.Text = txt;
-        }
+        public TextBox ClientRequestBeginTimeTextbox { get { return this.ClientRequestBeginTimeTextBox; } }
 
-        // Code to write to ClientRequestBeginTimeTextBox.Text value.
-        internal void SetClientRequestBeginTimeTextBox(string txt)
-        {
-            ClientRequestBeginTimeTextBox.Text = txt;
-        }
+        public TextBox ClientRequestBeginDateTextbox { get { return this.ClientRequestBeginDateTextBox; } }
 
-        // Code to write to ClientRequestBeginDateTextBox.Text value.
-        internal void SetClientRequestBeginDateTextBox(string txt)
-        {
-            ClientRequestBeginDateTextBox.Text = txt;
-        }
+        public TextBox ClientRequestEndTimeTextbox { get { return this.ClientRequestEndTimeTextBox; } }
 
-        // Code to write to ClientRequestEndTimeTextBox.Text value.
-        internal void SetClientRequestEndTimeTextBox(string txt)
-        {
-            ClientRequestEndTimeTextBox.Text = txt;
-        }
+        public TextBox ClientRequestEndDateTextbox { get { return this.ClientRequestEndDateTextBox; } }
 
-        // Code to write to ClientRequestEndDateTextBox.Text value.
-        internal void SetClientRequestEndDateTextBox(string txt)
-        {
-            ClientRequestEndDateTextBox.Text = txt;
-        }
+        public TextBox ServerGotRequestDateTextBox { get { return this.ServerGotRequestDateTextbox; } }
 
-        // Code to write to ServerGotRequestDateTextbox.Text value.
-        internal void SetServerGotRequestDateTextbox(string txt)
-        {
-            ServerGotRequestDateTextbox.Text = txt;
-        }
+        public TextBox ServerGotRequestTimeTextBox { get { return this.ServerGotRequestTimeTextbox; } }
 
-        // Code to write to ServerGotRequestTimeTextbox.Text value.
-        internal void SetServerGotRequestTimeTextbox(string txt)
-        {
-            ServerGotRequestTimeTextbox.Text = txt;
-        }
+        public TextBox ServerBeginResponseDateTextBox { get { return this.ServerBeginResponseDateTextbox; } }
 
-        // Code to write to ServerBeginResponseDateTextbox.Text value.
-        internal void SetServerBeginResponseDateTextbox(string txt)
-        {
-            ServerBeginResponseDateTextbox.Text = txt;
-        }
+        public TextBox ServerBeginResponseTimeTextBox { get { return this.ServerBeginResponseTimeTextbox; } }
 
-        // Code to write to ServerBeginResponseTimeTextbox.Text value.
-        internal void SetServerBeginResponseTimeTextbox(string txt)
-        {
-            ServerBeginResponseTimeTextbox.Text = txt;
-        }
+        public TextBox ServerDoneResponseDateTextBox { get { return this.ServerDoneResponseDateTextbox; } }
+
+        public TextBox ServerDoneResponseTimeTextBox { get { return this.ServerDoneResponseTimeTextbox; } }
+
+        public TextBox OverallElapsedTextBox { get { return this.OverallElapsedTextbox; } }
+
+        public TextBox ServerThinkTimeTextBox { get { return this.ServerThinkTimeTextbox; } }
+
+        public TextBox TransmitTimeTextBox { get { return this.TransmitTimeTextbox; } }
+
+        public TextBox ResponseAlertTextbox { get { return this.ResponseAlertTextBox; } }
+
+        public RichTextBox ResponseCommentsRichTextbox { get { return this.ResponseCommentsRichTextBox; } }
+
+        public TextBox DataAgeTextbox { get { return this.DataAgeTextBox; } }
+
+        public TextBox ResponseServerTexbox { get { return this.ResponseServerTextBox; } }
+
+        public TextBox RequestHeadersTextbox { get { return this.RequestHeadersTextBox; } }
+
+        public TextBox RequestBodyTextBox { get { return this.RequestBodyTextbox; } }
+
+        public TextBox ResponseHeadersTextBox { get { return this.ResponseHeadersTextbox; } }
+
+        public TextBox ResponseBodyTextBox { get { return this.ResponseBodyTextbox; } }
+
+        public TextBox ExchangeTypeTextBox { get { return this.ExchangeTypeTextbox; } }
+
+        public TextBox SessionIDTextBox { get { return this.SessionIDTextbox; } }
+
+        public TextBox XHostIPTextBox { get { return this.XHostIPTextbox; } }
 
 
-        // Code to write to ServerDoneResponseDateTextbox.Text value.
-        internal void SetServerDoneResponseDateTextbox(string txt)
-        {
-            ServerDoneResponseDateTextbox.Text = txt;
-        }
-
-        // Code to write to ServerDoneResponseTimeTextbox.Text value.
-        internal void SetServerDoneResponseTimeTextbox(string txt)
-        {
-            ServerDoneResponseTimeTextbox.Text = txt;
-        }
-
-        // Code to write to ClientBeginRequestDoneResponseDurationTextbox.Text value.
-        internal void SetOverallElapsedTextbox(string txt)
-        {
-            OverallElapsedTextbox.Text = txt;
-        }
-
-        // Code to write to ServerBeginRequestDoneResponseDurationTextbox.Text value.
-        internal void SetServerThinkTimeTextbox(string txt)
-        {
-            ServerThinkTimeTextbox.Text = txt;
-        }
-
-        internal void SetTransmitTimeTextbox(string txt)
-        {
-            TransmitTimeTextbox.Text = txt;
-        }
-
-        // Code to write to ResponseAlertTextBox.Text value.
-        internal void SetResponseAlertTextBox(string txt)
-        {
-            ResponseAlertTextBox.Text = txt;
-        }
-
-        // Code to write to ResponseCommentsTextBox.Text value.
-        internal void SetResponseCommentsRichTextboxText(string txt)
-        {
-            ResponseCommentsRichTextBox.Text = txt;
-        }
-
-        // Code to write to ResponseAlertTextBox.Text value.
-        internal void SetDataAgeTextBox(string txt)
-        {
-            DataAgeTextBox.Text = txt;
-        }
-
-        // Code to write to ResponseServerTextBox.Text value.
-        internal void SetResponseServerTextBoxText(string txt)
-        {
-            ResponseServerTextBox.Text = txt;
-        }
-
-        // Code to write to RequestHeadersTextBox.Text value.
-        internal void SetRequestHeadersTextBoxText(string txt)
-        {
-            RequestHeadersTextBox.Text = txt;
-        }
-
-        // Code to write to RequestBodyTextBox.Text value.
-        internal void SetRequestBodyTextBoxText(string txt)
-        {
-            RequestBodyTextbox.Text = txt;
-        }
-
-        // Code to write to ResponseHeadersTextBox.Text value.
-        internal void SetResponseHeadersTextBoxText(string txt)
-        {
-            ResponseHeadersTextbox.Text = txt;
-        }
-
-        // Code to write to RequestBodyTextBox.Text value.
-        internal void SetResponseBodyTextBoxText(string txt)
-        {
-            ResponseBodyTextbox.Text = txt;
-        }
-
-        // Code to write to ExchangeTypeTextBox.Text value.
-        internal void SetExchangeTypeTextBoxText(string txt)
-        {
-            ExchangeTypeTextbox.Text = txt;
-        }
-
-        // Code to write to SessionIDTextBox.Text value.
-        internal void SetSessionIDTextBoxText(string txt)
-        {
-            SessionIDTextbox.Text = txt;
-        }
-
-        // Code to write to XHostIP textbox.Text value.
-        internal void SetXHostIPTextBoxText(string txt)
-        {
-            XHostIPTextbox.Text = txt;
-        }
-
-        private void HTTPStatusCodeLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private async void HTTPStatusCodeLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {
-                VisitLink();
+                await Task.Run(() =>
+                {
+                   // Change the color of the link text by setting LinkVisited   
+                   // to true.  
+                   HTTPStatusCodeLinkLabel.LinkVisited = true;
+                   //Call the Process.Start method to open the default browser   
+                   //with a URL:  
+                   System.Diagnostics.Process.Start(Properties.Settings.Default.HTTPStatusCodesURL);
+                });
             }
             catch (Exception)
             {
                 MessageBox.Show("Unable to open link that was clicked.");
             }
-        }
-
-        private void VisitLink()
-        {
-            // Change the color of the link text by setting LinkVisited   
-            // to true.  
-            HTTPStatusCodeLinkLabel.LinkVisited = true;
-            //Call the Process.Start method to open the default browser   
-            //with a URL:  
-            System.Diagnostics.Process.Start(Properties.Settings.Default.HTTPStatusCodesURL);
         }
 
         private async void HTTPResponseCodeTextBox_TextChanged(object sender, EventArgs e)
@@ -397,56 +280,6 @@ namespace EXOFiddlerInspector
             }
         }
 
-        private void ResponseCommentLabel_Click(object sender, EventArgs e)
-        {
-            // Do nothing.
-        }
-
-        private void ProcessTextBox_TextChanged(object sender, EventArgs e)
-        {
-            // Do nothing.
-        }
-
-        private void HTTPStatusDescriptionTextBox_TextChanged(object sender, EventArgs e)
-        {
-            // Do nothing.
-        }
-
-        private void RequestBeginTimeTextBox_TextChanged(object sender, EventArgs e)
-        {
-            // Do nothing.
-        }
-
-        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
-            // Do nothing.
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-            // Do nothing.
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-            // Do nothing.
-        }
-
-        private void ElapsedTimeComemntTextBox_TextChanged(object sender, EventArgs e)
-        {
-            // Do nothing.
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            // Do nothing.
-        }
-
-        private void ResponseCommentsRichTextBox_TextChanged(object sender, EventArgs e)
-        {
-            // Do nothing.
-        }
-
         private void WriteSessionData()
         {
             // Put all the data together to be sent to text file.
@@ -529,11 +362,6 @@ namespace EXOFiddlerInspector
             System.Diagnostics.Process.Start(Environment.GetEnvironmentVariable("temp") + "\\FiddlerTrace - SessionID - " + SessionIDTextbox.Text + " - HTTP - " + HTTPResponseCodeTextBox.Text + ".txt");
         }
 
-        private void DeveloperControlsLabel_Click(object sender, EventArgs e)
-        {
-            // Do nothing.
-        }
-
         private void RemoveAllAppPrefsButton_Click(object sender, EventArgs e)
         {
             FiddlerApplication.Prefs.RemovePref("extensions.EXOFiddlerExtension.enabled");
@@ -553,39 +381,9 @@ namespace EXOFiddlerInspector
             MessageBox.Show("Removed extensions.EXOFiddlerInspector Prefs.");
         }
 
-        private void ServerResponseDurationTextbox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ServerGotRequestLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ServerGotRequestTimeTextbox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ServerResponseDurationLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TransmitLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        public static implicit operator ResponseUserControl(Office365AuthUserControl v)
-        {
-            throw new NotImplementedException();
-        }
+        //public static implicit operator ResponseUserControl(Office365AuthUserControl v)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

@@ -39,11 +39,7 @@ namespace EXOFiddlerInspector.Services
         /// <returns>Bool</returns>
         public static async Task InitializeAsync()
         {
-            Preferences calledPreferences = new Preferences();
-
-            List<string> devs = calledPreferences.GetDeveloperList();
-
-            if (devs.Any(Environment.UserName.Contains))
+            if (Preferences.IsDeveloper())
             {
                 return;
             }

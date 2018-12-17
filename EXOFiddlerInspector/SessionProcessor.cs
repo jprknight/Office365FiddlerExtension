@@ -6,120 +6,29 @@ using System.Xml;
 using System.Net;
 using System.Collections.Generic;
 using System.Diagnostics;
+using EXOFiddlerInspector.Services;
 
 namespace EXOFiddlerInspector
 {
-    /// <summary>
-    /// SessionProcessor containing:
-    /// -- OnLoad
-    /// -- HandleLoadSaz
-    /// </summary>
-    public class SessionProcessor : IAutoTamper    // Ensure class is public, or Fiddler won't see it!
+    public class SessionProcessor : ActivationService
     {
-        /// <summary>
-        /// References to other classes.
-        /// </summary>
-        MenuUI calledMenuUI = new MenuUI();
-        ColumnsUI calledColumnsUI = new ColumnsUI();
-        // Developer list is actually set in Preferences.cs.
-        Preferences calledPreferences = new Preferences();
-        SessionRuleSet calledSessionRuleSet = new SessionRuleSet();
-        ///
-        /////////////////
-
-        internal Session session { get; set; }
-
-        public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
-        public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ElapsedTimeColumnEnabled", false);
-        public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ResponseServerColumnEnabled", false);
-        public Boolean bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ExchangeTypeColumnEnabled", false);
-        public Boolean bHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HostIPColumnEnabled", false);
-        public Boolean bAuthColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AuthColumnEnabled", false);
-        public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", false);
-        public Boolean bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", false);
-        public int iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerExtension.ExecutionCount", 0);
-
-        /////////////////
-
-        #region OnLoad
-        /////////////////
-        //
-        // OnLoad
-        //
-        public void OnLoad()
+        public SessionProcessor()
         {
-            // Set this to false, LoadSaz will set it to true as needed.
+            //Setting to false by default.
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
 
-            calledColumnsUI.AddAllEnabledColumns();
-            // Comment out, do not think ordering columns works in OnLoad, needed in IAutoTamper.
-            //this.OrderColumns();
-
-            // Check if this is the first run of the extension and if so hight up all features.
-            calledMenuUI.FirstRunEnableMenuOptions();
-
-            // Check for update. Do this first as we alter the Exchange Online menu title according to
-            // whether an update is available.
-            // -- Still running into issues with checking for an update on live trace.
-            // -- This could be due my system proxy changing on my corp machine.
-            // -- Disabling this for now.
-            //CheckForAppUpdate calledCheckForAppUpdate = new CheckForAppUpdate();
-            //calledCheckForAppUpdate.CheckForUpdate();
-
-            // Developer list is actually set in Preferences.cs.
-            List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
-            Boolean DeveloperDemoMode = calledPreferences.GetDeveloperMode();
-            Boolean DeveloperDemoModeBreakScenarios = calledPreferences.GetDeveloperDemoModeBreakScenarios();
-
-            /////////////////
-            // Make sure that even if these are mistakenly left on from debugging, production users are not impacted.
-            if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
-            {
-                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.DemoMode", true);
-            }
-            else if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == false)
-            {
-                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.DemoMode", false);
-            }
-
-            if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoModeBreakScenarios == true)
-            {
-                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.DemoModeBreakScenarios", true);
-            }
-            else if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoModeBreakScenarios == false)
-            {
-                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.DemoModeBreakScenarios", false);
-            }
-            ///
-            /////////////////
-
-            /////////////////
-            // Throw a message box to alert demo mode is running.
-            if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
-            {
-                MessageBox.Show("Developer / Demo mode is running!");
-            }
-            //
-            /////////////////
-
-            /////////////////
             // Call function to start LoadSAZ if enabled.
-            if (bExtensionEnabled)
+            if (Preferences.ExtensionEnabled)
             {
                 FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
             }
             // If not enabled call the function to order columns (restore process column back to position 8).
             else
             {
-                calledColumnsUI.OrderColumns();
+                ColumnsUI.Instance.OrderColumns();
             }
-            //
-            /////////////////
         }
-        //
-        /////////////////
-        #endregion
-
+      
         #region LoadSAZ
         /////////////////
         // 
@@ -129,8 +38,8 @@ namespace EXOFiddlerInspector
         {
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", true);
 
-            calledColumnsUI.AddAllEnabledColumns();
-            calledColumnsUI.OrderColumns();
+            ColumnsUI.Instance.AddAllEnabledColumns();
+            ColumnsUI.Instance.OrderColumns();
 
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
@@ -138,7 +47,7 @@ namespace EXOFiddlerInspector
             {
 
                 // Populate the ElapsedTime column on load SAZ, if the column is enabled, and the extension is enabled.
-                if (bElapsedTimeColumnEnabled)
+                if (Preferences.ElapsedTimeColumnEnabled)
                 {
                     if (session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") == "0:00:00.000" || session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") == "0:00:00.000")
                     {
@@ -169,27 +78,27 @@ namespace EXOFiddlerInspector
                 }
 
                 // Populate the ExchangeType column on load SAZ, if the column is enabled, and the extension is enabled
-                if (bExchangeTypeColumnEnabled && bExtensionEnabled)
+                if (Preferences.ExchangeTypeColumnEnabled && Preferences.ExtensionEnabled)
                 {
-                    calledSessionRuleSet.SetExchangeType(session);
+                    SessionRuleSet.Instance.SetExchangeType(session);
                 }
 
                 // Populate the ResponseServer column on load SAZ, if the column is enabled, and the extension is enabled
-                if (bResponseServerColumnEnabled && bExtensionEnabled)
+                if (Preferences.ResponseServerColumnEnabled && Preferences.ExtensionEnabled)
                 {
-                    calledSessionRuleSet.SetResponseServer(session);
+                    SessionRuleSet.Instance.SetResponseServer(session);
                 }
 
                 // Populate the Authentication column on load SAZ, if the column is enabled, and the extension is enabled
-                if (bAuthColumnEnabled && bExtensionEnabled)
+                if (Preferences.AuthColumnEnabled && Preferences.ExtensionEnabled)
                 {
-                    calledSessionRuleSet.SetAuthentication(session);
+                    SessionRuleSet.Instance.SetAuthentication(session);
                 }
 
-                if (bExtensionEnabled)
+                if (Preferences.ExtensionEnabled)
                 {
                     // Colourise sessions on load SAZ.
-                    calledSessionRuleSet.OnPeekAtResponseHeaders(session); //Run whatever function you use in IAutoTamper
+                    SessionRuleSet.Instance.OnPeekAtResponseHeaders(session); //Run whatever function you use in IAutoTamper
                     session.RefreshUI();
                 }
             }
@@ -215,8 +124,8 @@ namespace EXOFiddlerInspector
         {
             this.session = session;
 
-            calledColumnsUI.AddAllEnabledColumns();
-            calledColumnsUI.OrderColumns();
+            ColumnsUI.Instance.AddAllEnabledColumns();
+            ColumnsUI.Instance.OrderColumns();
 
             /////////////////
             //
@@ -225,9 +134,9 @@ namespace EXOFiddlerInspector
             // Making sure this is called after SetExchangeType and SetResponseServer, so we can use overrides
             // in OnPeekAtResponseHeaders function.
             //
-            if (bExtensionEnabled)
+            if (Preferences.ExtensionEnabled)
             {
-                calledSessionRuleSet.OnPeekAtResponseHeaders(session);
+                SessionRuleSet.Instance.OnPeekAtResponseHeaders(session);
                 session.RefreshUI();
             }            
         }

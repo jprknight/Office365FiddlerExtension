@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Fiddler;
 using System.Xml;
 using System.Diagnostics;
+using EXOFiddlerInspector.Services;
 
 namespace EXOFiddlerInspector
 {
@@ -11,7 +12,7 @@ namespace EXOFiddlerInspector
         public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
         public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", false);
 
-        Preferences calledPreferences = new Preferences();
+       
 
         /////////////////
         //
@@ -77,7 +78,6 @@ namespace EXOFiddlerInspector
             /// Update available.
             /// </remarks>
             /// 
-            Boolean DeveloperDemoMode = calledPreferences.GetDeveloperMode();
 
             if (applicationVersion.CompareTo(newVersion) < 0)
             {
@@ -158,7 +158,7 @@ namespace EXOFiddlerInspector
             /// <remarks>
             /// If DeveloperDemoMode set the menu title regardless of the availability of an update.
             /// </remarks>
-            if (DeveloperDemoMode)
+            if (Preferences.GetDeveloperMode())
             {
                 FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.MenuTitle", "Exchange Online (Update Available!)");
             }

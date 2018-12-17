@@ -1,6 +1,6 @@
 ﻿namespace EXOFiddlerInspector
 {
-    partial class ResponseUserControl
+    partial class EXOResponseControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -121,7 +121,6 @@
             this.HTTPStatusDescriptionTextBox.ReadOnly = true;
             this.HTTPStatusDescriptionTextBox.Size = new System.Drawing.Size(164, 20);
             this.HTTPStatusDescriptionTextBox.TabIndex = 11;
-            this.HTTPStatusDescriptionTextBox.TextChanged += new System.EventHandler(this.HTTPStatusDescriptionTextBox_TextChanged);
             // 
             // ClientRquestBeginTimeLabel
             // 
@@ -140,7 +139,6 @@
             this.ClientRequestBeginTimeTextBox.ReadOnly = true;
             this.ClientRequestBeginTimeTextBox.Size = new System.Drawing.Size(73, 20);
             this.ClientRequestBeginTimeTextBox.TabIndex = 15;
-            this.ClientRequestBeginTimeTextBox.TextChanged += new System.EventHandler(this.RequestBeginTimeTextBox_TextChanged);
             // 
             // ClientRequestEndTimelabel
             // 
@@ -168,7 +166,6 @@
             this.label1.Size = new System.Drawing.Size(79, 13);
             this.label1.TabIndex = 20;
             this.label1.Text = "Response Alert";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // ResponseAlertTextBox
             // 
@@ -204,7 +201,6 @@
             this.ResponseCommentsRichTextBox.Size = new System.Drawing.Size(403, 125);
             this.ResponseCommentsRichTextBox.TabIndex = 33;
             this.ResponseCommentsRichTextBox.Text = "";
-            this.ResponseCommentsRichTextBox.TextChanged += new System.EventHandler(this.ResponseCommentsRichTextBox_TextChanged);
             // 
             // DataAgeLabel
             // 
@@ -259,7 +255,6 @@
             this.ResponseServerTextBox.ReadOnly = true;
             this.ResponseServerTextBox.Size = new System.Drawing.Size(278, 20);
             this.ResponseServerTextBox.TabIndex = 34;
-            this.ResponseServerTextBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // RequestHeadersTextBox
             // 
@@ -445,7 +440,6 @@
             this.ServerGotRequestLabel.Size = new System.Drawing.Size(101, 13);
             this.ServerGotRequestLabel.TabIndex = 59;
             this.ServerGotRequestLabel.Text = "Server Got Request";
-            this.ServerGotRequestLabel.Click += new System.EventHandler(this.ServerGotRequestLabel_Click);
             // 
             // ServerGotRequestDateTextbox
             // 
@@ -491,7 +485,6 @@
             this.ServerThinkTimeLabel.Size = new System.Drawing.Size(38, 39);
             this.ServerThinkTimeLabel.TabIndex = 67;
             this.ServerThinkTimeLabel.Text = "Server\r\nThink\r\nTime";
-            this.ServerThinkTimeLabel.Click += new System.EventHandler(this.ServerResponseDurationLabel_Click);
             // 
             // ServerThinkTimeTextbox
             // 
@@ -501,7 +494,6 @@
             this.ServerThinkTimeTextbox.ReadOnly = true;
             this.ServerThinkTimeTextbox.Size = new System.Drawing.Size(69, 20);
             this.ServerThinkTimeTextbox.TabIndex = 68;
-            this.ServerThinkTimeTextbox.TextChanged += new System.EventHandler(this.ServerResponseDurationTextbox_TextChanged);
             // 
             // groupBox1
             // 
@@ -563,7 +555,6 @@
             this.ServerGotRequestTimeTextbox.ReadOnly = true;
             this.ServerGotRequestTimeTextbox.Size = new System.Drawing.Size(73, 20);
             this.ServerGotRequestTimeTextbox.TabIndex = 73;
-            this.ServerGotRequestTimeTextbox.TextChanged += new System.EventHandler(this.ServerGotRequestTimeTextbox_TextChanged);
             // 
             // ServerBeginResponseDateTextbox
             // 
@@ -582,7 +573,6 @@
             this.HostIPLabel.Size = new System.Drawing.Size(42, 13);
             this.HostIPLabel.TabIndex = 71;
             this.HostIPLabel.Text = "Host IP";
-            this.HostIPLabel.Click += new System.EventHandler(this.label2_Click);
             // 
             // XHostIPTextbox
             // 
@@ -622,7 +612,6 @@
             this.TransmitLabel.Size = new System.Drawing.Size(47, 26);
             this.TransmitLabel.TabIndex = 74;
             this.TransmitLabel.Text = "Transmit\r\nTime";
-            this.TransmitLabel.Click += new System.EventHandler(this.TransmitLabel_Click);
             // 
             // TransmitTimeTextbox
             // 

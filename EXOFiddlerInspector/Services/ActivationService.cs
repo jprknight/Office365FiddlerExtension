@@ -6,34 +6,32 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace EXOFiddlerInspector.Services
 {
     /// <summary>
     /// Global application initializer.
     /// </summary>
-    public partial class ActivationService : IAutoTamper
+    public abstract class ActivationService : IAutoTamper
     {
         internal Session session { get; set; }
-
-        ColumnsUI calledColumnsUI = new ColumnsUI();
-
-        public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
-        public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ElapsedTimeColumnEnabled", false);
-        public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ResponseServerColumnEnabled", false);
-        public Boolean bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ExchangeTypeColumnEnabled", false);
-        public Boolean bHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HostIPColumnEnabled", false);
-        public Boolean bAuthColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AuthColumnEnabled", false);
-        public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", false);
-        public Boolean bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", false);
-        public int iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerExtension.ExecutionCount", 0);
-
+      
+        /// <summary>
+        /// This should be consider the main constructor for the app.
+        /// </summary>
         public async void OnLoad()
         {
             await TelemetryService.InitializeAsync();
-            calledColumnsUI.AddAllEnabledColumns();
-            // Comment out, do not think ordering columns works in OnLoad, needed in IAutoTamper.
-            //this.OrderColumns();
+
+            MenuUI.Instance.FirstRunEnableMenuOptions();
+            
+            // Throw a message box to alert demo mode is running.
+            if (Preferences.GetDeveloperMode())
+            {
+                MessageBox.Show("Developer / Demo mode is running!");
+            }
+
         }
 
         public async void OnBeforeUnload()
@@ -47,8 +45,26 @@ namespace EXOFiddlerInspector.Services
 
         public void AutoTamperResponseAfter(Session oSession)
         {
-            calledColumnsUI.AddAllEnabledColumns();
-            calledColumnsUI.OrderColumns();
+            ColumnsUI.Instance.AddAllEnabledColumns();
+            ColumnsUI.Instance.OrderColumns();
+
+            // Call the function to populate the session type column on live trace, if the column is enabled.
+            if (Preferences.ExchangeTypeColumnEnabled && Preferences.ExtensionEnabled)
+            {
+                SessionRuleSet.Instance.SetExchangeType(this.session);
+            }
+
+            // Call the function to populate the session type column on live trace, if the column is enabled.
+            if (Preferences.ResponseServerColumnEnabled && Preferences.ExtensionEnabled)
+            {
+                SessionRuleSet.Instance.SetResponseServer(this.session);
+            }
+
+            // Call the function to populate the Authentication column on live trace, if the column is enabled.
+            if (Preferences.AuthColumnEnabled && Preferences.ExtensionEnabled)
+            {
+                SessionRuleSet.Instance.SetAuthentication(this.session);
+            }
         }
 
         public void AutoTamperResponseBefore(Session session) { }
