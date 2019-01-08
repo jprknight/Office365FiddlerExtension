@@ -881,15 +881,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:EXO Fiddler Extension"
-        "ProductCode" = "8:{E6CDF347-E2FC-49E7-8224-50ADAD7EECCF}"
-        "PackageCode" = "8:{A68BE820-2F70-4A3A-8366-4A3ECC4D0BC3}"
+        "ProductCode" = "8:{F4635744-2219-49EB-A828-3080D8C1F313}"
+        "PackageCode" = "8:{B01A0EB9-C7CB-4DCF-9B3C-B31E7F22F2CA}"
         "UpgradeCode" = "8:{D1B9286E-21B9-4E30-BEF9-AED7C0C470E9}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.60"
+        "ProductVersion" = "8:1.0.63"
         "Manufacturer" = "8:Jeremy Knight"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1403,7 +1403,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_44F141B41B0542CA80798E4D5882B18F"
             {
-            "SourcePath" = "8:..\\EXOFiddlerInspector\\obj\\Debug\\EXOFiddlerInspector.dll"
+            "SourcePath" = "8:..\\EXOFiddlerInspector\\obj\\Release\\EXOFiddlerInspector.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D68FE51768B244EDB276B8C9BCA5C72A"
@@ -1431,7 +1431,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E71C85D89A2D4368ABD07DB99D41696D"
             {
-            "SourcePath" = "8:..\\EXOFiddlerInspector\\obj\\Debug\\EXOFiddlerInspector.dll"
+            "SourcePath" = "8:..\\EXOFiddlerInspector\\obj\\Release\\EXOFiddlerInspector.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_3588A0D640C54E9AA347B32A0E5CD1AC"

@@ -6,32 +6,41 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace EXOFiddlerInspector.Services
 {
     /// <summary>
     /// Global application initializer.
     /// </summary>
-    public abstract class ActivationService : IAutoTamper
+    public partial class ActivationService : IAutoTamper
     {
         internal Session session { get; set; }
-      
-        /// <summary>
-        /// This should be consider the main constructor for the app.
-        /// </summary>
+
+        ColumnsUI calledColumnsUI = new ColumnsUI();
+        Preferences calledPreferences = new Preferences();
+
+        public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
+        public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ElapsedTimeColumnEnabled", false);
+        public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ResponseServerColumnEnabled", false);
+        public Boolean bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ExchangeTypeColumnEnabled", false);
+        public Boolean bHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HostIPColumnEnabled", false);
+        public Boolean bAuthColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AuthColumnEnabled", false);
+        public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", false);
+        public Boolean bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", false);
+        public int iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerExtension.ExecutionCount", 0);
+
         public async void OnLoad()
         {
             await TelemetryService.InitializeAsync();
 
-            MenuUI.Instance.FirstRunEnableMenuOptions();
-            
-            // Throw a message box to alert demo mode is running.
-            if (Preferences.GetDeveloperMode())
-            {
-                MessageBox.Show("Developer / Demo mode is running!");
-            }
+            // Set this to false to start in a neutral position.
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
+            // Now work out if we are loading a SAZ file or not.
+            FiddlerApplication.OnLoadSAZ += calledPreferences.MakeLoadSaz;
 
+            calledColumnsUI.AddAllEnabledColumns();
+            // Comment out, do not think ordering columns works in OnLoad, needed in IAutoTamper.
+            //this.OrderColumns();
         }
 
         public async void OnBeforeUnload()
@@ -45,26 +54,8 @@ namespace EXOFiddlerInspector.Services
 
         public void AutoTamperResponseAfter(Session oSession)
         {
-            ColumnsUI.Instance.AddAllEnabledColumns();
-            ColumnsUI.Instance.OrderColumns();
-
-            // Call the function to populate the session type column on live trace, if the column is enabled.
-            if (Preferences.ExchangeTypeColumnEnabled && Preferences.ExtensionEnabled)
-            {
-                SessionRuleSet.Instance.SetExchangeType(this.session);
-            }
-
-            // Call the function to populate the session type column on live trace, if the column is enabled.
-            if (Preferences.ResponseServerColumnEnabled && Preferences.ExtensionEnabled)
-            {
-                SessionRuleSet.Instance.SetResponseServer(this.session);
-            }
-
-            // Call the function to populate the Authentication column on live trace, if the column is enabled.
-            if (Preferences.AuthColumnEnabled && Preferences.ExtensionEnabled)
-            {
-                SessionRuleSet.Instance.SetAuthentication(this.session);
-            }
+            calledColumnsUI.AddAllEnabledColumns();
+            calledColumnsUI.OrderColumns();
         }
 
         public void AutoTamperResponseBefore(Session session) { }

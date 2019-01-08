@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using EXOFiddlerInspector.Services;
 using Fiddler;
 
 namespace EXOFiddlerInspector
@@ -13,16 +12,13 @@ namespace EXOFiddlerInspector
     /// SessionRuleSet class. All extension session logic lives here.
     /// Anything which involves extensive logic for session values the extension uses should live here.
     /// </summary>
-    public class SessionRuleSet : ActivationService
+    public class SessionRuleSet : IAutoTamper
     {
-        private static SessionRuleSet _instance;
+        // References to other classes.
+        //MenuUI calledMenuUI = new MenuUI();
+        ColumnsUI calledColumnsUI = new ColumnsUI();
+        Preferences calledPreferences = new Preferences();
 
-        public static SessionRuleSet Instance => _instance ?? (_instance = new SessionRuleSet());
-
-        public SessionRuleSet()
-        {
-
-        }
         internal Session session { get; set; }
 
         private string searchTerm;
@@ -31,10 +27,81 @@ namespace EXOFiddlerInspector
         private int HTTP200FreeBusy;
         private int FalsePositive;
 
+        public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
+        public Boolean bElapsedTimeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ElapsedTimeColumnEnabled", false);
+        public Boolean bResponseServerColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ResponseServerColumnEnabled", false);
+        public Boolean bExchangeTypeColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ExchangeTypeColumnEnabled", false);
+        public Boolean bHostIPColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HostIPColumnEnabled", false);
+        public Boolean bAuthColumnEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AuthColumnEnabled", false);
+        public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", false);
+        public Boolean bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", false);
+        public int iExecutionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerExtension.ExecutionCount", 0);
 
-       
+        public void AutoTamperRequestAfter(Session oSession)
+        {
+            // Not used here.
+            //throw new NotImplementedException();
+        }
+
+        public void AutoTamperRequestBefore(Session oSession)
+        {
+            // Not used here.
+            //throw new NotImplementedException();
+        }
+
+        public void AutoTamperResponseAfter(Session session)
+        {
+            calledColumnsUI.AddAllEnabledColumns();
+            calledColumnsUI.OrderColumns();
+        }
+
+        public void AutoTamperResponseBefore(Session oSession)
+        {
+            // Not used here.
+            //throw new NotImplementedException();
+        }
+
+        public void OnBeforeReturningError(Session oSession)
+        {
+            // Not used here.
+            //throw new NotImplementedException();
+        }
+
+        public void OnBeforeUnload()
+        {
+            // Not used here.
+            //throw new NotImplementedException();
+        }
+
+        public void OnLoad()
+        {
+            // Set this to false to start in a neutral position.
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
+            // Now work out if we are loading a SAZ file or not.
+            FiddlerApplication.OnLoadSAZ += calledPreferences.MakeLoadSaz;
+
+            calledColumnsUI.AddAllEnabledColumns();
+            // Comment out, do not think ordering columns works in OnLoad, needed in IAutoTamper.
+            //this.OrderColumns();
+            // Not used here.
+            //throw new NotImplementedException();
+        }
+
+        /////////////////////////////
+        //
+        // Function where all session colourisation happens.
+        //
         public void OnPeekAtResponseHeaders(Session session)
-        {           
+        {
+            // 1.0.61 If bLoadSaz is not true return and prevent this function from running.
+            // 1.0.62 Allow colourisation of session on a live trace.
+            //if (!(FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))) return;
+
+            // Developer list is actually set in Preferences.cs.
+            List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
+            Boolean DeveloperDemoMode = calledPreferences.GetDeveloperMode();
+            Boolean DeveloperDemoModeBreakScenarios = calledPreferences.GetDeveloperDemoModeBreakScenarios();
+
             // Reset these session counters.
             HTTP200SkipLogic = 0;
             HTTP200FreeBusy = 0;
@@ -81,7 +148,7 @@ namespace EXOFiddlerInspector
                     Environment.NewLine +
                     "Beyond this the web administrator responsible for the server needs to stop the Apache web server from answering these requests.";
 
-                if (Preferences.AppLoggingEnabled)
+                if (bAppLoggingEnabled)
                 {
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 405 Method Not Allowed; Apache is answering Autodiscover requests!");
                 }
@@ -109,7 +176,7 @@ namespace EXOFiddlerInspector
                         this.session["X-ResponseAlertTextBox"] = "!HTTP 0 No Response!";
                         this.session["X-ResponseCommentsRichTextboxText"] = (Properties.Settings.Default.HTTPQuantity);
 
-                        if (Preferences.AppLoggingEnabled)
+                        if (bAppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 0 No response");
                         }
@@ -165,26 +232,24 @@ namespace EXOFiddlerInspector
                             int end = this.session.GetResponseBodyAsString().IndexOf("</RedirectAddr>");
                             int charcount = end - start;
 
-                            RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
-
-                            //if (Preferences.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
-                            //{
-                            //    // If as well as being in demo mode, demo mode break scenarios is enabled. Show fault through incorrect direct
-                            //    // address for an Exchange Online mailbox.
-                            //    if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoModeBreakScenarios == true)
-                            //    {
-                            //        RedirectAddress = "user@contoso.com";
-                            //    }
-                            //    else
-                            //    {
-                            //        RedirectAddress = "user@contoso.mail.onmicrosoft.com";
-                            //    }
-                            //}
-                            //else
-                            //{
-                            //    // If demo mode is not running, set RedirectAddress detected from the session.
-
-                            //}
+                            if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
+                            {
+                                // If as well as being in demo mode, demo mode break scenarios is enabled. Show fault through incorrect direct
+                                // address for an Exchange Online mailbox.
+                                if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoModeBreakScenarios == true)
+                                {
+                                    RedirectAddress = "user@contoso.com";
+                                }
+                                else
+                                {
+                                    RedirectAddress = "user@contoso.mail.onmicrosoft.com";
+                                }
+                            }
+                            else
+                            {
+                                // If demo mode is not running, set RedirectAddress detected from the session.
+                                RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
+                            }
 
                             if (RedirectAddress.Contains(".onmicrosoft.com"))
                             {
@@ -204,7 +269,7 @@ namespace EXOFiddlerInspector
 
                                 HTTP200SkipLogic++;
 
-                                if (Preferences.AppLoggingEnabled)
+                                if (bAppLoggingEnabled)
                                 {
                                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
                                 }
@@ -229,7 +294,7 @@ namespace EXOFiddlerInspector
                                 // Increment HTTP200SkipLogic so that 99 does not run below.
                                 HTTP200SkipLogic++;
 
-                                if (Preferences.AppLoggingEnabled)
+                                if (bAppLoggingEnabled)
                                 {
                                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD REDIRECT ADDR! : " + RedirectAddress);
                                 }
@@ -267,7 +332,7 @@ namespace EXOFiddlerInspector
                             // Increment HTTP200SkipLogic so that 99 does not run below.
                             HTTP200SkipLogic++;
 
-                            if (Preferences.AppLoggingEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
                             }
@@ -473,7 +538,7 @@ namespace EXOFiddlerInspector
                                         Environment.NewLine + 
                                         "Keyword 'Exception' found " + wordCountExceptionText;
 
-                                    if (Preferences.AppLoggingEnabled)
+                                    if (bAppLoggingEnabled)
                                     {
                                         FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 FAILURE LURKING!");
                                     }
@@ -501,7 +566,7 @@ namespace EXOFiddlerInspector
                                     this.session["X-ResponseAlertTextBox"] = "Undefined";
                                     this.session["X-ResponseCommentsRichTextboxText"] = "Undefined";
 
-                                    if (Preferences.AppLoggingEnabled)
+                                    if (bAppLoggingEnabled)
                                     {
                                         FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 200 ; 99 Undefined.");
                                     }
@@ -522,7 +587,7 @@ namespace EXOFiddlerInspector
                         this.session["X-ResponseAlertTextBox"] = "HTTP 201 Created.";
                         this.session["X-ResponseCommentsRichTextboxText"] = "Not expecting this to be anything which needs attention for troubleshooting.";
 
-                        if (Preferences.AppLoggingEnabled)
+                        if (bAppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 201 Created.");
                         }
@@ -541,7 +606,7 @@ namespace EXOFiddlerInspector
                         this.session["X-ResponseAlertTextBox"] = "HTTP 204 No Content.";
                         this.session["X-ResponseCommentsRichTextboxText"] = Properties.Settings.Default.HTTPQuantity;
 
-                        if (Preferences.AppLoggingEnabled)
+                        if (bAppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 204 No content.");
                         }
@@ -562,7 +627,7 @@ namespace EXOFiddlerInspector
                         this.session["X-ResponseAlertTextBox"] = "HTTP 301 Moved Permanently";
                         this.session["X-ResponseCommentsRichTextboxText"] = "Nothing of concern here at this time.";
 
-                        if (Preferences.AppLoggingEnabled)
+                        if (bAppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 301 Moved Permanently.");
                         }
@@ -580,7 +645,7 @@ namespace EXOFiddlerInspector
                         this.session["X-ResponseAlertTextBox"] = "Exchange On-Premise Autodiscover redirect to Exchange Online.";
                         this.session["X-ResponseCommentsRichTextboxText"] = "Exchange On-Premise Autodiscover redirect to Exchange Online.";
 
-                        if (Preferences.AppLoggingEnabled)
+                        if (bAppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 302 Found / Redirect.");
                         }
@@ -598,7 +663,7 @@ namespace EXOFiddlerInspector
                         this.session["X-ResponseAlertTextBox"] = "HTTP 304 Not Modified";
                         this.session["X-ResponseCommentsRichTextboxText"] = "Nothing of concern here at this time.";
 
-                        if (Preferences.AppLoggingEnabled)
+                        if (bAppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 304 Not modified.");
                         }
@@ -630,7 +695,7 @@ namespace EXOFiddlerInspector
                                 "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml as expected." + Environment.NewLine +
                                 "Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.";
 
-                            if (Preferences.AppLoggingEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
                             }
@@ -650,7 +715,7 @@ namespace EXOFiddlerInspector
                                 Environment.NewLine +
                                 "If this session is not for an Outlook process then the information above may not be relevant to the issue under investigation.";
 
-                            if (Preferences.AppLoggingEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 307 Temp Redirect.");
                             }
@@ -678,7 +743,7 @@ namespace EXOFiddlerInspector
                             Environment.NewLine +
                             "If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.";
 
-                        if (Preferences.AppLoggingEnabled)
+                        if (bAppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 401 Auth Challenge.");
                         }
@@ -703,7 +768,7 @@ namespace EXOFiddlerInspector
                                 "To fire this message a HTTP 403 response code was detected and 'Access Denied' was found in the response body." + Environment.NewLine +
                                 "Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked?";
 
-                            if (Preferences.AppLoggingEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
                             }
@@ -727,7 +792,7 @@ namespace EXOFiddlerInspector
                                 Environment.NewLine +
                                 "See: https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-2010/dd877045(v=exchg.140)";
 
-                            if (Preferences.AppLoggingEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 403 Forbidden.");
                             }
@@ -746,7 +811,7 @@ namespace EXOFiddlerInspector
                         this.session["X-ResponseAlertTextBox"] = "!HTTP 404 Not Found!";
                         this.session["X-ResponseCommentsRichTextboxText"] = Properties.Settings.Default.HTTPQuantity;
 
-                        if (Preferences.AppLoggingEnabled)
+                        if (bAppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 404 Not found.");
                         }
@@ -764,7 +829,7 @@ namespace EXOFiddlerInspector
                         this.session["X-ResponseAlertTextBox"] = "!HTTP 405: Method Not Allowed!";
                         this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 405: Method Not Allowed";
 
-                        if (Preferences.AppLoggingEnabled)
+                        if (bAppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 405 Method not allowed.");
                         }
@@ -783,7 +848,7 @@ namespace EXOFiddlerInspector
                         this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 429: These responses need to be taken into context with the rest of the sessions in the trace. " +
                             "A small number is probably not an issue, larger numbers of these could be cause for concern.";
 
-                        if (Preferences.AppLoggingEnabled)
+                        if (bAppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 429 Too many requests.");
                         }
@@ -801,7 +866,7 @@ namespace EXOFiddlerInspector
 
                         // Need comments.
 
-                        if (Preferences.AppLoggingEnabled)
+                        if (bAppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 440.");
                         }
@@ -828,7 +893,7 @@ namespace EXOFiddlerInspector
                                 Environment.NewLine +
                                 "See https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662";
 
-                            if (Preferences.AppLoggingEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 456 Multi-Factor Required!");
                             }
@@ -842,7 +907,7 @@ namespace EXOFiddlerInspector
                             this.session["X-ResponseAlertTextBox"] = "!HTTP 456 Multi-Factor Authentication!";
                             this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 429: See details on Raw tab.";
 
-                            if (Preferences.AppLoggingEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 456 Multi-Factor Required.");
                             }
@@ -867,7 +932,7 @@ namespace EXOFiddlerInspector
                         this.session["X-ResponseAlertTextBox"] = "!HTTP 500 Internal Server Error!";
                         this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 500 Internal Server Error";
 
-                        if (Preferences.AppLoggingEnabled)
+                        if (bAppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 500 Internal Server Error.");
                         }
@@ -913,7 +978,7 @@ namespace EXOFiddlerInspector
                             this.session["X-ResponseAlertTextBox"] = "False Positive";
                             this.session["X-ResponseCommentsRichTextboxText"] = "Telemetry failing is unlikely the cause of Outlook / OWA connectivity or other issues.";
 
-                            if (Preferences.AppLoggingEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway. Telemetry False Positive.");
                             }
@@ -944,7 +1009,7 @@ namespace EXOFiddlerInspector
                                 Environment.NewLine +
                                 "To validate this above lookup the record, confirm it is a MX record and attempt to connect to the MX host on ports 25 and 443.";
 
-                            if (Preferences.AppLoggingEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway. EXO DNS False Positive.");
                             }
@@ -985,7 +1050,7 @@ namespace EXOFiddlerInspector
                                 "If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects " +
                                 "requests to https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml.";
 
-                            if (Preferences.AppLoggingEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway. O365 AutoD onmicrosoft.com False Positive.");
                             }
@@ -1030,7 +1095,7 @@ namespace EXOFiddlerInspector
                                 "If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design " +
                                 "redirects requests to https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml.";
 
-                            if (Preferences.AppLoggingEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway. Vanity domain AutoD False Positive.");
                             }
@@ -1051,7 +1116,7 @@ namespace EXOFiddlerInspector
                             this.session["X-ResponseAlertTextBox"] = "!AUTODISCOVER!";
                             this.session["X-ResponseCommentsRichTextboxText"] = "Autodiscover request detected, which failed.";
 
-                            if (Preferences.AppLoggingEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway. Exchange Autodiscover.");
                             }
@@ -1071,7 +1136,7 @@ namespace EXOFiddlerInspector
                             this.session["X-ResponseCommentsRichTextboxText"] = "Potential to cause the issue you are investigating. " +
                                 "Do you see expected responses beyond this session in the trace? Is this an Exchange On - Premise, Exchange Online or other device ?";
 
-                            if (Preferences.AppLoggingEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 502 Bad Gateway (99).");
                             }
@@ -1128,7 +1193,7 @@ namespace EXOFiddlerInspector
                                 "If any of these show the HTTP 503 Service Unavailable this confirms a consistent failure on the federation service." + Environment.NewLine +
                                 "If however you get the expected responses, this does not neccessarily mean the federation service / everything authentication is healthy. Further investigation is advised.";
 
-                            if (Preferences.AppLoggingEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable. FederatedStsUnreachable in response body!");
                             }
@@ -1145,7 +1210,7 @@ namespace EXOFiddlerInspector
                             this.session["X-ResponseAlertTextBox"] = "!HTTP 503 Service Unavailable!";
                             this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 503 Service Unavailable.";
 
-                            if (Preferences.AppLoggingEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 503 Service Unavailable (99).");
                             }
@@ -1174,7 +1239,7 @@ namespace EXOFiddlerInspector
                                 "from has been quaratined for internet access on the customer's network." + Environment.NewLine + Environment.NewLine +
                                 "Validate this by checking the webview and raw tabs for more information.";
 
-                            if (Preferences.AppLoggingEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + "  HTTP 504 Gateway Timeout -- Internet Access Blocked.");
                             }
@@ -1190,7 +1255,7 @@ namespace EXOFiddlerInspector
                             this.session["X-ResponseAlertTextBox"] = "!HTTP 504 Gateway Timeout!";
                             this.session["X-ResponseCommentsRichTextboxText"] = Properties.Settings.Default.HTTPQuantity;
 
-                            if (Preferences.AppLoggingEnabled)
+                            if (bAppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 504 Gateway Timeout (99).");
                             }
@@ -1212,7 +1277,7 @@ namespace EXOFiddlerInspector
                         this.session["X-ResponseAlertTextBox"] = "Undefined.";
                         this.session["X-ResponseCommentsRichTextboxText"] = "No specific information on this session in the EXO Fiddler Extension.";
 
-                        if (Preferences.AppLoggingEnabled)
+                        if (bAppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Session undefined in extension.");
                         }
@@ -1235,7 +1300,7 @@ namespace EXOFiddlerInspector
 
             double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
 
-            int SlowRunningSessionThreshold = Preferences.GetSlowRunningSessionThreshold();
+            int SlowRunningSessionThreshold = calledPreferences.GetSlowRunningSessionThreshold();
 
 
             // Very likely the first session captured when running Fiddler.
@@ -1265,7 +1330,7 @@ namespace EXOFiddlerInspector
                 this.session["X-ResponseCommentsRichTextboxText"] = "Long running session found. A small number of long running sessions in the < 10 " +
                     "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue.";
 
-                if (Preferences.AppLoggingEnabled)
+                if (bAppLoggingEnabled)
                 {
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Long running session.");
                 }
@@ -1283,7 +1348,7 @@ namespace EXOFiddlerInspector
                 this.session["X-ResponseCommentsRichTextboxText"] = "Long running EXO session found. A small number of long running sessions in the < 10 " +
                     "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue.";
 
-                if (Preferences.AppLoggingEnabled)
+                if (bAppLoggingEnabled)
                 {
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Long running EXO session.");
                 }
@@ -1292,7 +1357,7 @@ namespace EXOFiddlerInspector
             {
                 //bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", false);
                 // If the menu item Highlight Outlook and OWA Only is enabled then grey out all the other traffic.
-                if (Preferences.HighlightOutlookOWAOnlyEnabled)
+                if (bHighlightOutlookOWAOnlyEnabled)
                 {
                     // With that out of the way,  if the traffic is not related to any of the below processes, then mark it as grey to
                     // de-emphasise it.
@@ -1322,6 +1387,9 @@ namespace EXOFiddlerInspector
         /// <param name="session"></param>
         public void SetResponseServer(Session session)
         {
+            // 1.0.61 If bLoadSaz is not true return and prevent this function from running.
+            if (!(FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))) return;
+
             this.session = session;
 
             // Populate Response Server on session in order of preference from common to obsure.
@@ -1365,6 +1433,9 @@ namespace EXOFiddlerInspector
         /// <param name="session"></param>
         public void SetExchangeType(Session session)
         {
+            // 1.0.61 If bLoadSaz is not true return and prevent this function from running.
+            if (!(FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))) return;
+
             this.session = session;
 
             // Outlook Connections.
@@ -1492,8 +1563,14 @@ namespace EXOFiddlerInspector
         /// <param name="session"></param>
         public void SetAuthentication(Session session)
         {
+            // 1.0.61 If bLoadSaz is not true return and prevent this function from running.
+            if (!(FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))) return;
+
             Boolean OverrideFurtherAuthChecking = false;
-           
+
+            List<string> calledDeveloperList = calledPreferences.GetDeveloperList();
+            Boolean DeveloperDemoMode = calledPreferences.GetDeveloperMode();
+            Boolean DeveloperDemoModeBreakScenarios = calledPreferences.GetDeveloperDemoModeBreakScenarios();
 
             this.session["X-Office365AuthType"] = "";
 
@@ -1516,34 +1593,23 @@ namespace EXOFiddlerInspector
                 // Avoid null object reference errors at runtime.
                 if ((this.session.utilFindInResponse("Issuer=", false) > 1) && (this.session.utilFindInResponse("IssueInstant=", false) > 1)) 
                 {
-                    // Pull issuer data from response.
-                    string IssuerSessionBody = this.session.ToString();
-                    int IssuerStartIndex = IssuerSessionBody.IndexOf("Issuer=");
-                    int IssuerEndIndex = IssuerSessionBody.IndexOf("IssueInstant=");
-                    int IssuerLength = IssuerEndIndex - IssuerStartIndex;
-                    string Issuer = IssuerSessionBody.Substring(IssuerStartIndex, IssuerLength);
-                    Issuer = Issuer.Replace("&quot;", "\"");
+                    if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
+                    {
+                        this.session["X-Issuer"] = "Issuer = \"http://sts.contoso.com/adfs/services/trust\"";
+                    }
+                    else
+                    {
+                        // Pull issuer data from response.
+                        string IssuerSessionBody = this.session.ToString();
+                        int IssuerStartIndex = IssuerSessionBody.IndexOf("Issuer=");
+                        int IssuerEndIndex = IssuerSessionBody.IndexOf("IssueInstant=");
+                        int IssuerLength = IssuerEndIndex - IssuerStartIndex;
+                        string Issuer = IssuerSessionBody.Substring(IssuerStartIndex, IssuerLength);
+                        Issuer = Issuer.Replace("&quot;", "\"");
 
-                    // Populate X flag on session.
-                    this.session["X-Issuer"] = Issuer;
-
-                    //if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
-                    //{
-                    //    this.session["X-Issuer"] = "Issuer = \"http://sts.contoso.com/adfs/services/trust\"";
-                    //}
-                    //else
-                    //{
-                    //    // Pull issuer data from response.
-                    //    string IssuerSessionBody = this.session.ToString();
-                    //    int IssuerStartIndex = IssuerSessionBody.IndexOf("Issuer=");
-                    //    int IssuerEndIndex = IssuerSessionBody.IndexOf("IssueInstant=");
-                    //    int IssuerLength = IssuerEndIndex - IssuerStartIndex;
-                    //    string Issuer = IssuerSessionBody.Substring(IssuerStartIndex, IssuerLength);
-                    //    Issuer = Issuer.Replace("&quot;", "\"");
-
-                    //    // Populate X flag on session.
-                    //    this.session["X-Issuer"] = Issuer;
-                    //}
+                        // Populate X flag on session.
+                        this.session["X-Issuer"] = Issuer;
+                    }
                 }
                 else
                 {
@@ -1553,83 +1619,75 @@ namespace EXOFiddlerInspector
                 // Pull the x509 signing certificate data.
                 if ((this.session.utilFindInResponse("&lt;X509Certificate>", false) > 1) && (this.session.utilFindInResponse("&lt;/X509Certificate>", false) > 1))
                 {
-                    string x509SigningCertSessionBody = this.session.ToString();
-                    int x509SigningCertificateStartIndex = x509SigningCertSessionBody.IndexOf("&lt;X509Certificate>") + 20; // 20 to shift to start of the selection.
-                    int x509SigningCertificateEndIndex = x509SigningCertSessionBody.IndexOf("&lt;/X509Certificate>");
-                    int x509SigningCertificateLength = x509SigningCertificateEndIndex - x509SigningCertificateStartIndex;
-                    string x509SigningCertificate = x509SigningCertSessionBody.Substring(x509SigningCertificateStartIndex, x509SigningCertificateLength);
+                    if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
+                    {
+                        // portal.office.com certificate for demo.
+                        this.session["X-SigningCertificate"] = "-----BEGIN CERTIFICATE-----" +
+                            "MIIJyTCCB7GgAwIBAgITFgAC+95Ht0cIYnGqEwAAAAL73jANBgkqhkiG9w0BAQsF" +
+                            "ADCBizELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcT" +
+                            "B1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEVMBMGA1UE" +
+                            "CxMMTWljcm9zb2Z0IElUMR4wHAYDVQQDExVNaWNyb3NvZnQgSVQgVExTIENBIDQw" +
+                            "HhcNMTgwOTI0MjExNTQwWhcNMjAwOTI0MjExNTQwWjArMSkwJwYDVQQDEyBzdGFt" +
+                            "cDIubG9naW4ubWljcm9zb2Z0b25saW5lLmNvbTCCASIwDQYJKoZIhvcNAQEBBQAD" +
+                            "ggEPADCCAQoCggEBAKXmyCmQ9dko2PQkmJE1Rd4oEE92VcoYWTKqnoiKfxz4yNAY" +
+                            "ATTLWyKH+SId+YeQw/aqVIwFZbeuAUocpWszyisOAEh76cgc7nZgh9mqzaMBVClb" +
+                            "VVoTNvhVoauh1ovbZ6yDOJhXgVDP2NODJKxi7ThbpfJwCXt78OzI+Z0EvzpdZxk9" +
+                            "PAVAveXf+bHRaD7ctsvyheuOjE/fVkUTotBppLsrKadc5mO+nvi6RYvO0h+ExLYL" +
+                            "WKLBtFXOB9xo85b2CxnuMoRGVDKWI+H3HYddKCC3EldFHHj2TOA/y0otK3xHFnNg" +
+                            "AMpKowBBBZJziUXw611AfGqKZVQE4Rzwoe5vxRsCAwEAAaOCBYMwggV/MIIB9gYK" +
+                            "KwYBBAHWeQIEAgSCAeYEggHiAeAAdgCkuQmQtBhYFIe7E6LMZ3AKPDWYBPkb37jj" +
+                            "d80OyA3cEAAAAWYNeUqlAAAEAwBHMEUCIQCPEAlU1m5COhI5vsyrbPIXgpCWjj2L" +
+                            "uXKm+xI8eHPxGQIgDx3QiH5hCQB+jc6h12fuY8GzLOk1kzb8oDMRZ3FyeD0AdgC7" +
+                            "2d+8H4pxtZOUI5eqkntHOFeVCqtS6BqQlmQ2jh7RhQAAAWYNeUvwAAAEAwBHMEUC" +
+                            "IQCaTXkt9/yf1PLY9o8k1lYbBxmKJzxxXFSQCNt0n9HbNwIgRRCY4Ge+DMCOKtqZ" +
+                            "2dSPY+WdEiimhily0qjQaDr451sAdgBWFAaaL9fC7NP14b1Esj7HRna5vJkRXMDv" +
+                            "lJhV1onQ3QAAAWYNeUtnAAAEAwBHMEUCIGt3YAa3D4OQLD7Jne2CZp1W/NVW9AQs" +
+                            "ZVJKl97FXF7jAiEAtGM91DzsBYv4Udh3QtI0FouhQ4rUZ0TSPwrjTcn+XIQAdgBe" +
+                            "p3P531bA57U2SH3QSeAyepGaDIShEhKEGHWWgXFFWAAAAWYNeUuCAAAEAwBHMEUC" +
+                            "IHcT7a0iybDc0TFFQWi6cWLzTyfILxjWFnEJgD44j/paAiEA6dKc86wqUV+xGyCb" +
+                            "CM1BqR2IwmrlxtAiByG956kduYUwJwYJKwYBBAGCNxUKBBowGDAKBggrBgEFBQcD" +
+                            "AjAKBggrBgEFBQcDATA+BgkrBgEEAYI3FQcEMTAvBicrBgEEAYI3FQiH2oZ1g+7Z" +
+                            "AYLJhRuBtZ5hhfTrYIFdhNLfQoLnk3oCAWQCAR0wgYUGCCsGAQUFBwEBBHkwdzBR" +
+                            "BggrBgEFBQcwAoZFaHR0cDovL3d3dy5taWNyb3NvZnQuY29tL3BraS9tc2NvcnAv" +
+                            "TWljcm9zb2Z0JTIwSVQlMjBUTFMlMjBDQSUyMDQuY3J0MCIGCCsGAQUFBzABhhZo" +
+                            "dHRwOi8vb2NzcC5tc29jc3AuY29tMB0GA1UdDgQWBBSUvDb8x1PhIWg2aXbaJeBh" +
+                            "RQEjoTALBgNVHQ8EBAMCBLAwggEmBgNVHREEggEdMIIBGYIZbG9naW4ubWljcm9z" +
+                            "b2Z0b25saW5lLmNvbYIbbG9naW4ubWljcm9zb2Z0b25saW5lLXAuY29tghtsb2dp" +
+                            "bmV4Lm1pY3Jvc29mdG9ubGluZS5jb22CGmxvZ2luMi5taWNyb3NvZnRvbmxpbmUu" +
+                            "Y29tgiRzdGFtcDIubG9naW4ubWljcm9zb2Z0b25saW5lLWludC5jb22CHWxvZ2lu" +
+                            "Lm1pY3Jvc29mdG9ubGluZS1pbnQuY29tgh9sb2dpbmV4Lm1pY3Jvc29mdG9ubGlu" +
+                            "ZS1pbnQuY29tgh5sb2dpbjIubWljcm9zb2Z0b25saW5lLWludC5jb22CIHN0YW1w" +
+                            "Mi5sb2dpbi5taWNyb3NvZnRvbmxpbmUuY29tMIGsBgNVHR8EgaQwgaEwgZ6ggZug" +
+                            "gZiGS2h0dHA6Ly9tc2NybC5taWNyb3NvZnQuY29tL3BraS9tc2NvcnAvY3JsL01p" +
+                            "Y3Jvc29mdCUyMElUJTIwVExTJTIwQ0ElMjA0LmNybIZJaHR0cDovL2NybC5taWNy" +
+                            "b3NvZnQuY29tL3BraS9tc2NvcnAvY3JsL01pY3Jvc29mdCUyMElUJTIwVExTJTIw" +
+                            "Q0ElMjA0LmNybDBNBgNVHSAERjBEMEIGCSsGAQQBgjcqATA1MDMGCCsGAQUFBwIB" +
+                            "FidodHRwOi8vd3d3Lm1pY3Jvc29mdC5jb20vcGtpL21zY29ycC9jcHMwHwYDVR0j" +
+                            "BBgwFoAUenuMwc/noMoc1Gv6++Ezww8aop0wHQYDVR0lBBYwFAYIKwYBBQUHAwIG" +
+                            "CCsGAQUFBwMBMA0GCSqGSIb3DQEBCwUAA4ICAQAKbW1c/c8p8Y6F79AxCcVV8DRq" +
+                            "kndFgBans8sOJmOVvLurpIsMvd4C6JKrB6yDK8fYxS5PtwQDVXW6b2C6EDPUrOQm" +
+                            "4Fkj4hApQMOyOxKcaUnfRDLZqEpbZ4oIxQ2rnxY9yEmegHBJ4+5qnlTLY+hlODpK" +
+                            "oiTkNKSpwj7rzIBnhTTSW4E2TI9RiG1KgviiJFVDdLQKH4/aPou0YBUXf6JNLX6X" +
+                            "wFFKWm/AYHZ9E4W97AQ7BQw9fvEZ0uE8bmsV6Y1dJrFl3/KmxDYDyJ4nFPhY0vHR" +
+                            "Kb9/H9/W6qb++j0zGejSGeVSmj/Xr1Y3Py9BL9unkKHx77ERycJS0WQGMDA7BEju" +
+                            "sZI1MQhzQe+vm/5Kn68ETPC1bI7o370wluf6ZoRHYPJtpD8WBceamoCMALUnyKe2" +
+                            "RzD8ZMOY0L8VHr0b8hNcCJaCRpiAGxkmbGu3v/dHRQ9YVddZa+7ROYH4teFhs7Bp" +
+                            "ffVM+zeHhD/oJ2q1iMKwhvXUL5aiBOkg+TpZC4YrWsNeNPdMIOKTMkR0yi3z1WSF" +
+                            "xxTfQPX0tmTagQKFUv3fATLnY47gt4UfUgOeGyfkV7r4K3clO/Vyj840fzCqtlro" +
+                            "vXcEStLU744fvnFYyvwvJCY2NRN7ByFKoPaG8E5tto7eYmyZbYd5SyIZ5X+1V+N5" +
+                            "8KdwU29EM46onpLRnQ==" +
+                            "-----END CERTIFICATE-----";
+                    }
+                    else
+                    {
+                        string x509SigningCertSessionBody = this.session.ToString();
+                        int x509SigningCertificateStartIndex = x509SigningCertSessionBody.IndexOf("&lt;X509Certificate>") + 20; // 20 to shift to start of the selection.
+                        int x509SigningCertificateEndIndex = x509SigningCertSessionBody.IndexOf("&lt;/X509Certificate>");
+                        int x509SigningCertificateLength = x509SigningCertificateEndIndex - x509SigningCertificateStartIndex;
+                        string x509SigningCertificate = x509SigningCertSessionBody.Substring(x509SigningCertificateStartIndex, x509SigningCertificateLength);
 
-                    this.session["X-SigningCertificate"] = x509SigningCertificate;
-
-                    //if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
-                    //{
-                    //    // portal.office.com certificate for demo.
-                    //    this.session["X-SigningCertificate"] = "-----BEGIN CERTIFICATE-----" +
-                    //        "MIIJyTCCB7GgAwIBAgITFgAC+95Ht0cIYnGqEwAAAAL73jANBgkqhkiG9w0BAQsF" +
-                    //        "ADCBizELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcT" +
-                    //        "B1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEVMBMGA1UE" +
-                    //        "CxMMTWljcm9zb2Z0IElUMR4wHAYDVQQDExVNaWNyb3NvZnQgSVQgVExTIENBIDQw" +
-                    //        "HhcNMTgwOTI0MjExNTQwWhcNMjAwOTI0MjExNTQwWjArMSkwJwYDVQQDEyBzdGFt" +
-                    //        "cDIubG9naW4ubWljcm9zb2Z0b25saW5lLmNvbTCCASIwDQYJKoZIhvcNAQEBBQAD" +
-                    //        "ggEPADCCAQoCggEBAKXmyCmQ9dko2PQkmJE1Rd4oEE92VcoYWTKqnoiKfxz4yNAY" +
-                    //        "ATTLWyKH+SId+YeQw/aqVIwFZbeuAUocpWszyisOAEh76cgc7nZgh9mqzaMBVClb" +
-                    //        "VVoTNvhVoauh1ovbZ6yDOJhXgVDP2NODJKxi7ThbpfJwCXt78OzI+Z0EvzpdZxk9" +
-                    //        "PAVAveXf+bHRaD7ctsvyheuOjE/fVkUTotBppLsrKadc5mO+nvi6RYvO0h+ExLYL" +
-                    //        "WKLBtFXOB9xo85b2CxnuMoRGVDKWI+H3HYddKCC3EldFHHj2TOA/y0otK3xHFnNg" +
-                    //        "AMpKowBBBZJziUXw611AfGqKZVQE4Rzwoe5vxRsCAwEAAaOCBYMwggV/MIIB9gYK" +
-                    //        "KwYBBAHWeQIEAgSCAeYEggHiAeAAdgCkuQmQtBhYFIe7E6LMZ3AKPDWYBPkb37jj" +
-                    //        "d80OyA3cEAAAAWYNeUqlAAAEAwBHMEUCIQCPEAlU1m5COhI5vsyrbPIXgpCWjj2L" +
-                    //        "uXKm+xI8eHPxGQIgDx3QiH5hCQB+jc6h12fuY8GzLOk1kzb8oDMRZ3FyeD0AdgC7" +
-                    //        "2d+8H4pxtZOUI5eqkntHOFeVCqtS6BqQlmQ2jh7RhQAAAWYNeUvwAAAEAwBHMEUC" +
-                    //        "IQCaTXkt9/yf1PLY9o8k1lYbBxmKJzxxXFSQCNt0n9HbNwIgRRCY4Ge+DMCOKtqZ" +
-                    //        "2dSPY+WdEiimhily0qjQaDr451sAdgBWFAaaL9fC7NP14b1Esj7HRna5vJkRXMDv" +
-                    //        "lJhV1onQ3QAAAWYNeUtnAAAEAwBHMEUCIGt3YAa3D4OQLD7Jne2CZp1W/NVW9AQs" +
-                    //        "ZVJKl97FXF7jAiEAtGM91DzsBYv4Udh3QtI0FouhQ4rUZ0TSPwrjTcn+XIQAdgBe" +
-                    //        "p3P531bA57U2SH3QSeAyepGaDIShEhKEGHWWgXFFWAAAAWYNeUuCAAAEAwBHMEUC" +
-                    //        "IHcT7a0iybDc0TFFQWi6cWLzTyfILxjWFnEJgD44j/paAiEA6dKc86wqUV+xGyCb" +
-                    //        "CM1BqR2IwmrlxtAiByG956kduYUwJwYJKwYBBAGCNxUKBBowGDAKBggrBgEFBQcD" +
-                    //        "AjAKBggrBgEFBQcDATA+BgkrBgEEAYI3FQcEMTAvBicrBgEEAYI3FQiH2oZ1g+7Z" +
-                    //        "AYLJhRuBtZ5hhfTrYIFdhNLfQoLnk3oCAWQCAR0wgYUGCCsGAQUFBwEBBHkwdzBR" +
-                    //        "BggrBgEFBQcwAoZFaHR0cDovL3d3dy5taWNyb3NvZnQuY29tL3BraS9tc2NvcnAv" +
-                    //        "TWljcm9zb2Z0JTIwSVQlMjBUTFMlMjBDQSUyMDQuY3J0MCIGCCsGAQUFBzABhhZo" +
-                    //        "dHRwOi8vb2NzcC5tc29jc3AuY29tMB0GA1UdDgQWBBSUvDb8x1PhIWg2aXbaJeBh" +
-                    //        "RQEjoTALBgNVHQ8EBAMCBLAwggEmBgNVHREEggEdMIIBGYIZbG9naW4ubWljcm9z" +
-                    //        "b2Z0b25saW5lLmNvbYIbbG9naW4ubWljcm9zb2Z0b25saW5lLXAuY29tghtsb2dp" +
-                    //        "bmV4Lm1pY3Jvc29mdG9ubGluZS5jb22CGmxvZ2luMi5taWNyb3NvZnRvbmxpbmUu" +
-                    //        "Y29tgiRzdGFtcDIubG9naW4ubWljcm9zb2Z0b25saW5lLWludC5jb22CHWxvZ2lu" +
-                    //        "Lm1pY3Jvc29mdG9ubGluZS1pbnQuY29tgh9sb2dpbmV4Lm1pY3Jvc29mdG9ubGlu" +
-                    //        "ZS1pbnQuY29tgh5sb2dpbjIubWljcm9zb2Z0b25saW5lLWludC5jb22CIHN0YW1w" +
-                    //        "Mi5sb2dpbi5taWNyb3NvZnRvbmxpbmUuY29tMIGsBgNVHR8EgaQwgaEwgZ6ggZug" +
-                    //        "gZiGS2h0dHA6Ly9tc2NybC5taWNyb3NvZnQuY29tL3BraS9tc2NvcnAvY3JsL01p" +
-                    //        "Y3Jvc29mdCUyMElUJTIwVExTJTIwQ0ElMjA0LmNybIZJaHR0cDovL2NybC5taWNy" +
-                    //        "b3NvZnQuY29tL3BraS9tc2NvcnAvY3JsL01pY3Jvc29mdCUyMElUJTIwVExTJTIw" +
-                    //        "Q0ElMjA0LmNybDBNBgNVHSAERjBEMEIGCSsGAQQBgjcqATA1MDMGCCsGAQUFBwIB" +
-                    //        "FidodHRwOi8vd3d3Lm1pY3Jvc29mdC5jb20vcGtpL21zY29ycC9jcHMwHwYDVR0j" +
-                    //        "BBgwFoAUenuMwc/noMoc1Gv6++Ezww8aop0wHQYDVR0lBBYwFAYIKwYBBQUHAwIG" +
-                    //        "CCsGAQUFBwMBMA0GCSqGSIb3DQEBCwUAA4ICAQAKbW1c/c8p8Y6F79AxCcVV8DRq" +
-                    //        "kndFgBans8sOJmOVvLurpIsMvd4C6JKrB6yDK8fYxS5PtwQDVXW6b2C6EDPUrOQm" +
-                    //        "4Fkj4hApQMOyOxKcaUnfRDLZqEpbZ4oIxQ2rnxY9yEmegHBJ4+5qnlTLY+hlODpK" +
-                    //        "oiTkNKSpwj7rzIBnhTTSW4E2TI9RiG1KgviiJFVDdLQKH4/aPou0YBUXf6JNLX6X" +
-                    //        "wFFKWm/AYHZ9E4W97AQ7BQw9fvEZ0uE8bmsV6Y1dJrFl3/KmxDYDyJ4nFPhY0vHR" +
-                    //        "Kb9/H9/W6qb++j0zGejSGeVSmj/Xr1Y3Py9BL9unkKHx77ERycJS0WQGMDA7BEju" +
-                    //        "sZI1MQhzQe+vm/5Kn68ETPC1bI7o370wluf6ZoRHYPJtpD8WBceamoCMALUnyKe2" +
-                    //        "RzD8ZMOY0L8VHr0b8hNcCJaCRpiAGxkmbGu3v/dHRQ9YVddZa+7ROYH4teFhs7Bp" +
-                    //        "ffVM+zeHhD/oJ2q1iMKwhvXUL5aiBOkg+TpZC4YrWsNeNPdMIOKTMkR0yi3z1WSF" +
-                    //        "xxTfQPX0tmTagQKFUv3fATLnY47gt4UfUgOeGyfkV7r4K3clO/Vyj840fzCqtlro" +
-                    //        "vXcEStLU744fvnFYyvwvJCY2NRN7ByFKoPaG8E5tto7eYmyZbYd5SyIZ5X+1V+N5" +
-                    //        "8KdwU29EM46onpLRnQ==" +
-                    //        "-----END CERTIFICATE-----";
-                    //}
-                    //else
-                    //{
-                    //    string x509SigningCertSessionBody = this.session.ToString();
-                    //    int x509SigningCertificateStartIndex = x509SigningCertSessionBody.IndexOf("&lt;X509Certificate>") + 20; // 20 to shift to start of the selection.
-                    //    int x509SigningCertificateEndIndex = x509SigningCertSessionBody.IndexOf("&lt;/X509Certificate>");
-                    //    int x509SigningCertificateLength = x509SigningCertificateEndIndex - x509SigningCertificateStartIndex;
-                    //    string x509SigningCertificate = x509SigningCertSessionBody.Substring(x509SigningCertificateStartIndex, x509SigningCertificateLength);
-
-                    //    this.session["X-SigningCertificate"] = x509SigningCertificate;
-                    //}
+                        this.session["X-SigningCertificate"] = x509SigningCertificate;
+                    }
                 }
 
                 /////////////////////////////
@@ -1641,45 +1699,30 @@ namespace EXOFiddlerInspector
                 if ((this.session.utilFindInResponse("&lt;saml:Attribute AttributeName=&quot;UPN", false) > 1) && 
                     (this.session.utilFindInResponse("&lt;/saml:Attribute>", false) > 1))
                 {
-                    //if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
-                    //{
-                    //    this.session["X-AttributeNameUPNTextBox"] = "<saml:Attribute AttributeName=\"UPN\"" +
-                    //        "AttributeNamespace=\"http://schemas.xmlsoap.org/claims\">" +
-                    //        "<saml:AttributeValue>user@contoso.com</saml:AttributeValue></saml:Attribute>";
-                    //}
-                    //else
-                    //{
-                    //    string AttributeNameUPNSessionBody = this.session.ToString();
-                    //    int AttributeNameUPNStartIndex = AttributeNameUPNSessionBody.IndexOf("&lt;saml:Attribute AttributeName=&quot;UPN");
-                    //    int AttributeNameUPNEndIndex = AttributeNameUPNSessionBody.IndexOf("&lt;/saml:Attribute>");
-                    //    int AttributeNameUPNLength = AttributeNameUPNEndIndex - AttributeNameUPNStartIndex;
-                    //    string AttributeNameUPN = AttributeNameUPNSessionBody.Substring(AttributeNameUPNStartIndex, AttributeNameUPNLength);
-                    //    AttributeNameUPN = AttributeNameUPN.Replace("&quot;", "\"");
-                    //    AttributeNameUPN = AttributeNameUPN.Replace("&lt;", "<");
-                    //    // Now split the two lines with a new line for easier reading in the user control.
-                    //    int SplitAttributeNameUPNStartIndex = AttributeNameUPN.IndexOf("><") + 1;
-                    //    string AttributeNameUPNFirstLine = AttributeNameUPN.Substring(0, SplitAttributeNameUPNStartIndex);
-                    //    string AttributeNameUPNSecondLine = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex);
-                    //    AttributeNameUPN = AttributeNameUPNFirstLine + Environment.NewLine + AttributeNameUPNSecondLine;
+                    if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
+                    {
+                        this.session["X-AttributeNameUPNTextBox"] = "<saml:Attribute AttributeName=\"UPN\"" +
+                            "AttributeNamespace=\"http://schemas.xmlsoap.org/claims\">" +
+                            "<saml:AttributeValue>user@contoso.com</saml:AttributeValue></saml:Attribute>";
+                    }
+                    else
+                    {
+                        string AttributeNameUPNSessionBody = this.session.ToString();
+                        int AttributeNameUPNStartIndex = AttributeNameUPNSessionBody.IndexOf("&lt;saml:Attribute AttributeName=&quot;UPN");
+                        int AttributeNameUPNEndIndex = AttributeNameUPNSessionBody.IndexOf("&lt;/saml:Attribute>");
+                        int AttributeNameUPNLength = AttributeNameUPNEndIndex - AttributeNameUPNStartIndex;
+                        string AttributeNameUPN = AttributeNameUPNSessionBody.Substring(AttributeNameUPNStartIndex, AttributeNameUPNLength);
+                        AttributeNameUPN = AttributeNameUPN.Replace("&quot;", "\"");
+                        AttributeNameUPN = AttributeNameUPN.Replace("&lt;", "<");
+                        // Now split the two lines with a new line for easier reading in the user control.
+                        int SplitAttributeNameUPNStartIndex = AttributeNameUPN.IndexOf("><") + 1;
+                        string AttributeNameUPNFirstLine = AttributeNameUPN.Substring(0, SplitAttributeNameUPNStartIndex);
+                        string AttributeNameUPNSecondLine = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex);
+                        AttributeNameUPN = AttributeNameUPNFirstLine + Environment.NewLine + AttributeNameUPNSecondLine;
 
-                    //    // Populate X flag on session.
-                    //    this.session["X-AttributeNameUPNTextBox"] = AttributeNameUPN;
-                    //}
-                    string AttributeNameUPNSessionBody = this.session.ToString();
-                    int AttributeNameUPNStartIndex = AttributeNameUPNSessionBody.IndexOf("&lt;saml:Attribute AttributeName=&quot;UPN");
-                    int AttributeNameUPNEndIndex = AttributeNameUPNSessionBody.IndexOf("&lt;/saml:Attribute>");
-                    int AttributeNameUPNLength = AttributeNameUPNEndIndex - AttributeNameUPNStartIndex;
-                    string AttributeNameUPN = AttributeNameUPNSessionBody.Substring(AttributeNameUPNStartIndex, AttributeNameUPNLength);
-                    AttributeNameUPN = AttributeNameUPN.Replace("&quot;", "\"");
-                    AttributeNameUPN = AttributeNameUPN.Replace("&lt;", "<");
-                    // Now split the two lines with a new line for easier reading in the user control.
-                    int SplitAttributeNameUPNStartIndex = AttributeNameUPN.IndexOf("><") + 1;
-                    string AttributeNameUPNFirstLine = AttributeNameUPN.Substring(0, SplitAttributeNameUPNStartIndex);
-                    string AttributeNameUPNSecondLine = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex);
-                    AttributeNameUPN = AttributeNameUPNFirstLine + Environment.NewLine + AttributeNameUPNSecondLine;
-
-                    // Populate X flag on session.
-                    this.session["X-AttributeNameUPNTextBox"] = AttributeNameUPN;
+                        // Populate X flag on session.
+                        this.session["X-AttributeNameUPNTextBox"] = AttributeNameUPN;
+                    }
                 }
                 else
                 {
@@ -1693,35 +1736,24 @@ namespace EXOFiddlerInspector
                 if ((this.session.utilFindInResponse("&lt;saml:NameIdentifier Format", false) > 1) &&
                     (this.session.utilFindInResponse("&lt;saml:SubjectConfirmation>", false) > 1))
                 {
-                    //if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
-                    //{
-                    //    this.session["X-NameIdentifierFormatTextBox"] = "<saml:NameIdentifier Format=\"urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified\">" +
-                    //        "+qwerty123456789qwerty==</saml:NameIdentifier>";
-                    //}
-                    //else
-                    //{
-                    //    string NameIdentifierFormatSessionBody = this.session.ToString();
-                    //    int NameIdentifierFormatStartIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:NameIdentifier Format");
-                    //    int NameIdentifierFormatEndIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:SubjectConfirmation>");
-                    //    int NameIdentifierFormatLength = NameIdentifierFormatEndIndex - NameIdentifierFormatStartIndex;
-                    //    string NameIdentifierFormat = NameIdentifierFormatSessionBody.Substring(NameIdentifierFormatStartIndex, NameIdentifierFormatLength);
-                    //    NameIdentifierFormat = NameIdentifierFormat.Replace("&quot;", "\"");
-                    //    NameIdentifierFormat = NameIdentifierFormat.Replace("&lt;", "<");
+                    if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
+                    {
+                        this.session["X-NameIdentifierFormatTextBox"] = "<saml:NameIdentifier Format=\"urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified\">" +
+                            "+qwerty123456789qwerty==</saml:NameIdentifier>";
+                    }
+                    else
+                    {
+                        string NameIdentifierFormatSessionBody = this.session.ToString();
+                        int NameIdentifierFormatStartIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:NameIdentifier Format");
+                        int NameIdentifierFormatEndIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:SubjectConfirmation>");
+                        int NameIdentifierFormatLength = NameIdentifierFormatEndIndex - NameIdentifierFormatStartIndex;
+                        string NameIdentifierFormat = NameIdentifierFormatSessionBody.Substring(NameIdentifierFormatStartIndex, NameIdentifierFormatLength);
+                        NameIdentifierFormat = NameIdentifierFormat.Replace("&quot;", "\"");
+                        NameIdentifierFormat = NameIdentifierFormat.Replace("&lt;", "<");
 
-                    //    // Populate X flag on session.
-                    //    this.session["X-NameIdentifierFormatTextBox"] = NameIdentifierFormat;
-                    //} 
-
-                    string NameIdentifierFormatSessionBody = this.session.ToString();
-                    int NameIdentifierFormatStartIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:NameIdentifier Format");
-                    int NameIdentifierFormatEndIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:SubjectConfirmation>");
-                    int NameIdentifierFormatLength = NameIdentifierFormatEndIndex - NameIdentifierFormatStartIndex;
-                    string NameIdentifierFormat = NameIdentifierFormatSessionBody.Substring(NameIdentifierFormatStartIndex, NameIdentifierFormatLength);
-                    NameIdentifierFormat = NameIdentifierFormat.Replace("&quot;", "\"");
-                    NameIdentifierFormat = NameIdentifierFormat.Replace("&lt;", "<");
-
-                    // Populate X flag on session.
-                    this.session["X-NameIdentifierFormatTextBox"] = NameIdentifierFormat;
+                        // Populate X flag on session.
+                        this.session["X-NameIdentifierFormatTextBox"] = NameIdentifierFormat;
+                    } 
                 }
                 else
                 {
@@ -1735,56 +1767,35 @@ namespace EXOFiddlerInspector
                 if ((this.session.utilFindInResponse("&lt;saml:NameIdentifier Format", false) > 1) &&
                     (this.session.utilFindInResponse("&lt;saml:SubjectConfirmation>", false) > 1))
                 {
-                    //if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
-                    //{
-                    //    this.session["X-AttributeNameImmutableIDTextBox"] = "<saml:Attribute AttributeName=\"ImmutableID\" " +
-                    //        "AttributeNamespace=\"http://schemas.microsoft.com/LiveID/Federation/2008/05\">" +
-                    //        "<saml:AttributeValue>+qwerty123456789qwerty==</saml:AttributeValue>";
-                    //}
-                    //else
-                    //{
-                    //    string AttributeNameImmutableIDSessionBody = this.session.ToString();
-                    //    int AttributeNameImmutableIDStartIndex = AttributeNameImmutableIDSessionBody.IndexOf("AttributeName=&quot;ImmutableID");
-                    //    int AttributeNameImmutibleIDEndIndex = AttributeNameImmutableIDSessionBody.IndexOf("&lt;/saml:AttributeStatement>");
-                    //    int AttributeNameImmutibleIDLength = AttributeNameImmutibleIDEndIndex - AttributeNameImmutableIDStartIndex;
-                    //    string AttributeNameImmutibleID = AttributeNameImmutableIDSessionBody.Substring(AttributeNameImmutableIDStartIndex, AttributeNameImmutibleIDLength);
-                    //    AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&quot;", "\"");
-                    //    AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&lt;", "<");
-                    //    // Now split out response with a newline for easier reading.
-                    //    int SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("<saml:AttributeValue>") + 21; // Add 21 characters to shift where the newline is placed.
-                    //    string AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
-                    //    string AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
-                    //    AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
-                    //    // Second split
-                    //    SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("</saml:AttributeValue></saml:Attribute>");
-                    //    AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
-                    //    AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
-                    //    AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
+                    if (calledDeveloperList.Any(Environment.UserName.Contains) && DeveloperDemoMode == true)
+                    {
+                        this.session["X-AttributeNameImmutableIDTextBox"] = "<saml:Attribute AttributeName=\"ImmutableID\" " +
+                            "AttributeNamespace=\"http://schemas.microsoft.com/LiveID/Federation/2008/05\">" +
+                            "<saml:AttributeValue>+qwerty123456789qwerty==</saml:AttributeValue>";
+                    }
+                    else
+                    {
+                        string AttributeNameImmutableIDSessionBody = this.session.ToString();
+                        int AttributeNameImmutableIDStartIndex = AttributeNameImmutableIDSessionBody.IndexOf("AttributeName=&quot;ImmutableID");
+                        int AttributeNameImmutibleIDEndIndex = AttributeNameImmutableIDSessionBody.IndexOf("&lt;/saml:AttributeStatement>");
+                        int AttributeNameImmutibleIDLength = AttributeNameImmutibleIDEndIndex - AttributeNameImmutableIDStartIndex;
+                        string AttributeNameImmutibleID = AttributeNameImmutableIDSessionBody.Substring(AttributeNameImmutableIDStartIndex, AttributeNameImmutibleIDLength);
+                        AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&quot;", "\"");
+                        AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&lt;", "<");
+                        // Now split out response with a newline for easier reading.
+                        int SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("<saml:AttributeValue>") + 21; // Add 21 characters to shift where the newline is placed.
+                        string AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
+                        string AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
+                        AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
+                        // Second split
+                        SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("</saml:AttributeValue></saml:Attribute>");
+                        AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
+                        AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
+                        AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
 
-                    //    // Populate X flag on session.
-                    //    this.session["X-AttributeNameImmutableIDTextBox"] = AttributeNameImmutibleID;
-                    //} 
-
-                    string AttributeNameImmutableIDSessionBody = this.session.ToString();
-                    int AttributeNameImmutableIDStartIndex = AttributeNameImmutableIDSessionBody.IndexOf("AttributeName=&quot;ImmutableID");
-                    int AttributeNameImmutibleIDEndIndex = AttributeNameImmutableIDSessionBody.IndexOf("&lt;/saml:AttributeStatement>");
-                    int AttributeNameImmutibleIDLength = AttributeNameImmutibleIDEndIndex - AttributeNameImmutableIDStartIndex;
-                    string AttributeNameImmutibleID = AttributeNameImmutableIDSessionBody.Substring(AttributeNameImmutableIDStartIndex, AttributeNameImmutibleIDLength);
-                    AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&quot;", "\"");
-                    AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&lt;", "<");
-                    // Now split out response with a newline for easier reading.
-                    int SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("<saml:AttributeValue>") + 21; // Add 21 characters to shift where the newline is placed.
-                    string AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
-                    string AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
-                    AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
-                    // Second split
-                    SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("</saml:AttributeValue></saml:Attribute>");
-                    AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
-                    AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
-                    AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
-
-                    // Populate X flag on session.
-                    this.session["X-AttributeNameImmutableIDTextBox"] = AttributeNameImmutibleID;
+                        // Populate X flag on session.
+                        this.session["X-AttributeNameImmutableIDTextBox"] = AttributeNameImmutibleID;
+                    } 
                 }
                 else
                 {
@@ -1837,7 +1848,7 @@ namespace EXOFiddlerInspector
                     // than Outlook client auth capabilities. Other sessions are expected to show client auth capabilities.
                     OverrideFurtherAuthChecking = true;
 
-                    if (Preferences.AppLoggingEnabled)
+                    if (bAppLoggingEnabled)
                     {
                         FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " EXO Modern Auth Disabled.");
                     }
@@ -1860,7 +1871,7 @@ namespace EXOFiddlerInspector
                         "Outlook is stating it can do Modern Authentication. " +
                         "Whether it is used or not will depend on whether Modern Authentication is enabled in Exchange Online.";
 
-                    if (Preferences.AppLoggingEnabled)
+                    if (bAppLoggingEnabled)
                     {
                         FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Outlook Modern Auth.");
                     }
@@ -1881,7 +1892,7 @@ namespace EXOFiddlerInspector
                         "which does not support Modern Authentication." +
                         "MutiFactor Authentication will not work as expected with Basic Authentication only capable Outlook clients";
 
-                    if (Preferences.AppLoggingEnabled)
+                    if (bAppLoggingEnabled)
                     {
                         FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Outlook Basic Auth.");
                     }
@@ -1902,7 +1913,7 @@ namespace EXOFiddlerInspector
                         Environment.NewLine +
                         "Outlook accessing resources with a Modern Authentication security token.";
 
-                if (Preferences.AppLoggingEnabled)
+                if (bAppLoggingEnabled)
                 {
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Modern Auth Token.");
                 }
@@ -1919,7 +1930,7 @@ namespace EXOFiddlerInspector
                     Environment.NewLine +
                     "Outlook accessing resources with a Basic Authentication security token.";
 
-                if (Preferences.AppLoggingEnabled)
+                if (bAppLoggingEnabled)
                 {
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Basic Auth Token.");
                 }

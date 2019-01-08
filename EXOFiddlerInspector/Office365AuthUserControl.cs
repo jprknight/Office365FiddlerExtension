@@ -16,21 +16,37 @@ namespace EXOFiddlerInspector
     {
         public string SessionData;
 
-        public bool bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
+        Preferences calledPreferences = new Preferences();
+
+        public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
 
         public Office365AuthUserControl()
         {
-            // If the extension is not enabled, don't build the user controls.
+            // Set this to false to start in a neutral position.
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
+            FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.sFileName", "");
+            FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.sContext", "");
             if (bExtensionEnabled)
             {
                 InitializeComponent();
             }
-            else
-            {
-                return;
-            }
+
+            // Now work out if we are loading a SAZ file or not.
+            // Call a local function MakeLoadSAZ to control whether or not we initialise the user controls.
+            FiddlerApplication.OnLoadSAZ += this.MakeLoadSaz;
         }
 
+        public void MakeLoadSaz(object sender, FiddlerApplication.ReadSAZEventArgs e)
+        {
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", true);
+            FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.sFileName", e.sFilename);
+            FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.sContext", e.sContext);
+
+            LiveTraceHelperGroupBox.Visible = false;
+
+            Office365AuthenticationGroupbox.Visible = true;
+        }
+        
         internal void SetAuthenticationResponseComments(string txt)
         {
             AuthenticationResponseCommentsTextbox.Text = txt;
@@ -167,11 +183,11 @@ namespace EXOFiddlerInspector
         {
             if (SAMLResponseParserGroupbox.Visible == true)
             {
-                SAMLResponseParserGroupbox.Location = new Point(3, 3);
+                SAMLResponseParserGroupbox.Location = new Point(8, 8);
             }
             else
             {
-                SAMLResponseParserGroupbox.Location = new Point(3, 300);
+                SAMLResponseParserGroupbox.Location = new Point(868, 251);
             }
         }
 
@@ -179,11 +195,23 @@ namespace EXOFiddlerInspector
         {
             if (Office365AuthenticationGroupbox.Visible == true)
             {
-                Office365AuthenticationGroupbox.Location = new Point(3, 3);
+                Office365AuthenticationGroupbox.Location = new Point(8, 8);
             }
             else
             {
-                Office365AuthenticationGroupbox.Location = new Point(3, 300);
+                Office365AuthenticationGroupbox.Location = new Point(8, 868);
+            }
+        }
+
+        private void LiveTraceHelperGroupBox_VisibleChanged(object sender, EventArgs e)
+        {
+            if (LiveTraceHelperGroupBox.Visible == true)
+            {
+                LiveTraceHelperGroupBox.Location = new Point(8, 8);
+            }
+            else
+            {
+                LiveTraceHelperGroupBox.Location = new Point(8, 868);
             }
         }
     }
