@@ -411,9 +411,9 @@ namespace EXOFiddlerInspector.Inspectors
                 ResultsString.AppendLine("Session Analysis");
                 ResultsString.AppendLine("----------------");
                 ResultsString.AppendLine();
-                ResultsString.AppendLine($"Session Alert: {this.session["X-ResponseAlertTextBox"]}");
+                ResultsString.AppendLine($"Session Alert: {this.session["X-ResponseAlert"]}");
                 ResultsString.AppendLine();
-                ResultsString.AppendLine($"Session Comment: {this.session["X-ResponseCommentsRichTextboxText"]}");
+                ResultsString.AppendLine($"Session Comment: {this.session["X-ResponseComments"]}");
                 ResultsString.AppendLine();
 
                 ExchangeResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
