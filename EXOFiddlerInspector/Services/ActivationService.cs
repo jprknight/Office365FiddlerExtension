@@ -20,9 +20,12 @@ namespace EXOFiddlerInspector.Services
         /// </summary>
         public async void OnLoad()
         {
-            await Preferences.SetDefaultPreferences();
+            if(Preferences.ExecutionCount++ == 1)
+            {
+                await Preferences.SetDefaultPreferences();
+            }
+           
             MenuUI.Instance.Initialize();
-            SessionProcessor.Instance.Initialize();
 
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 150, "X-ExchangeType");
@@ -34,7 +37,7 @@ namespace EXOFiddlerInspector.Services
             // Throw a message box to alert demo mode is running.
             if (Preferences.GetDeveloperMode())
             {
-               // MessageBox.Show("Developer / Demo mode is running!");
+                MessageBox.Show("Developer / Demo mode is running!");
             }
             else
             {

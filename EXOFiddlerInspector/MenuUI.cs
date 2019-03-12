@@ -57,7 +57,6 @@ namespace EXOFiddlerInspector
             /// 
             if (!IsInitialized)
             {
-                await Preferences.SetDefaultPreferences();
 
                 this.ExchangeOnlineTopMenu = new MenuItem(TopMenuText);
 
