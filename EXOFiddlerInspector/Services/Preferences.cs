@@ -1,7 +1,9 @@
 ﻿using Fiddler;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,14 +11,8 @@ namespace EXOFiddlerInspector.Services
 {
     public static class Preferences
     {
-        public static bool DeveloperDemoMode { get; set; }
-        public static bool DeveloperDemoModeBreakScenarios { get; set; }
-
-        internal static List<string> Developers = new List<string>(new string[] { "jeknight", "brandev", "bever", "jasonsla", "nick", "jeremy" });
-
-        public static bool IsDeveloper()
-        {
-            return Developers.Any(Environment.UserName.Contains);
+        public static void Initialize()
+        {           
         }
 
         /// <summary>
@@ -25,22 +21,7 @@ namespace EXOFiddlerInspector.Services
         /// <returns>DeveloperDemoMode</returns>
         public static bool GetDeveloperMode()
         {
-            bool isdevMode = Developers.Any(Environment.UserName.Contains) && DeveloperDemoMode == true;
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.DemoMode", isdevMode);
-
-            return isdevMode;
-        }
-
-        /// <summary>
-        /// Return DeveloperDemoModeBreakScenarios value.
-        /// </summary>
-        /// <returns>DeveloperDemoModeBreakScenarios</returns>
-        public static bool GetDeveloperDemoModeBreakScenarios()
-        {
-            bool isdevModeBreak = Developers.Any(Environment.UserName.Contains) && DeveloperDemoModeBreakScenarios == true;
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.DemoModeBreakScenarios", isdevModeBreak);
-
-            return isdevModeBreak;
+            return Debugger.IsAttached;
         }
 
         /// <summary>
@@ -53,17 +34,72 @@ namespace EXOFiddlerInspector.Services
         }
 
 
-        public static bool ExtensionEnabled { get; set; } = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
-        public static bool ElapsedTimeColumnEnabled { get; set; } = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ElapsedTimeColumnEnabled", false);
-        public static bool ResponseServerColumnEnabled { get; set; } = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ResponseServerColumnEnabled", false);
-        public static bool ExchangeTypeColumnEnabled { get; set; } = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ExchangeTypeColumnEnabled", false);
-        public static bool HostIPColumnEnabled { get; set; } = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HostIPColumnEnabled", false);
-        public static bool AuthColumnEnabled { get; set; } = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AuthColumnEnabled", false);
-        public static bool AppLoggingEnabled { get; set; } = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", false);
-        public static bool HighlightOutlookOWAOnlyEnabled { get; set; } = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", false);
-        public static int iExecutionCount { get; set; } = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerExtension.ExecutionCount", 0);
-        public static bool IsLoadSaz { get; set; } = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
-        public static bool ColumnsAllEnabled { get; set; } = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ColumnsEnableAll", true);
+        public static Task<bool> SetDefaultPreferences()
+        {
+            ExtensionEnabled = true;
+            AppLoggingEnabled = true;
+            HighlightOutlookOWAOnlyEnabled = true;
+            IsLoadSaz = false;
+            //ColumnsAllEnabled = true;
+
+            FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
+
+            return Task.FromResult(true);
+        }
+
+
+        public static string AppVersion
+        {
+            get
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+
+                FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+                return fileVersionInfo.FileVersion;
+            }
+        }
+
+        private static bool _extensionEnabled;
+        public static bool ExtensionEnabled
+        {
+            get => _extensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", true);
+            set  { _extensionEnabled = value; FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", value); }
+        }
+
+        private static bool _appLoggingEnabled;
+        public static bool AppLoggingEnabled
+        {
+            get => _appLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", true);
+            set { _appLoggingEnabled = value; FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", value); }
+        }
+
+        private static bool _highlightOutlookOWAOnlyEnabled;
+        public static bool HighlightOutlookOWAOnlyEnabled
+        {
+            get => _highlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", true);
+            set { _highlightOutlookOWAOnlyEnabled = value; FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", value); }
+        }
+
+        private static bool _isLoadSaz;
+        public static bool IsLoadSaz
+        {
+            get => _isLoadSaz = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.LoadSaz", false);
+            set { _isLoadSaz = value; FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.LoadSaz", value); }
+        }
+
+        //private static bool _columnsAllEnabled;
+        //public static bool ColumnsAllEnabled
+        //{
+        //    get => _columnsAllEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", _columnsAllEnabled);
+        //    set { _columnsAllEnabled = value; FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", value); }
+        //}
+
+        private static Int32 _executionCount;
+        public static Int32 ExecutionCount
+        {
+            get => _executionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
+            set { _executionCount = value; FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", value); }
+        }
 
     }
 }

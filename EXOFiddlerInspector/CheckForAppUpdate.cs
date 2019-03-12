@@ -9,11 +9,10 @@ namespace EXOFiddlerInspector
 {
     class CheckForAppUpdate
     {
-        public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
-        public Boolean bLoadSaz = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
-        public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", false);
+        public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", false);
+        public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", false);
 
-       
+
 
         /////////////////
         //
@@ -40,26 +39,26 @@ namespace EXOFiddlerInspector
                 string elementName = "";
                 if ((reader.NodeType == XmlNodeType.Element) && reader.Name == "EXOFiddlerInspector")
                 {
-                while (reader.Read())
-                    if (reader.NodeType == XmlNodeType.Element)
-                    {
-                        elementName = reader.Name;
-                    }
-                    else
-                    {
-                        if ((reader.NodeType == XmlNodeType.Text) && reader.HasValue)
+                    while (reader.Read())
+                        if (reader.NodeType == XmlNodeType.Element)
                         {
-                            switch (elementName)
+                            elementName = reader.Name;
+                        }
+                        else
+                        {
+                            if ((reader.NodeType == XmlNodeType.Text) && reader.HasValue)
                             {
-                                case "version":
-                                    newVersion = new Version(reader.Value);
-                                    break;
-                                case "url":
-                                    downloadUrl = reader.Value;
-                                    break;
+                                switch (elementName)
+                                {
+                                    case "version":
+                                        newVersion = new Version(reader.Value);
+                                        break;
+                                    case "url":
+                                        downloadUrl = reader.Value;
+                                        break;
+                                }
                             }
                         }
-                    }
                 }
             }
             catch (Exception ex)
@@ -82,15 +81,15 @@ namespace EXOFiddlerInspector
 
             if (applicationVersion.CompareTo(newVersion) < 0)
             {
-   
+
                 Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : Update Available.");
-                FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.MenuTitle", "Exchange Online (Update Available)");
+                FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerInspector.MenuTitle", "Exchange Online (Update Available)");
 
                 /// <remarks>
                 /// Refresh the value of ManualCheckForUpdate and respond with feedback if needed.
                 /// </remarks>
 
-                Boolean ManualCheckForUpdateFeedback = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
+                Boolean ManualCheckForUpdateFeedback = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ManualCheckForUpdate", false);
 
                 // Regardless of extension enabled or not, give the user feedback when they click the 'Check For Update' menu item if no update is available.
                 if (ManualCheckForUpdateFeedback)
@@ -124,7 +123,7 @@ namespace EXOFiddlerInspector
                         }
                     }
                     // return this perference back to false, so we don't give this feedback unintentionally.
-                    FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
+                    FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ManualCheckForUpdate", false);
                 }
             }
             else
@@ -134,7 +133,7 @@ namespace EXOFiddlerInspector
                 /// </remarks>
                 /// 
                 Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : No update available.");
-                FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.MenuTitle", "Exchange Online");
+                FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerInspector.MenuTitle", "Exchange Online");
 
                 if (bAppLoggingEnabled)
                 {
@@ -144,15 +143,15 @@ namespace EXOFiddlerInspector
                 /// <remarks>
                 /// Refresh the value of ManualCheckForUpdate and respond with feedback if needed.
                 /// </remarks>
-                
-                Boolean ManualCheckForUpdateFeedback = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
+
+                Boolean ManualCheckForUpdateFeedback = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.ManualCheckForUpdate", false);
 
                 // Regardless of extension enabled or not, give the user feedback when they click the 'Check For Update' menu item if no update is available.
                 if (ManualCheckForUpdateFeedback)
                 {
                     MessageBox.Show("EXOFiddlerExtention: You already have the latest version installed.", "EXO Fiddler Extension");
                     // return this perference back to false, so we don't give this feedback unintentionally.
-                    FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
+                    FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ManualCheckForUpdate", false);
                 }
             }
 
@@ -161,7 +160,7 @@ namespace EXOFiddlerInspector
             /// </remarks>
             if (Preferences.GetDeveloperMode())
             {
-                FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.MenuTitle", "Exchange Online (Update Available!)");
+                FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerInspector.MenuTitle", "Exchange Online (Update Available!)");
             }
             Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : CheckForUpdate done.");
         }

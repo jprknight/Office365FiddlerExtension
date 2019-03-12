@@ -39,13 +39,8 @@ namespace EXOFiddlerInspector.Services
         /// <returns>Bool</returns>
         public static async Task InitializeAsync()
         {
-            if (Preferences.IsDeveloper())
+            if (!IsInitialized)
             {
-                return;
-            }
-
-            else if (!IsInitialized)
-            {               
                 try
                 {
                     ExceptionCounter = 0;
@@ -62,7 +57,7 @@ namespace EXOFiddlerInspector.Services
 
                     Client.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
 
-                    Client.Context.Component.Version = ActivationService.GetAppVersion();
+                    Client.Context.Component.Version = Preferences.AppVersion;
 
                     TrackEvent("UserSession");
 
@@ -71,7 +66,7 @@ namespace EXOFiddlerInspector.Services
                 catch
                 {
                     // TODO add exception logic
-                }              
+                }
             }
         }
 
@@ -89,13 +84,13 @@ namespace EXOFiddlerInspector.Services
                     Client.TrackEvent(_value);
 
                     await FlushClientAsync();
-                }                
+                }
             }
             catch
             {
                 // swallow exception and if 5 exceptions, disable telemetry.
                 ExceptionCounter++;
-            }            
+            }
         }
 
         public async static Task FlushClientAsync()
@@ -117,7 +112,7 @@ namespace EXOFiddlerInspector.Services
         private async static Task<bool> GetClientStatus()
         {
             bool results = false;
-            if(ExceptionCounter <= 4)
+            if (ExceptionCounter <= 4)
             {
                 results = true;
             }
@@ -137,14 +132,14 @@ namespace EXOFiddlerInspector.Services
             string userName = null;
             try
             {
-                    ManagementObjectSearcher query = new ManagementObjectSearcher("SELECT * FROM Win32_BaseBoard");
+                ManagementObjectSearcher query = new ManagementObjectSearcher("SELECT * FROM Win32_BaseBoard");
 
-                    ManagementObjectCollection _managementObjects = query.Get();
+                ManagementObjectCollection _managementObjects = query.Get();
 
-                    foreach (ManagementObject mgmtObject in _managementObjects)
-                    {
-                        userName = CreateMD5((string)mgmtObject["SerialNumber"]);
-                    }
+                foreach (ManagementObject mgmtObject in _managementObjects)
+                {
+                    userName = CreateMD5((string)mgmtObject["SerialNumber"]);
+                }
             }
             catch
             {

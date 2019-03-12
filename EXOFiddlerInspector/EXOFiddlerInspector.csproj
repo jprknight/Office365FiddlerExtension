@@ -52,11 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Inspectors\EXOResponseInspector.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="CheckForAppUpdate.cs" />
     <Compile Include="SessionProcessor.cs" />
-    <Compile Include="ColumnsUI.cs" />
     <Compile Include="Inspectors\EXOInspector.cs" />
     <Compile Include="MenuUI.cs" />
     <Compile Include="Services\Preferences.cs" />
@@ -71,22 +69,21 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="UI\EXOResponseControl.cs">
+    <Compile Include="UI\ExchangeResponseControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\EXOResponseControl.Designer.cs">
-      <DependentUpon>EXOResponseControl.cs</DependentUpon>
+    <Compile Include="UI\ExchangeResponseControl.Designer.cs">
+      <DependentUpon>ExchangeResponseControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\TelemetryService.cs" />
-    <Compile Include="SessionRuleSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\EXOResponseControl.resx">
-      <DependentUpon>EXOResponseControl.cs</DependentUpon>
+    <EmbeddedResource Include="UI\ExchangeResponseControl.resx">
+      <DependentUpon>ExchangeResponseControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -107,13 +104,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "%25userprofile%25\AppData\Local\Programs\Fiddler\Scripts\$(TargetFilename)"
-copy "$(TargetPath)" "%25userprofile%25\AppData\Local\Programs\Fiddler\Inspectors\$(TargetFilename)"
-
-copy "$(TargetDir)\Microsoft.ApplicationInsights.dll" "%25userprofile%25\AppData\Local\Programs\Fiddler\Scripts\Microsoft.ApplicationInsights.dll"
-copy "$(TargetDir)\Microsoft.ApplicationInsights.xml" "%25userprofile%25\AppData\Local\Programs\Fiddler\Scripts\Microsoft.ApplicationInsights.xml"
-
-copy "$(TargetDir)\Microsoft.ApplicationInsights.dll" "%25userprofile%25\AppData\Local\Programs\Fiddler\Inspectors\Microsoft.ApplicationInsights.dll"
-copy "$(TargetDir)\Microsoft.ApplicationInsights.xml" "%25userprofile%25\AppData\Local\Programs\Fiddler\Inspectors\Microsoft.ApplicationInsights.xml"</PostBuildEvent>
+    <PostBuildEvent>xcopy /y /s "$(TargetDir)*.*" "%25userprofile%25\AppData\Local\Programs\Fiddler\Scripts"
+xcopy /y /s "$(TargetDir)*.*" "%25userprofile%25\AppData\Local\Programs\Fiddler\Inspectors"</PostBuildEvent>
   </PropertyGroup>
 </Project>
