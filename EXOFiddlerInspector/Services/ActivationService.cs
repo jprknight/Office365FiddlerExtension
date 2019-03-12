@@ -20,9 +20,15 @@ namespace EXOFiddlerInspector.Services
         /// </summary>
         public async void OnLoad()
         {
-            await Preferences.SetDefaultPreferences();
+            //FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
+            if (Preferences.ExecutionCount == 0)
+            {
+                await Preferences.SetDefaultPreferences();
+            }
+
+
+
             MenuUI.Instance.Initialize();
-            SessionProcessor.Instance.Initialize();
 
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 150, "X-ExchangeType");
@@ -34,13 +40,12 @@ namespace EXOFiddlerInspector.Services
             // Throw a message box to alert demo mode is running.
             if (Preferences.GetDeveloperMode())
             {
-               // MessageBox.Show("Developer / Demo mode is running!");
+                MessageBox.Show("Developer / Demo mode is running!");
             }
             else
             {
                 await TelemetryService.InitializeAsync();
             }
-
         }
 
         public async void OnBeforeUnload()
@@ -105,7 +110,7 @@ namespace EXOFiddlerInspector.Services
                 FiddlerApplication.UI.lvSessions.BeginUpdate();
 
                 // Only on LoadSAZ add all the columns.
-                if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))
+                if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.LoadSaz", false))
                 {
                     FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
                     FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 0, 130, "X-ResponseServer");

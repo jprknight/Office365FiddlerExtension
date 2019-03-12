@@ -57,12 +57,10 @@ namespace EXOFiddlerInspector
             /// 
             if (!IsInitialized)
             {
-                await Preferences.SetDefaultPreferences();
 
                 this.ExchangeOnlineTopMenu = new MenuItem(TopMenuText);
 
-                this.miEnabled = new MenuItem(ExtensionEnabled, new EventHandler(this.miEnabled_Click));
-                this.miEnabled.Checked = Preferences.ExtensionEnabled;
+                this.miEnabled = new MenuItem(ExtensionEnabled, new EventHandler(this.miEnabled_Click));               
                 this.miEnabled.Index = 0;
 
                 this.miSeperator1 = new MenuItem("-");
@@ -115,6 +113,8 @@ namespace EXOFiddlerInspector
             });
 
                 FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExchangeOnlineTopMenu);
+
+                this.miEnabled.Checked = Preferences.ExtensionEnabled;
 
                 IsInitialized = true;
             }

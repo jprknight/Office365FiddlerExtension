@@ -42,7 +42,7 @@ namespace EXOFiddlerInspector.Services
             IsLoadSaz = false;
             //ColumnsAllEnabled = true;
 
-            FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
+            FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 1);
 
             return Task.FromResult(true);
         }
