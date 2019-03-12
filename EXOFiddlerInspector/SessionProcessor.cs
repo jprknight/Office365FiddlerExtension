@@ -156,8 +156,8 @@ namespace EXOFiddlerInspector
                 this.session["ui-backcolor"] = HTMLColourRed;
                 this.session["ui-color"] = "black";
 
-                this.session["X-ResponseAlertTextBox"] = "Apache is answering Autodiscover requests!";
-                this.session["X-ResponseCommentsRichTextboxText"] = "An Apache Web Server(Unix/Linux) is answering Autodiscover requests!" +
+                this.session["X-ResponseAlert"] = "Apache is answering Autodiscover requests!";
+                this.session["X-ResponseComments"] = "An Apache Web Server(Unix/Linux) is answering Autodiscover requests!" +
                     Environment.NewLine +
                     "This should not be happening. Consider disabling Root Domain Autodiscover lookups." +
                     Environment.NewLine +
@@ -190,8 +190,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-ExchangeType"] = "!NO RESPONSE!";
 
-                        this.session["X-ResponseAlertTextBox"] = "!HTTP 0 No Response!";
-                        this.session["X-ResponseCommentsRichTextboxText"] = (Properties.Settings.Default.HTTPQuantity);
+                        this.session["X-ResponseAlert"] = "!HTTP 0 No Response!";
+                        this.session["X-ResponseComments"] = (Properties.Settings.Default.HTTPQuantity);
 
                         if (Preferences.AppLoggingEnabled)
                         {
@@ -219,8 +219,8 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourGreen;
                             this.session["ui-color"] = "black";
 
-                            this.session["X-ResponseAlertTextBox"] = "Connect Tunnel";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "Encrypted HTTPS traffic flows through this CONNECT tunnel. " +
+                            this.session["X-ResponseAlert"] = "Connect Tunnel";
+                            this.session["X-ResponseComments"] = "Encrypted HTTPS traffic flows through this CONNECT tunnel. " +
                                 "HTTPS Decryption is enabled in Fiddler, so decrypted sessions running in this tunnel will be shown in the Web Sessions list.";
 
                             HTTP200SkipLogic++;
@@ -276,8 +276,8 @@ namespace EXOFiddlerInspector
                                 this.session["ui-color"] = "black";
                                 this.session["X-ExchangeType"] = "On-Prem AutoD Redirect";
 
-                                this.session["X-ResponseAlertTextBox"] = "Exchange On-Premise Autodiscover redirect.";
-                                this.session["X-ResponseCommentsRichTextboxText"] = "Exchange On-Premise Autodiscover redirect address to Exchange Online found." +
+                                this.session["X-ResponseAlert"] = "Exchange On-Premise Autodiscover redirect.";
+                                this.session["X-ResponseComments"] = "Exchange On-Premise Autodiscover redirect address to Exchange Online found." +
                                     Environment.NewLine +
                                     Environment.NewLine +
                                     "RedirectAddress: " + RedirectAddress +
@@ -301,8 +301,8 @@ namespace EXOFiddlerInspector
                                 this.session["ui-color"] = "black";
                                 this.session["X-ExchangeType"] = "!AUTOD REDIRECT ADDR!";
 
-                                this.session["X-ResponseAlertTextBox"] = "!Exchange On-Premise Autodiscover redirect!";
-                                this.session["X-ResponseCommentsRichTextboxText"] = "Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." +
+                                this.session["X-ResponseAlert"] = "!Exchange On-Premise Autodiscover redirect!";
+                                this.session["X-ResponseComments"] = "Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." +
                                     Environment.NewLine +
                                     Environment.NewLine +
                                     "RedirectAddress: " + RedirectAddress +
@@ -343,8 +343,8 @@ namespace EXOFiddlerInspector
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "!NO AUTOD REDIRECT ADDR!";
 
-                            this.session["X-ResponseAlertTextBox"] = "!Exchange On-Premise Autodiscover redirect: Error Code 500!";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "Exchange On-Premise Autodiscover redirect address can't be found. "
+                            this.session["X-ResponseAlert"] = "!Exchange On-Premise Autodiscover redirect: Error Code 500!";
+                            this.session["X-ResponseComments"] = "Exchange On-Premise Autodiscover redirect address can't be found. "
                                 + "Look for other On-Premise Autodiscover responses, we may have a " +
                                 "valid Autodiscover targetAddress from On-Premise in another session in this trace.";
 
@@ -382,8 +382,8 @@ namespace EXOFiddlerInspector
                                 this.session["ui-backcolor"] = HTMLColourGreen;
                                 this.session["ui-color"] = "black";
 
-                                this.session["X-ResponseAlertTextBox"] = "Exchange Online Autodiscover";
-                                this.session["X-ResponseCommentsRichTextboxText"] = "Exchange Online Autodiscover.";
+                                this.session["X-ResponseAlert"] = "Exchange Online Autodiscover";
+                                this.session["X-ResponseComments"] = "Exchange Online Autodiscover.";
 
                                 // Don't use skip logic here, we want to dig deeper and see if there are errors, failures, or exceptions.
                                 //HTTP200SkipLogic++;
@@ -399,8 +399,8 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourGreen;
                             this.session["ui-color"] = "black";
 
-                            this.session["X-ResponseAlertTextBox"] = "Outlook for Windows MAPI traffic";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "Outlook for Windows MAPI traffic.";
+                            this.session["X-ResponseAlert"] = "Outlook for Windows MAPI traffic";
+                            this.session["X-ResponseComments"] = "Outlook for Windows MAPI traffic.";
 
                             // Increment HTTP200SkipLogic so that 99 does not run below.
                             HTTP200SkipLogic++;
@@ -421,8 +421,8 @@ namespace EXOFiddlerInspector
                                 this.session["ui-color"] = "black";
                                 this.session["X-ExchangeType"] = "EWS GetUnifiedGroupsSettings";
 
-                                this.session["X-ResponseAlertTextBox"] = "GetUnifiedGroupsSettings EWS call.";
-                                this.session["X-ResponseCommentsRichTextboxText"] = "<GroupCreationEnabled>true</GroupCreationEnabled> found in response body. " +
+                                this.session["X-ResponseAlert"] = "GetUnifiedGroupsSettings EWS call.";
+                                this.session["X-ResponseComments"] = "<GroupCreationEnabled>true</GroupCreationEnabled> found in response body. " +
                                     "Expect user to be able to create Office 365 groups in Outlook.";
 
                                 HTTP200SkipLogic++;
@@ -434,8 +434,8 @@ namespace EXOFiddlerInspector
                                 this.session["ui-color"] = "black";
                                 this.session["X-ExchangeType"] = "EWS GetUnifiedGroupsSettings";
 
-                                this.session["X-ResponseAlertTextBox"] = "GetUnifiedGroupsSettings EWS call!";
-                                this.session["X-ResponseCommentsRichTextboxText"] = "<GroupCreationEnabled>false</GroupCreationEnabled> found in response body. " +
+                                this.session["X-ResponseAlert"] = "GetUnifiedGroupsSettings EWS call!";
+                                this.session["X-ResponseComments"] = "<GroupCreationEnabled>false</GroupCreationEnabled> found in response body. " +
                                     "Expect user to NOT be able to create Office 365 groups in Outlook.";
 
                                 HTTP200SkipLogic++;
@@ -447,8 +447,8 @@ namespace EXOFiddlerInspector
                                 this.session["ui-color"] = "black";
                                 this.session["X-ExchangeType"] = "!EWS GetUnifiedGroupsSettings!";
 
-                                this.session["X-ResponseAlertTextBox"] = "!GetUnifiedGroupsSettings EWS call!";
-                                this.session["X-ResponseCommentsRichTextboxText"] = "Though GetUnifiedGroupsSettings scenario was detected neither <GroupCreationEnabled>true</GroupCreationEnabled> or" +
+                                this.session["X-ResponseAlert"] = "!GetUnifiedGroupsSettings EWS call!";
+                                this.session["X-ResponseComments"] = "Though GetUnifiedGroupsSettings scenario was detected neither <GroupCreationEnabled>true</GroupCreationEnabled> or" +
                                     "<GroupCreationEnabled>false</GroupCreationEnabled> was found in the response body. Check the Raw tab for more details.";
 
                                 // Do not do HTTP200SkipLogic here, expected response not found. Run keyword search on response for deeper inpsection of response.
@@ -543,8 +543,8 @@ namespace EXOFiddlerInspector
                                     this.session["ui-color"] = "red";
                                     this.session["X-ExchangeType"] = "!FAILURE LURKING!";
 
-                                    this.session["X-ResponseAlertTextBox"] = "!'error', 'failed' or 'exception' found in respone body!";
-                                    this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 200: Errors or failures found in response body. " +
+                                    this.session["X-ResponseAlert"] = "!'error', 'failed' or 'exception' found in respone body!";
+                                    this.session["X-ResponseComments"] = "HTTP 200: Errors or failures found in response body. " +
                                         "Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review." +
                                         Environment.NewLine +
                                         Environment.NewLine +
@@ -568,8 +568,8 @@ namespace EXOFiddlerInspector
                                     this.session["ui-backcolor"] = HTMLColourGreen;
                                     this.session["ui-color"] = "black";
 
-                                    this.session["X-ResponseAlertTextBox"] = "No failures keywords detected in respone body.";
-                                    this.session["X-ResponseCommentsRichTextboxText"] = "No failures keywords ('error', 'failed' or 'exception') detected in respone body.";
+                                    this.session["X-ResponseAlert"] = "No failures keywords detected in respone body.";
+                                    this.session["X-ResponseComments"] = "No failures keywords ('error', 'failed' or 'exception') detected in respone body.";
                                 }
                             }
                             // HTTP200SkipLogic is >= 1 or HTTP200FreeBusy is 0.
@@ -582,8 +582,8 @@ namespace EXOFiddlerInspector
                                     this.session["ui-backcolor"] = "Yellow";
                                     this.session["ui-color"] = "black";
 
-                                    this.session["X-ResponseAlertTextBox"] = "Undefined";
-                                    this.session["X-ResponseCommentsRichTextboxText"] = "Undefined";
+                                    this.session["X-ResponseAlert"] = "Undefined";
+                                    this.session["X-ResponseComments"] = "Undefined";
 
                                     if (Preferences.AppLoggingEnabled)
                                     {
@@ -603,8 +603,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-backcolor"] = HTMLColourGreen;
                         this.session["ui-color"] = "black";
 
-                        this.session["X-ResponseAlertTextBox"] = "HTTP 201 Created.";
-                        this.session["X-ResponseCommentsRichTextboxText"] = "Not expecting this to be anything which needs attention for troubleshooting.";
+                        this.session["X-ResponseAlert"] = "HTTP 201 Created.";
+                        this.session["X-ResponseComments"] = "Not expecting this to be anything which needs attention for troubleshooting.";
 
                         if (Preferences.AppLoggingEnabled)
                         {
@@ -622,8 +622,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
 
-                        this.session["X-ResponseAlertTextBox"] = "HTTP 204 No Content.";
-                        this.session["X-ResponseCommentsRichTextboxText"] = Properties.Settings.Default.HTTPQuantity;
+                        this.session["X-ResponseAlert"] = "HTTP 204 No Content.";
+                        this.session["X-ResponseComments"] = Properties.Settings.Default.HTTPQuantity;
 
                         if (Preferences.AppLoggingEnabled)
                         {
@@ -643,8 +643,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-backcolor"] = HTMLColourGreen;
                         this.session["ui-color"] = "black";
 
-                        this.session["X-ResponseAlertTextBox"] = "HTTP 301 Moved Permanently";
-                        this.session["X-ResponseCommentsRichTextboxText"] = "Nothing of concern here at this time.";
+                        this.session["X-ResponseAlert"] = "HTTP 301 Moved Permanently";
+                        this.session["X-ResponseComments"] = "Nothing of concern here at this time.";
 
                         if (Preferences.AppLoggingEnabled)
                         {
@@ -661,8 +661,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-backcolor"] = HTMLColourGreen;
                         this.session["ui-color"] = "black";
 
-                        this.session["X-ResponseAlertTextBox"] = "Exchange On-Premise Autodiscover redirect to Exchange Online.";
-                        this.session["X-ResponseCommentsRichTextboxText"] = "Exchange On-Premise Autodiscover redirect to Exchange Online.";
+                        this.session["X-ResponseAlert"] = "Exchange On-Premise Autodiscover redirect to Exchange Online.";
+                        this.session["X-ResponseComments"] = "Exchange On-Premise Autodiscover redirect to Exchange Online.";
 
                         if (Preferences.AppLoggingEnabled)
                         {
@@ -679,8 +679,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-backcolor"] = HTMLColourGreen;
                         this.session["ui-color"] = "black";
 
-                        this.session["X-ResponseAlertTextBox"] = "HTTP 304 Not Modified";
-                        this.session["X-ResponseCommentsRichTextboxText"] = "Nothing of concern here at this time.";
+                        this.session["X-ResponseAlert"] = "HTTP 304 Not Modified";
+                        this.session["X-ResponseComments"] = "Nothing of concern here at this time.";
 
                         if (Preferences.AppLoggingEnabled)
                         {
@@ -707,8 +707,8 @@ namespace EXOFiddlerInspector
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "!UNEXPECTED LOCATION!";
 
-                            this.session["X-ResponseAlertTextBox"] = "!HTTP 307 Temporary Redirect!";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 307: Temporary Redirects have been seen to redirect Exchange Online Autodiscover " +
+                            this.session["X-ResponseAlert"] = "!HTTP 307 Temporary Redirect!";
+                            this.session["X-ResponseComments"] = "HTTP 307: Temporary Redirects have been seen to redirect Exchange Online Autodiscover " +
                                 "calls back to On-Premise resources, breaking Outlook connectivity." + Environment.NewLine +
                                 "This session has enough data points to be an Autodiscover request for Exchange Online which has not been sent to " +
                                 "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml as expected." + Environment.NewLine +
@@ -726,8 +726,8 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourOrange;
                             this.session["ui-color"] = "black";
 
-                            this.session["X-ResponseAlertTextBox"] = "HTTP 307 Temporary Redirect";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 307: Temporary Redirects have been seen to redirect Exchange Online Autodiscover calls " +
+                            this.session["X-ResponseAlert"] = "HTTP 307 Temporary Redirect";
+                            this.session["X-ResponseComments"] = "HTTP 307: Temporary Redirects have been seen to redirect Exchange Online Autodiscover calls " +
                                 "back to On-Premise resources, breaking Outlook connectivity. " +
                                 Environment.NewLine +
                                 "Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place. " +
@@ -755,8 +755,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-ExchangeType"] = "Auth Challenge";
 
-                        this.session["X-ResponseAlertTextBox"] = "HTTP 401 Unauthorized";
-                        this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 401: Unauthorized / Authentication Challenge. These are expected and are not an issue as long as a subsequent " +
+                        this.session["X-ResponseAlert"] = "HTTP 401 Unauthorized";
+                        this.session["X-ResponseComments"] = "HTTP 401: Unauthorized / Authentication Challenge. These are expected and are not an issue as long as a subsequent " +
                             "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. " +
                             Environment.NewLine +
                             Environment.NewLine +
@@ -782,8 +782,8 @@ namespace EXOFiddlerInspector
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "!WEB PROXY BLOCK!";
 
-                            this.session["X-ResponseAlertTextBox"] = "!HTTP 403 Access Denied!";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 403: Forbidden. Is your firewall or web proxy blocking Outlook connectivity? " + Environment.NewLine +
+                            this.session["X-ResponseAlert"] = "!HTTP 403 Access Denied!";
+                            this.session["X-ResponseComments"] = "HTTP 403: Forbidden. Is your firewall or web proxy blocking Outlook connectivity? " + Environment.NewLine +
                                 "To fire this message a HTTP 403 response code was detected and 'Access Denied' was found in the response body." + Environment.NewLine +
                                 "Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked?";
 
@@ -798,8 +798,8 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
 
-                            this.session["X-ResponseAlertTextBox"] = "!HTTP 403 Forbidden!";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "While HTTP 403's can be symptomatic of a proxy server blocking traffic, " +
+                            this.session["X-ResponseAlert"] = "!HTTP 403 Forbidden!";
+                            this.session["X-ResponseComments"] = "While HTTP 403's can be symptomatic of a proxy server blocking traffic, " +
                                 "however the phrase 'Access Denied' was NOT detected in the response body." +
                                 Environment.NewLine +
                                 Environment.NewLine +
@@ -827,8 +827,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
 
-                        this.session["X-ResponseAlertTextBox"] = "!HTTP 404 Not Found!";
-                        this.session["X-ResponseCommentsRichTextboxText"] = Properties.Settings.Default.HTTPQuantity;
+                        this.session["X-ResponseAlert"] = "!HTTP 404 Not Found!";
+                        this.session["X-ResponseComments"] = Properties.Settings.Default.HTTPQuantity;
 
                         if (Preferences.AppLoggingEnabled)
                         {
@@ -845,8 +845,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
 
-                        this.session["X-ResponseAlertTextBox"] = "!HTTP 405: Method Not Allowed!";
-                        this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 405: Method Not Allowed";
+                        this.session["X-ResponseAlert"] = "!HTTP 405: Method Not Allowed!";
+                        this.session["X-ResponseComments"] = "HTTP 405: Method Not Allowed";
 
                         if (Preferences.AppLoggingEnabled)
                         {
@@ -863,8 +863,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
 
-                        this.session["X-ResponseAlertTextBox"] = "!HTTP 429 Too Many Requests!";
-                        this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 429: These responses need to be taken into context with the rest of the sessions in the trace. " +
+                        this.session["X-ResponseAlert"] = "!HTTP 429 Too Many Requests!";
+                        this.session["X-ResponseComments"] = "HTTP 429: These responses need to be taken into context with the rest of the sessions in the trace. " +
                             "A small number is probably not an issue, larger numbers of these could be cause for concern.";
 
                         if (Preferences.AppLoggingEnabled)
@@ -903,8 +903,8 @@ namespace EXOFiddlerInspector
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "!Multi-Factor Auth!";
 
-                            this.session["X-ResponseAlertTextBox"] = "HTTP 456 Multi-Factor Authentication";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 429: See details on Raw tab. Look for the presence of 'you must use multi-factor authentication'." +
+                            this.session["X-ResponseAlert"] = "HTTP 456 Multi-Factor Authentication";
+                            this.session["X-ResponseComments"] = "HTTP 429: See details on Raw tab. Look for the presence of 'you must use multi-factor authentication'." +
                                 Environment.NewLine +
                                 Environment.NewLine +
                                 "This has been seen where users have MFA enabled/enforced, but Modern Authentication is not enabled in Exchange Online" +
@@ -923,8 +923,8 @@ namespace EXOFiddlerInspector
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "Multi-Factor Auth?";
 
-                            this.session["X-ResponseAlertTextBox"] = "!HTTP 456 Multi-Factor Authentication!";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 429: See details on Raw tab.";
+                            this.session["X-ResponseAlert"] = "!HTTP 456 Multi-Factor Authentication!";
+                            this.session["X-ResponseComments"] = "HTTP 429: See details on Raw tab.";
 
                             if (Preferences.AppLoggingEnabled)
                             {
@@ -948,8 +948,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
 
-                        this.session["X-ResponseAlertTextBox"] = "!HTTP 500 Internal Server Error!";
-                        this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 500 Internal Server Error";
+                        this.session["X-ResponseAlert"] = "!HTTP 500 Internal Server Error!";
+                        this.session["X-ResponseComments"] = "HTTP 500 Internal Server Error";
 
                         if (Preferences.AppLoggingEnabled)
                         {
@@ -994,8 +994,8 @@ namespace EXOFiddlerInspector
                             // Increment false positive count to prevent long running session overrides.
                             FalsePositive++;
 
-                            this.session["X-ResponseAlertTextBox"] = "False Positive";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "Telemetry failing is unlikely the cause of Outlook / OWA connectivity or other issues.";
+                            this.session["X-ResponseAlert"] = "False Positive";
+                            this.session["X-ResponseComments"] = "Telemetry failing is unlikely the cause of Outlook / OWA connectivity or other issues.";
 
                             if (Preferences.AppLoggingEnabled)
                             {
@@ -1020,8 +1020,8 @@ namespace EXOFiddlerInspector
                             // Increment false positive count to prevent long running session overrides.
                             FalsePositive++;
 
-                            this.session["X-ResponseAlertTextBox"] = "False Positive";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "From the data in the response body this failure is likely due to a Microsoft DNS MX record " +
+                            this.session["X-ResponseAlert"] = "False Positive";
+                            this.session["X-ResponseComments"] = "From the data in the response body this failure is likely due to a Microsoft DNS MX record " +
                                 Environment.NewLine +
                                 "which points to an Exchange Online Protection mail host that accepts connections only on port 25. Connection on port 443 will not work by design." +
                                 Environment.NewLine +
@@ -1058,8 +1058,8 @@ namespace EXOFiddlerInspector
                             int charcount = end - start;
                             string AutoDFalsePositiveDomain = AutoDFalsePositiveResponseBody.Substring(start, charcount).Replace("'", "");
 
-                            this.session["X-ResponseAlertTextBox"] = "False Positive";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 502: False Positive. By design Office 365 Autodiscover does not respond to " +
+                            this.session["X-ResponseAlert"] = "False Positive";
+                            this.session["X-ResponseComments"] = "HTTP 502: False Positive. By design Office 365 Autodiscover does not respond to " +
                                 AutoDFalsePositiveDomain + " on port 443. " +
                                 Environment.NewLine +
                                 Environment.NewLine +
@@ -1103,8 +1103,8 @@ namespace EXOFiddlerInspector
                             // Increment false positive count to prevent long running session overrides.
                             FalsePositive++;
 
-                            this.session["X-ResponseAlertTextBox"] = "Office 365 Autodiscover False Positive";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 502: False Positive. By design Office 365 certain IP addresses used for " +
+                            this.session["X-ResponseAlert"] = "Office 365 Autodiscover False Positive";
+                            this.session["X-ResponseComments"] = "HTTP 502: False Positive. By design Office 365 certain IP addresses used for " +
                                 "Autodiscover do not respond on port 443. " +
                                 Environment.NewLine +
                                 Environment.NewLine +
@@ -1132,8 +1132,8 @@ namespace EXOFiddlerInspector
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "!AUTODISCOVER!";
 
-                            this.session["X-ResponseAlertTextBox"] = "!AUTODISCOVER!";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "Autodiscover request detected, which failed.";
+                            this.session["X-ResponseAlert"] = "!AUTODISCOVER!";
+                            this.session["X-ResponseComments"] = "Autodiscover request detected, which failed.";
 
                             if (Preferences.AppLoggingEnabled)
                             {
@@ -1151,8 +1151,8 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
 
-                            this.session["X-ResponseAlertTextBox"] = "!HTTP 502 Bad Gateway!";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "Potential to cause the issue you are investigating. " +
+                            this.session["X-ResponseAlert"] = "!HTTP 502 Bad Gateway!";
+                            this.session["X-ResponseComments"] = "Potential to cause the issue you are investigating. " +
                                 "Do you see expected responses beyond this session in the trace? Is this an Exchange On - Premise, Exchange Online or other device ?";
 
                             if (Preferences.AppLoggingEnabled)
@@ -1201,8 +1201,8 @@ namespace EXOFiddlerInspector
                                 RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=user@contoso.com&xml=1";
                             }
 
-                            this.session["X-ResponseAlertTextBox"] = "!FederatedSTSUnreachable!";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 503: FederatedSTSUnreachable." + Environment.NewLine +
+                            this.session["X-ResponseAlert"] = "!FederatedSTSUnreachable!";
+                            this.session["X-ResponseComments"] = "HTTP 503: FederatedSTSUnreachable." + Environment.NewLine +
                                 "The fedeation service is unreachable or unavailable. Check the Raw tab for additional details." + Environment.NewLine +
                                 "Check the realm page for the authenticating domain." + Environment.NewLine + RealmURL + Environment.NewLine + Environment.NewLine +
                                 "Expected responses:" + Environment.NewLine +
@@ -1226,8 +1226,8 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
 
-                            this.session["X-ResponseAlertTextBox"] = "!HTTP 503 Service Unavailable!";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "HTTP 503 Service Unavailable.";
+                            this.session["X-ResponseAlert"] = "!HTTP 503 Service Unavailable!";
+                            this.session["X-ResponseComments"] = "HTTP 503 Service Unavailable.";
 
                             if (Preferences.AppLoggingEnabled)
                             {
@@ -1253,8 +1253,8 @@ namespace EXOFiddlerInspector
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "!INTERNET BLOCKED!";
 
-                            this.session["X-ResponseAlertTextBox"] = "!HTTP 504 Gateway Timeout -- Internet Access Blocked!";
-                            this.session["X-ResponseCommentsRichTextboxText"] = "Detected the keywords 'internet' and 'access' and 'blocked'. Potentially the computer this trace was collected " +
+                            this.session["X-ResponseAlert"] = "!HTTP 504 Gateway Timeout -- Internet Access Blocked!";
+                            this.session["X-ResponseComments"] = "Detected the keywords 'internet' and 'access' and 'blocked'. Potentially the computer this trace was collected " +
                                 "from has been quaratined for internet access on the customer's network." + Environment.NewLine + Environment.NewLine +
                                 "Validate this by checking the webview and raw tabs for more information.";
 
@@ -1271,8 +1271,8 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
 
-                            this.session["X-ResponseAlertTextBox"] = "!HTTP 504 Gateway Timeout!";
-                            this.session["X-ResponseCommentsRichTextboxText"] = Properties.Settings.Default.HTTPQuantity;
+                            this.session["X-ResponseAlert"] = "!HTTP 504 Gateway Timeout!";
+                            this.session["X-ResponseComments"] = Properties.Settings.Default.HTTPQuantity;
 
                             if (Preferences.AppLoggingEnabled)
                             {
@@ -1293,8 +1293,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-ExchangeType"] = "Undefined";
 
-                        this.session["X-ResponseAlertTextBox"] = "Undefined.";
-                        this.session["X-ResponseCommentsRichTextboxText"] = "No specific information on this session in the EXO Fiddler Extension.";
+                        this.session["X-ResponseAlert"] = "Undefined.";
+                        this.session["X-ResponseComments"] = "No specific information on this session in the EXO Fiddler Extension.";
 
                         if (Preferences.AppLoggingEnabled)
                         {
@@ -1345,8 +1345,8 @@ namespace EXOFiddlerInspector
 
                 this.session["X-ExchangeType"] = "Long Running Session";
 
-                this.session["X-ResponseAlertTextBox"] = "!Long Running Session!";
-                this.session["X-ResponseCommentsRichTextboxText"] = "Long running session found. A small number of long running sessions in the < 10 " +
+                this.session["X-ResponseAlert"] = "!Long Running Session!";
+                this.session["X-ResponseComments"] = "Long running session found. A small number of long running sessions in the < 10 " +
                     "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue.";
 
                 if (Preferences.AppLoggingEnabled)
@@ -1363,8 +1363,8 @@ namespace EXOFiddlerInspector
 
                 this.session["X-ExchangeType"] = "Long Running EXO Session";
 
-                this.session["X-ResponseAlertTextBox"] = "!Long Running EXO Session!";
-                this.session["X-ResponseCommentsRichTextboxText"] = "Long running EXO session found. A small number of long running sessions in the < 10 " +
+                this.session["X-ResponseAlert"] = "!Long Running EXO Session!";
+                this.session["X-ResponseComments"] = "Long running EXO session found. A small number of long running sessions in the < 10 " +
                     "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue.";
 
                 if (Preferences.AppLoggingEnabled)

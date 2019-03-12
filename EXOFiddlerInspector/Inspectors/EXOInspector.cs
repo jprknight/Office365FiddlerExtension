@@ -227,139 +227,84 @@ namespace EXOFiddlerInspector.Inspectors
                 this.session.utilDecodeRequest(true);
                 this.session.utilDecodeResponse(true);
 
-                this.Clear();
+                //this.Clear();
+
+                ResultsString.AppendLine("General Session Data");
+                ResultsString.AppendLine("--------------------");
+                ResultsString.AppendLine();
 
                 // Write data into Exchange Type and session ID.
-                ResultsString.AppendLine($"Type: {this.session["X-ExchangeType"]}");
-                ResultsString.AppendLine($"SessionId: {this.session.id.ToString()}");
+                ResultsString.AppendLine($"Session Id: {this.session.id.ToString()}");
 
-                // Write HTTP Status Code Text box, convert int to string.
-                ResultsString.AppendLine($"ResponseCode: {this.session.responseCode.ToString()}");
+                ResultsString.AppendLine($"HTTP Response Code: {this.session.responseCode.ToString()}");
 
-                /// <remarks>
-                /// Client Begin and done response. -- Overall elapsed time.
-                /// </remarks>
+                // Write Data age data into textbox.
+                String TimeSpanDaysText = "";
+                String TimeSpanHoursText = "";
+                String TimeSpanMinutesText = "";
 
-                if (this.session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") != "0:00:00.000" || this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
+                DateTime SessionDateTime = this.session.Timers.ClientBeginRequest;
+                DateTime DateTimeNow = DateTime.Now;
+                TimeSpan CalcDataAge = DateTimeNow - SessionDateTime;
+                int TimeSpanDays = CalcDataAge.Days;
+                int TimeSpanHours = CalcDataAge.Hours;
+                int TimeSpanMinutes = CalcDataAge.Minutes;
+
+                if (TimeSpanDays == 0)
                 {
-                    ResultsString.AppendLine($"StartDate: {this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd")}");
-                    ResultsString.AppendLine($"StartTime: {this.session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff")}");
-
-                    ResultsString.AppendLine($"EndDate: {this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd")}");
-                    ResultsString.AppendLine($"EndTime: {this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff")}");
-
-                    double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
-
-                    ResultsString.AppendLine($"Elapsed: {ClientMilliseconds} ms");
-                    ResultsString.AppendLine();
-                    /// <remarks>
-                    /// Notify on slow running session with threshold pulled from Preferences.cs.
-                    /// </remarks>
-                    /// 
-                    int SlowRunningSessionThreshold = Preferences.GetSlowRunningSessionThreshold();
-
-                    if (ClientMilliseconds > SlowRunningSessionThreshold)
-                    {
-                        ResultsString.AppendLine("Long running session!");
-                        ResultsString.AppendLine("Found a long running session." +
-                            Environment.NewLine +
-                            Environment.NewLine +
-                            "What is Server Think Time? The time the server spent processing the request. (ServerBeginResponse - ServerGotRequest)." +
-                            Environment.NewLine +
-                            "The rest of the time is the time spent sending the response back to the client application which made the request." +
-                            Environment.NewLine +
-                            Environment.NewLine +
-                            "ClientBeginRequest == Fiddler is aware of when the traffic is initially passed to it as a proxy server." +
-                            Environment.NewLine +
-                            "ClientDoneRequest == Fiddler is aware of when it has finished sending the server response back to the application which made the request." +
-                            Environment.NewLine +
-                            "ServerGotRequest == Fiddler is aware of when the server received the request." +
-                            Environment.NewLine +
-                            "ServerBeginResponse == Fiddler is aware of when the server started to send the response." +
-                            Environment.NewLine +
-                            "ServerDoneResponse == Fiddler is aware of when it was was able to complete sending the server response back to the application which made the request.");
-
-                        ResultsString.AppendLine();
-
-                        if (Preferences.AppLoggingEnabled)
-                        {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Long running session.");
-                        }
-                    }
+                    // Do nothing.
+                }
+                else if (TimeSpanDays == 1)
+                {
+                    TimeSpanDaysText = TimeSpanDays + " day, ";
+                }
+                else
+                {
+                    TimeSpanDaysText = TimeSpanDays + " days, ";
                 }
 
-                /// <remarks>
-                /// Server Got and Done Response. -- Server Think Time.
-                /// </remarks>
-                /// 
-                if (this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff") != "0:00:00.000" ||
-                    this.session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff") != "0:00:00.000" ||
-                    this.session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
+                if (TimeSpanHours == 1)
                 {
-                    // Write Server data into textboxes.
-                    ResultsString.AppendLine($"Server StartDate: { this.session.Timers.ServerGotRequest.ToString("yyyy / MM / dd")}");
-                    ResultsString.AppendLine($"Server StartTime: { this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff")}");
-                    ResultsString.AppendLine($"Server BeginResponseDate: { this.session.Timers.ServerBeginResponse.ToString("yyyy/MM/dd")}");
-                    ResultsString.AppendLine($"Server BeginResponseTime: { this.session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff")}");
-                    ResultsString.AppendLine($"Server DoneResponseDate: {this.session.Timers.ServerDoneResponse.ToString("yyyy /MM/dd")}");
-                    ResultsString.AppendLine($"Seerver DoneResponseTime: {this.session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff")}");
-
-                    double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
-
-                    ResultsString.AppendLine($"ServerThinkTime: {ServerMilliseconds} ms");
-
-                    ResultsString.AppendLine($"TransitTime: { Math.Round((this.session.Timers.ServerDoneResponse - this.session.Timers.ServerBeginResponse).TotalMilliseconds)} ms");
-                    ResultsString.AppendLine();
-
-                    /// <remarks>
-                    /// Notify on slow running session with threshold pulled from Preferences.cs.
-                    /// </remarks>
-                    /// 
-                    int SlowRunningSessionThreshold = Preferences.GetSlowRunningSessionThreshold();
-
-                    if (ServerMilliseconds > SlowRunningSessionThreshold)
-                    {
-                        ResultsString.AppendLine("Long running EXO session!");
-                        ResultsString.AppendLine("Found a long running EXO session (> 5 seconds)." + Environment.NewLine +
-                            Environment.NewLine +
-                            "What is Server Think Time? The time the server spent processing the request. (ServerBeginResponse - ServerGotRequest)." +
-                            Environment.NewLine +
-                            "The rest of the time is the time spent sending the response back to the client application which made the request." +
-                            Environment.NewLine +
-                            Environment.NewLine +
-                            "ClientBeginRequest == Fiddler is aware of when the traffic is initially passed to it as a proxy server." +
-                            Environment.NewLine +
-                            "ClientDoneRequest == Fiddler is aware of when it has finished sending the server response back to the application which made the request." +
-                            Environment.NewLine +
-                            "ServerGotRequest == Fiddler is aware of when the server received the request." +
-                            Environment.NewLine +
-                            "ServerBeginResponse == Fiddler is aware of when the server started to send the response." +
-                            Environment.NewLine +
-                            "ServerDoneResponse == Fiddler is aware of when it was was able to complete sending the server response back to the application which made the request.");
-
-                        ResultsString.AppendLine();
-
-                        if (Preferences.AppLoggingEnabled)
-                        {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Long running EXO session.");
-                        }
-                    }
+                    TimeSpanHoursText = TimeSpanHours + " hour, ";
                 }
+                else
+                {
+                    TimeSpanHoursText = TimeSpanHours + " hours, ";
+                }
+
+                if (TimeSpanMinutes == 1)
+                {
+                    TimeSpanMinutesText = TimeSpanMinutes + " minute ago.";
+                }
+                else
+                {
+                    TimeSpanMinutesText = TimeSpanMinutes + " minutes ago.";
+                }
+
+                String DataAge = TimeSpanDaysText + TimeSpanHoursText + TimeSpanMinutesText;
+
+                String DataCollected = SessionDateTime.ToString("dddd, MMMM dd, yyyy h:mm tt");
+
+                ResultsString.AppendLine($"Session Captured: {DataCollected}");
+                ResultsString.AppendLine($"Capture was {DataAge}");
+
+                ResultsString.AppendLine($"Session Type: {this.session["X-ExchangeType"]}");
+                ResultsString.AppendLine($"Process: { this.session.LocalProcess}");
+
 
                 if (this.session["X-HostIP"]?.ToString().Length > 0)
                 {
-                    ResultsString.AppendLine($"XHostIP: {this.session["X-HostIP"]}");
+                    ResultsString.AppendLine($"Host IP: {this.session["X-HostIP"]}");
                 }
 
-
-                // If the response server header is not null or blank then populate it into the response server value.
+                // Response Server.
                 if (this.session.isTunnel == true)
                 {
-                    ResultsString.AppendLine($"ResponseServer: {this.session.url}");
+                    ResultsString.AppendLine("Connect Tunnel");
                 }
-                if ((this.session.oResponse["Server"] != null) && (this.session.oResponse["Server"] != ""))
+                else if ((this.session.oResponse["Server"] != null) && (this.session.oResponse["Server"] != ""))
                 {
-                    ResultsString.AppendLine($"ResponseServer: {this.session.oResponse["Server"]}");
+                    ResultsString.AppendLine($"Response Server: {this.session.oResponse["Server"]}");
                 }
                 // Else if the reponnse Host header is not null or blank then populate it into the response server value
                 // Some traffic identifies a host rather than a response server.
@@ -386,37 +331,89 @@ namespace EXOFiddlerInspector.Inspectors
 
                 ResultsString.AppendLine();
 
-                // Write Data age data into textbox.
-                String DataAgeOutput = "";
-                DateTime SessionDateTime = this.session.Timers.ClientBeginRequest;
-                DateTime DateTimeNow = DateTime.Now;
-                TimeSpan CalcDataAge = DateTimeNow - SessionDateTime;
-                int TimeSpanDays = CalcDataAge.Days;
-                int TimeSpanHours = CalcDataAge.Hours;
-                int TimeSpanMinutes = CalcDataAge.Minutes;
+                /// <remarks>
+                /// Client Begin and done response. -- Overall elapsed time.
+                /// </remarks>
+                ResultsString.AppendLine("Overall Session Timers");
+                ResultsString.AppendLine("----------------------");
+                ResultsString.AppendLine();
+                ResultsString.AppendLine("For an explantion of session timers refer to: https://aka.ms/Timers-Definitions");
+                ResultsString.AppendLine();
+                ResultsString.AppendLine($"Client Begin Request: {this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
+                ResultsString.AppendLine($"Client Done Response: {this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
 
-                if (TimeSpanDays == 0)
+                // ClientDoneResponse can be blank. If so do not try to calculate and output Elapsed Time, we end up with a hideously large number.
+                if (this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
                 {
-                    DataAgeOutput = "Session is " + TimeSpanHours + " Hour(s), " + TimeSpanMinutes + " minute(s) old.";
+                    double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
+
+                    ResultsString.Append($"Elapsed: {ClientMilliseconds}ms");
+
+                    int SlowRunningSessionThreshold = Preferences.GetSlowRunningSessionThreshold();
+
+                    if (ClientMilliseconds > SlowRunningSessionThreshold)
+                    {
+                        ResultsString.Append(" - Long running session!");
+                        if (Preferences.AppLoggingEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Long running session.");
+                        }
+                    }
+                    ResultsString.AppendLine();
                 }
                 else
                 {
-                    DataAgeOutput = "Session is " + TimeSpanDays + " Day(s), " + TimeSpanHours + " Hour(s), " + TimeSpanMinutes + " minute(s) old.";
+                    ResultsString.AppendLine("Session does not contain data to calculate 'Elapsed Time'.");
                 }
 
-                ResultsString.AppendLine($"DataAge: {DataAgeOutput}");
+                /// <remarks>
+                /// Server Got and Done Response. -- Server Think Time.
+                /// </remarks>
+                /// 
+                ResultsString.AppendLine();
+                ResultsString.AppendLine("Server Timers");
+                ResultsString.AppendLine("-------------");
+                ResultsString.AppendLine();
+                // Write Server data into textboxes.
+                ResultsString.AppendLine($"Server Got Request: { this.session.Timers.ServerGotRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
+                ResultsString.AppendLine($"Server Begin Response: { this.session.Timers.ServerBeginResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
+                ResultsString.AppendLine($"Server Done Response: {this.session.Timers.ServerDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
 
-                // Write Process into textbox.
-                ResultsString.AppendLine($"ResponseProcess: { this.session.LocalProcess}");
+                // ServerGotRequest, ServerBeginResponse or ServerDoneResponse can be blank. If so do not try to calculate and output 'Server Think Time' or 'Transmit Time', we end up with a hideously large number.
+                if (this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff") != "0:00:00.000" &&
+                    this.session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff") != "0:00:00.000" &&
+                    this.session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
+                {
+
+                    double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
+
+                    ResultsString.Append($"Server Think Time: {ServerMilliseconds}ms");
+
+                    int SlowRunningSessionThreshold = Preferences.GetSlowRunningSessionThreshold();
+
+                    if (ServerMilliseconds > SlowRunningSessionThreshold)
+                    {
+                        ResultsString.Append(" - Long running EXO session!");
+                        if (Preferences.AppLoggingEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Long running EXO session.");
+                        }
+                    }
+                    ResultsString.AppendLine();
+                    ResultsString.AppendLine($"Transit Time: { Math.Round((this.session.Timers.ServerDoneResponse - this.session.Timers.ServerBeginResponse).TotalMilliseconds)} ms");
+                }
+                else
+                {
+                    ResultsString.AppendLine("Session does not contain data to calculate 'Server Think Time' and 'Transit Time'.");
+                }
 
                 ResultsString.AppendLine();
-
-                // Session rule set used to live here.
-                // Now all the logic is ran in SessionRuleSet.cs.
-                // Data for these two textboxes on the inspector tab is now written into session tags.
-                ResultsString.AppendLine($"ResponseAlert: {this.session["X-ResponseAlertTextBox"]}");
-
-                ResultsString.AppendLine($"ResponseComment: {this.session["X-ResponseCommentsRichTextboxText"]}");
+                ResultsString.AppendLine("Session Analysis");
+                ResultsString.AppendLine("----------------");
+                ResultsString.AppendLine();
+                ResultsString.AppendLine($"Session Alert: {this.session["X-ResponseAlert"]}");
+                ResultsString.AppendLine();
+                ResultsString.AppendLine($"Session Comment: {this.session["X-ResponseComments"]}");
                 ResultsString.AppendLine();
 
                 ExchangeResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
