@@ -83,7 +83,6 @@ namespace EXOFiddlerInspector.Services
             
             SessionProcessor.Instance.SetExchangeType(_session);
 
-            //// Call the function to populate the Authentication column on live trace, if the column is enabled.
             SessionProcessor.Instance.SetAuthentication(_session);
 
             SessionProcessor.Instance.SetResponseServer(_session);

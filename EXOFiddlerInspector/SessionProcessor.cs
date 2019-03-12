@@ -1588,7 +1588,6 @@ namespace EXOFiddlerInspector
         {
             Boolean OverrideFurtherAuthChecking = false;
 
-
             this.session["X-Office365AuthType"] = "";
 
             this.session = session;
@@ -2004,7 +2003,7 @@ namespace EXOFiddlerInspector
 
                 this.session["X-Authentication"] = "Basic Auth Token";
 
-                this.session["X-AuthenticationDesc"] = "Outlook accessing resources with a Basic Authentication security token.";
+                this.session["X-AuthenticationDesc"] = this.session.LocalProcess + " accessing resources with a Basic Authentication security token.";
 
                 if (Preferences.AppLoggingEnabled)
                 {

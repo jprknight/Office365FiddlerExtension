@@ -218,7 +218,6 @@ namespace EXOFiddlerInspector.Inspectors
             try
             {
 
-
                 if (!Preferences.ExtensionEnabled)
                 {
                     Clear();
