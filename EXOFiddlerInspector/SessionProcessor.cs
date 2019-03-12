@@ -72,35 +72,11 @@ namespace EXOFiddlerInspector
 
             foreach (var session in e.arrSessions)
             {
-                // Populate the ElapsedTime column on load SAZ, if the column is enabled, and the extension is enabled.
-                if (session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") == "0:00:00.000" || session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") == "0:00:00.000")
-                {
-                    session["X-ElapsedTime"] = "No Data";
-                }
-                /*else if (session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff") == "0:00:00.000" || session.Timers.ServerDoneResponse.ToString("yyyy/MM/dd") == "0001/01/01")
-                {
-                    session["X-ElapsedTime"] = "No Data";
-                }*/
-                else
-                {
-                    double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds);
-
-                    if (Milliseconds < 1000)
-                    {
-                        session["X-ElapsedTime"] = Milliseconds + "ms";
-                    }
-                    else if (Milliseconds >= 1000 && Milliseconds < 2000)
-                    {
-                        session["X-ElapsedTime"] = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalSeconds) + " second";
-                    }
-                    else
-                    {
-                        session["X-ElapsedTime"] = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalSeconds) + " seconds";
-                    }
-                    //session["X-ElapsedTime"] = session.oResponse.iTTLB.ToString() + "ms";
-                }
+                SessionProcessor.Instance.SetElapsedTime(session);
 
                 SessionProcessor.Instance.SetResponseServer(session);
+
+                SessionProcessor.Instance.SetAuthentication(session);
 
                 if (Preferences.ExtensionEnabled)
                 {
@@ -1408,7 +1384,7 @@ namespace EXOFiddlerInspector
         {
             this.session = session;
 
-            SetExchangeType(this.session);
+            //SetExchangeType(this.session);
 
             // Populate Response Server on session in order of preference from common to obsure.
 
@@ -1565,10 +1541,43 @@ namespace EXOFiddlerInspector
         public void SAMLParserFieldsNoData()
         {
             this.session["X-Issuer"] = "No SAML Data in session";
-            this.session["X-AttributeNameUPNTextBox"] = "No SAML Data in session";
-            this.session["X-NameIdentifierFormatTextBox"] = "No SAML Data in session";
-            this.session["X-AttributeNameImmutableIDTextBox"] = "No SAML Data in session";
+            this.session["X-AttributeNameUPN"] = "No SAML Data in session";
+            this.session["X-NameIdentifierFormat"] = "No SAML Data in session";
+            this.session["X-AttributeNameImmutableID"] = "No SAML Data in session";
         }
+
+        public void SetElapsedTime(Session session)
+        {
+
+            // Populate the ElapsedTime column on load SAZ, if the column is enabled, and the extension is enabled.
+            if (session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") != "0:00:00.000" && session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
+            {
+                double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds);
+
+                session["X-ElapsedTime"] = Milliseconds + "ms";
+
+                // Commented out, its simply easier to see long running session when all are in milliseconds.
+
+                //if (Milliseconds < 1000)
+                //{
+
+                //}
+                //else if (Milliseconds >= 1000 && Milliseconds < 2000)
+                //{
+                //    session["X-ElapsedTime"] = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalSeconds) + " second";
+                //}
+                //else
+                //{
+                //    session["X-ElapsedTime"] = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalSeconds) + " seconds";
+                //}
+                //session["X-ElapsedTime"] = session.oResponse.iTTLB.ToString() + "ms";
+            }
+            else
+            {
+                session["X-ElapsedTime"] = "No Data";
+            }
+        }
+
 
         /// <summary>
         /// Set Authentication column values.
@@ -1606,7 +1615,8 @@ namespace EXOFiddlerInspector
                     int IssuerEndIndex = IssuerSessionBody.IndexOf("IssueInstant=");
                     int IssuerLength = IssuerEndIndex - IssuerStartIndex;
                     string Issuer = IssuerSessionBody.Substring(IssuerStartIndex, IssuerLength);
-                    Issuer = Issuer.Replace("&quot;", "\"");
+                    Issuer = Issuer.Replace("&quot;", "");
+                    Issuer = Issuer.Replace("Issuer=", "");
 
                     // Populate X flag on session.
                     this.session["X-Issuer"] = Issuer;
@@ -1757,17 +1767,21 @@ namespace EXOFiddlerInspector
                     AttributeNameUPN = AttributeNameUPN.Replace("&quot;", "\"");
                     AttributeNameUPN = AttributeNameUPN.Replace("&lt;", "<");
                     // Now split the two lines with a new line for easier reading in the user control.
-                    int SplitAttributeNameUPNStartIndex = AttributeNameUPN.IndexOf("><") + 1;
-                    string AttributeNameUPNFirstLine = AttributeNameUPN.Substring(0, SplitAttributeNameUPNStartIndex);
-                    string AttributeNameUPNSecondLine = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex);
-                    AttributeNameUPN = AttributeNameUPNFirstLine + Environment.NewLine + AttributeNameUPNSecondLine;
+                    int SplitAttributeNameUPNStartIndex = AttributeNameUPN.IndexOf("<saml:AttributeValue>") + 21;
+
+                    int SplitAttributeNameUPNEndIndex = AttributeNameUPN.IndexOf("</saml:AttributeValue>");
+                    int SplitAttributeNameLength = SplitAttributeNameUPNEndIndex - SplitAttributeNameUPNStartIndex;
+
+                    //string AttributeNameUPNFirstLine = AttributeNameUPN.Substring(0, SplitAttributeNameUPNStartIndex);
+                    //string AttributeNameUPNSecondLine = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex);
+                    AttributeNameUPN = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex, SplitAttributeNameLength);
 
                     // Populate X flag on session.
-                    this.session["X-AttributeNameUPNTextBox"] = AttributeNameUPN;
+                    this.session["X-AttributeNameUPN"] = AttributeNameUPN;
                 }
                 else
                 {
-                    this.session["X-AttributeNameUPNTextBox"] = "Data points not found for AttributeNameUPN";
+                    this.session["X-AttributeNameUPN"] = "Data points not found for AttributeNameUPN";
                 }
 
                 /////////////////////////////
@@ -1805,11 +1819,11 @@ namespace EXOFiddlerInspector
                     NameIdentifierFormat = NameIdentifierFormat.Replace("&lt;", "<");
 
                     // Populate X flag on session.
-                    this.session["X-NameIdentifierFormatTextBox"] = NameIdentifierFormat;
+                    this.session["X-NameIdentifierFormat"] = NameIdentifierFormat;
                 }
                 else
                 {
-                    this.session["X-NameIdentifierFormatTextBox"] = "Data points not found for NameIdentifierFormat";
+                    this.session["X-NameIdentifierFormat"] = "Data points not found for NameIdentifierFormat";
                 }
 
                 /////////////////////////////
@@ -1858,21 +1872,24 @@ namespace EXOFiddlerInspector
                     AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&lt;", "<");
                     // Now split out response with a newline for easier reading.
                     int SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("<saml:AttributeValue>") + 21; // Add 21 characters to shift where the newline is placed.
-                    string AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
-                    string AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
-                    AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
+                    //string AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
+                    //string AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
+                    //AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
                     // Second split
-                    SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("</saml:AttributeValue></saml:Attribute>");
-                    AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
-                    AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
-                    AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
+                    int SplitAttributeNameImmutibleIDEndIndex = AttributeNameImmutibleID.IndexOf("</saml:AttributeValue></saml:Attribute>");
+                    int SubstringLength = SplitAttributeNameImmutibleIDEndIndex - SplitAttributeNameImmutibleIDStartIndex;
+                    AttributeNameImmutibleID = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex, SubstringLength);
+                    
+                    //AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
+                    //AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
+                    //AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
 
                     // Populate X flag on session.
-                    this.session["X-AttributeNameImmutableIDTextBox"] = AttributeNameImmutibleID;
+                    this.session["X-AttributeNameImmutableID"] = AttributeNameImmutibleID;
                 }
                 else
                 {
-                    this.session["X-AttributeNameImmutableIDTextBox"] = "Data points not found for AttributeNameImmutibleID";
+                    this.session["X-AttributeNameImmutableID"] = "Data points not found for AttributeNameImmutibleID";
                 }
             }
             // Determine if Modern Authentication is enabled in Exchange Online.
@@ -1899,10 +1916,7 @@ namespace EXOFiddlerInspector
                 {
                     this.session["X-Authentication"] = "EXO Modern Auth Disabled";
 
-                    this.session["X-AuthenticationDesc"] = "EXO Modern Auth Disabled" +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        "Exchange Online has Modern Authentication disabled. " +
+                    this.session["X-AuthenticationDesc"] = "Exchange Online has Modern Authentication disabled. " +
                         "This is not necessarily a bad thing, but something to make note of during troubleshooting." +
                         Environment.NewLine +
                         "MutiFactor Authentication will not work as expected while Modern Authentication " +
@@ -1936,32 +1950,26 @@ namespace EXOFiddlerInspector
                 // Note OverrideFurtherAuthChecking which is set above if we detected EXO has Modern Auth disabled.
                 if (this.session.oRequest["Authorization"] == "Bearer" && !(OverrideFurtherAuthChecking))
                 {
-                    this.session["X-Authentication"] = "Outlook Modern Auth";
+                    this.session["X-Authentication"] = "Client Modern Auth Capable";
 
-                    this.session["X-AuthenticationDesc"] = "Outlook Modern Auth" +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        "Outlook is stating it can do Modern Authentication. " +
-                        "Whether it is used or not will depend on whether Modern Authentication is enabled in Exchange Online.";
+                    this.session["X-AuthenticationDesc"] = this.session.LocalProcess + " is stating it is Modern Authentication capable. " +
+                        "Whether it is used or not will depend on whether Modern Authentication is enabled in the Office 365 service.";
 
                     if (Preferences.AppLoggingEnabled)
                     {
-                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Outlook Modern Auth.");
+                        FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Client Modern Auth.");
                     }
                 }
                 // If the session request header Authorization equals Basic this is a Basic Auth capable client.
                 // Note OverrideFurtherAuthChecking which is set above if we detected EXO has Modern Auth disabled.
                 else if (this.session.oRequest["Authorization"] == "Basic" && !(OverrideFurtherAuthChecking))
                 {
-                    this.session["X-Authentication"] = "Outlook Basic Auth";
+                    this.session["X-Authentication"] = "Client Basic Auth Capable";
 
-                    this.session["X-AuthenticationDesc"] = "Outlook Basic Auth" +
+                    this.session["X-AuthenticationDesc"] = this.session.LocalProcess + " is stating it is Basic Authentication capable. " +
+                        "Whether it is used or not will depend on whether Basic Authentication is enabled in the Office 365 service." +
                         Environment.NewLine +
-                        Environment.NewLine +
-                        "Outlook is stating it can do Basic Authentication. " +
-                        "Whether or not Modern Authentication is enabled in Exchange Online this client session will use Basic Authentication." +
-                        Environment.NewLine +
-                        "In all likelihood this is an Outlook 2013 (updated prior to Modern Auth), Outlook 2010 or an older Outlook client, " +
+                        "If this is Outlook, in all likelihood this is an Outlook 2013 (updated prior to Modern Auth), Outlook 2010 or an older Outlook client, " +
                         "which does not support Modern Authentication." +
                         "MutiFactor Authentication will not work as expected with Basic Authentication only capable Outlook clients";
 
@@ -1981,10 +1989,7 @@ namespace EXOFiddlerInspector
 
                 this.session["X-Authentication"] = "Modern Auth Token";
 
-                this.session["X-AuthenticationDesc"] = "Modern Auth Token" +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        "Outlook accessing resources with a Modern Authentication security token.";
+                this.session["X-AuthenticationDesc"] = this.session.LocalProcess + " accessing resources with a Modern Authentication security token.";
 
                 if (Preferences.AppLoggingEnabled)
                 {
@@ -1998,10 +2003,7 @@ namespace EXOFiddlerInspector
 
                 this.session["X-Authentication"] = "Basic Auth Token";
 
-                this.session["X-AuthenticationDesc"] = "Basic Auth Token" +
-                    Environment.NewLine +
-                    Environment.NewLine +
-                    "Outlook accessing resources with a Basic Authentication security token.";
+                this.session["X-AuthenticationDesc"] = "Outlook accessing resources with a Basic Authentication security token.";
 
                 if (Preferences.AppLoggingEnabled)
                 {
@@ -2014,8 +2016,8 @@ namespace EXOFiddlerInspector
                 // Change which control appears for this session on the Office365 Auth inspector tab.
                 this.session["X-Office365AuthType"] = "Office365Auth";
 
-                this.session["X-Authentication"] = "--No Auth Headers";
-                this.session["X-AuthenticationDesc"] = "--No Auth Headers";
+                this.session["X-Authentication"] = "No Auth Headers";
+                this.session["X-AuthenticationDesc"] = "No Auth Headers";
             }
         }
     }

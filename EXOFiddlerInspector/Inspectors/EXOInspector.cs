@@ -407,6 +407,22 @@ namespace EXOFiddlerInspector.Inspectors
                     ResultsString.AppendLine("Session does not contain data to calculate 'Server Think Time' and 'Transit Time'.");
                 }
 
+                // Authentication
+                ResultsString.AppendLine();
+                ResultsString.AppendLine("Authentication");
+                ResultsString.AppendLine("--------------");
+                ResultsString.AppendLine();
+                ResultsString.AppendLine($"Authentication Type: {this.session["X-AUTHENTICATION"]}");
+                ResultsString.AppendLine($"Authentication Decription: {this.session["X-AUTHENTICATIONDESC"]}");
+
+                if (this.session["X-Office365AuthType"] == "SAMLResponseParser")
+                {
+                    ResultsString.AppendLine($"Issuer: {this.session["X-ISSUER"]}");
+                    ResultsString.AppendLine($"Attribute Name Immutable Id: {this.session["X-ATTRIBUTENAMEIMMUTABLEID"]}");
+                    ResultsString.AppendLine($"Attribute Name UPN: {this.session["X-ATTRIBUTENAMEUPN"]}");
+                    ResultsString.AppendLine($"Name Identifier Format: {this.session["X-NAMEIDENTIFIERFORMAT"]}");
+                }
+
                 ResultsString.AppendLine();
                 ResultsString.AppendLine("Session Analysis");
                 ResultsString.AppendLine("----------------");
