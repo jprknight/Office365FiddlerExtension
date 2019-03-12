@@ -72,15 +72,15 @@ namespace EXOFiddlerInspector
 
             foreach (var session in e.arrSessions)
             {
-                SessionProcessor.Instance.SetElapsedTime(session);
-
-                SessionProcessor.Instance.SetResponseServer(session);
-
-                SessionProcessor.Instance.SetAuthentication(session);
-
+                
                 if (Preferences.ExtensionEnabled)
                 {
-                    // Colourise sessions on load SAZ.
+                    SessionProcessor.Instance.SetElapsedTime(session);
+
+                    SessionProcessor.Instance.SetResponseServer(session);
+
+                    SessionProcessor.Instance.SetAuthentication(session);
+
                     SessionProcessor.Instance.OnPeekAtResponseHeaders(session); //Run whatever function you use in IAutoTamper
                     session.RefreshUI();
                 }
