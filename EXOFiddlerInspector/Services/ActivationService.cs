@@ -76,16 +76,17 @@ namespace EXOFiddlerInspector.Services
                 return;
             }
 
+            // Only do this on loadSAZ?
+            SessionProcessor.Instance.SetElapsedTime(_session);
+
             SessionProcessor.Instance.OnPeekAtResponseHeaders(_session);
             
-            // Call the function to populate the session type column on live trace, if the column is enabled.
             SessionProcessor.Instance.SetExchangeType(_session);
 
             //// Call the function to populate the Authentication column on live trace, if the column is enabled.
             SessionProcessor.Instance.SetAuthentication(_session);
 
-            // Only do this on loadSAZ?
-            SessionProcessor.Instance.SetElapsedTime(_session);
+            SessionProcessor.Instance.SetResponseServer(_session);
 
             _session.RefreshUI();
         }

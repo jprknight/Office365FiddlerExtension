@@ -81,7 +81,8 @@ namespace EXOFiddlerInspector
 
                     SessionProcessor.Instance.SetAuthentication(session);
 
-                    SessionProcessor.Instance.OnPeekAtResponseHeaders(session); //Run whatever function you use in IAutoTamper
+                    SessionProcessor.Instance.OnPeekAtResponseHeaders(session);
+
                     session.RefreshUI();
                 }
             }

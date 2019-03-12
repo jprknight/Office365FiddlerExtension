@@ -217,8 +217,17 @@ namespace EXOFiddlerInspector.Inspectors
         {
             try
             {
+
+
                 if (!Preferences.ExtensionEnabled)
+                {
+                    Clear();
+                    ResultsString.AppendLine("-------------------------------");
+                    ResultsString.AppendLine("EXO Fiddler Extension Disabled.");
+                    ResultsString.AppendLine("-------------------------------");
+                    ExchangeResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
                     return;
+                }
 
                 Clear();
 
