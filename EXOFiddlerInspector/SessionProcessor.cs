@@ -71,7 +71,7 @@ namespace EXOFiddlerInspector
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
             Preferences.IsLoadSaz = true;
-            Preferences.ExtensionEnabled = true;
+            //Preferences.ExtensionEnabled = true;
             MenuUI.Instance.miEnabled.Checked = Preferences.ExtensionEnabled;
 
             foreach (var session in e.arrSessions)
