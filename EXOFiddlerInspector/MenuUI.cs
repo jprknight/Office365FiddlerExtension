@@ -147,7 +147,7 @@ namespace EXOFiddlerInspector
             // Since the user has manually clicked this menu item to check for updates,
             // set this boolean variable to true so we can give user feedback if no update available.
 
-            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.ManualCheckForUpdate", true);
+            FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", true);
 
             // Check for app update.
             CheckForAppUpdate calledCheckForAppUpdate = new CheckForAppUpdate();

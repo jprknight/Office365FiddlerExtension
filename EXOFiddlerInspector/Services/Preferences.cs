@@ -42,7 +42,7 @@ namespace EXOFiddlerInspector.Services
             IsLoadSaz = false;
             //ColumnsAllEnabled = true;
 
-            FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 1);
+            ExecutionCount++;
 
             return Task.FromResult(true);
         }
@@ -62,11 +62,11 @@ namespace EXOFiddlerInspector.Services
         private static bool _extensionEnabled;
         public static bool ExtensionEnabled
         {
-            get => _extensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", true);
+            get => _extensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", true);
             set
             {
                 _extensionEnabled = value;
-                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", value);
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.enabled", value);
                 MenuUI.Instance.miEnabled.Text = ExtensionEnabled ? "Disable" : "Enable";
                 MenuUI.Instance.ExchangeOnlineTopMenu.Text = ExtensionEnabled ? "Exchange Online" : "Exchange Online (Disabled)";
             }
@@ -75,11 +75,11 @@ namespace EXOFiddlerInspector.Services
         private static bool _appLoggingEnabled;
         public static bool AppLoggingEnabled
         {
-            get => _appLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", true);
+            get => _appLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", true);
             set
             {
                 _appLoggingEnabled = value;
-                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", value);
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", value);
                 MenuUI.Instance.miAppLoggingEnabled.Checked = AppLoggingEnabled;
             }
         }
@@ -87,11 +87,11 @@ namespace EXOFiddlerInspector.Services
         private static bool _highlightOutlookOWAOnlyEnabled;
         public static bool HighlightOutlookOWAOnlyEnabled
         {
-            get => _highlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
+            get => _highlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", false);
             set
             {
                 _highlightOutlookOWAOnlyEnabled = value;
-                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", value);
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", value);
                 MenuUI.Instance.miHighlightOutlookOWAOnly.Checked = HighlightOutlookOWAOnlyEnabled;
             }
         }
@@ -99,22 +99,22 @@ namespace EXOFiddlerInspector.Services
         private static bool _isLoadSaz;
         public static bool IsLoadSaz
         {
-            get => _isLoadSaz = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.LoadSaz", false);
-            set { _isLoadSaz = value; FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.LoadSaz", value); }
+            get => _isLoadSaz = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
+            set { _isLoadSaz = value; FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", value); }
         }
 
         //private static bool _columnsAllEnabled;
         //public static bool ColumnsAllEnabled
         //{
-        //    get => _columnsAllEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", _columnsAllEnabled);
-        //    set { _columnsAllEnabled = value; FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", value); }
+        //    get => _columnsAllEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", _columnsAllEnabled);
+        //    set { _columnsAllEnabled = value; FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.enabled", value); }
         //}
 
         private static Int32 _executionCount;
         public static Int32 ExecutionCount
         {
-            get => _executionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
-            set { _executionCount = value; FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", value); }
+            get => _executionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerExtension.ExecutionCount", 0);
+            set { _executionCount = value; FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerExtension.ExecutionCount", value); }
         }
 
     }

@@ -31,8 +31,7 @@ namespace EXOFiddlerInspector.Services
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 140, "X-Authentication");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 110, "X-HostIP");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 130, "X-ResponseServer");
-
-
+            
             // Throw a message box to alert demo mode is running.
             if (Preferences.GetDeveloperMode())
             {
@@ -106,7 +105,7 @@ namespace EXOFiddlerInspector.Services
                 FiddlerApplication.UI.lvSessions.BeginUpdate();
 
                 // Only on LoadSAZ add all the columns.
-                if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.LoadSaz", false))
+                if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))
                 {
                     FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
                     FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 0, 130, "X-ResponseServer");
