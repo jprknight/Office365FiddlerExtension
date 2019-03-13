@@ -28,15 +28,14 @@ namespace EXOFiddlerInspector
 
         public SessionProcessor()
         {
-
         }
 
         public void Initialize()
         {
+            FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
+
             if (!IsInitialized)
             {
-                FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
-
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 2, -1);
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", 2, -1);
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Content-Type", 2, -1);
@@ -69,6 +68,8 @@ namespace EXOFiddlerInspector
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
             Preferences.IsLoadSaz = true;
+            Preferences.ExtensionEnabled = true;
+            MenuUI.Instance.miEnabled.Checked = Preferences.ExtensionEnabled;
 
             foreach (var session in e.arrSessions)
             {
@@ -89,11 +90,7 @@ namespace EXOFiddlerInspector
             FiddlerApplication.UI.lvSessions.EndUpdate();
         }
         #endregion
-
-
-
-
-
+               
         public void OnPeekAtResponseHeaders(Session session)
         {            
             // Reset these session counters.

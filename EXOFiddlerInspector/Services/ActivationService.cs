@@ -20,15 +20,11 @@ namespace EXOFiddlerInspector.Services
         /// </summary>
         public async void OnLoad()
         {
-            //FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
+            MenuUI.Instance.Initialize();
             if (Preferences.ExecutionCount == 0)
             {
                 await Preferences.SetDefaultPreferences();
             }
-
-
-
-            MenuUI.Instance.Initialize();
 
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 150, "X-ExchangeType");
