@@ -722,6 +722,26 @@ namespace EXOFiddlerInspector
                     #endregion
 
                     #region HTTP400s
+                    case 400:
+
+                        /////////////////////////////
+                        //
+                        //  HTTP 401: BAD REQUEST.
+                        //
+                        this.session["ui-backcolor"] = HTMLColourOrange;
+                        this.session["ui-color"] = "black";
+                        this.session["X-ExchangeType"] = "Bad Request";
+
+                        this.session["X-ResponseAlert"] = "HTTP 401 Bad Request";
+                        this.session["X-ResponseComments"] = "HTTP 401: Bad Request. Seeing 1 or 2 of these may not be an issue. Any more than this should be investiagted further.";
+
+                        if (Preferences.AppLoggingEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 400 Bad Request.");
+                        }
+                        //
+                        /////////////////////////////
+                        break;
                     case 401:
 
                         /////////////////////////////
@@ -832,6 +852,35 @@ namespace EXOFiddlerInspector
                         //
                         /////////////////////////////
                         break;
+                    case 407:
+                        /////////////////////////////
+                        //
+                        // HTTP 407: Proxy Authentication Required.
+                        //
+                        this.session["ui-backcolor"] = HTMLColourRed;
+                        this.session["ui-color"] = "black";
+
+                        this.session["X-ResponseAlert"] = "!HTTP 407: Proxy Authentication Required!";
+                        this.session["X-ResponseComments"] = "HTTP 407: Proxy Authentication Required" +
+                            Environment.NewLine +
+                            Environment.NewLine +
+                            "Seeing these in a trace when investigating Office 365 connectivity is a big indicator of an issue." +
+                            Environment.NewLine +
+                            Environment.NewLine +
+                            "Look to engage the network or security team who is responsible for the Proxy infrastructure and give them " +
+                            "the information from these HTTP 407 sessions to troubleshoot with." +
+                            Environment.NewLine +
+                            Environment.NewLine +
+                            "Office365 traffic should be exempt from proxy authentication or better yet follow Microsoft's recommendation " +
+                            "to bypass the proxy for Office365 traffic.";
+
+                        if (Preferences.AppLoggingEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 407 Proxy Authentication Required.");
+                        }
+                        //
+                        /////////////////////////////
+                        break;
                     case 429:
                         /////////////////////////////
                         //
@@ -881,13 +930,39 @@ namespace EXOFiddlerInspector
                             this.session["X-ExchangeType"] = "!Multi-Factor Auth!";
 
                             this.session["X-ResponseAlert"] = "HTTP 456 Multi-Factor Authentication";
-                            this.session["X-ResponseComments"] = "HTTP 429: See details on Raw tab. Look for the presence of 'you must use multi-factor authentication'." +
+                            this.session["X-ResponseComments"] = "HTTP 456: See details on Raw tab. Look for the presence of 'you must use multi-factor authentication'." +
                                 Environment.NewLine +
                                 Environment.NewLine +
-                                "This has been seen where users have MFA enabled/enforced, but Modern Authentication is not enabled in Exchange Online" +
+                                "This has been seen where users have MFA enabled/enforced, but Modern Authentication is not enabled in the Office 365 service being connected to" +
                                 Environment.NewLine +
                                 Environment.NewLine +
-                                "See https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662";
+                                "See https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662" +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx";
+
+                            if (Preferences.AppLoggingEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 456 Multi-Factor Required!");
+                            }
+                        }
+                        else if (this.session.utilFindInResponse("oauth_not_available", false) > 1)
+                        {
+                            this.session["ui-backcolor"] = HTMLColourRed;
+                            this.session["ui-color"] = "black";
+                            this.session["X-ExchangeType"] = "!Multi-Factor Auth!";
+
+                            this.session["X-ResponseAlert"] = "HTTP 456 Multi-Factor Authentication";
+                            this.session["X-ResponseComments"] = "HTTP 456: See details on Raw tab. Look for the presence of 'oauth_not_available'." +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "This has been seen where users have MFA enabled/enforced, but Modern Authentication is not enabled in the Office 365 service being connected to" +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "See https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662" +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx";
 
                             if (Preferences.AppLoggingEnabled)
                             {
@@ -900,8 +975,17 @@ namespace EXOFiddlerInspector
                             this.session["ui-color"] = "black";
                             this.session["X-ExchangeType"] = "Multi-Factor Auth?";
 
-                            this.session["X-ResponseAlert"] = "!HTTP 456 Multi-Factor Authentication!";
-                            this.session["X-ResponseComments"] = "HTTP 429: See details on Raw tab.";
+                            this.session["X-ResponseAlert"] = "HTTP 456 Multi-Factor Authentication?";
+                            this.session["X-ResponseComments"] = "HTTP 456: See details on Raw tab. Is Modern Authentication disabled?" +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "This has been seen where users have MFA enabled/enforced, but Modern Authentication is not enabled in the Office 365 service being connected to" +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "See https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662" +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx";
 
                             if (Preferences.AppLoggingEnabled)
                             {
