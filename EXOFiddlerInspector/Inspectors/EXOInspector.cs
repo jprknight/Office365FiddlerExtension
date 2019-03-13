@@ -241,7 +241,7 @@ namespace EXOFiddlerInspector.Inspectors
                 ResultsString.AppendLine("--------------------");
                 ResultsString.AppendLine();
 
-                // Write data into Exchange Type and session ID.
+                // Write data into Session Type and session ID.
                 ResultsString.AppendLine($"Session Id: {this.session.id.ToString()}");
 
                 ResultsString.AppendLine($"HTTP Response Code: {this.session.responseCode.ToString()}");
@@ -296,7 +296,7 @@ namespace EXOFiddlerInspector.Inspectors
                 ResultsString.AppendLine($"Session Captured: {DataCollected}");
                 ResultsString.AppendLine($"Capture was {DataAge}");
 
-                ResultsString.AppendLine($"Session Type: {this.session["X-ExchangeType"]}");
+                ResultsString.AppendLine($"Session Type: {this.session["X-SessionType"]}");
                 ResultsString.AppendLine($"Process: { this.session.LocalProcess}");
 
 

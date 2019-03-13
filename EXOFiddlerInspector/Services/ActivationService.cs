@@ -29,7 +29,7 @@ namespace EXOFiddlerInspector.Services
             SessionProcessor.Instance.Initialize();
 
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
-            FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 150, "X-ExchangeType");
+            FiddlerApplication.UI.lvSessions.AddBoundColumn("Session Type", 150, "X-SessionType");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 140, "X-Authentication");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 110, "X-HostIP");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 130, "X-ResponseServer");
@@ -78,7 +78,7 @@ namespace EXOFiddlerInspector.Services
 
             SessionProcessor.Instance.OnPeekAtResponseHeaders(_session);
             
-            SessionProcessor.Instance.SetExchangeType(_session);
+            SessionProcessor.Instance.SetSessionType(_session);
 
             SessionProcessor.Instance.SetAuthentication(_session);
 
@@ -112,7 +112,7 @@ namespace EXOFiddlerInspector.Services
                     FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
                     FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 0, 130, "X-ResponseServer");
                     FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 0, 110, "X-HostIP");
-                    FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 0, 150, "X-ExchangeType");
+                    FiddlerApplication.UI.lvSessions.AddBoundColumn("Session Type", 0, 150, "X-SessionType");
                     FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 0, 140, "X-Authentication");
                 }
                 // On live trace just add in the Host IP column.

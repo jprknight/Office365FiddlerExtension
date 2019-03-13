@@ -46,7 +46,7 @@ namespace EXOFiddlerInspector
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Protocol", 2, -1);
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 2, -1);
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Elapsed Time", 2, -1);
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Exchange Type", 2, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Session Type", 2, -1);
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Authentication", 2, -1);
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host IP", 2, -1);
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
@@ -77,6 +77,8 @@ namespace EXOFiddlerInspector
                 if (Preferences.ExtensionEnabled)
                 {
                     SessionProcessor.Instance.SetElapsedTime(session);
+
+                    SessionProcessor.Instance.SetSessionType(session);
 
                     SessionProcessor.Instance.SetResponseServer(session);
 
@@ -162,7 +164,7 @@ namespace EXOFiddlerInspector
                         //
                         this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
-                        this.session["X-ExchangeType"] = "!NO RESPONSE!";
+                        this.session["X-SessionType"] = "!NO RESPONSE!";
 
                         this.session["X-ResponseAlert"] = "!HTTP 0 No Response!";
                         this.session["X-ResponseComments"] = (Properties.Settings.Default.HTTPQuantity);
@@ -194,8 +196,7 @@ namespace EXOFiddlerInspector
                             this.session["ui-color"] = "black";
 
                             this.session["X-ResponseAlert"] = "Connect Tunnel";
-                            this.session["X-ResponseComments"] = "Encrypted HTTPS traffic flows through this CONNECT tunnel. " +
-                                "HTTPS Decryption is enabled in Fiddler, so decrypted sessions running in this tunnel will be shown in the Web Sessions list.";
+                            this.session["X-ResponseComments"] = "Encrypted HTTPS traffic flows through this CONNECT tunnel. ";
 
                             HTTP200SkipLogic++;
                         }
@@ -248,7 +249,7 @@ namespace EXOFiddlerInspector
                             {
                                 this.session["ui-backcolor"] = HTMLColourGreen;
                                 this.session["ui-color"] = "black";
-                                this.session["X-ExchangeType"] = "On-Prem AutoD Redirect";
+                                this.session["X-SessionType"] = "On-Prem AutoD Redirect";
 
                                 this.session["X-ResponseAlert"] = "Exchange On-Premise Autodiscover redirect.";
                                 this.session["X-ResponseComments"] = "Exchange On-Premise Autodiscover redirect address to Exchange Online found." +
@@ -273,7 +274,7 @@ namespace EXOFiddlerInspector
                             {
                                 this.session["ui-backcolor"] = HTMLColourRed;
                                 this.session["ui-color"] = "black";
-                                this.session["X-ExchangeType"] = "!AUTOD REDIRECT ADDR!";
+                                this.session["X-SessionType"] = "!AUTOD REDIRECT ADDR!";
 
                                 this.session["X-ResponseAlert"] = "!Exchange On-Premise Autodiscover redirect!";
                                 this.session["X-ResponseComments"] = "Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." +
@@ -315,7 +316,7 @@ namespace EXOFiddlerInspector
                             */
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "!NO AUTOD REDIRECT ADDR!";
+                            this.session["X-SessionType"] = "!NO AUTOD REDIRECT ADDR!";
 
                             this.session["X-ResponseAlert"] = "!Exchange On-Premise Autodiscover redirect: Error Code 500!";
                             this.session["X-ResponseComments"] = "Exchange On-Premise Autodiscover redirect address can't be found. "
@@ -393,7 +394,7 @@ namespace EXOFiddlerInspector
                             {
                                 this.session["ui-backcolor"] = HTMLColourGreen;
                                 this.session["ui-color"] = "black";
-                                this.session["X-ExchangeType"] = "EWS GetUnifiedGroupsSettings";
+                                this.session["X-SessionType"] = "EWS GetUnifiedGroupsSettings";
 
                                 this.session["X-ResponseAlert"] = "GetUnifiedGroupsSettings EWS call.";
                                 this.session["X-ResponseComments"] = "<GroupCreationEnabled>true</GroupCreationEnabled> found in response body. " +
@@ -406,7 +407,7 @@ namespace EXOFiddlerInspector
                             {
                                 this.session["ui-backcolor"] = HTMLColourGreen;
                                 this.session["ui-color"] = "black";
-                                this.session["X-ExchangeType"] = "EWS GetUnifiedGroupsSettings";
+                                this.session["X-SessionType"] = "EWS GetUnifiedGroupsSettings";
 
                                 this.session["X-ResponseAlert"] = "GetUnifiedGroupsSettings EWS call!";
                                 this.session["X-ResponseComments"] = "<GroupCreationEnabled>false</GroupCreationEnabled> found in response body. " +
@@ -419,7 +420,7 @@ namespace EXOFiddlerInspector
                             {
                                 this.session["ui-backcolor"] = HTMLColourRed;
                                 this.session["ui-color"] = "black";
-                                this.session["X-ExchangeType"] = "!EWS GetUnifiedGroupsSettings!";
+                                this.session["X-SessionType"] = "!EWS GetUnifiedGroupsSettings!";
 
                                 this.session["X-ResponseAlert"] = "!GetUnifiedGroupsSettings EWS call!";
                                 this.session["X-ResponseComments"] = "Though GetUnifiedGroupsSettings scenario was detected neither <GroupCreationEnabled>true</GroupCreationEnabled> or" +
@@ -515,7 +516,7 @@ namespace EXOFiddlerInspector
                                     // Red text on black background.
                                     this.session["ui-backcolor"] = "black";
                                     this.session["ui-color"] = "red";
-                                    this.session["X-ExchangeType"] = "!FAILURE LURKING!";
+                                    this.session["X-SessionType"] = "!FAILURE LURKING!";
 
                                     this.session["X-ResponseAlert"] = "!'error', 'failed' or 'exception' found in respone body!";
                                     this.session["X-ResponseComments"] = "HTTP 200: Errors or failures found in response body. " +
@@ -679,7 +680,7 @@ namespace EXOFiddlerInspector
                             // Exchange Online, highlight.
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "!UNEXPECTED LOCATION!";
+                            this.session["X-SessionType"] = "!UNEXPECTED LOCATION!";
 
                             this.session["X-ResponseAlert"] = "!HTTP 307 Temporary Redirect!";
                             this.session["X-ResponseComments"] = "HTTP 307: Temporary Redirects have been seen to redirect Exchange Online Autodiscover " +
@@ -727,7 +728,7 @@ namespace EXOFiddlerInspector
                         //
                         this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
-                        this.session["X-ExchangeType"] = "Bad Request";
+                        this.session["X-SessionType"] = "Bad Request";
 
                         this.session["X-ResponseAlert"] = "HTTP 401 Bad Request";
                         this.session["X-ResponseComments"] = "HTTP 401: Bad Request. Seeing 1 or 2 of these may not be an issue. Any more than this should be investiagted further.";
@@ -747,7 +748,7 @@ namespace EXOFiddlerInspector
                         //
                         this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
-                        this.session["X-ExchangeType"] = "Auth Challenge";
+                        this.session["X-SessionType"] = "Auth Challenge";
 
                         this.session["X-ResponseAlert"] = "HTTP 401 Unauthorized";
                         this.session["X-ResponseComments"] = "HTTP 401: Unauthorized / Authentication Challenge. These are expected and are not an issue as long as a subsequent " +
@@ -774,7 +775,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "!WEB PROXY BLOCK!";
+                            this.session["X-SessionType"] = "!WEB PROXY BLOCK!";
 
                             this.session["X-ResponseAlert"] = "!HTTP 403 Access Denied!";
                             this.session["X-ResponseComments"] = "HTTP 403: Forbidden. Is your firewall or web proxy blocking Outlook connectivity? " + Environment.NewLine +
@@ -924,7 +925,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "!Multi-Factor Auth!";
+                            this.session["X-SessionType"] = "!Multi-Factor Auth!";
 
                             this.session["X-ResponseAlert"] = "HTTP 456 Multi-Factor Authentication";
                             this.session["X-ResponseComments"] = "HTTP 456: See details on Raw tab. Look for the presence of 'you must use multi-factor authentication'." +
@@ -947,7 +948,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "!Multi-Factor Auth!";
+                            this.session["X-SessionType"] = "!Multi-Factor Auth!";
 
                             this.session["X-ResponseAlert"] = "HTTP 456 Multi-Factor Authentication";
                             this.session["X-ResponseComments"] = "HTTP 456: See details on Raw tab. Look for the presence of 'oauth_not_available'." +
@@ -970,7 +971,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourOrange;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "Multi-Factor Auth?";
+                            this.session["X-SessionType"] = "Multi-Factor Auth?";
 
                             this.session["X-ResponseAlert"] = "HTTP 456 Multi-Factor Authentication?";
                             this.session["X-ResponseComments"] = "HTTP 456: See details on Raw tab. Is Modern Authentication disabled?" +
@@ -1047,7 +1048,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "False Positive";
+                            this.session["X-SessionType"] = "False Positive";
 
                             // Increment false positive count to prevent long running session overrides.
                             FalsePositive++;
@@ -1073,7 +1074,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "False Positive";
+                            this.session["X-SessionType"] = "False Positive";
 
                             // Increment false positive count to prevent long running session overrides.
                             FalsePositive++;
@@ -1105,7 +1106,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "False Positive";
+                            this.session["X-SessionType"] = "False Positive";
 
                             // Increment false positive count to prevent long running session overrides.
                             FalsePositive++;
@@ -1156,7 +1157,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourBlue;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "False Positive";
+                            this.session["X-SessionType"] = "False Positive";
 
                             // Increment false positive count to prevent long running session overrides.
                             FalsePositive++;
@@ -1188,7 +1189,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "!AUTODISCOVER!";
+                            this.session["X-SessionType"] = "!AUTODISCOVER!";
 
                             this.session["X-ResponseAlert"] = "!AUTODISCOVER!";
                             this.session["X-ResponseComments"] = "Autodiscover request detected, which failed.";
@@ -1251,7 +1252,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "!FEDERATION!";
+                            this.session["X-SessionType"] = "!FEDERATION!";
 
                             string RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=" + this.session.oRequest["X-User-Identity"] + "&xml=1";
                             if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.DemoMode", false) == true)
@@ -1309,7 +1310,7 @@ namespace EXOFiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-ExchangeType"] = "!INTERNET BLOCKED!";
+                            this.session["X-SessionType"] = "!INTERNET BLOCKED!";
 
                             this.session["X-ResponseAlert"] = "!HTTP 504 Gateway Timeout -- Internet Access Blocked!";
                             this.session["X-ResponseComments"] = "Detected the keywords 'internet' and 'access' and 'blocked'. Potentially the computer this trace was collected " +
@@ -1349,7 +1350,7 @@ namespace EXOFiddlerInspector
                     default:
                         this.session["ui-backcolor"] = "Yellow";
                         this.session["ui-color"] = "black";
-                        this.session["X-ExchangeType"] = "Undefined";
+                        this.session["X-SessionType"] = "Undefined";
 
                         this.session["X-ResponseAlert"] = "Undefined.";
                         this.session["X-ResponseComments"] = "No specific information on this session in the EXO Fiddler Extension.";
@@ -1401,7 +1402,7 @@ namespace EXOFiddlerInspector
                 this.session["ui-backcolor"] = HTMLColourRed;
                 this.session["ui-color"] = "black";
 
-                this.session["X-ExchangeType"] = "Long Running Session";
+                this.session["X-SessionType"] = "Long Running Session";
 
                 this.session["X-ResponseAlert"] = "!Long Running Session!";
                 this.session["X-ResponseComments"] = "Long running session found. A small number of long running sessions in the < 10 " +
@@ -1419,7 +1420,7 @@ namespace EXOFiddlerInspector
                 this.session["ui-backcolor"] = HTMLColourRed;
                 this.session["ui-color"] = "black";
 
-                this.session["X-ExchangeType"] = "Long Running EXO Session";
+                this.session["X-SessionType"] = "Long Running EXO Session";
 
                 this.session["X-ResponseAlert"] = "!Long Running EXO Session!";
                 this.session["X-ResponseComments"] = "Long running EXO session found. A small number of long running sessions in the < 10 " +
@@ -1450,7 +1451,7 @@ namespace EXOFiddlerInspector
                         // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
                         this.session["ui-backcolor"] = HTMLColourGrey;
                         this.session["ui-color"] = "black";
-                        this.session["X-ExchangeType"] = "Not Exchange";
+                        this.session["X-SessionType"] = "Not Exchange";
                     }
                 }
             }
@@ -1504,61 +1505,61 @@ namespace EXOFiddlerInspector
         }
 
         /// <summary>
-        /// Function where the Exchange Type column is populated.
+        /// Function where the Session Type column is populated.
         /// </summary>
         /// <param name="session"></param>
-        public void SetExchangeType(Session session)
+        public void SetSessionType(Session session)
         {
             // Outlook Connections.
-            if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) { this.session["X-ExchangeType"] = "EXO MAPI"; }
+            if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) { this.session["X-SessionType"] = "EXO MAPI"; }
             // Exchange Online Autodiscover.
-            else if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { this.session["X-ExchangeType"] = "EXO Autodiscover"; }
-            else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { this.session["X-ExchangeType"] = "EXO Autodiscover"; }
-            else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { this.session["X-ExchangeType"] = "EXO Autodiscover"; }
-            else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { this.session["X-ExchangeType"] = "EXO Autodiscover"; }
+            else if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { this.session["X-SessionType"] = "EXO Autodiscover"; }
+            else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { this.session["X-SessionType"] = "EXO Autodiscover"; }
+            else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { this.session["X-SessionType"] = "EXO Autodiscover"; }
+            else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { this.session["X-SessionType"] = "EXO Autodiscover"; }
             // Autodiscover.     
-            else if ((this.session.fullUrl.Contains("autodiscover") && (!(this.session.hostname == "outlook.office365.com")))) { this.session["X-ExchangeType"] = "On-Prem Autodiscover"; }
-            else if (this.session.hostname.Contains("autodiscover")) { this.session["X-ExchangeType"] = "On-Prem Autodiscover"; }
+            else if ((this.session.fullUrl.Contains("autodiscover") && (!(this.session.hostname == "outlook.office365.com")))) { this.session["X-SessionType"] = "On-Prem Autodiscover"; }
+            else if (this.session.hostname.Contains("autodiscover")) { this.session["X-SessionType"] = "On-Prem Autodiscover"; }
             // Free/Busy.
             else if (this.session.fullUrl.Contains("WSSecurity"))
             {
-                this.session["X-ExchangeType"] = "Free/Busy";
+                this.session["X-SessionType"] = "Free/Busy";
                 // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
                 //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
             }
             else if (this.session.fullUrl.Contains("GetUserAvailability"))
             {
-                this.session["X-ExchangeType"] = "Free/Busy";
+                this.session["X-SessionType"] = "Free/Busy";
                 // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
                 //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
             }
             else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1)
             {
-                this.session["X-ExchangeType"] = "Free/Busy";
+                this.session["X-SessionType"] = "Free/Busy";
                 // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
                 //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
             }
             // EWS.
-            else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { this.session["X-ExchangeType"] = "EXO EWS"; }
+            else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { this.session["X-SessionType"] = "EXO EWS"; }
             // Generic Office 365.
             else if (this.session.fullUrl.Contains(".onmicrosoft.com") && (!(this.session.hostname.Contains("live.com")))) { this.session["X -ExchangeType"] = "Exchange Online"; }
-            else if (this.session.fullUrl.Contains("outlook.office365.com")) { this.session["X-ExchangeType"] = "Office 365"; }
-            else if (this.session.fullUrl.Contains("outlook.office.com")) { this.session["X-ExchangeType"] = "Office 365"; }
+            else if (this.session.fullUrl.Contains("outlook.office365.com")) { this.session["X-SessionType"] = "Office 365"; }
+            else if (this.session.fullUrl.Contains("outlook.office.com")) { this.session["X-SessionType"] = "Office 365"; }
             // Office 365 Authentication.
-            else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { this.session["X-ExchangeType"] = "Office 365 Authentication"; }
+            else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { this.session["X-SessionType"] = "Office 365 Authentication"; }
             // ADFS Authentication.
-            else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { this.session["X-ExchangeType"] = "ADFS Authentication"; }
+            else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { this.session["X-SessionType"] = "ADFS Authentication"; }
             // Undetermined, but related to local process.
-            else if (this.session.LocalProcess.Contains("outlook")) { this.session["X-ExchangeType"] = "Outlook"; }
-            else if (this.session.LocalProcess.Contains("iexplore")) { this.session["X-ExchangeType"] = "Internet Explorer"; }
-            else if (this.session.LocalProcess.Contains("chrome")) { this.session["X-ExchangeType"] = "Chrome"; }
-            else if (this.session.LocalProcess.Contains("firefox")) { this.session["X-ExchangeType"] = "Firefox"; }
+            else if (this.session.LocalProcess.Contains("outlook")) { this.session["X-SessionType"] = "Outlook"; }
+            else if (this.session.LocalProcess.Contains("iexplore")) { this.session["X-SessionType"] = "Internet Explorer"; }
+            else if (this.session.LocalProcess.Contains("chrome")) { this.session["X-SessionType"] = "Chrome"; }
+            else if (this.session.LocalProcess.Contains("firefox")) { this.session["X-SessionType"] = "Firefox"; }
             // Everything else.
-            else { this.session["X-ExchangeType"] = "Not Exchange"; }
+            else { this.session["X-SessionType"] = "Not Exchange"; }
 
             /////////////////////////////
             //
-            // Exchange Type overrides
+            // Session Type overrides
             //
             // First off if the local process is null or blank, then we are analysing traffic from a remote client such as a mobile device.
             // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
@@ -1566,12 +1567,12 @@ namespace EXOFiddlerInspector
             if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
             {
                 // Traffic has a null or blank local process value.
-                this.session["X-ExchangeType"] = "Remote Capture";
+                this.session["X-SessionType"] = "Remote Capture";
             }
             else
             {
                 // With that out of the way,  if the traffic is not related to any of the below processes call it out.
-                // So if for example lync.exe is the process write that to the Exchange Type column.
+                // So if for example lync.exe is the process write that to the Session Type column.
                 if (!(this.session.LocalProcess.Contains("outlook") ||
                     this.session.LocalProcess.Contains("searchprotocolhost") ||
                     this.session.LocalProcess.Contains("iexplore") ||
@@ -1581,7 +1582,7 @@ namespace EXOFiddlerInspector
                     this.session.LocalProcess.Contains("w3wp")))
                 {
                     // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
-                    { this.session["X-ExchangeType"] = this.session.LocalProcess; }
+                    { this.session["X-SessionType"] = this.session.LocalProcess; }
                 }
             }
         }
@@ -1672,6 +1673,10 @@ namespace EXOFiddlerInspector
             this.session["X-Office365AuthType"] = "";
 
             this.session = session;
+
+            // Set process name.
+            string[] ProcessName = this.session.LocalProcess.Split(':');
+            this.session["X-ProcessName"] = ProcessName[0];
 
             // Determine if this session contains a SAML response.
             if (this.session.utilFindInResponse("Issuer=", false) > 1 &&
@@ -2033,7 +2038,7 @@ namespace EXOFiddlerInspector
                 {
                     this.session["X-Authentication"] = "Client Modern Auth Capable";
 
-                    this.session["X-AuthenticationDesc"] = this.session.LocalProcess + " is stating it is Modern Authentication capable. " +
+                    this.session["X-AuthenticationDesc"] = this.session["X-ProcessName"] + " is stating it is Modern Authentication capable. " +
                         "Whether it is used or not will depend on whether Modern Authentication is enabled in the Office 365 service.";
 
                     if (Preferences.AppLoggingEnabled)
@@ -2047,7 +2052,7 @@ namespace EXOFiddlerInspector
                 {
                     this.session["X-Authentication"] = "Client Basic Auth Capable";
 
-                    this.session["X-AuthenticationDesc"] = this.session.LocalProcess + " is stating it is Basic Authentication capable. " +
+                    this.session["X-AuthenticationDesc"] = this.session["X-ProcessName"] + " is stating it is Basic Authentication capable. " +
                         "Whether it is used or not will depend on whether Basic Authentication is enabled in the Office 365 service." +
                         Environment.NewLine +
                         "If this is Outlook, in all likelihood this is an Outlook 2013 (updated prior to Modern Auth), Outlook 2010 or an older Outlook client, " +
@@ -2070,7 +2075,7 @@ namespace EXOFiddlerInspector
 
                 this.session["X-Authentication"] = "Modern Auth Token";
 
-                this.session["X-AuthenticationDesc"] = this.session.LocalProcess + " accessing resources with a Modern Authentication security token.";
+                this.session["X-AuthenticationDesc"] = this.session["X-ProcessName"] + " accessing resources with a Modern Authentication security token.";
 
                 if (Preferences.AppLoggingEnabled)
                 {
@@ -2084,7 +2089,7 @@ namespace EXOFiddlerInspector
 
                 this.session["X-Authentication"] = "Basic Auth Token";
 
-                this.session["X-AuthenticationDesc"] = this.session.LocalProcess + " accessing resources with a Basic Authentication security token.";
+                this.session["X-AuthenticationDesc"] = this.session["X-ProcessName"] + " accessing resources with a Basic Authentication security token.";
 
                 if (Preferences.AppLoggingEnabled)
                 {
