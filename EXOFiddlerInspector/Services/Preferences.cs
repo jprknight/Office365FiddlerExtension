@@ -63,21 +63,37 @@ namespace EXOFiddlerInspector.Services
         public static bool ExtensionEnabled
         {
             get => _extensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.enabled", true);
-            set  { _extensionEnabled = value; FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", value); }
+            set
+            {
+                _extensionEnabled = value;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.enabled", value);
+                MenuUI.Instance.miEnabled.Text = ExtensionEnabled ? "Disable" : "Enable";
+                MenuUI.Instance.ExchangeOnlineTopMenu.Text = ExtensionEnabled ? "Exchange Online" : "Exchange Online (Disabled)";
+            }
         }
 
         private static bool _appLoggingEnabled;
         public static bool AppLoggingEnabled
         {
             get => _appLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", true);
-            set { _appLoggingEnabled = value; FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", value); }
+            set
+            {
+                _appLoggingEnabled = value;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.AppLoggingEnabled", value);
+                MenuUI.Instance.miAppLoggingEnabled.Checked = AppLoggingEnabled;
+            }
         }
 
         private static bool _highlightOutlookOWAOnlyEnabled;
         public static bool HighlightOutlookOWAOnlyEnabled
         {
-            get => _highlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", true);
-            set { _highlightOutlookOWAOnlyEnabled = value; FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", value); }
+            get => _highlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", false);
+            set
+            {
+                _highlightOutlookOWAOnlyEnabled = value;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerInspector.HighlightOutlookOWAOnlyEnabled", value);
+                MenuUI.Instance.miHighlightOutlookOWAOnly.Checked = HighlightOutlookOWAOnlyEnabled;
+            }
         }
 
         private static bool _isLoadSaz;

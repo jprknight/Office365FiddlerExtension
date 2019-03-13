@@ -1,4 +1,5 @@
-﻿using Fiddler;
+﻿using EXOFiddlerInspector.UI;
+using Fiddler;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,14 +22,13 @@ namespace EXOFiddlerInspector.Services
         public async void OnLoad()
         {
             //FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerInspector.ExecutionCount", 0);
+            MenuUI.Instance.Initialize();
             if (Preferences.ExecutionCount == 0)
             {
                 await Preferences.SetDefaultPreferences();
             }
 
-
-
-            MenuUI.Instance.Initialize();
+       
 
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 150, "X-ExchangeType");
@@ -36,6 +36,7 @@ namespace EXOFiddlerInspector.Services
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 110, "X-HostIP");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 130, "X-ResponseServer");
 
+            SessionProcessor.Instance.Initialize();
 
             // Throw a message box to alert demo mode is running.
             if (Preferences.GetDeveloperMode())
@@ -82,11 +83,7 @@ namespace EXOFiddlerInspector.Services
             // Call the function to populate the session type column on live trace, if the column is enabled.
             SessionProcessor.Instance.SetExchangeType(_session);
 
-            //// Call the function to populate the Authentication column on live trace, if the column is enabled.
-            //if (Preferences.AuthColumnEnabled)
-            //{
-            //    SessionProcessor.Instance.SetAuthentication(_session);
-            //}
+            SessionProcessor.Instance.SetAuthentication(_session);
         }
 
         /// <summary>
