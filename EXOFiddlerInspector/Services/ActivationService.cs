@@ -26,6 +26,8 @@ namespace EXOFiddlerInspector.Services
                 await Preferences.SetDefaultPreferences();
             }
 
+            SessionProcessor.Instance.Initialize();
+
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Exchange Type", 150, "X-ExchangeType");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 140, "X-Authentication");
