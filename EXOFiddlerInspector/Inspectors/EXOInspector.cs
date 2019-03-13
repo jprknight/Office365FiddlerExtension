@@ -217,8 +217,16 @@ namespace EXOFiddlerInspector.Inspectors
         {
             try
             {
+
                 if (!Preferences.ExtensionEnabled)
+                {
+                    Clear();
+                    ResultsString.AppendLine("-------------------------------");
+                    ResultsString.AppendLine("EXO Fiddler Extension Disabled.");
+                    ResultsString.AppendLine("-------------------------------");
+                    ExchangeResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
                     return;
+                }
 
                 Clear();
 
@@ -405,6 +413,22 @@ namespace EXOFiddlerInspector.Inspectors
                 else
                 {
                     ResultsString.AppendLine("Session does not contain data to calculate 'Server Think Time' and 'Transit Time'.");
+                }
+
+                // Authentication
+                ResultsString.AppendLine();
+                ResultsString.AppendLine("Authentication");
+                ResultsString.AppendLine("--------------");
+                ResultsString.AppendLine();
+                ResultsString.AppendLine($"Authentication Type: {this.session["X-AUTHENTICATION"]}");
+                ResultsString.AppendLine($"Authentication Decription: {this.session["X-AUTHENTICATIONDESC"]}");
+
+                if (this.session["X-Office365AuthType"] == "SAMLResponseParser")
+                {
+                    ResultsString.AppendLine($"Issuer: {this.session["X-ISSUER"]}");
+                    ResultsString.AppendLine($"Attribute Name Immutable Id: {this.session["X-ATTRIBUTENAMEIMMUTABLEID"]}");
+                    ResultsString.AppendLine($"Attribute Name UPN: {this.session["X-ATTRIBUTENAMEUPN"]}");
+                    ResultsString.AppendLine($"Name Identifier Format: {this.session["X-NAMEIDENTIFIERFORMAT"]}");
                 }
 
                 ResultsString.AppendLine();
