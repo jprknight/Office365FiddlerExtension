@@ -32,6 +32,9 @@ namespace EXOFiddlerInspector
 
         public void Initialize()
         {
+            if (!Preferences.ExtensionEnabled)
+                return;
+
             FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
 
             if (!IsInitialized)
