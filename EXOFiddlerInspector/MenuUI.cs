@@ -19,24 +19,17 @@ namespace EXOFiddlerInspector
 
         public MenuItem miEnabled { get; set; }
 
-        public MenuItem miSeperator1 { get; set; }
-
-        public MenuItem miSeperator2 { get; set; }
-
-
         public MenuItem miAppLoggingEnabled { get; set; }
 
         public MenuItem miCheckForUpdate { get; set; }
 
         public MenuItem miHighlightOutlookOWAOnly { get; set; }
-        public MenuItem miSeperator3 { get; set; }
 
         public MenuItem miReleasesDownloadWebpage { get; set; }
 
         public MenuItem miWiki { get; set; }
 
         public MenuItem miReportIssues { get; set; }
-        public MenuItem miSeperator4 { get; set; }
 
         private int iExecutionCount { get; set; }
 
