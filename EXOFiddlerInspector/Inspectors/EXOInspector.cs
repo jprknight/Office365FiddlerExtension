@@ -237,6 +237,8 @@ namespace EXOFiddlerInspector.Inspectors
 
                 //this.Clear();
 
+                ResultsString.Append(FiddlerApplication.Prefs.GetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", ""));
+
                 ResultsString.AppendLine("General Session Data");
                 ResultsString.AppendLine("--------------------");
                 ResultsString.AppendLine();

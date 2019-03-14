@@ -44,6 +44,7 @@
             this.ResultsDisplay.Multiline = true;
             this.ResultsDisplay.Name = "ResultsDisplay";
             this.ResultsDisplay.ReadOnly = true;
+            this.ResultsDisplay.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.ResultsDisplay.Size = new System.Drawing.Size(558, 605);
             this.ResultsDisplay.TabIndex = 1;
             // 
