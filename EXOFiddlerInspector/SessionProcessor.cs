@@ -814,6 +814,16 @@ namespace EXOFiddlerInspector
                                 Environment.NewLine +
                                 "See: https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-2010/dd877045(v=exchg.140)";
 
+                            // 3rd-party EWS application could not connect to Exchange Online mailbox until culture/language was set for the first time in OWA.
+                            if (this.session.fullUrl.Contains("outlook.office365.com/ews"))
+                            {
+                                this.session["X-ResponseComments"] = this.session["X-ResponseComments"] + Environment.NewLine +
+                                    "EWS Scenario: If you are troubleshooting a 3rd party EWS application (using application impersonation) and the service account mailbox " +
+                                    "has been recently migrated into the cloud, ensure mailbox is licensed and to log into the service account mailbox for the first time using OWA at " +
+                                    "https://outlook.office365.com to set the mailbox culture." + Environment.NewLine +
+                                    "Validate with: Get-Mailbox service-account@domain.com | FL Languages";
+                            }
+
                             if (Preferences.AppLoggingEnabled)
                             {
                                 FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 403 Forbidden.");

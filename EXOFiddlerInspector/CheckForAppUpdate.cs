@@ -12,8 +12,6 @@ namespace EXOFiddlerInspector
         public Boolean bExtensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", false);
         public Boolean bAppLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", false);
 
-
-
         /////////////////
         //
         // Check for updates.
@@ -83,7 +81,7 @@ namespace EXOFiddlerInspector
             {
 
                 Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : Update Available.");
-                FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.MenuTitle", "Exchange Online (Update Available)");
+                //FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.MenuTitle", "Exchange Online (Update Available)");
 
                 /// <remarks>
                 /// Refresh the value of ManualCheckForUpdate and respond with feedback if needed.
@@ -103,7 +101,7 @@ namespace EXOFiddlerInspector
                     FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", $"Update Available{Environment.NewLine}----------------" +
                         $"{Environment.NewLine}Currently using version: {applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
                         $"{Environment.NewLine}New version available: {newVersion.Major}.{newVersion.Minor}.{newVersion.Build} {Environment.NewLine} {Environment.NewLine}" +
-                        $"Download the latest version: {Environment.NewLine}https://aka.ms/exofiddlerextension {Environment.NewLine} {Environment.NewLine}");
+                        $"Download the latest version: {Environment.NewLine}https://aka.ms/EXOFiddlerExtension {Environment.NewLine} {Environment.NewLine}");
 
                     string caption = "EXO Fiddler Extension - Update Available";
 
@@ -138,7 +136,7 @@ namespace EXOFiddlerInspector
                 /// </remarks>
                 /// 
                 Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : No update available.");
-                FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.MenuTitle", "Exchange Online");
+                //FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.MenuTitle", "Exchange Online");
 
                 FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", "");
 
@@ -153,10 +151,30 @@ namespace EXOFiddlerInspector
 
                 Boolean ManualCheckForUpdateFeedback = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
 
-                // Regardless of extension enabled or not, give the user feedback when they click the 'Check For Update' menu item if no update is available.
-                if (ManualCheckForUpdateFeedback)
+                // Tell users if they are either on a beta build or the latest build.
+                if (applicationVersion.Build >= 1000 && ManualCheckForUpdateFeedback)
                 {
-                    MessageBox.Show("EXOFiddlerExtention: You already have the latest version installed.", "EXO Fiddler Extension");
+                    MessageBox.Show("EXOFiddlerExtention: You are using a beta build. Thanks for the testing!" + Environment.NewLine +
+                        "You are currently using v" + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + "." + Environment.NewLine +
+                        "Newest production build available v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".", "EXO Fiddler Extension - Beta Version!");
+
+                    FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", $"Beta Build!{Environment.NewLine}-----------" +
+                        $"{Environment.NewLine}Currently using version: {applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
+                        $"{Environment.NewLine}Newest production build available: {newVersion.Major}.{newVersion.Minor}.{newVersion.Build} {Environment.NewLine} {Environment.NewLine}" +
+                        $"Raise any issues at: {Environment.NewLine}http://aka.ms/EXOFiddlerExtensionIssues {Environment.NewLine} {Environment.NewLine}");
+                }
+                else if (applicationVersion.Build >= 1000)
+                {
+                    FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", $"Beta Build!{Environment.NewLine}-----------" +
+                        $"{Environment.NewLine}Currently using version: {applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
+                        $"{Environment.NewLine}Newest production build available: {newVersion.Major}.{newVersion.Minor}.{newVersion.Build} {Environment.NewLine} {Environment.NewLine}" +
+                        $"Raise any issues at: {Environment.NewLine}http://aka.ms/EXOFiddlerExtensionIssues {Environment.NewLine} {Environment.NewLine}");
+                }
+                else if (ManualCheckForUpdateFeedback)
+                {
+                    MessageBox.Show("EXOFiddlerExtention: You already have the latest version installed." + Environment.NewLine +
+                        "You are currently using v" + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + "." + Environment.NewLine +
+                        "Newest available v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".", "EXO Fiddler Extension");
                     // return this perference back to false, so we don't give this feedback unintentionally.
                     FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
                 }
@@ -165,10 +183,10 @@ namespace EXOFiddlerInspector
             /// <remarks>
             /// If DeveloperDemoMode set the menu title regardless of the availability of an update.
             /// </remarks>
-            if (Preferences.GetDeveloperMode())
-            {
-                FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.MenuTitle", "Exchange Online (Update Available!)");
-            }
+            //if (Preferences.GetDeveloperMode())
+            //{
+            //    FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.MenuTitle", "Exchange Online (Update Available!)");
+            //}
             Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : CheckForUpdate done.");
         }
     }
