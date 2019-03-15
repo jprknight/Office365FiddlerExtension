@@ -100,6 +100,11 @@ namespace EXOFiddlerInspector
                     "A new version is available v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + "." + Environment.NewLine +
                     "Do you want to download the update?";
 
+                    FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", $"Update Available{Environment.NewLine}----------------" +
+                        $"{Environment.NewLine}Currently using version: {applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
+                        $"{Environment.NewLine}New version available: {newVersion.Major}.{newVersion.Minor}.{newVersion.Build} {Environment.NewLine} {Environment.NewLine}" +
+                        $"Download the latest version: {Environment.NewLine}https://aka.ms/exofiddlerextension {Environment.NewLine} {Environment.NewLine}");
+
                     string caption = "EXO Fiddler Extension - Update Available";
 
                     /// <remarks>
@@ -134,6 +139,8 @@ namespace EXOFiddlerInspector
                 /// 
                 Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : No update available.");
                 FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.MenuTitle", "Exchange Online");
+
+                FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", "");
 
                 if (bAppLoggingEnabled)
                 {

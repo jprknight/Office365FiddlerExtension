@@ -32,6 +32,10 @@ namespace EXOFiddlerInspector
 
         public void Initialize()
         {
+            // Stop HandleLoadSaz and further processing if the extension is not enabled.
+            if (!Preferences.ExtensionEnabled)
+                return;
+
             FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
 
             if (!IsInitialized)
@@ -68,7 +72,11 @@ namespace EXOFiddlerInspector
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
             Preferences.IsLoadSaz = true;
-            Preferences.ExtensionEnabled = true;
+            
+            // HandleLoadSaz function was enabling the extension. 
+            // The drawback to this is that if the extension is disabled and a loadsaz event occurs the extension is re-enabled. This may not be what the user wants.
+
+            //Preferences.ExtensionEnabled = true;
             MenuUI.Instance.miEnabled.Checked = Preferences.ExtensionEnabled;
 
             foreach (var session in e.arrSessions)
