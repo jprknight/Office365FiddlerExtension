@@ -143,8 +143,9 @@ namespace EXOFiddlerInspector
             FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", true);
 
             // Check for app update.
-            CheckForAppUpdate calledCheckForAppUpdate = new CheckForAppUpdate();
-            calledCheckForAppUpdate.CheckForUpdate();
+            //CheckForAppUpdate calledCheckForAppUpdate = new CheckForAppUpdate();
+            //calledCheckForAppUpdate.CheckForUpdate();
+            CheckForAppUpdate.Instance.CheckForUpdate();
         }
 
         public void miHighlightOutlookOWAOnly_click(object sender, EventArgs e)

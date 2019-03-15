@@ -1529,7 +1529,7 @@ namespace EXOFiddlerInspector
         public void SetSessionType(Session session)
         {
             // Outlook Connections.
-            if (this.session.fullUrl.Contains("outlook.office365.com/mapi") || this.session.fullUrl.Contains("outlook.office365.com/MAPI")) {this.session["X-SessionType"] = "EXO MAPI"; }
+            if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) {this.session["X-SessionType"] = "EXO MAPI"; }
             // Exchange Online Autodiscover.
             else if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { this.session["X-SessionType"] = "EXO Autodiscover"; }
             else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { this.session["X-SessionType"] = "EXO Autodiscover"; }
