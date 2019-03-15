@@ -198,12 +198,11 @@ namespace EXOFiddlerInspector.Inspectors
         /// <param name="o">The tab control for the inspector</param>
         public override void AddToTab(TabPage o)
         {
-
-            ExchangeResponseControl testControl = new ExchangeResponseControl();
+            ExchangeResponseControl textControl = new ExchangeResponseControl();
             o.Text = "Exchange Online";
             o.ToolTipText = "Exchange Online Inspector";
-            testControl.Size = o.Size;
-            o.Controls.Add(testControl);
+            textControl.Size = o.Size;
+            o.Controls.Add(textControl);
             o.Controls[0].Dock = DockStyle.Fill;
         }
 
