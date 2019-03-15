@@ -12,14 +12,6 @@ namespace EXOFiddlerInspector
         private static CheckForAppUpdate _instance;
         public static CheckForAppUpdate Instance => _instance ?? (_instance = new CheckForAppUpdate());
 
-        /////////////////
-        //
-        // Check for updates.
-        //
-        // Called from Onload in ColouriseWebSessions.cs. 
-        // Needs further investigation: Only implemented on loadSAZ), due to web call issue, as Fiddler substitutes in http://localhost:8888 as the proxy server.
-        //
-
         public void CheckForUpdate()
         {
             Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : CheckForUpdate begin.");
@@ -72,11 +64,11 @@ namespace EXOFiddlerInspector
             }
 
             Version applicationVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+
             /// <remarks>
             /// Update available.
             /// </remarks>
             /// 
-
             if (applicationVersion.CompareTo(newVersion) < 0)
             {
 
@@ -87,7 +79,7 @@ namespace EXOFiddlerInspector
                 /// Refresh the value of ManualCheckForUpdate and respond with feedback if needed.
                 /// </remarks>
 
-                Boolean ManualCheckForUpdateFeedback = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
+                //Boolean ManualCheckForUpdateFeedback = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
 
                 if (applicationVersion.Build >= 1000)
                 {
@@ -106,7 +98,7 @@ namespace EXOFiddlerInspector
                 }
 
                 // Regardless of extension enabled or not, give the user feedback when they click the 'Check For Update' menu item if no update is available.
-                if (ManualCheckForUpdateFeedback)
+                if (Preferences.ManualCheckForUpdate)
                 {
                     //MessageBox.Show("EXOFiddlerExtention: Update available. v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".", "EXO Fiddler Extension");
 
@@ -137,18 +129,20 @@ namespace EXOFiddlerInspector
                         }
                     }
                     // return this perference back to false, so we don't give this feedback unintentionally.
-                    FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
+                    Preferences.ManualCheckForUpdate = false;
+                    //FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
                 }
             }
+            /// <remarks>
+            /// No update available.
+            /// </remarks>
+            /// 
             else
             {
-                /// <remarks>
-                /// No update available.
-                /// </remarks>
-                /// 
                 Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : No update available.");
                 //FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.MenuTitle", "Exchange Online");
 
+                // Clear UpdateMessage if no update is available. More processing below if running a beta version.
                 FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", "");
 
                 if (Preferences.AppLoggingEnabled)
@@ -156,14 +150,8 @@ namespace EXOFiddlerInspector
                     FiddlerApplication.Log.LogString("EXOFiddlerExtention: Latest version installed.");
                 }
 
-                /// <remarks>
-                /// Refresh the value of ManualCheckForUpdate and respond with feedback if needed.
-                /// </remarks>
-
-                Boolean ManualCheckForUpdateFeedback = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
-
                 // Tell user if they are either on a beta build.
-                if (applicationVersion.Build >= 1000 && ManualCheckForUpdateFeedback)
+                if (applicationVersion.Build >= 1000 && Preferences.ManualCheckForUpdate)
                 {
                     MessageBox.Show($"EXOFiddlerExtention: You are using a beta build. Thanks for the testing!{Environment.NewLine}" +
                         $"You are currently using v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}.{Environment.NewLine}" +
@@ -184,7 +172,7 @@ namespace EXOFiddlerInspector
                         $"Raise any issues at: {Environment.NewLine}http://aka.ms/EXOFiddlerExtensionIssues {Environment.NewLine}{Environment.NewLine}");
                 }
                 // Tell user if they are on latest production build.
-                else if (ManualCheckForUpdateFeedback)
+                else if (Preferences.ManualCheckForUpdate)
                 {
                     MessageBox.Show("EXOFiddlerExtention: You already have the latest version installed." + Environment.NewLine +
                         $"You are currently using v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}.{Environment.NewLine}" +
