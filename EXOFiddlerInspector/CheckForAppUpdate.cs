@@ -89,6 +89,22 @@ namespace EXOFiddlerInspector
 
                 Boolean ManualCheckForUpdateFeedback = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
 
+                if (applicationVersion.Build >= 1000)
+                {
+                    FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", $"Update Available{Environment.NewLine}----------------" +
+                        $"{Environment.NewLine}You should update from this beta build to the latest production build." +
+                        $"{Environment.NewLine}Currently using beta version: {applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
+                        $"{Environment.NewLine}New production version available: {newVersion.Major}.{newVersion.Minor}.{newVersion.Build} {Environment.NewLine} {Environment.NewLine}" +
+                        $"Download the latest version: {Environment.NewLine}https://aka.ms/EXOFiddlerExtension {Environment.NewLine} {Environment.NewLine}");
+                }
+                else
+                {
+                    FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", $"Update Available{Environment.NewLine}----------------" +
+                        $"{Environment.NewLine}Currently using version: {applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
+                        $"{Environment.NewLine}New version available: {newVersion.Major}.{newVersion.Minor}.{newVersion.Build} {Environment.NewLine} {Environment.NewLine}" +
+                        $"Download the latest version: {Environment.NewLine}https://aka.ms/EXOFiddlerExtension {Environment.NewLine} {Environment.NewLine}");
+                }
+
                 // Regardless of extension enabled or not, give the user feedback when they click the 'Check For Update' menu item if no update is available.
                 if (ManualCheckForUpdateFeedback)
                 {
@@ -97,11 +113,6 @@ namespace EXOFiddlerInspector
                     string message = "You are currently using v" + applicationVersion.Major + "." + applicationVersion.Minor + "." + applicationVersion.Build + "." + Environment.NewLine +
                     "A new version is available v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + "." + Environment.NewLine +
                     "Do you want to download the update?";
-
-                    FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", $"Update Available{Environment.NewLine}----------------" +
-                        $"{Environment.NewLine}Currently using version: {applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
-                        $"{Environment.NewLine}New version available: {newVersion.Major}.{newVersion.Minor}.{newVersion.Build} {Environment.NewLine} {Environment.NewLine}" +
-                        $"Download the latest version: {Environment.NewLine}https://aka.ms/EXOFiddlerExtension {Environment.NewLine} {Environment.NewLine}");
 
                     string caption = "EXO Fiddler Extension - Update Available";
 
@@ -151,7 +162,7 @@ namespace EXOFiddlerInspector
 
                 Boolean ManualCheckForUpdateFeedback = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
 
-                // Tell users if they are either on a beta build or the latest build.
+                // Tell user if they are either on a beta build.
                 if (applicationVersion.Build >= 1000 && ManualCheckForUpdateFeedback)
                 {
                     MessageBox.Show("EXOFiddlerExtention: You are using a beta build. Thanks for the testing!" + Environment.NewLine +
@@ -163,6 +174,7 @@ namespace EXOFiddlerInspector
                         $"{Environment.NewLine}Newest production build available: {newVersion.Major}.{newVersion.Minor}.{newVersion.Build} {Environment.NewLine} {Environment.NewLine}" +
                         $"Raise any issues at: {Environment.NewLine}http://aka.ms/EXOFiddlerExtensionIssues {Environment.NewLine} {Environment.NewLine}");
                 }
+                // Update the UpdateMessage if user is on beta build.
                 else if (applicationVersion.Build >= 1000)
                 {
                     FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", $"Beta Build!{Environment.NewLine}-----------" +
@@ -170,6 +182,7 @@ namespace EXOFiddlerInspector
                         $"{Environment.NewLine}Newest production build available: {newVersion.Major}.{newVersion.Minor}.{newVersion.Build} {Environment.NewLine} {Environment.NewLine}" +
                         $"Raise any issues at: {Environment.NewLine}http://aka.ms/EXOFiddlerExtensionIssues {Environment.NewLine} {Environment.NewLine}");
                 }
+                // Tell user if they are on latest production build.
                 else if (ManualCheckForUpdateFeedback)
                 {
                     MessageBox.Show("EXOFiddlerExtention: You already have the latest version installed." + Environment.NewLine +
