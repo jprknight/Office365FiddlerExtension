@@ -815,9 +815,9 @@ namespace EXOFiddlerInspector
                                 "See: https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-2010/dd877045(v=exchg.140)";
 
                             // 3rd-party EWS application could not connect to Exchange Online mailbox until culture/language was set for the first time in OWA.
-                            if (this.session.fullUrl.Contains("outlook.office365.com/ews"))
+                            if (this.session.fullUrl.Contains("outlook.office365.com/EWS") || this.session.fullUrl.Contains("outlook.office365.com/ews"))
                             {
-                                this.session["X-ResponseComments"] = this.session["X-ResponseComments"] + Environment.NewLine +
+                                this.session["X-ResponseComments"] += Environment.NewLine + Environment.NewLine +
                                     "EWS Scenario: If you are troubleshooting a 3rd party EWS application (using application impersonation) and the service account mailbox " +
                                     "has been recently migrated into the cloud, ensure mailbox is licensed and to log into the service account mailbox for the first time using OWA at " +
                                     "https://outlook.office365.com to set the mailbox culture." + Environment.NewLine +
@@ -1529,7 +1529,7 @@ namespace EXOFiddlerInspector
         public void SetSessionType(Session session)
         {
             // Outlook Connections.
-            if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) { this.session["X-SessionType"] = "EXO MAPI"; }
+            if (this.session.fullUrl.Contains("outlook.office365.com/mapi") || this.session.fullUrl.Contains("outlook.office365.com/MAPI")) {this.session["X-SessionType"] = "EXO MAPI"; }
             // Exchange Online Autodiscover.
             else if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { this.session["X-SessionType"] = "EXO Autodiscover"; }
             else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { this.session["X-SessionType"] = "EXO Autodiscover"; }
