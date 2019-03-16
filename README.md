@@ -1,4 +1,4 @@
-# Download Latest Version
+# Download
 <a href="https://github.com/jprknight/exofiddlerextension/releases/latest" target="_blank">Download the latest release</a> of the Exchange Online Fiddler Extension.
 
 # Current Release Information
