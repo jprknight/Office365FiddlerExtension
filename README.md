@@ -4,10 +4,10 @@ Download the latest release of the Exchange Online Fiddler Extension <a href="ht
 # Current Release Information
 Version 1.0.63 addresses performance concerns when running in 'live trace' mode. Minimal features in the extension now run in this mode. Load a SAZ archive into Fiddler to see all functionality.
 
-# EXOFiddlerExtension
-The Exchange Online Fiddler Extension
+# Purpose
+The Exchange Online Fiddler Extension is an Outlook / Office 365 / Exchange / Exchange Online centric parser for Fiddler traces captured while reproducing issues. It can be used with Outlook or other Office 365 applications, since Fiddler can decrypt HTTPS traffic and record the session data for review and troubleshooting.
 
-This inspector is intended to help with troubleshooting issues with Outlook and Office 365 / Exchange Online. With Fiddler installed, install this extension to alter the standard Fiddler UI:
+The extension to alters the standard Fiddler UI:
 
 * Add column 'Elapsed Time'.
 * Add column 'Response Server'.
