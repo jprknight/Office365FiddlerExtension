@@ -9,6 +9,7 @@ The Exchange Online Fiddler Extension is an Outlook / Office 365 / Exchange / Ex
 
 The extension to alters the standard Fiddler UI:
 
+* Colourisation of sessions.
 * Add column 'Elapsed Time'.
 * Add column 'Response Server'.
 * Add column 'Session Type'.
@@ -16,7 +17,6 @@ The extension to alters the standard Fiddler UI:
 * Add column 'Authentication'.
 * Add an 'Exchange Online' response inspector tab.
 * Add an 'Exchange Online' menu to turn off/on extension and extension features.
-* Colourisation of sessions.
 
 # Project Links
 
