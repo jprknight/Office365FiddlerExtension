@@ -1,3 +1,5 @@
+<a href="https://github.com/jprknight/exofiddlerextension/releases/latest" target="_blank">Download the latest release</a>
+
 # Current Release Information
 Version 1.0.63 addresses performance concerns when running in 'live trace' mode. Minimal features in the extension now run in this mode. Load a SAZ archive into Fiddler to see all functionality.
 
