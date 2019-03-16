@@ -17,7 +17,7 @@ This inspector is intended to help with troubleshooting issues with Outlook and 
 * Colourisation of sessions upon loading a .SAZ file.
 * Colourisation of sessions upon live tracing.
 
-For more information click here: https://github.com/jprknight/EXOFiddlerExtension/wiki
+For more information click here: <a href="https://github.com/jprknight/EXOFiddlerExtension/wiki">https://github.com/jprknight/EXOFiddlerExtension/wiki</a>
 
 To submit issues or suggestions click here: https://github.com/jprknight/EXOFiddlerExtension/issues
 
