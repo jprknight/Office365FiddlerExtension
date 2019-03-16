@@ -26,4 +26,4 @@ Issues: <a href="https://github.com/jprknight/EXOFiddlerExtension/issues" target
 
 Download: <a href="https://github.com/jprknight/exofiddlerextension/releases/latest" target="_blank">https://github.com/jprknight/exofiddlerextension/releases/latest</a>
 
-Exchange EHLO Technet Blog post: <a href="https://blogs.technet.microsoft.com/exchange/2018/12/11/introducing-the-exchange-online-fiddler-extension/" target="_blank">https://blogs.technet.microsoft.com/exchange/2018/12/11/introducing-the-exchange-online-fiddler-extension/</a>
+Exchange EHLO Technet blog post: <a href="https://blogs.technet.microsoft.com/exchange/2018/12/11/introducing-the-exchange-online-fiddler-extension/" target="_blank">https://blogs.technet.microsoft.com/exchange/2018/12/11/introducing-the-exchange-online-fiddler-extension/</a>
