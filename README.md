@@ -19,7 +19,7 @@ The extension to alters the standard Fiddler UI:
 * Colourisation of sessions upon loading a .SAZ file.
 * Colourisation of sessions upon live tracing.
 
-# Projects Links
+# Project Links
 
 EXOFiddlerExtension Wiki: <a href="https://github.com/jprknight/EXOFiddlerExtension/wiki" target="_blank">https://github.com/jprknight/EXOFiddlerExtension/wiki</a>
 
