@@ -28,6 +28,8 @@ namespace EXOFiddlerInspector.Services
 
             SessionProcessor.Instance.Initialize();
 
+            CheckForAppUpdate.Instance.CheckForUpdate();
+
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Session Type", 150, "X-SessionType");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 140, "X-Authentication");

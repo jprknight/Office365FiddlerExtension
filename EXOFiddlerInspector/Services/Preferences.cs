@@ -117,5 +117,13 @@ namespace EXOFiddlerInspector.Services
             set { _executionCount = value; FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerExtension.ExecutionCount", value); }
         }
 
+        private static bool _ManualCheckForUpdate;
+
+        public static bool ManualCheckForUpdate
+        {
+            get => _ManualCheckForUpdate = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
+            set { _ManualCheckForUpdate = value; FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", value); }
+        }
+
     }
 }

@@ -198,12 +198,11 @@ namespace EXOFiddlerInspector.Inspectors
         /// <param name="o">The tab control for the inspector</param>
         public override void AddToTab(TabPage o)
         {
-
-            ExchangeResponseControl testControl = new ExchangeResponseControl();
+            ExchangeResponseControl textControl = new ExchangeResponseControl();
             o.Text = "Exchange Online";
             o.ToolTipText = "Exchange Online Inspector";
-            testControl.Size = o.Size;
-            o.Controls.Add(testControl);
+            textControl.Size = o.Size;
+            o.Controls.Add(textControl);
             o.Controls[0].Dock = DockStyle.Fill;
         }
 
@@ -431,6 +430,11 @@ namespace EXOFiddlerInspector.Inspectors
                     ResultsString.AppendLine($"Attribute Name Immutable Id: {this.session["X-ATTRIBUTENAMEIMMUTABLEID"]}");
                     ResultsString.AppendLine($"Attribute Name UPN: {this.session["X-ATTRIBUTENAMEUPN"]}");
                     ResultsString.AppendLine($"Name Identifier Format: {this.session["X-NAMEIDENTIFIERFORMAT"]}");
+                    ResultsString.AppendLine("Signing Certificate: Copy the below text in a .cer file to view the certificate.");
+                    ResultsString.AppendLine("");
+                    ResultsString.AppendLine("-----BEGIN CERTIFICATE-----");
+                    ResultsString.AppendLine(this.session["X-SigningCertificate"]);
+                    ResultsString.AppendLine("-----END CERTIFICATE-----");
                 }
 
                 ResultsString.AppendLine();
