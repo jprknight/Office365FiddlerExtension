@@ -16,10 +16,10 @@ This inspector is intended to help with troubleshooting issues with Outlook and 
 * Colourisation of sessions upon loading a .SAZ file.
 * Colourisation of sessions upon live tracing.
 
-For more information click here: <a href="https://github.com/jprknight/EXOFiddlerExtension/wiki">https://github.com/jprknight/EXOFiddlerExtension/wiki</a>
+For more information click here: <a href="https://github.com/jprknight/EXOFiddlerExtension/wiki" target="_blank">https://github.com/jprknight/EXOFiddlerExtension/wiki</a>
 
-To submit issues or suggestions click here: <a href="https://github.com/jprknight/EXOFiddlerExtension/issues">https://github.com/jprknight/EXOFiddlerExtension/issues</a>
+To submit issues or suggestions click here: <a href="https://github.com/jprknight/EXOFiddlerExtension/issues" target="_blank">https://github.com/jprknight/EXOFiddlerExtension/issues</a>
 
-To download the extension click here: <a href="https://github.com/jprknight/EXOFiddlerExtension/releases">https://github.com/jprknight/EXOFiddlerExtension/releases</a>
+To download the extension click here: <a href="https://github.com/jprknight/EXOFiddlerExtension/releases" target="_blank">https://github.com/jprknight/EXOFiddlerExtension/releases</a>
 
-EHLO Blog post: <a href="https://blogs.technet.microsoft.com/exchange/2018/12/11/introducing-the-exchange-online-fiddler-extension/">https://blogs.technet.microsoft.com/exchange/2018/12/11/introducing-the-exchange-online-fiddler-extension/</a>
+EHLO Blog post: <a href="https://blogs.technet.microsoft.com/exchange/2018/12/11/introducing-the-exchange-online-fiddler-extension/" target="_blank">https://blogs.technet.microsoft.com/exchange/2018/12/11/introducing-the-exchange-online-fiddler-extension/</a>
