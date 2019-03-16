@@ -16,8 +16,7 @@ The extension to alters the standard Fiddler UI:
 * Add column 'Authentication'.
 * Add an 'Exchange Online' response inspector tab.
 * Add an 'Exchange Online' menu to turn off/on extension and extension features.
-* Colourisation of sessions upon loading a .SAZ file.
-* Colourisation of sessions upon live tracing.
+* Colourisation of sessions.
 
 # Project Links
 
