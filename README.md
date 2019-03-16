@@ -19,10 +19,12 @@ The extension to alters the standard Fiddler UI:
 * Colourisation of sessions upon loading a .SAZ file.
 * Colourisation of sessions upon live tracing.
 
-For more information click here: <a href="https://github.com/jprknight/EXOFiddlerExtension/wiki" target="_blank">https://github.com/jprknight/EXOFiddlerExtension/wiki</a>
+# Projects Links
 
-To submit issues or suggestions click here: <a href="https://github.com/jprknight/EXOFiddlerExtension/issues" target="_blank">https://github.com/jprknight/EXOFiddlerExtension/issues</a>
+EXOFiddlerExtension Wiki: <a href="https://github.com/jprknight/EXOFiddlerExtension/wiki" target="_blank">https://github.com/jprknight/EXOFiddlerExtension/wiki</a>
 
-To download the extension click here: <a href="https://github.com/jprknight/EXOFiddlerExtension/releases" target="_blank">https://github.com/jprknight/EXOFiddlerExtension/releases</a>
+EXOFiddlerExtension Issues: <a href="https://github.com/jprknight/EXOFiddlerExtension/issues" target="_blank">https://github.com/jprknight/EXOFiddlerExtension/issues</a>
 
-EHLO Blog post: <a href="https://blogs.technet.microsoft.com/exchange/2018/12/11/introducing-the-exchange-online-fiddler-extension/" target="_blank">https://blogs.technet.microsoft.com/exchange/2018/12/11/introducing-the-exchange-online-fiddler-extension/</a>
+EXOFiddlerExtension Download: <a href="https://github.com/jprknight/exofiddlerextension/releases/latest" target="_blank">https://github.com/jprknight/exofiddlerextension/releases/latest</a>
+
+Exchange EHLO Technet Blog post: <a href="https://blogs.technet.microsoft.com/exchange/2018/12/11/introducing-the-exchange-online-fiddler-extension/" target="_blank">https://blogs.technet.microsoft.com/exchange/2018/12/11/introducing-the-exchange-online-fiddler-extension/</a>
