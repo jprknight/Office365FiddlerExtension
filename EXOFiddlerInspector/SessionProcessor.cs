@@ -212,7 +212,6 @@ namespace EXOFiddlerInspector
 
                             // Increment SkipFurtherProcess for SetSessionType function and return.
                             SkipFurtherProcessing++;
-                            return;
                         }
 
                         /////////////////////////////
@@ -281,7 +280,6 @@ namespace EXOFiddlerInspector
                                 }
                                 // Increment SkipFurtherProcess for SetSessionType function and return.
                                 SkipFurtherProcessing++;
-                                return;
 
                             }
                             // Highlight if we got this far and do not have a redirect address which points to
@@ -307,8 +305,6 @@ namespace EXOFiddlerInspector
                                 }
                                 // Increment SkipFurtherProcess for SetSessionType function and return.
                                 SkipFurtherProcessing++;
-                                return;
-
                             }
                         }
 
@@ -346,7 +342,6 @@ namespace EXOFiddlerInspector
                             }
                             // Increment SkipFurtherProcess for SetSessionType function and return.
                             SkipFurtherProcessing++;
-                            return;
                         }
 
                         /////////////////////////////
@@ -371,7 +366,6 @@ namespace EXOFiddlerInspector
 
                                 // Increment SkipFurtherProcess for SetSessionType function and return.
                                 SkipFurtherProcessing++;
-                                return;
                             }
                             
                             // The below does not make sense, commenting out for now.
@@ -405,7 +399,6 @@ namespace EXOFiddlerInspector
 
                             // Increment SkipFurtherProcess for SetSessionType function and return.
                             SkipFurtherProcessing++;
-                            return;
                         }
 
                         /////////////////////////////
@@ -429,7 +422,6 @@ namespace EXOFiddlerInspector
 
                                 // Increment SkipFurtherProcess for SetSessionType function and return.
                                 SkipFurtherProcessing++;
-                                return;
                             }
                             // User cannot create Office 365 groups. Not an error condition in and of itself.
                             else if (this.session.utilFindInResponse("<GroupCreationEnabled>false</GroupCreationEnabled>", false) > 1)
@@ -444,7 +436,6 @@ namespace EXOFiddlerInspector
 
                                 // Increment SkipFurtherProcess for SetSessionType function and return.
                                 SkipFurtherProcessing++;
-                                return;
                             }
                             // Did not see the expected keyword in the response body. This is the error condition.
                             else
@@ -464,7 +455,6 @@ namespace EXOFiddlerInspector
                                 }
                                 // Increment SkipFurtherProcess for SetSessionType function and return.
                                 SkipFurtherProcessing++;
-                                return;
                             }
                         }
 
@@ -823,7 +813,6 @@ namespace EXOFiddlerInspector
                             }
                             // Increment SkipFurtherProcess for SetSessionType function and return.
                             SkipFurtherProcessing++;
-                            return;
                         }
                         else
                         {
@@ -995,7 +984,6 @@ namespace EXOFiddlerInspector
                             }
                             // Increment SkipFurtherProcess for SetSessionType function and return.
                             SkipFurtherProcessing++;
-                            return;
                         }
                         else if (this.session.utilFindInResponse("oauth_not_available", false) > 1)
                         {
@@ -1021,7 +1009,6 @@ namespace EXOFiddlerInspector
                             }
                             // Increment SkipFurtherProcess for SetSessionType function and return.
                             SkipFurtherProcessing++;
-                            return;
                         }
                         else
                         {
@@ -1118,7 +1105,6 @@ namespace EXOFiddlerInspector
                             }
                             // Increment SkipFurtherProcess for SetSessionType function and return.
                             SkipFurtherProcessing++;
-                            return;
                         }
 
                         /////////////////////////////
@@ -1152,7 +1138,6 @@ namespace EXOFiddlerInspector
                             }
                             // Increment SkipFurtherProcess for SetSessionType function and return.
                             SkipFurtherProcessing++;
-                            return;
                         }
 
                         /////////////////////////////
@@ -1196,7 +1181,6 @@ namespace EXOFiddlerInspector
                             }
                             // Increment SkipFurtherProcess for SetSessionType function and return.
                             SkipFurtherProcessing++;
-                            return;
                         }
 
                         /////////////////////////////
@@ -1244,7 +1228,6 @@ namespace EXOFiddlerInspector
                             }
                             // Increment SkipFurtherProcess for SetSessionType function and return.
                             SkipFurtherProcessing++;
-                            return;
                         }
 
                         /////////////////////////////
@@ -1268,7 +1251,6 @@ namespace EXOFiddlerInspector
                             }
                             // Increment SkipFurtherProcess for SetSessionType function and return.
                             SkipFurtherProcessing++;
-                            return;
                         }
 
                         /////////////////////////////
@@ -1348,7 +1330,6 @@ namespace EXOFiddlerInspector
                             }
                             // Increment SkipFurtherProcess for SetSessionType function and return.
                             SkipFurtherProcessing++;
-                            return;
                         }
                         /////////////////////////////
                         //
