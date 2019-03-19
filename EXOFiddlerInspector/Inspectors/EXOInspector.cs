@@ -458,7 +458,10 @@ namespace EXOFiddlerInspector.Inspectors
             }
             catch (Exception ex)
             {
-                // TODO handle exception
+                ResultsString.AppendLine();
+                ResultsString.AppendLine(ex.Message);
+                ResultsString.AppendLine();
+                ExchangeResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
             }
         }
 
