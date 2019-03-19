@@ -152,7 +152,7 @@ namespace EXOFiddlerInspector
                 }
 
                 // Tell user if they are either on a beta build.
-                if (applicationVersion.Revision >= 1000 && Preferences.ManualCheckForUpdate)
+                if (applicationVersion.Build >= 1000 && Preferences.ManualCheckForUpdate)
                 {
                     MessageBox.Show($"EXOFiddlerExtention: You are using a beta build. Thanks for the testing!{Environment.NewLine}" +
                         $"Currently using beta build: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}.{applicationVersion.Revision}{Environment.NewLine}" +
