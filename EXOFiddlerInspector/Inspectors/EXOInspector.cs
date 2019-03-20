@@ -348,7 +348,9 @@ namespace EXOFiddlerInspector.Inspectors
                 ResultsString.AppendLine();
                 ResultsString.AppendLine("For an explantion of session timers refer to: https://aka.ms/Timers-Definitions");
                 ResultsString.AppendLine();
+                ResultsString.AppendLine($"Client Connected: {this.session.Timers.ClientConnected.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
                 ResultsString.AppendLine($"Client Begin Request: {this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
+                ResultsString.AppendLine($"Got Request Headers: {this.session.Timers.FiddlerGotRequestHeaders.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
                 ResultsString.AppendLine($"Client Done Response: {this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
 
                 // ClientDoneResponse can be blank. If so do not try to calculate and output Elapsed Time, we end up with a hideously large number.
@@ -356,7 +358,8 @@ namespace EXOFiddlerInspector.Inspectors
                 {
                     double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
 
-                    ResultsString.Append($"Elapsed: {ClientMilliseconds}ms");
+                    ResultsString.AppendLine();
+                    ResultsString.Append($"Elapsed Time: {ClientMilliseconds}ms");
 
                     int SlowRunningSessionThreshold = Preferences.GetSlowRunningSessionThreshold();
 
@@ -372,6 +375,7 @@ namespace EXOFiddlerInspector.Inspectors
                 }
                 else
                 {
+                    ResultsString.AppendLine();
                     ResultsString.AppendLine("Session does not contain data to calculate 'Elapsed Time'.");
                 }
 
@@ -384,8 +388,10 @@ namespace EXOFiddlerInspector.Inspectors
                 ResultsString.AppendLine("-------------");
                 ResultsString.AppendLine();
                 // Write Server data into textboxes.
+                ResultsString.AppendLine($"Fiddler Begin Request: { this.session.Timers.FiddlerBeginRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
                 ResultsString.AppendLine($"Server Got Request: { this.session.Timers.ServerGotRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
                 ResultsString.AppendLine($"Server Begin Response: { this.session.Timers.ServerBeginResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
+                ResultsString.AppendLine($"Got Response Headers: { this.session.Timers.FiddlerGotResponseHeaders.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
                 ResultsString.AppendLine($"Server Done Response: {this.session.Timers.ServerDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
 
                 // ServerGotRequest, ServerBeginResponse or ServerDoneResponse can be blank. If so do not try to calculate and output 'Server Think Time' or 'Transmit Time', we end up with a hideously large number.
@@ -396,6 +402,7 @@ namespace EXOFiddlerInspector.Inspectors
 
                     double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
 
+                    ResultsString.AppendLine();
                     ResultsString.Append($"Server Think Time: {ServerMilliseconds}ms");
 
                     int SlowRunningSessionThreshold = Preferences.GetSlowRunningSessionThreshold();
@@ -413,6 +420,7 @@ namespace EXOFiddlerInspector.Inspectors
                 }
                 else
                 {
+                    ResultsString.AppendLine();
                     ResultsString.AppendLine("Session does not contain data to calculate 'Server Think Time' and 'Transit Time'.");
                 }
 
@@ -450,7 +458,10 @@ namespace EXOFiddlerInspector.Inspectors
             }
             catch (Exception ex)
             {
-                // TODO handle exception
+                ResultsString.AppendLine();
+                ResultsString.AppendLine(ex.Message);
+                ResultsString.AppendLine();
+                ExchangeResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
             }
         }
 

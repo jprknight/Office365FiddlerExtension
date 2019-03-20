@@ -86,14 +86,15 @@ namespace EXOFiddlerInspector
                     FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", $"Update Available{Environment.NewLine}----------------" +
                         $"{Environment.NewLine}You should update from this beta build to the latest production build." +
                         $"{Environment.NewLine}Currently using beta version: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
-                        $"{Environment.NewLine}New production version available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}{Environment.NewLine} {Environment.NewLine}" +
+                        $"{Environment.NewLine}New production version available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}" + 
+                        $"{Environment.NewLine}{Environment.NewLine}" +
                         $"Download the latest version: {Environment.NewLine}https://aka.ms/EXOFiddlerExtension {Environment.NewLine}{Environment.NewLine}");
                 }
                 else
                 {
                     FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", $"Update Available{Environment.NewLine}----------------" +
                         $"{Environment.NewLine}Currently using version: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
-                        $"{Environment.NewLine}New version available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build} {Environment.NewLine} {Environment.NewLine}" +
+                        $"{Environment.NewLine}New version available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}{Environment.NewLine} {Environment.NewLine}" +
                         $"Download the latest version: {Environment.NewLine}https://aka.ms/EXOFiddlerExtension {Environment.NewLine}{Environment.NewLine}");
                 }
 
@@ -102,8 +103,8 @@ namespace EXOFiddlerInspector
                 {
                     //MessageBox.Show("EXOFiddlerExtention: Update available. v" + newVersion.Major + "." + newVersion.Minor + "." + newVersion.Build + ".", "EXO Fiddler Extension");
 
-                    string message = $"You are currently using v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}.{Environment.NewLine}"+
-                        $"A new version is available v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}.{Environment.NewLine}" +
+                    string message = $"You are currently using v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}{Environment.NewLine}"+
+                        $"A new version is available v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}{Environment.NewLine}" +
                         "Do you want to download the update?";
 
                     string caption = "EXO Fiddler Extension - Update Available";
@@ -124,8 +125,8 @@ namespace EXOFiddlerInspector
                         System.Diagnostics.Process.Start(Properties.Settings.Default.InstallerURL);
                         if (Preferences.AppLoggingEnabled)
                         {
-                            FiddlerApplication.Log.LogString($"EXOFiddlerExtention: Version installed. v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}.");
-                            FiddlerApplication.Log.LogString($"EXOFiddlerExtention: New Version Available. v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}.");
+                            FiddlerApplication.Log.LogString($"EXOFiddlerExtention: Version installed. v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}");
+                            FiddlerApplication.Log.LogString($"EXOFiddlerExtention: New Version Available. v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}");
                         }
                     }
                     // return this perference back to false, so we don't give this feedback unintentionally.
@@ -154,8 +155,8 @@ namespace EXOFiddlerInspector
                 if (applicationVersion.Build >= 1000 && Preferences.ManualCheckForUpdate)
                 {
                     MessageBox.Show($"EXOFiddlerExtention: You are using a beta build. Thanks for the testing!{Environment.NewLine}" +
-                        $"Currently using beta build: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}.{Environment.NewLine}" +
-                        $"Newest production build available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}.", "EXO Fiddler Extension - Beta Version!");
+                        $"Currently using beta build: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}{Environment.NewLine}" +
+                        $"Newest production build available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}", "EXO Fiddler Extension - Beta Version!");
 
                     FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", $"Beta Build!{Environment.NewLine}-----------" +
                         $"{Environment.NewLine}Currently using beta build: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
@@ -176,8 +177,8 @@ namespace EXOFiddlerInspector
                 else if (Preferences.ManualCheckForUpdate)
                 {
                     MessageBox.Show("EXOFiddlerExtention: You already have the latest version installed." + Environment.NewLine +
-                        $"Currently using: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}.{Environment.NewLine}" +
-                        $"Newest available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}.", "EXO Fiddler Extension");
+                        $"Currently using: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}{Environment.NewLine}" +
+                        $"Newest available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}", "EXO Fiddler Extension");
                     // return this perference back to false, so we don't give this feedback unintentionally.
                     //FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
                     Preferences.ManualCheckForUpdate = false;
