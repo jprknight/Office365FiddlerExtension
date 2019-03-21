@@ -47,7 +47,7 @@ namespace EXOFiddlerInspector
 
                 this.ExchangeOnlineTopMenu = new MenuItem(Preferences.ExtensionEnabled ? "Exchange Online" : "Exchange Online (Disabled)");
 
-                this.miEnabled = new MenuItem(Preferences.ExtensionEnabled ? "Disable" : "Enable", new EventHandler(this.miEnabled_Click));
+                this.miEnabled = new MenuItem("Enable", new EventHandler(this.miEnabled_Click));
                 this.miEnabled.Checked = Preferences.ExtensionEnabled;
 
                 //this.miColumnsEnableDisable = new MenuItem(Preferences.ColumnsAllEnabled ? "Turn Columns Off" : "Turn Columns On", new EventHandler(this.miColumnsEnableAll_Click));
