@@ -197,7 +197,7 @@ namespace EXOFiddlerInspector
                         //
 
                         /////////////////////////////
-                        // 1. Connect Tunnel.
+                        // 200.1. Connect Tunnel.
                         if (this.session.isTunnel == true)
                         {
                             // Skip 99 response body word split and keyword search with Linq code.
@@ -215,7 +215,7 @@ namespace EXOFiddlerInspector
                         }
 
                         /////////////////////////////
-                        // 2. Exchange On-Premise Autodiscover redirect.
+                        // 200.2. Exchange On-Premise Autodiscover redirect.
                         if (this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1)
                         {
                             /*
@@ -310,7 +310,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 3. Exchange On-Premise Autodiscover redirect - address can't be found
+                        // 200.3. Exchange On-Premise Autodiscover redirect - address can't be found
                         //
                         if ((this.session.utilFindInResponse("<Message>The email address can't be found.</Message>", false) > 1) &&
                             (this.session.utilFindInResponse("<ErrorCode>500</ErrorCode>", false) > 1))
@@ -346,7 +346,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 4. Exchange Online Autodiscover
+                        // 200.4. Exchange Online Autodiscover
                         //
 
                         // Make sure this session is an Exchange Online Autodiscover request.
@@ -386,7 +386,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 5. Outlook MAPI traffic.
+                        // 200.5. Outlook MAPI traffic.
                         //
                         if (this.session.HostnameIs("outlook.office365.com") && (this.session.uriContains("/mapi/emsmdb/?MailboxId=")))
                         {
@@ -403,7 +403,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 6. GetUnifiedGroupsSettings EWS call.
+                        // 200.6. GetUnifiedGroupsSettings EWS call.
                         //
                         if (this.session.HostnameIs("outlook.office365.com") &&
                             (this.session.uriContains("ews/exchange.asmx") &&
@@ -459,11 +459,11 @@ namespace EXOFiddlerInspector
                         }
 
                         // Exchange On-Premise redirect to Exchange Online Autodiscover.
-                        // 7.Location: https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml
+                        // 200.7.Location: https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml
 
                         /////////////////////////////
                         //
-                        // 99. All other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
+                        // 200.99. All other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                         else
                         {
                             // Only fire the Linq response body word split and keyword search if:
@@ -1087,7 +1087,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 1. telemetry false positive. <Need to validate in working scenarios>
+                        // 502.1. telemetry false positive. <Need to validate in working scenarios>
                         //
                         if ((this.session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443") &&
                             (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
@@ -1112,7 +1112,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 2. Exchange Online DNS lookup on contoso.onmicrosoft.com, False Positive!?
+                        // 502.2. Exchange Online DNS lookup on contoso.onmicrosoft.com, False Positive!?
                         //
                         // Specific scenario on Outlook and Office 365 invalid DNS lookup.
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
@@ -1145,7 +1145,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 3. Exchange Online connection to autodiscover.contoso.mail.onmicrosoft.com, False Positive!
+                        // 502.3. Exchange Online connection to autodiscover.contoso.mail.onmicrosoft.com, False Positive!
                         //
                         // Specific scenario on Outlook and Office 365 invalid connection to contoso.mail.onmicrosoft.com
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
@@ -1188,7 +1188,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 4. Vanity domain points to Office 365 autodiscover; false positive.
+                        // 502.4. Vanity domain points to Office 365 autodiscover; false positive.
                         //
 
                         /*
@@ -1235,7 +1235,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 5. Anything else Exchange Autodiscover.
+                        // 502.5. Anything else Exchange Autodiscover.
                         //
                         else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
                             (this.session.utilFindInResponse("autodiscover", false) > 1) &&
@@ -1258,7 +1258,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 99. Everything else.
+                        // 502.99. Everything else.
                         //
                         else
                         {
@@ -1283,7 +1283,7 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 503: SERVICE UNAVAILABLE.
                         //
-                        // Call out all 503 Service Unavailable as something to focus on.
+                        // 503.1. Call out all 503 Service Unavailable as something to focus on.
                         searchTerm = "FederatedStsUnreachable";
                         //"Service Unavailable"
 
@@ -1336,7 +1336,7 @@ namespace EXOFiddlerInspector
                         }
                         /////////////////////////////
                         //
-                        // 99. Everything else.
+                        // 503.99. Everything else.
                         //
                         else
                         {
@@ -1365,7 +1365,7 @@ namespace EXOFiddlerInspector
                         //
 
                         /////////////////////////////
-                        // 1. HTTP 504 Bad Gateway 'internet has been blocked'
+                        // 504.1. HTTP 504 Bad Gateway 'internet has been blocked'
                         if ((this.session.utilFindInResponse("access", false) > 1) &&
                             (this.session.utilFindInResponse("internet", false) > 1) &&
                             (this.session.utilFindInResponse("blocked", false) > 1))
@@ -1388,7 +1388,7 @@ namespace EXOFiddlerInspector
                         }
 
                         /////////////////////////////
-                        // 99. Pick up any other 504 Gateway Timeout and write data into the comments box.
+                        // 504.99. Pick up any other 504 Gateway Timeout and write data into the comments box.
                         else
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
