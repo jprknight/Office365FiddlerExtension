@@ -430,7 +430,7 @@ namespace EXOFiddlerInspector.Inspectors
                 ResultsString.AppendLine("--------------");
                 ResultsString.AppendLine();
                 ResultsString.AppendLine($"Authentication Type: {this.session["X-AUTHENTICATION"]}");
-                ResultsString.AppendLine($"Authentication Decription: {this.session["X-AUTHENTICATIONDESC"]}");
+                ResultsString.AppendLine($"Authentication Description: {this.session["X-AUTHENTICATIONDESC"]}");
 
                 if (this.session["X-Office365AuthType"] == "SAMLResponseParser")
                 {
