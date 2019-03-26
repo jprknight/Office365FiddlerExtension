@@ -80,7 +80,7 @@ namespace EXOFiddlerInspector.Services
 
             SessionProcessor.Instance.OnPeekAtResponseHeaders(_session);
             
-            SessionProcessor.Instance.SetSessionType(_session);
+            //SessionProcessor.Instance.SetSessionType(_session);
 
             SessionProcessor.Instance.SetAuthentication(_session);
 

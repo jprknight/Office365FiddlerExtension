@@ -86,7 +86,7 @@ namespace EXOFiddlerInspector
                 {
                     SessionProcessor.Instance.SetElapsedTime(session);
 
-                    SessionProcessor.Instance.SetSessionType(session);
+                    //SessionProcessor.Instance.SetSessionType(session);
 
                     SessionProcessor.Instance.SetResponseServer(session);
 
@@ -749,7 +749,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        //  HTTP 401: BAD REQUEST.
+                        //  HTTP 400: BAD REQUEST.
                         //
                         this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
@@ -781,6 +781,9 @@ namespace EXOFiddlerInspector
                             Environment.NewLine +
                             Environment.NewLine +
                             "If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.";
+
+                        // Increment SkipFurtherProcess for SetSessionType function and return.
+                        SkipFurtherProcessing++;
 
                         if (Preferences.AppLoggingEnabled)
                         {
@@ -1435,8 +1438,9 @@ namespace EXOFiddlerInspector
                 /////////////////////////////
             }
             #endregion
-            //
-            /////////////////////////////
+
+
+            #region ColouriseSessionsOverrides
 
             /////////////////////////////
             // ColouriseSessionsOverrides
@@ -1522,8 +1526,105 @@ namespace EXOFiddlerInspector
                     }
                 }
             }
-            //
+
+            #endregion
+
+
+            #region SetSessionType
+
             /////////////////////////////
+            ///
+            /// Set Session Type
+            /// 
+
+            if (SkipFurtherProcessing > 0)
+                return;
+            //if (this.session.responseCode == 200 || this.session.responseCode == 302)
+            //{
+                // Outlook Connections.
+                //if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) {this.session["X-SessionType"] = "EXO MAPI"; }
+                // Exchange Online Autodiscover.
+                //if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { this.session["X-SessionType"] = "EXO Autodiscover"; }
+                //else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { this.session["X-SessionType"] = "EXO Autodiscover"; }
+                //else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { this.session["X-SessionType"] = "EXO Autodiscover"; }
+                //else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { this.session["X-SessionType"] = "EXO Autodiscover"; }
+                //// Autodiscover.     
+                //else if ((this.session.fullUrl.Contains("autodiscover") && (!(this.session.hostname == "outlook.office365.com")))) { this.session["X-SessionType"] = "On-Prem Autodiscover"; }
+                //else if (this.session.hostname.Contains("autodiscover")) { this.session["X-SessionType"] = "On-Prem Autodiscover"; }
+                //// Free/Busy.
+                if (this.session.fullUrl.Contains("WSSecurity"))
+                {
+                    this.session["X-SessionType"] = "Free/Busy";
+                    // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
+                    //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
+                }
+                else if (this.session.fullUrl.Contains("GetUserAvailability"))
+                {
+                    this.session["X-SessionType"] = "Free/Busy";
+                    // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
+                    //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
+                }
+                else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1)
+                {
+                    this.session["X-SessionType"] = "Free/Busy";
+                    // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
+                    //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
+                }
+                // EWS.
+                else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { this.session["X-SessionType"] = "EXO EWS"; }
+                // Generic Office 365.
+                else if (this.session.fullUrl.Contains(".onmicrosoft.com") && (!(this.session.hostname.Contains("live.com")))) { this.session["X -ExchangeType"] = "Exchange Online"; }
+                else if (this.session.fullUrl.Contains("outlook.office365.com")) { this.session["X-SessionType"] = "Office 365"; }
+                else if (this.session.fullUrl.Contains("outlook.office.com")) { this.session["X-SessionType"] = "Office 365"; }
+                // Office 365 Authentication.
+                else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { this.session["X-SessionType"] = "Office 365 Authentication"; }
+                // ADFS Authentication.
+                else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { this.session["X-SessionType"] = "ADFS Authentication"; }
+                // Undetermined, but related to local process.
+                else if (this.session.LocalProcess.Contains("outlook")) { this.session["X-SessionType"] = "Outlook"; }
+                else if (this.session.LocalProcess.Contains("iexplore")) { this.session["X-SessionType"] = "Internet Explorer"; }
+                else if (this.session.LocalProcess.Contains("chrome")) { this.session["X-SessionType"] = "Chrome"; }
+                else if (this.session.LocalProcess.Contains("firefox")) { this.session["X-SessionType"] = "Firefox"; }
+                // Everything else.
+                else {
+                    this.session["X-SessionType"] = "Not Exchange";
+                    this.session["ui-backcolor"] = HTMLColourGrey;
+                    this.session["ui-color"] = "black";
+                }
+
+
+            //}
+
+            /////////////////////////////
+            //
+            // Session Type overrides
+            //
+            // First off if the local process is null or blank, then we are analysing traffic from a remote client such as a mobile device.
+            // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
+            // So don't pay any attention to overrides for this type of traffic.
+            if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
+            {
+                // Traffic has a null or blank local process value.
+                this.session["X-SessionType"] = "Remote Capture";
+            }
+            else
+            {
+                // With that out of the way,  if the traffic is not related to any of the below processes call it out.
+                // So if for example lync.exe is the process write that to the Session Type column.
+                if (!(this.session.LocalProcess.Contains("outlook") ||
+                    this.session.LocalProcess.Contains("searchprotocolhost") ||
+                    this.session.LocalProcess.Contains("iexplore") ||
+                    this.session.LocalProcess.Contains("chrome") ||
+                    this.session.LocalProcess.Contains("firefox") ||
+                    this.session.LocalProcess.Contains("edge") ||
+                    this.session.LocalProcess.Contains("w3wp")))
+                {
+                    // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
+                    { this.session["X-SessionType"] = this.session.LocalProcess; }
+                }
+            }
+            #endregion
+
         }
 
         /// <summary>
@@ -1575,93 +1676,11 @@ namespace EXOFiddlerInspector
         /// Function where the Session Type column is populated.
         /// </summary>
         /// <param name="session"></param>
-        public void SetSessionType(Session session)
-        {
-            // Many of the if statements within the case in OnPeekAtResponseHeaders increment SkipFurtherProcessing in order to minimise processing here.
-            if (SkipFurtherProcessing > 0)
-                return;
-            if (this.session.responseCode == 200 || this.session.responseCode == 302)
-            {
-                // Outlook Connections.
-                //if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) {this.session["X-SessionType"] = "EXO MAPI"; }
-                // Exchange Online Autodiscover.
-                if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { this.session["X-SessionType"] = "EXO Autodiscover"; }
-                else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { this.session["X-SessionType"] = "EXO Autodiscover"; }
-                else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { this.session["X-SessionType"] = "EXO Autodiscover"; }
-                else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { this.session["X-SessionType"] = "EXO Autodiscover"; }
-                // Autodiscover.     
-                else if ((this.session.fullUrl.Contains("autodiscover") && (!(this.session.hostname == "outlook.office365.com")))) { this.session["X-SessionType"] = "On-Prem Autodiscover"; }
-                else if (this.session.hostname.Contains("autodiscover")) { this.session["X-SessionType"] = "On-Prem Autodiscover"; }
-                // Free/Busy.
-                else if (this.session.fullUrl.Contains("WSSecurity"))
-                {
-                    this.session["X-SessionType"] = "Free/Busy";
-                    // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                    //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
-                }
-                else if (this.session.fullUrl.Contains("GetUserAvailability"))
-                {
-                    this.session["X-SessionType"] = "Free/Busy";
-                    // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                    //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
-                }
-                else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1)
-                {
-                    this.session["X-SessionType"] = "Free/Busy";
-                    // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                    //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
-                }
-                // EWS.
-                else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { this.session["X-SessionType"] = "EXO EWS"; }
-                // Generic Office 365.
-                else if (this.session.fullUrl.Contains(".onmicrosoft.com") && (!(this.session.hostname.Contains("live.com")))) { this.session["X -ExchangeType"] = "Exchange Online"; }
-                else if (this.session.fullUrl.Contains("outlook.office365.com")) { this.session["X-SessionType"] = "Office 365"; }
-                else if (this.session.fullUrl.Contains("outlook.office.com")) { this.session["X-SessionType"] = "Office 365"; }
-                // Office 365 Authentication.
-                else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { this.session["X-SessionType"] = "Office 365 Authentication"; }
-                // ADFS Authentication.
-                else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { this.session["X-SessionType"] = "ADFS Authentication"; }
-                // Undetermined, but related to local process.
-                else if (this.session.LocalProcess.Contains("outlook")) { this.session["X-SessionType"] = "Outlook"; }
-                else if (this.session.LocalProcess.Contains("iexplore")) { this.session["X-SessionType"] = "Internet Explorer"; }
-                else if (this.session.LocalProcess.Contains("chrome")) { this.session["X-SessionType"] = "Chrome"; }
-                else if (this.session.LocalProcess.Contains("firefox")) { this.session["X-SessionType"] = "Firefox"; }
-                // Everything else.
-                else { this.session["X-SessionType"] = "Not Exchange"; }
-
-
-
-            }
-
-            /////////////////////////////
-            //
-            // Session Type overrides
-            //
-            // First off if the local process is null or blank, then we are analysing traffic from a remote client such as a mobile device.
-            // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
-            // So don't pay any attention to overrides for this type of traffic.
-            if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
-            {
-                // Traffic has a null or blank local process value.
-                this.session["X-SessionType"] = "Remote Capture";
-            }
-            else
-            {
-                // With that out of the way,  if the traffic is not related to any of the below processes call it out.
-                // So if for example lync.exe is the process write that to the Session Type column.
-                if (!(this.session.LocalProcess.Contains("outlook") ||
-                    this.session.LocalProcess.Contains("searchprotocolhost") ||
-                    this.session.LocalProcess.Contains("iexplore") ||
-                    this.session.LocalProcess.Contains("chrome") ||
-                    this.session.LocalProcess.Contains("firefox") ||
-                    this.session.LocalProcess.Contains("edge") ||
-                    this.session.LocalProcess.Contains("w3wp")))
-                {
-                    // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
-                    { this.session["X-SessionType"] = this.session.LocalProcess; }
-                }
-            }
-        }
+        //public void SetSessionType(Session session)
+        //{
+            
+            
+        //}
 
         /// <summary>
         /// Used specifically for Authentication sessions.
