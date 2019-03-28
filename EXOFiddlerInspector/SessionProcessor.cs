@@ -212,10 +212,61 @@ namespace EXOFiddlerInspector
 
                             // Increment SkipFurtherProcess for SetSessionType function and return.
                             SkipFurtherProcessing++;
+                            // Break out of the switch statement.
+                            break;
                         }
 
                         /////////////////////////////
-                        // 200.2. Exchange On-Premise Autodiscover redirect.
+                        //
+                        // 200.2. Connection blocked by Client Access Rules.
+                        // 
+
+                        if (this.session.fullUrl.Contains("outlook.office365.com/mapi")
+                            && this.session.utilFindInResponse("Connection blocked by Client Access Rules", false) > 1)
+                        {
+                            this.session["ui-backcolor"] = HTMLColourRed;
+                            this.session["ui-color"] = "black";
+
+                            this.session["X-SessionType"] = "!CLIENT ACCESS RULE!";
+
+                            this.session["X-ResponseAlert"] = "!CLIENT ACCESS RULE!";
+                            this.session["X-ResponseComments"] = "A client access rule has blocked MAPI connectivity to the mailbox. " +
+                                "Check if the client access rule includes OutlookAnywhere." +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "Per https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules, OutlookAnywhere includes MAPI over HTTP." +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "Remove OutlookAnywhere from the client access rule, wait 1 hour, then test again.";
+
+                            // Increment SkipFurtherProcess for SetSessionType function and return.
+                            SkipFurtherProcessing++;
+                            // Break out of the switch statement. No further processing needed here.
+                            break;
+                        }
+
+                        /////////////////////////////
+                        //
+                        // 200.3. Outlook MAPI traffic.
+                        //
+                        if (this.session.HostnameIs("outlook.office365.com") && (this.session.uriContains("/mapi/emsmdb/?MailboxId=")))
+                        {
+                            this.session["ui-backcolor"] = HTMLColourGreen;
+                            this.session["ui-color"] = "black";
+
+                            this.session["X-SessionType"] = "Outlook MAPI";
+
+                            this.session["X-ResponseAlert"] = "Outlook for Windows MAPI traffic";
+                            this.session["X-ResponseComments"] = "Outlook for Windows MAPI traffic.";
+
+                            // Increment SkipFurtherProcess for SetSessionType function and return.
+                            SkipFurtherProcessing++;
+                            // Break out of the switch statement.
+                            break;
+                        }
+
+                        /////////////////////////////
+                        // 200.4. Exchange On-Premise Autodiscover redirect.
                         if (this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1)
                         {
                             /*
@@ -310,7 +361,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 200.3. Exchange On-Premise Autodiscover redirect - address can't be found
+                        // 200.5. Exchange On-Premise Autodiscover redirect - address can't be found
                         //
                         if ((this.session.utilFindInResponse("<Message>The email address can't be found.</Message>", false) > 1) &&
                             (this.session.utilFindInResponse("<ErrorCode>500</ErrorCode>", false) > 1))
@@ -346,7 +397,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 200.4. Exchange Online Autodiscover
+                        // 200.6. Exchange Online Autodiscover
                         //
 
                         // Make sure this session is an Exchange Online Autodiscover request.
@@ -382,49 +433,6 @@ namespace EXOFiddlerInspector
                             //    // Don't use skip logic here, we want to dig deeper and see if there are errors, failures, or exceptions.
                             //    //HTTP200SkipLogic++;
                             //}
-                        }
-
-                        /////////////////////////////
-                        //
-                        // 200.5. Connection blocked by Client Access Rules.
-                        // 
-
-                        if (this.session.fullUrl.Contains("outlook.office365.com/mapi") 
-                            && this.session.utilFindInResponse("Connection blocked by Client Access Rules", false) > 1)
-                        {
-                            this.session["ui-backcolor"] = HTMLColourRed;
-                            this.session["ui-color"] = "black";
-
-                            this.session["X-ResponseAlert"] = "!CLIENT ACCESS RULE!";
-                            this.session["X-ResponseComments"] = "A client access rule has blocked MAPI connectivity to the mailbox. " +
-                                "Check if the client access rule includes OutlookAnywhere." +
-                                Environment.NewLine +
-                                Environment.NewLine +
-                                "Per https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules, OutlookAnywhere includes MAPI over HTTP." +
-                                Environment.NewLine +
-                                Environment.NewLine +
-                                "Remove OutlookAnywhere from the client access rule, wait 1 hour, then test again.";
-
-                            // Increment SkipFurtherProcess for SetSessionType function and return.
-                            SkipFurtherProcessing++;
-                        }
-
-
-                        /////////////////////////////
-                        //
-                        // 200.6. Outlook MAPI traffic.
-                        //
-                        if (this.session.HostnameIs("outlook.office365.com") && (this.session.uriContains("/mapi/emsmdb/?MailboxId=")))
-                        {
-                            this.session["ui-backcolor"] = HTMLColourGreen;
-                            this.session["ui-color"] = "black";
-                            this.session["X-SessionType"] = "Outlook MAPI";
-
-                            this.session["X-ResponseAlert"] = "Outlook for Windows MAPI traffic";
-                            this.session["X-ResponseComments"] = "Outlook for Windows MAPI traffic.";
-
-                            // Increment SkipFurtherProcess for SetSessionType function and return.
-                            SkipFurtherProcessing++;
                         }
 
                         /////////////////////////////
@@ -1075,6 +1083,7 @@ namespace EXOFiddlerInspector
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
                         this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
+                        this.session["X-SessionType"] = "Internal Server Error";
 
                         this.session["X-ResponseAlert"] = "!HTTP 500 Internal Server Error!";
                         this.session["X-ResponseComments"] = "HTTP 500 Internal Server Error";
@@ -1560,8 +1569,10 @@ namespace EXOFiddlerInspector
             /// Set Session Type
             /// 
 
+            // Finish processing in this function for this session if we have incremented the SkipFurtherProcessing int.
             if (SkipFurtherProcessing > 0)
                 return;
+
             //if (this.session.responseCode == 200 || this.session.responseCode == 302)
             //{
                 // Outlook Connections.
