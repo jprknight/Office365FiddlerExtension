@@ -386,7 +386,28 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 200.5. Outlook MAPI traffic.
+                        // 200.5. Connection blocked by Client Access Rules.
+                        // 
+
+                        if (this.session.responseCode == 200 
+                            && this.session.fullUrl.Contains("outlook.office365.com/mapi") 
+                            && this.session.utilFindInResponse("Connection blocked by Client Access Rules", false) > 1)
+                        {
+                            this.session["ui-backcolor"] = HTMLColourRed;
+                            this.session["ui-color"] = "black";
+
+                            this.session["X-ResponseAlert"] = "!CLIENT ACCESS RULE!";
+                            this.session["X-ResponseComments"] = "A client access rule has blocked MAPI connectivity to the mailbox. " +
+                                "Check if the client access rule includes OutlookAnywhere." +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "Per https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules, OutlookAnywhere includes MAPI over HTTP.";
+                        }
+
+
+                        /////////////////////////////
+                        //
+                        // 200.6. Outlook MAPI traffic.
                         //
                         if (this.session.HostnameIs("outlook.office365.com") && (this.session.uriContains("/mapi/emsmdb/?MailboxId=")))
                         {
@@ -403,7 +424,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 200.6. GetUnifiedGroupsSettings EWS call.
+                        // 200.7. GetUnifiedGroupsSettings EWS call.
                         //
                         if (this.session.HostnameIs("outlook.office365.com") &&
                             (this.session.uriContains("ews/exchange.asmx") &&
@@ -457,9 +478,6 @@ namespace EXOFiddlerInspector
                                 SkipFurtherProcessing++;
                             }
                         }
-
-                        // Exchange On-Premise redirect to Exchange Online Autodiscover.
-                        // 200.7.Location: https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml
 
                         /////////////////////////////
                         //
