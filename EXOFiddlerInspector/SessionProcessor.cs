@@ -389,8 +389,7 @@ namespace EXOFiddlerInspector
                         // 200.5. Connection blocked by Client Access Rules.
                         // 
 
-                        if (this.session.responseCode == 200 
-                            && this.session.fullUrl.Contains("outlook.office365.com/mapi") 
+                        if (this.session.fullUrl.Contains("outlook.office365.com/mapi") 
                             && this.session.utilFindInResponse("Connection blocked by Client Access Rules", false) > 1)
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
