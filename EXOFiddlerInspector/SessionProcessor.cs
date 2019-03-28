@@ -828,9 +828,9 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 403: FORBIDDEN.
                         //
-                        // Looking for the term "Access Denied" works fine using utilFindInResponse.
-                        // Specific scenario where a web proxy is blocking traffic.
-                        if (this.session.utilFindInResponse("Access Denied", false) > 1)
+                        // Looking for the term "Access Denied" or "Access Blocked" in session response.
+                        // Specific scenario where a web proxy is blocking traffic from reaching the internet.
+                        if (this.session.utilFindInResponse("Access Denied", false) > 1 || this.session.utilFindInResponse("Access Blocked", false) > 1)
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
