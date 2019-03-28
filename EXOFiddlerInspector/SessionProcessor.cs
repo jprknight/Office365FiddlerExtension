@@ -400,7 +400,13 @@ namespace EXOFiddlerInspector
                                 "Check if the client access rule includes OutlookAnywhere." +
                                 Environment.NewLine +
                                 Environment.NewLine +
-                                "Per https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules, OutlookAnywhere includes MAPI over HTTP.";
+                                "Per https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules, OutlookAnywhere includes MAPI over HTTP." +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "Remove OutlookAnywhere from the client access rule, wait 1 hour, then test again.";
+
+                            // Increment SkipFurtherProcess for SetSessionType function and return.
+                            SkipFurtherProcessing++;
                         }
 
 
