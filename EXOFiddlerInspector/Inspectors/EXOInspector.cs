@@ -357,15 +357,21 @@ namespace EXOFiddlerInspector.Inspectors
                 if (this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
                 {
                     double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
-
+                    
                     ResultsString.AppendLine();
-                    ResultsString.Append($"Elapsed Time: {ClientMilliseconds}ms");
+                    ResultsString.AppendLine($"Elapsed Time: {ClientMilliseconds}ms");
+
+                    if (ClientMilliseconds > 1000)
+                    {
+                        double ClientSeconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalSeconds);
+                        ResultsString.AppendLine($"Elapsed Time: {ClientSeconds}s");
+                    }
 
                     int SlowRunningSessionThreshold = Preferences.GetSlowRunningSessionThreshold();
 
                     if (ClientMilliseconds > SlowRunningSessionThreshold)
                     {
-                        ResultsString.Append(" - Long running session!");
+                        ResultsString.AppendLine("!Long running session!");
                         if (Preferences.AppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Long running session.");
@@ -403,13 +409,19 @@ namespace EXOFiddlerInspector.Inspectors
                     double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
 
                     ResultsString.AppendLine();
-                    ResultsString.Append($"Server Think Time: {ServerMilliseconds}ms");
+                    ResultsString.AppendLine($"Server Think Time: {ServerMilliseconds}ms");
+
+                    if (ServerMilliseconds > 1000)
+                    {
+                        double ServerSeconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalSeconds);
+                        ResultsString.AppendLine($"Server Think Time: {ServerSeconds}s");
+                    }
 
                     int SlowRunningSessionThreshold = Preferences.GetSlowRunningSessionThreshold();
 
                     if (ServerMilliseconds > SlowRunningSessionThreshold)
                     {
-                        ResultsString.Append(" - Long running EXO session!");
+                        ResultsString.AppendLine("!Long running EXO session!");
                         if (Preferences.AppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Long running EXO session.");
