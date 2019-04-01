@@ -79,7 +79,7 @@ namespace EXOFiddlerInspector.Services
             SessionProcessor.Instance.SetElapsedTime(_session);
 
             SessionProcessor.Instance.OnPeekAtResponseHeaders(_session);
-            
+
             //SessionProcessor.Instance.SetSessionType(_session);
 
             SessionProcessor.Instance.SetAuthentication(_session);
@@ -101,35 +101,35 @@ namespace EXOFiddlerInspector.Services
         /// <param name="_session"></param>
         public void OnBeforeReturningError(Session _session) { }
 
-        public void SetColumns()
-        {
+        //public void SetColumns()
+        //{
 
-            if (Preferences.ExtensionEnabled)
-            {
-                FiddlerApplication.UI.lvSessions.BeginUpdate();
+        //    if (Preferences.ExtensionEnabled)
+        //    {
+        //        FiddlerApplication.UI.lvSessions.BeginUpdate();
 
-                // Only on LoadSAZ add all the columns.
-                if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))
-                {
-                    FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
-                    FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 0, 130, "X-ResponseServer");
-                    FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 0, 110, "X-HostIP");
-                    FiddlerApplication.UI.lvSessions.AddBoundColumn("Session Type", 0, 150, "X-SessionType");
-                    FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 0, 140, "X-Authentication");
-                }
-                // On live trace just add in the Host IP column.
-                else
-                {
-                    FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 110, "X-HostIP");
-                }
+        //        // Only on LoadSAZ add all the columns.
+        //        if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))
+        //        {
+        //            FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
+        //            FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 0, 130, "X-ResponseServer");
+        //            FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 0, 110, "X-HostIP");
+        //            FiddlerApplication.UI.lvSessions.AddBoundColumn("Session Type", 0, 150, "X-SessionType");
+        //            FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 0, 140, "X-Authentication");
+        //        }
+        //        // On live trace just add in the Host IP column.
+        //        else
+        //        {
+        //            FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 110, "X-HostIP");
+        //        }
 
-            }
-            else
-            {
-                int iColumnsCount = FiddlerApplication.UI.lvSessions.Columns.Count;
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", iColumnsCount - 2, -1);
-            }
-            FiddlerApplication.UI.lvSessions.BeginUpdate();
-        }
+        //    }
+        //    else
+        //    {
+        //        int iColumnsCount = FiddlerApplication.UI.lvSessions.Columns.Count;
+        //        FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", iColumnsCount - 2, -1);
+        //    }
+        //    FiddlerApplication.UI.lvSessions.BeginUpdate();
+        //}
     }
 }

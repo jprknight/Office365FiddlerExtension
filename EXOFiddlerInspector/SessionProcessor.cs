@@ -61,6 +61,33 @@ namespace EXOFiddlerInspector
             }
         }
 
+        #region SaveSAZ
+        /// <summary>
+        /// Handle saving a SAZ file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// Currently not called, work in progress.
+        private void HandleSaveSaz(object sender, FiddlerApplication.WriteSAZEventArgs e)
+        {
+            FiddlerApplication.UI.lvSessions.BeginUpdate();
+
+            foreach (var session in e.arrSessions)
+            {
+                if (Preferences.ExtensionEnabled)
+                {
+                    //if (this.session.isFlagSet(SessionFlags. )
+                    //{
+
+                    //}
+                }
+            }
+
+        }
+
+        #endregion
+
+
         #region LoadSAZ
         /// <summary>
         /// Handle loading a SAZ file.
@@ -130,6 +157,22 @@ namespace EXOFiddlerInspector
             //
             //  Broader code logic for sessions, where the response code cannot be used as in the switch statement.
             //
+
+            /////////////////////////////
+            //
+            // Connect Tunnel.
+            //
+            // If the session is a connect tunnel, update sessions flags as below.
+            // Do not SkipFurtherProcessing, break or return here since worse things can happen on the session which would need to be highlighted.
+            //
+            if (this.session.isTunnel)
+            {
+                this.session["X-ResponseAlert"] = "Connect Tunnel";
+                this.session["X-ResponseComments"] = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels the sessions collected did not have decryption enabled." +
+                    Environment.NewLine +
+                    Environment.NewLine +
+                    "If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS";
+            }
 
             /////////////////////////////
             //
@@ -204,9 +247,6 @@ namespace EXOFiddlerInspector
                             // Mark as green, not expecting to find anything noteworthy in these sessions.
                             this.session["ui-backcolor"] = HTMLColourGreen;
                             this.session["ui-color"] = "black";
-
-                            this.session["X-ResponseAlert"] = "Connect Tunnel";
-                            this.session["X-ResponseComments"] = "Encrypted HTTPS traffic flows through this CONNECT tunnel. ";
 
                             this.session["X-SessionType"] = "Connect Tunnel";
 
@@ -1803,10 +1843,17 @@ namespace EXOFiddlerInspector
 
             this.session = session;
 
-            // Set process name.
-            string[] ProcessName = this.session.LocalProcess.Split(':');
-            this.session["X-ProcessName"] = ProcessName[0];
-
+            // Set process name, split and exclude port used.
+            if (this.session.LocalProcess != String.Empty) {
+                string[] ProcessName = this.session.LocalProcess.Split(':');
+                this.session["X-ProcessName"] = ProcessName[0];
+            }
+            // No local process to split.
+            else
+            {
+                this.session["X-ProcessName"] = "Remote Capture";
+            }
+            
             // Determine if this session contains a SAML response.
             if (this.session.utilFindInResponse("Issuer=", false) > 1 &&
                 this.session.utilFindInResponse("Attribute AttributeName=", false) > 1 &&

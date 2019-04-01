@@ -83,8 +83,7 @@ namespace EXOFiddlerInspector.Inspectors
         {
             this.session = oS;
         }
-
-
+        
         /// <summary>
         /// This is called every time this inspector is shown
         /// </summary>
@@ -298,7 +297,7 @@ namespace EXOFiddlerInspector.Inspectors
                 ResultsString.AppendLine($"Capture was {DataAge}");
 
                 ResultsString.AppendLine($"Session Type: {this.session["X-SessionType"]}");
-                ResultsString.AppendLine($"Process: { this.session.LocalProcess}");
+                ResultsString.AppendLine($"Process: {this.session["X-ProcessName"]}");
 
 
                 if (this.session["X-HostIP"]?.ToString().Length > 0)
@@ -437,12 +436,16 @@ namespace EXOFiddlerInspector.Inspectors
                 }
 
                 // Authentication
-                ResultsString.AppendLine();
-                ResultsString.AppendLine("Authentication");
-                ResultsString.AppendLine("--------------");
-                ResultsString.AppendLine();
-                ResultsString.AppendLine($"Authentication Type: {this.session["X-AUTHENTICATION"]}");
-                ResultsString.AppendLine($"Authentication Description: {this.session["X-AUTHENTICATIONDESC"]}");
+                if (this.session["X-AUTHENTICATION"] != "No Auth Headers")
+                {
+                    ResultsString.AppendLine();
+                    ResultsString.AppendLine("Authentication");
+                    ResultsString.AppendLine("--------------");
+                    ResultsString.AppendLine();
+                    ResultsString.AppendLine($"Authentication Type: {this.session["X-AUTHENTICATION"]}");
+                    ResultsString.AppendLine();
+                    ResultsString.AppendLine($"Authentication Description: {this.session["X-AUTHENTICATIONDESC"]}");
+                }
 
                 if (this.session["X-Office365AuthType"] == "SAMLResponseParser")
                 {
@@ -450,7 +453,7 @@ namespace EXOFiddlerInspector.Inspectors
                     ResultsString.AppendLine($"Attribute Name Immutable Id: {this.session["X-ATTRIBUTENAMEIMMUTABLEID"]}");
                     ResultsString.AppendLine($"Attribute Name UPN: {this.session["X-ATTRIBUTENAMEUPN"]}");
                     ResultsString.AppendLine($"Name Identifier Format: {this.session["X-NAMEIDENTIFIERFORMAT"]}");
-                    ResultsString.AppendLine("Signing Certificate: Copy the below text in a .cer file to view the certificate.");
+                    ResultsString.AppendLine("Signing Certificate: Copy and save the below text into a .cer file to view the certificate.");
                     ResultsString.AppendLine("");
                     ResultsString.AppendLine("-----BEGIN CERTIFICATE-----");
                     ResultsString.AppendLine(this.session["X-SigningCertificate"]);
