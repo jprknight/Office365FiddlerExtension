@@ -66,38 +66,37 @@ namespace EXOFiddlerInspector
         #region SaveSAZ
         /// <summary>
         /// Handle saving a SAZ file.
+        /// Remove the session flags the extension adds to save space in the file, 
+        /// mitigate errors thrown when loading a SAZ file generated with the extension enabled.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        /// Remove the session flags the extension adds to save space in the file.
         private void HandleSaveSaz(object sender, FiddlerApplication.WriteSAZEventArgs e)
         {
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
             foreach (var session in e.arrSessions)
             {
-                if (Preferences.ExtensionEnabled)
-                {
-                    session.oFlags.Remove("UI-BACKCOLOR");
-                    session.oFlags.Remove("UI-COLOR");
-                    session.oFlags.Remove("X-SESSIONTYPE");
-                    session.oFlags.Remove("X-ATTRIBUTENAMEIMMUTABLEID");
-                    session.oFlags.Remove("X-ATTRIBUTENAMEUPN");
-                    session.oFlags.Remove("X-AUTHENTICATION");
-                    session.oFlags.Remove("X-AUTHENTICATIONDESC");
-                    session.oFlags.Remove("X-ELAPSEDTIME");
-                    session.oFlags.Remove("X-ISSUER");
-                    session.oFlags.Remove("X-NAMEIDENTIFIERFORMAT");
-                    session.oFlags.Remove("X-OFFICE365AUTHTYPE");
-                    session.oFlags.Remove("X-PROCESSNAME");
-                    session.oFlags.Remove("X-RESPONSEALERT");
-                    session.oFlags.Remove("X-RESPONSECOMMENTS");
-                }
+                session.oFlags.Remove("UI-BACKCOLOR");
+                session.oFlags.Remove("UI-COLOR");
+                session.oFlags.Remove("X-SESSIONTYPE");
+                session.oFlags.Remove("X-ATTRIBUTENAMEIMMUTABLEID");
+                session.oFlags.Remove("X-ATTRIBUTENAMEUPN");
+                session.oFlags.Remove("X-AUTHENTICATION");
+                session.oFlags.Remove("X-AUTHENTICATIONDESC");
+                session.oFlags.Remove("X-ELAPSEDTIME");
+                session.oFlags.Remove("X-RESPONSESERVER");
+                session.oFlags.Remove("X-ISSUER");
+                session.oFlags.Remove("X-NAMEIDENTIFIERFORMAT");
+                session.oFlags.Remove("X-OFFICE365AUTHTYPE");
+                session.oFlags.Remove("X-PROCESSNAME");
+                session.oFlags.Remove("X-RESPONSEALERT");
+                session.oFlags.Remove("X-RESPONSECOMMENTS");
             }
+
+            FiddlerApplication.UI.lvSessions.EndUpdate();
         }
-
         #endregion
-
 
         #region LoadSAZ
         /// <summary>
