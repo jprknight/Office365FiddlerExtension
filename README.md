@@ -20,10 +20,10 @@ The extension alters the standard Fiddler UI:
 
 ## Project Links
 
-Wiki: <a href="https://github.com/jprknight/EXOFiddlerExtension/wiki" target="_blank">https://github.com/jprknight/EXOFiddlerExtension/wiki</a>
+Wiki: <a href="https://github.com/jprknight/EXOFiddlerExtension/wiki" target="_blank">https://aka.ms/O365FiddlerExtensionWiki</a>
 
-Issues: <a href="https://github.com/jprknight/EXOFiddlerExtension/issues" target="_blank">https://github.com/jprknight/EXOFiddlerExtension/issues</a>
+Issues: <a href="https://github.com/jprknight/EXOFiddlerExtension/issues" target="_blank">https://aka.ms/O365FiddlerExtensionIssues</a>
 
-Download: <a href="https://github.com/jprknight/exofiddlerextension/releases/latest" target="_blank">https://github.com/jprknight/exofiddlerextension/releases/latest</a>
+Download: <a href="https://github.com/jprknight/exofiddlerextension/releases/latest" target="_blank">https://aka.ms/O365FiddlerExtensionUpdateUrl</a>
 
 Exchange EHLO Technet blog post: <a href="https://blogs.technet.microsoft.com/exchange/2018/12/11/introducing-the-exchange-online-fiddler-extension/" target="_blank">https://blogs.technet.microsoft.com/exchange/2018/12/11/introducing-the-exchange-online-fiddler-extension/</a>
