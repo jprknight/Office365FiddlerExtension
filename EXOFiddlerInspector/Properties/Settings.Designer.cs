@@ -25,18 +25,6 @@ namespace EXOFiddlerInspector.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("The quantity of these types of server errors need to be considered in context wit" +
-            "h what you are troubleshooting and whether these are relevant or not. A small nu" +
-            "mber is probably not an issue, larger numbers of these could be cause for concer" +
-            "n.")]
-        public string HTTPQuantity {
-            get {
-                return ((string)(this["HTTPQuantity"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://aka.ms/O365FiddlerExtensionUpdateCheckUrl")]
         public string UpdateURL {
             get {

@@ -2,9 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EXOFiddlerInspector.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="HTTPQuantity" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">The quantity of these types of server errors need to be considered in context with what you are troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.</Value>
-    </Setting>
     <Setting Name="UpdateURL" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://aka.ms/O365FiddlerExtensionUpdateCheckUrl</Value>
     </Setting>

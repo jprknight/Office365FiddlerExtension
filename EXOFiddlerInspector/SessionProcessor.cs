@@ -231,7 +231,8 @@ namespace EXOFiddlerInspector
                         this.session["X-SessionType"] = "!NO RESPONSE!";
 
                         this.session["X-ResponseAlert"] = "!HTTP 0 No Response!";
-                        this.session["X-ResponseComments"] = (Properties.Settings.Default.HTTPQuantity);
+                        this.session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting " +
+                            "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.";
 
                         if (Preferences.AppLoggingEnabled)
                         {
@@ -705,7 +706,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-color"] = "black";
 
                         this.session["X-ResponseAlert"] = "HTTP 204 No Content.";
-                        this.session["X-ResponseComments"] = Properties.Settings.Default.HTTPQuantity;
+                        this.session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting " +
+                            "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.";
 
                         if (Preferences.AppLoggingEnabled)
                         {
@@ -947,7 +949,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-color"] = "black";
 
                         this.session["X-ResponseAlert"] = "!HTTP 404 Not Found!";
-                        this.session["X-ResponseComments"] = Properties.Settings.Default.HTTPQuantity;
+                        this.session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting " +
+                            "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.";
 
                         if (Preferences.AppLoggingEnabled)
                         {
@@ -1478,7 +1481,8 @@ namespace EXOFiddlerInspector
                             this.session["ui-color"] = "black";
 
                             this.session["X-ResponseAlert"] = "!HTTP 504 Gateway Timeout!";
-                            this.session["X-ResponseComments"] = Properties.Settings.Default.HTTPQuantity;
+                            this.session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting " +
+                                "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.";
 
                             this.session["X-SessionType"] = "Gateway Timeout";
 
