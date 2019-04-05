@@ -88,14 +88,14 @@ namespace EXOFiddlerInspector
                         $"{Environment.NewLine}Currently using beta version: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
                         $"{Environment.NewLine}New production version available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}" + 
                         $"{Environment.NewLine}{Environment.NewLine}" +
-                        $"Download the latest version: {Environment.NewLine}https://aka.ms/EXOFiddlerExtension {Environment.NewLine}{Environment.NewLine}");
+                        $"Download the latest version: {Environment.NewLine}{Properties.Settings.Default.InstallerURL}{Environment.NewLine}{Environment.NewLine}");
                 }
                 else
                 {
                     FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", $"Update Available{Environment.NewLine}----------------" +
                         $"{Environment.NewLine}Currently using version: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
                         $"{Environment.NewLine}New version available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}{Environment.NewLine} {Environment.NewLine}" +
-                        $"Download the latest version: {Environment.NewLine}https://aka.ms/EXOFiddlerExtension {Environment.NewLine}{Environment.NewLine}");
+                        $"Download the latest version: {Environment.NewLine}{Properties.Settings.Default.InstallerURL}{Environment.NewLine}{Environment.NewLine}");
                 }
 
                 // Regardless of extension enabled or not, give the user feedback when they click the 'Check For Update' menu item if no update is available.
@@ -161,7 +161,7 @@ namespace EXOFiddlerInspector
                     FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", $"Beta Build!{Environment.NewLine}-----------" +
                         $"{Environment.NewLine}Currently using beta build: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
                         $"{Environment.NewLine}Newest production build available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}{Environment.NewLine}{Environment.NewLine}" +
-                        $"Raise any issues at:{Environment.NewLine}http://aka.ms/EXOFiddlerExtensionIssues{Environment.NewLine}{Environment.NewLine}");
+                        $"Raise any issues at:{Environment.NewLine}{Properties.Settings.Default.InstallerURL}{Environment.NewLine}{Environment.NewLine}");
                     //FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
                     Preferences.ManualCheckForUpdate = false; 
                 }
@@ -171,7 +171,7 @@ namespace EXOFiddlerInspector
                     FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", $"Beta Build!{Environment.NewLine}-----------" +
                         $"{Environment.NewLine}Currently using beta build: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
                         $"{Environment.NewLine}Newest production build available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}{Environment.NewLine}{Environment.NewLine}" +
-                        $"Raise any issues at: {Environment.NewLine}http://aka.ms/EXOFiddlerExtensionIssues {Environment.NewLine}{Environment.NewLine}");
+                        $"Raise any issues at: {Environment.NewLine}{Properties.Settings.Default.ReportIssuesURL}{Environment.NewLine}{Environment.NewLine}");
                 }
                 // Tell user if they are on latest production build.
                 else if (Preferences.ManualCheckForUpdate)
