@@ -68,6 +68,7 @@ namespace EXOFiddlerInspector
         /// Handle saving a SAZ file.
         /// Remove the session flags the extension adds to save space in the file, 
         /// mitigate errors thrown when loading a SAZ file generated with the extension enabled.
+        /// https://github.com/jprknight/EXOFiddlerExtension/issues/45
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

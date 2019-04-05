@@ -198,8 +198,8 @@ namespace EXOFiddlerInspector.Inspectors
         public override void AddToTab(TabPage o)
         {
             ExchangeResponseControl textControl = new ExchangeResponseControl();
-            o.Text = "Exchange Online";
-            o.ToolTipText = "Exchange Online Inspector";
+            o.Text = "Office 365";
+            o.ToolTipText = "Office 365 Inspector";
             textControl.Size = o.Size;
             o.Controls.Add(textControl);
             o.Controls[0].Dock = DockStyle.Fill;
@@ -220,7 +220,7 @@ namespace EXOFiddlerInspector.Inspectors
                 {
                     Clear();
                     ResultsString.AppendLine("-------------------------------");
-                    ResultsString.AppendLine("EXO Fiddler Extension Disabled.");
+                    ResultsString.AppendLine("O365 Fiddler Extension Disabled.");
                     ResultsString.AppendLine("-------------------------------");
                     ExchangeResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
                     return;

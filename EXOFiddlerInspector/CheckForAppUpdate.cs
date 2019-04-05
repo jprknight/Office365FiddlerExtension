@@ -14,7 +14,7 @@ namespace EXOFiddlerInspector
 
         public void CheckForUpdate()
         {
-            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : CheckForUpdate begin.");
+            Debug.WriteLine($"OFFICE 365 EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : CheckForUpdate begin.");
 
             string downloadUrl = "";
             Version newVersion = null;
@@ -72,7 +72,7 @@ namespace EXOFiddlerInspector
             if (applicationVersion.CompareTo(newVersion) < 0)
             {
 
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : Update Available.");
+                Debug.WriteLine($"OFFICE 365 EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : Update Available.");
                 //FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.MenuTitle", "Exchange Online (Update Available)");
 
                 /// <remarks>
@@ -107,7 +107,7 @@ namespace EXOFiddlerInspector
                         $"A new version is available v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}{Environment.NewLine}" +
                         "Do you want to download the update?";
 
-                    string caption = "EXO Fiddler Extension - Update Available";
+                    string caption = "O365 Fiddler Extension - Update Available";
 
                     /// <remarks>
                     /// Set menu title to show user there is an update available.
@@ -125,8 +125,8 @@ namespace EXOFiddlerInspector
                         System.Diagnostics.Process.Start(Properties.Settings.Default.InstallerURL);
                         if (Preferences.AppLoggingEnabled)
                         {
-                            FiddlerApplication.Log.LogString($"EXOFiddlerExtention: Version installed. v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}");
-                            FiddlerApplication.Log.LogString($"EXOFiddlerExtention: New Version Available. v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}");
+                            FiddlerApplication.Log.LogString($"O365FiddlerExtention: Version installed. v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}");
+                            FiddlerApplication.Log.LogString($"O365FiddlerExtention: New Version Available. v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}");
                         }
                     }
                     // return this perference back to false, so we don't give this feedback unintentionally.
@@ -140,7 +140,7 @@ namespace EXOFiddlerInspector
             /// 
             else
             {
-                Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : No update available.");
+                Debug.WriteLine($"OFFICE 365 EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : No update available.");
                 //FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.MenuTitle", "Exchange Online");
 
                 // Clear UpdateMessage if no update is available. More processing below if running a beta version.
@@ -148,15 +148,15 @@ namespace EXOFiddlerInspector
 
                 if (Preferences.AppLoggingEnabled)
                 {
-                    FiddlerApplication.Log.LogString("EXOFiddlerExtention: Latest version installed.");
+                    FiddlerApplication.Log.LogString("O365FiddlerExtention: Latest version installed.");
                 }
 
                 // Tell user if they are either on a beta build.
                 if (applicationVersion.Build >= 1000 && Preferences.ManualCheckForUpdate)
                 {
-                    MessageBox.Show($"EXOFiddlerExtention: You are using a beta build. Thanks for the testing!{Environment.NewLine}" +
+                    MessageBox.Show($"O365FiddlerExtention: You are using a beta build. Thanks for the testing!{Environment.NewLine}" +
                         $"Currently using beta build: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}{Environment.NewLine}" +
-                        $"Newest production build available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}", "EXO Fiddler Extension - Beta Version!");
+                        $"Newest production build available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}", "O365 Fiddler Extension - Beta Version!");
 
                     FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", $"Beta Build!{Environment.NewLine}-----------" +
                         $"{Environment.NewLine}Currently using beta build: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
@@ -176,9 +176,9 @@ namespace EXOFiddlerInspector
                 // Tell user if they are on latest production build.
                 else if (Preferences.ManualCheckForUpdate)
                 {
-                    MessageBox.Show("EXOFiddlerExtention: You already have the latest version installed." + Environment.NewLine +
+                    MessageBox.Show("O365FiddlerExtention: You already have the latest version installed." + Environment.NewLine +
                         $"Currently using: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}{Environment.NewLine}" +
-                        $"Newest available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}", "EXO Fiddler Extension");
+                        $"Newest available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}", "O365 Fiddler Extension");
                     // return this perference back to false, so we don't give this feedback unintentionally.
                     //FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
                     Preferences.ManualCheckForUpdate = false;
@@ -192,7 +192,7 @@ namespace EXOFiddlerInspector
             //{
             //    FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.MenuTitle", "Exchange Online (Update Available!)");
             //}
-            Debug.WriteLine($"EXCHANGE ONLINE EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : CheckForUpdate done.");
+            Debug.WriteLine($"OFFICE 365 EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : CheckForUpdate done.");
         }
     }
 }
