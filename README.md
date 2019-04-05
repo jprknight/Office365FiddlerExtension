@@ -1,11 +1,11 @@
 ## Download
-<a href="https://github.com/jprknight/exofiddlerextension/releases/latest" target="_blank">Download the latest release</a> of the Exchange Online Fiddler Extension.
+<a href="https://aka.ms/O365FiddlerExtensionUpdateUrl" target="_blank">Download the latest release</a> of the Office 365 Fiddler Extension.
 
 ## Current Release Information
 Version 1.0.63 addresses performance concerns when running in 'live trace' mode. Minimal features in the extension now run in this mode. Load a SAZ archive into Fiddler to see all functionality.
 
 ## Extension Purpose
-The Exchange Online Fiddler Extension is an Outlook / Office 365 / Exchange / Exchange Online centric parser for Fiddler traces captured while reproducing issues to aid troubleshooting. It can be used with Outlook or other Office 365 applications, since Fiddler can decrypt HTTPS traffic and record the session data for review and troubleshooting.
+The Office 365 Fiddler Extension is an Office 365 centric parser to efficiently troubleshoot Office 365 client application connectivity and functionality.
 
 The extension alters the standard Fiddler UI:
 
@@ -15,15 +15,15 @@ The extension alters the standard Fiddler UI:
 * Add column 'Session Type'.
 * Add column 'Host IP'.
 * Add column 'Authentication'.
-* Add an 'Exchange Online' response inspector tab.
-* Add an 'Exchange Online' menu to turn off/on extension and extension features.
+* Add an 'Office 365' response inspector tab.
+* Add an 'Office 365' menu to turn off/on extension and extension features.
 
 ## Project Links
 
-Wiki: <a href="https://github.com/jprknight/EXOFiddlerExtension/wiki" target="_blank">https://aka.ms/O365FiddlerExtensionWiki</a>
+Wiki: <a href="https://aka.ms/O365FiddlerExtensionWiki" target="_blank">https://aka.ms/O365FiddlerExtensionWiki</a>
 
-Issues: <a href="https://github.com/jprknight/EXOFiddlerExtension/issues" target="_blank">https://aka.ms/O365FiddlerExtensionIssues</a>
+Issues: <a href="https://aka.ms/O365FiddlerExtensionIssues" target="_blank">https://aka.ms/O365FiddlerExtensionIssues</a>
 
-Download: <a href="https://github.com/jprknight/exofiddlerextension/releases/latest" target="_blank">https://aka.ms/O365FiddlerExtensionUpdateUrl</a>
+Download: <a href="https://aka.ms/O365FiddlerExtensionUpdateUrl" target="_blank">https://aka.ms/O365FiddlerExtensionUpdateUrl</a>
 
-Exchange EHLO Technet blog post: <a href="https://blogs.technet.microsoft.com/exchange/2018/12/11/introducing-the-exchange-online-fiddler-extension/" target="_blank">https://blogs.technet.microsoft.com/exchange/2018/12/11/introducing-the-exchange-online-fiddler-extension/</a>
+Exchange EHLO Technet blog post: <a href="https://aka.ms/EHLOBlogArticle" target="_blank">https://aka.ms/EHLOBlogArticle</a>
