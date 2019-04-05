@@ -26,4 +26,4 @@ Issues: <a href="https://aka.ms/O365FiddlerExtensionIssues" target="_blank">http
 
 Download: <a href="https://aka.ms/O365FiddlerExtensionUpdateUrl" target="_blank">https://aka.ms/O365FiddlerExtensionUpdateUrl</a>
 
-Exchange EHLO Technet blog post: <a href="https://aka.ms/EHLOBlogArticle" target="_blank">https://aka.ms/EHLOBlogArticle</a>
+EHLO Technet blog post: <a href="https://aka.ms/EHLOBlogArticle" target="_blank">https://aka.ms/EHLOBlogArticle</a>
