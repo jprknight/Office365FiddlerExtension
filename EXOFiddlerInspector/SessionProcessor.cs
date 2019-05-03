@@ -38,6 +38,8 @@ namespace EXOFiddlerInspector
 
             FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
 
+            FiddlerApplication.OnSaveSAZ += HandleSaveSaz;
+
             if (!IsInitialized)
             {
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 2, -1);
@@ -60,6 +62,42 @@ namespace EXOFiddlerInspector
                 IsInitialized = true;
             }
         }
+
+        #region SaveSAZ
+        /// <summary>
+        /// Handle saving a SAZ file.
+        /// Remove the session flags the extension adds to save space in the file, 
+        /// mitigate errors thrown when loading a SAZ file generated with the extension enabled.
+        /// https://github.com/jprknight/EXOFiddlerExtension/issues/45
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void HandleSaveSaz(object sender, FiddlerApplication.WriteSAZEventArgs e)
+        {
+            FiddlerApplication.UI.lvSessions.BeginUpdate();
+
+            foreach (var session in e.arrSessions)
+            {
+                session.oFlags.Remove("UI-BACKCOLOR");
+                session.oFlags.Remove("UI-COLOR");
+                session.oFlags.Remove("X-SESSIONTYPE");
+                session.oFlags.Remove("X-ATTRIBUTENAMEIMMUTABLEID");
+                session.oFlags.Remove("X-ATTRIBUTENAMEUPN");
+                session.oFlags.Remove("X-AUTHENTICATION");
+                session.oFlags.Remove("X-AUTHENTICATIONDESC");
+                session.oFlags.Remove("X-ELAPSEDTIME");
+                session.oFlags.Remove("X-RESPONSESERVER");
+                session.oFlags.Remove("X-ISSUER");
+                session.oFlags.Remove("X-NAMEIDENTIFIERFORMAT");
+                session.oFlags.Remove("X-OFFICE365AUTHTYPE");
+                session.oFlags.Remove("X-PROCESSNAME");
+                session.oFlags.Remove("X-RESPONSEALERT");
+                session.oFlags.Remove("X-RESPONSECOMMENTS");
+            }
+
+            FiddlerApplication.UI.lvSessions.EndUpdate();
+        }
+        #endregion
 
         #region LoadSAZ
         /// <summary>
@@ -86,7 +124,7 @@ namespace EXOFiddlerInspector
                 {
                     SessionProcessor.Instance.SetElapsedTime(session);
 
-                    SessionProcessor.Instance.SetSessionType(session);
+                    //SessionProcessor.Instance.SetSessionType(session);
 
                     SessionProcessor.Instance.SetResponseServer(session);
 
@@ -130,6 +168,22 @@ namespace EXOFiddlerInspector
             //
             //  Broader code logic for sessions, where the response code cannot be used as in the switch statement.
             //
+
+            /////////////////////////////
+            //
+            // Connect Tunnel.
+            //
+            // If the session is a connect tunnel, update sessions flags as below.
+            // Do not SkipFurtherProcessing, break or return here since worse things can happen on the session which would need to be highlighted.
+            //
+            if (this.session.isTunnel)
+            {
+                this.session["X-ResponseAlert"] = "Connect Tunnel";
+                this.session["X-ResponseComments"] = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels the sessions collected did not have decryption enabled." +
+                    Environment.NewLine +
+                    Environment.NewLine +
+                    "If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS";
+            }
 
             /////////////////////////////
             //
@@ -177,7 +231,8 @@ namespace EXOFiddlerInspector
                         this.session["X-SessionType"] = "!NO RESPONSE!";
 
                         this.session["X-ResponseAlert"] = "!HTTP 0 No Response!";
-                        this.session["X-ResponseComments"] = (Properties.Settings.Default.HTTPQuantity);
+                        this.session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting " +
+                            "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.";
 
                         if (Preferences.AppLoggingEnabled)
                         {
@@ -197,7 +252,7 @@ namespace EXOFiddlerInspector
                         //
 
                         /////////////////////////////
-                        // 1. Connect Tunnel.
+                        // 200.1. Connect Tunnel.
                         if (this.session.isTunnel == true)
                         {
                             // Skip 99 response body word split and keyword search with Linq code.
@@ -205,17 +260,65 @@ namespace EXOFiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourGreen;
                             this.session["ui-color"] = "black";
 
-                            this.session["X-ResponseAlert"] = "Connect Tunnel";
-                            this.session["X-ResponseComments"] = "Encrypted HTTPS traffic flows through this CONNECT tunnel. ";
-
                             this.session["X-SessionType"] = "Connect Tunnel";
 
                             // Increment SkipFurtherProcess for SetSessionType function and return.
                             SkipFurtherProcessing++;
+                            // Break out of the switch statement.
+                            break;
                         }
 
                         /////////////////////////////
-                        // 2. Exchange On-Premise Autodiscover redirect.
+                        //
+                        // 200.2. Connection blocked by Client Access Rules.
+                        // 
+
+                        if (this.session.fullUrl.Contains("outlook.office365.com/mapi")
+                            && this.session.utilFindInResponse("Connection blocked by Client Access Rules", false) > 1)
+                        {
+                            this.session["ui-backcolor"] = HTMLColourRed;
+                            this.session["ui-color"] = "black";
+
+                            this.session["X-SessionType"] = "!CLIENT ACCESS RULE!";
+
+                            this.session["X-ResponseAlert"] = "!CLIENT ACCESS RULE!";
+                            this.session["X-ResponseComments"] = "A client access rule has blocked MAPI connectivity to the mailbox. " +
+                                "Check if the client access rule includes OutlookAnywhere." +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "Per https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules, OutlookAnywhere includes MAPI over HTTP." +
+                                Environment.NewLine +
+                                Environment.NewLine +
+                                "Remove OutlookAnywhere from the client access rule, wait 1 hour, then test again.";
+
+                            // Increment SkipFurtherProcess for SetSessionType function and return.
+                            SkipFurtherProcessing++;
+                            // Break out of the switch statement. No further processing needed here.
+                            break;
+                        }
+
+                        /////////////////////////////
+                        //
+                        // 200.3. Outlook MAPI traffic.
+                        //
+                        if (this.session.HostnameIs("outlook.office365.com") && (this.session.uriContains("/mapi/emsmdb/?MailboxId=")))
+                        {
+                            this.session["ui-backcolor"] = HTMLColourGreen;
+                            this.session["ui-color"] = "black";
+
+                            this.session["X-SessionType"] = "Outlook MAPI";
+
+                            this.session["X-ResponseAlert"] = "Outlook for Windows MAPI traffic";
+                            this.session["X-ResponseComments"] = "Outlook for Windows MAPI traffic.";
+
+                            // Increment SkipFurtherProcess for SetSessionType function and return.
+                            SkipFurtherProcessing++;
+                            // Break out of the switch statement.
+                            break;
+                        }
+
+                        /////////////////////////////
+                        // 200.4. Exchange On-Premise Autodiscover redirect.
                         if (this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1)
                         {
                             /*
@@ -310,7 +413,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 3. Exchange On-Premise Autodiscover redirect - address can't be found
+                        // 200.5. Exchange On-Premise Autodiscover redirect - address can't be found
                         //
                         if ((this.session.utilFindInResponse("<Message>The email address can't be found.</Message>", false) > 1) &&
                             (this.session.utilFindInResponse("<ErrorCode>500</ErrorCode>", false) > 1))
@@ -346,7 +449,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 4. Exchange Online Autodiscover
+                        // 200.6. Exchange Online Autodiscover
                         //
 
                         // Make sure this session is an Exchange Online Autodiscover request.
@@ -386,24 +489,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 5. Outlook MAPI traffic.
-                        //
-                        if (this.session.HostnameIs("outlook.office365.com") && (this.session.uriContains("/mapi/emsmdb/?MailboxId=")))
-                        {
-                            this.session["ui-backcolor"] = HTMLColourGreen;
-                            this.session["ui-color"] = "black";
-                            this.session["X-SessionType"] = "Outlook MAPI";
-
-                            this.session["X-ResponseAlert"] = "Outlook for Windows MAPI traffic";
-                            this.session["X-ResponseComments"] = "Outlook for Windows MAPI traffic.";
-
-                            // Increment SkipFurtherProcess for SetSessionType function and return.
-                            SkipFurtherProcessing++;
-                        }
-
-                        /////////////////////////////
-                        //
-                        // 6. GetUnifiedGroupsSettings EWS call.
+                        // 200.7. GetUnifiedGroupsSettings EWS call.
                         //
                         if (this.session.HostnameIs("outlook.office365.com") &&
                             (this.session.uriContains("ews/exchange.asmx") &&
@@ -458,12 +544,9 @@ namespace EXOFiddlerInspector
                             }
                         }
 
-                        // Exchange On-Premise redirect to Exchange Online Autodiscover.
-                        // 7.Location: https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml
-
                         /////////////////////////////
                         //
-                        // 99. All other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
+                        // 200.99. All other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                         else
                         {
                             // Only fire the Linq response body word split and keyword search if:
@@ -623,7 +706,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-color"] = "black";
 
                         this.session["X-ResponseAlert"] = "HTTP 204 No Content.";
-                        this.session["X-ResponseComments"] = Properties.Settings.Default.HTTPQuantity;
+                        this.session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting " +
+                            "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.";
 
                         if (Preferences.AppLoggingEnabled)
                         {
@@ -749,7 +833,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        //  HTTP 401: BAD REQUEST.
+                        //  HTTP 400: BAD REQUEST.
                         //
                         this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
@@ -782,6 +866,9 @@ namespace EXOFiddlerInspector
                             Environment.NewLine +
                             "If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.";
 
+                        // Increment SkipFurtherProcess for SetSessionType function and return.
+                        SkipFurtherProcessing++;
+
                         if (Preferences.AppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " HTTP 401 Auth Challenge.");
@@ -794,9 +881,9 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 403: FORBIDDEN.
                         //
-                        // Looking for the term "Access Denied" works fine using utilFindInResponse.
-                        // Specific scenario where a web proxy is blocking traffic.
-                        if (this.session.utilFindInResponse("Access Denied", false) > 1)
+                        // Looking for the term "Access Denied" or "Access Blocked" in session response.
+                        // Specific scenario where a web proxy is blocking traffic from reaching the internet.
+                        if (this.session.utilFindInResponse("Access Denied", false) > 1 || this.session.utilFindInResponse("Access Blocked", false) > 1)
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
@@ -862,7 +949,8 @@ namespace EXOFiddlerInspector
                         this.session["ui-color"] = "black";
 
                         this.session["X-ResponseAlert"] = "!HTTP 404 Not Found!";
-                        this.session["X-ResponseComments"] = Properties.Settings.Default.HTTPQuantity;
+                        this.session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting " +
+                            "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.";
 
                         if (Preferences.AppLoggingEnabled)
                         {
@@ -1049,6 +1137,7 @@ namespace EXOFiddlerInspector
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
                         this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
+                        this.session["X-SessionType"] = "Internal Server Error";
 
                         this.session["X-ResponseAlert"] = "!HTTP 500 Internal Server Error!";
                         this.session["X-ResponseComments"] = "HTTP 500 Internal Server Error";
@@ -1084,7 +1173,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 1. telemetry false positive. <Need to validate in working scenarios>
+                        // 502.1. telemetry false positive. <Need to validate in working scenarios>
                         //
                         if ((this.session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443") &&
                             (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
@@ -1109,7 +1198,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 2. Exchange Online DNS lookup on contoso.onmicrosoft.com, False Positive!?
+                        // 502.2. Exchange Online DNS lookup on contoso.onmicrosoft.com, False Positive!?
                         //
                         // Specific scenario on Outlook and Office 365 invalid DNS lookup.
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
@@ -1142,7 +1231,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 3. Exchange Online connection to autodiscover.contoso.mail.onmicrosoft.com, False Positive!
+                        // 502.3. Exchange Online connection to autodiscover.contoso.mail.onmicrosoft.com, False Positive!
                         //
                         // Specific scenario on Outlook and Office 365 invalid connection to contoso.mail.onmicrosoft.com
                         // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in blue? >
@@ -1185,7 +1274,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 4. Vanity domain points to Office 365 autodiscover; false positive.
+                        // 502.4. Vanity domain points to Office 365 autodiscover; false positive.
                         //
 
                         /*
@@ -1232,7 +1321,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 5. Anything else Exchange Autodiscover.
+                        // 502.5. Anything else Exchange Autodiscover.
                         //
                         else if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
                             (this.session.utilFindInResponse("autodiscover", false) > 1) &&
@@ -1255,7 +1344,7 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
-                        // 99. Everything else.
+                        // 502.99. Everything else.
                         //
                         else
                         {
@@ -1280,7 +1369,7 @@ namespace EXOFiddlerInspector
                         //
                         //  HTTP 503: SERVICE UNAVAILABLE.
                         //
-                        // Call out all 503 Service Unavailable as something to focus on.
+                        // 503.1. Call out all 503 Service Unavailable as something to focus on.
                         searchTerm = "FederatedStsUnreachable";
                         //"Service Unavailable"
 
@@ -1333,7 +1422,7 @@ namespace EXOFiddlerInspector
                         }
                         /////////////////////////////
                         //
-                        // 99. Everything else.
+                        // 503.99. Everything else.
                         //
                         else
                         {
@@ -1362,7 +1451,7 @@ namespace EXOFiddlerInspector
                         //
 
                         /////////////////////////////
-                        // 1. HTTP 504 Bad Gateway 'internet has been blocked'
+                        // 504.1. HTTP 504 Bad Gateway 'internet has been blocked'
                         if ((this.session.utilFindInResponse("access", false) > 1) &&
                             (this.session.utilFindInResponse("internet", false) > 1) &&
                             (this.session.utilFindInResponse("blocked", false) > 1))
@@ -1385,14 +1474,15 @@ namespace EXOFiddlerInspector
                         }
 
                         /////////////////////////////
-                        // 99. Pick up any other 504 Gateway Timeout and write data into the comments box.
+                        // 504.99. Pick up any other 504 Gateway Timeout and write data into the comments box.
                         else
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
 
                             this.session["X-ResponseAlert"] = "!HTTP 504 Gateway Timeout!";
-                            this.session["X-ResponseComments"] = Properties.Settings.Default.HTTPQuantity;
+                            this.session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting " +
+                                "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.";
 
                             this.session["X-SessionType"] = "Gateway Timeout";
 
@@ -1435,8 +1525,9 @@ namespace EXOFiddlerInspector
                 /////////////////////////////
             }
             #endregion
-            //
-            /////////////////////////////
+
+
+            #region ColouriseSessionsOverrides
 
             /////////////////////////////
             // ColouriseSessionsOverrides
@@ -1522,8 +1613,107 @@ namespace EXOFiddlerInspector
                     }
                 }
             }
-            //
+
+            #endregion
+
+
+            #region SetSessionType
+
             /////////////////////////////
+            ///
+            /// Set Session Type
+            /// 
+
+            // Finish processing in this function for this session if we have incremented the SkipFurtherProcessing int.
+            if (SkipFurtherProcessing > 0)
+                return;
+
+            //if (this.session.responseCode == 200 || this.session.responseCode == 302)
+            //{
+                // Outlook Connections.
+                //if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) {this.session["X-SessionType"] = "EXO MAPI"; }
+                // Exchange Online Autodiscover.
+                //if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { this.session["X-SessionType"] = "EXO Autodiscover"; }
+                //else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { this.session["X-SessionType"] = "EXO Autodiscover"; }
+                //else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { this.session["X-SessionType"] = "EXO Autodiscover"; }
+                //else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { this.session["X-SessionType"] = "EXO Autodiscover"; }
+                //// Autodiscover.     
+                //else if ((this.session.fullUrl.Contains("autodiscover") && (!(this.session.hostname == "outlook.office365.com")))) { this.session["X-SessionType"] = "On-Prem Autodiscover"; }
+                //else if (this.session.hostname.Contains("autodiscover")) { this.session["X-SessionType"] = "On-Prem Autodiscover"; }
+                //// Free/Busy.
+                if (this.session.fullUrl.Contains("WSSecurity"))
+                {
+                    this.session["X-SessionType"] = "Free/Busy";
+                    // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
+                    //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
+                }
+                else if (this.session.fullUrl.Contains("GetUserAvailability"))
+                {
+                    this.session["X-SessionType"] = "Free/Busy";
+                    // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
+                    //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
+                }
+                else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1)
+                {
+                    this.session["X-SessionType"] = "Free/Busy";
+                    // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
+                    //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
+                }
+                // EWS.
+                else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { this.session["X-SessionType"] = "EXO EWS"; }
+                // Generic Office 365.
+                else if (this.session.fullUrl.Contains(".onmicrosoft.com") && (!(this.session.hostname.Contains("live.com")))) { this.session["X -ExchangeType"] = "Exchange Online"; }
+                else if (this.session.fullUrl.Contains("outlook.office365.com")) { this.session["X-SessionType"] = "Office 365"; }
+                else if (this.session.fullUrl.Contains("outlook.office.com")) { this.session["X-SessionType"] = "Office 365"; }
+                // Office 365 Authentication.
+                else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { this.session["X-SessionType"] = "Office 365 Authentication"; }
+                // ADFS Authentication.
+                else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { this.session["X-SessionType"] = "ADFS Authentication"; }
+                // Undetermined, but related to local process.
+                else if (this.session.LocalProcess.Contains("outlook")) { this.session["X-SessionType"] = "Outlook"; }
+                else if (this.session.LocalProcess.Contains("iexplore")) { this.session["X-SessionType"] = "Internet Explorer"; }
+                else if (this.session.LocalProcess.Contains("chrome")) { this.session["X-SessionType"] = "Chrome"; }
+                else if (this.session.LocalProcess.Contains("firefox")) { this.session["X-SessionType"] = "Firefox"; }
+                // Everything else.
+                else {
+                    this.session["X-SessionType"] = "Not Exchange";
+                    this.session["ui-backcolor"] = HTMLColourGrey;
+                    this.session["ui-color"] = "black";
+                }
+
+
+            //}
+
+            /////////////////////////////
+            //
+            // Session Type overrides
+            //
+            // First off if the local process is null or blank, then we are analysing traffic from a remote client such as a mobile device.
+            // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
+            // So don't pay any attention to overrides for this type of traffic.
+            if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
+            {
+                // Traffic has a null or blank local process value.
+                this.session["X-SessionType"] = "Remote Capture";
+            }
+            else
+            {
+                // With that out of the way,  if the traffic is not related to any of the below processes call it out.
+                // So if for example lync.exe is the process write that to the Session Type column.
+                if (!(this.session.LocalProcess.Contains("outlook") ||
+                    this.session.LocalProcess.Contains("searchprotocolhost") ||
+                    this.session.LocalProcess.Contains("iexplore") ||
+                    this.session.LocalProcess.Contains("chrome") ||
+                    this.session.LocalProcess.Contains("firefox") ||
+                    this.session.LocalProcess.Contains("edge") ||
+                    this.session.LocalProcess.Contains("w3wp")))
+                {
+                    // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
+                    { this.session["X-SessionType"] = this.session.LocalProcess; }
+                }
+            }
+            #endregion
+
         }
 
         /// <summary>
@@ -1575,93 +1765,11 @@ namespace EXOFiddlerInspector
         /// Function where the Session Type column is populated.
         /// </summary>
         /// <param name="session"></param>
-        public void SetSessionType(Session session)
-        {
-            // Many of the if statements within the case in OnPeekAtResponseHeaders increment SkipFurtherProcessing in order to minimise processing here.
-            if (SkipFurtherProcessing > 0)
-                return;
-            if (this.session.responseCode == 200 || this.session.responseCode == 302)
-            {
-                // Outlook Connections.
-                //if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) {this.session["X-SessionType"] = "EXO MAPI"; }
-                // Exchange Online Autodiscover.
-                if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { this.session["X-SessionType"] = "EXO Autodiscover"; }
-                else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { this.session["X-SessionType"] = "EXO Autodiscover"; }
-                else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { this.session["X-SessionType"] = "EXO Autodiscover"; }
-                else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { this.session["X-SessionType"] = "EXO Autodiscover"; }
-                // Autodiscover.     
-                else if ((this.session.fullUrl.Contains("autodiscover") && (!(this.session.hostname == "outlook.office365.com")))) { this.session["X-SessionType"] = "On-Prem Autodiscover"; }
-                else if (this.session.hostname.Contains("autodiscover")) { this.session["X-SessionType"] = "On-Prem Autodiscover"; }
-                // Free/Busy.
-                else if (this.session.fullUrl.Contains("WSSecurity"))
-                {
-                    this.session["X-SessionType"] = "Free/Busy";
-                    // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                    //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
-                }
-                else if (this.session.fullUrl.Contains("GetUserAvailability"))
-                {
-                    this.session["X-SessionType"] = "Free/Busy";
-                    // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                    //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
-                }
-                else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1)
-                {
-                    this.session["X-SessionType"] = "Free/Busy";
-                    // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                    //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
-                }
-                // EWS.
-                else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { this.session["X-SessionType"] = "EXO EWS"; }
-                // Generic Office 365.
-                else if (this.session.fullUrl.Contains(".onmicrosoft.com") && (!(this.session.hostname.Contains("live.com")))) { this.session["X -ExchangeType"] = "Exchange Online"; }
-                else if (this.session.fullUrl.Contains("outlook.office365.com")) { this.session["X-SessionType"] = "Office 365"; }
-                else if (this.session.fullUrl.Contains("outlook.office.com")) { this.session["X-SessionType"] = "Office 365"; }
-                // Office 365 Authentication.
-                else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { this.session["X-SessionType"] = "Office 365 Authentication"; }
-                // ADFS Authentication.
-                else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { this.session["X-SessionType"] = "ADFS Authentication"; }
-                // Undetermined, but related to local process.
-                else if (this.session.LocalProcess.Contains("outlook")) { this.session["X-SessionType"] = "Outlook"; }
-                else if (this.session.LocalProcess.Contains("iexplore")) { this.session["X-SessionType"] = "Internet Explorer"; }
-                else if (this.session.LocalProcess.Contains("chrome")) { this.session["X-SessionType"] = "Chrome"; }
-                else if (this.session.LocalProcess.Contains("firefox")) { this.session["X-SessionType"] = "Firefox"; }
-                // Everything else.
-                else { this.session["X-SessionType"] = "Not Exchange"; }
-
-
-
-            }
-
-            /////////////////////////////
-            //
-            // Session Type overrides
-            //
-            // First off if the local process is null or blank, then we are analysing traffic from a remote client such as a mobile device.
-            // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
-            // So don't pay any attention to overrides for this type of traffic.
-            if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
-            {
-                // Traffic has a null or blank local process value.
-                this.session["X-SessionType"] = "Remote Capture";
-            }
-            else
-            {
-                // With that out of the way,  if the traffic is not related to any of the below processes call it out.
-                // So if for example lync.exe is the process write that to the Session Type column.
-                if (!(this.session.LocalProcess.Contains("outlook") ||
-                    this.session.LocalProcess.Contains("searchprotocolhost") ||
-                    this.session.LocalProcess.Contains("iexplore") ||
-                    this.session.LocalProcess.Contains("chrome") ||
-                    this.session.LocalProcess.Contains("firefox") ||
-                    this.session.LocalProcess.Contains("edge") ||
-                    this.session.LocalProcess.Contains("w3wp")))
-                {
-                    // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
-                    { this.session["X-SessionType"] = this.session.LocalProcess; }
-                }
-            }
-        }
+        //public void SetSessionType(Session session)
+        //{
+            
+            
+        //}
 
         /// <summary>
         /// Used specifically for Authentication sessions.
@@ -1750,10 +1858,17 @@ namespace EXOFiddlerInspector
 
             this.session = session;
 
-            // Set process name.
-            string[] ProcessName = this.session.LocalProcess.Split(':');
-            this.session["X-ProcessName"] = ProcessName[0];
-
+            // Set process name, split and exclude port used.
+            if (this.session.LocalProcess != String.Empty) {
+                string[] ProcessName = this.session.LocalProcess.Split(':');
+                this.session["X-ProcessName"] = ProcessName[0];
+            }
+            // No local process to split.
+            else
+            {
+                this.session["X-ProcessName"] = "Remote Capture";
+            }
+            
             // Determine if this session contains a SAML response.
             if (this.session.utilFindInResponse("Issuer=", false) > 1 &&
                 this.session.utilFindInResponse("Attribute AttributeName=", false) > 1 &&

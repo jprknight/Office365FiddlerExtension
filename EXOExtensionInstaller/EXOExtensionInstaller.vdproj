@@ -3,7 +3,7 @@
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
-"ProjectName" = "8:EXOExtensionInstaller"
+"ProjectName" = "8:Office365ExtensionInstaller"
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
@@ -365,7 +365,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\EXOExtensionInstaller.msi"
+        "OutputFilename" = "8:Release\\Office365Extension.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -518,7 +518,7 @@
             "SourcePath" = "8:..\\..\\..\\..\\OneDrive - Microsoft\\EXOFiddlerExtention\\Icons-Land-Medical-Equipment-Microscope.ico"
             "TargetName" = "8:Icons-Land-Medical-Equipment-Microscope.ico"
             "Tag" = "8:"
-            "Folder" = "8:_CD695A21C1E34998BBFC8B61993FA9DF"
+            "Folder" = "8:_3588A0D640C54E9AA347B32A0E5CD1AC"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -787,33 +787,11 @@
         }
         "Folder"
         {
-            "{1525181F-901A-416C-8A58-119130FE478E}:_3006D9E047564AD5BA3B95D221006FD6"
-            {
-            "Name" = "8:#1919"
-            "AlwaysCreate" = "11:FALSE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Property" = "8:ProgramMenuFolder"
-                "Folders"
-                {
-                }
-            }
-            "{1525181F-901A-416C-8A58-119130FE478E}:_3FD813DC5AD945E9B664ECB8C0B04B87"
-            {
-            "Name" = "8:#1916"
-            "AlwaysCreate" = "11:FALSE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Property" = "8:DesktopFolder"
-                "Folders"
-                {
-                }
-            }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_CD695A21C1E34998BBFC8B61993FA9DF"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder]\\[ProductName]"
+            "DefaultLocation" = "8:[LocalAppDataFolder]\\[ProductName]"
             "Name" = "8:#1925"
-            "AlwaysCreate" = "11:TRUE"
+            "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Property" = "8:TARGETDIR"
@@ -824,7 +802,7 @@
             "{1525181F-901A-416C-8A58-119130FE478E}:_D415333A171F43D29F7B84158C0B4CDA"
             {
             "Name" = "8:#1918"
-            "AlwaysCreate" = "11:FALSE"
+            "AlwaysCreate" = "11:TRUE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Property" = "8:PersonalFolder"
@@ -880,20 +858,20 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:EXO Fiddler Extension"
-        "ProductCode" = "8:{4F4C2FD3-E830-472C-B511-F0BF379A6155}"
-        "PackageCode" = "8:{A7BA202F-4F98-4C3D-9CE8-F429E1B5B175}"
+        "ProductName" = "8:Office 365 Fiddler Extension"
+        "ProductCode" = "8:{06E93A47-F4DD-4D7F-8B05-917D17739B1D}"
+        "PackageCode" = "8:{87A375CC-23AC-480A-9F77-4C4DABD50396}"
         "UpgradeCode" = "8:{D1B9286E-21B9-4E30-BEF9-AED7C0C470E9}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.6501"
+        "ProductVersion" = "8:1.0.70"
         "Manufacturer" = "8:Jeremy Knight"
         "ARPHELPTELEPHONE" = "8:"
-        "ARPHELPLINK" = "8:"
-        "Title" = "8:EXO Fiddler Extension"
+        "ARPHELPLINK" = "8:https://aka.ms/O365FiddlerExtensionIssues"
+        "Title" = "8:Office 365 Fiddler Extension"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Jeremy Knight"
         "Keywords" = "8:"
@@ -1403,7 +1381,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_44F141B41B0542CA80798E4D5882B18F"
             {
-            "SourcePath" = "8:..\\EXOFiddlerInspector\\obj\\Release\\EXOFiddlerInspector.dll"
+            "SourcePath" = "8:"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D68FE51768B244EDB276B8C9BCA5C72A"
@@ -1431,7 +1409,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E71C85D89A2D4368ABD07DB99D41696D"
             {
-            "SourcePath" = "8:..\\EXOFiddlerInspector\\obj\\Release\\EXOFiddlerInspector.dll"
+            "SourcePath" = "8:..\\EXOFiddlerInspector\\obj\\Debug\\EXOFiddlerInspector.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_3588A0D640C54E9AA347B32A0E5CD1AC"

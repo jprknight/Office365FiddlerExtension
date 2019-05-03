@@ -68,7 +68,7 @@ namespace EXOFiddlerInspector.Services
                 _extensionEnabled = value;
                 FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.enabled", value);
                 MenuUI.Instance.miEnabled.Text = ExtensionEnabled ? "Disable" : "Enable";
-                MenuUI.Instance.ExchangeOnlineTopMenu.Text = ExtensionEnabled ? "Exchange Online" : "Exchange Online (Disabled)";
+                MenuUI.Instance.ExchangeOnlineTopMenu.Text = ExtensionEnabled ? "Office 365" : "Office 365 (Disabled)";
             }
         }
 

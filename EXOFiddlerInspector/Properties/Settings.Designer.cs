@@ -12,7 +12,7 @@ namespace EXOFiddlerInspector.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,29 +25,7 @@ namespace EXOFiddlerInspector.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://en.wikipedia.org/wiki/List_of_HTTP_status_codes")]
-        public string HTTPStatusCodesURL {
-            get {
-                return ((string)(this["HTTPStatusCodesURL"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("The quantity of these types of server errors need to be considered in context wit" +
-            "h what you are troubleshooting and whether these are relevant or not. A small nu" +
-            "mber is probably not an issue, larger numbers of these could be cause for concer" +
-            "n.")]
-        public string HTTPQuantity {
-            get {
-                return ((string)(this["HTTPQuantity"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/jprknight/EXOFiddlerExtension/master/EXOFiddler" +
-            "Inspector/update.xml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://aka.ms/O365FiddlerExtensionUpdateCheckUrl")]
         public string UpdateURL {
             get {
                 return ((string)(this["UpdateURL"]));
@@ -56,7 +34,7 @@ namespace EXOFiddlerInspector.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/jprknight/EXOFiddlerExtension/releases")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://aka.ms/O365FiddlerExtensionUpdateUrl")]
         public string InstallerURL {
             get {
                 return ((string)(this["InstallerURL"]));
@@ -65,7 +43,7 @@ namespace EXOFiddlerInspector.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/jprknight/EXOFiddlerExtension/wiki")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://aka.ms/O365FiddlerExtensionWiki")]
         public string WikiURL {
             get {
                 return ((string)(this["WikiURL"]));
@@ -74,22 +52,10 @@ namespace EXOFiddlerInspector.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/jprknight/EXOFiddlerExtension/issues")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://aka.ms/O365FiddlerExtensionIssues")]
         public string ReportIssuesURL {
             get {
                 return ((string)(this["ReportIssuesURL"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string PreviousPath {
-            get {
-                return ((string)(this["PreviousPath"]));
-            }
-            set {
-                this["PreviousPath"] = value;
             }
         }
     }

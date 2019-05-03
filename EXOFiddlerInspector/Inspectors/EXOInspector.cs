@@ -83,8 +83,7 @@ namespace EXOFiddlerInspector.Inspectors
         {
             this.session = oS;
         }
-
-
+        
         /// <summary>
         /// This is called every time this inspector is shown
         /// </summary>
@@ -199,8 +198,8 @@ namespace EXOFiddlerInspector.Inspectors
         public override void AddToTab(TabPage o)
         {
             ExchangeResponseControl textControl = new ExchangeResponseControl();
-            o.Text = "Exchange Online";
-            o.ToolTipText = "Exchange Online Inspector";
+            o.Text = "Office 365";
+            o.ToolTipText = "Office 365 Inspector";
             textControl.Size = o.Size;
             o.Controls.Add(textControl);
             o.Controls[0].Dock = DockStyle.Fill;
@@ -221,7 +220,7 @@ namespace EXOFiddlerInspector.Inspectors
                 {
                     Clear();
                     ResultsString.AppendLine("-------------------------------");
-                    ResultsString.AppendLine("EXO Fiddler Extension Disabled.");
+                    ResultsString.AppendLine("O365 Fiddler Extension Disabled.");
                     ResultsString.AppendLine("-------------------------------");
                     ExchangeResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
                     return;
@@ -298,7 +297,7 @@ namespace EXOFiddlerInspector.Inspectors
                 ResultsString.AppendLine($"Capture was {DataAge}");
 
                 ResultsString.AppendLine($"Session Type: {this.session["X-SessionType"]}");
-                ResultsString.AppendLine($"Process: { this.session.LocalProcess}");
+                ResultsString.AppendLine($"Process: {this.session["X-ProcessName"]}");
 
 
                 if (this.session["X-HostIP"]?.ToString().Length > 0)
@@ -357,15 +356,21 @@ namespace EXOFiddlerInspector.Inspectors
                 if (this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
                 {
                     double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
-
+                    
                     ResultsString.AppendLine();
-                    ResultsString.Append($"Elapsed Time: {ClientMilliseconds}ms");
+                    ResultsString.AppendLine($"Elapsed Time: {ClientMilliseconds}ms");
+
+                    if (ClientMilliseconds > 1000)
+                    {
+                        double ClientSeconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalSeconds);
+                        ResultsString.AppendLine($"Elapsed Time: {ClientSeconds}s");
+                    }
 
                     int SlowRunningSessionThreshold = Preferences.GetSlowRunningSessionThreshold();
 
                     if (ClientMilliseconds > SlowRunningSessionThreshold)
                     {
-                        ResultsString.Append(" - Long running session!");
+                        ResultsString.AppendLine("!Long running session!");
                         if (Preferences.AppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Long running session.");
@@ -403,13 +408,19 @@ namespace EXOFiddlerInspector.Inspectors
                     double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
 
                     ResultsString.AppendLine();
-                    ResultsString.Append($"Server Think Time: {ServerMilliseconds}ms");
+                    ResultsString.AppendLine($"Server Think Time: {ServerMilliseconds}ms");
+
+                    if (ServerMilliseconds > 1000)
+                    {
+                        double ServerSeconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalSeconds);
+                        ResultsString.AppendLine($"Server Think Time: {ServerSeconds}s");
+                    }
 
                     int SlowRunningSessionThreshold = Preferences.GetSlowRunningSessionThreshold();
 
                     if (ServerMilliseconds > SlowRunningSessionThreshold)
                     {
-                        ResultsString.Append(" - Long running EXO session!");
+                        ResultsString.AppendLine("!Long running EXO session!");
                         if (Preferences.AppLoggingEnabled)
                         {
                             FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Long running EXO session.");
@@ -425,12 +436,16 @@ namespace EXOFiddlerInspector.Inspectors
                 }
 
                 // Authentication
-                ResultsString.AppendLine();
-                ResultsString.AppendLine("Authentication");
-                ResultsString.AppendLine("--------------");
-                ResultsString.AppendLine();
-                ResultsString.AppendLine($"Authentication Type: {this.session["X-AUTHENTICATION"]}");
-                ResultsString.AppendLine($"Authentication Decription: {this.session["X-AUTHENTICATIONDESC"]}");
+                if (this.session["X-AUTHENTICATION"] != "No Auth Headers")
+                {
+                    ResultsString.AppendLine();
+                    ResultsString.AppendLine("Authentication");
+                    ResultsString.AppendLine("--------------");
+                    ResultsString.AppendLine();
+                    ResultsString.AppendLine($"Authentication Type: {this.session["X-AUTHENTICATION"]}");
+                    ResultsString.AppendLine();
+                    ResultsString.AppendLine($"Authentication Description: {this.session["X-AUTHENTICATIONDESC"]}");
+                }
 
                 if (this.session["X-Office365AuthType"] == "SAMLResponseParser")
                 {
@@ -438,7 +453,7 @@ namespace EXOFiddlerInspector.Inspectors
                     ResultsString.AppendLine($"Attribute Name Immutable Id: {this.session["X-ATTRIBUTENAMEIMMUTABLEID"]}");
                     ResultsString.AppendLine($"Attribute Name UPN: {this.session["X-ATTRIBUTENAMEUPN"]}");
                     ResultsString.AppendLine($"Name Identifier Format: {this.session["X-NAMEIDENTIFIERFORMAT"]}");
-                    ResultsString.AppendLine("Signing Certificate: Copy the below text in a .cer file to view the certificate.");
+                    ResultsString.AppendLine("Signing Certificate: Copy and save the below text into a .cer file to view the certificate.");
                     ResultsString.AppendLine("");
                     ResultsString.AppendLine("-----BEGIN CERTIFICATE-----");
                     ResultsString.AppendLine(this.session["X-SigningCertificate"]);
