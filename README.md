@@ -21,6 +21,6 @@ Wiki: <a href="https://aka.ms/O365FiddlerExtensionWiki" target="_blank">https://
 
 Issues: <a href="https://aka.ms/O365FiddlerExtensionIssues" target="_blank">https://aka.ms/O365FiddlerExtensionIssues</a>
 
-Download: <a href="https://aka.ms/O365FiddlerExtensionUpdateUrl" target="_blank">https://aka.ms/O365FiddlerExtensionUpdateUrl</a>
+Download: <a href="https://aka.ms/O365FiddlerExtension" target="_blank">https://aka.ms/O365FiddlerExtension</a>
 
 EHLO Technet blog post: <a href="https://aka.ms/EHLOBlogArticle" target="_blank">https://aka.ms/EHLOBlogArticle</a>
