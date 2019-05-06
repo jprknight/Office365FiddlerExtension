@@ -1,9 +1,6 @@
 ## Download
 <a href="https://aka.ms/O365FiddlerExtensionUpdateUrl" target="_blank">Download the latest release</a> of the Office 365 Fiddler Extension.
 
-## Current Release Information
-Version 1.0.63 addresses performance concerns when running in 'live trace' mode. Minimal features in the extension now run in this mode. Load a SAZ archive into Fiddler to see all functionality.
-
 ## Extension Purpose
 The Office 365 Fiddler Extension is an Office 365 centric parser to efficiently troubleshoot Office 365 client application connectivity and functionality.
 
