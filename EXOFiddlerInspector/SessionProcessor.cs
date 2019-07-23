@@ -7,7 +7,6 @@ using System.Net;
 using System.Collections.Generic;
 using System.Diagnostics;
 using EXOFiddlerInspector.Services;
-using System.Text.RegularExpressions;
 
 namespace EXOFiddlerInspector
 {
