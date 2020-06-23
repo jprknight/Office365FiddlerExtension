@@ -177,6 +177,24 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_AA961782824D9EF07F741600F4232B0A"
+        "OwnerKey" = "8:_ECB4C5D71DF9C12E2A6DCAB756382D2D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_AA961782824D9EF07F741600F4232B0A"
+        "OwnerKey" = "8:_E71C85D89A2D4368ABD07DB99D41696D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_AA961782824D9EF07F741600F4232B0A"
+        "OwnerKey" = "8:_44F141B41B0542CA80798E4D5882B18F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_C8FB8964F9D2E9155D210919970E75CB"
         "OwnerKey" = "8:_ECB4C5D71DF9C12E2A6DCAB756382D2D"
         "MsmSig" = "8:_UNDEFINED"
@@ -299,6 +317,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_5893401D864524A2B35C9D9D9F0B2FB4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_AA961782824D9EF07F741600F4232B0A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -657,6 +681,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AA961782824D9EF07F741600F4232B0A"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Telerik.NetworkConnections, Version=0.1.2.0, Culture=neutral, PublicKeyToken=67cb91587178ac5a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_AA961782824D9EF07F741600F4232B0A"
+                    {
+                    "Name" = "8:Telerik.NetworkConnections.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Telerik.NetworkConnections.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_D68FE51768B244EDB276B8C9BCA5C72A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C8FB8964F9D2E9155D210919970E75CB"
             {
             "AssemblyRegister" = "3:1"
@@ -692,7 +747,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Fiddler, Version=5.0.20182.28034, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Fiddler, Version=5.0.20202.18177, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_ECB4C5D71DF9C12E2A6DCAB756382D2D"
@@ -859,15 +914,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Office 365 Fiddler Extension"
-        "ProductCode" = "8:{06E93A47-F4DD-4D7F-8B05-917D17739B1D}"
-        "PackageCode" = "8:{87A375CC-23AC-480A-9F77-4C4DABD50396}"
+        "ProductCode" = "8:{5C78BB43-B214-4C68-8B69-1B9FCE29232C}"
+        "PackageCode" = "8:{E4AE3E70-C527-4591-A72A-B583B5D6B074}"
         "UpgradeCode" = "8:{D1B9286E-21B9-4E30-BEF9-AED7C0C470E9}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.70"
+        "ProductVersion" = "8:1.0.71"
         "Manufacturer" = "8:Jeremy Knight"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://aka.ms/O365FiddlerExtensionIssues"
@@ -1381,7 +1436,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_44F141B41B0542CA80798E4D5882B18F"
             {
-            "SourcePath" = "8:"
+            "SourcePath" = "8:..\\EXOFiddlerInspector\\obj\\Debug\\EXOFiddlerInspector.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D68FE51768B244EDB276B8C9BCA5C72A"

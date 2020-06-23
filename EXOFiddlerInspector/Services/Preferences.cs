@@ -37,8 +37,8 @@ namespace EXOFiddlerInspector.Services
         public static Task<bool> SetDefaultPreferences()
         {
             ExtensionEnabled = true;
-            AppLoggingEnabled = true;
-            HighlightOutlookOWAOnlyEnabled = true;
+            //AppLoggingEnabled = true;
+            //HighlightOutlookOWAOnlyEnabled = true;
             IsLoadSaz = false;
             //ColumnsAllEnabled = true;
 
@@ -76,25 +76,28 @@ namespace EXOFiddlerInspector.Services
         public static bool AppLoggingEnabled
         {
             get => _appLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", true);
-            set
-            {
-                _appLoggingEnabled = value;
-                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", value);
-                MenuUI.Instance.miAppLoggingEnabled.Checked = AppLoggingEnabled;
-            }
+            // Removed AppLoggingEnabled Menu Item in the simplity update v1.71. Changed this to only allow a get.
+            // Disable appLoggingEnabled via the Fiddler application preference if needed.
+            // After leaving this on for several versions, no known issues raised. Making app logging enabled by default.
+            //set
+            //{
+            //    _appLoggingEnabled = value;
+            //    FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", value);
+            //    MenuUI.Instance.miAppLoggingEnabled.Checked = AppLoggingEnabled;
+            //}
         }
 
-        private static bool _highlightOutlookOWAOnlyEnabled;
-        public static bool HighlightOutlookOWAOnlyEnabled
-        {
-            get => _highlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", false);
-            set
-            {
-                _highlightOutlookOWAOnlyEnabled = value;
-                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", value);
-                MenuUI.Instance.miHighlightOutlookOWAOnly.Checked = HighlightOutlookOWAOnlyEnabled;
-            }
-        }
+        //private static bool _highlightOutlookOWAOnlyEnabled;
+        //public static bool HighlightOutlookOWAOnlyEnabled
+        //{
+        //    get => _highlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", false);
+        //    set
+        //    {
+        //        _highlightOutlookOWAOnlyEnabled = value;
+        //        FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", value);
+        //        MenuUI.Instance.miHighlightOutlookOWAOnly.Checked = HighlightOutlookOWAOnlyEnabled;
+        //    }
+        //}
 
         private static bool _isLoadSaz;
         public static bool IsLoadSaz

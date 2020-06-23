@@ -107,7 +107,7 @@ namespace EXOFiddlerInspector
                         $"A new version is available v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}{Environment.NewLine}" +
                         "Do you want to download the update?";
 
-                    string caption = "O365 Fiddler Extension - Update Available";
+                    string caption = "Office 365 Fiddler Extension - Update Available";
 
                     /// <remarks>
                     /// Set menu title to show user there is an update available.
@@ -156,7 +156,7 @@ namespace EXOFiddlerInspector
                 {
                     MessageBox.Show($"O365FiddlerExtention: You are using a beta build. Thanks for the testing!{Environment.NewLine}" +
                         $"Currently using beta build: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}{Environment.NewLine}" +
-                        $"Newest production build available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}", "O365 Fiddler Extension - Beta Version!");
+                        $"Newest production build available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}", "Office 365 Fiddler Extension - Beta Version!");
 
                     FiddlerApplication.Prefs.SetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", $"Beta Build!{Environment.NewLine}-----------" +
                         $"{Environment.NewLine}Currently using beta build: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
@@ -176,9 +176,9 @@ namespace EXOFiddlerInspector
                 // Tell user if they are on latest production build.
                 else if (Preferences.ManualCheckForUpdate)
                 {
-                    MessageBox.Show("O365FiddlerExtention: You already have the latest version installed." + Environment.NewLine +
+                    MessageBox.Show("You already have the latest version installed." + Environment.NewLine + Environment.NewLine +
                         $"Currently using: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}{Environment.NewLine}" +
-                        $"Newest available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}", "O365 Fiddler Extension");
+                        $"Newest available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}", "Office 365 Fiddler Extension");
                     // return this perference back to false, so we don't give this feedback unintentionally.
                     //FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
                     Preferences.ManualCheckForUpdate = false;

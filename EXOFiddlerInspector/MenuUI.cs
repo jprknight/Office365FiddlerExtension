@@ -19,7 +19,7 @@ namespace EXOFiddlerInspector
 
         public MenuItem miEnabled { get; set; }
 
-        public MenuItem miAppLoggingEnabled { get; set; }
+        //public MenuItem miAppLoggingEnabled { get; set; }
 
         public MenuItem miCheckForUpdate { get; set; }
 
@@ -57,11 +57,11 @@ namespace EXOFiddlerInspector
                 //this.miSeperator2 = new MenuItem("-");
                 //this.miSeperator2.Index = 3;
 
-                this.miAppLoggingEnabled = new MenuItem("Application &Logging Enabled", new System.EventHandler(this.miAppLoggingEnabled_Click));
-                this.miAppLoggingEnabled.Checked = Preferences.AppLoggingEnabled;
+                //this.miAppLoggingEnabled = new MenuItem("Application &Logging Enabled", new System.EventHandler(this.miAppLoggingEnabled_Click));
+                //this.miAppLoggingEnabled.Checked = Preferences.AppLoggingEnabled;
 
-                this.miHighlightOutlookOWAOnly = new MenuItem("&Highlight Outlook and OWA Only", new System.EventHandler(this.miHighlightOutlookOWAOnly_click));
-                this.miHighlightOutlookOWAOnly.Checked = Preferences.HighlightOutlookOWAOnlyEnabled;
+                //this.miHighlightOutlookOWAOnly = new MenuItem("&Highlight Outlook and OWA Only", new System.EventHandler(this.miHighlightOutlookOWAOnly_click));
+                //this.miHighlightOutlookOWAOnly.Checked = Preferences.HighlightOutlookOWAOnlyEnabled;
 
                 this.miReleasesDownloadWebpage = new MenuItem("&Releases Download Page", new System.EventHandler(this.miReleasesDownloadWebpage_click));
 
@@ -74,9 +74,9 @@ namespace EXOFiddlerInspector
                 // Add menu items to top level menu.
                 this.ExchangeOnlineTopMenu.MenuItems.AddRange(new MenuItem[] { this.miEnabled,
                 new MenuItem("-"),
-                this.miAppLoggingEnabled,
-                this.miHighlightOutlookOWAOnly,
-                new MenuItem("-"),
+                //this.miAppLoggingEnabled,
+                //this.miHighlightOutlookOWAOnly,
+                //new MenuItem("-"),
                 this.miReleasesDownloadWebpage,
                 this.miWiki,
                 this.miReportIssues,
@@ -109,13 +109,13 @@ namespace EXOFiddlerInspector
         }
 
 
-        public void miAppLoggingEnabled_Click(object sender, EventArgs e)
-        {
+        //public void miAppLoggingEnabled_Click(object sender, EventArgs e)
+        //{
             // Invert selection when this menu item is clicked.
-            miAppLoggingEnabled.Checked = !miAppLoggingEnabled.Checked;
+            //miAppLoggingEnabled.Checked = !miAppLoggingEnabled.Checked;
             // Match boolean variable on whether app logging is enabled or not.
-            Preferences.AppLoggingEnabled = miAppLoggingEnabled.Checked;
-        }
+            //Preferences.AppLoggingEnabled = miAppLoggingEnabled.Checked;
+        //}
 
         public void miWiki_Click(object sender, EventArgs e)
         {
@@ -148,12 +148,12 @@ namespace EXOFiddlerInspector
             CheckForAppUpdate.Instance.CheckForUpdate();
         }
 
-        public void miHighlightOutlookOWAOnly_click(object sender, EventArgs e)
-        {
+        //public void miHighlightOutlookOWAOnly_click(object sender, EventArgs e)
+        //{
             // Invert selection when this menu item is clicked.
-            miHighlightOutlookOWAOnly.Checked = !miHighlightOutlookOWAOnly.Checked;
+          //  miHighlightOutlookOWAOnly.Checked = !miHighlightOutlookOWAOnly.Checked;
             // Match boolean variable on whether column is enabled or not.
-            Preferences.HighlightOutlookOWAOnlyEnabled = miHighlightOutlookOWAOnly.Checked;
-        }
+            //Preferences.HighlightOutlookOWAOnlyEnabled = miHighlightOutlookOWAOnly.Checked;
+        //}
     }
 }

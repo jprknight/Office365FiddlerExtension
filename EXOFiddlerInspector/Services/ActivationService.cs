@@ -37,14 +37,16 @@ namespace EXOFiddlerInspector.Services
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 130, "X-ResponseServer");
             
             // Throw a message box to alert demo mode is running.
-            if (Preferences.GetDeveloperMode())
-            {
-                MessageBox.Show("Developer / Demo mode is running!");
-            }
-            else
-            {
-                await TelemetryService.InitializeAsync();
-            }
+            //if (Preferences.GetDeveloperMode())
+            //{
+            //    MessageBox.Show("Developer / Demo mode is running!");
+            //}
+            //else
+            //{
+
+            await TelemetryService.InitializeAsync();
+
+            //}
         }
 
         public async void OnBeforeUnload()

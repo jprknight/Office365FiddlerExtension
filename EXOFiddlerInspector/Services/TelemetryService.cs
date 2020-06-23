@@ -15,8 +15,10 @@ namespace EXOFiddlerInspector.Services
         /// <summary>
         /// Instrumentation Key used to communicate with Azure Application Insights.
         /// </summary>
-        private static readonly string iKey = "f236d9b9-fc00-461d-a9c6-64f231416908";
-
+        // Old iKey.
+        // private static readonly string iKey = "f236d9b9-fc00-461d-a9c6-64f231416908";
+        private static readonly string iKey = "87fb55ab-0052-4970-9318-7c740220e3c0";
+        
         /// <summary>
         /// Azure Application Insights Telemetry client.
         /// </summary>

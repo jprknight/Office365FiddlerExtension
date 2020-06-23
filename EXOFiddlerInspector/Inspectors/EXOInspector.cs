@@ -373,7 +373,7 @@ namespace EXOFiddlerInspector.Inspectors
                         ResultsString.AppendLine("!Long running session!");
                         if (Preferences.AppLoggingEnabled)
                         {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Long running session.");
+                            FiddlerApplication.Log.LogString("O365FiddlerExtention: " + this.session.id + " Long running session.");
                         }
                     }
                     ResultsString.AppendLine();
@@ -423,7 +423,7 @@ namespace EXOFiddlerInspector.Inspectors
                         ResultsString.AppendLine("!Long running EXO session!");
                         if (Preferences.AppLoggingEnabled)
                         {
-                            FiddlerApplication.Log.LogString("EXOFiddlerExtention: " + this.session.id + " Long running EXO session.");
+                            FiddlerApplication.Log.LogString("O365FiddlerExtention: " + this.session.id + " Long running Office 365 session.");
                         }
                     }
                     ResultsString.AppendLine();
