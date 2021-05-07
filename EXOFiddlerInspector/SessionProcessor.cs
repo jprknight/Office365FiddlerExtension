@@ -6,9 +6,9 @@ using System.Xml;
 using System.Net;
 using System.Collections.Generic;
 using System.Diagnostics;
-using EXOFiddlerInspector.Services;
+using O365FiddlerInspector.Services;
 
-namespace EXOFiddlerInspector
+namespace O365FiddlerInspector
 {
     public class SessionProcessor : ActivationService
     {

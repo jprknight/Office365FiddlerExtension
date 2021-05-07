@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EXOFiddlerInspector.Services
+namespace O365FiddlerInspector.Services
 {
     public static class Preferences
     {

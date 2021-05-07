@@ -1,6 +1,6 @@
-﻿namespace EXOFiddlerInspector.UI
+﻿namespace O365FiddlerInspector.UI
 {
-    partial class ExchangeResponseControl
+    partial class O365ResponseControl
     {
         /// <summary> 
         /// Required designer variable.

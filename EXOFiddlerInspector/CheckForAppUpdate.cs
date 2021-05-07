@@ -3,9 +3,9 @@ using System.Windows.Forms;
 using Fiddler;
 using System.Xml;
 using System.Diagnostics;
-using EXOFiddlerInspector.Services;
+using O365FiddlerInspector.Services;
 
-namespace EXOFiddlerInspector
+namespace O365FiddlerInspector
 {
     class CheckForAppUpdate : ActivationService
     {

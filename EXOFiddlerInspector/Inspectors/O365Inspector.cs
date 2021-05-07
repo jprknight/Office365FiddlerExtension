@@ -6,19 +6,19 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using EXOFiddlerInspector.Services;
-using EXOFiddlerInspector.UI;
+using O365FiddlerInspector.Services;
+using O365FiddlerInspector.UI;
 using System.Collections.ObjectModel;
 using System.Text;
 
-namespace EXOFiddlerInspector.Inspectors
+namespace O365FiddlerInspector.Inspectors
 {
     /// <summary>
     /// Base class, generic inspector
     /// </summary>
-    public class EXOInspector : Inspector2, IResponseInspector2
+    public class O365Inspector : Inspector2, IResponseInspector2
     {
-        public EXOInspector()
+        public O365Inspector()
         {
 
         }

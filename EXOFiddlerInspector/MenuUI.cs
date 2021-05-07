@@ -1,9 +1,9 @@
-﻿using EXOFiddlerInspector.Services;
+﻿using O365FiddlerInspector.Services;
 using Fiddler;
 using System;
 using System.Windows.Forms;
 
-namespace EXOFiddlerInspector
+namespace O365FiddlerInspector
 {
     public class MenuUI
     {

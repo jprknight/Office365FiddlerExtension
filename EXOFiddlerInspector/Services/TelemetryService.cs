@@ -8,7 +8,7 @@ using System.Text;
 using System.Reflection;
 using System.Diagnostics;
 
-namespace EXOFiddlerInspector.Services
+namespace O365FiddlerInspector.Services
 {
     public partial class TelemetryService
     {

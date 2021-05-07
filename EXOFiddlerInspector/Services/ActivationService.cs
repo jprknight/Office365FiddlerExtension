@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace EXOFiddlerInspector.Services
+namespace O365FiddlerInspector.Services
 {
     /// <summary>
     /// Global application initializer.
