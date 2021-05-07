@@ -2,11 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
 using System.Management;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Reflection;
-using System.Diagnostics;
 
 namespace O365FiddlerInspector.Services
 {

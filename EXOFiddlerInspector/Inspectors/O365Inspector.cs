@@ -197,7 +197,7 @@ namespace O365FiddlerInspector.Inspectors
         /// <param name="o">The tab control for the inspector</param>
         public override void AddToTab(TabPage o)
         {
-            ExchangeResponseControl textControl = new ExchangeResponseControl();
+            O365ResponseControl textControl = new O365ResponseControl();
             o.Text = "Office 365";
             o.ToolTipText = "Office 365 Inspector";
             textControl.Size = o.Size;
@@ -222,7 +222,7 @@ namespace O365FiddlerInspector.Inspectors
                     ResultsString.AppendLine("-------------------------------");
                     ResultsString.AppendLine("O365 Fiddler Extension Disabled.");
                     ResultsString.AppendLine("-------------------------------");
-                    ExchangeResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
+                    O365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
                     return;
                 }
 
@@ -469,14 +469,14 @@ namespace O365FiddlerInspector.Inspectors
                 ResultsString.AppendLine($"Session Comment: {this.session["X-ResponseComments"]}");
                 ResultsString.AppendLine();
 
-                ExchangeResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
+                O365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
             }
             catch (Exception ex)
             {
                 ResultsString.AppendLine();
                 ResultsString.AppendLine(ex.Message);
                 ResultsString.AppendLine();
-                ExchangeResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
+                O365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
             }
         }
 
@@ -486,7 +486,7 @@ namespace O365FiddlerInspector.Inspectors
         /// </summary>
         public void Clear()
         {
-            ExchangeResponseControl.ResultsOutput.Clear();
+            O365ResponseControl.ResultsOutput.Clear();
 
             ResultsString = new StringBuilder();
         }
