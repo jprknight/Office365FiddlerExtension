@@ -1,14 +1,9 @@
 ﻿using System.Windows.Forms;
-using System.Linq;
-using System.IO;
 using Fiddler;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using O365FiddlerInspector.Services;
 using O365FiddlerInspector.UI;
-using System.Collections.ObjectModel;
 using System.Text;
 
 namespace O365FiddlerInspector.Inspectors
