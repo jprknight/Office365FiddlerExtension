@@ -168,10 +168,9 @@ namespace O365FiddlerInspector
             //
             // Connect Tunnel.
             //
-            // If the session is a connect tunnel, update sessions flags as below.
-            // Do not SkipFurtherProcessing, break or return here since worse things can happen on the session which would need to be highlighted.
+            // Check for connect tunnel with no usable data in the response body.
             //
-            if (this.session.isTunnel)
+            if (this.session.utilFindInResponse("This is a CONNECT tunnel", false) > 0)
             {
                 this.session["ui-backcolor"] = HTMLColourOrange;
                 this.session["ui-color"] = "black";
@@ -184,7 +183,7 @@ namespace O365FiddlerInspector
                     + Environment.NewLine
                     + Environment.NewLine
                     + "If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS";
-//                return;
+                return;
             }
 
             /////////////////////////////
@@ -1465,8 +1464,8 @@ namespace O365FiddlerInspector
                         this.session["ui-color"] = "black";
 
                         this.session["X-ResponseAlert"] = "!HTTP 504 Gateway Timeout!";
-                        this.session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting " +
-                            "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.";
+                        this.session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting "
+                            + "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.";
 
                         this.session["X-SessionType"] = "Gateway Timeout";
 
@@ -1529,7 +1528,7 @@ namespace O365FiddlerInspector
             if (this.session.hostname == "www.fiddler2.com")
             {
                 this.session["ui-backcolor"] = HTMLColourGrey;
-                this.session["ui-color"] = "black";
+                this.session["ui-color"] = "yellow";
             }
             // If the local process is nullor blank, then we are analysing traffic from a remote client such as a mobile device.
             // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
@@ -1587,30 +1586,6 @@ namespace O365FiddlerInspector
                     FiddlerApplication.Log.LogString("O365FiddlerExtention: " + this.session.id + " Long running Office 365 session.");
                 }
             }
-            //else
-            //{
-                //bHighlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", false);
-                // If the menu item Highlight Outlook and OWA Only is enabled then grey out all the other traffic.
-            //    if (Preferences.HighlightOutlookOWAOnlyEnabled)
-            //    {
-                    // With that out of the way,  if the traffic is not related to any of the below processes, then mark it as grey to
-                    // de-emphasise it.
-                    // So if for example lync.exe is the process de-emphasise the traffic with grey.
-            //        if (!(this.session.LocalProcess.Contains("outlook") ||
-            //            this.session.LocalProcess.Contains("searchprotocolhost") ||
-            //            this.session.LocalProcess.Contains("iexplore") ||
-            //            this.session.LocalProcess.Contains("chrome") ||
-            //            this.session.LocalProcess.Contains("firefox") ||
-            //            this.session.LocalProcess.Contains("edge") ||
-            //            this.session.LocalProcess.Contains("w3wp")))
-            //        {
-                        // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
-            //            this.session["ui-backcolor"] = HTMLColourGrey;
-            //            this.session["ui-color"] = "black";
-            //            this.session["X-SessionType"] = "";
-            //        }
-            //    }
-            //}
 
             #endregion
 
@@ -1674,9 +1649,9 @@ namespace O365FiddlerInspector
                 else if (this.session.LocalProcess.Contains("firefox")) { this.session["X-SessionType"] = "Firefox"; }
                 // Everything else.
                 else {
-                    this.session["X-SessionType"] = "Not Exchange";
+                    this.session["X-SessionType"] = "Not Classified";
                     this.session["ui-backcolor"] = HTMLColourGrey;
-                    this.session["ui-color"] = "black";
+                    this.session["ui-color"] = "red";
                 }
 
 
