@@ -1,14 +1,6 @@
 ﻿using Fiddler;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace O365FiddlerInspector.Services
+namespace Office365FiddlerInspector.Services
 {
     /// <summary>
     /// Global application initializer.

@@ -2,18 +2,18 @@
 using Fiddler;
 using System;
 using System.Threading.Tasks;
-using O365FiddlerInspector.Services;
-using O365FiddlerInspector.UI;
+using Office365FiddlerInspector.Services;
 using System.Text;
+using O365FiddlerInspector.UI;
 
-namespace O365FiddlerInspector.Inspectors
+namespace Office365FiddlerInspector.Inspectors
 {
     /// <summary>
     /// Base class, generic inspector
     /// </summary>
-    public class O365Inspector : Inspector2, IResponseInspector2
+    public class Office365Inspector : Inspector2, IResponseInspector2
     {
-        public O365Inspector()
+        public Office365Inspector()
         {
 
         }
@@ -192,7 +192,7 @@ namespace O365FiddlerInspector.Inspectors
         /// <param name="o">The tab control for the inspector</param>
         public override void AddToTab(TabPage o)
         {
-            O365ResponseControl textControl = new O365ResponseControl();
+            Office365ResponseControl textControl = new Office365ResponseControl();
             o.Text = "Office 365";
             o.ToolTipText = "Office 365 Inspector";
             textControl.Size = o.Size;
@@ -217,7 +217,7 @@ namespace O365FiddlerInspector.Inspectors
                     ResultsString.AppendLine("-------------------------------");
                     ResultsString.AppendLine("O365 Fiddler Extension Disabled.");
                     ResultsString.AppendLine("-------------------------------");
-                    O365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
+                    Office365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
                     return;
                 }
 
@@ -464,14 +464,14 @@ namespace O365FiddlerInspector.Inspectors
                 ResultsString.AppendLine($"Session Comment: {this.session["X-ResponseComments"]}");
                 ResultsString.AppendLine();
 
-                O365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
+                Office365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
             }
             catch (Exception ex)
             {
                 ResultsString.AppendLine();
                 ResultsString.AppendLine(ex.Message);
                 ResultsString.AppendLine();
-                O365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
+                Office365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
             }
         }
 
@@ -481,7 +481,7 @@ namespace O365FiddlerInspector.Inspectors
         /// </summary>
         public void Clear()
         {
-            O365ResponseControl.ResultsOutput.Clear();
+            Office365ResponseControl.ResultsOutput.Clear();
 
             ResultsString = new StringBuilder();
         }

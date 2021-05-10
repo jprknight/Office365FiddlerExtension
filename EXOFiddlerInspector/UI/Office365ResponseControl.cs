@@ -11,10 +11,10 @@ using Fiddler;
 
 namespace O365FiddlerInspector.UI
 {
-    public partial class O365ResponseControl : UserControl
+    public partial class Office365ResponseControl : UserControl
     {
         public static TextBox ResultsOutput { get; set; }
-        public O365ResponseControl()
+        public Office365ResponseControl()
         {
             InitializeComponent();
            

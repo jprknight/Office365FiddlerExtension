@@ -1,13 +1,10 @@
 ﻿using Fiddler;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace O365FiddlerInspector.Services
+namespace Office365FiddlerInspector.Services
 {
     public static class Preferences
     {
@@ -37,10 +34,7 @@ namespace O365FiddlerInspector.Services
         public static Task<bool> SetDefaultPreferences()
         {
             ExtensionEnabled = true;
-            //AppLoggingEnabled = true;
-            //HighlightOutlookOWAOnlyEnabled = true;
             IsLoadSaz = false;
-            //ColumnsAllEnabled = true;
 
             ExecutionCount++;
 
@@ -62,11 +56,11 @@ namespace O365FiddlerInspector.Services
         private static bool _extensionEnabled;
         public static bool ExtensionEnabled
         {
-            get => _extensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", true);
+            get => _extensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.enabled", true);
             set
             {
                 _extensionEnabled = value;
-                FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.enabled", value);
+                FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.enabled", value);
                 MenuUI.Instance.miEnabled.Text = ExtensionEnabled ? "Disable" : "Enable";
                 MenuUI.Instance.ExchangeOnlineTopMenu.Text = ExtensionEnabled ? "Office 365" : "Office 365 (Disabled)";
             }
@@ -75,57 +69,38 @@ namespace O365FiddlerInspector.Services
         private static bool _appLoggingEnabled;
         public static bool AppLoggingEnabled
         {
-            get => _appLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", true);
+            get => _appLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.AppLoggingEnabled", true);
             // Removed AppLoggingEnabled Menu Item in the simplity update v1.71. Changed this to only allow a get.
             // Disable appLoggingEnabled via the Fiddler application preference if needed.
             // After leaving this on for several versions, no known issues raised. Making app logging enabled by default.
             //set
             //{
             //    _appLoggingEnabled = value;
-            //    FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.AppLoggingEnabled", value);
+            //    FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.AppLoggingEnabled", value);
             //    MenuUI.Instance.miAppLoggingEnabled.Checked = AppLoggingEnabled;
             //}
         }
 
-        //private static bool _highlightOutlookOWAOnlyEnabled;
-        //public static bool HighlightOutlookOWAOnlyEnabled
-        //{
-        //    get => _highlightOutlookOWAOnlyEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", false);
-        //    set
-        //    {
-        //        _highlightOutlookOWAOnlyEnabled = value;
-        //        FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.HighlightOutlookOWAOnlyEnabled", value);
-        //        MenuUI.Instance.miHighlightOutlookOWAOnly.Checked = HighlightOutlookOWAOnlyEnabled;
-        //    }
-        //}
-
         private static bool _isLoadSaz;
         public static bool IsLoadSaz
         {
-            get => _isLoadSaz = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false);
-            set { _isLoadSaz = value; FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", value); }
+            get => _isLoadSaz = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.LoadSaz", false);
+            set { _isLoadSaz = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.LoadSaz", value); }
         }
-
-        //private static bool _columnsAllEnabled;
-        //public static bool ColumnsAllEnabled
-        //{
-        //    get => _columnsAllEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.enabled", _columnsAllEnabled);
-        //    set { _columnsAllEnabled = value; FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.enabled", value); }
-        //}
 
         private static Int32 _executionCount;
         public static Int32 ExecutionCount
         {
-            get => _executionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.EXOFiddlerExtension.ExecutionCount", 0);
-            set { _executionCount = value; FiddlerApplication.Prefs.SetInt32Pref("extensions.EXOFiddlerExtension.ExecutionCount", value); }
+            get => _executionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.Office365FiddlerExtension.ExecutionCount", 0);
+            set { _executionCount = value; FiddlerApplication.Prefs.SetInt32Pref("extensions.Office365FiddlerExtension.ExecutionCount", value); }
         }
 
         private static bool _ManualCheckForUpdate;
 
         public static bool ManualCheckForUpdate
         {
-            get => _ManualCheckForUpdate = FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", false);
-            set { _ManualCheckForUpdate = value; FiddlerApplication.Prefs.SetBoolPref("extensions.EXOFiddlerExtension.ManualCheckForUpdate", value); }
+            get => _ManualCheckForUpdate = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.ManualCheckForUpdate", false);
+            set { _ManualCheckForUpdate = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.ManualCheckForUpdate", value); }
         }
 
     }

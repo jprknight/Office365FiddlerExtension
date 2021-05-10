@@ -7,8 +7,8 @@
     <ProjectGuid>{5D9F84F0-77F3-45F5-8DA9-C89DB69BD643}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>O365FiddlerInspector</RootNamespace>
-    <AssemblyName>O365FiddlerInspector</AssemblyName>
+    <RootNamespace>Office365FiddlerInspector</RootNamespace>
+    <AssemblyName>Office365FiddlerInspector</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -190,7 +190,7 @@
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="CheckForAppUpdate.cs" />
     <Compile Include="SessionProcessor.cs" />
-    <Compile Include="Inspectors\O365Inspector.cs" />
+    <Compile Include="Inspectors\Office365Inspector.cs" />
     <Compile Include="MenuUI.cs" />
     <Compile Include="Services\Preferences.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -204,11 +204,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="UI\O365ResponseControl.cs">
+    <Compile Include="UI\Office365ResponseControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\O365ResponseControl.Designer.cs">
-      <DependentUpon>O365ResponseControl.cs</DependentUpon>
+    <Compile Include="UI\Office365ResponseControl.Designer.cs">
+      <DependentUpon>Office365ResponseControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\TelemetryService.cs" />
   </ItemGroup>
@@ -217,8 +217,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\O365ResponseControl.resx">
-      <DependentUpon>O365ResponseControl.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Office365ResponseControl.resx">
+      <DependentUpon>Office365ResponseControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

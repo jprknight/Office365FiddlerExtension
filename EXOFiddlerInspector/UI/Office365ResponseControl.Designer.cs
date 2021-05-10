@@ -1,6 +1,6 @@
 ﻿namespace O365FiddlerInspector.UI
 {
-    partial class O365ResponseControl
+    partial class Office365ResponseControl
     {
         /// <summary> 
         /// Required designer variable.

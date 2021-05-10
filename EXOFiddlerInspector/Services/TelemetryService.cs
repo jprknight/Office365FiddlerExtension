@@ -4,7 +4,7 @@ using Microsoft.ApplicationInsights;
 using System.Management;
 using System.Text;
 
-namespace O365FiddlerInspector.Services
+namespace Office365FiddlerInspector.Services
 {
     public partial class TelemetryService
     {

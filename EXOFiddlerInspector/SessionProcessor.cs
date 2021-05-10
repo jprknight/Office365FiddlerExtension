@@ -1,9 +1,9 @@
 ﻿using System;
 using Fiddler;
 using System.Linq;
-using O365FiddlerInspector.Services;
+using Office365FiddlerInspector.Services;
 
-namespace O365FiddlerInspector
+namespace Office365FiddlerInspector
 {
     public class SessionProcessor : ActivationService
     {
