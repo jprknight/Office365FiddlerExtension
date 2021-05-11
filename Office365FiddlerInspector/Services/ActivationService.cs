@@ -20,7 +20,7 @@ namespace Office365FiddlerInspector.Services
 
             SessionProcessor.Instance.Initialize();
 
-            CheckForAppUpdate.Instance.CheckForUpdate();
+            About.Instance.CheckForUpdate();
 
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Session Type", 150, "X-SessionType");

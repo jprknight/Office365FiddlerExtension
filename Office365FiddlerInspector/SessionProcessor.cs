@@ -17,9 +17,6 @@ namespace Office365FiddlerInspector
 
         private string searchTerm;
         private string RedirectAddress;
-        //private int SkipFurtherProcessing;
-        private int HTTP200FreeBusy;
-        private int FalsePositive;
        
         public SessionProcessor()
         {
@@ -58,17 +55,13 @@ namespace Office365FiddlerInspector
             }
         }
 
-        #region SaveSAZ
-        /// <summary>
-        /// Handle saving a SAZ file.
-        /// Remove the session flags the extension adds to save space in the file, 
-        /// mitigate errors thrown when loading a SAZ file generated with the extension enabled.
-        /// https://github.com/jprknight/EXOFiddlerExtension/issues/45
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        // Function to handle saving a SAZ file.
+        // Remove the session flags the extension adds to save space in the file and
+        // mitigate errors thrown when loading a SAZ file generated with the extension enabled.
+        // https://github.com/jprknight/EXOFiddlerExtension/issues/45
         private void HandleSaveSaz(object sender, FiddlerApplication.WriteSAZEventArgs e)
         {
+            #region SaveSAZ
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
             foreach (var session in e.arrSessions)
@@ -91,17 +84,14 @@ namespace Office365FiddlerInspector
             }
 
             FiddlerApplication.UI.lvSessions.EndUpdate();
+            #endregion
         }
-        #endregion
 
-        #region LoadSAZ
-        /// <summary>
-        /// Handle loading a SAZ file.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        // Function to handle loading a SAZ file.
         private void HandleLoadSaz(object sender, FiddlerApplication.ReadSAZEventArgs e)
         {
+            #region LoadSAZ
+
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
             Preferences.IsLoadSaz = true;
@@ -131,33 +121,33 @@ namespace Office365FiddlerInspector
                 }
             }
             FiddlerApplication.UI.lvSessions.EndUpdate();
+            #endregion
         }
-        #endregion
-               
+
+
         public void OnPeekAtResponseHeaders(Session session)
         {
             // Reset these session counters.
             bool SkipFurtherProcessing = false;
-            HTTP200FreeBusy = 0;
-            FalsePositive = 0;
 
             this.session = session;
 
             // Colour codes for sessions. Softer tones, easier on the eye than standard red, orange and green.
             string HTMLColourBlue = "#81BEF7";
-            string HTMLColourGreen = "#81f7ba";
-            string HTMLColourRed = "#f06141";
+            string HTMLColourGreen = "#81F7BA";
+            string HTMLColourRed = "#F06141";
             string HTMLColourGrey = "#BDBDBD";
-            string HTMLColourOrange = "#f59758";
+            string HTMLColourOrange = "#F59758";
 
-            this.session.utilDecodeRequest();
-            this.session.utilDecodeResponse();
+            this.session.utilDecodeRequest(true);
+            this.session.utilDecodeResponse(true);
 
             int wordCount = 0;
             int wordCountError = 0;
             int wordCountFailed = 0;
             int wordCountException = 0;
 
+            // Code section containing broad logic checks on sessions regardless of response code.
             #region BroadLogicChecks
             /////////////////////////////
             //
@@ -188,7 +178,44 @@ namespace Office365FiddlerInspector
             // Check for connect tunnel with no usable data in the response body.
             //
             if (this.session.isTunnel) {
-                if (session.utilFindInResponse("tunnel", false) > 1)
+
+                // Trying to check session response body for a string value using !this.session.bHasResponse does not impact performance, but is not reliable.
+                // Using this.session.GetResponseBodyAsString().Length == 0 kills performance. Fiddler wouldn't even load with this code in place.
+                // Ideally looking to do: if (this.session.utilFindInResponse("CONNECT tunnel, through which encrypted HTTPS traffic flows", false) > 1)
+                // Only works reliably when loading a SAZ file and request/response data is immediately available to do logic checks against.
+
+                // Different code paths based on whether the session has been loaded from a SAZ file or not.
+
+                // If this session was loaded from a SAZ file, check it for usable data in the response body.
+                // If not usable data is found, mark it up and return. No further processing needed.
+                if (Preferences.IsLoadSaz)
+                {
+                    if (this.session.utilFindInResponse("CONNECT tunnel, through which encrypted HTTPS traffic flows", false) > 1)
+                    {
+                        this.session["ui-backcolor"] = HTMLColourOrange;
+                        this.session["ui-color"] = "black";
+
+                        this.session["X-SessionType"] = "Connect Tunnel";
+
+                        this.session["X-ResponseAlert"] = "Connect Tunnel";
+                        this.session["X-ResponseComments"] = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
+                            + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
+                            + Environment.NewLine
+                            + Environment.NewLine
+                            + "If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS";
+
+                        if (Preferences.AppLoggingEnabled)
+                        {
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " has connect tunnel in response.");
+                        }
+
+                        return;
+                    }
+                }
+                // Otherwise this is a live data collection.
+                // Don't bother trying to check the response body, it isn't reliable (notes above).
+                // Mark it up anyway. In all likelihood code below in overrides will alter the session headers to replace this data.
+                else
                 {
                     this.session["ui-backcolor"] = HTMLColourOrange;
                     this.session["ui-color"] = "black";
@@ -204,17 +231,9 @@ namespace Office365FiddlerInspector
 
                     if (Preferences.AppLoggingEnabled)
                     {
-                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " has connect tunnel in response.");
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " is a connect tunnel.");
                     }
-
-                    return;
                 }
-
-                if (Preferences.AppLoggingEnabled)
-                {
-                    FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " session type is a connect tunnel." + this.session.utilFindInResponse("This is a CONNECT tunnel", false));
-                }
-
             }
 
             /////////////////////////////
@@ -246,6 +265,7 @@ namespace Office365FiddlerInspector
             }
             #endregion
 
+            // Code section containing switch statement for response code logic.
             #region ResponseCodeLogic
             /////////////////////////////
             //
@@ -530,134 +550,107 @@ namespace Office365FiddlerInspector
                     // 200.99. All other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                     else
                     {
-                        // Only fire the Linq response body word split and keyword search if:
-                        // HTTP200SkipLogic has not been incremented above = Session has been classified as something else and this is not necessary.
-                        // OR...
-                        // HTTP200FreeBusy is greater than zero = Session is marked as Free/Busy and we want deep inspection for errors, failed or exception keywords.
-                        // All SkipFurtherProcessing should return, however just in case they don't leaving logic as it is.
-                        if (SkipFurtherProcessing == false || HTTP200FreeBusy > 0)
+                        string wordCountErrorText;
+                        string wordCountFailedText;
+                        string wordCountExceptionText;
+
+                        // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
+                        //
+                        // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
+                        //
+
+                        string text200 = this.session.ToString();
+
+                        //Convert the string into an array of words  
+                        string[] source200 = text200.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                        // Create the query. Use ToLowerInvariant to match "data" and "Data"   
+                        var matchQuery200 = from word in source200
+                                            where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
+                                            select word;
+
+                        searchTerm = "Error";
+
+                        // Count the matches, which executes the query.  
+                        wordCountError = matchQuery200.Count();
+
+                        searchTerm = "failed";
+
+                        // Count the matches, which executes the query.  
+                        wordCountFailed = matchQuery200.Count();
+
+                        searchTerm = "exception";
+
+                        // Count the matches, which executes the query.  
+                        wordCountException = matchQuery200.Count();
+
+                        // If either the keyword searches give us a result.
+                        if (wordCountError > 0 || wordCountFailed > 0 || wordCountException > 0)
                         {
-                            string wordCountErrorText;
-                            string wordCountFailedText;
-                            string wordCountExceptionText;
-
-                            // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
-                            //
-                            // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
-                            //
-
-                            string text200 = this.session.ToString();
-
-                            //Convert the string into an array of words  
-                            string[] source200 = text200.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-                            // Create the query. Use ToLowerInvariant to match "data" and "Data"   
-                            var matchQuery200 = from word in source200
-                                                where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
-                                                select word;
-
-                            searchTerm = "Error";
-
-                            // Count the matches, which executes the query.  
-                            wordCountError = matchQuery200.Count();
-
-                            searchTerm = "failed";
-
-                            // Count the matches, which executes the query.  
-                            wordCountFailed = matchQuery200.Count();
-
-                            searchTerm = "exception";
-
-                            // Count the matches, which executes the query.  
-                            wordCountException = matchQuery200.Count();
-
-                            // If either the keyword searches give us a result.
-                            if (wordCountError > 0 || wordCountFailed > 0 || wordCountException > 0)
+                            if (wordCountError == 1)
                             {
-                                if (wordCountError == 1)
-                                {
-                                    wordCountErrorText = wordCountError + " time.";
-                                }
-                                else
-                                {
-                                    wordCountErrorText = wordCountError + " times.";
-                                }
-
-                                if (wordCountFailed == 1)
-                                {
-                                    wordCountFailedText = wordCountFailed + " time.";
-                                }
-                                else
-                                {
-                                    wordCountFailedText = wordCountFailed + " times.";
-                                }
-
-                                if (wordCountException == 1)
-                                {
-                                    wordCountExceptionText = wordCountException + " time.";
-                                }
-                                else
-                                {
-                                    wordCountExceptionText = wordCountException + " times.";
-                                }
-
-                                // Special attention to HTTP 200's where the keyword 'error' or 'failed' is found.
-                                // Red text on black background.
-                                this.session["ui-backcolor"] = "black";
-                                this.session["ui-color"] = "red";
-                                this.session["X-SessionType"] = "!FAILURE LURKING!";
-
-                                this.session["X-ResponseAlert"] = "!'error', 'failed' or 'exception' found in respone body!";
-                                this.session["X-ResponseComments"] = "HTTP 200: Errors or failures found in response body. "
-                                    + "Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review."
-                                    + Environment.NewLine
-                                    + Environment.NewLine
-                                    + "After splitting all words in the response body the following were found:"
-                                    + Environment.NewLine
-                                    + Environment.NewLine
-                                    + "Keyword 'Error' found " + wordCountErrorText
-                                    + Environment.NewLine
-                                    + "Keyword 'Failed' found " + wordCountFailedText
-                                    + Environment.NewLine
-                                    + "Keyword 'Exception' found " + wordCountExceptionText
-                                    + Environment.NewLine
-                                    + Environment.NewLine
-                                    + "Check the content body of the response for any failures you recognise. You may find false positives, "
-                                    + "if lots of Javascript or other web code is being loaded.";
-
-                                if (Preferences.AppLoggingEnabled)
-                                {
-                                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 FAILURE LURKING!?");
-                                }
+                                wordCountErrorText = wordCountError + " time.";
                             }
                             else
                             {
-                                // All good.
-                                this.session["ui-backcolor"] = HTMLColourGreen;
-                                this.session["ui-color"] = "black";
+                                wordCountErrorText = wordCountError + " times.";
+                            }
 
-                                this.session["X-ResponseAlert"] = "No failures keywords detected in respone body.";
-                                this.session["X-ResponseComments"] = "No failures keywords ('error', 'failed' or 'exception') detected in respone body.";
+                            if (wordCountFailed == 1)
+                            {
+                                wordCountFailedText = wordCountFailed + " time.";
+                            }
+                            else
+                            {
+                                wordCountFailedText = wordCountFailed + " times.";
+                            }
+
+                            if (wordCountException == 1)
+                            {
+                                wordCountExceptionText = wordCountException + " time.";
+                            }
+                            else
+                            {
+                                wordCountExceptionText = wordCountException + " times.";
+                            }
+
+                            // Special attention to HTTP 200's where the keyword 'error' or 'failed' is found.
+                            // Red text on black background.
+                            this.session["ui-backcolor"] = "black";
+                            this.session["ui-color"] = "red";
+                            this.session["X-SessionType"] = "!FAILURE LURKING!";
+
+                            this.session["X-ResponseAlert"] = "!'error', 'failed' or 'exception' found in respone body!";
+                            this.session["X-ResponseComments"] = "HTTP 200: Errors or failures found in response body. "
+                                + "Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review."
+                                + Environment.NewLine
+                                + Environment.NewLine
+                                + "After splitting all words in the response body the following were found:"
+                                + Environment.NewLine
+                                + Environment.NewLine
+                                + "Keyword 'Error' found " + wordCountErrorText
+                                + Environment.NewLine
+                                + "Keyword 'Failed' found " + wordCountFailedText
+                                + Environment.NewLine
+                                + "Keyword 'Exception' found " + wordCountExceptionText
+                                + Environment.NewLine
+                                + Environment.NewLine
+                                + "Check the content body of the response for any failures you recognise. You may find false positives, "
+                                + "if lots of Javascript or other web code is being loaded.";
+
+                            if (Preferences.AppLoggingEnabled)
+                            {
+                                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 FAILURE LURKING!?");
                             }
                         }
-                        // HTTP200SkipLogic is >= 1 or HTTP200FreeBusy is 0.
                         else
                         {
-                            // Since we use HTTP200SkipLogic and skipped the code above to split words and search for keywords, and we have also not detected any other conditions
-                            // mark the remaining sessions as yellow, not detected.
-                            if (string.IsNullOrEmpty(this.session["UI-BACKCOLOR"]) && string.IsNullOrEmpty(this.session["UI-COLOR"]))
-                            {
-                                this.session["ui-backcolor"] = "Yellow";
-                                this.session["ui-color"] = "black";
+                            // All good.
+                            this.session["ui-backcolor"] = HTMLColourGreen;
+                            this.session["ui-color"] = "black";
 
-                                this.session["X-ResponseAlert"] = "Undefined";
-                                this.session["X-ResponseComments"] = "Undefined";
-
-                                if (Preferences.AppLoggingEnabled)
-                                {
-                                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 ; 99 Undefined.");
-                                }
-                            }
+                            this.session["X-ResponseAlert"] = "No failures keywords detected in respone body.";
+                            this.session["X-ResponseComments"] = "No failures keywords ('error', 'failed' or 'exception') detected in respone body.";
                         }
                     }
                     //
@@ -1178,9 +1171,6 @@ namespace Office365FiddlerInspector
                         this.session["ui-backcolor"] = HTMLColourBlue;
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "False Positive";
-                            
-                        // Increment false positive count to prevent long running session overrides.
-                        FalsePositive++;
 
                         this.session["X-ResponseAlert"] = "False Positive";
                         this.session["X-ResponseComments"] = "Telemetry failing is unlikely the cause of Outlook / OWA connectivity or other issues.";
@@ -1206,9 +1196,6 @@ namespace Office365FiddlerInspector
                         this.session["ui-backcolor"] = HTMLColourBlue;
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "False Positive";
-
-                        // Increment false positive count to prevent long running session overrides.
-                        FalsePositive++;
 
                         this.session["X-ResponseAlert"] = "False Positive";
                         this.session["X-ResponseComments"] = "From the data in the response body this failure is likely due to a Microsoft DNS MX record "
@@ -1240,9 +1227,6 @@ namespace Office365FiddlerInspector
                         this.session["ui-backcolor"] = HTMLColourBlue;
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "False Positive";
-
-                        // Increment false positive count to prevent long running session overrides.
-                        FalsePositive++;
 
                         string AutoDFalsePositiveResponseBody = this.session.GetResponseBodyAsString();
                         int start = this.session.GetResponseBodyAsString().IndexOf("'");
@@ -1294,9 +1278,6 @@ namespace Office365FiddlerInspector
                         this.session["ui-backcolor"] = HTMLColourBlue;
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "Possible False Positive";
-
-                        // Increment false positive count to prevent long running session overrides.
-                        FalsePositive++;
 
                         this.session["X-ResponseAlert"] = "Autodiscover Possible False Positive?";
                         this.session["X-ResponseComments"] = "HTTP 502: Autoddiscover Possible False Positive. By design Office 365 endpoints such as autodiscover.contoso.onmicrosoft.com "
@@ -1533,7 +1514,7 @@ namespace Office365FiddlerInspector
                     break;
                     //
                     /////////////////////////////
-                    #endregion
+                #endregion
             }
             // If a response code logic check set SkipFurtherProcesssing to true stop any further processing on this session.
             if (SkipFurtherProcessing) return;
@@ -1543,15 +1524,13 @@ namespace Office365FiddlerInspector
             ///
             #endregion
 
+            // Code section for response code logic overrides.
             #region ResponseCodeLogicOverrides
 
             if (Preferences.AppLoggingEnabled)
             {
                 FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " session overrides.");
             }
-
-            /////////////////////////////
-            // ColouriseSessionsOverrides
 
             double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
 
@@ -1562,7 +1541,7 @@ namespace Office365FiddlerInspector
 
             // If the overall session time runs longer than 5,000ms or 5 seconds 
             //  AND this is not determined to be a false positive.
-            if (ClientMilliseconds > SlowRunningSessionThreshold && FalsePositive == 0)
+            if (ClientMilliseconds > SlowRunningSessionThreshold)
             {
                 this.session["ui-backcolor"] = HTMLColourRed;
                 this.session["ui-color"] = "black";
@@ -1586,7 +1565,7 @@ namespace Office365FiddlerInspector
             }
             // If the EXO server think time runs longer than 5,000ms or 5 seconds 
             //  AND this is not determined to be a false positive.
-            else if (ServerMilliseconds > SlowRunningSessionThreshold && FalsePositive == 0)
+            else if (ServerMilliseconds > SlowRunningSessionThreshold)
             {
                 this.session["ui-backcolor"] = HTMLColourRed;
                 this.session["ui-color"] = "black";
@@ -1611,81 +1590,54 @@ namespace Office365FiddlerInspector
 
             #endregion
 
-
+            // Code section to set Session Type column.
             #region SetSessionType
 
             /////////////////////////////
             ///
             /// Set Session Type
             /// 
-
-            // Finish processing in this function for this session if we have incremented the SkipFurtherProcessing int.
-            //if (SkipFurtherProcessing == true)
-            //    return;
-
-            //if (this.session.responseCode == 200 || this.session.responseCode == 302)
-            //{
-                // Outlook Connections.
-                //if (this.session.fullUrl.Contains("outlook.office365.com/mapi")) {this.session["X-SessionType"] = "EXO MAPI"; }
-                // Exchange Online Autodiscover.
-                //if (this.session.utilFindInRequest("autodiscover", false) > 1 && this.session.utilFindInRequest("onmicrosoft.com", false) > 1) { this.session["X-SessionType"] = "EXO Autodiscover"; }
-                //else if (this.session.fullUrl.Contains("autodiscover") && (this.session.fullUrl.Contains(".onmicrosoft.com"))) { this.session["X-SessionType"] = "EXO Autodiscover"; }
-                //else if (this.session.fullUrl.Contains("autodiscover-s.outlook.com")) { this.session["X-SessionType"] = "EXO Autodiscover"; }
-                //else if (this.session.fullUrl.Contains("onmicrosoft.com/autodiscover")) { this.session["X-SessionType"] = "EXO Autodiscover"; }
-                //// Autodiscover.     
-                //else if ((this.session.fullUrl.Contains("autodiscover") && (!(this.session.hostname == "outlook.office365.com")))) { this.session["X-SessionType"] = "On-Prem Autodiscover"; }
-                //else if (this.session.hostname.Contains("autodiscover")) { this.session["X-SessionType"] = "On-Prem Autodiscover"; }
-                //// Free/Busy.
-                if (this.session.fullUrl.Contains("WSSecurity"))
-                {
-                    this.session["X-SessionType"] = "Free/Busy";
-                    // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                    //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
-                }
-                else if (this.session.fullUrl.Contains("GetUserAvailability"))
-                {
-                    this.session["X-SessionType"] = "Free/Busy";
-                    // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                    //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
-                }
-                else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1)
-                {
-                    this.session["X-SessionType"] = "Free/Busy";
-                    // Increment HTTP200FreeBusy counter to assist with session classification further on down the line.
-                    //calledColouriseWebSessions.IncrementHTTP200FreeBusyCount();
-                }
-                // EWS.
-                else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { this.session["X-SessionType"] = "EXO EWS"; }
-                // Generic Office 365.
-                else if (this.session.fullUrl.Contains(".onmicrosoft.com") && (!(this.session.hostname.Contains("live.com")))) { this.session["X -ExchangeType"] = "Exchange Online"; }
-                else if (this.session.fullUrl.Contains("outlook.office365.com")) { this.session["X-SessionType"] = "Office 365"; }
-                else if (this.session.fullUrl.Contains("outlook.office.com")) { this.session["X-SessionType"] = "Office 365"; }
-                // Office 365 Authentication.
-                else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { this.session["X-SessionType"] = "Office 365 Authentication"; }
-                // ADFS Authentication.
-                else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { this.session["X-SessionType"] = "ADFS Authentication"; }
-                // Undetermined, but related to local process.
-                else if (this.session.LocalProcess.Contains("outlook")) { this.session["X-SessionType"] = "Outlook"; }
-                else if (this.session.LocalProcess.Contains("iexplore")) { this.session["X-SessionType"] = "Internet Explorer"; }
-                else if (this.session.LocalProcess.Contains("chrome")) { this.session["X-SessionType"] = "Chrome"; }
-                else if (this.session.LocalProcess.Contains("firefox")) { this.session["X-SessionType"] = "Firefox"; }
-                // Everything else.
-                else {
-                    this.session["X-SessionType"] = "Not Classified";
-                    this.session["ui-backcolor"] = "yellow";
-                    this.session["ui-color"] = "red";
-                }
-
-
-            //}
+            if (this.session.fullUrl.Contains("WSSecurity"))
+            {
+                this.session["X-SessionType"] = "Free/Busy";
+            }
+            else if (this.session.fullUrl.Contains("GetUserAvailability"))
+            {
+                this.session["X-SessionType"] = "Free/Busy";
+            }
+            else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1)
+            {
+                this.session["X-SessionType"] = "Free/Busy";
+            }
+            // EWS.
+            else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { this.session["X-SessionType"] = "EXO EWS"; }
+            // Generic Office 365.
+            else if (this.session.fullUrl.Contains(".onmicrosoft.com") && (!(this.session.hostname.Contains("live.com")))) { this.session["X -ExchangeType"] = "Exchange Online"; }
+            else if (this.session.fullUrl.Contains("outlook.office365.com")) { this.session["X-SessionType"] = "Office 365"; }
+            else if (this.session.fullUrl.Contains("outlook.office.com")) { this.session["X-SessionType"] = "Office 365"; }
+            // Office 365 Authentication.
+            else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { this.session["X-SessionType"] = "Office 365 Authentication"; }
+            // ADFS Authentication.
+            else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { this.session["X-SessionType"] = "ADFS Authentication"; }
+            // Undetermined, but related to local process.
+            else if (this.session.LocalProcess.Contains("outlook")) { this.session["X-SessionType"] = "Outlook"; }
+            else if (this.session.LocalProcess.Contains("iexplore")) { this.session["X-SessionType"] = "Internet Explorer"; }
+            else if (this.session.LocalProcess.Contains("chrome")) { this.session["X-SessionType"] = "Chrome"; }
+            else if (this.session.LocalProcess.Contains("firefox")) { this.session["X-SessionType"] = "Firefox"; }
+            // Everything else.
+            else {
+                this.session["X-SessionType"] = "Not Classified";
+                this.session["ui-backcolor"] = "yellow";
+                this.session["ui-color"] = "red";
+            }
 
             /////////////////////////////
             //
             // Session Type overrides
             //
-            // First off if the local process is null or blank, then we are analysing traffic from a remote client such as a mobile device.
+            // If the local process is null or blank, then we are analysing traffic from a remote client such as a mobile device.
             // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
-            // So don't pay any attention to overrides for this type of traffic.
+
             if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
             {
                 // Traffic has a null or blank local process value.
@@ -1711,14 +1663,11 @@ namespace Office365FiddlerInspector
 
         }
 
-        #region ResponseServer
-
-        /// <summary>
-        /// Function where the Response Server column is populated.
-        /// </summary>
-        /// <param name="session"></param>
+        // Function where the Response Server column is populated.
         public void SetResponseServer(Session session)
         {
+            #region ResponseServer
+
             this.session = session;
 
             //SetExchangeType(this.session);
@@ -1756,21 +1705,32 @@ namespace Office365FiddlerInspector
             {
                 this.session["X-ResponseServer"] = "Connect Tunnel";
             }
+            #endregion
+        }
+        
+        // Function where Elapsed Time column is populated.
+        public void SetElapsedTime(Session session)
+        {
+            #region ElapsedTime
+            // Populate the ElapsedTime column.
+            if (session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") != "0:00:00.000" && session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
+            {
+                double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds);
+
+                session["X-ElapsedTime"] = Milliseconds + "ms";
+            }
+            else
+            {
+                session["X-ElapsedTime"] = "No Data";
+            }
+            #endregion
         }
 
-        #endregion
-
-        #region SetAuthentication
-
-        /// <summary>
-        /// Used specifically for Authentication sessions.
-        /// Inclusion of '"' may not be compatible with say HTTP 503 response body word split.
-        /// </summary>
-        /// <param name="session"></param>
-        /// <param name="searchTerm"></param>
-        /// <returns>wordCount</returns>
+        // Function where Authentication column is populated and SAML parser code lives.
         public int SearchSessionForWord(Session session, string searchTerm)
         {
+            #region SetAuthenticationSAMLParser
+
             this.session = session;
 
             // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
@@ -1802,38 +1762,6 @@ namespace Office365FiddlerInspector
             this.session["X-AttributeNameUPN"] = "No SAML Data in session";
             this.session["X-NameIdentifierFormat"] = "No SAML Data in session";
             this.session["X-AttributeNameImmutableID"] = "No SAML Data in session";
-        }
-
-        public void SetElapsedTime(Session session)
-        {
-
-            // Populate the ElapsedTime column on load SAZ, if the column is enabled, and the extension is enabled.
-            if (session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") != "0:00:00.000" && session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
-            {
-                double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds);
-
-                session["X-ElapsedTime"] = Milliseconds + "ms";
-
-                // Commented out, its simply easier to see long running session when all are in milliseconds.
-
-                //if (Milliseconds < 1000)
-                //{
-
-                //}
-                //else if (Milliseconds >= 1000 && Milliseconds < 2000)
-                //{
-                //    session["X-ElapsedTime"] = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalSeconds) + " second";
-                //}
-                //else
-                //{
-                //    session["X-ElapsedTime"] = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalSeconds) + " seconds";
-                //}
-                //session["X-ElapsedTime"] = session.oResponse.iTTLB.ToString() + "ms";
-            }
-            else
-            {
-                session["X-ElapsedTime"] = "No Data";
-            }
         }
 
         /// <summary>
@@ -1998,7 +1926,7 @@ namespace Office365FiddlerInspector
                     this.session["X-AttributeNameImmutableID"] = "Data points not found for AttributeNameImmutibleID";
                 }
             }
-            // Determine if Modern Authentication is enabled in Exchange Online.
+            // Determine if Modern Authentication is enabled in session request.
             else if (this.session.oRequest["Authorization"] == "Bearer" || this.session.oRequest["Authorization"] == "Basic")
             {
                 SAMLParserFieldsNoData();
@@ -2016,26 +1944,27 @@ namespace Office365FiddlerInspector
                 int Keywordoauth_not_available = SearchSessionForWord(this.session, "oauth_not_available");
 
                 // Check if all the above checks have a value of at least 1. 
-                // If they do, then Exchange Online is configured with Modern Authentication disabled.
+                // If they do, then the Office 365 workload (Exchange Online / Skype etc) is configured with Modern Authentication disabled.
                 if (KeywordFourMillion > 0 && KeywordFlighting > 0 && Keywordenabled > 0 &&
                     Keyworddomain > 0 && Keywordoauth_not_available > 0 && this.session.HostnameIs("autodiscover-s.outlook.com"))
                 {
-                    this.session["X-Authentication"] = "EXO Modern Auth Disabled";
+                    this.session["X-Authentication"] = "Modern Auth Disabled";
 
-                    this.session["X-AuthenticationDesc"] = "Exchange Online has Modern Authentication disabled. " +
-                        "This is not necessarily a bad thing, but something to make note of during troubleshooting." +
-                        Environment.NewLine +
-                        "MutiFactor Authentication will not work as expected while Modern Authentication " +
-                        "is disabled in Exchange Online" +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        "Outlook 2010 and older do not support Modern Authentication and by extension MutliFactor Authentication." +
-                        Environment.NewLine +
-                        "Outlook 2013 supports modern authentication with updates and the EnableADAL registry key set to 1." +
-                        Environment.NewLine +
-                        "See https://support.microsoft.com/en-us/help/4041439/modern-authentication-configuration-requirements-for-transition-from-o" +
-                        Environment.NewLine +
-                        "Outlook 2016 or newer. No updates or registry keys needed for Modern Authentication.";
+                    this.session["X-AuthenticationDesc"] = "Office 365 workload has Modern Authentication disabled. "
+                        + "This is not necessarily a bad thing, but something to make note of during troubleshooting."
+                        + Environment.NewLine
+                        + "MutiFactor Authentication will not work as expected while Modern Authentication "
+                        + "is disabled in the Office 365 workload."
+                        + "For Exchange Online, the following is important for Outlook connectivity:"
+                        + Environment.NewLine
+                        + Environment.NewLine
+                        + "Outlook 2010 and older do not support Modern Authentication and by extension MutliFactor Authentication."
+                        + Environment.NewLine
+                        + "Outlook 2013 supports modern authentication with updates and the EnableADAL registry key set to 1."
+                        + Environment.NewLine
+                        + "See https://support.microsoft.com/en-us/help/4041439/modern-authentication-configuration-requirements-for-transition-from-o"
+                        + Environment.NewLine
+                        + "Outlook 2016 or newer. No updates or registry keys needed for Modern Authentication.";
 
                     // Set the OverrideFurtherAuthChecking to true; EXO Modern Auth Disabled is a more important message in these sessions,
                     // than Outlook client auth capabilities. Other sessions are expected to show client auth capabilities.
@@ -2125,7 +2054,7 @@ namespace Office365FiddlerInspector
                 this.session["X-Authentication"] = "No Auth Headers";
                 this.session["X-AuthenticationDesc"] = "No Auth Headers";
             }
+            #endregion
         }
-        #endregion
     }
 }

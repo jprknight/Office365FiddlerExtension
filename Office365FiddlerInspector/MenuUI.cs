@@ -31,6 +31,8 @@ namespace Office365FiddlerInspector
 
         public MenuItem miReportIssues { get; set; }
 
+        public MenuItem miAbout { get; set; }
+
         private int iExecutionCount { get; set; }
 
         private bool IsInitialized { get; set; }
@@ -56,7 +58,9 @@ namespace Office365FiddlerInspector
 
                 this.miReportIssues = new MenuItem("&Report Issues", new System.EventHandler(this.miReportIssues_Click));
 
-                this.miCheckForUpdate = new MenuItem("&Check For Update", new System.EventHandler(this.miCheckForUpdate_Click));
+                //this.miCheckForUpdate = new MenuItem("&Check For Update", new System.EventHandler(this.miCheckForUpdate_Click));
+
+                this.miAbout = new MenuItem("&About", new System.EventHandler(this.miAbout_Click));
 
                 // Add menu items to top level menu.
                 this.ExchangeOnlineTopMenu.MenuItems.AddRange(new MenuItem[] { this.miEnabled,
@@ -65,7 +69,8 @@ namespace Office365FiddlerInspector
                 this.miWiki,
                 this.miReportIssues,
                 new MenuItem("-"),
-                this.miCheckForUpdate
+                //this.miCheckForUpdate,
+                this.miAbout
             });
 
                 FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExchangeOnlineTopMenu);
@@ -99,7 +104,7 @@ namespace Office365FiddlerInspector
             System.Diagnostics.Process.Start(Properties.Settings.Default.ReportIssuesURL);
         }
 
-        public void miCheckForUpdate_Click(object sender, EventArgs e)
+        public void miAbout_Click(object sender, EventArgs e)
         {
             // Since the user has manually clicked this menu item to check for updates,
             // set this boolean variable to true so we can give user feedback if no update available.
@@ -107,8 +112,7 @@ namespace Office365FiddlerInspector
             Preferences.ManualCheckForUpdate = true;
 
             // Check for app update.
-            CheckForAppUpdate.Instance.CheckForUpdate();
+            About.Instance.CheckForUpdate();
         }
-
     }
 }
