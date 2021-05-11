@@ -527,6 +527,63 @@ namespace EXOFiddlerInspector
 
                         /////////////////////////////
                         //
+                        // 200.8. 3S Suggestions call.
+                        //
+                        if (this.session.uriContains("search/api/v1/suggestions"))
+                        {
+                            this.session["ui-backcolor"] = HTMLColourGreen;
+                            this.session["ui-color"] = "black";
+                            this.session["X-SessionType"] = "3S Suggestions";
+
+                            Uri uri = new Uri(this.session.fullUrl);
+                            var queryStrings = System.Web.HttpUtility.ParseQueryString(uri.Query);
+                            var scenario = queryStrings["scenario"] ?? "scenario not specified in url";
+                            var entityTypes = queryStrings["entityTypes"] ?? "entityTypes not specified in url";
+                            var clientRequestId = this.session.RequestHeaders.Where(x => x.Name.Equals("client-request-id")).FirstOrDefault();
+
+                            this.session["X-ResponseAlert"] = "";
+                            this.session["X-ResponseComments"] = $"Scenario: {scenario} Types: {entityTypes} {clientRequestId}";
+
+                            SkipFurtherProcessing++;
+                        }
+
+                        /////////////////////////////
+                        //
+                        // 200.9. REST - People Request.
+                        //
+                        if (this.session.uriContains("people"))
+                        {
+                            this.session["ui-backcolor"] = HTMLColourGreen;
+                            this.session["ui-color"] = "black";
+
+                            Uri uri = new Uri(this.session.fullUrl);
+                            var queryStrings = System.Web.HttpUtility.ParseQueryString(uri.Query);
+
+                            string sessionType = "";
+
+                            // /me/people : : Private FindPeople Request
+                            if (this.session.uriContains("/me/people"))
+                            {
+                                sessionType = "Private";
+                            }
+
+                            // /users()/people : Public FindPeople Request
+                            else if (this.session.uriContains("/users(") && this.session.uriContains("/people"))
+                            {
+                                sessionType = "Public";
+                            }
+
+                            var requestId = this.session.ResponseHeaders.Where(x => x.Name.Equals("request-id")).FirstOrDefault();
+
+                            this.session["X-SessionType"] = $"REST People {sessionType}";
+                            this.session["X-ResponseAlert"] = "";
+                            this.session["X-ResponseComments"] = $"{requestId} $search:{queryStrings["$search"]} $top:{queryStrings["$top"]} $skip:{queryStrings["$skip"]} $select:{queryStrings["$select"]} $filter:{queryStrings["$filter"]}";
+
+                            SkipFurtherProcessing++;
+                        }
+
+                        /////////////////////////////
+                        //
                         // 200.99. All other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                         else
                         {
@@ -607,7 +664,7 @@ namespace EXOFiddlerInspector
                                     this.session["ui-color"] = "red";
                                     this.session["X-SessionType"] = "!FAILURE LURKING!";
 
-                                    this.session["X-ResponseAlert"] = "!'error', 'failed' or 'exception' found in respone body!";
+                                    this.session["X-ResponseAlert"] = "!'error', 'failed' or 'exception' found in response body!";
                                     this.session["X-ResponseComments"] = "HTTP 200: Errors or failures found in response body. " +
                                         "Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review." +
                                         Environment.NewLine +
@@ -636,8 +693,8 @@ namespace EXOFiddlerInspector
                                     this.session["ui-backcolor"] = HTMLColourGreen;
                                     this.session["ui-color"] = "black";
 
-                                    this.session["X-ResponseAlert"] = "No failures keywords detected in respone body.";
-                                    this.session["X-ResponseComments"] = "No failures keywords ('error', 'failed' or 'exception') detected in respone body.";
+                                    this.session["X-ResponseAlert"] = "No failures keywords detected in response body.";
+                                    this.session["X-ResponseComments"] = "No failures keywords ('error', 'failed' or 'exception') detected in response body.";
                                 }
                             }
                             // HTTP200SkipLogic is >= 1 or HTTP200FreeBusy is 0.
