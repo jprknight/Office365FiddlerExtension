@@ -3,16 +3,19 @@ using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
 using System.Management;
 using System.Text;
+using Fiddler;
 
 namespace Office365FiddlerInspector.Services
 {
     public partial class TelemetryService
     {
+
+        private static TelemetryService _instance;
+        public static TelemetryService Instance => _instance ?? (_instance = new TelemetryService());
+
         /// <summary>
         /// Instrumentation Key used to communicate with Azure Application Insights.
         /// </summary>
-        // Old iKey.
-        // private static readonly string iKey = "f236d9b9-fc00-461d-a9c6-64f231416908";
         private static readonly string iKey = "87fb55ab-0052-4970-9318-7c740220e3c0";
         
         /// <summary>
@@ -37,6 +40,14 @@ namespace Office365FiddlerInspector.Services
         /// <returns>Bool</returns>
         public static async Task InitializeAsync()
         {
+
+            if (Preferences.DisableWebCalls)
+            {
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: Telemetry Service DisableWebCalls is true.");
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: The Office 365 Fiddler Extension won't send telemetry data.");
+                return;
+            }
+
             if (!IsInitialized)
             {
                 try
@@ -75,6 +86,13 @@ namespace Office365FiddlerInspector.Services
         /// <returns>Task Completion Event.</returns>
         public async static void TrackEvent(string _value)
         {
+            if (Preferences.DisableWebCalls)
+            {
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: Telemetry Service DisableWebCalls is true.");
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: The Office 365 Fiddler Extension won't send telemetry data.");
+                return;
+            }
+
             try
             {
                 if (await GetClientStatus())
@@ -93,6 +111,13 @@ namespace Office365FiddlerInspector.Services
 
         public async static Task FlushClientAsync()
         {
+            if (Preferences.DisableWebCalls)
+            {
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: Telemetry Service DisableWebCalls is true.");
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: The Office 365 Fiddler Extension won't send telemetry data.");
+                return;
+            }
+
             try
             {
                 Client.Flush();
