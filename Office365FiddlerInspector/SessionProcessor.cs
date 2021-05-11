@@ -127,10 +127,11 @@ namespace Office365FiddlerInspector
 
         public void OnPeekAtResponseHeaders(Session session)
         {
-            // Reset these session counters.
-            bool SkipFurtherProcessing = false;
-
             this.session = session;
+
+            // Various response code logic checks will set this to true.
+            // This will stop any overrides firing on a session, which may not provide as much value to troubleshooting.
+            bool SkipFurtherProcessing = false;
 
             // Colour codes for sessions. Softer tones, easier on the eye than standard red, orange and green.
             string HTMLColourBlue = "#81BEF7";
@@ -139,9 +140,11 @@ namespace Office365FiddlerInspector
             string HTMLColourGrey = "#BDBDBD";
             string HTMLColourOrange = "#F59758";
 
+            // Decode session request/responses.
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
 
+            // Used in response code logic check 200.99 when searching for and counting error, failure and exception strings.
             int wordCount = 0;
             int wordCountError = 0;
             int wordCountFailed = 0;
@@ -167,8 +170,6 @@ namespace Office365FiddlerInspector
                 this.session["X-ResponseComments"] = "This is Fiddler itself checking for updates. It has nothing to do with the Office 365 Fiddler Extension.";
 
                 return;
-                
-
             }
 
             /////////////////////////////
@@ -547,6 +548,64 @@ namespace Office365FiddlerInspector
 
                     /////////////////////////////
                     //
+                    // 200.7. 3S Suggestions call.
+                    //
+                    if (this.session.uriContains("search/api/v1/suggestions"))
+                    {
+                        this.session["ui-backcolor"] = HTMLColourGreen;
+                        this.session["ui-color"] = "black";
+                        this.session["X-SessionType"] = "3S Suggestions";
+
+                        Uri uri = new Uri(this.session.fullUrl);
+                        var queryStrings = System.Web.HttpUtility.ParseQueryString(uri.Query);
+                        var scenario = queryStrings["scenario"] ?? "scenario not specified in url";
+                        var entityTypes = queryStrings["entityTypes"] ?? "entityTypes not specified in url";
+                        var clientRequestId = this.session.RequestHeaders.Where(x => x.Name.Equals("client-request-id")).FirstOrDefault();
+
+                        this.session["X-ResponseAlert"] = "";
+                        this.session["X-ResponseComments"] = $"Scenario: {scenario} Types: {entityTypes} {clientRequestId}";
+
+                        SkipFurtherProcessing = true;
+                    }
+
+                    /////////////////////////////
+                    //
+                    // 200.8. REST - People Request.
+                    //
+                    if (this.session.uriContains("people"))
+                    {
+                        this.session["ui-backcolor"] = HTMLColourGreen;
+                        this.session["ui-color"] = "black";
+
+                        Uri uri = new Uri(this.session.fullUrl);
+                        var queryStrings = System.Web.HttpUtility.ParseQueryString(uri.Query);
+
+                        string sessionType = "";
+
+                        // /me/people : : Private FindPeople Request
+                        if (this.session.uriContains("/me/people"))
+                        {
+                            sessionType = "Private";
+                        }
+
+                        // /users()/people : Public FindPeople Request
+                        else if (this.session.uriContains("/users(") && this.session.uriContains("/people"))
+                        {
+                            sessionType = "Public";
+                        }
+
+                        var requestId = this.session.ResponseHeaders.Where(x => x.Name.Equals("request-id")).FirstOrDefault();
+
+                        this.session["X-SessionType"] = $"REST People {sessionType}";
+                        this.session["X-ResponseAlert"] = "";
+                        this.session["X-ResponseComments"] = $"{requestId} $search:{queryStrings["$search"]} $top:{queryStrings["$top"]} $skip:{queryStrings["$skip"]} $select:{queryStrings["$select"]} $filter:{queryStrings["$filter"]}";
+
+                        SkipFurtherProcessing = true;
+                    }
+
+
+                    /////////////////////////////
+                    //
                     // 200.99. All other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
                     else
                     {
@@ -620,7 +679,7 @@ namespace Office365FiddlerInspector
                             this.session["ui-color"] = "red";
                             this.session["X-SessionType"] = "!FAILURE LURKING!";
 
-                            this.session["X-ResponseAlert"] = "!'error', 'failed' or 'exception' found in respone body!";
+                            this.session["X-ResponseAlert"] = "!'error', 'failed' or 'exception' found in response body!";
                             this.session["X-ResponseComments"] = "HTTP 200: Errors or failures found in response body. "
                                 + "Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review."
                                 + Environment.NewLine
@@ -649,8 +708,8 @@ namespace Office365FiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourGreen;
                             this.session["ui-color"] = "black";
 
-                            this.session["X-ResponseAlert"] = "No failures keywords detected in respone body.";
-                            this.session["X-ResponseComments"] = "No failures keywords ('error', 'failed' or 'exception') detected in respone body.";
+                            this.session["X-ResponseAlert"] = "No failures keywords detected in response body.";
+                            this.session["X-ResponseComments"] = "No failures keywords ('error', 'failed' or 'exception') detected in response body.";
                         }
                     }
                     //
@@ -1128,7 +1187,7 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseAlert"] = "!HTTP 500 Internal Server Error!";
 
-                    this.session["X-ResponseComments"] = "HTTP 500 Internal Server Error. Consider the server that issued this respone, "
+                    this.session["X-ResponseComments"] = "HTTP 500 Internal Server Error. Consider the server that issued this response, "
                         + "look at the IP address in the 'Host IP' column and lookup where it is hosted to know who should be looking at "
                         + "the issue.";
 
