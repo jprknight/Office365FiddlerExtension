@@ -13,15 +13,6 @@ namespace Office365FiddlerInspector.Services
         }
 
         /// <summary>
-        /// Return DeveloperDemoMode value.
-        /// </summary>
-        /// <returns>DeveloperDemoMode</returns>
-        public static bool GetDeveloperMode()
-        {
-            return Debugger.IsAttached;
-        }
-
-        /// <summary>
         /// This is the low water mark for what is considered a slow running session, considering a number of factors.
         /// Exchange response times are typically going to be much quicker than this. In the < 300ms range.
         /// </summary>
@@ -101,6 +92,14 @@ namespace Office365FiddlerInspector.Services
         {
             get => _ManualCheckForUpdate = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.ManualCheckForUpdate", false);
             set { _ManualCheckForUpdate = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.ManualCheckForUpdate", value); }
+        }
+
+        private static bool _DisableWebCalls;
+
+        public static bool DisableWebCalls
+        {
+            get => DisableWebCalls = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.NeverWebCall", false);
+            set { _DisableWebCalls = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.NeverWebCall", value); }
         }
 
     }

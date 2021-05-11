@@ -19,11 +19,7 @@ namespace Office365FiddlerInspector
 
         public MenuItem miEnabled { get; set; }
 
-        //public MenuItem miAppLoggingEnabled { get; set; }
-
-        public MenuItem miCheckForUpdate { get; set; }
-
-        public MenuItem miHighlightOutlookOWAOnly { get; set; }
+        public MenuItem miDisableWebCalls { get; set; }
 
         public MenuItem miReleasesDownloadWebpage { get; set; }
 
@@ -52,13 +48,14 @@ namespace Office365FiddlerInspector
                 this.miEnabled = new MenuItem("Enable", new EventHandler(this.miEnabled_Click));
                 this.miEnabled.Checked = Preferences.ExtensionEnabled;
 
+                this.miDisableWebCalls = new MenuItem("Never Web Call", new EventHandler(this.miDisableWebCalls_Click));
+                this.miDisableWebCalls.Checked = Preferences.DisableWebCalls;
+
                 this.miReleasesDownloadWebpage = new MenuItem("&Releases Download Page", new System.EventHandler(this.miReleasesDownloadWebpage_click));
 
                 this.miWiki = new MenuItem("Extension &Wiki", new System.EventHandler(this.miWiki_Click));
 
                 this.miReportIssues = new MenuItem("&Report Issues", new System.EventHandler(this.miReportIssues_Click));
-
-                //this.miCheckForUpdate = new MenuItem("&Check For Update", new System.EventHandler(this.miCheckForUpdate_Click));
 
                 this.miAbout = new MenuItem("&About", new System.EventHandler(this.miAbout_Click));
 
@@ -69,7 +66,7 @@ namespace Office365FiddlerInspector
                 this.miWiki,
                 this.miReportIssues,
                 new MenuItem("-"),
-                //this.miCheckForUpdate,
+                this.miDisableWebCalls,
                 this.miAbout
             });
 
@@ -84,6 +81,12 @@ namespace Office365FiddlerInspector
         {
             miEnabled.Checked = !miEnabled.Checked;
             Preferences.ExtensionEnabled = miEnabled.Checked;
+        }
+
+        public void miDisableWebCalls_Click(object sender, EventArgs e)
+        {
+            miDisableWebCalls.Checked = !miDisableWebCalls.Checked;
+            Preferences.DisableWebCalls = miDisableWebCalls.Checked;
         }
 
         public void miWiki_Click(object sender, EventArgs e)

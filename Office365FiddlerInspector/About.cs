@@ -14,7 +14,16 @@ namespace Office365FiddlerInspector
 
         public void CheckForUpdate()
         {
-            FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : CheckForUpdate begin.");
+            if (Preferences.DisableWebCalls)
+            {
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: CheckForUpdate DisableWebCalls is true.");
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: The Office 365 Fiddler Extension won't check for any updates.");
+                return;
+            }
+
+            FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: CheckForUpdate begin.");
+
+            #region ReadVersionFromXML
 
             string downloadUrl = "";
             Version newVersion = null;
@@ -27,7 +36,7 @@ namespace Office365FiddlerInspector
                 reader = new XmlTextReader(xmlUrl);
                 reader.MoveToContent();
                 string elementName = "";
-                if ((reader.NodeType == XmlNodeType.Element) && reader.Name == "EXOFiddlerInspector")
+                if ((reader.NodeType == XmlNodeType.Element) && reader.Name == "FiddlerInspector")
                 {
                     while (reader.Read())
                         if (reader.NodeType == XmlNodeType.Element)
@@ -63,14 +72,14 @@ namespace Office365FiddlerInspector
                 }
             }
 
+            #endregion
+
             Version applicationVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 
-            /// <remarks>
-            /// Update available.
-            /// </remarks>
-            /// 
+            // Update available.
             if (applicationVersion.CompareTo(newVersion) < 0)
             {
+                #region UpdateAvailable
 
                 FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: {DateTime.Now}: About.cs : Update Available.");
 
@@ -129,13 +138,13 @@ namespace Office365FiddlerInspector
                     Preferences.ManualCheckForUpdate = false;
                     //FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.ManualCheckForUpdate", false);
                 }
+                #endregion
             }
-            /// <remarks>
-            /// No update available.
-            /// </remarks>
-            /// 
+            // No update available.
             else
             {
+                #region NoUpdateAvailable
+
                 Debug.WriteLine($"OFFICE 365 EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : No update available.");
 
                 // Clear UpdateMessage if no update is available. More processing below if running a beta version.
@@ -176,8 +185,9 @@ namespace Office365FiddlerInspector
                     // return this perference back to false, so we don't give this feedback unintentionally.
                     Preferences.ManualCheckForUpdate = false;
                 }
+                #endregion
             }
-            FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : CheckForUpdate done.");
+            FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: CheckForUpdate done.");
         }
     }
 }
