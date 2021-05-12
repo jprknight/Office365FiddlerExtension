@@ -2,7 +2,6 @@
 using System.Windows.Forms;
 using Fiddler;
 using System.Xml;
-using System.Diagnostics;
 using Office365FiddlerInspector.Services;
 
 namespace Office365FiddlerInspector
@@ -16,8 +15,7 @@ namespace Office365FiddlerInspector
         {
             if (Preferences.DisableWebCalls)
             {
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: CheckForUpdate DisableWebCalls is true.");
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: The Office 365 Fiddler Extension won't check for any updates.");
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: CheckForUpdate: DisableWebCalls is true; Extension won't check for any updates.");
                 return;
             }
 
@@ -25,7 +23,7 @@ namespace Office365FiddlerInspector
 
             #region ReadVersionFromXML
 
-            string downloadUrl = "";
+            string downloadUrl;
             Version newVersion = null;
             string xmlUrl = Properties.Settings.Default.UpdateURL;
 
@@ -38,26 +36,26 @@ namespace Office365FiddlerInspector
                 string elementName = "";
                 if ((reader.NodeType == XmlNodeType.Element) && reader.Name == "FiddlerInspector")
                 {
-                    while (reader.Read())
-                        if (reader.NodeType == XmlNodeType.Element)
+                while (reader.Read())
+                    if (reader.NodeType == XmlNodeType.Element)
+                    {
+                        elementName = reader.Name;
+                    }
+                    else
+                    {
+                        if ((reader.NodeType == XmlNodeType.Text) && reader.HasValue)
                         {
-                            elementName = reader.Name;
-                        }
-                        else
-                        {
-                            if ((reader.NodeType == XmlNodeType.Text) && reader.HasValue)
+                            switch (elementName)
                             {
-                                switch (elementName)
-                                {
-                                    case "version":
-                                        newVersion = new Version(reader.Value);
-                                        break;
-                                    case "url":
-                                        downloadUrl = reader.Value;
-                                        break;
-                                }
+                                case "version":
+                                    newVersion = new Version(reader.Value);
+                                    break;
+                                case "url":
+                                    downloadUrl = reader.Value;
+                                    break;
                             }
                         }
+                    }
                 }
             }
             catch (Exception ex)
@@ -83,28 +81,12 @@ namespace Office365FiddlerInspector
 
                 FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: {DateTime.Now}: About.cs : Update Available.");
 
-                /// <remarks>
-                /// Refresh the value of ManualCheckForUpdate and respond with feedback if needed.
-                /// </remarks>
+                FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.UpdateMessage", $"Update Available{Environment.NewLine}----------------" +
+                    $"{Environment.NewLine}Currently using version: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
+                    $"{Environment.NewLine}New version available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}{Environment.NewLine} {Environment.NewLine}" +
+                    $"Download the latest version: {Environment.NewLine}{Properties.Settings.Default.InstallerURL}{Environment.NewLine}{Environment.NewLine}");
 
-                if (applicationVersion.Build >= 1000)
-                {
-                    FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.UpdateMessage", $"Update Available{Environment.NewLine}----------------" +
-                        $"{Environment.NewLine}You should update from this beta build to the latest production build." +
-                        $"{Environment.NewLine}Currently using beta version: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
-                        $"{Environment.NewLine}New production version available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}" + 
-                        $"{Environment.NewLine}{Environment.NewLine}" +
-                        $"Download the latest version: {Environment.NewLine}{Properties.Settings.Default.InstallerURL}{Environment.NewLine}{Environment.NewLine}");
-                }
-                else
-                {
-                    FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.UpdateMessage", $"Update Available{Environment.NewLine}----------------" +
-                        $"{Environment.NewLine}Currently using version: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
-                        $"{Environment.NewLine}New version available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}{Environment.NewLine} {Environment.NewLine}" +
-                        $"Download the latest version: {Environment.NewLine}{Properties.Settings.Default.InstallerURL}{Environment.NewLine}{Environment.NewLine}");
-                }
-
-                // Regardless of extension enabled or not, give the user feedback when they click the 'About' menu item if no update is available.
+                // Give user feedback on click 'About' menu item if no update is available.
                 if (Preferences.ManualCheckForUpdate)
                 {
 
@@ -113,10 +95,6 @@ namespace Office365FiddlerInspector
                         "Do you want to download the update?";
 
                     string caption = "Office 365 Fiddler Extension - Update Available";
-
-                    /// <remarks>
-                    /// Set menu title to show user there is an update available.
-                    /// </remarks>
 
                     MessageBoxButtons buttons = MessageBoxButtons.YesNo;
                     DialogResult result;
@@ -128,15 +106,11 @@ namespace Office365FiddlerInspector
                     {
                         // Execute the installer MSI URL, which will open in the user's default browser.
                         System.Diagnostics.Process.Start(Properties.Settings.Default.InstallerURL);
-                        if (Preferences.AppLoggingEnabled)
-                        {
-                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: Version installed. v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}");
-                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: New Version Available. v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}");
-                        }
+                        FiddlerApplication.Log.LogString($"Office365FiddlerExtension: Version installed. v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}");
+                        FiddlerApplication.Log.LogString($"Office365FiddlerExtension: New Version Available. v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}");
                     }
                     // return this perference back to false, so we don't give this feedback unintentionally.
                     Preferences.ManualCheckForUpdate = false;
-                    //FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.ManualCheckForUpdate", false);
                 }
                 #endregion
             }
@@ -145,43 +119,22 @@ namespace Office365FiddlerInspector
             {
                 #region NoUpdateAvailable
 
-                Debug.WriteLine($"OFFICE 365 EXTENSION: {DateTime.Now}: CheckForAppUpdate.cs : No update available.");
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: CheckForUpdate: No update available.");
 
-                // Clear UpdateMessage if no update is available. More processing below if running a beta version.
-                FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.UpdateMessage", "");
+                if (Preferences.ManualCheckForUpdate)
+                {
+                    MessageBox.Show("You already have the latest version installed." 
+                        + Environment.NewLine 
+                        + Environment.NewLine 
+                        + $"Currently using: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}{Environment.NewLine}"
+                        + $"Newest available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}", "Office 365 Fiddler Extension");
 
-                if (Preferences.AppLoggingEnabled)
-                {
-                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: Latest version installed.");
-                }
-
-                // Tell user if they are either on a beta build.
-                if (applicationVersion.Build >= 1000 && Preferences.ManualCheckForUpdate)
-                {
-                    MessageBox.Show($"Office365FiddlerExtension: You are using a beta build. Thanks for the testing!{Environment.NewLine}" +
-                        $"Currently using beta build: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}{Environment.NewLine}" +
-                        $"Newest production build available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}", "Office 365 Fiddler Extension - Beta Version!");
-
-                    FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.UpdateMessage", $"Beta Build!{Environment.NewLine}-----------" +
-                        $"{Environment.NewLine}Currently using beta build: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
-                        $"{Environment.NewLine}Newest production build available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}{Environment.NewLine}{Environment.NewLine}" +
-                        $"Raise any issues at:{Environment.NewLine}{Properties.Settings.Default.InstallerURL}{Environment.NewLine}{Environment.NewLine}");
-                    Preferences.ManualCheckForUpdate = false; 
-                }
-                // Update the UpdateMessage if user is on beta build.
-                else if (applicationVersion.Build >= 1000)
-                {
-                    FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.UpdateMessage", $"Beta Build!{Environment.NewLine}-----------" +
-                        $"{Environment.NewLine}Currently using beta build: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
-                        $"{Environment.NewLine}Newest production build available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}{Environment.NewLine}{Environment.NewLine}" +
-                        $"Raise any issues at: {Environment.NewLine}{Properties.Settings.Default.ReportIssuesURL}{Environment.NewLine}{Environment.NewLine}");
-                }
-                // Tell user if they are on latest production build.
-                else if (Preferences.ManualCheckForUpdate)
-                {
-                    MessageBox.Show("You already have the latest version installed." + Environment.NewLine + Environment.NewLine +
-                        $"Currently using: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}{Environment.NewLine}" +
-                        $"Newest available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}", "Office 365 Fiddler Extension");
+                    FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.UpdateMessage", $"You already have the latest version installed."
+                        + $"{Environment.NewLine}-----------"
+                        + $"{Environment.NewLine}Currently using: v"
+                        + $"{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}"
+                        + $"{Environment.NewLine}Newest available: v"
+                        + $"{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}{Environment.NewLine}{Environment.NewLine}");
                     // return this perference back to false, so we don't give this feedback unintentionally.
                     Preferences.ManualCheckForUpdate = false;
                 }

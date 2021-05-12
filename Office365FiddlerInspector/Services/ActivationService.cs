@@ -8,7 +8,7 @@ namespace Office365FiddlerInspector.Services
     public abstract class ActivationService : IAutoTamper
     {
         /// <summary>
-        /// This should be consider the main constructor for the app. It's called after the UI has loaded.
+        /// This should be consider the main constructor for the extension. It's called after the UI has loaded.
         /// </summary>
         public async void OnLoad()
         {
@@ -20,30 +20,42 @@ namespace Office365FiddlerInspector.Services
 
             SessionProcessor.Instance.Initialize();
 
-            About.Instance.CheckForUpdate();
-
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Session Type", 150, "X-SessionType");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 140, "X-Authentication");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 110, "X-HostIP");
             FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 130, "X-ResponseServer");
             
-            // Throw a message box to alert demo mode is running.
-            //if (Preferences.GetDeveloperMode())
-            //{
-            //    MessageBox.Show("Developer / Demo mode is running!");
-            //}
-            //else
-            //{
-
-            await TelemetryService.InitializeAsync();
-
-            //}
+            // If disable web calls is true dion't check for updates and don't call telemetry service.
+            if (Preferences.DisableWebCalls)
+            {
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: Telemetry Service DisableWebCalls is true.");
+                
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: The Office 365 Fiddler Extension won't check for updates.");
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: The Office 365 Fiddler Extension won't send telemetry data.");
+            }
+            // Otherwise, check for updates and call telemetry service.
+            else
+            {
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: The Office 365 Fiddler Extension checking for updates.");
+                About.Instance.CheckForUpdate();
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: The Office 365 Fiddler Extension initializing telemetry service.");
+                await TelemetryService.InitializeAsync();
+            }
         }
 
         public async void OnBeforeUnload()
         {
-            await TelemetryService.FlushClientAsync();
+            if (Preferences.DisableWebCalls)
+            {
+                // Do nothing.
+            }
+            else
+            {
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: The Office 365 Fiddler Extension closing telemetry service client connection.");
+                await TelemetryService.FlushClientAsync();
+            }
+                
         }
 
         /// <summary>
@@ -69,12 +81,9 @@ namespace Office365FiddlerInspector.Services
                 return;
             }
 
-            // Only do this on loadSAZ?
             SessionProcessor.Instance.SetElapsedTime(_session);
 
             SessionProcessor.Instance.OnPeekAtResponseHeaders(_session);
-
-            //SessionProcessor.Instance.SetSessionType(_session);
 
             SessionProcessor.Instance.SetAuthentication(_session);
 
@@ -95,35 +104,5 @@ namespace Office365FiddlerInspector.Services
         /// <param name="_session"></param>
         public void OnBeforeReturningError(Session _session) { }
 
-        //public void SetColumns()
-        //{
-
-        //    if (Preferences.ExtensionEnabled)
-        //    {
-        //        FiddlerApplication.UI.lvSessions.BeginUpdate();
-
-        //        // Only on LoadSAZ add all the columns.
-        //        if (FiddlerApplication.Prefs.GetBoolPref("extensions.EXOFiddlerExtension.LoadSaz", false))
-        //        {
-        //            FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
-        //            FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 0, 130, "X-ResponseServer");
-        //            FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 0, 110, "X-HostIP");
-        //            FiddlerApplication.UI.lvSessions.AddBoundColumn("Session Type", 0, 150, "X-SessionType");
-        //            FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 0, 140, "X-Authentication");
-        //        }
-        //        // On live trace just add in the Host IP column.
-        //        else
-        //        {
-        //            FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 110, "X-HostIP");
-        //        }
-
-        //    }
-        //    else
-        //    {
-        //        int iColumnsCount = FiddlerApplication.UI.lvSessions.Columns.Count;
-        //        FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", iColumnsCount - 2, -1);
-        //    }
-        //    FiddlerApplication.UI.lvSessions.BeginUpdate();
-        //}
     }
 }

@@ -11,25 +11,21 @@ namespace Office365FiddlerInspector
 
         public static MenuUI Instance => _instance ?? (_instance = new MenuUI());
 
-        public MenuUI()
-        { }
+        public MenuUI() { }
 
         public MenuItem ExchangeOnlineTopMenu { get; set; }
 
+        public MenuItem MiEnabled { get; set; }
 
-        public MenuItem miEnabled { get; set; }
+        public MenuItem MiReleasesDownloadWebpage { get; set; }
 
-        public MenuItem miDisableWebCalls { get; set; }
+        public MenuItem MiWiki { get; set; }
 
-        public MenuItem miReleasesDownloadWebpage { get; set; }
+        public MenuItem MiReportIssues { get; set; }
 
-        public MenuItem miWiki { get; set; }
+        public MenuItem MiAbout { get; set; }
 
-        public MenuItem miReportIssues { get; set; }
-
-        public MenuItem miAbout { get; set; }
-
-        private int iExecutionCount { get; set; }
+        //private int iExecutionCount { get; set; }
 
         private bool IsInitialized { get; set; }
 
@@ -45,29 +41,25 @@ namespace Office365FiddlerInspector
 
                 this.ExchangeOnlineTopMenu = new MenuItem(Preferences.ExtensionEnabled ? "Office 365" : "Office 365 (Disabled)");
 
-                this.miEnabled = new MenuItem("Enable", new EventHandler(this.miEnabled_Click));
-                this.miEnabled.Checked = Preferences.ExtensionEnabled;
+                this.MiEnabled = new MenuItem("Enable", new EventHandler(this.MiEnabled_Click));
+                this.MiEnabled.Checked = Preferences.ExtensionEnabled;
 
-                this.miDisableWebCalls = new MenuItem("Never Web Call", new EventHandler(this.miDisableWebCalls_Click));
-                this.miDisableWebCalls.Checked = Preferences.DisableWebCalls;
+                this.MiReleasesDownloadWebpage = new MenuItem("&Releases Download Page", new System.EventHandler(this.MiReleasesDownloadWebpage_click));
 
-                this.miReleasesDownloadWebpage = new MenuItem("&Releases Download Page", new System.EventHandler(this.miReleasesDownloadWebpage_click));
+                this.MiWiki = new MenuItem("Extension &Wiki", new System.EventHandler(this.MiWiki_Click));
 
-                this.miWiki = new MenuItem("Extension &Wiki", new System.EventHandler(this.miWiki_Click));
+                this.MiReportIssues = new MenuItem("&Report Issues", new System.EventHandler(this.MiReportIssues_Click));
 
-                this.miReportIssues = new MenuItem("&Report Issues", new System.EventHandler(this.miReportIssues_Click));
-
-                this.miAbout = new MenuItem("&About", new System.EventHandler(this.miAbout_Click));
+                this.MiAbout = new MenuItem("&About", new System.EventHandler(this.MiAbout_Click));
 
                 // Add menu items to top level menu.
-                this.ExchangeOnlineTopMenu.MenuItems.AddRange(new MenuItem[] { this.miEnabled,
+                this.ExchangeOnlineTopMenu.MenuItems.AddRange(new MenuItem[] { this.MiEnabled,
                 new MenuItem("-"),
-                this.miReleasesDownloadWebpage,
-                this.miWiki,
-                this.miReportIssues,
+                this.MiReleasesDownloadWebpage,
+                this.MiWiki,
+                this.MiReportIssues,
                 new MenuItem("-"),
-                this.miDisableWebCalls,
-                this.miAbout
+                this.MiAbout
             });
 
                 FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExchangeOnlineTopMenu);
@@ -77,45 +69,42 @@ namespace Office365FiddlerInspector
         }
 
         // Menu item event handlers.
-        public void miEnabled_Click(object sender, EventArgs e)
+        public void MiEnabled_Click(object sender, EventArgs e)
         {
-            miEnabled.Checked = !miEnabled.Checked;
-            Preferences.ExtensionEnabled = miEnabled.Checked;
+            MiEnabled.Checked = !MiEnabled.Checked;
+            Preferences.ExtensionEnabled = MiEnabled.Checked;        
         }
 
-        public void miDisableWebCalls_Click(object sender, EventArgs e)
-        {
-            miDisableWebCalls.Checked = !miDisableWebCalls.Checked;
-            Preferences.DisableWebCalls = miDisableWebCalls.Checked;
-        }
-
-        public void miWiki_Click(object sender, EventArgs e)
+        public void MiWiki_Click(object sender, EventArgs e)
         {
             // Fire up a web browser to the project Wiki URL.
             System.Diagnostics.Process.Start(Properties.Settings.Default.WikiURL);
         }
 
-        public void miReleasesDownloadWebpage_click(object sender, EventArgs e)
+        public void MiReleasesDownloadWebpage_click(object sender, EventArgs e)
         {
             // Fire up a web browser to the project Wiki URL.
             System.Diagnostics.Process.Start(Properties.Settings.Default.InstallerURL);
         }
 
-        public void miReportIssues_Click(object sender, EventArgs e)
+        public void MiReportIssues_Click(object sender, EventArgs e)
         {
             // Fire up a web browser to the project issues URL.
             System.Diagnostics.Process.Start(Properties.Settings.Default.ReportIssuesURL);
         }
 
-        public void miAbout_Click(object sender, EventArgs e)
+        public void MiAbout_Click(object sender, EventArgs e)
         {
-            // Since the user has manually clicked this menu item to check for updates,
+            // Since the user has manually clicked this menu item, check for updates,
             // set this boolean variable to true so we can give user feedback if no update available.
-                        
-            Preferences.ManualCheckForUpdate = true;
 
             // Check for app update.
-            About.Instance.CheckForUpdate();
+            if (!Preferences.DisableWebCalls)
+            {
+                Preferences.ManualCheckForUpdate = true;
+                About.Instance.CheckForUpdate();
+            }
+            
         }
     }
 }

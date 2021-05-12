@@ -21,7 +21,6 @@ namespace Office365FiddlerInspector.Services
             return 5000;
         }
 
-
         public static Task<bool> SetDefaultPreferences()
         {
             ExtensionEnabled = true;
@@ -31,7 +30,6 @@ namespace Office365FiddlerInspector.Services
 
             return Task.FromResult(true);
         }
-
 
         public static string AppVersion
         {
@@ -52,7 +50,7 @@ namespace Office365FiddlerInspector.Services
             {
                 _extensionEnabled = value;
                 FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.enabled", value);
-                MenuUI.Instance.miEnabled.Text = ExtensionEnabled ? "Disable" : "Enable";
+                MenuUI.Instance.MiEnabled.Text = ExtensionEnabled ? "Disable" : "Enable";
                 MenuUI.Instance.ExchangeOnlineTopMenu.Text = ExtensionEnabled ? "Office 365" : "Office 365 (Disabled)";
             }
         }
@@ -72,11 +70,11 @@ namespace Office365FiddlerInspector.Services
             //}
         }
 
-        private static bool _isLoadSaz;
+        private static bool _IsLoadSaz;
         public static bool IsLoadSaz
         {
-            get => _isLoadSaz = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.LoadSaz", false);
-            set { _isLoadSaz = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.LoadSaz", value); }
+            get => _IsLoadSaz = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.LoadSaz", false);
+            set { _IsLoadSaz = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.LoadSaz", value); }
         }
 
         private static Int32 _executionCount;
@@ -101,6 +99,5 @@ namespace Office365FiddlerInspector.Services
             get => DisableWebCalls = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.NeverWebCall", false);
             set { _DisableWebCalls = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.NeverWebCall", value); }
         }
-
     }
 }

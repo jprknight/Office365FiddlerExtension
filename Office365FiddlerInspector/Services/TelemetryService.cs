@@ -40,14 +40,6 @@ namespace Office365FiddlerInspector.Services
         /// <returns>Bool</returns>
         public static async Task InitializeAsync()
         {
-
-            if (Preferences.DisableWebCalls)
-            {
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: Telemetry Service DisableWebCalls is true.");
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: The Office 365 Fiddler Extension won't send telemetry data.");
-                return;
-            }
-
             if (!IsInitialized)
             {
                 try
@@ -86,13 +78,6 @@ namespace Office365FiddlerInspector.Services
         /// <returns>Task Completion Event.</returns>
         public async static void TrackEvent(string _value)
         {
-            if (Preferences.DisableWebCalls)
-            {
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: Telemetry Service DisableWebCalls is true.");
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: The Office 365 Fiddler Extension won't send telemetry data.");
-                return;
-            }
-
             try
             {
                 if (await GetClientStatus())
@@ -111,13 +96,6 @@ namespace Office365FiddlerInspector.Services
 
         public async static Task FlushClientAsync()
         {
-            if (Preferences.DisableWebCalls)
-            {
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: Telemetry Service DisableWebCalls is true.");
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: The Office 365 Fiddler Extension won't send telemetry data.");
-                return;
-            }
-
             try
             {
                 Client.Flush();
@@ -134,7 +112,8 @@ namespace Office365FiddlerInspector.Services
 
         private async static Task<bool> GetClientStatus()
         {
-            bool results = false;
+            //bool results = false;
+            bool results;
             if (ExceptionCounter <= 4)
             {
                 results = true;
@@ -189,6 +168,5 @@ namespace Office365FiddlerInspector.Services
                 return sb.ToString();
             }
         }
-
     }
 }

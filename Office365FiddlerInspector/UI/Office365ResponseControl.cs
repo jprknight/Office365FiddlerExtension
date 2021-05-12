@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using Fiddler;
 
 namespace O365FiddlerInspector.UI
@@ -19,7 +11,6 @@ namespace O365FiddlerInspector.UI
             InitializeComponent();
            
             ResultsOutput = ResultsDisplay;
-
         }
         private void ResetPrefs()
         {

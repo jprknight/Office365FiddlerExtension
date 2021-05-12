@@ -52,12 +52,12 @@ namespace Office365FiddlerInspector.Inspectors
         {
             get
             {
-                return this.rawBody;
+                return this.RawBody;
             }
 
             set
             {
-                this.rawBody = value;
+                this.RawBody = value;
                 if (cachedSessionId != session.id || cachedSessionId == 0 && this.session != null)
                 {
                     this.cachedSessionId = session.id;
@@ -92,7 +92,7 @@ namespace Office365FiddlerInspector.Inspectors
         /// <summary>
         /// Gets or sets the raw bytes from the frame
         /// </summary>
-        private byte[] rawBody { get; set; }
+        private byte[] RawBody { get; set; }
 
         /// <summary>
         /// Method that returns a sorting hint
@@ -141,7 +141,7 @@ namespace Office365FiddlerInspector.Inspectors
                 }
             }
 
-            if (this.IsEXOhttp)
+            if (this.IsHTTP)
             {
                 return 100;
             }
@@ -155,7 +155,7 @@ namespace Office365FiddlerInspector.Inspectors
         /// <summary>
         /// Gets a value indicating whether the message is MAPI protocol message.
         /// </summary>
-        public bool IsEXOhttp
+        public bool IsHTTP
         {
             get
             {
@@ -230,7 +230,7 @@ namespace Office365FiddlerInspector.Inspectors
 
                 //this.Clear();
 
-                ResultsString.Append(FiddlerApplication.Prefs.GetStringPref("extensions.EXOFiddlerExtension.UpdateMessage", ""));
+                ResultsString.Append(FiddlerApplication.Prefs.GetStringPref("extensions.Office365.UpdateMessage", ""));
 
                 ResultsString.AppendLine("General Session Data");
                 ResultsString.AppendLine("--------------------");
@@ -366,10 +366,7 @@ namespace Office365FiddlerInspector.Inspectors
                     if (ClientMilliseconds > SlowRunningSessionThreshold)
                     {
                         ResultsString.AppendLine("!Long running session!");
-                        if (Preferences.AppLoggingEnabled)
-                        {
-                            FiddlerApplication.Log.LogString("O365FiddlerExtention: " + this.session.id + " Long running session.");
-                        }
+                        FiddlerApplication.Log.LogString("O365FiddlerExtention: " + this.session.id + " Long running session.");
                     }
                     ResultsString.AppendLine();
                 }
@@ -415,11 +412,8 @@ namespace Office365FiddlerInspector.Inspectors
 
                     if (ServerMilliseconds > SlowRunningSessionThreshold)
                     {
-                        ResultsString.AppendLine("!Long running EXO session!");
-                        if (Preferences.AppLoggingEnabled)
-                        {
-                            FiddlerApplication.Log.LogString("O365FiddlerExtention: " + this.session.id + " Long running Office 365 session.");
-                        }
+                        ResultsString.AppendLine("!Long running Office 365 session!");
+                        FiddlerApplication.Log.LogString("O365FiddlerExtention: " + this.session.id + " Long running Office 365 session.");
                     }
                     ResultsString.AppendLine();
                     ResultsString.AppendLine($"Transit Time: { Math.Round((this.session.Timers.ServerDoneResponse - this.session.Timers.ServerBeginResponse).TotalMilliseconds)} ms");
