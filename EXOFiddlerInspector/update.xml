@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<EXOFiddlerInspector>
+<FiddlerInspector>
   <version>1.0.71</version>
   <url>https://aka.ms/O365FiddlerExtensionUpdateUrl</url>
-</EXOFiddlerInspector>
+  <EXOFiddlerInspector>
+    <version>1.0.71</version>
+    <url>https://aka.ms/O365FiddlerExtensionUpdateUrl</url>
+  </EXOFiddlerInspector>
+</FiddlerInspector>
