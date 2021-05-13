@@ -5,12 +5,14 @@ namespace O365FiddlerInspector.UI
 {
     public partial class Office365ResponseControl : UserControl
     {
-        public static TextBox ResultsOutput { get; set; }
+        //public static TextBox ResultsOutput { get; set; }
+        public static WebBrowser ResultsOutput { get; set; }
         public Office365ResponseControl()
         {
             InitializeComponent();
            
-            ResultsOutput = ResultsDisplay;
+            //ResultsOutput = ResultsDisplay;
+            ResultsOutput = webBrowserControl;
         }
         private void ResetPrefs()
         {
@@ -28,6 +30,11 @@ namespace O365FiddlerInspector.UI
             FiddlerApplication.Prefs.RemovePref("extensions.O365FiddlerExtension.MenuTitle");
             FiddlerApplication.Prefs.RemovePref("extensions.O365FiddlerExtension.HostIPColumnEnabled");
             FiddlerApplication.Prefs.RemovePref("extensions.O365FiddlerExtension.AuthColumnEnabled");
+        }
+
+        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+
         }
     }
 }

@@ -21,6 +21,12 @@ namespace Office365FiddlerInspector.Services
             return 5000;
         }
 
+        // 2.5 seconds for warning on the time a session took.
+        public static int GetWarningSessionTimeThreshold()
+        {
+            return 2500;
+        }
+
         public static Task<bool> SetDefaultPreferences()
         {
             ExtensionEnabled = true;

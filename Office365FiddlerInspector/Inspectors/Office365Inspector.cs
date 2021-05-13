@@ -192,11 +192,18 @@ namespace Office365FiddlerInspector.Inspectors
         /// <param name="o">The tab control for the inspector</param>
         public override void AddToTab(TabPage o)
         {
-            Office365ResponseControl textControl = new Office365ResponseControl();
+            //Office365ResponseControl textControl = new Office365ResponseControl();
+            //o.Text = "Office 365";
+            //o.ToolTipText = "Office 365 Inspector";
+            //textControl.Size = o.Size;
+            //o.Controls.Add(textControl);
+            //o.Controls[0].Dock = DockStyle.Fill;
+
+            Office365ResponseControl webBrowser = new Office365ResponseControl();
             o.Text = "Office 365";
             o.ToolTipText = "Office 365 Inspector";
-            textControl.Size = o.Size;
-            o.Controls.Add(textControl);
+            webBrowser.Size = o.Size;
+            o.Controls.Add(webBrowser);
             o.Controls[0].Dock = DockStyle.Fill;
         }
 
@@ -206,41 +213,30 @@ namespace Office365FiddlerInspector.Inspectors
         /// </summary>
         /// <param name="_session"></param>
         /// <returns></returns>
-        public async Task ParseHTTPResponse(Session _session)
+        public async Task ParseHTTPResponse(Session session)
         {
             try
             {
-
+                // Extension disabled.
                 if (!Preferences.ExtensionEnabled)
                 {
+                    // Clear ResultsString.
                     Clear();
-                    ResultsString.AppendLine("-------------------------------");
-                    ResultsString.AppendLine("O365 Fiddler Extension Disabled.");
-                    ResultsString.AppendLine("-------------------------------");
-                    Office365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
+                    ResultsString.AppendLine("<h2>Office 365 Fiddler Extension Disabled</h2>");
+                    //Office365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
+                    Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
                     return;
                 }
 
+                // Clear ResultsString.
                 Clear();
 
-                this.session = _session;
+                this.session = session;
 
                 this.session.utilDecodeRequest(true);
                 this.session.utilDecodeResponse(true);
 
-                //this.Clear();
-
-                ResultsString.Append(FiddlerApplication.Prefs.GetStringPref("extensions.Office365.UpdateMessage", ""));
-
-                ResultsString.AppendLine("General Session Data");
-                ResultsString.AppendLine("--------------------");
-                ResultsString.AppendLine();
-
-                // Write data into Session Type and session ID.
-                ResultsString.AppendLine($"Session Id: {this.session.id.ToString()}");
-
-                ResultsString.AppendLine($"HTTP Response Code: {this.session.responseCode.ToString()}");
-
+                #region CalculateTimespan
                 // Write Data age data into textbox.
                 String TimeSpanDaysText = "";
                 String TimeSpanHoursText = "";
@@ -253,11 +249,7 @@ namespace Office365FiddlerInspector.Inspectors
                 int TimeSpanHours = CalcDataAge.Hours;
                 int TimeSpanMinutes = CalcDataAge.Minutes;
 
-                if (TimeSpanDays == 0)
-                {
-                    // Do nothing.
-                }
-                else if (TimeSpanDays == 1)
+                if (TimeSpanDays == 1)
                 {
                     TimeSpanDaysText = TimeSpanDays + " day, ";
                 }
@@ -288,108 +280,268 @@ namespace Office365FiddlerInspector.Inspectors
 
                 String DataCollected = SessionDateTime.ToString("dddd, MMMM dd, yyyy h:mm tt");
 
-                ResultsString.AppendLine($"Session Captured: {DataCollected}");
-                ResultsString.AppendLine($"Capture was {DataAge}");
+                #endregion
 
-                ResultsString.AppendLine($"Session Type: {this.session["X-SessionType"]}");
-                ResultsString.AppendLine($"Process: {this.session["X-ProcessName"]}");
+                ResultsString.Append(FiddlerApplication.Prefs.GetStringPref("extensions.Office365.UpdateMessage", ""));
 
+                ResultsString.AppendLine("<h2>General Session Data</h2>");
+                
+                ResultsString.AppendLine("<table border='0'>");
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Session Id");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.id.ToString());
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
 
-                if (this.session["X-HostIP"]?.ToString().Length > 0)
-                {
-                    ResultsString.AppendLine($"Host IP: {this.session["X-HostIP"]}");
-                }
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("HTTP Response Code");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine($"<a href='https://en.wikipedia.org/wiki/List_of_HTTP_status_codes' target='_blank'>{this.session["X-ResponseCodeDescription"]}</a>");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
 
-                // Response Server.
-                if (this.session.isTunnel == true)
-                {
-                    ResultsString.AppendLine("Connect Tunnel");
-                }
-                else if ((this.session.oResponse["Server"] != null) && (this.session.oResponse["Server"] != ""))
-                {
-                    ResultsString.AppendLine($"Response Server: {this.session.oResponse["Server"]}");
-                }
-                // Else if the reponnse Host header is not null or blank then populate it into the response server value
-                // Some traffic identifies a host rather than a response server.
-                else if ((this.session.oResponse["Host"] != null && (this.session.oResponse["Host"] != "")))
-                {
-                    ResultsString.AppendLine($"Host: {this.session.oResponse["Host"]}");
-                }
-                // Else if the response PoweredBy header is not null or blank then populate it into the response server value.
-                // Some Office 365 servers respond as X-Powered-By ASP.NET.
-                else if ((this.session.oResponse["X-Powered-By"] != null) && (this.session.oResponse["X-Powered-By"] != ""))
-                {
-                    ResultsString.AppendLine($"X-Powered-By: {this.session.oResponse["X-Powered-By"]}");
-                }
-                // Else if the response X-Served-By header is not null or blank then populate it into the response server value.
-                else if ((this.session.oResponse["X-Served-By"] != null && (this.session.oResponse["X-Served-By"] != "")))
-                {
-                    ResultsString.AppendLine($"X-Served-By: {this.session.oResponse["X-Served-By"]}");
-                }
-                // Else if the response X-Served-By header is not null or blank then populate it into the response server value.
-                else if ((this.session.oResponse["X-Server-Name"] != null && (this.session.oResponse["X-Server-Name"] != "")))
-                {
-                    ResultsString.AppendLine($"X-Server-Name: {this.session.oResponse["X-Server-Name"]}");
-                }
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                
+                ResultsString.AppendLine("Session Captured");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(DataCollected);
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
 
-                ResultsString.AppendLine();
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Capture was");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(DataAge);
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
 
-                /// <remarks>
-                /// Client Begin and done response. -- Overall elapsed time.
-                /// </remarks>
-                ResultsString.AppendLine("Overall Session Timers");
-                ResultsString.AppendLine("----------------------");
-                ResultsString.AppendLine();
-                ResultsString.AppendLine("For an explantion of session timers refer to: https://aka.ms/Timers-Definitions");
-                ResultsString.AppendLine();
-                ResultsString.AppendLine($"Client Connected: {this.session.Timers.ClientConnected.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
-                ResultsString.AppendLine($"Client Begin Request: {this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
-                ResultsString.AppendLine($"Got Request Headers: {this.session.Timers.FiddlerGotRequestHeaders.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
-                ResultsString.AppendLine($"Client Done Response: {this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Session Alert");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session["X-ResponseAlert"]);
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Process");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session["X-ProcessName"]);
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Response Server");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session["X-ResponseServer"]);
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("</table>");
+
+                // Session Timers.
+                ResultsString.AppendLine("<h2>Overall Session Timers</h2>");
+
+                ResultsString.AppendLine("<p>For an explantion of session timers refer to: <a href='https://aka.ms/Timers-Definitions' target='_blank'>https://aka.ms/Timers-Definitions</a>.</p>");
+
+                ResultsString.AppendLine("<table border='0'>");
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Client Connected");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.ClientConnected.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Client Begin Request");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Got Request Headers");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.FiddlerGotRequestHeaders.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Client Done Response");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                
 
                 // ClientDoneResponse can be blank. If so do not try to calculate and output Elapsed Time, we end up with a hideously large number.
                 if (this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
                 {
                     double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
-                    
-                    ResultsString.AppendLine();
-                    ResultsString.AppendLine($"Elapsed Time: {ClientMilliseconds}ms");
+                    double ClientSeconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalSeconds);
 
-                    if (ClientMilliseconds > 1000)
+                    ResultsString.AppendLine();
+
+                    // If the roundtrip time is less than 1 second show the result in milliseconds.
+                    if (ClientMilliseconds < 1000)
                     {
-                        double ClientSeconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalSeconds);
-                        ResultsString.AppendLine($"Elapsed Time: {ClientSeconds}s");
+                        ResultsString.AppendLine("<tr>");
+                        ResultsString.AppendLine("<td>");
+                        ResultsString.AppendLine("Elapsed Time");
+                        ResultsString.AppendLine("</td>");
+                        ResultsString.AppendLine("<td>");
+                        ResultsString.AppendLine($"{ClientMilliseconds}ms");
+                        ResultsString.AppendLine("</td>");
+                        ResultsString.AppendLine("</tr>");
+                    }
+                    // If the roundtrip is over warning and under slow running thresholds; orange.
+                    else if (ClientMilliseconds > Preferences.GetWarningSessionTimeThreshold() && ClientMilliseconds < Preferences.GetSlowRunningSessionThreshold())
+                    {
+                        ResultsString.AppendLine("<tr>");
+                        ResultsString.AppendLine("<td>");
+                        ResultsString.AppendLine("Elapsed Time");
+                        ResultsString.AppendLine("</td>");
+                        ResultsString.AppendLine("<td>");
+                        ResultsString.AppendLine($"<b><div style=color:'orange'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</div></b>");
+                        ResultsString.AppendLine("</td>");
+                        ResultsString.AppendLine("</tr>");
+                    }
+                    // If roundtrip is over slow running threshold; red.
+                    else if (ClientMilliseconds > Preferences.GetSlowRunningSessionThreshold())
+                    {
+                        ResultsString.AppendLine("<tr>");
+                        ResultsString.AppendLine("<td>");
+                        ResultsString.AppendLine("Elapsed Time");
+                        ResultsString.AppendLine("</td>");
+                        ResultsString.AppendLine("<td>");
+                        ResultsString.AppendLine($"<b><div style=color:'red'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</div></b>");
+                        ResultsString.AppendLine("</td>");
+                        ResultsString.AppendLine("</tr>");
+                    }
+                    // If the roundtrip time is more than 1 second show the result in seconds.
+                    else
+                    {
+                        if (ClientSeconds == 1)
+                        {
+                            ResultsString.AppendLine("<tr>");
+                            ResultsString.AppendLine("<td>");
+                            ResultsString.AppendLine("Elapsed Time");
+                            ResultsString.AppendLine("</td>");
+                            ResultsString.AppendLine("<td>");
+                            ResultsString.AppendLine(ClientSeconds + " second (" + ClientMilliseconds + "ms).");
+                            ResultsString.AppendLine("</td>");
+                            ResultsString.AppendLine("</tr>");
+                        }
+                        else
+                        {
+                            ResultsString.AppendLine("<tr>");
+                            ResultsString.AppendLine("<td>");
+                            ResultsString.AppendLine("Elapsed Time");
+                            ResultsString.AppendLine("</td>");
+                            ResultsString.AppendLine("<td>");
+                            ResultsString.AppendLine(ClientSeconds + " seconds (" + ClientMilliseconds + "ms).");
+                            ResultsString.AppendLine("</td>");
+                            ResultsString.AppendLine("</tr>");
+                        }
                     }
 
                     int SlowRunningSessionThreshold = Preferences.GetSlowRunningSessionThreshold();
 
                     if (ClientMilliseconds > SlowRunningSessionThreshold)
                     {
-                        ResultsString.AppendLine("!Long running session!");
                         FiddlerApplication.Log.LogString("O365FiddlerExtention: " + this.session.id + " Long running session.");
                     }
                     ResultsString.AppendLine();
                 }
                 else
                 {
-                    ResultsString.AppendLine();
-                    ResultsString.AppendLine("Session does not contain data to calculate 'Elapsed Time'.");
+                    ResultsString.AppendLine("<tr>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine("Elapsed Time");
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine("Unsufficient data");
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("</tr>");
                 }
+
+                ResultsString.AppendLine("</table>");
 
                 /// <remarks>
                 /// Server Got and Done Response. -- Server Think Time.
                 /// </remarks>
                 /// 
-                ResultsString.AppendLine();
-                ResultsString.AppendLine("Server Timers");
-                ResultsString.AppendLine("-------------");
-                ResultsString.AppendLine();
-                // Write Server data into textboxes.
-                ResultsString.AppendLine($"Fiddler Begin Request: { this.session.Timers.FiddlerBeginRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
-                ResultsString.AppendLine($"Server Got Request: { this.session.Timers.ServerGotRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
-                ResultsString.AppendLine($"Server Begin Response: { this.session.Timers.ServerBeginResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
-                ResultsString.AppendLine($"Got Response Headers: { this.session.Timers.FiddlerGotResponseHeaders.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
-                ResultsString.AppendLine($"Server Done Response: {this.session.Timers.ServerDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt")}");
+                
+                ResultsString.AppendLine("<h2>Server Timers</h2>");
+
+                ResultsString.AppendLine("<table border='0'>");
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Fiddler Begin Request");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.FiddlerBeginRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Server Got Request");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.ServerGotRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Server Begin Response");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.ServerBeginResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Got Response Headers");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.FiddlerGotResponseHeaders.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Server Done Response");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.ServerDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
 
                 // ServerGotRequest, ServerBeginResponse or ServerDoneResponse can be blank. If so do not try to calculate and output 'Server Think Time' or 'Transmit Time', we end up with a hideously large number.
                 if (this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff") != "0:00:00.000" &&
@@ -399,73 +551,141 @@ namespace Office365FiddlerInspector.Inspectors
 
                     double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
 
-                    ResultsString.AppendLine();
-                    ResultsString.AppendLine($"Server Think Time: {ServerMilliseconds}ms");
-
-                    if (ServerMilliseconds > 1000)
+                    if (ServerMilliseconds < 1000)
+                    {
+                        ResultsString.AppendLine("<tr>");
+                        ResultsString.AppendLine("<td>");
+                        ResultsString.AppendLine("Server Think Time");
+                        ResultsString.AppendLine("</td>");
+                        ResultsString.AppendLine("<td>");
+                        ResultsString.AppendLine($"{ServerMilliseconds}ms");
+                        ResultsString.AppendLine("</td>");
+                        ResultsString.AppendLine("</tr>");
+                    }
+                    else
                     {
                         double ServerSeconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalSeconds);
-                        ResultsString.AppendLine($"Server Think Time: {ServerSeconds}s");
+
+                        ResultsString.AppendLine("<tr>");
+                        ResultsString.AppendLine("<td>");
+                        ResultsString.AppendLine("Server Think Time");
+                        ResultsString.AppendLine("</td>");
+                        ResultsString.AppendLine("<td>");
+                        ResultsString.AppendLine($"{ServerSeconds}s ({ServerMilliseconds}ms).");
+                        ResultsString.AppendLine("</td>");
+                        ResultsString.AppendLine("</tr>");
                     }
 
                     int SlowRunningSessionThreshold = Preferences.GetSlowRunningSessionThreshold();
 
                     if (ServerMilliseconds > SlowRunningSessionThreshold)
                     {
-                        ResultsString.AppendLine("!Long running Office 365 session!");
                         FiddlerApplication.Log.LogString("O365FiddlerExtention: " + this.session.id + " Long running Office 365 session.");
                     }
-                    ResultsString.AppendLine();
-                    ResultsString.AppendLine($"Transit Time: { Math.Round((this.session.Timers.ServerDoneResponse - this.session.Timers.ServerBeginResponse).TotalMilliseconds)} ms");
+
+                    ResultsString.AppendLine("<tr>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine("Transit Time");
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine($"{Math.Round((this.session.Timers.ServerDoneResponse - this.session.Timers.ServerBeginResponse).TotalMilliseconds)} ms");
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("</tr>");
                 }
-                else
-                {
-                    ResultsString.AppendLine();
-                    ResultsString.AppendLine("Session does not contain data to calculate 'Server Think Time' and 'Transit Time'.");
-                }
+
+                ResultsString.AppendLine("</table>");
 
                 // Authentication
                 if (this.session["X-AUTHENTICATION"] != "No Auth Headers")
                 {
-                    ResultsString.AppendLine();
-                    ResultsString.AppendLine("Authentication");
-                    ResultsString.AppendLine("--------------");
-                    ResultsString.AppendLine();
-                    ResultsString.AppendLine($"Authentication Type: {this.session["X-AUTHENTICATION"]}");
-                    ResultsString.AppendLine();
-                    ResultsString.AppendLine($"Authentication Description: {this.session["X-AUTHENTICATIONDESC"]}");
+                    ResultsString.AppendLine("<h2>Authentication</h2>");
+
+                    ResultsString.AppendLine("<table border='0'>");
+                    ResultsString.AppendLine("<tr>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine("Type");
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine(this.session["X-AUTHENTICATION"]);
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("</tr>");
+
+                    ResultsString.AppendLine("<tr>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine("Description");
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine(this.session["X-AUTHENTICATIONDESC"]);
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("</tr>");
+
+                    ResultsString.AppendLine("</table>");
                 }
 
                 if (this.session["X-Office365AuthType"] == "SAMLResponseParser")
                 {
-                    ResultsString.AppendLine($"Issuer: {this.session["X-ISSUER"]}");
-                    ResultsString.AppendLine($"Attribute Name Immutable Id: {this.session["X-ATTRIBUTENAMEIMMUTABLEID"]}");
-                    ResultsString.AppendLine($"Attribute Name UPN: {this.session["X-ATTRIBUTENAMEUPN"]}");
-                    ResultsString.AppendLine($"Name Identifier Format: {this.session["X-NAMEIDENTIFIERFORMAT"]}");
-                    ResultsString.AppendLine("Signing Certificate: Copy and save the below text into a .cer file to view the certificate.");
-                    ResultsString.AppendLine("");
-                    ResultsString.AppendLine("-----BEGIN CERTIFICATE-----");
-                    ResultsString.AppendLine(this.session["X-SigningCertificate"]);
-                    ResultsString.AppendLine("-----END CERTIFICATE-----");
+
+                    ResultsString.AppendLine("<h2>SAML Response Parser</h2>");
+
+                    ResultsString.AppendLine("<table border='0'>");
+                    ResultsString.AppendLine("<tr>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine("Issuer");
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine(this.session["X-ISSUER"]);
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("</tr>");
+
+                    ResultsString.AppendLine("<tr>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine("Attribute Name Immutable Id");
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine(this.session["X-ATTRIBUTENAMEIMMUTABLEID"]);
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("</tr>");
+
+                    ResultsString.AppendLine("<tr>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine("Attribute Name UPN");
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine(this.session["X-ATTRIBUTENAMEUPN"]);
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("</tr>");
+
+                    ResultsString.AppendLine("<tr>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine("Name Identifier Format");
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine(this.session["X-NAMEIDENTIFIERFORMAT"]);
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("</tr>");
+
+                    ResultsString.AppendLine("</table>");
+
+                    ResultsString.AppendLine("<p>Signing Certificate: Copy and save the below text into a .cer file to view the certificate.</p>");
+                    ResultsString.AppendLine("<pre>-----BEGIN CERTIFICATE-----</pre>");
+                    ResultsString.AppendLine($"<pre>{this.session["X-SigningCertificate"]}</pre>");
+                    ResultsString.AppendLine("<pre>-----END CERTIFICATE-----</pre>");
                 }
 
-                ResultsString.AppendLine();
-                ResultsString.AppendLine("Session Analysis");
-                ResultsString.AppendLine("----------------");
-                ResultsString.AppendLine();
-                ResultsString.AppendLine($"Session Alert: {this.session["X-ResponseAlert"]}");
-                ResultsString.AppendLine();
-                ResultsString.AppendLine($"Session Comment: {this.session["X-ResponseComments"]}");
-                ResultsString.AppendLine();
+                ResultsString.AppendLine("<h2>Session Analysis</h2>");
 
-                Office365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
+                ResultsString.AppendLine($"<p>{this.session["X-ResponseComments"]}</p>");
+
+                //Office365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
+                Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
             }
             catch (Exception ex)
             {
                 ResultsString.AppendLine();
                 ResultsString.AppendLine(ex.Message);
                 ResultsString.AppendLine();
-                Office365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
+                //Office365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
+                Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
             }
         }
 
@@ -475,7 +695,9 @@ namespace Office365FiddlerInspector.Inspectors
         /// </summary>
         public void Clear()
         {
-            Office365ResponseControl.ResultsOutput.Clear();
+            //Office365ResponseControl.ResultsOutput.Clear();
+            //ResultsString.Clear();
+            Office365ResponseControl.ResultsOutput.DocumentText = "";
 
             ResultsString = new StringBuilder();
         }

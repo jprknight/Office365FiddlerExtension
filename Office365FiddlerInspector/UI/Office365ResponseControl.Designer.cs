@@ -28,43 +28,36 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ResultsDisplay = new System.Windows.Forms.TextBox();
+            this.webBrowserControl = new System.Windows.Forms.WebBrowser();
             this.SuspendLayout();
             // 
-            // ResultsDisplay
+            // webBrowserControl
             // 
-            this.ResultsDisplay.AcceptsReturn = true;
-            this.ResultsDisplay.AcceptsTab = true;
-            this.ResultsDisplay.BackColor = System.Drawing.Color.AliceBlue;
-            this.ResultsDisplay.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.ResultsDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ResultsDisplay.Font = new System.Drawing.Font("Lucida Console", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ResultsDisplay.Location = new System.Drawing.Point(0, 0);
-            this.ResultsDisplay.Margin = new System.Windows.Forms.Padding(6);
-            this.ResultsDisplay.Multiline = true;
-            this.ResultsDisplay.Name = "ResultsDisplay";
-            this.ResultsDisplay.ReadOnly = true;
-            this.ResultsDisplay.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.ResultsDisplay.Size = new System.Drawing.Size(558, 605);
-            this.ResultsDisplay.TabIndex = 1;
+            this.webBrowserControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowserControl.Location = new System.Drawing.Point(0, 0);
+            this.webBrowserControl.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowserControl.Name = "webBrowserControl";
+            this.webBrowserControl.Size = new System.Drawing.Size(558, 77);
+            this.webBrowserControl.TabIndex = 2;
+            this.webBrowserControl.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
             // 
-            // ExchangeResponseControl
+            // Office365ResponseControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.Controls.Add(this.ResultsDisplay);
+            this.Controls.Add(this.webBrowserControl);
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "ExchangeResponseControl";
-            this.Size = new System.Drawing.Size(558, 605);
+            this.Name = "Office365ResponseControl";
+            this.Size = new System.Drawing.Size(558, 77);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TextBox ResultsDisplay;
+        //private System.Windows.Forms.TextBox ResultsDisplay;
+        private System.Windows.Forms.WebBrowser webBrowserControl;
     }
 }

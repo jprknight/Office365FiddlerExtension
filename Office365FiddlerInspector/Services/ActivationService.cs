@@ -74,22 +74,24 @@ namespace Office365FiddlerInspector.Services
         /// Called for each HTTP/HTTPS response after it's complete.
         /// </summary>
         /// <param name="_session"></param>
-        public void AutoTamperResponseAfter(Session _session)
+        public void AutoTamperResponseAfter(Session session)
         {
             if (!Preferences.ExtensionEnabled)
             {
                 return;
             }
 
-            SessionProcessor.Instance.SetElapsedTime(_session);
+            SessionProcessor.Instance.SetElapsedTime(session);
 
-            SessionProcessor.Instance.OnPeekAtResponseHeaders(_session);
+            SessionProcessor.Instance.OnPeekAtResponseHeaders(session);
 
-            SessionProcessor.Instance.SetAuthentication(_session);
+            SessionProcessor.Instance.SetAuthentication(session);
 
-            SessionProcessor.Instance.SetResponseServer(_session);
+            SessionProcessor.Instance.SetResponseServer(session);
 
-            _session.RefreshUI();
+            SessionProcessor.Instance.SetResponseCodeDescription(session);
+
+            session.RefreshUI();
         }
 
         /// <summary>
