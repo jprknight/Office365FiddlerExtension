@@ -83,13 +83,21 @@ namespace Office365FiddlerInspector.Services
 
             SessionProcessor.Instance.SetElapsedTime(session);
 
-            SessionProcessor.Instance.OnPeekAtResponseHeaders(session);
+            SessionProcessor.Instance.SetResponseServer(session);
 
             SessionProcessor.Instance.SetAuthentication(session);
 
-            SessionProcessor.Instance.SetResponseServer(session);
+            SessionProcessor.Instance.SetSessionType(session);
 
-            SessionProcessor.Instance.SetResponseCodeDescription(session);
+            SessionProcessor.Instance.CalculateSessionAge(session);
+
+            SessionProcessor.Instance.SetInspectorElapsedTime(session);
+
+            SessionProcessor.Instance.SetServerThinkTime(session);
+
+            SessionProcessor.Instance.SetTransitTime(session);
+
+            SessionProcessor.Instance.OnPeekAtResponseHeaders(session);
 
             session.RefreshUI();
         }

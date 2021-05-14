@@ -192,13 +192,6 @@ namespace Office365FiddlerInspector.Inspectors
         /// <param name="o">The tab control for the inspector</param>
         public override void AddToTab(TabPage o)
         {
-            //Office365ResponseControl textControl = new Office365ResponseControl();
-            //o.Text = "Office 365";
-            //o.ToolTipText = "Office 365 Inspector";
-            //textControl.Size = o.Size;
-            //o.Controls.Add(textControl);
-            //o.Controls[0].Dock = DockStyle.Fill;
-
             Office365ResponseControl webBrowser = new Office365ResponseControl();
             o.Text = "Office 365";
             o.ToolTipText = "Office 365 Inspector";
@@ -206,7 +199,6 @@ namespace Office365FiddlerInspector.Inspectors
             o.Controls.Add(webBrowser);
             o.Controls[0].Dock = DockStyle.Fill;
         }
-
 
         /// <summary>
         ///  Parse the HTTP payload to FSSHTTP and WOPI message.
@@ -223,7 +215,6 @@ namespace Office365FiddlerInspector.Inspectors
                     // Clear ResultsString.
                     Clear();
                     ResultsString.AppendLine("<h2>Office 365 Fiddler Extension Disabled</h2>");
-                    //Office365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
                     Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
                     return;
                 }
@@ -233,62 +224,22 @@ namespace Office365FiddlerInspector.Inspectors
 
                 this.session = session;
 
-                this.session.utilDecodeRequest(true);
-                this.session.utilDecodeResponse(true);
-
-                #region CalculateTimespan
-                // Write Data age data into textbox.
-                String TimeSpanDaysText = "";
-                String TimeSpanHoursText = "";
-                String TimeSpanMinutesText = "";
-
-                DateTime SessionDateTime = this.session.Timers.ClientBeginRequest;
-                DateTime DateTimeNow = DateTime.Now;
-                TimeSpan CalcDataAge = DateTimeNow - SessionDateTime;
-                int TimeSpanDays = CalcDataAge.Days;
-                int TimeSpanHours = CalcDataAge.Hours;
-                int TimeSpanMinutes = CalcDataAge.Minutes;
-
-                if (TimeSpanDays == 1)
-                {
-                    TimeSpanDaysText = TimeSpanDays + " day, ";
-                }
-                else
-                {
-                    TimeSpanDaysText = TimeSpanDays + " days, ";
-                }
-
-                if (TimeSpanHours == 1)
-                {
-                    TimeSpanHoursText = TimeSpanHours + " hour, ";
-                }
-                else
-                {
-                    TimeSpanHoursText = TimeSpanHours + " hours, ";
-                }
-
-                if (TimeSpanMinutes == 1)
-                {
-                    TimeSpanMinutesText = TimeSpanMinutes + " minute ago.";
-                }
-                else
-                {
-                    TimeSpanMinutesText = TimeSpanMinutes + " minutes ago.";
-                }
-
-                String DataAge = TimeSpanDaysText + TimeSpanHoursText + TimeSpanMinutesText;
-
-                String DataCollected = SessionDateTime.ToString("dddd, MMMM dd, yyyy h:mm tt");
-
-                #endregion
+                // HTML Header.
+                ResultsString.AppendLine("<html>");
+                ResultsString.AppendLine("<title></title>");
+                ResultsString.AppendLine("<head></head>");
+                ResultsString.AppendLine("<body>");
+                ResultsString.AppendLine("<font face='open-sans'>");
 
                 ResultsString.Append(FiddlerApplication.Prefs.GetStringPref("extensions.Office365.UpdateMessage", ""));
-
+                
+                // General Session Data.
+                #region GeneralSessionData
                 ResultsString.AppendLine("<h2>General Session Data</h2>");
                 
                 ResultsString.AppendLine("<table border='0'>");
                 ResultsString.AppendLine("<tr>");
-                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("<td width='150px'>");
                 ResultsString.AppendLine("Session Id");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
@@ -311,7 +262,7 @@ namespace Office365FiddlerInspector.Inspectors
                 ResultsString.AppendLine("Session Captured");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(DataCollected);
+                ResultsString.AppendLine(this.session["X-DataCollected"]);
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -320,7 +271,7 @@ namespace Office365FiddlerInspector.Inspectors
                 ResultsString.AppendLine("Capture was");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(DataAge);
+                ResultsString.AppendLine(this.session["X-DataAge"]);
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -351,258 +302,37 @@ namespace Office365FiddlerInspector.Inspectors
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
-                ResultsString.AppendLine("</table>");
-
-                // Session Timers.
-                ResultsString.AppendLine("<h2>Overall Session Timers</h2>");
-
-                ResultsString.AppendLine("<p>For an explantion of session timers refer to: <a href='https://aka.ms/Timers-Definitions' target='_blank'>https://aka.ms/Timers-Definitions</a>.</p>");
-
-                ResultsString.AppendLine("<table border='0'>");
-                ResultsString.AppendLine("<tr>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine("Client Connected");
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session.Timers.ClientConnected.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("</tr>");
-
-                ResultsString.AppendLine("<tr>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine("Client Begin Request");
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("</tr>");
-
-                ResultsString.AppendLine("<tr>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine("Got Request Headers");
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session.Timers.FiddlerGotRequestHeaders.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("</tr>");
-
-                ResultsString.AppendLine("<tr>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine("Client Done Response");
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("</tr>");
-
-                
-
-                // ClientDoneResponse can be blank. If so do not try to calculate and output Elapsed Time, we end up with a hideously large number.
-                if (this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
-                {
-                    double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
-                    double ClientSeconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalSeconds);
-
-                    ResultsString.AppendLine();
-
-                    // If the roundtrip time is less than 1 second show the result in milliseconds.
-                    if (ClientMilliseconds < 1000)
-                    {
-                        ResultsString.AppendLine("<tr>");
-                        ResultsString.AppendLine("<td>");
-                        ResultsString.AppendLine("Elapsed Time");
-                        ResultsString.AppendLine("</td>");
-                        ResultsString.AppendLine("<td>");
-                        ResultsString.AppendLine($"{ClientMilliseconds}ms");
-                        ResultsString.AppendLine("</td>");
-                        ResultsString.AppendLine("</tr>");
-                    }
-                    // If the roundtrip is over warning and under slow running thresholds; orange.
-                    else if (ClientMilliseconds > Preferences.GetWarningSessionTimeThreshold() && ClientMilliseconds < Preferences.GetSlowRunningSessionThreshold())
-                    {
-                        ResultsString.AppendLine("<tr>");
-                        ResultsString.AppendLine("<td>");
-                        ResultsString.AppendLine("Elapsed Time");
-                        ResultsString.AppendLine("</td>");
-                        ResultsString.AppendLine("<td>");
-                        ResultsString.AppendLine($"<b><div style=color:'orange'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</div></b>");
-                        ResultsString.AppendLine("</td>");
-                        ResultsString.AppendLine("</tr>");
-                    }
-                    // If roundtrip is over slow running threshold; red.
-                    else if (ClientMilliseconds > Preferences.GetSlowRunningSessionThreshold())
-                    {
-                        ResultsString.AppendLine("<tr>");
-                        ResultsString.AppendLine("<td>");
-                        ResultsString.AppendLine("Elapsed Time");
-                        ResultsString.AppendLine("</td>");
-                        ResultsString.AppendLine("<td>");
-                        ResultsString.AppendLine($"<b><div style=color:'red'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</div></b>");
-                        ResultsString.AppendLine("</td>");
-                        ResultsString.AppendLine("</tr>");
-                    }
-                    // If the roundtrip time is more than 1 second show the result in seconds.
-                    else
-                    {
-                        if (ClientSeconds == 1)
-                        {
-                            ResultsString.AppendLine("<tr>");
-                            ResultsString.AppendLine("<td>");
-                            ResultsString.AppendLine("Elapsed Time");
-                            ResultsString.AppendLine("</td>");
-                            ResultsString.AppendLine("<td>");
-                            ResultsString.AppendLine(ClientSeconds + " second (" + ClientMilliseconds + "ms).");
-                            ResultsString.AppendLine("</td>");
-                            ResultsString.AppendLine("</tr>");
-                        }
-                        else
-                        {
-                            ResultsString.AppendLine("<tr>");
-                            ResultsString.AppendLine("<td>");
-                            ResultsString.AppendLine("Elapsed Time");
-                            ResultsString.AppendLine("</td>");
-                            ResultsString.AppendLine("<td>");
-                            ResultsString.AppendLine(ClientSeconds + " seconds (" + ClientMilliseconds + "ms).");
-                            ResultsString.AppendLine("</td>");
-                            ResultsString.AppendLine("</tr>");
-                        }
-                    }
-
-                    int SlowRunningSessionThreshold = Preferences.GetSlowRunningSessionThreshold();
-
-                    if (ClientMilliseconds > SlowRunningSessionThreshold)
-                    {
-                        FiddlerApplication.Log.LogString("O365FiddlerExtention: " + this.session.id + " Long running session.");
-                    }
-                    ResultsString.AppendLine();
-                }
-                else
+                if (this.session["X-InspectorElapsedTime"] != "Insufficient data")
                 {
                     ResultsString.AppendLine("<tr>");
                     ResultsString.AppendLine("<td>");
                     ResultsString.AppendLine("Elapsed Time");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine("Unsufficient data");
+                    ResultsString.AppendLine(this.session["X-InspectorElapsedTime"]);
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
                 }
 
                 ResultsString.AppendLine("</table>");
+                #endregion
 
-                /// <remarks>
-                /// Server Got and Done Response. -- Server Think Time.
-                /// </remarks>
-                /// 
-                
-                ResultsString.AppendLine("<h2>Server Timers</h2>");
+                // Session Analysis.
+                #region SessionAnalysis
+                ResultsString.AppendLine("<h2>Session Analysis</h2>");
 
-                ResultsString.AppendLine("<table border='0'>");
-                ResultsString.AppendLine("<tr>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine("Fiddler Begin Request");
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session.Timers.FiddlerBeginRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("</tr>");
-
-                ResultsString.AppendLine("<tr>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine("Server Got Request");
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session.Timers.ServerGotRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("</tr>");
-
-                ResultsString.AppendLine("<tr>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine("Server Begin Response");
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session.Timers.ServerBeginResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("</tr>");
-
-                ResultsString.AppendLine("<tr>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine("Got Response Headers");
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session.Timers.FiddlerGotResponseHeaders.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("</tr>");
-
-                ResultsString.AppendLine("<tr>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine("Server Done Response");
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session.Timers.ServerDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("</tr>");
-
-                // ServerGotRequest, ServerBeginResponse or ServerDoneResponse can be blank. If so do not try to calculate and output 'Server Think Time' or 'Transmit Time', we end up with a hideously large number.
-                if (this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff") != "0:00:00.000" &&
-                    this.session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff") != "0:00:00.000" &&
-                    this.session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
-                {
-
-                    double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
-
-                    if (ServerMilliseconds < 1000)
-                    {
-                        ResultsString.AppendLine("<tr>");
-                        ResultsString.AppendLine("<td>");
-                        ResultsString.AppendLine("Server Think Time");
-                        ResultsString.AppendLine("</td>");
-                        ResultsString.AppendLine("<td>");
-                        ResultsString.AppendLine($"{ServerMilliseconds}ms");
-                        ResultsString.AppendLine("</td>");
-                        ResultsString.AppendLine("</tr>");
-                    }
-                    else
-                    {
-                        double ServerSeconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalSeconds);
-
-                        ResultsString.AppendLine("<tr>");
-                        ResultsString.AppendLine("<td>");
-                        ResultsString.AppendLine("Server Think Time");
-                        ResultsString.AppendLine("</td>");
-                        ResultsString.AppendLine("<td>");
-                        ResultsString.AppendLine($"{ServerSeconds}s ({ServerMilliseconds}ms).");
-                        ResultsString.AppendLine("</td>");
-                        ResultsString.AppendLine("</tr>");
-                    }
-
-                    int SlowRunningSessionThreshold = Preferences.GetSlowRunningSessionThreshold();
-
-                    if (ServerMilliseconds > SlowRunningSessionThreshold)
-                    {
-                        FiddlerApplication.Log.LogString("O365FiddlerExtention: " + this.session.id + " Long running Office 365 session.");
-                    }
-
-                    ResultsString.AppendLine("<tr>");
-                    ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine("Transit Time");
-                    ResultsString.AppendLine("</td>");
-                    ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine($"{Math.Round((this.session.Timers.ServerDoneResponse - this.session.Timers.ServerBeginResponse).TotalMilliseconds)} ms");
-                    ResultsString.AppendLine("</td>");
-                    ResultsString.AppendLine("</tr>");
-                }
-
-                ResultsString.AppendLine("</table>");
+                ResultsString.AppendLine($"<p>{this.session["X-ResponseComments"]}</p>");
+                #endregion
 
                 // Authentication
+                #region Authentication
                 if (this.session["X-AUTHENTICATION"] != "No Auth Headers")
                 {
                     ResultsString.AppendLine("<h2>Authentication</h2>");
 
                     ResultsString.AppendLine("<table border='0'>");
                     ResultsString.AppendLine("<tr>");
-                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine("<td width='150px'>");
                     ResultsString.AppendLine("Type");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
@@ -671,12 +401,148 @@ namespace Office365FiddlerInspector.Inspectors
                     ResultsString.AppendLine($"<pre>{this.session["X-SigningCertificate"]}</pre>");
                     ResultsString.AppendLine("<pre>-----END CERTIFICATE-----</pre>");
                 }
+                #endregion
 
-                ResultsString.AppendLine("<h2>Session Analysis</h2>");
+                // Session Timers.
+                #region SessionTimers
+                ResultsString.AppendLine("<h2>Overall Session Timers</h2>");
 
-                ResultsString.AppendLine($"<p>{this.session["X-ResponseComments"]}</p>");
+                ResultsString.AppendLine("<p>For an explantion of session timers refer to: <a href='https://aka.ms/Timers-Definitions' target='_blank'>https://aka.ms/Timers-Definitions</a>.</p>");
 
-                //Office365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
+                ResultsString.AppendLine("<table border='0'>");
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td width='150px'>");
+                ResultsString.AppendLine("Client Connected");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.ClientConnected.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Client Begin Request");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Got Request Headers");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.FiddlerGotRequestHeaders.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Client Done Response");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                if (this.session["X-InspectorElapsedTime"] != "Insufficient data")
+                {
+                    ResultsString.AppendLine("<tr>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine("Elapsed Time");
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine(this.session["X-InspectorElapsedTime"]);
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("</tr>");
+                }
+
+                ResultsString.AppendLine("</table>");
+                #endregion
+
+                // Server Timers.
+                #region ServerTimers
+                ResultsString.AppendLine("<h2>Server Timers</h2>");
+
+                ResultsString.AppendLine("<table border='0'>");
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td width='150px'>");
+                ResultsString.AppendLine("Fiddler Begin Request");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.FiddlerBeginRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Server Got Request");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.ServerGotRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Server Begin Response");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.ServerBeginResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Got Response Headers");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.FiddlerGotResponseHeaders.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Server Done Response");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session.Timers.ServerDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                if (this.session["X-ServerThinkTime"] != "Insufficient data" && this.session["X-ServerThinkTime"] != null)
+                {
+                    ResultsString.AppendLine("<tr>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine("Server Think Time");
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine(this.session["X-ServerThinkTime"]);
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("</tr>");
+                }
+
+                if (this.session["X-TransitTime"] != "Insufficient data" && this.session["X-TransitTime"] != null)
+                {
+                    ResultsString.AppendLine("<tr>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine("Transit Time");
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine(this.session["X-TransitTime"]);
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("</tr>");
+                }
+
+                ResultsString.AppendLine("</table>");
+                #endregion
+
+                // HTML Footer.
+                ResultsString.AppendLine("</font>");
+                ResultsString.AppendLine("</body>");
+                ResultsString.AppendLine("</html>");
+
                 Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
             }
             catch (Exception ex)
@@ -684,7 +550,7 @@ namespace Office365FiddlerInspector.Inspectors
                 ResultsString.AppendLine();
                 ResultsString.AppendLine(ex.Message);
                 ResultsString.AppendLine();
-                //Office365ResponseControl.ResultsOutput.AppendText(ResultsString.ToString());
+
                 Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
             }
         }
@@ -695,8 +561,6 @@ namespace Office365FiddlerInspector.Inspectors
         /// </summary>
         public void Clear()
         {
-            //Office365ResponseControl.ResultsOutput.Clear();
-            //ResultsString.Clear();
             Office365ResponseControl.ResultsOutput.DocumentText = "";
 
             ResultsString = new StringBuilder();

@@ -39,7 +39,7 @@
             this.webBrowserControl.Name = "webBrowserControl";
             this.webBrowserControl.Size = new System.Drawing.Size(558, 77);
             this.webBrowserControl.TabIndex = 2;
-            this.webBrowserControl.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
+            this.webBrowserControl.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowserControl_DocumentCompleted);
             // 
             // Office365ResponseControl
             // 
