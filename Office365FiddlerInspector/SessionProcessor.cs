@@ -203,9 +203,7 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseAlert"] = "Connect Tunnel";
                         this.session["X-ResponseComments"] = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
                             + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
-                            + Environment.NewLine
-                            + Environment.NewLine
-                            + "If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS";
+                            + "<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " has connect tunnel in response.");
 
@@ -225,9 +223,7 @@ namespace Office365FiddlerInspector
                     this.session["X-ResponseAlert"] = "Connect Tunnel";
                     this.session["X-ResponseComments"] = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
                         + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
-                        + Environment.NewLine
-                        + Environment.NewLine
-                        + "If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS";
+                        + "<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>";
 
                     FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " is a connect tunnel.");
                 }
@@ -244,13 +240,10 @@ namespace Office365FiddlerInspector
 
                 this.session["X-ResponseAlert"] = "Apache is answering Autodiscover requests!";
                 this.session["X-ResponseComments"] = "An Apache Web Server(Unix/Linux) is answering Autodiscover requests!"
-                    + Environment.NewLine
-                    + "This should not be happening. Consider disabling Root Domain Autodiscover lookups."
-                    + Environment.NewLine
-                    + "See ExcludeHttpsRootDomain on "
-                    + "https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under"
-                    + Environment.NewLine
-                    + "Beyond this the web administrator responsible for the server needs to stop the Apache web server from answering these requests.";
+                    + "<p>This should not be happening. Consider disabling Root Domain Autodiscover lookups.</p>"
+                    + "<p>See ExcludeHttpsRootDomain on </p>"
+                    + "<p>https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under </p>"
+                    + "<p>Beyond this the web administrator responsible for the server needs to stop the Apache web server from answering these requests.</p>";
 
                 this.session["X-SessionType"] = "!APACHE AUTODISCOVER!";
 
@@ -278,11 +271,9 @@ namespace Office365FiddlerInspector
                     this.session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are "
                         + "troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could "
                         + "be cause for concern."
-                        + Environment.NewLine
-                        + Environment.NewLine
-                        + "If you are not seeing expected client traffic, consider if network traces should be collected to review if there is an underlying "
+                        + "<p>If you are not seeing expected client traffic, consider if network traces should be collected to review if there is an underlying "
                         + "network issue such as congestion, which could be causing issues. The Network Connection Status Indicator (NCSI) might also be an "
-                        + "area to investigate.";
+                        + "area to investigate.</p>";
 
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 0 No response");
 
@@ -310,13 +301,9 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseAlert"] = "<b><span style=color:'red'>CLIENT ACCESS RULE</span></b>";
                         this.session["X-ResponseComments"] = "A <b>client access rule has blocked MAPI connectivity to the mailbox</b>. "
                             + "Check if the <b>client access rule includes OutlookAnywhere</b>."
-                            + Environment.NewLine
-                            + Environment.NewLine
-                            + "Per https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules, "
-                            + "OutlookAnywhere includes MAPI over HTTP."
-                            + Environment.NewLine
-                            + Environment.NewLine
-                            + "Remove OutlookAnywhere from the client access rule, wait 1 hour, then test again.";
+                            + "<p>Per https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules, <br />"
+                            + "OutlookAnywhere includes MAPI over HTTP.<p>"
+                            + "<p>Remove OutlookAnywhere from the client access rule, wait 1 hour, then test again.</p>";
 
                         SkipFurtherProcessing = true;
                         // Break out of the switch statement. No further processing needed here.
@@ -379,14 +366,10 @@ namespace Office365FiddlerInspector
 
                             this.session["X-ResponseAlert"] = "Exchange On-Premise Autodiscover redirect.";
                             this.session["X-ResponseComments"] = "Exchange On-Premise Autodiscover redirect address to Exchange Online found."
-                                + Environment.NewLine
-                                + Environment.NewLine
-                                + "RedirectAddress: "
+                                + "<p>RedirectAddress: "
                                 + RedirectAddress
-                                + Environment.NewLine
-                                + Environment.NewLine
-                                + "This is what we want to see, the mail.onmicrosoft.com redirect address (you may know this as the <b>target address</b> or "
-                                + "<b>remote routing address</b>) from On-Premise sends Outlook to Office 365.";
+                                + "</p><p>This is what we want to see, the mail.onmicrosoft.com redirect address (you may know this as the <b>target address</b> or "
+                                + "<b>remote routing address</b>) from On-Premise sends Outlook to Office 365.</p>";
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
                             
@@ -403,12 +386,8 @@ namespace Office365FiddlerInspector
 
                             this.session["X-ResponseAlert"] = "!Exchange On-Premise Autodiscover redirect!";
                             this.session["X-ResponseComments"] = "Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." +
-                                Environment.NewLine +
-                                Environment.NewLine +
-                                "RedirectAddress: " + RedirectAddress +
-                                Environment.NewLine +
-                                Environment.NewLine +
-                                "If this is an Office 365 mailbox the <b>targetAddress from On-Premise is not sending Outlook to Office 365</b>!";
+                                "<p>RedirectAddress: " + RedirectAddress +
+                                "</p><p>If this is an Office 365 mailbox the <b>targetAddress from On-Premise is not sending Outlook to Office 365</b>!</p>";
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD REDIRECT ADDR! : " + RedirectAddress);
                             
@@ -670,20 +649,12 @@ namespace Office365FiddlerInspector
                             this.session["X-ResponseAlert"] = "<b><span style=color:'red'>'error', 'failed' or 'exception' found in response body</span></b>";
                             this.session["X-ResponseComments"] = "Session response body was scanned and errors or failures were found in response body. "
                                 + "Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review."
-                                + Environment.NewLine
-                                + Environment.NewLine
-                                + "After splitting all words in the response body the following were found:"
-                                + Environment.NewLine
-                                + Environment.NewLine
-                                + "Keyword 'Error' found " + wordCountErrorText
-                                + Environment.NewLine
-                                + "Keyword 'Failed' found " + wordCountFailedText
-                                + Environment.NewLine
-                                + "Keyword 'Exception' found " + wordCountExceptionText
-                                + Environment.NewLine
-                                + Environment.NewLine
-                                + "Check the content body of the response for any failures you recognise. You may find <b>false positives, "
-                                + "if lots of Javascript or other web code</b> is being loaded.";
+                                + "<p>After splitting all words in the response body the following were found:<br />"
+                                + "Keyword 'Error' found " + wordCountErrorText + "<br />"
+                                + "Keyword 'Failed' found " + wordCountFailedText + "<br />"
+                                + "Keyword 'Exception' found " + wordCountExceptionText + "<br /></p>"
+                                + "<p>Check the content body of the response for any failures you recognise. You may find <b>false positives, "
+                                + "if lots of Javascript or other web code</b> is being loaded.</p>";
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 FAILURE LURKING!?");
                         }
@@ -693,8 +664,8 @@ namespace Office365FiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourGreen;
                             this.session["ui-color"] = "black";
 
-                            this.session["X-ResponseAlert"] = "<b><span style=color:'green'>No failures keywords detected in response body.</span></b>";
-                            this.session["X-ResponseComments"] = "Session response body was scanned and no failures keywords ('error', 'failed' or "
+                            this.session["X-ResponseAlert"] = "<b><span style=color:'green'>No failure keywords detected in response body.</span></b>";
+                            this.session["X-ResponseComments"] = "Session response body was scanned and no failure keywords ('error', 'failed' or "
                                 + "'exception') detected in response body.";
                         }
                     }
@@ -865,11 +836,9 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseComments"] = "<b>Temporary Redirects have been seen to redirect Exchange Online Autodiscover " 
                             + "calls back to On-Premise resources, breaking Outlook connectivity</b>. Likely cause is a networking device within the local "
                             + "lan which is causing this. Test outside of the lan to confirm."
-                            + Environment.NewLine 
-                            + "This session has enough data points to be an Autodiscover request for Exchange Online which has not been sent to "
-                            + "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml as expected." 
-                            + Environment.NewLine 
-                            + "Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.";
+                            + "<p>This session has enough data points to be an Autodiscover request for Exchange Online which has not been sent to "
+                            + "<a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a> as expected.</p>"
+                            + "<p>Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.</p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
                     }
@@ -883,10 +852,8 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseAlert"] = "HTTP 307 Temporary Redirect";
                         this.session["X-ResponseComments"] = "Temporary Redirects have been seen to redirect Exchange Online Autodiscover calls " +
                             "back to On-Premise resources, breaking Outlook connectivity. " +
-                            Environment.NewLine +
-                            "Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place. " +
-                            Environment.NewLine +
-                            "If this session is not for an Outlook process then the information above may not be relevant to the issue under investigation.";
+                            "<p>Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place. </p>" +
+                            "<p>If this session is not for an Outlook process then the information above may not be relevant to the issue under investigation.</p>";
                         
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 307 Temp Redirect.");
                         
@@ -933,9 +900,7 @@ namespace Office365FiddlerInspector
                     this.session["X-ResponseAlert"] = "<b><span style=color:'orange'>Authentication Challenge</span></b>";
                     this.session["X-ResponseComments"] = "Authentication Challenge. <b>These are expected</b> and are not an issue as long as a subsequent " 
                         + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. "
-                        + Environment.NewLine
-                        + Environment.NewLine
-                        + "If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.";
+                        + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>";
 
                     SkipFurtherProcessing = true;
 
@@ -963,14 +928,12 @@ namespace Office365FiddlerInspector
 
                         this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 403 Access Denied - WEB PROXY BLOCK!</span></b>";
                         this.session["X-ResponseComments"] = "<b><span style=color:'red'>Is your firewall or web proxy blocking Outlook connectivity?</span></b> "
-                            + Environment.NewLine
-                            + "To fire this message a HTTP 403 response code was detected and '<b><span style=color:'red'>Access Denied</span></b>' was found in "
-                            + "the response body."
-                            + Environment.NewLine
-                            + "Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked? <b>Is there a message from "
+                            + "<p>To fire this message a HTTP 403 response code was detected and '<b><span style=color:'red'>Access Denied</span></b>' was found in "
+                            + "the response body.</p>"
+                            + "<p>Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked? <b>Is there a message from "
                             + "your proxy device indiciating it blocked traffic any webmail related traffic?</b> A common scenario when first setting "
                             + "up Outlook with an Office 365 mailbox is a web proxy device blocking access to consumer webmail which can impact "
-                            + "Outlook and potentially other Office 365 applications.";
+                            + "Outlook and potentially other Office 365 applications.</p>";
                             
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
                         
@@ -986,26 +949,18 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 403 Forbidden</span></b>";
                         this.session["X-ResponseComments"] = "While HTTP 403's can be symptomatic of a proxy server blocking traffic, " 
                             + "however the phrase 'Access Denied' was NOT detected in the response body."
-                            + Environment.NewLine
-                            + Environment.NewLine
-                            + "A small number of HTTP 403's can be seen in normal working scenarios. Check the Raw and WebView tabs to look for anything which looks suspect."
-                            + Environment.NewLine
-                            + Environment.NewLine
-                            + "If you are troubleshooting Free/Busy (Meeting availability info) or setting Out of Office messages then you may be more interested in these."
-                            + Environment.NewLine
-                            + Environment.NewLine
-                            + "See: https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-2010/dd877045(v=exchg.140)";
+                            + "<p>A small number of HTTP 403's can be seen in normal working scenarios. Check the Raw and WebView tabs to look for anything which looks suspect.</p>"
+                            + "<p>If you are troubleshooting Free/Busy (Meeting availability info) or setting Out of Office messages then you may be more interested in these.</p>"
+                            + "<p>See: <a href='https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-2010/dd877045(v=exchg.140)'>"
+                            + "https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-2010/dd877045(v=exchg.140) </a></p>";
 
                         // 3rd-party EWS application could not connect to Exchange Online mailbox until culture/language was set for the first time in OWA.
                         if (this.session.fullUrl.Contains("outlook.office365.com/EWS") || this.session.fullUrl.Contains("outlook.office365.com/ews"))
                         {
-                            this.session["X-ResponseComments"] += Environment.NewLine 
-                                + Environment.NewLine
-                                + "EWS Scenario: If you are troubleshooting a 3rd party EWS application (using application impersonation) and the service account mailbox "
+                            this.session["X-ResponseComments"] += "<p>EWS Scenario: If you are troubleshooting a 3rd party EWS application (using application impersonation) and the service account mailbox "
                                 + "has been recently migrated into the cloud, ensure mailbox is licensed and to log into the service account mailbox for the first time using OWA at "
-                                + "https://outlook.office365.com to set the mailbox culture." 
-                                + Environment.NewLine
-                                + "Validate with: Get-Mailbox service-account@domain.com | FL Languages";
+                                + "<a href='https://outlook.office365.com'>https://outlook.office365.com</a> to set the mailbox culture.</p>"
+                                + "<p>Validate with: Get-Mailbox service-account@domain.com | FL Languages</p>";
                         }
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 403 Forbidden.");
@@ -1065,17 +1020,11 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 407: Proxy Authentication Required</span></b>";
                     this.session["X-ResponseComments"] = "<b><span style=color:'red'>Proxy Authentication Required</span></b>"
-                        + Environment.NewLine
-                        + Environment.NewLine
-                        + "Seeing these in a trace when investigating Office 365 connectivity is a <b>big indicator of an issue</b>."
-                        + Environment.NewLine
-                        + Environment.NewLine
-                        + "Look to engage the network or security team who is responsible for the proxy infrastructure and give them "
-                        + "the information from these HTTP 407 sessions to troubleshoot with."
-                        + Environment.NewLine
-                        + Environment.NewLine
-                        + "Office 365 application traffic should be exempt from proxy authentication or better yet follow Microsoft's recommendation "
-                        + "to bypass the proxy for Office365 traffic.";
+                        + "<p>Seeing these in a trace when investigating Office 365 connectivity is a <b>big indicator of an issue</b>.</p>"
+                        + "<p>Look to engage the network or security team who is responsible for the proxy infrastructure and give them "
+                        + "the information from these HTTP 407 sessions to troubleshoot with.</p>"
+                        + "<p>Office 365 application traffic should be exempt from proxy authentication or better yet follow Microsoft's recommendation "
+                        + "to bypass the proxy for Office365 traffic.</p>";
                         
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 407 Proxy Authentication Required.");
 
@@ -1176,15 +1125,11 @@ namespace Office365FiddlerInspector
 
                         this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 456 Multi-Factor Authentication</span></b>";
                         this.session["X-ResponseComments"] = "See details on Raw tab. Look for the presence of 'you must use multi-factor authentication'." +
-                            Environment.NewLine +
-                            Environment.NewLine +
-                            "This has been seen where users have <b>MFA enabled/enforced, but Modern Authentication is not enabled</b> in the Office 365 workload being connected to" +
-                            Environment.NewLine +
-                            Environment.NewLine +
-                            "See https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662" +
-                            Environment.NewLine +
-                            Environment.NewLine +
-                            "https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx";
+                            "<p>This has been seen where users have <b>MFA enabled/enforced, but Modern Authentication is not enabled</b> in the Office 365 workload being connected to</p?" +
+                            "<p>See <a href='https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662'>" +
+                            "https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662 </a></p>" +
+                            "<p><a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx'>" +
+                            "https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx </a>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 456 Multi-Factor Required!");
                         
@@ -1198,15 +1143,11 @@ namespace Office365FiddlerInspector
 
                         this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 456 Multi-Factor Authentication</span></b>";
                         this.session["X-ResponseComments"] = "See details on Raw tab. Look for the presence of 'oauth_not_available'."
-                            + Environment.NewLine
-                            + Environment.NewLine
-                            + "This has been seen where users have <b>MFA enabled/enforced, but Modern Authentication</b> is not enabled in the Office 365 workload being connected to"
-                            + Environment.NewLine
-                            + Environment.NewLine
-                            + "See https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662"
-                            + Environment.NewLine
-                            + Environment.NewLine
-                            + "https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx";
+                            + "<p>This has been seen where users have <b>MFA enabled/enforced, but Modern Authentication</b> is not enabled in the Office 365 workload being connected to</p>"
+                            + "<p>See <a href='https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662'>" +
+                            "https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662 </a></p>"
+                            + "<p><a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx'>" +
+                            "https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx </a></p>";
                             
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 456 Multi-Factor Required!");
                         
@@ -1220,15 +1161,11 @@ namespace Office365FiddlerInspector
 
                         this.session["X-ResponseAlert"] = "<b><span style=color:'orange'>HTTP 456 Multi-Factor Authentication?</span></b>";
                         this.session["X-ResponseComments"] = "See details on Raw tab. Is Modern Authentication disabled?"
-                            + Environment.NewLine
-                            + Environment.NewLine
-                            + "This has been seen where users have <b>MFA enabled/enforced, but Modern Authentication is not enabled</b> in the Office 365 workload being connected to"
-                            + Environment.NewLine
-                            + Environment.NewLine
-                            + "See https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662"
-                            + Environment.NewLine
-                            + Environment.NewLine
-                            + "https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx";
+                            + "<p>This has been seen where users have <b>MFA enabled/enforced, but Modern Authentication is not enabled</b> in the Office 365 workload being connected to.</p>"
+                            + "<p>See <a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx'>" 
+                            + "https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662 </a></p>"
+                            + "<a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx'>" 
+                            + "https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx </a></p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 456 Multi-Factor Required.");
                     }
@@ -1320,12 +1257,9 @@ namespace Office365FiddlerInspector
                         this.session["X-SessionType"] = "False Positive";
 
                         this.session["X-ResponseAlert"] = "<b><span style=color:'green'>False Positive</span></b>";
-                        this.session["X-ResponseComments"] = "From the data in the response body this failure is likely due to a Microsoft DNS MX record "
-                            + Environment.NewLine
+                        this.session["X-ResponseComments"] = "False positive on HTTP 502; From the data in the response body this failure is likely due to a Microsoft DNS MX record "
                             + "which points to an Exchange Online Protection mail host that accepts connections only on port 25. Connection on port 443 will not work by design."
-                            + Environment.NewLine
-                            + Environment.NewLine
-                            + "To validate this above lookup the record, confirm it is a MX record and attempt to connect to the MX host on ports 25 and 443.";
+                            + "<p>To validate this above lookup the record, confirm it is a MX record and attempt to connect to the MX host on ports 25 and 443.</p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. EXO DNS False Positive.");
                         
@@ -1356,15 +1290,11 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseAlert"] = "<b><span style=color:'green'>False Positive</span></b>";
                         this.session["X-ResponseComments"] = "By design Office 365 Autodiscover does not respond to "
                             + AutoDFalsePositiveDomain 
-                            + " on port 443. "
-                            + Environment.NewLine
-                            + Environment.NewLine
-                            + "Validate this message by confirming the Host IP (if shown) is an Office 365 Host/IP address and perform a telnet to it on port 80."
-                            + Environment.NewLine
-                            + Environment.NewLine
-                            + "If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects "
-                            + "requests to https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml or "
-                            + "https://autodiscover.office365.com/autodiscover/autodiscover.xml";
+                            + " on port 443. "                            
+                            + "<p>Validate this message by confirming the Host IP (if shown) is an Office 365 Host/IP address and perform a telnet to it on port 80.</p>"
+                            + "<p>If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects "
+                            + "requests to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>"
+                            + " or <a href='https://autodiscover.office365.com/autodiscover/autodiscover.xml'>https://autodiscover.office365.com/autodiscover/autodiscover.xml</a></p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. O365 AutoD onmicrosoft.com False Positive.");
                         
@@ -1398,14 +1328,10 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseAlert"] = "<b><span style=color:'orange'>Autodiscover Possible False Positive?</span></b>";
                         this.session["X-ResponseComments"] = "Autoddiscover Possible False Positive. By design Office 365 endpoints such as autodiscover.contoso.onmicrosoft.com "
                             + "do not respond on port 443. "
-                            + Environment.NewLine
-                            + Environment.NewLine
-                            + "Validate this message by confirming this is an Office 365 Host/IP address and perform a telnet to it on port 80."
-                            + Environment.NewLine
-                            + Environment.NewLine
-                            + "If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design "
-                            + "redirects requests to https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml or "
-                            + "https://autodiscover.office365.com/autodiscover/autodiscover.xml";
+                            + "<p>Validate this message by confirming this is an Office 365 Host/IP address and perform a telnet to it on port 80.</p>"
+                            + "<p>If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design "
+                            + "redirects requests to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>"
+                            + " or <a href='https://autodiscover.office365.com/autodiscover/autodiscover.xml'>https://autodiscover.office365.com/autodiscover/autodiscover.xml</a></p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. Vanity domain AutoD False Positive.");
                         
@@ -1762,12 +1688,10 @@ namespace Office365FiddlerInspector
                 this.session["X-ResponseAlert"] = "<b><span style=color:'red'>Long Running Client Session</span></b>";
                 this.session["X-ResponseComments"] = "Long running session found. A small number of long running sessions in the < 10 "
                     + "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue."
-                    + Environment.NewLine
-                    + Environment.NewLine
-                    + "If, however, you are troubleshooting an application performance issue, consider any proxy device in your network, "
+                    + "<p>If, however, you are troubleshooting an application performance issue, consider any proxy device in your network, "
                     + "or any other device sitting between the client computer and access to the application server the data resides on."
                     + "Try the divide and conquer approach. What can you remove or bypass from the equation to see if the application then performs "
-                    + "normally?";
+                    + "normally?</p>";
 
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Long running client session.");
             }
@@ -1782,12 +1706,10 @@ namespace Office365FiddlerInspector
                 this.session["X-ResponseAlert"] = "<b><span style=color:'red'>Long Running Server Session</span></b>";
                 this.session["X-ResponseComments"] = "Long running Server session found. A small number of long running sessions in the < 10 " +
                     "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue." + 
-                    Environment.NewLine +
-                    Environment.NewLine +
-                    "If, however, you are troubleshooting an Office 365 application performance issue, consider any proxy device in your network, " +
+                    "<p>If, however, you are troubleshooting an Office 365 application performance issue, consider any proxy device in your network, " +
                     "or any other device sitting between the client computer and access to the internet." +
                     "Try the divide and conquer approach. What can you remove or bypass from the equation to see if the application then performs " +
-                    "normally?";
+                    "normally?</p>";
 
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Long running Office 365 session.");
             }
@@ -1839,10 +1761,8 @@ namespace Office365FiddlerInspector
 
                 this.session["X-ResponseAlert"] = "Unclassified";
                 this.session["X-ResponseComments"] = "The Office 365 Fiddler Extension does not have a way to classify this session."
-                    + Environment.NewLine
-                    + Environment.NewLine
-                    + "If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: "
-                    + "<a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'>https://github.com/jprknight/Office365FiddlerExtension</a>.";
+                    + "<p>If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: "
+                    + "<a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'>https://github.com/jprknight/Office365FiddlerExtension</a>.</p>";
             }
 
             /////////////////////////////
@@ -2355,19 +2275,13 @@ namespace Office365FiddlerInspector
                     
                     this.session["X-AuthenticationDesc"] = "Office 365 workload has Modern Authentication disabled. "
                         + $"At this point in {today:yyyy} there isn't a good reason to not have Modern Authentication turned on or having a plan to turn it on."
-                        + Environment.NewLine
-                        + "MutiFactor Authentication will not work as expected while Modern Authentication "
+                        + "<p>MutiFactor Authentication will not work as expected while Modern Authentication "
                         + "is disabled in the Office 365 workload."
-                        + "For Exchange Online, the following is important for Outlook connectivity:"
-                        + Environment.NewLine
-                        + Environment.NewLine
-                        + "Outlook 2010 and older do not support Modern Authentication and by extension MutliFactor Authentication."
-                        + Environment.NewLine
-                        + "Outlook 2013 supports modern authentication with updates and the EnableADAL registry key set to 1."
-                        + Environment.NewLine
-                        + "See https://support.microsoft.com/en-us/help/4041439/modern-authentication-configuration-requirements-for-transition-from-o"
-                        + Environment.NewLine
-                        + "Outlook 2016 or newer. No updates or registry keys needed for Modern Authentication.";
+                        + "For Exchange Online, the following is important for Outlook connectivity:</p>"
+                        + "<p>Outlook 2010 and older do not support Modern Authentication and by extension MutliFactor Authentication.</p>"
+                        + "<p>Outlook 2013 supports modern authentication with updates and the EnableADAL registry key set to 1.</p>"
+                        + "<p>See https://support.microsoft.com/en-us/help/4041439/modern-authentication-configuration-requirements-for-transition-from-o </p>"
+                        + "<p>Outlook 2016 or newer. No updates or registry keys needed for Modern Authentication.</p>";
 
                     // Set the OverrideFurtherAuthChecking to true; Office 365 workload Modern Auth Disabled is a more important message in these sessions,
                     // than Outlook client auth capabilities. Other sessions are expected to show client auth capabilities.
@@ -2400,10 +2314,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-AuthenticationDesc"] = this.session["X-ProcessName"] + " is stating it is Basic Authentication capable. "
                         + "Whether it is used or not will depend on whether Basic Authentication is enabled in the Office 365 service."
-                        + Environment.NewLine
-                        + "If this is Outlook, in all likelihood this is an Outlook 2013 (updated prior to Modern Auth), Outlook 2010 or an "
-                        + "older Outlook client, which does not support Modern Authentication."
-                        + "MutiFactor Authentication will not work as expected with Basic Authentication only capable Outlook clients";
+                        + "<p>If this is Outlook, in all likelihood this is an Outlook 2013 (updated prior to Modern Auth), Outlook 2010 or an "
+                        + "older Outlook client, which does not support Modern Authentication.<br />"
+                        + "MutiFactor Authentication will not work as expected with Basic Authentication only capable Outlook clients</p>";
 
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Outlook Basic Auth.");
                 }
