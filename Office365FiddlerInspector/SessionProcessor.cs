@@ -837,7 +837,7 @@ namespace Office365FiddlerInspector
                             + "calls back to On-Premise resources, breaking Outlook connectivity</b>. Likely cause is a networking device within the local "
                             + "lan which is causing this. Test outside of the lan to confirm."
                             + "<p>This session has enough data points to be an Autodiscover request for Exchange Online which has not been sent to "
-                            + "<a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a> as expected.</p>"
+                            + "<a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a> as expected.</p>"
                             + "<p>Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.</p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
@@ -951,7 +951,7 @@ namespace Office365FiddlerInspector
                             + "however the phrase 'Access Denied' was NOT detected in the response body."
                             + "<p>A small number of HTTP 403's can be seen in normal working scenarios. Check the Raw and WebView tabs to look for anything which looks suspect.</p>"
                             + "<p>If you are troubleshooting Free/Busy (Meeting availability info) or setting Out of Office messages then you may be more interested in these.</p>"
-                            + "<p>See: <a href='https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-2010/dd877045(v=exchg.140)'>"
+                            + "<p>See: <a href='https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-2010/dd877045(v=exchg.140)' target='_blank'>"
                             + "https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-2010/dd877045(v=exchg.140) </a></p>";
 
                         // 3rd-party EWS application could not connect to Exchange Online mailbox until culture/language was set for the first time in OWA.
@@ -959,7 +959,7 @@ namespace Office365FiddlerInspector
                         {
                             this.session["X-ResponseComments"] += "<p>EWS Scenario: If you are troubleshooting a 3rd party EWS application (using application impersonation) and the service account mailbox "
                                 + "has been recently migrated into the cloud, ensure mailbox is licensed and to log into the service account mailbox for the first time using OWA at "
-                                + "<a href='https://outlook.office365.com'>https://outlook.office365.com</a> to set the mailbox culture.</p>"
+                                + "<a href='https://outlook.office365.com' target='_blank'>https://outlook.office365.com</a> to set the mailbox culture.</p>"
                                 + "<p>Validate with: Get-Mailbox service-account@domain.com | FL Languages</p>";
                         }
 
@@ -1126,9 +1126,9 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 456 Multi-Factor Authentication</span></b>";
                         this.session["X-ResponseComments"] = "See details on Raw tab. Look for the presence of 'you must use multi-factor authentication'." +
                             "<p>This has been seen where users have <b>MFA enabled/enforced, but Modern Authentication is not enabled</b> in the Office 365 workload being connected to</p?" +
-                            "<p>See <a href='https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662'>" +
+                            "<p>See <a href='https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662' target='_blank'>" +
                             "https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662 </a></p>" +
-                            "<p><a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx'>" +
+                            "<p><a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx' target='_blank'>" +
                             "https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx </a>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 456 Multi-Factor Required!");
@@ -1144,9 +1144,9 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 456 Multi-Factor Authentication</span></b>";
                         this.session["X-ResponseComments"] = "See details on Raw tab. Look for the presence of 'oauth_not_available'."
                             + "<p>This has been seen where users have <b>MFA enabled/enforced, but Modern Authentication</b> is not enabled in the Office 365 workload being connected to</p>"
-                            + "<p>See <a href='https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662'>" +
+                            + "<p>See <a href='https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662' target='_blank'>" +
                             "https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662 </a></p>"
-                            + "<p><a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx'>" +
+                            + "<p><a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx' target='_blank'>" +
                             "https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx </a></p>";
                             
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 456 Multi-Factor Required!");
@@ -1162,9 +1162,9 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseAlert"] = "<b><span style=color:'orange'>HTTP 456 Multi-Factor Authentication?</span></b>";
                         this.session["X-ResponseComments"] = "See details on Raw tab. Is Modern Authentication disabled?"
                             + "<p>This has been seen where users have <b>MFA enabled/enforced, but Modern Authentication is not enabled</b> in the Office 365 workload being connected to.</p>"
-                            + "<p>See <a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx'>" 
+                            + "<p>See <a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx' target='_blank'>"
                             + "https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662 </a></p>"
-                            + "<a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx'>" 
+                            + "<a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx' target='_blank'>"
                             + "https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx </a></p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 456 Multi-Factor Required.");
@@ -1294,7 +1294,7 @@ namespace Office365FiddlerInspector
                             + "<p>Validate this message by confirming the Host IP (if shown) is an Office 365 Host/IP address and perform a telnet to it on port 80.</p>"
                             + "<p>If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects "
                             + "requests to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>"
-                            + " or <a href='https://autodiscover.office365.com/autodiscover/autodiscover.xml'>https://autodiscover.office365.com/autodiscover/autodiscover.xml</a></p>";
+                            + " or <a href='https://autodiscover.office365.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover.office365.com/autodiscover/autodiscover.xml</a></p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. O365 AutoD onmicrosoft.com False Positive.");
                         
@@ -1330,8 +1330,8 @@ namespace Office365FiddlerInspector
                             + "do not respond on port 443. "
                             + "<p>Validate this message by confirming this is an Office 365 Host/IP address and perform a telnet to it on port 80.</p>"
                             + "<p>If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design "
-                            + "redirects requests to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>"
-                            + " or <a href='https://autodiscover.office365.com/autodiscover/autodiscover.xml'>https://autodiscover.office365.com/autodiscover/autodiscover.xml</a></p>";
+                            + "redirects requests to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>"
+                            + " or <a href='https://autodiscover.office365.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover.office365.com/autodiscover/autodiscover.xml</a></p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. Vanity domain AutoD False Positive.");
                         
