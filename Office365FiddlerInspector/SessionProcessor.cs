@@ -301,12 +301,15 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseAlert"] = "<b><span style=color:'red'>CLIENT ACCESS RULE</span></b>";
                         this.session["X-ResponseComments"] = "A <b>client access rule has blocked MAPI connectivity to the mailbox</b>. "
                             + "Check if the <b>client access rule includes OutlookAnywhere</b>."
-                            + "<p>Per https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules, <br />"
+                            + "<p>Per <a href='https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules' target='_blank'>"
+                            + "https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules </a>, <br />"
                             + "OutlookAnywhere includes MAPI over HTTP.<p>"
                             + "<p>Remove OutlookAnywhere from the client access rule, wait 1 hour, then test again.</p>";
 
                         SkipFurtherProcessing = true;
                         // Break out of the switch statement. No further processing needed here.
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200.1 Connection blocked by Client Access Rules.");
 
                         this.session["X-ResponseCodeDescription"] = "200 OK";
 
@@ -327,8 +330,12 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseAlert"] = "Outlook for Windows MAPI traffic";
                         this.session["X-ResponseComments"] = "Outlook for Windows MAPI traffic.";
 
+                        // No FiddlerApplication logging here.
+
                         SkipFurtherProcessing = true;
-                        // Break out of the switch statement.
+
+                        this.session["X-ResponseCodeDescription"] = "200 OK";
+
                         break;
                     }
 
@@ -372,7 +379,7 @@ namespace Office365FiddlerInspector
                                 + "<b>remote routing address</b>) from On-Premise sends Outlook to Office 365.</p>";
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
-                            
+
                             SkipFurtherProcessing = true;
 
                         }
@@ -436,10 +443,10 @@ namespace Office365FiddlerInspector
                     //
 
                     // Make sure this session is an Exchange Online Autodiscover request.
-                    // I *think* I am now seeing non-ClickToRun clients resolve to autodiscover-s.outlook.com and ClickToRun clients resolve to autodiscover.office365.com.
-                    // Whatever the scenario they both need including.
+                    // Non-ClickToRun clients redirect to https://autodiscover-s.outlook.com/Autodiscover/AutoDiscover.xml
+                    // ClickToRun clients use to https://outlook.office365.com/Autodiscover/AutoDiscover.xml.
                     if ((this.session.hostname == "autodiscover-s.outlook.com")
-                        || (this.session.hostname == "autodiscover.office365.com")
+                        || (this.session.hostname == "outlook.office365.com")
                         && (this.session.uriContains("autodiscover.xml")))
                     {
                         if ((this.session.utilFindInResponse("<DisplayName>", false) > 1) &&
@@ -452,7 +459,26 @@ namespace Office365FiddlerInspector
                             this.session["X-SessionType"] = "EXO Autodiscover";
 
                             this.session["X-ResponseAlert"] = "Exchange Online Autodiscover.";
-                            this.session["X-ResponseComments"] = "Exchange Online Autodiscover.";
+                            this.session["X-ResponseComments"] = "If the host for this session is autodiscover-s.outlook.com this is likely Outlook (MSI / not downloaded from the Office365 portal)"
+                                + " being redirected from Exchange On-Premise."
+                                + "<p>If the host for this session is outlook.office365.com this is likely Outlook Click-To-Run (Downloaded or deployed from Office365) which uses this hostname for "
+                                + "its Autodiscover requests.";
+
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200.5 Exchange Online Autodiscover. Expected XML found.");
+
+                            SkipFurtherProcessing = true;
+                        }
+                        else
+                        {
+                            this.session["ui-backcolor"] = HTMLColourRed;
+                            this.session["ui-color"] = "black";
+                            this.session["X-SessionType"] = "EXO Autodiscover";
+
+                            this.session["X-ResponseAlert"] = "<b><span style=color:'red'>Unusual Autodiscover Response</span></b>";
+                            this.session["X-ResponseComments"] = "This session was detected as an Autodiscover response from Exchange Online. However the response did not contain the expected XML data."
+                                + " Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response.";
+
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200.5 Exchange Online Autodiscover. Expected XML NOT found!");
 
                             SkipFurtherProcessing = true;
                         }
@@ -477,6 +503,8 @@ namespace Office365FiddlerInspector
                             this.session["X-ResponseComments"] = "<GroupCreationEnabled>true</GroupCreationEnabled> found in response body. " 
                                 + "Expect user to be able to create Office 365 groups in Outlook.";
 
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200.6 GetUnifiedGroupsSettings EWS call. User can create O365 Groups in Outlook.");
+
                             SkipFurtherProcessing = true;
                         }
                         // User cannot create Office 365 groups. Not an error condition in and of itself.
@@ -489,6 +517,8 @@ namespace Office365FiddlerInspector
                             this.session["X-ResponseAlert"] = "<b><span style=color:'red'>GetUnifiedGroupsSettings EWS call</span></b>";
                             this.session["X-ResponseComments"] = "<GroupCreationEnabled>false</GroupCreationEnabled> found in response body. " 
                                 + "Expect user to <b>NOT be able to create Office 365 groups</b> in Outlook.";
+
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200.6 GetUnifiedGroupsSettings EWS call. User cannot create O365 Groups in Outlook.");
 
                             SkipFurtherProcessing = true;
                         }
@@ -528,6 +558,8 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseAlert"] = "3S Suggestions";
                         this.session["X-ResponseComments"] = $"Scenario: {scenario} Types: {entityTypes} {clientRequestId}";
 
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " 200.7. 3S Suggestions call.");
+
                         SkipFurtherProcessing = true;
                     }
 
@@ -562,6 +594,8 @@ namespace Office365FiddlerInspector
                         this.session["X-SessionType"] = $"REST People {sessionType}";
                         this.session["X-ResponseAlert"] = $"REST People {sessionType}";
                         this.session["X-ResponseComments"] = $"{requestId} $search:{queryStrings["$search"]} $top:{queryStrings["$top"]} $skip:{queryStrings["$skip"]} $select:{queryStrings["$select"]} $filter:{queryStrings["$filter"]}";
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " 200.8. REST - People Request.");
 
                         SkipFurtherProcessing = true;
                     }
@@ -669,6 +703,7 @@ namespace Office365FiddlerInspector
                                 + "'exception') detected in response body.";
                         }
                     }
+
                     this.session["X-ResponseCodeDescription"] = "200 OK";
                     //
                     /////////////////////////////
@@ -692,9 +727,15 @@ namespace Office365FiddlerInspector
                     break;
                 case 202:
                     this.session["X-ResponseCodeDescription"] = "202 Accepted";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 202 Accepted.");
+
                     break;
                 case 203:
                     this.session["X-ResponseCodeDescription"] = "203 Non-Authoritative Information";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 203 Non-Authoritative Information.");
+
                     break;
                 case 204:
                     /////////////////////////////
@@ -717,24 +758,42 @@ namespace Office365FiddlerInspector
                     break;
                 case 205:
                     this.session["X-ResponseCodeDescription"] = "205 Reset Content";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 204 No content.");
+
                     break;
                 case 206:
                     this.session["X-ResponseCodeDescription"] = "206 Partial Content";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 206 Partial Content.");
+
                     break;
                 case 207:
                     this.session["X-ResponseCodeDescription"] = "207 Multi-Status (WebDAV; RFC 4918)";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 207 Multi-Status (WebDAV; RFC 4918).");
+
                     break;
                 case 208:
                     this.session["X-ResponseCodeDescription"] = "208 Already Reported (WebDAV; RFC 5842)";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 208 Already Reported (WebDAV; RFC 5842).");
+
                     break;
                 case 226:
                     this.session["X-ResponseCodeDescription"] = "226 IM Used (RFC 3229)";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 226 IM Used (RFC 3229).");
+
                     break;
                 #endregion
 
                 #region HTTP300s
                 case 300:
                     this.session["X-ResponseCodeDescription"] = "300 Multiple Choices";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 300 Multiple Choices.");
+
                     break;
                 case 301:
                     /////////////////////////////
@@ -790,6 +849,9 @@ namespace Office365FiddlerInspector
                     break;
                 case 303:
                     this.session["X-ResponseCodeDescription"] = "303 See Other";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 303 See Other.");
+
                     break;
                 case 304:
                     /////////////////////////////
@@ -810,9 +872,15 @@ namespace Office365FiddlerInspector
                     break;
                 case 305:
                     this.session["X-ResponseCodeDescription"] = "305 Use Proxy";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 305 Use Proxy.");
+
                     break;
                 case 306:
                     this.session["X-ResponseCodeDescription"] = "306 Switch Proxy";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 306 Switch Proxy.");
+
                     break;
                 case 307:
                     /////////////////////////////
@@ -864,6 +932,9 @@ namespace Office365FiddlerInspector
                     break;
                 case 308:
                     this.session["X-ResponseCodeDescription"] = "308 Permanent Redirect (RFC 7538)";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 308 Permanent Redirect (RFC 7538).");
+
                     break;
                 #endregion
 
@@ -893,16 +964,50 @@ namespace Office365FiddlerInspector
                     //
                     //  HTTP 401: UNAUTHORIZED.
                     //
-                    this.session["ui-backcolor"] = HTMLColourOrange;
-                    this.session["ui-color"] = "black";
-                    this.session["X-SessionType"] = "Auth Challenge";
 
-                    this.session["X-ResponseAlert"] = "<b><span style=color:'orange'>Authentication Challenge</span></b>";
-                    this.session["X-ResponseComments"] = "Authentication Challenge. <b>These are expected</b> and are not an issue as long as a subsequent " 
-                        + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. "
-                        + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>";
+                    /////////////////////////////
+                    //
+                    // 401.1. Exchange Online Autodiscover
+                    //
+                    // Make sure this session is an Exchange Online Autodiscover request.
+                    // Non-ClickToRun clients redirect to https://autodiscover-s.outlook.com/Autodiscover/AutoDiscover.xml
+                    // ClickToRun clients use to https://outlook.office365.com/Autodiscover/AutoDiscover.xml.
+                    if ((this.session.hostname == "autodiscover-s.outlook.com")
+                        || (this.session.hostname == "outlook.office365.com")
+                        && (this.session.uriContains("autodiscover.xml")))
+                    {
+                        this.session["ui-backcolor"] = HTMLColourOrange;
+                        this.session["ui-color"] = "black";
+                        this.session["X-SessionType"] = "Autodiscover Auth Challenge";
 
-                    SkipFurtherProcessing = true;
+                        this.session["X-ResponseAlert"] = "<b><span style=color:'orange'>Autodiscover Authentication Challenge</span></b>";
+                        this.session["X-ResponseComments"] = "Autodiscover Authentication Challenge. If the host for this session is autodiscover-s.outlook.com this is likely Outlook "
+                            + "(MSI / not downloaded from the Office365 portal) being redirected from Exchange On-Premise."
+                            + "<p>If the host for this session is outlook.office365.com this is likely Outlook Click-To-Run (Downloaded or deployed from Office365) which uses this hostname for "
+                            + "its Autodiscover requests."
+                            + "<p><b>These are expected</b> and are not an issue as long as a subsequent "
+                            + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. "
+                            + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>";
+
+                        SkipFurtherProcessing = true;
+                        
+                    }
+                    /////////////////////////////
+                    //
+                    // 401.99 Everything else.
+                    else
+                    {
+                        this.session["ui-backcolor"] = HTMLColourOrange;
+                        this.session["ui-color"] = "black";
+                        this.session["X-SessionType"] = "Auth Challenge";
+
+                        this.session["X-ResponseAlert"] = "<b><span style=color:'orange'>Authentication Challenge</span></b>";
+                        this.session["X-ResponseComments"] = "Authentication Challenge. <b>These are expected</b> and are not an issue as long as a subsequent "
+                            + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. "
+                            + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>";
+
+                        SkipFurtherProcessing = true;
+                    }
 
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 401 Auth Challenge.");
 
@@ -912,6 +1017,9 @@ namespace Office365FiddlerInspector
                     break;
                 case 402:
                     this.session["X-ResponseCodeDescription"] = "402 Payment Required";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 402 Payment Required.");
+
                     break;
                 case 403:
                     /////////////////////////////
@@ -1008,6 +1116,9 @@ namespace Office365FiddlerInspector
                     break;
                 case 406:
                     this.session["X-ResponseCodeDescription"] = "406 Not Acceptable";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 406 Not Acceptable.");
+
                     break;
                 case 407:
                     /////////////////////////////
@@ -1034,57 +1145,111 @@ namespace Office365FiddlerInspector
                     break;
                 case 408:
                     this.session["X-ResponseCodeDescription"] = "408 Request Timeout";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 408 Request Timeout.");
+
                     break;
                 case 409:
                     this.session["X-ResponseCodeDescription"] = "409 Conflict";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 409 Conflict.");
+
                     break;
                 case 410:
                     this.session["X-ResponseCodeDescription"] = "410 Gone";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 410 Gone.");
+
                     break;
                 case 411:
                     this.session["X-ResponseCodeDescription"] = "411 Length Required";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 411 Length Required.");
+
                     break;
                 case 412:
                     this.session["X-ResponseCodeDescription"] = "412 Precondition Failed (RFC 7232)";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 412 Precondition Failed (RFC 7232).");
+
                     break;
                 case 413:
                     this.session["X-ResponseCodeDescription"] = "413 Payload Too Large (RFC 7231)";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 413 Payload Too Large (RFC 7231).");
+
                     break;
                 case 414:
                     this.session["X-ResponseCodeDescription"] = "414 URI Too Long (RFC 7231)";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 414 URI Too Long (RFC 7231).");
+
                     break;
                 case 415:
                     this.session["X-ResponseCodeDescription"] = "415 Unsupported Media Type (RFC 7231)";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 415 Unsupported Media Type (RFC 7231).");
+
                     break;
                 case 416:
                     this.session["X-ResponseCodeDescription"] = "416 Range Not Satisfiable (RFC 7233)";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 416 Range Not Satisfiable (RFC 7233).");
+
                     break;
                 case 417:
                     this.session["X-ResponseCodeDescription"] = "417 Expectation Failed";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 417 Expectation Failed.");
+
                     break;
                 case 418:
                     this.session["X-ResponseCodeDescription"] = "418 I'm a teapot (RFC 2324, RFC 7168)";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 418 I'm a teapot (RFC 2324, RFC 7168).");
+
                     break;
                 case 421:
                     this.session["X-ResponseCodeDescription"] = "421 Misdirected Request (RFC 7540)";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 421 Misdirected Request (RFC 7540).");
+
                     break;
                 case 422:
                     this.session["X-ResponseCodeDescription"] = "422 Unprocessable Entity (WebDAV; RFC 4918)";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 422 Unprocessable Entity (WebDAV; RFC 4918).");
+
                     break;
                 case 423:
                     this.session["X-ResponseCodeDescription"] = "423 Locked (WebDAV; RFC 4918)";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 423 Locked (WebDAV; RFC 4918).");
+
                     break;
                 case 424:
                     this.session["X-ResponseCodeDescription"] = "424 Failed Dependency (WebDAV; RFC 4918)";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 424 Failed Dependency (WebDAV; RFC 4918).");
+
                     break;
                 case 425:
                     this.session["X-ResponseCodeDescription"] = "425 Too Early (RFC 8470)";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 425 Too Early (RFC 8470).");
+
                     break;
                 case 426:
                     this.session["X-ResponseCodeDescription"] = "426 Upgrade Required";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 426 Upgrade Required.");
+
                     break;
                 case 428:
                     this.session["X-ResponseCodeDescription"] = "428 Precondition Required (RFC 6585)";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 428 Precondition Required (RFC 6585).");
+
                     break;
                 case 429:
                     /////////////////////////////
@@ -1107,9 +1272,15 @@ namespace Office365FiddlerInspector
                     break;
                 case 431:
                     this.session["X-ResponseCodeDescription"] = "431 Request Header Fields Too Large (RFC 6585)";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 431 Request Header Fields Too Large (RFC 6585).");
+
                     break;
                 case 451:
                     this.session["X-ResponseCodeDescription"] = "451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect.");
+
                     break;
                 case 456:
                     /////////////////////////////
@@ -1200,6 +1371,9 @@ namespace Office365FiddlerInspector
                     break;
                 case 501:
                     this.session["X-ResponseCodeDescription"] = "501 Not Implemented";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 501 Not Implemented.");
+
                     break;
                 case 502:
                     /////////////////////////////
@@ -1289,12 +1463,11 @@ namespace Office365FiddlerInspector
 
                         this.session["X-ResponseAlert"] = "<b><span style=color:'green'>False Positive</span></b>";
                         this.session["X-ResponseComments"] = "By design Office 365 Autodiscover does not respond to "
-                            + AutoDFalsePositiveDomain 
-                            + " on port 443. "                            
+                            + AutoDFalsePositiveDomain
+                            + " on port 443. "
                             + "<p>Validate this message by confirming the Host IP (if shown) is an Office 365 Host/IP address and perform a telnet to it on port 80.</p>"
                             + "<p>If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects "
-                            + "requests to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>"
-                            + " or <a href='https://autodiscover.office365.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover.office365.com/autodiscover/autodiscover.xml</a></p>";
+                            + "requests to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. O365 AutoD onmicrosoft.com False Positive.");
                         
@@ -1330,8 +1503,7 @@ namespace Office365FiddlerInspector
                             + "do not respond on port 443. "
                             + "<p>Validate this message by confirming this is an Office 365 Host/IP address and perform a telnet to it on port 80.</p>"
                             + "<p>If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design "
-                            + "redirects requests to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>"
-                            + " or <a href='https://autodiscover.office365.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover.office365.com/autodiscover/autodiscover.xml</a></p>";
+                            + "redirects requests to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. Vanity domain AutoD False Positive.");
                         
@@ -1509,6 +1681,9 @@ namespace Office365FiddlerInspector
                     break;
                 case 505:
                     this.session["X-ResponseCodeDescription"] = "505 HTTP Version Not Supported";
+
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 505 HTTP Version Not Supported.");
+
                     break;
                 case 506:
                     this.session["X-ResponseCodeDescription"] = "506 Variant Also Negotiates (RFC 2295)";
