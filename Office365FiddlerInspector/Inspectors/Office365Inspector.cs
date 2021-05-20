@@ -293,14 +293,17 @@ namespace Office365FiddlerInspector.Inspectors
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
-                ResultsString.AppendLine("<tr>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine("Response Server");
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session["X-ResponseServer"]);
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("</tr>");
+                if (this.session["X-ResponseServer"] != null)
+                {
+                    ResultsString.AppendLine("<tr>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine("Response Server");
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine(this.session["X-ResponseServer"]);
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("</tr>");
+                }
 
                 if (this.session["X-InspectorElapsedTime"] != "Insufficient data")
                 {
@@ -322,6 +325,13 @@ namespace Office365FiddlerInspector.Inspectors
                 ResultsString.AppendLine("<h2>Session Analysis</h2>");
 
                 ResultsString.AppendLine($"<p>{this.session["X-ResponseComments"]}</p>");
+                #endregion
+
+                // Session Age.
+                #region SessionAge
+                ResultsString.AppendLine($"<h2>Session Age</h2>");
+
+                ResultsString.AppendLine($"<p>{this.session["X-CalculatedSessionAge"]}</p>");
                 #endregion
 
                 // Authentication
@@ -396,10 +406,10 @@ namespace Office365FiddlerInspector.Inspectors
 
                     ResultsString.AppendLine("</table>");
 
-                    ResultsString.AppendLine("<p>Signing Certificate: Copy and save the below text into a .cer file to view the certificate.</p>");
-                    ResultsString.AppendLine("<pre>-----BEGIN CERTIFICATE-----</pre>");
-                    ResultsString.AppendLine($"<pre>{this.session["X-SigningCertificate"]}</pre>");
-                    ResultsString.AppendLine("<pre>-----END CERTIFICATE-----</pre>");
+                    ResultsString.AppendLine("<p>Copy and save the below text into a .cer file to view the signing certificate.</p>");
+                    ResultsString.AppendLine("-----BEGIN CERTIFICATE-----<br />");
+                    ResultsString.AppendLine($"{this.session["X-SigningCertificate"]}<br />");
+                    ResultsString.AppendLine("-----END CERTIFICATE-----");
                 }
                 #endregion
 

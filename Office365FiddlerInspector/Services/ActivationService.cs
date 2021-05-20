@@ -81,23 +81,15 @@ namespace Office365FiddlerInspector.Services
                 return;
             }
 
-            SessionProcessor.Instance.SetElapsedTime(session);
+            // Run the main OnPeekAtResponseHeaders function.
+            // Calls other functions to populate column data and inpector info in session headers.
+            SessionProcessor.Instance.OnPeekAtResponseHeaders(session);
 
-            SessionProcessor.Instance.SetResponseServer(session);
-
-            SessionProcessor.Instance.SetAuthentication(session);
-
+            // Run SetSessionType next, OnPeekAtResponseHeaders overrides it as needed if it has more specific info.
             SessionProcessor.Instance.SetSessionType(session);
 
-            SessionProcessor.Instance.CalculateSessionAge(session);
-
-            SessionProcessor.Instance.SetInspectorElapsedTime(session);
-
-            SessionProcessor.Instance.SetServerThinkTime(session);
-
-            SessionProcessor.Instance.SetTransitTime(session);
-
-            SessionProcessor.Instance.OnPeekAtResponseHeaders(session);
+            // Finally run SetAuthentication, OnPeekAtResponseHeaders overrides it as needed if it has more specific info.
+            SessionProcessor.Instance.SetAuthentication(session);
 
             session.RefreshUI();
         }
