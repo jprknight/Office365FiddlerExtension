@@ -81,15 +81,8 @@ namespace Office365FiddlerInspector.Services
                 return;
             }
 
-            // Run the main OnPeekAtResponseHeaders function.
-            // Calls other functions to populate column data and inpector info in session headers.
+            // Call the main fuction which runs through all session logic checks.
             SessionProcessor.Instance.OnPeekAtResponseHeaders(session);
-
-            // Run SetSessionType next, OnPeekAtResponseHeaders overrides it as needed if it has more specific info.
-            SessionProcessor.Instance.SetSessionType(session);
-
-            // Finally run SetAuthentication, OnPeekAtResponseHeaders overrides it as needed if it has more specific info.
-            SessionProcessor.Instance.SetAuthentication(session);
 
             session.RefreshUI();
         }

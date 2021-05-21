@@ -232,9 +232,19 @@ namespace Office365FiddlerInspector.Inspectors
                 ResultsString.AppendLine("<font face='open-sans'>");
 
                 ResultsString.Append(FiddlerApplication.Prefs.GetStringPref("extensions.Office365.UpdateMessage", ""));
-                
+
                 // General Session Data.
                 #region GeneralSessionData
+
+                if (!this.session.isFlagSet(SessionFlags.LoadedFromSAZ))
+                {
+                    ResultsString.AppendLine("<h2>Sessions Not Loaded from SAZ</h2>");
+                    ResultsString.AppendLine("<p><b><span style=color:'red'>The sessions here have not been loaded from a SAZ file</span></b>. For the best results analysing these sessions save them "
+                        + "as a SAZ file and load them back in. Click <i>File, Save, All Sessions</i>.</p>"
+                        + "<p>When analysing live traffic, there are multiple scenarios where the session response is not immeidately available. This Alters the "
+                        + "responses the extension shows on session analysis.</p>");
+                }
+
                 ResultsString.AppendLine("<h2>General Session Data</h2>");
                 
                 ResultsString.AppendLine("<table border='0'>");
@@ -321,18 +331,14 @@ namespace Office365FiddlerInspector.Inspectors
                 #endregion
 
                 // Session Analysis.
-                #region SessionAnalysis
                 ResultsString.AppendLine("<h2>Session Analysis</h2>");
 
                 ResultsString.AppendLine($"<p>{this.session["X-ResponseComments"]}</p>");
-                #endregion
 
                 // Session Age.
-                #region SessionAge
                 ResultsString.AppendLine($"<h2>Session Age</h2>");
 
                 ResultsString.AppendLine($"<p>{this.session["X-CalculatedSessionAge"]}</p>");
-                #endregion
 
                 // Authentication
                 #region Authentication

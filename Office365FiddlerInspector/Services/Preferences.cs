@@ -38,7 +38,6 @@ namespace Office365FiddlerInspector.Services
         public static Task<bool> SetDefaultPreferences()
         {
             ExtensionEnabled = true;
-            IsLoadSaz = false;
 
             ExecutionCount++;
 
@@ -82,13 +81,6 @@ namespace Office365FiddlerInspector.Services
             //    FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.AppLoggingEnabled", value);
             //    MenuUI.Instance.miAppLoggingEnabled.Checked = AppLoggingEnabled;
             //}
-        }
-
-        private static bool _IsLoadSaz;
-        public static bool IsLoadSaz
-        {
-            get => _IsLoadSaz = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.LoadSaz", false);
-            set { _IsLoadSaz = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.LoadSaz", value); }
         }
 
         private static Int32 _executionCount;
