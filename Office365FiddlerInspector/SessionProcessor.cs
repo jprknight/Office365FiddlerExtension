@@ -2,13 +2,11 @@
 using Fiddler;
 using System.Linq;
 using Office365FiddlerInspector.Services;
-using System.Threading;
 
 namespace Office365FiddlerInspector
 {
     public class SessionProcessor : ActivationService
     {
-
         // Colour codes for sessions. Softer tones, easier on the eye than standard red, orange and green.
         string HTMLColourBlue = "#81BEF7";
         string HTMLColourGreen = "#81F7BA";
@@ -23,8 +21,6 @@ namespace Office365FiddlerInspector
         private bool IsInitialized { get; set; }
 
         internal Session session { get; set; }
-
-        Boolean bSkipFurtherChecks { get; set; }
 
         private string searchTerm;     
        
@@ -215,8 +211,6 @@ namespace Office365FiddlerInspector
             // This check does not work for sessions which have not been loaded from a SAZ file.
             // My best guess is this is a timing issue, where the data is not immediately available when this check runs.
             // SetSessionType makes exactly the same call later on down the code path and it works.
-
-
             if (this.session.isTunnel)
             {
 
@@ -1025,9 +1019,8 @@ namespace Office365FiddlerInspector
 
                         this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 307 Temporary Redirect</span></b>";
                         this.session["X-ResponseComments"] = "<b>Temporary Redirects have been seen to redirect Exchange Online Autodiscover "
-                            + "calls back to On-Premise resources, breaking Outlook connectivity</b>. Likely cause is a networking device within the local "
-                            + "lan which is causing this. Test outside of the lan to confirm."
-                            + "<p>This session has enough data points to be an Autodiscover request for Exchange Online which has not been sent to "
+                            + "calls back to On-Premise resources, breaking Outlook connectivity</b>. Likely cause is a local networking device. Test outside of the LAN to confirm."
+                            + "<p>This session is an Autodiscover request for Exchange Online which has not been sent to "
                             + "<a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a> as expected.</p>"
                             + "<p>Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.</p>";
 
@@ -1075,7 +1068,7 @@ namespace Office365FiddlerInspector
                     this.session["X-SessionType"] = "Bad Request";
 
                     this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 400 Bad Request</span></b>";
-                    this.session["X-ResponseComments"] = "HTTP 400: Bad Request. Seeing 1 or 2 of these may not be an issue. Any more than this should be investigated further.";
+                    this.session["X-ResponseComments"] = "HTTP 400: Bad Request. Seeing small numbers of these may not be an issue. However, if many are seen this should be investigated further.";
 
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 400 Bad Request.");
 
@@ -1106,9 +1099,7 @@ namespace Office365FiddlerInspector
 
                         this.session["X-ResponseAlert"] = "<b><span style=color:'orange'>Autodiscover Authentication Challenge</span></b>";
                         this.session["X-ResponseComments"] = "Autodiscover Authentication Challenge. If the host for this session is autodiscover-s.outlook.com this is likely Outlook "
-                            + "(MSI / not downloaded from the Office365 portal) being redirected from Exchange On-Premise."
-                            + "<p>If the host for this session is outlook.office365.com this is likely Outlook Click-To-Run (Downloaded or deployed from Office365) which uses this hostname for "
-                            + "its Autodiscover requests."
+                            + "(MSI / perpetual license) being redirected from Exchange On-Premise."
                             + "<p><b>These are expected</b> and are not an issue as long as a subsequent "
                             + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. "
                             + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>";
@@ -1160,10 +1151,9 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseComments"] = "<b><span style=color:'red'>Is your firewall or web proxy blocking Outlook connectivity?</span></b> "
                             + "<p>To fire this message a HTTP 403 response code was detected and '<b><span style=color:'red'>Access Denied</span></b>' was found in "
                             + "the response body.</p>"
-                            + "<p>Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked? <b>Is there a message from "
-                            + "your proxy device indiciating it blocked traffic any webmail related traffic?</b> A common scenario when first setting "
-                            + "up Outlook with an Office 365 mailbox is a web proxy device blocking access to consumer webmail which can impact "
-                            + "Outlook and potentially other Office 365 applications.</p>";
+                            + "<p>Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked? <b>Is there a message branded by or from "
+                            + "your proxy device indiciating it blocked traffic?</b> A common scenario when first deploying Office365 / Exchange Online "
+                            + "is a web proxy device blocking access to consumer webmail which can impact Outlook connectivity and potentially other Office 365 applications.</p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
                     }
@@ -1187,8 +1177,9 @@ namespace Office365FiddlerInspector
                         {
                             this.session["X-ResponseComments"] += "<p>EWS Scenario: If you are troubleshooting a 3rd party EWS application (using application impersonation) and the service account mailbox "
                                 + "has been recently migrated into the cloud, ensure mailbox is licensed and to log into the service account mailbox for the first time using OWA at "
-                                + "<a href='https://outlook.office365.com' target='_blank'>https://outlook.office365.com</a> to set the mailbox culture.</p>"
-                                + "<p>Validate with: Get-Mailbox service-account@domain.com | FL Languages</p>";
+                                + "<a href='https://outlook.office365.com' target='_blank'>https://outlook.office365.com</a> to set the mailbox language / culture.</p>"
+                                + "<p>Validate with: Get-Mailbox service-account@domain.com | FL Languages</p>"
+                                + "<p>Without the language set on the mailbox, EWS will not work properly</p>";
                         }
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 403 Forbidden.");
@@ -1251,11 +1242,13 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 407: Proxy Authentication Required</span></b>";
                     this.session["X-ResponseComments"] = "<b><span style=color:'red'>Proxy Authentication Required</span></b>"
-                        + "<p>Seeing these in a trace when investigating Office 365 connectivity is a <b>big indicator of an issue</b>.</p>"
+                        + "<p>Seeing these when investigating an Office 365 connectivity is a <b>big indicator of an issue</b>.</p>"
                         + "<p>Look to engage the network or security team who is responsible for the proxy infrastructure and give them "
                         + "the information from these HTTP 407 sessions to troubleshoot with.</p>"
                         + "<p>Office 365 application traffic should be exempt from proxy authentication or better yet follow Microsoft's recommendation "
-                        + "to bypass the proxy for Office365 traffic.</p>";
+                        + "to bypass the proxy for Office365 traffic.</p>"
+                        + "<p>See Microsoft 365 Connectivity Principals in <a href='https://docs.microsoft.com/en-us/microsoft-365/enterprise/microsoft-365-network-connectivity-principles?view=o365-worldwide#microsoft-365-connectivity-principles' target='_blank'>" +
+                        + "https://docs.microsoft.com/en-us/microsoft-365/enterprise/microsoft-365-network-connectivity-principles?view=o365-worldwide#microsoft-365-connectivity-principles </a></p>";
 
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 407 Proxy Authentication Required.");
 
