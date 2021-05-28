@@ -1,4 +1,8 @@
 ﻿using Fiddler;
+using System.Windows.Forms;
+using Office365FiddlerInspector.UI;
+using O365FiddlerInspector.UI;
+using System.Text;
 
 namespace Office365FiddlerInspector.Services
 {
@@ -7,11 +11,15 @@ namespace Office365FiddlerInspector.Services
     /// </summary>
     public abstract class ActivationService : IAutoTamper
     {
+        
+
         /// <summary>
         /// This should be consider the main constructor for the extension. It's called after the UI has loaded.
         /// </summary>
         public async void OnLoad()
         {
+            
+
             MenuUI.Instance.Initialize();
             if (Preferences.ExecutionCount == 0)
             {
@@ -43,6 +51,7 @@ namespace Office365FiddlerInspector.Services
                 await TelemetryService.InitializeAsync();
             }
         }
+
 
         public async void OnBeforeUnload()
         {

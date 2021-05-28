@@ -7,6 +7,7 @@ namespace Office365FiddlerInspector
 {
     public class MenuUI
     {
+
         private static MenuUI _instance;
 
         public static MenuUI Instance => _instance ?? (_instance = new MenuUI());
@@ -72,7 +73,8 @@ namespace Office365FiddlerInspector
         public void MiEnabled_Click(object sender, EventArgs e)
         {
             MiEnabled.Checked = !MiEnabled.Checked;
-            Preferences.ExtensionEnabled = MiEnabled.Checked;        
+            Preferences.ExtensionEnabled = MiEnabled.Checked;
+
         }
 
         public void MiWiki_Click(object sender, EventArgs e)

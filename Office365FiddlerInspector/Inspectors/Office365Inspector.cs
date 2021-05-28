@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Office365FiddlerInspector.Services;
 using System.Text;
 using O365FiddlerInspector.UI;
+using Office365FiddlerInspector.UI;
 
 namespace Office365FiddlerInspector.Inspectors
 {

@@ -16,7 +16,7 @@ namespace Office365FiddlerInspector.Services
         {
             return "<p>No known issue with Office 365 and this type of session. If you have a suggestion for an improvement, "
             + "create an issue or better yet a pull request in the project Github repository: "
-            + "<a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'>https://github.com/jprknight/Office365FiddlerExtension</a>.</p>";
+            + "<a href='https://aka.ms/Office365FiddlerExtension' target='_blank'>https://aka.ms/Office365FiddlerExtension</a>.</p>";
         }
 
 

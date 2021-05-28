@@ -187,6 +187,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Inspectors\Office365FiddlerExtensionTabPage.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="About.cs" />
     <Compile Include="SessionProcessor.cs" />
@@ -211,6 +212,12 @@
       <DependentUpon>Office365ResponseControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\TelemetryService.cs" />
+    <Compile Include="UI\Office365TabPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Office365TabPage.Designer.cs">
+      <DependentUpon>Office365TabPage.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -219,6 +226,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Office365ResponseControl.resx">
       <DependentUpon>Office365ResponseControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Office365TabPage.resx">
+      <DependentUpon>Office365TabPage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

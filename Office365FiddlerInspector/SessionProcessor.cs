@@ -1247,7 +1247,7 @@ namespace Office365FiddlerInspector
                         + "the information from these HTTP 407 sessions to troubleshoot with.</p>"
                         + "<p>Office 365 application traffic should be exempt from proxy authentication or better yet follow Microsoft's recommendation "
                         + "to bypass the proxy for Office365 traffic.</p>"
-                        + "<p>See Microsoft 365 Connectivity Principals in <a href='https://docs.microsoft.com/en-us/microsoft-365/enterprise/microsoft-365-network-connectivity-principles?view=o365-worldwide#microsoft-365-connectivity-principles' target='_blank'>" +
+                        + "<p>See Microsoft 365 Connectivity Principals in <a href='https://docs.microsoft.com/en-us/microsoft-365/enterprise/microsoft-365-network-connectivity-principles?view=o365-worldwide#microsoft-365-connectivity-principles' target='_blank'>"
                         + "https://docs.microsoft.com/en-us/microsoft-365/enterprise/microsoft-365-network-connectivity-principles?view=o365-worldwide#microsoft-365-connectivity-principles </a></p>";
 
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 407 Proxy Authentication Required.");
@@ -1597,8 +1597,8 @@ namespace Office365FiddlerInspector
                         this.session["X-SessionType"] = "False Positive";
 
                         this.session["X-ResponseAlert"] = "<b><span style=color:'green'>False Positive</span></b>";
-                        this.session["X-ResponseComments"] = "False positive on HTTP 502; From the data in the response body this failure is likely due to a Microsoft DNS MX record "
-                            + "which points to an Exchange Online Protection mail host that accepts connections only on port 25. Connection on port 443 will not work by design."
+                        this.session["X-ResponseComments"] = "False positive on HTTP 502; This is a Microsoft DNS MX record for the .onmicrosoft.com domain."
+                            + "By design, the host only accepts connections on port 25, port 443 is not available."
                             + "<p>To validate this above lookup the record, confirm it is a MX record and attempt to connect to the MX host on ports 25 and 443.</p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. EXO DNS False Positive.");
@@ -1631,7 +1631,7 @@ namespace Office365FiddlerInspector
                             + " on port 443. "
                             + "<p>Validate this message by confirming the Host IP (if shown) is an Office 365 Host/IP address and perform a telnet to it on port 80.</p>"
                             + "<p>If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects "
-                            + "requests to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>";
+                            + "requests on port 80 to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. O365 AutoD onmicrosoft.com False Positive.");
                     }
@@ -1665,7 +1665,7 @@ namespace Office365FiddlerInspector
                             + "do not respond on port 443. "
                             + "<p>Validate this message by confirming this is an Office 365 Host/IP address and perform a telnet to it on port 80.</p>"
                             + "<p>If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design "
-                            + "redirects requests to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>";
+                            + "redirects requests on port 80 to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. Vanity domain AutoD False Positive.");
                     }
@@ -1759,7 +1759,7 @@ namespace Office365FiddlerInspector
                             + "<b>MEXURL</b>: Normally expected to show long stream of XML data.<br />"
                             + "<p>If any of these show the HTTP 503 Service Unavailable this <b>confirms some kind of failure on the federation service</b>.</p>"
                             + "<p>If however you get the expected responses, this <b>does not neccessarily mean the federation service / everything authentication is healthy</b>. "
-                            + "Further investigation is advised.</p>";
+                            + "Further investigation is advised. You could try hitting these endpoints a few times and see if you get an intermittent failure.</p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 503 Service Unavailable. FederatedStsUnreachable in response body!");
                     }
@@ -1801,7 +1801,7 @@ namespace Office365FiddlerInspector
 
                         this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 504 Gateway Timeout -- Internet Access Blocked</span></b>";
                         this.session["X-ResponseComments"] = "Detected the keywords 'internet' and 'access' and 'blocked'. Potentially the computer this trace was collected "
-                            + "from has been <b><span style=color:'red'>quaratined for internet access by a lan based network security device</span></b>."
+                            + "from has been <b><span style=color:'red'>quaratined for internet access by a LAN based network security device</span></b>."
                             + "<p>Validate this by checking the webview and raw tabs for more information.</p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + "  HTTP 504 Gateway Timeout -- Internet Access Blocked.");

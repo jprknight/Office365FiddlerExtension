@@ -5,13 +5,11 @@ namespace O365FiddlerInspector.UI
 {
     public partial class Office365ResponseControl : UserControl
     {
-        //public static TextBox ResultsOutput { get; set; }
         public static WebBrowser ResultsOutput { get; set; }
         public Office365ResponseControl()
         {
             InitializeComponent();
            
-            //ResultsOutput = ResultsDisplay;
             ResultsOutput = webBrowserControl;
         }
         private void ResetPrefs()
