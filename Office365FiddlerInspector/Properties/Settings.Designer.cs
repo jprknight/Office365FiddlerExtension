@@ -25,7 +25,7 @@ namespace Office365FiddlerInspector.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://aka.ms/O365FiddlerExtensionUpdateCheckUrl")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://aka.ms/Office365FiddlerExtensionUpdateCheckUrl")]
         public string UpdateURL {
             get {
                 return ((string)(this["UpdateURL"]));

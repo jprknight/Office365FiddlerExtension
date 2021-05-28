@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="UpdateURL" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">https://aka.ms/O365FiddlerExtensionUpdateCheckUrl</Value>
+      <Value Profile="(Default)">https://aka.ms/Office365FiddlerExtensionUpdateCheckUrl</Value>
     </Setting>
     <Setting Name="InstallerURL" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://aka.ms/O365FiddlerExtensionUpdateUrl</Value>

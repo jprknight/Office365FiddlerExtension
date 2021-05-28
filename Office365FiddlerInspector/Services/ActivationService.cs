@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Office365FiddlerInspector.UI;
 using O365FiddlerInspector.UI;
 using System.Text;
+using System;
 
 namespace Office365FiddlerInspector.Services
 {
@@ -28,12 +29,23 @@ namespace Office365FiddlerInspector.Services
 
             SessionProcessor.Instance.Initialize();
 
-            FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
-            FiddlerApplication.UI.lvSessions.AddBoundColumn("Session Type", 150, "X-SessionType");
-            FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 140, "X-Authentication");
-            FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 110, "X-HostIP");
-            FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 130, "X-ResponseServer");
-            
+            try
+            {
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: Attempting to add columns to UI.");
+
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Session Type", 150, "X-SessionType");
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 140, "X-Authentication");
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 110, "X-HostIP");
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 130, "X-ResponseServer");
+            }
+            catch (Exception e)
+            {
+                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: {0} Exception caught." + e);
+            }
+
+            FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: Finished adding columns to UI.");
+
             // If disable web calls is true dion't check for updates and don't call telemetry service.
             if (Preferences.DisableWebCalls)
             {
