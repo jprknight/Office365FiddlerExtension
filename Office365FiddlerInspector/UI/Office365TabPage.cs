@@ -19,6 +19,8 @@ namespace Office365FiddlerInspector.UI
             InitializeComponent();
 
             TabPageResultsOutput = TabPageWebBrowser;
+
+            TabPageWebBrowser.DocumentText = "<h2>Click a session for analysis.</h2>";
         }
     }
 }
