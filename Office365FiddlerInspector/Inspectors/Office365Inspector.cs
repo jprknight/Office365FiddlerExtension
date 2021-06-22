@@ -215,7 +215,7 @@ namespace Office365FiddlerInspector.Inspectors
                 {
                     // Clear ResultsString.
                     Clear();
-                    ResultsString.AppendLine("<h2>Office 365 Fiddler Extension Disabled</h2>");
+                    ResultsString.AppendLine("<br /><h2>Office 365 Fiddler Extension Disabled</h2>");
                     Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
                     return;
                 }
@@ -239,11 +239,15 @@ namespace Office365FiddlerInspector.Inspectors
 
                 if (!this.session.isFlagSet(SessionFlags.LoadedFromSAZ))
                 {
-                    ResultsString.AppendLine("<h2><span style=color:'red'>Sessions Not Loaded from SAZ</span></h2>");
+                    ResultsString.AppendLine("<br /><h2><span style='color:red'>Sessions Not Loaded from SAZ</span></h2>");
                     ResultsString.AppendLine("<p>For the best results analysing data save the sessions "
                         + "as a SAZ file and load them back in. Click <i>File, Save, All Sessions</i>.</p>"
                         + "<p>When analysing live traffic, there are multiple scenarios where the session response is not immeidately available. This Alters the "
                         + "responses the extension shows on session analysis.</p>");
+                }
+                else
+                {
+                    ResultsString.AppendLine("<br />");
                 }
 
                 ResultsString.AppendLine("<h2>General Session Data</h2>");

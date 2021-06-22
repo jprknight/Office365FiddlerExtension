@@ -273,7 +273,7 @@ namespace Office365FiddlerInspector
                 this.session["ui-color"] = "black";
 
                 this.session["X-ResponseAlert"] = "Apache is answering Autodiscover requests!";
-                this.session["X-ResponseComments"] = "<b><span style=color:'red'>An Apache Web Server(Unix/Linux) is answering Autodiscover requests!</span></b>"
+                this.session["X-ResponseComments"] = "<b><span style='color:red'>An Apache Web Server(Unix/Linux) is answering Autodiscover requests!</span></b>"
                     + "<p>This should not be happening. Consider disabling Root Domain Autodiscover lookups.</p>"
                     + "<p>See ExcludeHttpsRootDomain on </p>"
                     + "<p><a href='https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under' target='_blank'>"
@@ -306,7 +306,7 @@ namespace Office365FiddlerInspector
                     this.session["ui-color"] = "black";
                     this.session["X-SessionType"] = "!NO RESPONSE!";
 
-                    this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 0 - No Response</span></b>";
+                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 0 - No Response</span></b>";
 
                     this.session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are "
                         + "troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could "
@@ -337,7 +337,7 @@ namespace Office365FiddlerInspector
 
                         this.session["X-SessionType"] = "!CLIENT ACCESS RULE!";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'red'>CLIENT ACCESS RULE</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:red'>CLIENT ACCESS RULE</span></b>";
                         this.session["X-ResponseComments"] = "A <b>client access rule has blocked MAPI connectivity to the mailbox</b>. "
                             + "Check if the <b>client access rule includes OutlookAnywhere</b>."
                             + "<p>Per <a href='https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules' target='_blank'>"
@@ -481,7 +481,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "!NO AUTOD REDIRECT ADDR!";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'red'>Exchange On-Premise Autodiscover Redirect</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:red'>Exchange On-Premise Autodiscover Redirect</span></b>";
                         this.session["X-ResponseComments"] = "Exchange On-Premise Autodiscover redirect address can't be found. "
                             + "Look for other On-Premise Autodiscover responses, we may have a "
                             + "valid Autodiscover targetAddress from On-Premise in another session in this trace."
@@ -525,7 +525,7 @@ namespace Office365FiddlerInspector
                             this.session["ui-color"] = "black";
                             this.session["X-SessionType"] = "!EXO MSI Autodiscover!";
 
-                            this.session["X-ResponseAlert"] = "<b><span style=color:'red'>Exchange Online / Outlook MSI Autodiscover - Unusual Autodiscover Response</span></b>";
+                            this.session["X-ResponseAlert"] = "<b><span style='color:red'>Exchange Online / Outlook MSI Autodiscover - Unusual Autodiscover Response</span></b>";
                             this.session["X-ResponseComments"] = "This session was detected as an Autodiscover response from Exchange Online. However the response did not contain the expected XML data."
                                 + " Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response.";
 
@@ -560,7 +560,7 @@ namespace Office365FiddlerInspector
                             this.session["ui-color"] = "black";
                             this.session["X-SessionType"] = "!EXO CTR Autodiscover!";
 
-                            this.session["X-ResponseAlert"] = "<b><span style=color:'red'>Exchange Online / Outlook CTR Autodiscover - Unusual Autodiscover Response</span></b>";
+                            this.session["X-ResponseAlert"] = "<b><span style='color:red'>Exchange Online / Outlook CTR Autodiscover - Unusual Autodiscover Response</span></b>";
                             this.session["X-ResponseComments"] = "This session was detected as an Autodiscover response from Exchange Online. However the response did not contain the expected XML data."
                                 + " Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response.";
 
@@ -600,7 +600,7 @@ namespace Office365FiddlerInspector
                             this.session["ui-color"] = "black";
                             this.session["X-SessionType"] = "EWS GetUnifiedGroupsSettings";
 
-                            this.session["X-ResponseAlert"] = "<b><span style=color:'red'>GetUnifiedGroupsSettings EWS call</span></b>";
+                            this.session["X-ResponseAlert"] = "<b><span style='color:red'>GetUnifiedGroupsSettings EWS call</span></b>";
                             this.session["X-ResponseComments"] = "<GroupCreationEnabled>false</GroupCreationEnabled> found in response body. "
                                 + "Expect user to <b>NOT be able to create Office 365 groups</b> in Outlook.";
 
@@ -766,7 +766,7 @@ namespace Office365FiddlerInspector
                             this.session["ui-color"] = "red";
                             this.session["X-SessionType"] = "!FAILURE LURKING!";
 
-                            this.session["X-ResponseAlert"] = "<b><span style=color:'red'>'error', 'failed' or 'exception' found in response body</span></b>";
+                            this.session["X-ResponseAlert"] = "<b><span style='color:red'>'error', 'failed' or 'exception' found in response body</span></b>";
                             this.session["X-ResponseComments"] += "<p>Session response body was scanned and errors or failures were found in response body. "
                                 + "Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review.</p>"
                                 + "<p>After splitting all words in the response body the following were found:<br />"
@@ -788,7 +788,7 @@ namespace Office365FiddlerInspector
                             this.session["ui-backcolor"] = HTMLColourGreen;
                             this.session["ui-color"] = "black";
 
-                            this.session["X-ResponseAlert"] = "<b><span style=color:'green'>No failure keywords detected in response body.</span></b>";
+                            this.session["X-ResponseAlert"] = "<b><span style='color:green'>No failure keywords detected in response body.</span></b>";
                             this.session["X-ResponseComments"] += "Session response body was scanned and no failure keywords ('error', 'failed' or "
                                 + "'exception') detected in response body.";
 
@@ -934,7 +934,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "Autodiscover Redirect";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'green'>Exchange Autodiscover redirect.</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:green'>Exchange Autodiscover redirect.</span></b>";
                         this.session["X-ResponseComments"] = "This type of traffic is typically an Autodiscover redirect response from Exchange On-Premise "
                             + "sending the Outlook client to connect to Exchange Online.";
                     }
@@ -945,7 +945,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "Autodiscover Redirect";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'green'>Redirect.</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:green'>Redirect.</span></b>";
                         this.session["X-ResponseComments"] = "Redirects within Office 365 client applications or servers are not unusual. "
                             + "The only potential downfall is too many of them. However if this happens you would normally see a too many "
                             + "redirects exception thrown as a server response.";
@@ -1017,7 +1017,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "!UNEXPECTED LOCATION!";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 307 Temporary Redirect</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 307 Temporary Redirect</span></b>";
                         this.session["X-ResponseComments"] = "<b>Temporary Redirects have been seen to redirect Exchange Online Autodiscover "
                             + "calls back to On-Premise resources, breaking Outlook connectivity</b>. Likely cause is a local networking device. Test outside of the LAN to confirm."
                             + "<p>This session is an Autodiscover request for Exchange Online which has not been sent to "
@@ -1067,7 +1067,7 @@ namespace Office365FiddlerInspector
                     this.session["ui-color"] = "black";
                     this.session["X-SessionType"] = "Bad Request";
 
-                    this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 400 Bad Request</span></b>";
+                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 400 Bad Request</span></b>";
                     this.session["X-ResponseComments"] = "HTTP 400: Bad Request. Seeing small numbers of these may not be an issue. However, if many are seen this should be investigated further.";
 
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 400 Bad Request.");
@@ -1097,7 +1097,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "Autodiscover Auth Challenge";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'orange'>Autodiscover Authentication Challenge</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:orange'>Autodiscover Authentication Challenge</span></b>";
                         this.session["X-ResponseComments"] = "Autodiscover Authentication Challenge. If the host for this session is autodiscover-s.outlook.com this is likely Outlook "
                             + "(MSI / perpetual license) being redirected from Exchange On-Premise."
                             + "<p><b>These are expected</b> and are not an issue as long as a subsequent "
@@ -1114,7 +1114,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "Auth Challenge";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'orange'>Authentication Challenge</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:orange'>Authentication Challenge</span></b>";
                         this.session["X-ResponseComments"] = "Authentication Challenge. <b>These are expected</b> and are not an issue as long as a subsequent "
                             + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. "
                             + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>";
@@ -1147,9 +1147,9 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "WEB PROXY BLOCK";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 403 Access Denied - WEB PROXY BLOCK!</span></b>";
-                        this.session["X-ResponseComments"] = "<b><span style=color:'red'>Is your firewall or web proxy blocking Outlook connectivity?</span></b> "
-                            + "<p>To fire this message a HTTP 403 response code was detected and '<b><span style=color:'red'>Access Denied</span></b>' was found in "
+                        this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 403 Access Denied - WEB PROXY BLOCK!</span></b>";
+                        this.session["X-ResponseComments"] = "<b><span style='color:red'>Is your firewall or web proxy blocking Outlook connectivity?</span></b> "
+                            + "<p>To fire this message a HTTP 403 response code was detected and '<b><span style='color:red'>Access Denied</span></b>' was found in "
                             + "the response body.</p>"
                             + "<p>Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked? <b>Is there a message branded by or from "
                             + "your proxy device indiciating it blocked traffic?</b> A common scenario when first deploying Office365 / Exchange Online "
@@ -1164,7 +1164,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "HTTP 403 FORBIDDEN";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 403 Forbidden</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 403 Forbidden</span></b>";
                         this.session["X-ResponseComments"] = "While HTTP 403's can be symptomatic of a proxy server blocking traffic, "
                             + "however the phrase 'Access Denied' was NOT detected in the response body."
                             + "<p>A small number of HTTP 403's can be seen in normal working scenarios. Check the Raw and WebView tabs to look for anything which looks suspect.</p>"
@@ -1197,7 +1197,7 @@ namespace Office365FiddlerInspector
                     this.session["ui-color"] = "black";
                     this.session["X-SessionType"] = "HTTP 404 Not Found";
 
-                    this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 404 Not Found</span></b>";
+                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 404 Not Found</span></b>";
                     this.session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting " +
                         "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.";
 
@@ -1214,7 +1214,7 @@ namespace Office365FiddlerInspector
                     this.session["ui-backcolor"] = HTMLColourOrange;
                     this.session["ui-color"] = "black";
 
-                    this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 405: Method Not Allowed</span></b>";
+                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 405: Method Not Allowed</span></b>";
                     this.session["X-ResponseComments"] = "Method Not Allowed";
 
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 405 Method not allowed.");
@@ -1240,8 +1240,8 @@ namespace Office365FiddlerInspector
                     this.session["ui-color"] = "black";
                     this.session["X-SessionType"] = "HTTP 407 Proxy Auth Required";
 
-                    this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 407: Proxy Authentication Required</span></b>";
-                    this.session["X-ResponseComments"] = "<b><span style=color:'red'>Proxy Authentication Required</span></b>"
+                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 407: Proxy Authentication Required</span></b>";
+                    this.session["X-ResponseComments"] = "<b><span style='color:red'>Proxy Authentication Required</span></b>"
                         + "<p>Seeing these when investigating an Office 365 connectivity is a <b>big indicator of an issue</b>.</p>"
                         + "<p>Look to engage the network or security team who is responsible for the proxy infrastructure and give them "
                         + "the information from these HTTP 407 sessions to troubleshoot with.</p>"
@@ -1426,7 +1426,7 @@ namespace Office365FiddlerInspector
                     this.session["ui-color"] = "black";
                     this.session["X-SessionType"] = "HTTP 429 Too Many Requests";
 
-                    this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 429 Too Many Requests</span></b>";
+                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 429 Too Many Requests</span></b>";
                     this.session["X-ResponseComments"] = "These responses need to be taken into context with the rest of the sessions in the trace. " +
                         "A small number is probably not an issue, larger numbers of these could be cause for concern.";
 
@@ -1465,7 +1465,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "!Multi-Factor Auth!";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 456 Multi-Factor Authentication</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 456 Multi-Factor Authentication</span></b>";
                         this.session["X-ResponseComments"] = "See details on Raw tab. Look for the presence of 'you must use multi-factor authentication'." +
                             "<p>This has been seen where users have <b>MFA enabled/enforced, but Modern Authentication is not enabled</b> in the Office 365 workload being connected to</p?" +
                             "<p>See <a href='https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662' target='_blank'>" +
@@ -1481,7 +1481,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "!Multi-Factor Auth!";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 456 Multi-Factor Authentication</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 456 Multi-Factor Authentication</span></b>";
                         this.session["X-ResponseComments"] = "See details on Raw tab. Look for the presence of 'oauth_not_available'."
                             + "<p>This has been seen where users have <b>MFA enabled/enforced, but Modern Authentication</b> is not enabled in the Office 365 workload being connected to</p>"
                             + "<p>See <a href='https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662' target='_blank'>" +
@@ -1497,7 +1497,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "Multi-Factor Auth?";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'orange'>HTTP 456 Multi-Factor Authentication?</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:orange'>HTTP 456 Multi-Factor Authentication?</span></b>";
                         this.session["X-ResponseComments"] = "See details on Raw tab. Is Modern Authentication disabled?"
                             + "<p>This has been seen where users have <b>MFA enabled/enforced, but Modern Authentication is not enabled</b> in the Office 365 workload being connected to.</p>"
                             + "<p>See <a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx' target='_blank'>"
@@ -1524,7 +1524,7 @@ namespace Office365FiddlerInspector
                     this.session["ui-color"] = "black";
                     this.session["X-SessionType"] = "!HTTP 500 Internal Server Error!";
 
-                    this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 500 Internal Server Error</span></b>";
+                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 500 Internal Server Error</span></b>";
                     this.session["X-ResponseComments"] = "Consider the server that issued this response, "
                         + "look at the IP address in the 'Host IP' column and lookup where it is hosted to know who should be looking at "
                         + "the issue.";
@@ -1576,7 +1576,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "False Positive";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'green'>False Positive</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:green'>False Positive</span></b>";
                         this.session["X-ResponseComments"] = "Telemetry failing is unlikely the cause of Outlook / OWA connectivity or other issues.";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. Telemetry False Positive.");
@@ -1596,7 +1596,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "False Positive";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'green'>False Positive</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:green'>False Positive</span></b>";
                         this.session["X-ResponseComments"] = "False positive on HTTP 502; This is a Microsoft DNS MX record for the .onmicrosoft.com domain."
                             + "By design, the host only accepts connections on port 25, port 443 is not available."
                             + "<p>To validate this above lookup the record, confirm it is a MX record and attempt to connect to the MX host on ports 25 and 443.</p>";
@@ -1625,7 +1625,7 @@ namespace Office365FiddlerInspector
                         int charcount = end - start;
                         string AutoDFalsePositiveDomain = AutoDFalsePositiveResponseBody.Substring(start, charcount).Replace("'", "");
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'green'>False Positive</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:green'>False Positive</span></b>";
                         this.session["X-ResponseComments"] = "By design Office 365 Autodiscover does not respond to "
                             + AutoDFalsePositiveDomain
                             + " on port 443. "
@@ -1660,7 +1660,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "Autodiscover Possible False Positive?";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'orange'>Autodiscover Possible False Positive?</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:orange'>Autodiscover Possible False Positive?</span></b>";
                         this.session["X-ResponseComments"] = "Autoddiscover Possible False Positive. By design Office 365 endpoints such as autodiscover.contoso.onmicrosoft.com "
                             + "do not respond on port 443. "
                             + "<p>Validate this message by confirming this is an Office 365 Host/IP address and perform a telnet to it on port 80.</p>"
@@ -1681,7 +1681,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "!AUTODISCOVER!";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'red'>AUTODISCOVER</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:red'>AUTODISCOVER</span></b>";
                         this.session["X-ResponseComments"] = "This AutoDiscover request was refused by the server it was sent to. Check the raw tab for further details.";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. Exchange Autodiscover.");
@@ -1698,7 +1698,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "!Bad Gateway!";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 502 Bad Gateway</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 502 Bad Gateway</span></b>";
                         this.session["X-ResponseComments"] = "Potential to cause the issue you are investigating. "
                             + "Do you see expected responses beyond this session in the trace? Is the Host IP for the device issuing this response with a subnet "
                             + "within your lan or something in a cloud provider's network?";
@@ -1745,10 +1745,10 @@ namespace Office365FiddlerInspector
 
                         string RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=" + this.session.oRequest["X-User-Identity"] + "&xml=1";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'red'>FederatedSTSUnreachable</span></b>";
-                        this.session["X-ResponseComments"] = "<b><span style=color:'red'>HTTP 503: FederatedSTSUnreachable</span></b>."
-                            + "<b><span style=color:'red'>The fedeation service is unreachable or unavailable</span></b>."
-                            + "<p><b><span style=color:'red'>Troubleshoot this issue first before doing anything else.</span></b></p>"
+                        this.session["X-ResponseAlert"] = "<b><span style='color:red'>FederatedSTSUnreachable</span></b>";
+                        this.session["X-ResponseComments"] = "<b><span style='color:red'>HTTP 503: FederatedSTSUnreachable</span></b>."
+                            + "<b><span style='color:red'>The fedeation service is unreachable or unavailable</span></b>."
+                            + "<p><b><span style='color:red'>Troubleshoot this issue first before doing anything else.</span></b></p>"
                             + "<p>Check the Raw tab for additional details.</p>"
                             + "<p>Check the realm page for the authenticating domain. Check the below links from the Realm page to see if the IDP gives the "
                             + "expected responses.</p>"
@@ -1773,7 +1773,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "!Service Unavailable!";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 503 Service Unavailable</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 503 Service Unavailable</span></b>";
                         this.session["X-ResponseComments"] = "<b>Server that was contacted in this session reports it is unavailable</b>. Look at the server that issued this response, "
                             + "it is healthy? Contactable? Contactable consistently or intermittently?";
 
@@ -1799,9 +1799,9 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "!INTERNET BLOCKED!";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 504 Gateway Timeout -- Internet Access Blocked</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 504 Gateway Timeout -- Internet Access Blocked</span></b>";
                         this.session["X-ResponseComments"] = "Detected the keywords 'internet' and 'access' and 'blocked'. Potentially the computer this trace was collected "
-                            + "from has been <b><span style=color:'red'>quaratined for internet access by a LAN based network security device</span></b>."
+                            + "from has been <b><span style='color:red'>quaratined for internet access by a LAN based network security device</span></b>."
                             + "<p>Validate this by checking the webview and raw tabs for more information.</p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + "  HTTP 504 Gateway Timeout -- Internet Access Blocked.");
@@ -1814,7 +1814,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
 
-                        this.session["X-ResponseAlert"] = "<b><span style=color:'red'>HTTP 504 Gateway Timeout</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 504 Gateway Timeout</span></b>";
                         this.session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting "
                             + "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.";
 
@@ -2222,12 +2222,12 @@ namespace Office365FiddlerInspector
                 // If the roundtrip is over warning and under slow running thresholds; orange.
                 else if (ClientMilliseconds > Preferences.GetWarningSessionTimeThreshold() && ClientMilliseconds < Preferences.GetSlowRunningSessionThreshold())
                 {
-                    this.session["X-InspectorElapsedTime"] = $"<b><span style=color:'orange'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>";
+                    this.session["X-InspectorElapsedTime"] = $"<b><span style='color:orange'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>";
                 }
                 // If roundtrip is over slow running threshold; red.
                 else if (ClientMilliseconds > Preferences.GetSlowRunningSessionThreshold())
                 {
-                    this.session["X-InspectorElapsedTime"] = $"<b><span style=color:'red'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>";
+                    this.session["X-InspectorElapsedTime"] = $"<b><span style='color:red'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>";
                 }
                 // If the roundtrip time is more than 1 second show the result in seconds.
                 else
@@ -2272,11 +2272,11 @@ namespace Office365FiddlerInspector
                 }
                 else if (ServerMilliseconds > Preferences.GetWarningSessionTimeThreshold() && ServerMilliseconds < Preferences.GetSlowRunningSessionThreshold())
                 {
-                    this.session["X-ServerThinkTime"] = $"<b><span style=color:'orange'>{ServerSeconds} seconds ({ServerMilliseconds}ms).</span></b>";
+                    this.session["X-ServerThinkTime"] = $"<b><span style='color:orange'>{ServerSeconds} seconds ({ServerMilliseconds}ms).</span></b>";
                 }
                 else if (ServerMilliseconds >= Preferences.GetSlowRunningSessionThreshold())
                 {
-                    this.session["X-ServerThinkTime"] = $"<b><span style=color:'red'>{ServerSeconds} seconds ({ServerMilliseconds}ms).</span></b>";
+                    this.session["X-ServerThinkTime"] = $"<b><span style='color:red'>{ServerSeconds} seconds ({ServerMilliseconds}ms).</span></b>";
                 }
                 else
                 {
@@ -2314,11 +2314,11 @@ namespace Office365FiddlerInspector
                 }
                 else if (ServerMilliseconds > Preferences.GetWarningSessionTimeThreshold() && ServerMilliseconds < Preferences.GetSlowRunningSessionThreshold())
                 {
-                    this.session["X-TransitTime"] = $"<b><span style=color:'orange'>{ServerSeconds} seconds ({ServerMilliseconds} ms).</span></b>";
+                    this.session["X-TransitTime"] = $"<b><span style='color:orange'>{ServerSeconds} seconds ({ServerMilliseconds} ms).</span></b>";
                 }
                 else if (ServerMilliseconds >= Preferences.GetSlowRunningSessionThreshold())
                 {
-                    this.session["X-TransitTime"] = $"<b><span style=color:'red'>{ServerSeconds} seconds ({ServerMilliseconds} ms).</span></b>";
+                    this.session["X-TransitTime"] = $"<b><span style='color:red'>{ServerSeconds} seconds ({ServerMilliseconds} ms).</span></b>";
                 }
                 else
                 {
@@ -2419,30 +2419,30 @@ namespace Office365FiddlerInspector
 
             if (TimeSpanDays <= 7)
             {
-                this.session["X-DataAge"] = $"<b><span style=color:'green'>{DataAge}</span></b>";
+                this.session["X-DataAge"] = $"<b><span style='color:green'>{DataAge}</span></b>";
 
                 this.session["X-CalculatedSessionAge"] = "<p>Session collected within 7 days, data freshness is good. Best case scenario for correlating this data to backend server logs.</p>";
             }
             else if (TimeSpanDays > 7 && TimeSpanDays < 14)
             {
-                this.session["X-DataAge"] = $"<b><span style=color:'orange'>{DataAge}</span></b>";
+                this.session["X-DataAge"] = $"<b><span style='color:orange'>{DataAge}</span></b>";
 
-                this.session["X-CalculatedSessionAge"] = "<p>Session collected within 14 days, data freshness is good, <b><span style=color:'orange'>but not ideal</span></b>. "
-                    + "Depending on the backend system, <b><span style=color:'orange'>correlating this data to server logs might be possible</span></b>.</p>";
+                this.session["X-CalculatedSessionAge"] = "<p>Session collected within 14 days, data freshness is good, <b><span style='color:orange'>but not ideal</span></b>. "
+                    + "Depending on the backend system, <b><span style='color:orange'>correlating this data to server logs might be possible</span></b>.</p>";
             }
             else if (TimeSpanDays >= 14 && TimeSpanDays < 30)
             {
-                this.session["X-DataAge"] = $"<b><span style=color:'orange'>{DataAge}</span></b>";
+                this.session["X-DataAge"] = $"<b><span style='color:orange'>{DataAge}</span></b>";
 
-                this.session["X-CalculatedSessionAge"] = "<p><b><span style=color:'red'>Session collected between 14 and 30 days ago</span></b>. "
-                    + "Correlating with any backend server logs is <b><span style=color:'red'>likely impossible</span></b>. Many systems don't keep logs this long.</p>";
+                this.session["X-CalculatedSessionAge"] = "<p><b><span style='color:red'>Session collected between 14 and 30 days ago</span></b>. "
+                    + "Correlating with any backend server logs is <b><span style='color:red'>likely impossible</span></b>. Many systems don't keep logs this long.</p>";
             }
             else
             {
-                this.session["X-DataAge"] = $"<b><span style=color:'red'>{DataAge}</span></b>";
+                this.session["X-DataAge"] = $"<b><span style='color:red'>{DataAge}</span></b>";
 
-                this.session["X-CalculatedSessionAge"] = "<p><b><span style=color:'red'>Session collected more than 30 days ago</span></b>. "
-                    + "Correlating with any backend server logs is <b><span style=color:'red'>very likely impossible</span></b>. Many systems don't keep logs this long.</p>";
+                this.session["X-CalculatedSessionAge"] = "<p><b><span style='color:red'>Session collected more than 30 days ago</span></b>. "
+                    + "Correlating with any backend server logs is <b><span style='color:red'>very likely impossible</span></b>. Many systems don't keep logs this long.</p>";
             }
             #endregion
         }
@@ -2467,7 +2467,7 @@ namespace Office365FiddlerInspector
 
                     this.session["X-SessionType"] = "Roundtrip Time Warning";
 
-                    this.session["X-ResponseAlert"] = "<b><span style=color:'orange'>Roundtrip Time Warning</span></b>";
+                    this.session["X-ResponseAlert"] = "<b><span style='color:orange'>Roundtrip Time Warning</span></b>";
                 }
                 
                 this.session["X-ResponseComments"] += "This session took more than 2.5 seconds to complete. "
@@ -2483,7 +2483,7 @@ namespace Office365FiddlerInspector
 
                     this.session["X-SessionType"] = "Long Running Client Session";
 
-                    this.session["X-ResponseAlert"] = "<b><span style=color:'red'>Long Running Client Session</span></b>";
+                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>Long Running Client Session</span></b>";
                 }
                 
                 this.session["X-ResponseComments"] += "Long running session found. A small number of long running sessions in the < 10 "
@@ -2506,7 +2506,7 @@ namespace Office365FiddlerInspector
 
                     this.session["X-SessionType"] = "Long Running Server Session";
 
-                    this.session["X-ResponseAlert"] = "<b><span style=color:'red'>Long Running Server Session</span></b>";
+                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>Long Running Server Session</span></b>";
                 }
                 
                 this.session["X-ResponseComments"] += "Long running Server session found. A small number of long running sessions in the < 10 "
@@ -2855,7 +2855,7 @@ namespace Office365FiddlerInspector
                 this.session["X-Authentication"] = "Basic Auth Token";
 
                 this.session["X-AuthenticationDesc"] = $"Process '{this.session["X-ProcessName"]}' accessing resources with a Basic Authentication security token.<br />"
-                    + "<b><span style=color:'red'>It's time to think about Modern Authentication!</span></b>";
+                    + "<b><span style='color:red'>It's time to think about Modern Authentication!</span></b>";
 
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Basic Auth Token.");
             }

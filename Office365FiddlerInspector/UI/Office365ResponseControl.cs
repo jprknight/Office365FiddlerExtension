@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.IO;
+using System.Windows.Forms;
 using Fiddler;
 
 namespace O365FiddlerInspector.UI
@@ -48,6 +49,21 @@ namespace O365FiddlerInspector.UI
         private void webBrowserControl_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
 
+        }
+
+        private void Save_Click(object sender, System.EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = " Webpage, HTML only |*.html;*.htm";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                using (StreamWriter sw = new StreamWriter(sfd.FileName))
+                {
+                    // Remove <br /> from output, not needed in HTML, introduced spacing for save button.
+                    string HTMLOutput = webBrowserControl.DocumentText.Replace("<br />", "");
+                    sw.Write(HTMLOutput);
+                }
+            }
         }
     }
 }
