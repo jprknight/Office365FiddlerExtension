@@ -152,11 +152,8 @@ namespace Office365FiddlerInspector
             // Set Elapsed Time for inspector with HTML mark-up.
             Instance.SetInspectorElapsedTime(session);
 
-            // Set Server Think Time for inspector with HTML mark-up.
-            Instance.SetServerThinkTime(session);
-
-            // Set Transit Time for inspector with HTML mark-up.
-            Instance.SetTransitTime(session);
+            // Set Server Think Time and Transit Time for inspector with HTML mark-up.
+            Instance.SetServerThinkTimeTransitTime(session);
 
             // Set Response Server column data.
             Instance.SetResponseServer(session);
@@ -1151,8 +1148,10 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseComments"] = "<b><span style='color:red'>Is your firewall or web proxy blocking Outlook connectivity?</span></b> "
                             + "<p>To fire this message a HTTP 403 response code was detected and '<b><span style='color:red'>Access Denied</span></b>' was found in "
                             + "the response body.</p>"
-                            + "<p>Check the Raw and WebView tabs, do you see anything which indicates traffic is blocked? <b>Is there a message branded by or from "
-                            + "your proxy device indiciating it blocked traffic?</b> A common scenario when first deploying Office365 / Exchange Online "
+                            + "<p>Check the WebView tab, do you see anything which indicates traffic is blocked?"
+                            + "<p><b><span style='color:red'>Is there a message branded by or from "
+                            + "your proxy device indiciating it blocked traffic?</span></b> "
+                            + "A common scenario when first deploying Office365 / Exchange Online "
                             + "is a web proxy device blocking access to consumer webmail which can impact Outlook connectivity and potentially other Office 365 applications.</p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
@@ -1774,8 +1773,8 @@ namespace Office365FiddlerInspector
                         this.session["X-SessionType"] = "!Service Unavailable!";
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 503 Service Unavailable</span></b>";
-                        this.session["X-ResponseComments"] = "<b>Server that was contacted in this session reports it is unavailable</b>. Look at the server that issued this response, "
-                            + "it is healthy? Contactable? Contactable consistently or intermittently?";
+                        this.session["X-ResponseComments"] = "<b><span style='color:red'>Server that was contacted in this session reports it is unavailable</span></b>. Look at the server that issued this response, "
+                            + "it is healthy? Contactable? Contactable consistently or intermittently? Consider other session server responses in the 500's (500, 502 or 503) in conjunction with this session.";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 503 Service Unavailable (99).");
                     }
@@ -2213,7 +2212,7 @@ namespace Office365FiddlerInspector
                 // If the roundtrip time is less than 1 second show the result in milliseconds.
                 if (ClientMilliseconds == 0)
                 {
-                    this.session["X-InspectorElapsedTime"] = "Insufficient data";
+                    this.session["X-InspectorElapsedTime"] = $"{ClientMilliseconds}ms";
                 }
                 else if (ClientMilliseconds < 1000)
                 {
@@ -2250,9 +2249,9 @@ namespace Office365FiddlerInspector
         }
 
         // Function to set Server Think Time and Transit Time for use within Inspector.
-        public void SetServerThinkTime(Session session)
+        public void SetServerThinkTimeTransitTime(Session session)
         {
-            #region ServerThinkTime
+            #region ServerThinkTimeTransitTime
             // ServerGotRequest, ServerBeginResponse or ServerDoneResponse can be blank. If so do not try to calculate and output 'Server Think Time' or 'Transmit Time', we end up with a hideously large number.
             if (this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff") != "0:00:00.000" &&
                 this.session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff") != "0:00:00.000" &&
@@ -2262,68 +2261,69 @@ namespace Office365FiddlerInspector
                 double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
                 double ServerSeconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalSeconds);
 
-                if (ServerMilliseconds == 0)
+                // transit time = elapsed time - server think time.
+
+                double ElapsedMilliseconds = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds);
+
+                double dTransitTimeMilliseconds = ElapsedMilliseconds - ServerMilliseconds;
+                if (dTransitTimeMilliseconds < 0 )
                 {
-                    this.session["X-ServerThinkTime"] = "Insufficient data";
+                    dTransitTimeMilliseconds = 0;
                 }
-                else if (ServerMilliseconds < 1000)
+
+                int iTransitTimeSeconds = (int)Math.Round(dTransitTimeMilliseconds / 1000);
+
+                // If 1/10th of the session elapsed time is more than the server think time, network roundtrip loses.
+                if (ElapsedMilliseconds / 10 > ServerMilliseconds && ElapsedMilliseconds > Preferences.GetSlowRunningSessionThreshold())
                 {
-                    this.session["X-ServerThinkTime"] = $"{ServerMilliseconds}ms";
-                }
-                else if (ServerMilliseconds > Preferences.GetWarningSessionTimeThreshold() && ServerMilliseconds < Preferences.GetSlowRunningSessionThreshold())
-                {
-                    this.session["X-ServerThinkTime"] = $"<b><span style='color:orange'>{ServerSeconds} seconds ({ServerMilliseconds}ms).</span></b>";
-                }
-                else if (ServerMilliseconds >= Preferences.GetSlowRunningSessionThreshold())
-                {
-                    this.session["X-ServerThinkTime"] = $"<b><span style='color:red'>{ServerSeconds} seconds ({ServerMilliseconds}ms).</span></b>";
+                    this.session["X-SessionTimersDescription"] = "<p>The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.</p>" +
+                        "<p>If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.</p>" +
+                        "<p>Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.<p>";
+                    // Highlight server think time in green.
+                    if (ServerMilliseconds < 1000)
+                    {
+                        this.session["X-ServerThinkTime"] = $"<b><span style='color:green'>{ServerMilliseconds}ms.</span></b>";
+                    }
+                    else
+                    {
+                        this.session["X-ServerThinkTime"] = $"<b><span style='color:green'>{ServerSeconds} seconds ({ServerMilliseconds}ms).</span></b>";
+                    }
+                    
+                    // Highlight transit time in red.
+                    if (iTransitTimeSeconds < 1000)
+                    {
+                        this.session["X-TransitTime"] = $"<b><span style='color:red'>{dTransitTimeMilliseconds}ms.</span></b>";
+                    }
+                    else
+                    {
+                        this.session["X-TransitTime"] = $"<b><span style='color:red'>{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms).</span></b>";
+                    }
                 }
                 else
                 {
-                    this.session["X-ServerThinkTime"] = $"{ServerSeconds}s ({ServerMilliseconds}ms).";
-                }
+                    if (ServerMilliseconds < 1000)
+                    {
+                        this.session["X-ServerThinkTime"] = $"{ServerMilliseconds}ms";
+                    }
+                    else
+                    {
+                        this.session["X-ServerThinkTime"] = $"{ServerSeconds} seconds ({ServerMilliseconds}ms).";
+                    }
 
-                if (ServerMilliseconds > Preferences.GetSlowRunningSessionThreshold())
-                {
-                    FiddlerApplication.Log.LogString("O365FiddlerExtention: " + this.session.id + " Long running Office 365 session.");
+                    if (iTransitTimeSeconds < 1000)
+                    {
+                        this.session["X-TransitTime"] = $"{dTransitTimeMilliseconds}ms";
+                    }
+                    else
+                    {
+                        this.session["X-TransitTime"] = $"{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms).";
+                    }
                 }
             }
-            #endregion
-        }
-
-        //Function to set TransitTime used in Inspector.
-        public void SetTransitTime(Session session)
-        {
-            #region TransitTime
-            // ServerGotRequest, ServerBeginResponse or ServerDoneResponse can be blank. If so do not try to calculate and output 'Server Think Time' or 'Transmit Time', we end up with a hideously large number.
-            if (this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff") != "0:00:00.000" &&
-                this.session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff") != "0:00:00.000" &&
-                this.session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
+            else
             {
-
-                double ServerMilliseconds = Math.Round((this.session.Timers.ServerDoneResponse - this.session.Timers.ServerBeginResponse).TotalMilliseconds);
-                double ServerSeconds = Math.Round((this.session.Timers.ServerDoneResponse - this.session.Timers.ServerBeginResponse).TotalSeconds);
-
-                if (ServerMilliseconds == 0)
-                {
-                    this.session["X-TransitTime"] = "Insufficient data";
-                }
-                else if (ServerMilliseconds < 1000)
-                {
-                    this.session["X-TransitTime"] = $"{ServerMilliseconds} ms";
-                }
-                else if (ServerMilliseconds > Preferences.GetWarningSessionTimeThreshold() && ServerMilliseconds < Preferences.GetSlowRunningSessionThreshold())
-                {
-                    this.session["X-TransitTime"] = $"<b><span style='color:orange'>{ServerSeconds} seconds ({ServerMilliseconds} ms).</span></b>";
-                }
-                else if (ServerMilliseconds >= Preferences.GetSlowRunningSessionThreshold())
-                {
-                    this.session["X-TransitTime"] = $"<b><span style='color:red'>{ServerSeconds} seconds ({ServerMilliseconds} ms).</span></b>";
-                }
-                else
-                {
-                    this.session["X-TransitTime"] = $"{ServerSeconds} seconds ({ServerMilliseconds} ms)";
-                }
+                this.session["X-ServerThinkTime"] = "Insufficient data";
+                this.session["X-TransitTime"] = "Insufficient data";
             }
             #endregion
         }
@@ -2486,12 +2486,12 @@ namespace Office365FiddlerInspector
                     this.session["X-ResponseAlert"] = "<b><span style='color:red'>Long Running Client Session</span></b>";
                 }
                 
-                this.session["X-ResponseComments"] += "Long running session found. A small number of long running sessions in the < 10 "
-                    + "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue."
+                this.session["X-ResponseComments"] += "<p><b><span style='color:red'>Long running session found</span></b>. A small number of long running sessions in the < 10 "
+                    + "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue.</p>"
                     + "<p>If, however, you are troubleshooting an application performance issue, consider the number of sessions which "
-                    + "have this warning alongany proxy device in your network, "
-                    + "or any other device sitting between the client computer and access to the application server the data resides on."
-                    + "Try the divide and conquer approach. What can you remove or bypass from the equation to see if the application then performs "
+                    + "have this warning. Investigate any proxy device or load balancer in your network, "
+                    + "or any other device sitting between the client computer and access to the application server the data resides on.</p>"
+                    + "<p>Try the divide and conquer approach. What can you remove or bypass from the equation to see if the application then performs "
                     + "normally?</p>";
 
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Long running client session.");

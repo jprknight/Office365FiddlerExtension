@@ -68,7 +68,7 @@ namespace Office365FiddlerInspector
 
                 TabPageResultsString.AppendLine(StrExtensionAdds());
 
-                TabPageResultsString.AppendLine("<h3>Columns</h3><p>The columns the extension adds five columns.</p>");
+                TabPageResultsString.AppendLine("<h3>Columns</h3><p>The extension adds five columns.</p>");
 
                 TabPageResultsString.AppendLine("<img src='https://github.com/jprknight/Office365FiddlerExtension/blob/master/docs/Office365FiddlerExtensionColumns.png?raw=true'>");
 
@@ -115,17 +115,17 @@ namespace Office365FiddlerInspector
         public string StrAccessInspector2()
         {
             return "<p>Once you click on a session in the left hand panel, you will see the Inspectors available.</p>"
-                + "<p>The top right panel is the request data sent out from the application(s) recorded by Fiddler</p>"
-                + "<p>The bottom right panel is the server response data received back for the application(s) recorded by Fiddler</p>"
-                + "<p>Click the Office365 response Inspector for detailed analysis of each session response in relation to how Office 365 "
-                + "are expected to behave and what action to take if something is not working as expected.</p>";
+                + "<p>The top right panel is the request data sent out from client applications and recorded by Fiddler.</p>"
+                + "<p>The bottom right panel is the server data received back in response and recorded by Fiddler.</p>"
+                + "<p>Click the Office365 response Inspector for detailed analysis of each session response. Detailed information "
+                + "is available on how Office 365 client applications are expected to behave and how to troubleshoot issues.</p>";
         }
 
         public string StrProjectLinks()
         {
-            return "<h3>Links</h3><p>Releases download page: <a href='https://aka.ms/O365FiddlerExtensionUpdateUrl' target='_blank'>https://aka.ms/O365FiddlerExtensionUpdateUrl</a><br />"
-                + "Extension wiki page: <a href='https://aka.ms/O365FiddlerExtensionWiki' target='_blank'>https://aka.ms/O365FiddlerExtensionWiki</a><br />"
-                + "Report Issues page: <a href='https://aka.ms/O365FiddlerExtensionIssues' target='_blank'>https://aka.ms/O365FiddlerExtensionIssues</a></p>";
+            return "<h3>Links</h3><p>Releases download page: <a href='https://aka.ms/Office365FiddlerExtensionUpdateUrl' target='_blank'>https://aka.ms/Office365FiddlerExtensionUpdateUrl</a><br />"
+                + "Extension wiki page: <a href='https://aka.ms/Office365FiddlerExtensionWiki' target='_blank'>https://aka.ms/Office365FiddlerExtensionWiki</a><br />"
+                + "Report Issues page: <a href='https://aka.ms/Office365FiddlerExtensionIssues' target='_blank'>https://aka.ms/Office365FiddlerExtensionIssues</a></p>";
         }
 
         public void Clear()

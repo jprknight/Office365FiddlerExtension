@@ -34,7 +34,7 @@ namespace Office365FiddlerInspector
                 reader = new XmlTextReader(xmlUrl);
                 reader.MoveToContent();
                 string elementName = "";
-                if ((reader.NodeType == XmlNodeType.Element) && reader.Name == "FiddlerInspector")
+                if ((reader.NodeType == XmlNodeType.Element) && reader.Name == "EXOFiddlerInspector")
                 {
                 while (reader.Read())
                     if (reader.NodeType == XmlNodeType.Element)

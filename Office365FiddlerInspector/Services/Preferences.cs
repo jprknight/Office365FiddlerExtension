@@ -35,6 +35,12 @@ namespace Office365FiddlerInspector.Services
             return 2500;
         }
 
+        // 1 second for a good time on a session.
+        public static int GetGoodSessionTimeThreshold()
+        {
+            return 1000;
+        }
+
         public static Task<bool> SetDefaultPreferences()
         {
             ExtensionEnabled = true;

@@ -264,7 +264,7 @@ namespace Office365FiddlerInspector.Inspectors
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine("HTTP Response Code");
+                ResultsString.AppendLine("Response Code");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine($"<a href='https://en.wikipedia.org/wiki/List_of_HTTP_status_codes' target='_blank'>{this.session["X-ResponseCodeDescription"]}</a>");
@@ -273,7 +273,6 @@ namespace Office365FiddlerInspector.Inspectors
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                
                 ResultsString.AppendLine("Session Captured");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
@@ -283,19 +282,19 @@ namespace Office365FiddlerInspector.Inspectors
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine("Capture was");
+                ResultsString.AppendLine("Session Analysis");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session["X-DataAge"]);
+                ResultsString.AppendLine(DateTime.Now.ToString("dddd, dd MMMM yyyy"));
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine("Session Alert");
+                ResultsString.AppendLine("Capture was");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session["X-ResponseAlert"]);
+                ResultsString.AppendLine(this.session["X-DataAge"]);
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -351,26 +350,9 @@ namespace Office365FiddlerInspector.Inspectors
                 {
                     ResultsString.AppendLine("<h2>Authentication</h2>");
 
-                    ResultsString.AppendLine("<table border='0'>");
-                    ResultsString.AppendLine("<tr>");
-                    ResultsString.AppendLine("<td width='150px'>");
-                    ResultsString.AppendLine("Type");
-                    ResultsString.AppendLine("</td>");
-                    ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(this.session["X-AUTHENTICATION"]);
-                    ResultsString.AppendLine("</td>");
-                    ResultsString.AppendLine("</tr>");
+                    ResultsString.AppendLine($"<h3>{this.session["X-AUTHENTICATION"]}</h3>");
 
-                    ResultsString.AppendLine("<tr>");
-                    ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine("Description");
-                    ResultsString.AppendLine("</td>");
-                    ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(this.session["X-AUTHENTICATIONDESC"]);
-                    ResultsString.AppendLine("</td>");
-                    ResultsString.AppendLine("</tr>");
-
-                    ResultsString.AppendLine("</table>");
+                    ResultsString.AppendLine($"<p>{this.session["X-AUTHENTICATIONDESC"]}</p>");
                 }
 
                 if (this.session["X-Office365AuthType"] == "SAMLResponseParser")
@@ -428,8 +410,6 @@ namespace Office365FiddlerInspector.Inspectors
                 #region SessionTimers
                 ResultsString.AppendLine("<h2>Overall Session Timers</h2>");
 
-                ResultsString.AppendLine("<p>For an explantion of session timers refer to: <a href='https://aka.ms/Timers-Definitions' target='_blank'>https://aka.ms/Timers-Definitions</a>.</p>");
-
                 ResultsString.AppendLine("<table border='0'>");
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td width='150px'>");
@@ -467,17 +447,14 @@ namespace Office365FiddlerInspector.Inspectors
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
-                if (this.session["X-InspectorElapsedTime"] != "Insufficient data")
-                {
-                    ResultsString.AppendLine("<tr>");
-                    ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine("Elapsed Time");
-                    ResultsString.AppendLine("</td>");
-                    ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(this.session["X-InspectorElapsedTime"]);
-                    ResultsString.AppendLine("</td>");
-                    ResultsString.AppendLine("</tr>");
-                }
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Elapsed Time");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session["X-InspectorElapsedTime"]);
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
 
                 ResultsString.AppendLine("</table>");
                 #endregion
@@ -532,32 +509,30 @@ namespace Office365FiddlerInspector.Inspectors
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
-                if (this.session["X-ServerThinkTime"] != "Insufficient data" && this.session["X-ServerThinkTime"] != null)
-                {
-                    ResultsString.AppendLine("<tr>");
-                    ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine("Server Think Time");
-                    ResultsString.AppendLine("</td>");
-                    ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(this.session["X-ServerThinkTime"]);
-                    ResultsString.AppendLine("</td>");
-                    ResultsString.AppendLine("</tr>");
-                }
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Server Think Time");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session["X-ServerThinkTime"]);
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
 
-                if (this.session["X-TransitTime"] != "Insufficient data" && this.session["X-TransitTime"] != null)
-                {
-                    ResultsString.AppendLine("<tr>");
-                    ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine("Transit Time");
-                    ResultsString.AppendLine("</td>");
-                    ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(this.session["X-TransitTime"]);
-                    ResultsString.AppendLine("</td>");
-                    ResultsString.AppendLine("</tr>");
-                }
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine("Transit Time");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine(this.session["X-TransitTime"]);
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
 
                 ResultsString.AppendLine("</table>");
                 #endregion
+
+                ResultsString.AppendLine($"<p>{this.session["X-SessionTimersDescription"]}</p>");
+
+                ResultsString.AppendLine("<p>For an explantion of session timers refer to: <a href='https://aka.ms/Timers-Definitions' target='_blank'>https://aka.ms/Timers-Definitions</a>.</p>");
 
                 // HTML Footer.
                 ResultsString.AppendLine("</font>");

@@ -61,6 +61,7 @@ namespace O365FiddlerInspector.UI
                 {
                     // Remove <br /> from output, not needed in HTML, introduced spacing for save button.
                     string HTMLOutput = webBrowserControl.DocumentText.Replace("<br />", "");
+                    HTMLOutput += "<p>Data created from the <a href='https://aka.ms/Office365FiddlerExtensionUpdateURL' target='_blank'>Office 365 Fiddler Extension.</a></p>";
                     sw.Write(HTMLOutput);
                 }
             }
