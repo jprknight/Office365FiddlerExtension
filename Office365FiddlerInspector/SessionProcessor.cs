@@ -30,7 +30,10 @@ namespace Office365FiddlerInspector
         {
             // Stop HandleLoadSaz and further processing if the extension is not enabled.
             if (!Preferences.ExtensionEnabled)
+            {
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: Extension not enabled, exiting.");
                 return;
+            }                
 
             FiddlerApplication.OnLoadSAZ += HandleLoadSaz;
 
@@ -2572,7 +2575,7 @@ namespace Office365FiddlerInspector
                 this.session["ui-color"] = "black";
 
                 this.session["X-ResponseAlert"] = "Unclassified";
-                this.session["X-ResponseComments"] = "The Office 365 Fiddler Extension does not have a way to classify this session."
+                this.session["X-ResponseComments"] = "The Office 365 Fiddler Extension does not yet have a way to classify this session."
                     + "<p>If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: "
                     + "<a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'>https://github.com/jprknight/Office365FiddlerExtension</a>.</p>";
             }

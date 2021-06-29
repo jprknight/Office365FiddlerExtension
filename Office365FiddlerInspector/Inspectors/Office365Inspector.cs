@@ -239,11 +239,11 @@ namespace Office365FiddlerInspector.Inspectors
 
                 if (!this.session.isFlagSet(SessionFlags.LoadedFromSAZ))
                 {
-                    ResultsString.AppendLine("<br /><h2><span style='color:red'>Sessions Not Loaded from SAZ</span></h2>");
+                    ResultsString.AppendLine("<br /><h2><span style='color:red'>Sessions Not Loaded from SAZ file.</span></h2>");
                     ResultsString.AppendLine("<p>For the best results analysing data save the sessions "
-                        + "as a SAZ file and load them back in. Click <i>File, Save, All Sessions</i>.</p>"
-                        + "<p>When analysing live traffic, there are multiple scenarios where the session response is not immeidately available. This Alters the "
-                        + "responses the extension shows on session analysis.</p>");
+                        + "as a SAZ file and load them back into Fiddler. Click <i>File, Save, All Sessions</i>.</p>"
+                        + "<p>When analysing live traffic, there are multiple scenarios where session response data is not immediately available. This impacts the accuracy of "
+                        + "session analysis the extension can offer.</p>");
                 }
                 else
                 {
