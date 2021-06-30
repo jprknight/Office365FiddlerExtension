@@ -74,7 +74,6 @@ namespace Office365FiddlerInspector
         {
             MiEnabled.Checked = !MiEnabled.Checked;
             Preferences.ExtensionEnabled = MiEnabled.Checked;
-
         }
 
         public void MiWiki_Click(object sender, EventArgs e)

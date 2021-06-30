@@ -109,8 +109,12 @@ namespace Office365FiddlerInspector
             #region LoadSAZ
 
             FiddlerApplication.UI.lvSessions.BeginUpdate();
-                        
-            MenuUI.Instance.MiEnabled.Checked = Preferences.ExtensionEnabled;
+
+            // Looking at this I can't see a good reason why it would be updated here.
+            // Whether the extension is loaded or not and what the enable/disble option looks like would be determined elsewhere.
+            //MenuUI.Instance.MiEnabled.Checked = Preferences.ExtensionEnabled;
+
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: LoadSaz with Extension Enabled {Preferences.ExtensionEnabled}.");
 
             foreach (var session in e.arrSessions)
             {
@@ -338,8 +342,8 @@ namespace Office365FiddlerInspector
                         this.session["X-SessionType"] = "!CLIENT ACCESS RULE!";
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:red'>CLIENT ACCESS RULE</span></b>";
-                        this.session["X-ResponseComments"] = "A <b>client access rule has blocked MAPI connectivity to the mailbox</b>. "
-                            + "Check if the <b>client access rule includes OutlookAnywhere</b>."
+                        this.session["X-ResponseComments"] = "<b><span style='color:red'>A client access rule has blocked MAPI connectivity to the mailbox</span></b>. "
+                            + "<p>Check if the <b><span style='color:red'>client access rule includes OutlookAnywhere</span></b>.</p>"
                             + "<p>Per <a href='https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules' target='_blank'>"
                             + "https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules </a>, <br />"
                             + "OutlookAnywhere includes MAPI over HTTP.<p>"
@@ -422,7 +426,15 @@ namespace Office365FiddlerInspector
                         int charcount = end - start;
                         string RedirectAddress;
 
-                        RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
+                        if (charcount > 0)
+                        {
+                            RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
+                        }
+                        else
+                        {
+                            RedirectAddress = "Redirect address not found by extension.";
+                        }
+                        
 
                         if (RedirectAddress.Contains(".onmicrosoft.com"))
                         {
@@ -733,31 +745,43 @@ namespace Office365FiddlerInspector
                         // If either the keyword searches give us a result.
                         if (wordCountError > 0 || wordCountFailed > 0 || wordCountException > 0)
                         {
-                            if (wordCountError == 1)
+                            if (wordCountError == 0)
                             {
-                                wordCountErrorText = wordCountError + " time.";
+                                wordCountErrorText = $"<b><span style='color:green'>Keyword 'Error' found {wordCountError} times.</span></b>";
+                            }
+                            else if (wordCountError == 1)
+                            {
+                                wordCountErrorText = $"<b><span style='color:red'>Keyword 'Error' found {wordCountError} time.</span></b>";
                             }
                             else
                             {
-                                wordCountErrorText = wordCountError + " times.";
+                                wordCountErrorText = $"<b><span style='color:red'>Keyword 'Error' found {wordCountError} times.</span></b>";
                             }
 
-                            if (wordCountFailed == 1)
+                            if (wordCountFailed == 0)
                             {
-                                wordCountFailedText = wordCountFailed + " time.";
+                                wordCountFailedText = $"<b><span style='color:green'>Keyword 'Failed' found {wordCountFailed} times.</span></b>";
+                            }
+                            else if (wordCountFailed == 1)
+                            {
+                                wordCountFailedText = $"<b><span style='color:red'>Keyword 'Failed' found {wordCountFailed} time.</span></b>";
                             }
                             else
                             {
-                                wordCountFailedText = wordCountFailed + " times.";
+                                wordCountFailedText = $"<b><span style='color:red'>Keyword 'Failed' found {wordCountFailed} times.</span></b>";
                             }
 
-                            if (wordCountException == 1)
+                            if (wordCountException == 0)
                             {
-                                wordCountExceptionText = wordCountException + " time.";
+                                wordCountExceptionText = $"<b><span style='color:green'>Keyword 'Exception' found {wordCountException} times.</span></b>";
+                            }
+                            else if (wordCountException == 1)
+                            {
+                                wordCountExceptionText = $"<b><span style='color:red'>Keyword 'Exception' found {wordCountException} time.</span></b>";
                             }
                             else
                             {
-                                wordCountExceptionText = wordCountException + " times.";
+                                wordCountExceptionText = $"<b><span style='color:red'>Keyword 'Exception' found {wordCountException} times.</span></b>";
                             }
 
                             // Special attention to HTTP 200's where the keyword 'error' or 'failed' is found.
@@ -769,10 +793,10 @@ namespace Office365FiddlerInspector
                             this.session["X-ResponseAlert"] = "<b><span style='color:red'>'error', 'failed' or 'exception' found in response body</span></b>";
                             this.session["X-ResponseComments"] += "<p>Session response body was scanned and errors or failures were found in response body. "
                                 + "Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review.</p>"
-                                + "<p>After splitting all words in the response body the following were found:<br />"
-                                + "Keyword 'Error' found " + wordCountErrorText + "<br />"
-                                + "Keyword 'Failed' found " + wordCountFailedText + "<br />"
-                                + "Keyword 'Exception' found " + wordCountExceptionText + "<br /></p>"
+                                + "<p>After splitting all words in the response body the following were found:</p>"
+                                + "<p>" + wordCountErrorText + "</p>"
+                                + "<p>" + wordCountFailedText + "</p>"
+                                + "<p>" + wordCountExceptionText + "</p>"
                                 + "<p>Check the content body of the response for any failures you recognise. You may find <b>false positives, "
                                 + "if lots of Javascript or other web code</b> is being loaded.</p>";
 
@@ -1519,6 +1543,99 @@ namespace Office365FiddlerInspector
                     //
                     //  HTTP 500: Internal Server Error.
                     //
+
+                    /////////////////////////////
+                    //
+                    // 500.1. Repeating Redirects Detected.
+                    //
+
+                    if (this.session.utilFindInResponse("Repeating redirects detected", false) > 1) {
+                        if (this.session.HostnameIs("outlook.office365.com"))
+                        {
+                            this.session["ui-backcolor"] = HTMLColourRed;
+                            this.session["ui-color"] = "black";
+                            this.session["X-SessionType"] = "!REPEATING REDIRECTS DETECTED!";
+
+                            this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 500 Internal Server Error - Repeating redirects detected</span></b>";
+                            this.session["X-ResponseComments"] = "<b><span style='color:red'>Repeating redirects detected</span></b> found in this session response. "
+                                + "This response has been seen with OWA and federated domains. Is this issue seen with non-federated user accounts? "
+                                + "If not this might suggest an issue with a federation service. "
+                                + "<p>Alternatively does the impacted account have too many roles assigned? Too many roles on an account have been seen as a cause of this type of issue.</p>"
+                                + "<p>Otherwise this might be an issue which needs to be raised to Microsoft support.</p>";
+
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 500 Internal Server Error.");
+
+                            this.session["X-ResponseCodeDescription"] = "500 Internal Server Error";
+
+                            break;
+                        }
+                    }
+
+                    /////////////////////////////
+                    //
+                    // 500.2. EWS ErrorImpersonateUserDenied.
+                    //
+
+                    if (this.session.utilFindInResponse("ErrorImpersonateUserDenied", false) > 1)
+                    {
+                        if (this.session.HostnameIs("outlook.office365.com"))
+                        {
+                            if (this.session.uriContains("/EWS/Exchange.asmx"))
+                            {
+                                this.session["ui-backcolor"] = HTMLColourRed;
+                                this.session["ui-color"] = "black";
+                                this.session["X-SessionType"] = "!EWS Impersonate User Denied!";
+
+                                this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 500 Internal Server Error - EWS Impersonate User Denied</span></b>";
+                                this.session["X-ResponseComments"] = "<b><span style='color:red'>EWS Impersonate User Denied</span></b> found in this session response. "
+                                    + "Check the service account in use has impersonation rights on the mailbox you are trying to work with."
+                                    + "Are the impersonation permissions given directly on the service account or via a security group?</p>";
+
+                                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 500 EWS Impersonate User Denied.");
+
+                                this.session["X-ResponseCodeDescription"] = "500 EWS Impersonate User Denied";
+
+                                break;
+                            }
+                        }
+                    }
+
+                    /////////////////////////////
+                    //
+                    // 500.50. OWA - Something went wrong.
+                    //
+
+                    // General highlight on an OWA session where "Something went wrong."
+                    // Making this rule #50, since we may find more specific rules for this scenario.
+
+                    if (this.session.utilFindInResponse("Something went wrong", false) > 1)
+                    {
+                        if (this.session.HostnameIs("outlook.office365.com"))
+                        {
+                            this.session["ui-backcolor"] = HTMLColourRed;
+                            this.session["ui-color"] = "black";
+                            this.session["X-SessionType"] = "!OWA SOMETHING WENT WRONG!";
+
+                            this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 500 Internal Server Error - OWA Something went wrong.</span></b>";
+                            this.session["X-ResponseComments"] = "<b><span style='color:red'>OWA - Something went wrong</span></b> found in this session response. "
+                                + "<p>Check the response Raw and Webview tabs to see what further details can be pulled on the issue.</p>"
+                                + "<p>Does the issue reproduce with federated and non-federated (managed) domains?</p>"
+                                + "<p>Does the issue reproduce in different browsers?</p>"
+                                + "<p>Otherwise this might be an issue which needs to be raised to Microsoft support.</p>";
+
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 500 Internal Server Error - OWA Something went wrong.");
+
+                            this.session["X-ResponseCodeDescription"] = "500 OWA Something went wrong";
+
+                            break;
+                        }
+                    }
+
+                    /////////////////////////////
+                    //
+                    // 500.99. Everything else.
+                    //
+
                     // Pick up any 500 Internal Server Error and write data into the comments box.
                     // Specific scenario on Outlook and Office 365 invalid DNS lookup.
                     // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
@@ -1621,11 +1738,20 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "False Positive";
 
+                        string AutoDFalsePositiveDomain;
                         string AutoDFalsePositiveResponseBody = this.session.GetResponseBodyAsString();
                         int start = this.session.GetResponseBodyAsString().IndexOf("'");
                         int end = this.session.GetResponseBodyAsString().LastIndexOf("'");
                         int charcount = end - start;
-                        string AutoDFalsePositiveDomain = AutoDFalsePositiveResponseBody.Substring(start, charcount).Replace("'", "");
+                        if (charcount > 0)
+                        {
+                            AutoDFalsePositiveDomain = AutoDFalsePositiveResponseBody.Substring(start, charcount).Replace("'", "");
+                        }
+                        else
+                        {
+                            AutoDFalsePositiveDomain = "<Domain not detected by extension>";
+                        }
+                        
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:green'>False Positive</span></b>";
                         this.session["X-ResponseComments"] = "By design Office 365 Autodiscover does not respond to "
@@ -2641,138 +2767,283 @@ namespace Office365FiddlerInspector
                 this.session.utilFindInResponse("NameIdentifier Format=", false) > 1 &&
                 this.session.utilFindInResponse("Attribute AttributeName=", false) > 1)
             {
-                // Used in Auth column and Office365 Auth inspector tab.
                 this.session["X-Authentication"] = "SAML Request/Response";
-                this.session["X-AuthenticationDesc"] = "See below for SAML response parser.";
 
-                // Change which control appears for this session on the Office365 Auth inspector tab.
-                this.session["X-Office365AuthType"] = "SAMLResponseParser";
-
-                // Error handling, if we don't have the expected values in the session body, don't do this work.
-                // Avoid null object reference errors at runtime.
-                if ((this.session.utilFindInResponse("Issuer=", false) > 1) && (this.session.utilFindInResponse("IssueInstant=", false) > 1))
+                // wrap all of this in a check to see if the SAML token came back from an ADFS endpoint.
+                // If it didn't we don't have the labs setup to validate how 3rd-party IDPs format things
+                // out for SAML tokens.
+                if (this.session.uriContains("adfs/ls"))
                 {
-                    // Pull issuer data from response.
-                    string IssuerSessionBody = this.session.ToString();
-                    int IssuerStartIndex = IssuerSessionBody.IndexOf("Issuer=");
-                    int IssuerEndIndex = IssuerSessionBody.IndexOf("IssueInstant=");
-                    int IssuerLength = IssuerEndIndex - IssuerStartIndex;
-                    string Issuer = IssuerSessionBody.Substring(IssuerStartIndex, IssuerLength);
-                    Issuer = Issuer.Replace("&quot;", "");
-                    Issuer = Issuer.Replace("Issuer=", "");
+                    // Used in Auth column and Office365 Auth inspector tab.
+                    this.session["X-AuthenticationDesc"] = "ADFS SAML response found. See below for SAML response parser.";
 
-                    // Populate X flag on session.
-                    this.session["X-Issuer"] = Issuer;
+                    // Change which control appears for this session on the Office365 Auth inspector tab.
+                    this.session["X-Office365AuthType"] = "SAMLResponseParser";
+
+                    // JK 6/30/2021
+                    // All the below logic was build with an ADFS SAML token from a lab environment.
+                    // Discovered the makeup of SAML tokens from other providers do not follow the exact
+                    // same structure.
+                    // Added try catch statements and validation checks on string lengths prior to attempting
+                    // substring operations to prevent running into "Length cannot be less than zero" exceptions.
+
+                    #region Issuer
+
+                    if ((this.session.utilFindInResponse("Issuer=", false) > 1) && (this.session.utilFindInResponse("IssueInstant=", false) > 1))
+                    {
+                        FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML token issuer.");
+                        string Issuer;
+                        try
+                        {
+                            // Pull issuer data from response.
+                            string IssuerSessionBody = this.session.ToString();
+                            int IssuerStartIndex = IssuerSessionBody.IndexOf("Issuer=");
+                            int IssuerEndIndex = IssuerSessionBody.IndexOf("IssueInstant=");
+                            int IssuerLength = IssuerEndIndex - IssuerStartIndex;
+                            if (IssuerLength > 0)
+                            {
+                                Issuer = IssuerSessionBody.Substring(IssuerStartIndex, IssuerLength);
+                                Issuer = Issuer.Replace("&quot;", "");
+                                Issuer = Issuer.Replace("Issuer=", "");
+                            }
+                            else
+                            {
+                                Issuer = "Issuer in SAML token could not be determined.";
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML token issuer could not be determined. {e}");
+                            Issuer = "Issuer in SAML token could not be determined.";
+                        }
+
+                        // Populate X flag on session.
+                        this.session["X-Issuer"] = Issuer;
+                    }
+                    else
+                    {
+                        this.session["X-Issuer"] = "Issuer in SAML token could not be determined.";
+                    }
+
+                    #endregion
+
+                    #region SigningCertificate
+
+                    // Pull the x509 signing certificate data.
+                    if ((this.session.utilFindInResponse("&lt;X509Certificate>", false) > 1) && (this.session.utilFindInResponse("&lt;/X509Certificate>", false) > 1))
+                    {
+                        FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML signing certificate.");
+
+                        string x509SigningCertificate;
+                        try
+                        {
+                            string x509SigningCertSessionBody = this.session.ToString();
+                            int x509SigningCertificateStartIndex = x509SigningCertSessionBody.IndexOf("&lt;X509Certificate>") + 20; // 20 to shift to start of the selection.
+                            int x509SigningCertificateEndIndex = x509SigningCertSessionBody.IndexOf("&lt;/X509Certificate>");
+                            int x509SigningCertificateLength = x509SigningCertificateEndIndex - x509SigningCertificateStartIndex;
+                            if (x509SigningCertificateLength > 0)
+                            {
+                                x509SigningCertificate = x509SigningCertSessionBody.Substring(x509SigningCertificateStartIndex, x509SigningCertificateLength);
+                            }
+                            else
+                            {
+                                x509SigningCertificate = "SAML signing certificate could not be determined.";
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML signing certificate could not be determined. {e}");
+                            x509SigningCertificate = "SAML signing certificate could not be determined.";
+                        }
+
+                        this.session["X-SigningCertificate"] = x509SigningCertificate;
+                    }
+
+                    #endregion
+
+                    #region AttributeNameUPN
+                    if ((this.session.utilFindInResponse("&lt;saml:Attribute AttributeName=&quot;UPN", false) > 1) &&
+                        (this.session.utilFindInResponse("&lt;/saml:Attribute>", false) > 1))
+                    {
+                        FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML AttributeNameUPN.");
+
+                        string AttributeNameUPN;
+                        try
+                        {
+                            string AttributeNameUPNSessionBody = this.session.ToString();
+                            int AttributeNameUPNStartIndex = AttributeNameUPNSessionBody.IndexOf("&lt;saml:Attribute AttributeName=&quot;UPN");
+                            int AttributeNameUPNEndIndex = AttributeNameUPNSessionBody.IndexOf("&lt;/saml:Attribute>");
+                            int AttributeNameUPNLength = AttributeNameUPNEndIndex - AttributeNameUPNStartIndex;
+                            if (AttributeNameUPNLength > 0)
+                            {
+                                AttributeNameUPN = AttributeNameUPNSessionBody.Substring(AttributeNameUPNStartIndex, AttributeNameUPNLength);
+                                AttributeNameUPN = AttributeNameUPN.Replace("&quot;", "\"");
+                                AttributeNameUPN = AttributeNameUPN.Replace("&lt;", "<");
+                                // Now split the two lines with a new line for easier reading in the user control.
+                                int SplitAttributeNameUPNStartIndex = AttributeNameUPN.IndexOf("<saml:AttributeValue>") + 21;
+
+                                int SplitAttributeNameUPNEndIndex = AttributeNameUPN.IndexOf("</saml:AttributeValue>");
+                                int SplitAttributeNameLength = SplitAttributeNameUPNEndIndex - SplitAttributeNameUPNStartIndex;
+
+                                //string AttributeNameUPNFirstLine = AttributeNameUPN.Substring(0, SplitAttributeNameUPNStartIndex);
+                                //string AttributeNameUPNSecondLine = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex);
+
+                                if (SplitAttributeNameLength > 0)
+                                {
+                                    AttributeNameUPN = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex, SplitAttributeNameLength);
+                                }
+                                else
+                                {
+                                    AttributeNameUPN = "SAML AttributeNameUPN could not be determined.";
+                                }
+                            }
+                            else
+                            {
+                                AttributeNameUPN = "SAML AttributeNameUPN could not be determined.";
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML AttributeNameUPN could not be determined. {e}");
+                            AttributeNameUPN = "SAML AttributeNameUPN could not be determined.";
+                        }
+
+                        // Populate X flag on session.
+                        this.session["X-AttributeNameUPN"] = AttributeNameUPN;
+                    }
+                    else
+                    {
+                        this.session["X-AttributeNameUPN"] = "Data points not found for AttributeNameUPN";
+                    }
+
+                    #endregion
+
+                    #region NameIdentifierFormat
+                    /////////////////////////////
+                    //
+                    // NameIdentifierFormat.
+
+                    if ((this.session.utilFindInResponse("&lt;saml:NameIdentifier Format", false) > 1) &&
+                        (this.session.utilFindInResponse("&lt;saml:SubjectConfirmation>", false) > 1))
+                    {
+                        FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML NameIdentifierFormat.");
+
+                        string NameIdentifierFormat;
+                        try
+                        {
+                            string NameIdentifierFormatSessionBody = this.session.ToString();
+                            int NameIdentifierFormatStartIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:NameIdentifier Format");
+                            int NameIdentifierFormatEndIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:SubjectConfirmation>");
+                            int NameIdentifierFormatLength = NameIdentifierFormatEndIndex - NameIdentifierFormatStartIndex;
+                            if (NameIdentifierFormatLength > 0)
+                            {
+                                NameIdentifierFormat = NameIdentifierFormatSessionBody.Substring(NameIdentifierFormatStartIndex, NameIdentifierFormatLength);
+                                NameIdentifierFormat = NameIdentifierFormat.Replace("&quot;", "\"");
+                                NameIdentifierFormat = NameIdentifierFormat.Replace("&lt;", "<");
+                            }
+                            else
+                            {
+                                NameIdentifierFormat = "SAML NameIdentifierFormat could not be determined.";
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML NameIdentifierFormat could not be determined. {e}");
+                            NameIdentifierFormat = "SAML NameIdentifierFormat could not be determined.";
+                        }
+
+                        // Populate X flag on session.
+                        this.session["X-NameIdentifierFormat"] = NameIdentifierFormat;
+                    }
+                    else
+                    {
+                        this.session["X-NameIdentifierFormat"] = "Data points not found for NameIdentifierFormat";
+                    }
+
+                    #endregion
+
+                    #region AttributeNameImmutableID
+                    if ((this.session.utilFindInResponse("&lt;saml:NameIdentifier Format", false) > 1) &&
+                        (this.session.utilFindInResponse("&lt;saml:SubjectConfirmation>", false) > 1))
+                    {
+                        FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML AttributeNameImmutableID.");
+
+                        string AttributeNameImmutibleID;
+                        try
+                        {
+                            string AttributeNameImmutableIDSessionBody = this.session.ToString();
+                            int AttributeNameImmutableIDStartIndex = AttributeNameImmutableIDSessionBody.IndexOf("AttributeName=&quot;ImmutableID");
+                            int AttributeNameImmutibleIDEndIndex = AttributeNameImmutableIDSessionBody.IndexOf("&lt;/saml:AttributeStatement>");
+                            int AttributeNameImmutibleIDLength = AttributeNameImmutibleIDEndIndex - AttributeNameImmutableIDStartIndex;
+
+                            if (AttributeNameImmutibleIDLength > 0)
+                            {
+                                AttributeNameImmutibleID = AttributeNameImmutableIDSessionBody.Substring(AttributeNameImmutableIDStartIndex, AttributeNameImmutibleIDLength);
+                                AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&quot;", "\"");
+                                AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&lt;", "<");
+                                // Now split out response with a newline for easier reading.
+                                int SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("<saml:AttributeValue>") + 21; // Add 21 characters to shift where the newline is placed.
+                                //string AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
+                                //string AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
+                                //AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
+                                // Second split
+                                int SplitAttributeNameImmutibleIDEndIndex = AttributeNameImmutibleID.IndexOf("</saml:AttributeValue></saml:Attribute>");
+                                int SubstringLength = SplitAttributeNameImmutibleIDEndIndex - SplitAttributeNameImmutibleIDStartIndex;
+
+                                if (SubstringLength > 0)
+                                {
+                                    AttributeNameImmutibleID = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex, SubstringLength);
+                                }
+                                else
+                                {
+                                    AttributeNameImmutibleID = "SAML AttributeNameImmutibleID could not be determined.";
+                                }
+                                //AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
+                                //AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
+                                //AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
+                            }
+                            else
+                            {
+                                AttributeNameImmutibleID = "SAML AttributeNameImmutibleID could not be determined.";
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML AttributeNameImmutibleID could not be determined. {e}");
+                            AttributeNameImmutibleID = "SAML AttributeNameImmutibleID could not be determined.";
+                        }
+
+                        // Populate X flag on session.
+                        this.session["X-AttributeNameImmutableID"] = AttributeNameImmutibleID;
+                    }
+                    else
+                    {
+                        this.session["X-AttributeNameImmutableID"] = "Data points not found for AttributeNameImmutibleID";
+                    }
+                    #endregion
                 }
                 else
                 {
-                    this.session["X-Issuer"] = "Data points not found for issuer";
+                    // Used in Auth column and Office365 Auth inspector tab.
+                    this.session["X-AuthenticationDesc"] = "Third-party SAML response found. SAML response parser not running.";
+
+                    // Change which control appears for this session on the Office365 Auth inspector tab.
+                    this.session["X-Office365AuthType"] = "SAMLResponseParser";
+
+                    this.session["X-Issuer"] = "SAML token issued by third-party IDP. SAML response parser not running.";
+
+                    this.session["X-SigningCertificate"] = "SAML token issued by third-party IDP. SAML response parser not running.";
+
+                    this.session["X-AttributeNameUPN"] = "SAML token issued by third-party IDP. SAML response parser not running.";
+
+                    this.session["X-NameIdentifierFormat"] = "SAML token issued by third-party IDP. SAML response parser not running.";
+
+                    this.session["X-AttributeNameImmutableID"] = "SAML token issued by third-party IDP. SAML response parser not running.";
                 }
 
-                // Pull the x509 signing certificate data.
-                if ((this.session.utilFindInResponse("&lt;X509Certificate>", false) > 1) && (this.session.utilFindInResponse("&lt;/X509Certificate>", false) > 1))
-                {
-                    string x509SigningCertSessionBody = this.session.ToString();
-                    int x509SigningCertificateStartIndex = x509SigningCertSessionBody.IndexOf("&lt;X509Certificate>") + 20; // 20 to shift to start of the selection.
-                    int x509SigningCertificateEndIndex = x509SigningCertSessionBody.IndexOf("&lt;/X509Certificate>");
-                    int x509SigningCertificateLength = x509SigningCertificateEndIndex - x509SigningCertificateStartIndex;
-                    string x509SigningCertificate = x509SigningCertSessionBody.Substring(x509SigningCertificateStartIndex, x509SigningCertificateLength);
-
-                    this.session["X-SigningCertificate"] = x509SigningCertificate;
-                }
-
-                /////////////////////////////
-                //
-                // AttributeNameUPN.
-
-                // Error handling, if we don't have the expected values in the session body, don't do this work.
-                // Avoid null object reference errors at runtime.
-                if ((this.session.utilFindInResponse("&lt;saml:Attribute AttributeName=&quot;UPN", false) > 1) &&
-                    (this.session.utilFindInResponse("&lt;/saml:Attribute>", false) > 1))
-                {
-                    string AttributeNameUPNSessionBody = this.session.ToString();
-                    int AttributeNameUPNStartIndex = AttributeNameUPNSessionBody.IndexOf("&lt;saml:Attribute AttributeName=&quot;UPN");
-                    int AttributeNameUPNEndIndex = AttributeNameUPNSessionBody.IndexOf("&lt;/saml:Attribute>");
-                    int AttributeNameUPNLength = AttributeNameUPNEndIndex - AttributeNameUPNStartIndex;
-                    string AttributeNameUPN = AttributeNameUPNSessionBody.Substring(AttributeNameUPNStartIndex, AttributeNameUPNLength);
-                    AttributeNameUPN = AttributeNameUPN.Replace("&quot;", "\"");
-                    AttributeNameUPN = AttributeNameUPN.Replace("&lt;", "<");
-                    // Now split the two lines with a new line for easier reading in the user control.
-                    int SplitAttributeNameUPNStartIndex = AttributeNameUPN.IndexOf("<saml:AttributeValue>") + 21;
-
-                    int SplitAttributeNameUPNEndIndex = AttributeNameUPN.IndexOf("</saml:AttributeValue>");
-                    int SplitAttributeNameLength = SplitAttributeNameUPNEndIndex - SplitAttributeNameUPNStartIndex;
-
-                    //string AttributeNameUPNFirstLine = AttributeNameUPN.Substring(0, SplitAttributeNameUPNStartIndex);
-                    //string AttributeNameUPNSecondLine = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex);
-                    AttributeNameUPN = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex, SplitAttributeNameLength);
-
-                    // Populate X flag on session.
-                    this.session["X-AttributeNameUPN"] = AttributeNameUPN;
-                }
-                else
-                {
-                    this.session["X-AttributeNameUPN"] = "Data points not found for AttributeNameUPN";
-                }
-
-                /////////////////////////////
-                //
-                // NameIdentifierFormat.
-
-                if ((this.session.utilFindInResponse("&lt;saml:NameIdentifier Format", false) > 1) &&
-                    (this.session.utilFindInResponse("&lt;saml:SubjectConfirmation>", false) > 1))
-                {
-                    string NameIdentifierFormatSessionBody = this.session.ToString();
-                    int NameIdentifierFormatStartIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:NameIdentifier Format");
-                    int NameIdentifierFormatEndIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:SubjectConfirmation>");
-                    int NameIdentifierFormatLength = NameIdentifierFormatEndIndex - NameIdentifierFormatStartIndex;
-                    string NameIdentifierFormat = NameIdentifierFormatSessionBody.Substring(NameIdentifierFormatStartIndex, NameIdentifierFormatLength);
-                    NameIdentifierFormat = NameIdentifierFormat.Replace("&quot;", "\"");
-                    NameIdentifierFormat = NameIdentifierFormat.Replace("&lt;", "<");
-
-                    // Populate X flag on session.
-                    this.session["X-NameIdentifierFormat"] = NameIdentifierFormat;
-                }
-                else
-                {
-                    this.session["X-NameIdentifierFormat"] = "Data points not found for NameIdentifierFormat";
-                }
-
-                /////////////////////////////
-                //
-                // AttributeNameImmutableID.
-
-                if ((this.session.utilFindInResponse("&lt;saml:NameIdentifier Format", false) > 1) &&
-                    (this.session.utilFindInResponse("&lt;saml:SubjectConfirmation>", false) > 1))
-                {
-                    string AttributeNameImmutableIDSessionBody = this.session.ToString();
-                    int AttributeNameImmutableIDStartIndex = AttributeNameImmutableIDSessionBody.IndexOf("AttributeName=&quot;ImmutableID");
-                    int AttributeNameImmutibleIDEndIndex = AttributeNameImmutableIDSessionBody.IndexOf("&lt;/saml:AttributeStatement>");
-                    int AttributeNameImmutibleIDLength = AttributeNameImmutibleIDEndIndex - AttributeNameImmutableIDStartIndex;
-                    string AttributeNameImmutibleID = AttributeNameImmutableIDSessionBody.Substring(AttributeNameImmutableIDStartIndex, AttributeNameImmutibleIDLength);
-                    AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&quot;", "\"");
-                    AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&lt;", "<");
-                    // Now split out response with a newline for easier reading.
-                    int SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("<saml:AttributeValue>") + 21; // Add 21 characters to shift where the newline is placed.
-                    //string AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
-                    //string AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
-                    //AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
-                    // Second split
-                    int SplitAttributeNameImmutibleIDEndIndex = AttributeNameImmutibleID.IndexOf("</saml:AttributeValue></saml:Attribute>");
-                    int SubstringLength = SplitAttributeNameImmutibleIDEndIndex - SplitAttributeNameImmutibleIDStartIndex;
-                    AttributeNameImmutibleID = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex, SubstringLength);
-                    
-                    //AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
-                    //AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
-                    //AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
-
-                    // Populate X flag on session.
-                    this.session["X-AttributeNameImmutableID"] = AttributeNameImmutibleID;
-                }
-                else
-                {
-                    this.session["X-AttributeNameImmutableID"] = "Data points not found for AttributeNameImmutibleID";
-                }
             }
             // Determine if Modern Authentication is enabled in session request.
             else if (this.session.oRequest["Authorization"] == "Bearer" || this.session.oRequest["Authorization"] == "Basic")

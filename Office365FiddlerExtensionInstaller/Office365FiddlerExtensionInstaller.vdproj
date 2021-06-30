@@ -11,6 +11,7 @@
 "SccLocalPath" = "8:"
 "SccAuxPath" = "8:"
 "SccProvider" = "8:"
+"BackwardsCompatibleGUIDGeneration" = "8:TRUE"
     "Hierarchy"
     {
     }
@@ -57,7 +58,7 @@
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
-        "Compression" = "3:2"
+        "Compression" = "3:3"
         "SignOutput" = "11:FALSE"
         "CertificateFile" = "8:"
         "PrivateKeyFile" = "8:"
@@ -114,61 +115,83 @@
         }
         "Folder"
         {
+            "{1525181F-901A-416C-8A58-119130FE478E}:_15BB38093EED44AEB0F01952495551F0"
+            {
+            "Name" = "8:#1916"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:DesktopFolder"
+                "Folders"
+                {
+                }
+            }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_2D77B99B1CFD45CF88A8C5A8124B6DA7"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
+            "DefaultLocation" = "8:[ProgramFilesFolder]\\[ProductName]"
             "Name" = "8:#1925"
-            "AlwaysCreate" = "11:FALSE"
+            "AlwaysCreate" = "11:TRUE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_DF93F8CDB51147F9BD72786AB8980598"
+                }
+            }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_67892C03425D40608BA7560501CF69E2"
+            {
+            "Name" = "8:#1915"
+            "AlwaysCreate" = "11:TRUE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:AppDataFolder"
+                "Folders"
+                {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_6A83A3A05BD04889AB2AD4D271C84E40"
                     {
                     "Name" = "8:Local"
-                    "AlwaysCreate" = "11:FALSE"
+                    "AlwaysCreate" = "11:TRUE"
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
-                    "Property" = "8:_29AC55D569BF425786FF96A9AC88B732"
+                    "Property" = "8:_F6BEC10355664A7D9EB8C47CBBC14078"
                         "Folders"
                         {
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_B3C3F9C834314BBFBEC3301C480CF2E3"
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_34FA93B713244A139F86E3EF13D03FD9"
                             {
                             "Name" = "8:Programs"
-                            "AlwaysCreate" = "11:FALSE"
+                            "AlwaysCreate" = "11:TRUE"
                             "Condition" = "8:"
                             "Transitive" = "11:FALSE"
-                            "Property" = "8:_F341931DD90E475584E3CDDEA17802B4"
+                            "Property" = "8:_99BF7F3B5FD945A3B0FB1B90C50630B0"
                                 "Folders"
                                 {
-                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_CC8B9524D84241B69848D0BA0D51257B"
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_A43DBE1C3750488098B9A633032C8C6B"
                                     {
                                     "Name" = "8:Fiddler"
-                                    "AlwaysCreate" = "11:FALSE"
+                                    "AlwaysCreate" = "11:TRUE"
                                     "Condition" = "8:"
                                     "Transitive" = "11:FALSE"
-                                    "Property" = "8:_6642F454D3C348AF9640090C52B8C62F"
+                                    "Property" = "8:_271CEC3C552D4E31BB94CB2010634248"
                                         "Folders"
                                         {
-                                            "{9EF0B969-E518-4E46-987F-47570745A589}:_0127990101A046CEB49511ED0E254C9B"
+                                            "{9EF0B969-E518-4E46-987F-47570745A589}:_B1E09A7DD9D64295B646F63A67ECD668"
                                             {
                                             "Name" = "8:Scripts"
-                                            "AlwaysCreate" = "11:FALSE"
+                                            "AlwaysCreate" = "11:TRUE"
                                             "Condition" = "8:"
                                             "Transitive" = "11:FALSE"
-                                            "Property" = "8:_72613098080D4435B8A45114D725BEEC"
+                                            "Property" = "8:_488CF61FDBCC47D98867AC7ED439A9C5"
                                                 "Folders"
                                                 {
                                                 }
                                             }
-                                            "{9EF0B969-E518-4E46-987F-47570745A589}:_A46F8D6C2DAB4FD29BCCD9A3DC406254"
+                                            "{9EF0B969-E518-4E46-987F-47570745A589}:_C4DD7849A64947C78DD525E7F5CEA844"
                                             {
                                             "Name" = "8:Inspectors"
-                                            "AlwaysCreate" = "11:FALSE"
+                                            "AlwaysCreate" = "11:TRUE"
                                             "Condition" = "8:"
                                             "Transitive" = "11:FALSE"
-                                            "Property" = "8:_89ED62936D0045749AE1A7016EB2381B"
+                                            "Property" = "8:_BB6BAB1FDE094598A342EECC5040EECE"
                                                 "Folders"
                                                 {
                                                 }
@@ -181,18 +204,7 @@
                     }
                 }
             }
-            "{1525181F-901A-416C-8A58-119130FE478E}:_416EBF0E2A8B4BCAA2E0760DC867A6E5"
-            {
-            "Name" = "8:#1916"
-            "AlwaysCreate" = "11:FALSE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Property" = "8:DesktopFolder"
-                "Folders"
-                {
-                }
-            }
-            "{1525181F-901A-416C-8A58-119130FE478E}:_DFCE7B85157E4692867F4DE83E9C5956"
+            "{1525181F-901A-416C-8A58-119130FE478E}:_87F2FC03D472401FBBB81E5FDACABDE0"
             {
             "Name" = "8:#1919"
             "AlwaysCreate" = "11:FALSE"
@@ -220,7 +232,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Office 365 Fiddler Extension"
         "ProductCode" = "8:{A923B0C9-150A-47CC-ADD1-3DCDE701F4BC}"
-        "PackageCode" = "8:{698CC3C5-78D0-41AE-BEED-28339234A2FB}"
+        "PackageCode" = "8:{65ACB51C-4F25-4A6A-9CEF-4C5AA1164493}"
         "UpgradeCode" = "8:{1C8A4AAE-75BE-4636-9944-AB49E8E588B5}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -401,7 +413,7 @@
                             "ContextData" = "8:1;True=1;False=0"
                             "Attributes" = "3:0"
                             "Setting" = "3:0"
-                            "Value" = "3:1"
+                            "Value" = "3:0"
                             "DefaultValue" = "3:1"
                             "UsePlugInResources" = "11:TRUE"
                             }
@@ -739,62 +751,6 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_08BF547D2E354296A05DD28E604466EA"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_A46F8D6C2DAB4FD29BCCD9A3DC406254"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:Release|Any CPU"
-            "OutputGroupCanonicalName" = "8:ReferenceCopyLocalPaths"
-            "OutputProjectGuid" = "8:{5D9F84F0-77F3-45F5-8DA9-C89DB69BD643}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_EE99B8FBA0B74E648AA6113C126ED8C0"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_0127990101A046CEB49511ED0E254C9B"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:Release|Any CPU"
-            "OutputGroupCanonicalName" = "8:ReferenceCopyLocalPaths"
-            "OutputProjectGuid" = "8:{5D9F84F0-77F3-45F5-8DA9-C89DB69BD643}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
         }
     }
 }
