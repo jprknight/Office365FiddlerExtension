@@ -1493,7 +1493,7 @@ namespace Office365FiddlerInspector
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 456 Multi-Factor Authentication</span></b>";
                         this.session["X-ResponseComments"] = "See details on Raw tab. Look for the presence of 'you must use multi-factor authentication'." +
-                            "<p>This has been seen where users have <b>MFA enabled/enforced, but Modern Authentication is not enabled</b> in the Office 365 workload being connected to</p?" +
+                            "<p>This has been seen where users have <b><span style='color:red'>MFA enabled/enforced, but Modern Authentication is not enabled</span></b> in the Office 365 workload being connected to</p?" +
                             "<p>See <a href='https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662' target='_blank'>" +
                             "https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662 </a></p>" +
                             "<p><a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx' target='_blank'>" +
@@ -1509,7 +1509,7 @@ namespace Office365FiddlerInspector
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 456 Multi-Factor Authentication</span></b>";
                         this.session["X-ResponseComments"] = "See details on Raw tab. Look for the presence of 'oauth_not_available'."
-                            + "<p>This has been seen where users have <b>MFA enabled/enforced, but Modern Authentication</b> is not enabled in the Office 365 workload being connected to</p>"
+                            + "<p>This has been seen where users have <b><span style='color:red'>MFA enabled/enforced, but Modern Authentication</span></b> is not enabled in the Office 365 workload being connected to</p>"
                             + "<p>See <a href='https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662' target='_blank'>" +
                             "https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662 </a></p>"
                             + "<p><a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx' target='_blank'>" +
@@ -1525,7 +1525,7 @@ namespace Office365FiddlerInspector
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:orange'>HTTP 456 Multi-Factor Authentication?</span></b>";
                         this.session["X-ResponseComments"] = "See details on Raw tab. Is Modern Authentication disabled?"
-                            + "<p>This has been seen where users have <b>MFA enabled/enforced, but Modern Authentication is not enabled</b> in the Office 365 workload being connected to.</p>"
+                            + "<p>This has been seen where users have <b><span style='color:red'>MFA enabled/enforced, but Modern Authentication is not enabled</span></b> in the Office 365 workload being connected to.</p>"
                             + "<p>See <a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx' target='_blank'>"
                             + "https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662 </a></p>"
                             + "<a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx' target='_blank'>"
@@ -2408,10 +2408,17 @@ namespace Office365FiddlerInspector
                     this.session["X-SessionTimersDescription"] = "<p>The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.</p>" +
                         "<p>If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.</p>" +
                         "<p>Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.<p>";
+                    
+                    
+                    
                     // Highlight server think time in green.
                     if (ServerMilliseconds < 1000)
                     {
                         this.session["X-ServerThinkTime"] = $"<b><span style='color:green'>{ServerMilliseconds}ms.</span></b>";
+                    }
+                    else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
+                    {
+                        this.session["X-ServerThinkTime"] = $"<b><span style='color:green'>{ServerSeconds} second ({ServerMilliseconds}ms).</span></b>";
                     }
                     else
                     {
@@ -2419,9 +2426,13 @@ namespace Office365FiddlerInspector
                     }
                     
                     // Highlight transit time in red.
-                    if (iTransitTimeSeconds < 1000)
+                    if (dTransitTimeMilliseconds < 1000)
                     {
                         this.session["X-TransitTime"] = $"<b><span style='color:red'>{dTransitTimeMilliseconds}ms.</span></b>";
+                    }
+                    else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
+                    {
+                        this.session["X-TransitTime"] = $"<b><span style='color:red'>{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms).</span></b>";
                     }
                     else
                     {
@@ -2434,14 +2445,22 @@ namespace Office365FiddlerInspector
                     {
                         this.session["X-ServerThinkTime"] = $"{ServerMilliseconds}ms";
                     }
+                    else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
+                    {
+                        this.session["X-ServerThinkTime"] = $"{ServerSeconds} second ({ServerMilliseconds}ms).";
+                    }
                     else
                     {
                         this.session["X-ServerThinkTime"] = $"{ServerSeconds} seconds ({ServerMilliseconds}ms).";
                     }
 
-                    if (iTransitTimeSeconds < 1000)
+                    if (dTransitTimeMilliseconds < 1000)
                     {
                         this.session["X-TransitTime"] = $"{dTransitTimeMilliseconds}ms";
+                    }
+                    else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
+                    {
+                        this.session["X-TransitTime"] = $"{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms).";
                     }
                     else
                     {
