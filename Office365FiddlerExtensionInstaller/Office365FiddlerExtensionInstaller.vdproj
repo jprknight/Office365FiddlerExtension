@@ -4061,19 +4061,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_BA9C3EE2BAA9DD4FEE75731B98B67E04"
+        "OwnerKey" = "8:_2F213F3499D44436AC386AD24C81E99C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_8684A035417F4E1BAEED4E46A7C52CF2"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2F213F3499D44436AC386AD24C81E99C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -4710,6 +4704,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_6D567D05AA6172C41D4E27BF38A53E6B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_BA9C3EE2BAA9DD4FEE75731B98B67E04"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -11190,15 +11190,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Office 365 Fiddler Extension"
-        "ProductCode" = "8:{A923B0C9-150A-47CC-ADD1-3DCDE701F4BC}"
-        "PackageCode" = "8:{0BFA6437-66FB-4853-A743-5896282C1813}"
+        "ProductCode" = "8:{703D83C2-24BE-496E-A96E-F33A5DDD9248}"
+        "PackageCode" = "8:{14617E5D-FA7F-4D53-BA0C-C2E39C4988B2}"
         "UpgradeCode" = "8:{1C8A4AAE-75BE-4636-9944-AB49E8E588B5}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.72"
+        "ProductVersion" = "8:1.0.73"
         "Manufacturer" = "8:Jeremy Knight"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/jprknight/Office365FiddlerExtension/issues"

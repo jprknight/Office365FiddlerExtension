@@ -173,7 +173,7 @@ namespace Office365FiddlerInspector
 
             // If SessionType is blank, set Long Running Session override.
             // In relatively few cases has roundtrip time been highlighted as an issue by Fiddler alone.
-            // Typical network traces are used to validate the underlying network connectivity.
+            // Typically network traces are used to validate the underlying network connectivity.
             Instance.SetLongRunningSessions(session);         
 
             // Set Authentication column data and SAML Response Parser for inspector.
