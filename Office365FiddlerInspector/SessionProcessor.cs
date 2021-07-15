@@ -719,8 +719,9 @@ namespace Office365FiddlerInspector
 
                         string text200 = this.session.ToString();
 
-                        //Convert the string into an array of words  
-                        string[] source200 = text200.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        // Convert the string into an array of words
+                        // 7/15/2021 Added '"' to split out "Error" and count these.
+                        string[] source200 = text200.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',','"' }, StringSplitOptions.RemoveEmptyEntries);
 
                         // Create the query. Use ToLowerInvariant to match "data" and "Data"   
                         var matchQuery200 = from word in source200
@@ -837,6 +838,9 @@ namespace Office365FiddlerInspector
 
                     break;
                 case 202:
+                    this.session["ui-backcolor"] = HTMLColourGreen;
+                    this.session["ui-color"] = "black";
+
                     this.session["X-ResponseAlert"] = "202 Accepted";
                     this.session["X-ResponseComments"] = Preferences.GetStrNoKnownIssue();
 
@@ -2291,8 +2295,10 @@ namespace Office365FiddlerInspector
                 // Fallen into default, so undefined in the extension.
                 // Mark the session as such.
                 default:
-                    this.session["ui-backcolor"] = "Yellow";
-                    this.session["ui-color"] = "black";
+                    // Commented out setting colours on sessions not recognised.
+                    // Find in Fiddler will highlight sessions as yellow, so this would make reviewing find results difficult.
+                    //this.session["ui-backcolor"] = "Yellow";
+                    //this.session["ui-color"] = "black";
                     this.session["X-SessionType"] = "Undefined";
 
                     this.session["X-ResponseAlert"] = "Undefined.";
@@ -2716,8 +2722,12 @@ namespace Office365FiddlerInspector
             else
             {
                 this.session["X-SessionType"] = "Not Classified";
-                this.session["ui-backcolor"] = "yellow";
-                this.session["ui-color"] = "black";
+                // Commented out setting colours on sessions not recognised.
+                // Find in Fiddler will highlight sessions as yellow, so this would make reviewing find results difficult.
+                //this.session["ui-backcolor"] = "yellow";
+                //this.session["ui-color"] = "black";
+
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Session not classified in extension.");
 
                 this.session["X-ResponseAlert"] = "Unclassified";
                 this.session["X-ResponseComments"] = "The Office 365 Fiddler Extension does not yet have a way to classify this session."
