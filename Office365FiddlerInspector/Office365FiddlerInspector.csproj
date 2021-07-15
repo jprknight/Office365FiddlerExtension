@@ -205,16 +205,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="UI\Office365ResponseControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UI\Office365ResponseControl.cs" />
     <Compile Include="UI\Office365ResponseControl.Designer.cs">
       <DependentUpon>Office365ResponseControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\TelemetryService.cs" />
-    <Compile Include="UI\Office365TabPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UI\Office365TabPage.cs" />
     <Compile Include="UI\Office365TabPage.Designer.cs">
       <DependentUpon>Office365TabPage.cs</DependentUpon>
     </Compile>
