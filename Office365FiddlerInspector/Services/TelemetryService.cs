@@ -2,21 +2,20 @@
 using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
 using System.Management;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Reflection;
-using System.Diagnostics;
+using Fiddler;
 
-namespace EXOFiddlerInspector.Services
+namespace Office365FiddlerInspector.Services
 {
     public partial class TelemetryService
     {
+
+        private static TelemetryService _instance;
+        public static TelemetryService Instance => _instance ?? (_instance = new TelemetryService());
+
         /// <summary>
         /// Instrumentation Key used to communicate with Azure Application Insights.
         /// </summary>
-        // Old iKey.
-        // private static readonly string iKey = "f236d9b9-fc00-461d-a9c6-64f231416908";
         private static readonly string iKey = "87fb55ab-0052-4970-9318-7c740220e3c0";
         
         /// <summary>
@@ -113,7 +112,8 @@ namespace EXOFiddlerInspector.Services
 
         private async static Task<bool> GetClientStatus()
         {
-            bool results = false;
+            //bool results = false;
+            bool results;
             if (ExceptionCounter <= 4)
             {
                 results = true;
@@ -168,6 +168,5 @@ namespace EXOFiddlerInspector.Services
                 return sb.ToString();
             }
         }
-
     }
 }
