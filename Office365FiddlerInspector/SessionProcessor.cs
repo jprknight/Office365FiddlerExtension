@@ -7,6 +7,9 @@ namespace Office365FiddlerInspector
 {
     public class SessionProcessor : ActivationService
     {
+        // Initialize code section, changes infrequently.
+        #region StaticCodeInitialize
+
         // Colour codes for sessions. Softer tones, easier on the eye than standard red, orange and green.
         string HTMLColourBlue = "#81BEF7";
         string HTMLColourGreen = "#81F7BA";
@@ -180,6 +183,8 @@ namespace Office365FiddlerInspector
             Instance.SetAuthentication(session);
         }
 
+        #endregion
+
         // Function containing broad logic checks on sessions regardless of response code.
         public void BroadLogicChecks (Session session)
         {
@@ -270,6 +275,7 @@ namespace Office365FiddlerInspector
             /////////////////////////////
             //
             // From a scenario where Apache Web Server found to be answering Autodiscover calls and throwing HTTP 301 & 405 responses.
+            // This is typically seen on the root domain Autodiscover call made from Outlook if GetO365Explicit is not used.
             //
             if ((this.session.url.Contains("autodiscover") && (this.session.oResponse["server"].Contains("Apache"))))
             {
@@ -1720,7 +1726,7 @@ namespace Office365FiddlerInspector
                         this.session["X-SessionType"] = "False Positive";
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:green'>False Positive</span></b>";
-                        this.session["X-ResponseComments"] = "False positive on HTTP 502; This is a Microsoft DNS MX record for the .onmicrosoft.com domain."
+                        this.session["X-ResponseComments"] = "<b><span style='color:green'>False positive on HTTP 502</span></b>. "
                             + "By design, the host only accepts connections on port 25, port 443 is not available."
                             + "<p>To validate this above lookup the record, confirm it is a MX record and attempt to connect to the MX host on ports 25 and 443.</p>";
 
@@ -1758,7 +1764,7 @@ namespace Office365FiddlerInspector
                         
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:green'>False Positive</span></b>";
-                        this.session["X-ResponseComments"] = "By design Office 365 Autodiscover does not respond to "
+                        this.session["X-ResponseComments"] = "<b><span style='color:green'>False Positive</span></b>. By design Office 365 Autodiscover does not respond to "
                             + AutoDFalsePositiveDomain
                             + " on port 443. "
                             + "<p>Validate this message by confirming the Host IP (if shown) is an Office 365 Host/IP address and perform a telnet to it on port 80.</p>"
