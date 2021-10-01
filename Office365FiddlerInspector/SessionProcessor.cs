@@ -298,6 +298,7 @@ namespace Office365FiddlerInspector
 
                 return;
             }
+
             #endregion
         }
 
@@ -368,19 +369,42 @@ namespace Office365FiddlerInspector
                     //
                     if (this.session.HostnameIs("outlook.office365.com") && (this.session.uriContains("/mapi/emsmdb/?MailboxId=")))
                     {
-                        this.session["ui-backcolor"] = HTMLColourGreen;
-                        this.session["ui-color"] = "black";
+                        /////////////////////////////
+                        //
+                        // Protocol Disabled.
+                        //
+                        if (this.session.utilFindInResponse("ProtocolDisabled", false) > 1)
+                        {
+                            this.session["ui-backcolor"] = HTMLColourRed;
+                            this.session["ui-color"] = "black";
+                            this.session["X-SessionType"] = "!PROTOCOL DISABLED!";
 
-                        this.session["X-SessionType"] = "Outlook MAPI";
+                            this.session["X-ResponseAlert"] = "<b><span style='color:red'>Store Error Protocol Disabled</span></b>";
+                            this.session["X-ResponseComments"] = "<b><span style='color:red'>Store Error Protocol disabled found in response body.</span></b>"
+                                + "Expect user to <b>NOT be able to connect using connecting client application.</b>.";
 
-                        this.session["X-ResponseAlert"] = "Outlook for Windows MAPI traffic";
-                        this.session["X-ResponseComments"] = "This is normal Outlook MAPI over HTTP traffic to an Exchange Online mailbox.";
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Store Error Protocol Disabled.");
 
-                        // No FiddlerApplication logging here.
+                            this.session["X-ResponseCodeDescription"] = "200 OK - <b><span style='color:red'>PROTOCOL DISABLED</span></b>";
 
-                        this.session["X-ResponseCodeDescription"] = "200 OK";
+                            return;
+                        } 
+                        else
+                        {
+                            this.session["ui-backcolor"] = HTMLColourGreen;
+                            this.session["ui-color"] = "black";
 
-                        break;
+                            this.session["X-SessionType"] = "Outlook MAPI";
+
+                            this.session["X-ResponseAlert"] = "Outlook for Windows MAPI traffic";
+                            this.session["X-ResponseComments"] = "This is normal Outlook MAPI over HTTP traffic to an Exchange Online mailbox.";
+
+                            // No FiddlerApplication logging here.
+
+                            this.session["X-ResponseCodeDescription"] = "200 OK";
+
+                            break;
+                        }
                     }
 
                     /////////////////////////////

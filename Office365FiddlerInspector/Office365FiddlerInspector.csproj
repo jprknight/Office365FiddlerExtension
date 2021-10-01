@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Fiddler">
-      <HintPath>..\..\..\..\..\AppData\Local\Programs\Fiddler\Fiddler.exe</HintPath>
+      <HintPath>..\..\..\..\AppData\Local\Programs\Fiddler\Fiddler.exe</HintPath>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
@@ -205,12 +205,16 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="UI\Office365ResponseControl.cs" />
+    <Compile Include="UI\Office365ResponseControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UI\Office365ResponseControl.Designer.cs">
       <DependentUpon>Office365ResponseControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\TelemetryService.cs" />
-    <Compile Include="UI\Office365TabPage.cs" />
+    <Compile Include="UI\Office365TabPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UI\Office365TabPage.Designer.cs">
       <DependentUpon>Office365TabPage.cs</DependentUpon>
     </Compile>
