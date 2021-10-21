@@ -17,6 +17,8 @@ namespace Office365FiddlerInspector
         string HTMLColourGrey = "#BDBDBD";
         string HTMLColourOrange = "#F59758";
 
+        string TLS;
+
         private static SessionProcessor _instance;
 
         public static SessionProcessor Instance => _instance ?? (_instance = new SessionProcessor());
@@ -100,6 +102,7 @@ namespace Office365FiddlerInspector
                 session.oFlags.Remove("X-TRANSITTIME");
                 session.oFlags.Remove("X-CALCULATEDSESSIONAGE");
                 session.oFlags.Remove("X-STOPFURTHERPROCESSING");
+                session.oFlags.Remove("X-PROCESSINFO");
             }
 
             FiddlerApplication.UI.lvSessions.EndUpdate();
@@ -139,6 +142,13 @@ namespace Office365FiddlerInspector
         {
             this.session = session;
 
+            if (!this.session.isFlagSet(SessionFlags.LoadedFromSAZ))
+            {
+                // Live sessions, return.
+                return;
+            }
+
+
             // Decode session requests/responses.
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
@@ -146,15 +156,18 @@ namespace Office365FiddlerInspector
             // Broad logic checks on sessions regardless of response code.
             Instance.BroadLogicChecks(session);
 
+            // Response code based logic.
+            Instance.ResponseCodeLogic(session);
+
+            // Calculate Session Age for inspector with HTML mark-up.
+            Instance.CalculateSessionAge(session);
+
             // Stop here if we already identified sessions in BroadLogicChecks.
             if (this.session["X-StopFurtherProcessing"] != null)
             {
                 //FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " stopping after broad checks.");
                 return;
             }
-
-            // Response code based logic.
-            Instance.ResponseCodeLogic(session);
 
             // Set Elapsed Time column data.
             Instance.SetElapsedTime(session);
@@ -167,9 +180,6 @@ namespace Office365FiddlerInspector
 
             // Set Response Server column data.
             Instance.SetResponseServer(session);
-
-            // Calculate Session Age for inspector with HTML mark-up.
-            Instance.CalculateSessionAge(session);
 
             // If SessionType is blank, set Session Type override.
             Instance.SetSessionType(session);
@@ -223,6 +233,41 @@ namespace Office365FiddlerInspector
             if (this.session.isTunnel)
             {
 
+                // Determine TLS version.
+
+                FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " TLS: " + this.session.utilFindInRequest("(TLS/1.2)", false));
+
+
+                // TLS 1.0 in request/response pair.
+                if (this.session.utilFindInRequest("(TLS/1.0)", false) > 1)
+                {
+                    if (this.session.utilFindInResponse("Secure Protocol: Tls11", false) > 1 || this.session.utilFindInResponse("(TLS/1.0)", false) > 1)
+                    {
+                        TLS = ": TLS 1.0";
+                    }
+                }
+                // TLS 1.1 in request/response pair.
+                else if (this.session.utilFindInRequest("(TLS/1.1)", false) > 1)
+                {
+                    if (this.session.utilFindInResponse("Secure Protocol: Tls11", false) > 1 || this.session.utilFindInResponse("(TLS/1.1)", false) > 1)
+                    {
+                        TLS = ": TLS 1.1";
+                    }
+                }
+                // TLS 1.2 in request/response pair.
+                else if (this.session.utilFindInRequest("(TLS/1.2)", false) > 1)
+                {
+                    if (this.session.utilFindInResponse("Secure Protocol: Tls12", false) > 1 || this.session.utilFindInResponse("(TLS/1.2)", false) > 1)
+                    {
+                        TLS = ": TLS 1.2";
+                    }
+                }
+                else
+                {
+                    // If we cannot determine the TLS version do nothing.
+                    // This can happen when live tracing traffic. The request/responses cannot be read fast enough to get accurate results.
+                }
+
                 // Trying to check session response body for a string value using !this.session.bHasResponse does not impact performance, but is not reliable.
                 // Using this.session.GetResponseBodyAsString().Length == 0 kills performance. Fiddler wouldn't even load with this code in place.
                 // Ideally looking to do: if (this.session.utilFindInResponse("CONNECT tunnel, through which encrypted HTTPS traffic flows", false) > 1)
@@ -239,7 +284,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
 
-                        this.session["X-SessionType"] = "Connect Tunnel";
+                        this.session["X-SessionType"] = "Connect Tunnel" + TLS;
 
                         this.session["X-ResponseAlert"] = "Connect Tunnel";
                         this.session["X-ResponseComments"] = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
@@ -261,7 +306,7 @@ namespace Office365FiddlerInspector
                     this.session["ui-backcolor"] = HTMLColourOrange;
                     this.session["ui-color"] = "black";
 
-                    this.session["X-SessionType"] = "Connect Tunnel";
+                    this.session["X-SessionType"] = "Connect Tunnel: " + TLS;
 
                     this.session["X-ResponseAlert"] = "Connect Tunnel";
                     this.session["X-ResponseComments"] = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
@@ -1557,7 +1602,7 @@ namespace Office365FiddlerInspector
                         this.session["ui-color"] = "black";
                         this.session["X-SessionType"] = "Multi-Factor Auth?";
 
-                        this.session["X-ResponseAlert"] = "<b><span style='color:orange'>HTTP 456 Multi-Factor Authentication?</span></b>";
+                        this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 456 Multi-Factor Authentication?</span></b>";
                         this.session["X-ResponseComments"] = "See details on Raw tab. Is Modern Authentication disabled?"
                             + "<p>This has been seen where users have <b><span style='color:red'>MFA enabled/enforced, but Modern Authentication is not enabled</span></b> in the Office 365 workload being connected to.</p>"
                             + "<p>See <a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx' target='_blank'>"

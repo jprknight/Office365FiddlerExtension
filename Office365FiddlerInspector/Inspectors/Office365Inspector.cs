@@ -220,6 +220,19 @@ namespace Office365FiddlerInspector.Inspectors
                     return;
                 }
 
+                if (!this.session.isFlagSet(SessionFlags.LoadedFromSAZ))
+                {
+                    // Clear ResultsString.
+                    Clear();
+                    ResultsString.AppendLine("<br /><h2><span style='color:red'>Session analysis not available on live sessions.</span></h2>");
+                    ResultsString.AppendLine("<p>Live analysis of sessions is known to provide inaccurate results.</p>"
+                        + "<p>Save these sessions as a SAZ file and load them back into Fiddler. Click <i>File, Save, All Sessions</i>.</p>"
+                        + "<p>Then click File, Load Archive... to open the SAZ file.</p>"
+                        + "</font></body></html>");
+                    Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
+                    return;
+                }
+
                 // Clear ResultsString.
                 Clear();
 
@@ -237,21 +250,10 @@ namespace Office365FiddlerInspector.Inspectors
                 // General Session Data.
                 #region GeneralSessionData
 
-                if (!this.session.isFlagSet(SessionFlags.LoadedFromSAZ))
-                {
-                    ResultsString.AppendLine("<br /><h2><span style='color:red'>Sessions Not Loaded from SAZ file.</span></h2>");
-                    ResultsString.AppendLine("<p>For the best results analysing data save the sessions "
-                        + "as a SAZ file and load them back into Fiddler. Click <i>File, Save, All Sessions</i>.</p>"
-                        + "<p>When analysing live traffic, there are multiple scenarios where session response data is not immediately available. This impacts the accuracy of "
-                        + "session analysis the extension can offer.</p>");
-                }
-                else
-                {
-                    ResultsString.AppendLine("<br />");
-                }
+                ResultsString.AppendLine("<br />");
 
                 ResultsString.AppendLine("<h2>General Session Data</h2>");
-                
+
                 ResultsString.AppendLine("<table border='0'>");
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td width='150px'>");
@@ -540,6 +542,7 @@ namespace Office365FiddlerInspector.Inspectors
                 ResultsString.AppendLine("</html>");
 
                 Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
+                
             }
             catch (Exception ex)
             {
