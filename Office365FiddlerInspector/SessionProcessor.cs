@@ -1775,7 +1775,7 @@ namespace Office365FiddlerInspector
                         this.session["X-SessionType"] = "False Positive";
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:green'>False Positive</span></b>";
-                        this.session["X-ResponseComments"] = "Telemetry failing is unlikely the cause of Outlook / OWA connectivity or other issues.";
+                        this.session["X-ResponseComments"] = "Telemetry failing is unlikely the cause of significant Office 365 client issues.";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. Telemetry False Positive.");
                     }
