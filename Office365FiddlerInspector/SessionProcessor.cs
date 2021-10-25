@@ -481,67 +481,70 @@ namespace Office365FiddlerInspector
                     // 200.4. Exchange On-Premise Autodiscover redirect.
                     if (this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1)
                     {
-                        /*
-                        <?xml version="1.0" encoding="utf-8"?>
-                        <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
-                            <Response xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a">
-                            <Account>
-                                <Action>redirectAddr</Action>
-                                <RedirectAddr>user@contoso.mail.onmicrosoft.com</RedirectAddr>       
-                            </Account>
-                            </Response>
-                        </Autodiscover>
-                        */
-
-                        // Logic to detected the redirect address in this session.
-                        // 
-                        string RedirectResponseBody = this.session.GetResponseBodyAsString();
-                        int start = this.session.GetResponseBodyAsString().IndexOf("<RedirectAddr>");
-                        int end = this.session.GetResponseBodyAsString().IndexOf("</RedirectAddr>");
-                        int charcount = end - start;
-                        string RedirectAddress;
-
-                        if (charcount > 0)
+                        if (this.session.HostnameIs("autodiscover-s.outlook.com"))
                         {
-                            RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
-                        }
-                        else
-                        {
-                            RedirectAddress = "Redirect address not found by extension.";
+                            /*
+                            <?xml version="1.0" encoding="utf-8"?>
+                            <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
+                                <Response xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a">
+                                <Account>
+                                    <Action>redirectAddr</Action>
+                                    <RedirectAddr>user@contoso.mail.onmicrosoft.com</RedirectAddr>       
+                                </Account>
+                                </Response>
+                            </Autodiscover>
+                            */
+
+                            // Logic to detected the redirect address in this session.
+                            // 
+                            string RedirectResponseBody = this.session.GetResponseBodyAsString();
+                            int start = this.session.GetResponseBodyAsString().IndexOf("<RedirectAddr>");
+                            int end = this.session.GetResponseBodyAsString().IndexOf("</RedirectAddr>");
+                            int charcount = end - start;
+                            string RedirectAddress;
+
+                            if (charcount > 0)
+                            {
+                                RedirectAddress = RedirectResponseBody.Substring(start, charcount).Replace("<RedirectAddr>", "");
+                            }
+                            else
+                            {
+                                RedirectAddress = "Redirect address not found by extension.";
+                            }
+
+
+                            if (RedirectAddress.Contains(".onmicrosoft.com"))
+                            {
+                                this.session["ui-backcolor"] = HTMLColourGreen;
+                                this.session["ui-color"] = "black";
+                                this.session["X-SessionType"] = "On-Prem AutoD Redirect";
+
+                                this.session["X-ResponseAlert"] = "Exchange On-Premise Autodiscover redirect.";
+                                this.session["X-ResponseComments"] = "Exchange On-Premise Autodiscover redirect address to Exchange Online found."
+                                    + "<p>RedirectAddress: "
+                                    + RedirectAddress
+                                    + "</p><p>This is what we want to see, the mail.onmicrosoft.com redirect address (you may know this as the <b>target address</b> or "
+                                    + "<b>remote routing address</b>) from On-Premise sends Outlook (MSI / Perpetual license) to Office 365 / Exchange Online.</p>";
+
+                                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
+                            }
+                            // Highlight if we got this far and do not have a redirect address which points to
+                            // Exchange Online such as: contoso.mail.onmicrosoft.com.
+                            else
+                            {
+                                this.session["ui-backcolor"] = HTMLColourRed;
+                                this.session["ui-color"] = "black";
+                                this.session["X-SessionType"] = "!AUTOD REDIRECT ADDR!";
+
+                                this.session["X-ResponseAlert"] = "!Exchange On-Premise Autodiscover redirect!";
+                                this.session["X-ResponseComments"] = "Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." +
+                                    "<p>RedirectAddress: " + RedirectAddress +
+                                    "</p><p>If this is an Office 365 mailbox the <b>targetAddress from On-Premise is not sending Outlook to Office 365</b>!</p>";
+
+                                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD REDIRECT ADDR! : " + RedirectAddress);
+                            }
                         }
                         
-
-                        if (RedirectAddress.Contains(".onmicrosoft.com"))
-                        {
-                            this.session["ui-backcolor"] = HTMLColourGreen;
-                            this.session["ui-color"] = "black";
-                            this.session["X-SessionType"] = "On-Prem AutoD Redirect";
-
-                            this.session["X-ResponseAlert"] = "Exchange On-Premise Autodiscover redirect.";
-                            this.session["X-ResponseComments"] = "Exchange On-Premise Autodiscover redirect address to Exchange Online found."
-                                + "<p>RedirectAddress: "
-                                + RedirectAddress
-                                + "</p><p>This is what we want to see, the mail.onmicrosoft.com redirect address (you may know this as the <b>target address</b> or "
-                                + "<b>remote routing address</b>) from On-Premise sends Outlook (MSI / Perpetual license) to Office 365 / Exchange Online.</p>";
-
-                            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
-                        }
-                        // Highlight if we got this far and do not have a redirect address which points to
-                        // Exchange Online such as: contoso.mail.onmicrosoft.com.
-                        else
-                        {
-                            this.session["ui-backcolor"] = HTMLColourRed;
-                            this.session["ui-color"] = "black";
-                            this.session["X-SessionType"] = "!AUTOD REDIRECT ADDR!";
-
-                            this.session["X-ResponseAlert"] = "!Exchange On-Premise Autodiscover redirect!";
-                            this.session["X-ResponseComments"] = "Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." +
-                                "<p>RedirectAddress: " + RedirectAddress +
-                                "</p><p>If this is an Office 365 mailbox the <b>targetAddress from On-Premise is not sending Outlook to Office 365</b>!</p>";
-
-                            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD REDIRECT ADDR! : " + RedirectAddress);
-                        }
-
                         break;
                     }
 
