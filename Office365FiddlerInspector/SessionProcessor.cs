@@ -145,6 +145,7 @@ namespace Office365FiddlerInspector
             if (!this.session.isFlagSet(SessionFlags.LoadedFromSAZ))
             {
                 // Live sessions, return.
+                FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " live session, diliberate return.");
                 return;
             }
 
@@ -165,7 +166,7 @@ namespace Office365FiddlerInspector
             // Stop here if we already identified sessions in BroadLogicChecks.
             if (this.session["X-StopFurtherProcessing"] != null)
             {
-                //FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " stopping after broad checks.");
+                FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " stopping after broad checks.");
                 return;
             }
 
@@ -216,6 +217,8 @@ namespace Office365FiddlerInspector
 
                 this.session["X-ResponseComments"] = "This is Fiddler itself checking for updates. It has nothing to do with the Office 365 Fiddler Extension.";
 
+                FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " fidder2.com set X-StopFurtherProcessing to true.");
+
                 this.session["X-StopFurtherProcessing"] = "true";
 
                 return;
@@ -232,16 +235,19 @@ namespace Office365FiddlerInspector
             // SetSessionType makes exactly the same call later on down the code path and it works.
             if (this.session.isTunnel)
             {
-
-                // Determine TLS version.
-
-                FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " TLS: " + this.session.utilFindInRequest("(TLS/1.2)", false));
-
-
                 // TLS 1.0 in request/response pair.
+
+                // Request:
+                //   Version: 3.1 (TLS/1.0)
+
+                //Response:
+                //   Secure Protocol: Tls
+                //   Cipher: Aes256 256bits
+                //   Hash Algorithm: Sha1 160bits
+
                 if (this.session.utilFindInRequest("(TLS/1.0)", false) > 1)
                 {
-                    if (this.session.utilFindInResponse("Secure Protocol: Tls11", false) > 1 || this.session.utilFindInResponse("(TLS/1.0)", false) > 1)
+                    if (this.session.utilFindInResponse("Secure Protocol: Tls10", false) > 1 || this.session.utilFindInResponse("(TLS/1.0)", false) > 1)
                     {
                         TLS = ": TLS 1.0";
                     }
@@ -293,6 +299,8 @@ namespace Office365FiddlerInspector
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " has connect tunnel in response.");
 
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " connect tunnel set X-StopFurtherProcessing to true.");
+
                         this.session["X-StopFurtherProcessing"] = "true";
 
                         return;
@@ -339,6 +347,8 @@ namespace Office365FiddlerInspector
 
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Apache is answering Autodiscover requests! Investigate this first!");
 
+                FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " Apache is answering Autodiscover set X-StopFurtherProcessing to true.");
+
                 this.session["X-StopFurtherProcessing"] = "true";
 
                 return;
@@ -351,6 +361,8 @@ namespace Office365FiddlerInspector
         // https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
         public void ResponseCodeLogic (Session session)
         {
+            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " Running ResponseCodeLogic.");
+
             switch (this.session.responseCode)
             {
                 #region HTTP0
@@ -432,6 +444,7 @@ namespace Office365FiddlerInspector
 
                             this.session["X-ResponseCodeDescription"] = "200 OK - <b><span style='color:red'>PROTOCOL DISABLED</span></b>";
 
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 Outlook MAPI traffic return.");
                             return;
                         } 
                         else
@@ -447,7 +460,8 @@ namespace Office365FiddlerInspector
                             // No FiddlerApplication logging here.
 
                             this.session["X-ResponseCodeDescription"] = "200 OK";
-
+                            
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 Outlook MAPI traffic break.");
                             break;
                         }
                     }
@@ -473,6 +487,7 @@ namespace Office365FiddlerInspector
 
                         this.session["X-ResponseCodeDescription"] = "200 OK";
 
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 Outlook RPC traffic break.");
                         break;
                     }
 
@@ -481,7 +496,7 @@ namespace Office365FiddlerInspector
                     // 200.4. Exchange On-Premise Autodiscover redirect.
                     if (this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1)
                     {
-                        if (this.session.HostnameIs("autodiscover-s.outlook.com"))
+                        if (!this.session.HostnameIs("autodiscover-s.outlook.com"))
                         {
                             /*
                             <?xml version="1.0" encoding="utf-8"?>
@@ -2397,6 +2412,8 @@ namespace Office365FiddlerInspector
         // Function where Elapsed Time column data is populated.
         public void SetElapsedTime(Session session)
         {
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetElapsedTime.");
+
             #region ElapsedTimeColumn
             // Populate the ElapsedTime column.
             if (session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") != "0:00:00.000" && session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
@@ -2416,6 +2433,8 @@ namespace Office365FiddlerInspector
         public void SetInspectorElapsedTime(Session session)
         {
             #region InspectorElapsedTime
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetInspectorElapsedTime.");
+
             // ClientDoneResponse can be blank. If so do not try to calculate and output Elapsed Time, we end up with a hideously large number.
             if (this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
             {
@@ -2465,6 +2484,8 @@ namespace Office365FiddlerInspector
         public void SetServerThinkTimeTransitTime(Session session)
         {
             #region ServerThinkTimeTransitTime
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetServerThinkTimeTransitTime.");
+
             // ServerGotRequest, ServerBeginResponse or ServerDoneResponse can be blank. If so do not try to calculate and output 'Server Think Time' or 'Transmit Time', we end up with a hideously large number.
             if (this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff") != "0:00:00.000" &&
                 this.session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff") != "0:00:00.000" &&
@@ -2564,6 +2585,7 @@ namespace Office365FiddlerInspector
         public void SetResponseServer(Session session)
         {
             #region ResponseServerColumn
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetResponseServer.");
 
             this.session = session;
 
@@ -2607,6 +2629,8 @@ namespace Office365FiddlerInspector
         public void CalculateSessionAge(Session session)
         {
             #region CalculateSessionAge
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running CalculateSessionAge.");
+
             String TimeSpanDaysText;
             String TimeSpanHoursText;
             String TimeSpanMinutesText;
@@ -2684,6 +2708,7 @@ namespace Office365FiddlerInspector
         {
             // Code section for response code logic overrides (long running sessions).
             #region LongRunningSessions
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetLongRunningSessions.");
 
             double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
 
@@ -2758,10 +2783,15 @@ namespace Office365FiddlerInspector
         public void SetSessionType(Session session)
         {
             #region SetSessionTypeColumn
-                        
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetSessionTypeColumn.");
+
             // Return if SessionType already has a value.
             // Quite often ResponseCodeLogic has already stamped a more specific SessionType value.
-            if (this.session["X-SessionType"] != null) return;
+            if (this.session["X-SessionType"] != null)
+            {
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " SessionType already set return.");
+                return;
+            }
 
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetSessionType");
 
@@ -2848,7 +2878,6 @@ namespace Office365FiddlerInspector
         public void SetAuthentication(Session session)
         {
             #region SetAuthenticationSAMLParser
-
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetAuthentication.");
 
             this.session["X-Office365AuthType"] = "";
@@ -2875,6 +2904,8 @@ namespace Office365FiddlerInspector
                 this.session.utilFindInResponse("Attribute AttributeName=", false) > 1)
             {
                 this.session["X-Authentication"] = "SAML Request/Response";
+
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " SAML Request/Response.");
 
                 // wrap all of this in a check to see if the SAML token came back from an ADFS endpoint.
                 // If it didn't we don't have the labs setup to validate how 3rd-party IDPs format things
