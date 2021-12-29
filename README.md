@@ -23,4 +23,4 @@ Issues: <a href="https://aka.ms/O365FiddlerExtensionIssues" target="_blank">http
 
 Download: <a href="https://aka.ms/O365FiddlerExtension" target="_blank">https://aka.ms/O365FiddlerExtension</a>
 
-EHLO Technet blog post: <a href="https://aka.ms/EHLOBlogArticle" target="_blank">https://aka.ms/EHLOBlogArticle</a>
+EHLO Technet blog post: <a href="https://techcommunity.microsoft.com/t5/exchange-team-blog/introducing-the-exchange-online-fiddler-extension/ba-p/608788" target="_blank">EHLO Blog Article</a>
