@@ -2,6 +2,7 @@
 using Fiddler;
 using System.Linq;
 using Office365FiddlerInspector.Services;
+using System.Windows.Forms;
 
 namespace Office365FiddlerInspector
 {
@@ -27,8 +28,18 @@ namespace Office365FiddlerInspector
 
         internal Session session { get; set; }
 
-        private string searchTerm;     
-       
+        private string searchTerm;
+
+        // Session Classification Confidence Level.
+        // Utilized to stop / allow further session processing.
+        private int iSCCL;
+        // Low: Session classification has low confidence and/or Session Type column is not set.
+        private int iSCCLLow = 0;
+        // Mid: Session classification has some confidence, but overriding Session Type function should be run just in case.
+        private int iSCCLMid = 5;
+        // High: Session classification has high level of confidence, session type is set, and any overriding functions should not be run.
+        private int iSCCLHigh = 10;
+
         public SessionProcessor() {}
 
         public void Initialize()
@@ -103,6 +114,7 @@ namespace Office365FiddlerInspector
                 session.oFlags.Remove("X-CALCULATEDSESSIONAGE");
                 session.oFlags.Remove("X-STOPFURTHERPROCESSING");
                 session.oFlags.Remove("X-PROCESSINFO");
+                session.oFlags.Remove("X-SCCL");
             }
 
             FiddlerApplication.UI.lvSessions.EndUpdate();
@@ -149,7 +161,6 @@ namespace Office365FiddlerInspector
                 return;
             }
 
-
             // Decode session requests/responses.
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
@@ -157,18 +168,14 @@ namespace Office365FiddlerInspector
             // Broad logic checks on sessions regardless of response code.
             Instance.BroadLogicChecks(session);
 
-            // Response code based logic.
-            Instance.ResponseCodeLogic(session);
-
             // Calculate Session Age for inspector with HTML mark-up.
             Instance.CalculateSessionAge(session);
 
-            // Stop here if we already identified sessions in BroadLogicChecks.
-            if (this.session["X-StopFurtherProcessing"] != null)
-            {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " stopping after broad checks.");
-                return;
-            }
+            // Set Response Server column data.
+            Instance.SetResponseServer(session);
+
+            // Set Server Think Time and Transit Time for inspector with HTML mark-up.
+            Instance.SetServerThinkTimeTransitTime(session);
 
             // Set Elapsed Time column data.
             Instance.SetElapsedTime(session);
@@ -176,22 +183,42 @@ namespace Office365FiddlerInspector
             // Set Elapsed Time for inspector with HTML mark-up.
             Instance.SetInspectorElapsedTime(session);
 
-            // Set Server Think Time and Transit Time for inspector with HTML mark-up.
-            Instance.SetServerThinkTimeTransitTime(session);
-
-            // Set Response Server column data.
-            Instance.SetResponseServer(session);
-
-            // If SessionType is blank, set Session Type override.
-            Instance.SetSessionType(session);
-
-            // If SessionType is blank, set Long Running Session override.
-            // In relatively few cases has roundtrip time been highlighted as an issue by Fiddler alone.
-            // Typically network traces are used to validate the underlying network connectivity.
-            Instance.SetLongRunningSessions(session);         
-
             // Set Authentication column data and SAML Response Parser for inspector.
             Instance.SetAuthentication(session);
+
+            ///////////////////////////////
+            // If after running broad logic checks we have a high session classification confidence,
+            // stop further processing for this session.
+            GetSCCL(session);
+            if (iSCCL == 10)
+            {
+                return;
+            }
+
+            // If Session Classification Confidence Level (SCCL) is moderate or low,
+            // continue with this more intensive logic function.
+            GetSCCL(session);
+            if (iSCCL <= 5)
+            {
+                // Response code based logic.
+                Instance.ResponseCodeLogic(session);
+            }
+
+            GetSCCL(session);
+            if (iSCCL <= 5)
+            {
+                // If SSCL is low run Session Type override function.
+                Instance.SetSessionType(session);
+            }
+
+            // If SCCL is low run Long Running Session override function.
+            // In relatively few cases has roundtrip time been highlighted as an issue by Fiddler alone.
+            // Typically network traces are used to validate the underlying network connectivity.
+            GetSCCL(session);
+            if (iSCCL <= 5)
+            {
+                Instance.SetLongRunningSessions(session);
+            }
         }
 
         #endregion
@@ -217,9 +244,8 @@ namespace Office365FiddlerInspector
 
                 this.session["X-ResponseComments"] = "This is Fiddler itself checking for updates. It has nothing to do with the Office 365 Fiddler Extension.";
 
-                FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " fidder2.com set X-StopFurtherProcessing to true.");
-
-                this.session["X-StopFurtherProcessing"] = "true";
+                FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " Broad Logic Checks (www.fiddler2.com) setting SCCL to 10.");
+                SetSCCL(session, "10");
 
                 return;
             }
@@ -247,17 +273,17 @@ namespace Office365FiddlerInspector
 
                 if (this.session.utilFindInResponse("Secure Protocol: Tls10", false) > 1 || this.session.utilFindInResponse("(TLS/1.0)", false) > 1)
                 {
-                    TLS = ": TLS 1.0";
+                    TLS = "TLS 1.0";
                 }
                 // TLS 1.1 in request/response pair.
                 else if (this.session.utilFindInResponse("Secure Protocol: Tls11", false) > 1 || this.session.utilFindInRequest("(TLS/1.1)", false) > 1)
                 {
-                    TLS = ": TLS 1.1";
+                    TLS = "TLS 1.1";
                 }
                 // TLS 1.2 in request/response pair.
                 else if (this.session.utilFindInRequest("Secure Protocol: Tls12", false) > 1 || this.session.utilFindInRequest("(TLS/1.2)", false) > 1)
                 {
-                    TLS = ": TLS 1.2";
+                    TLS = "TLS 1.2";
                 }
                 else
                 {
@@ -274,6 +300,7 @@ namespace Office365FiddlerInspector
 
                 // If this session was loaded from a SAZ file, check it for usable data in the response body.
                 // If not usable data is found, mark it up and return. No further processing needed.
+                /*
                 if (this.session.isFlagSet(SessionFlags.LoadedFromSAZ))
                 {
                     if (this.session.utilFindInResponse("CONNECT tunnel, through which encrypted HTTPS traffic flows", false) > 1)
@@ -288,18 +315,14 @@ namespace Office365FiddlerInspector
                             + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
                             + "<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>";
 
-                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " has connect tunnel in response.");
-
-                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " connect tunnel set X-StopFurtherProcessing to true.");
-
-                        this.session["X-StopFurtherProcessing"] = "true";
-
-                        return;
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " (LoadSaz true) has connect tunnel in response.");
                     }
                 }
+                */
                 // Otherwise this is a live data collection.
                 // Don't bother trying to check the response body, it isn't reliable (notes above).
                 // Mark it up anyway. In all likelihood code below in overrides will alter the session headers to replace this data.
+                /*
                 else
                 {
                     this.session["ui-backcolor"] = HTMLColourOrange;
@@ -314,6 +337,40 @@ namespace Office365FiddlerInspector
 
                     FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " is a connect tunnel.");
                 }
+                */
+
+                // if (this.session.isFlagSet(SessionFlags.LoadedFromSAZ)) also seems unreliable, unnecessarily complex and no longer needed since logic
+                // only plays when sessions are loaded from SAZ file.
+
+                this.session["ui-backcolor"] = HTMLColourOrange;
+                this.session["ui-color"] = "black";
+
+                this.session["X-SessionType"] = "Connect Tunnel: " + TLS;
+
+                this.session["X-ResponseAlert"] = "Connect Tunnel";
+                this.session["X-ResponseComments"] = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
+                    + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
+                    + "<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>";
+
+
+                switch (this.session.responseCode)
+                {
+                    case 403:
+                        // If this is a HTTP 403 we need analysis on this session.
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " Broad Logic Checks (connect tunnel) setting SCCL to 5.");
+                        SetSCCL(session, "5");
+                        break;
+                    case 200:
+                        // If this is a HTTP 200 all is well, set to 10 for no further analysis.
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " Broad Logic Checks (connect tunnel) setting SCCL to 10.");
+                        SetSCCL(session, "10");
+                        break;
+                    default:
+                        // Do nothing.
+                        break;
+                }              
+
+                return;
             }
 
             /////////////////////////////
@@ -341,6 +398,9 @@ namespace Office365FiddlerInspector
                 FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " Apache is answering Autodiscover set X-StopFurtherProcessing to true.");
 
                 this.session["X-StopFurtherProcessing"] = "true";
+
+                FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " Broad Logic Checks (Apache answering AutoDiscover) setting SCCL to 10.");
+                SetSCCL(session, "10");
 
                 return;
             }
@@ -378,6 +438,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "0 No Response";
 
+                    // Set SCCL to 10, stop any further session processing.
+                    SetSCCL(session, "10");
+
                     break;
                 #endregion
 
@@ -408,6 +471,9 @@ namespace Office365FiddlerInspector
 
                         this.session["X-ResponseCodeDescription"] = "200 OK";
 
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (Client Access Rules) setting SCCL to 10.");
+                        SetSCCL(session, "10");
+
                         break;
                     }
 
@@ -436,6 +502,10 @@ namespace Office365FiddlerInspector
                             this.session["X-ResponseCodeDescription"] = "200 OK - <b><span style='color:red'>PROTOCOL DISABLED</span></b>";
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 Outlook MAPI traffic return.");
+
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (MAPI Protocol Disabled) setting SCCL to 10.");
+                            SetSCCL(session, "10");
+
                             return;
                         } 
                         else
@@ -452,7 +522,11 @@ namespace Office365FiddlerInspector
 
                             this.session["X-ResponseCodeDescription"] = "200 OK";
                             
-                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 Outlook MAPI traffic break.");
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 Outlook MAPI traffic.");
+
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (MAPI Traffic) setting SCCL to 5.");
+                            SetSCCL(session, "5");
+
                             break;
                         }
                     }
@@ -479,6 +553,10 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseCodeDescription"] = "200 OK";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 Outlook RPC traffic break.");
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (RPC Traffic) setting SCCL to 5.");
+                        SetSCCL(session, "5");
+
                         break;
                     }
 
@@ -533,6 +611,7 @@ namespace Office365FiddlerInspector
                                     + "<b>remote routing address</b>) from On-Premise sends Outlook (MSI / Perpetual license) to Office 365 / Exchange Online.</p>";
 
                                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
+                                SetSCCL(session, "0");
                             }
                             // Highlight if we got this far and do not have a redirect address which points to
                             // Exchange Online such as: contoso.mail.onmicrosoft.com.
@@ -548,9 +627,11 @@ namespace Office365FiddlerInspector
                                     "</p><p>If this is an Office 365 mailbox the <b>targetAddress from On-Premise is not sending Outlook to Office 365</b>!</p>";
 
                                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD REDIRECT ADDR! : " + RedirectAddress);
+
+                                FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (AutoDiscover Incorrect Exchange Online Redirect Address) setting SCCL to 5.");
+                                SetSCCL(session, "10");
                             }
                         }
-                        
                         break;
                     }
 
@@ -586,6 +667,9 @@ namespace Office365FiddlerInspector
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
 
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (AutoDiscover Redirect Address Not Found) setting SCCL to 10.");
+                        SetSCCL(session, "10");
+
                         break;
                     }
 
@@ -613,6 +697,9 @@ namespace Office365FiddlerInspector
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML found.");
 
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (Exchange Online / Outlook MSI Autodiscover) setting SCCL to 5.");
+                            SetSCCL(session, "5");
+
                             break;
                         }
                         else
@@ -626,6 +713,9 @@ namespace Office365FiddlerInspector
                                 + " Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response.";
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML NOT found!");
+
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (Exchange Online / Outlook MSI Autodiscover Unusual Autodiscover Response) setting SCCL to 10.");
+                            SetSCCL(session, "10");
 
                             break;
                         }
@@ -648,6 +738,9 @@ namespace Office365FiddlerInspector
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML found.");
 
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (Exchange Online / Outlook MSI Autodiscover Expected Autodiscover Response) setting SCCL to 5.");
+                            SetSCCL(session, "5");
+
                             break;
                         }
                         else
@@ -661,6 +754,9 @@ namespace Office365FiddlerInspector
                                 + " Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response.";
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML NOT found!");
+
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (Exchange Online / Outlook MSI Autodiscover Unusual Autodiscover Response) setting SCCL to 10.");
+                            SetSCCL(session, "10");
 
                             break;
                         }
@@ -687,6 +783,9 @@ namespace Office365FiddlerInspector
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 GetUnifiedGroupsSettings EWS call. User can create O365 Groups in Outlook.");
 
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (GetUnifiedGroupsSettings) setting SCCL to 5.");
+                            SetSCCL(session, "5");
+
                             break;
                         }
                         // User cannot create Office 365 groups. Not an error condition in and of itself.
@@ -702,6 +801,9 @@ namespace Office365FiddlerInspector
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 GetUnifiedGroupsSettings EWS call. User cannot create O365 Groups in Outlook.");
 
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (GetUnifiedGroupsSettings - Cannot create Office 365 Groups) setting SCCL to 10.");
+                            SetSCCL(session, "10");
+
                             break;
                         }
                         // Did not see the expected keyword in the response body. This is the error condition.
@@ -716,6 +818,9 @@ namespace Office365FiddlerInspector
                                 + "<GroupCreationEnabled>false</GroupCreationEnabled> was found in the response body. Check the Raw tab for more details.";
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 GetUnifiedGroupsSettings!");
+
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (GetUnifiedGroupsSettings not detected) setting SCCL to 5.");
+                            SetSCCL(session, "5");
 
                             break;
                         }
@@ -741,6 +846,9 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseComments"] = $"Scenario: {scenario} Types: {entityTypes} {clientRequestId}";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " 200 3S Suggestions call.");
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (search/api/v1/suggestions) setting SCCL to 5.");
+                        SetSCCL(session, "5");
 
                         break;
                     }
@@ -778,6 +886,9 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseComments"] = $"{requestId} $search:{queryStrings["$search"]} $top:{queryStrings["$top"]} $skip:{queryStrings["$skip"]} $select:{queryStrings["$select"]} $filter:{queryStrings["$filter"]}";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " 200 REST - People Request.");
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (people) setting SCCL to 5.");
+                        SetSCCL(session, "5");
 
                         break;
                     }
@@ -889,6 +1000,9 @@ namespace Office365FiddlerInspector
 
                             this.session["X-ResponseCodeDescription"] = "200 OK, but possibly bad.";
 
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (99. others) setting SCCL to 5.");
+                            SetSCCL(session, "5");
+
                             break;
                         }
                         else
@@ -902,6 +1016,8 @@ namespace Office365FiddlerInspector
                                 + "'exception') detected in response body.";
 
                             this.session["X-ResponseCodeDescription"] = "200 OK";
+
+                            SetSCCL(session, "5");
                         }
                     }
                     break;
@@ -920,6 +1036,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "201 Created";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 202:
                     this.session["ui-backcolor"] = HTMLColourGreen;
@@ -932,6 +1051,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "202 Accepted";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 203:
                     this.session["X-ResponseAlert"] = "203 Non-Authoritative Information";
@@ -940,6 +1062,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 203 Non-Authoritative Information.");
 
                     this.session["X-ResponseCodeDescription"] = "203 Non-Authoritative Information";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 204:
@@ -959,6 +1084,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "204 No Content";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 205:
                     this.session["X-ResponseAlert"] = "HTTP 205 Reset Content.";
@@ -967,6 +1095,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 205 Reset Content.");
 
                     this.session["X-ResponseCodeDescription"] = "205 Reset Content";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 206:
@@ -977,6 +1108,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "206 Partial Content";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 207:
                     this.session["X-ResponseAlert"] = "HTTP 207 Multi-Status (WebDAV; RFC 4918).";
@@ -985,6 +1119,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 207 Multi-Status (WebDAV; RFC 4918).");
 
                     this.session["X-ResponseCodeDescription"] = "207 Multi-Status (WebDAV; RFC 4918)";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 208:
@@ -995,6 +1132,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "208 Already Reported (WebDAV; RFC 5842)";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 226:
                     this.session["X-ResponseAlert"] = "HTTP 226 IM Used (RFC 3229).";
@@ -1003,6 +1143,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 226 IM Used (RFC 3229).");
 
                     this.session["X-ResponseCodeDescription"] = "226 IM Used (RFC 3229)";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 #endregion
@@ -1015,6 +1158,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 300 Multiple Choices.");
 
                     this.session["X-ResponseCodeDescription"] = "300 Multiple Choices";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 301:
@@ -1031,6 +1177,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 301 Moved Permanently.");
 
                     this.session["X-ResponseCodeDescription"] = "301 Moved Permanently";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 302:
@@ -1067,6 +1216,8 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "302 Found";
 
+                    SetSCCL(session, "5");
+
                     break;
                 case 303:
                     this.session["X-ResponseAlert"] = "HTTP 303 See Other";
@@ -1075,6 +1226,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 303 See Other.");
 
                     this.session["X-ResponseCodeDescription"] = "303 See Other";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 304:
@@ -1092,6 +1246,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "304 Not Modified (RFC 7232)";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 305:
                     this.session["X-ResponseAlert"] = "HTTP 305 Use Proxy";
@@ -1101,6 +1258,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "305 Use Proxy";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 306:
                     this.session["X-ResponseAlert"] = "HTTP 306 Switch Proxy";
@@ -1109,6 +1269,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 306 Switch Proxy.");
 
                     this.session["X-ResponseCodeDescription"] = "306 Switch Proxy";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 307:
@@ -1137,6 +1300,9 @@ namespace Office365FiddlerInspector
                             + "<p>Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.</p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 302 (unexpected redirect) setting SCCL to 5.");
+                        SetSCCL(session, "10");
                     }
                     else
                     {
@@ -1154,6 +1320,9 @@ namespace Office365FiddlerInspector
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 307 Temp Redirect.");
 
                         this.session["X-ResponseCodeDescription"] = "307 Temporary Redirect";
+
+                        // Set SCCL to 0.
+                        SetSCCL(session, "0");
                     }
 
                     break;
@@ -1164,6 +1333,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 308 Permanent Redirect (RFC 7538).");
 
                     this.session["X-ResponseCodeDescription"] = "308 Permanent Redirect (RFC 7538)";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 #endregion
@@ -1185,6 +1357,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 400 Bad Request.");
 
                     this.session["X-ResponseCodeDescription"] = "400 Bad Request";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 401:
@@ -1216,6 +1391,9 @@ namespace Office365FiddlerInspector
                             + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. "
                             + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>";
 
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 401 (authentication challenge) setting SCCL to 10.");
+                        SetSCCL(session, "10");
+
                     }
                     /////////////////////////////
                     //
@@ -1236,6 +1414,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "401 Unauthorized (RFC 7235)";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 402:
                     this.session["X-ResponseAlert"] = "HTTP 402 Payment Required.";
@@ -1244,6 +1425,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 402 Payment Required.");
 
                     this.session["X-ResponseCodeDescription"] = "402 Payment Required";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 403:
@@ -1270,6 +1454,9 @@ namespace Office365FiddlerInspector
                             + "is a web proxy device blocking access to consumer webmail which can impact Outlook connectivity and potentially other Office 365 applications.</p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 403 (web proxy) setting SCCL to 10.");
+                        SetSCCL(session, "10");
                     }
                     else
                     {
@@ -1297,6 +1484,9 @@ namespace Office365FiddlerInspector
                         }
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 403 Forbidden.");
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 403 (All Other Forbidden) setting SCCL to 5.");
+                        SetSCCL(session, "5");
                     }
 
                     this.session["X-ResponseCodeDescription"] = "403 Forbidden";
@@ -1319,6 +1509,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "404 Not Found";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 405:
                     /////////////////////////////
@@ -1335,6 +1528,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "405 Method Not Allowed";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 406:
                     this.session["X-ResponseAlert"] = "HTTP 402 Payment Required.";
@@ -1343,6 +1539,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 406 Not Acceptable.");
 
                     this.session["X-ResponseCodeDescription"] = "406 Not Acceptable";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 407:
@@ -1368,6 +1567,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "407 Proxy Authentication Required (RFC 7235)";
 
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 407 (Proxy Auth Required) setting SCCL to 10.");
+                    SetSCCL(session, "10");
+
                     break;
                 case 408:
                     this.session["X-ResponseAlert"] = "HTTP 408 Request Timeout.";
@@ -1376,6 +1578,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 408 Request Timeout.");
 
                     this.session["X-ResponseCodeDescription"] = "408 Request Timeout";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 409:
@@ -1386,6 +1591,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "409 Conflict";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 410:
                     this.session["X-ResponseAlert"] = "HTTP 410 Gone.";
@@ -1394,6 +1602,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 410 Gone.");
 
                     this.session["X-ResponseCodeDescription"] = "410 Gone";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 411:
@@ -1404,6 +1615,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "411 Length Required";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 412:
                     this.session["X-ResponseAlert"] = "HTTP 412 Precondition Failed (RFC 7232).";
@@ -1412,6 +1626,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 412 Precondition Failed (RFC 7232).");
 
                     this.session["X-ResponseCodeDescription"] = "412 Precondition Failed (RFC 7232)";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 413:
@@ -1422,6 +1639,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "413 Payload Too Large (RFC 7231)";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 414:
                     this.session["X-ResponseAlert"] = "HTTP 414 URI Too Long (RFC 7231).";
@@ -1430,6 +1650,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 414 URI Too Long (RFC 7231).");
 
                     this.session["X-ResponseCodeDescription"] = "414 URI Too Long (RFC 7231)";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 415:
@@ -1440,6 +1663,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "415 Unsupported Media Type (RFC 7231)";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 416:
                     this.session["X-ResponseAlert"] = "HTTP 416 Range Not Satisfiable (RFC 7233).";
@@ -1448,6 +1674,9 @@ namespace Office365FiddlerInspector
                     this.session["X-ResponseCodeDescription"] = "416 Range Not Satisfiable (RFC 7233)";
 
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 416 Range Not Satisfiable (RFC 7233).");
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 417:
@@ -1458,6 +1687,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "417 Expectation Failed";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 418:
                     this.session["X-ResponseAlert"] = "HTTP 418 I'm a teapot (RFC 2324, RFC 7168).";
@@ -1466,6 +1698,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 418 I'm a teapot (RFC 2324, RFC 7168).");
 
                     this.session["X-ResponseCodeDescription"] = "418 I'm a teapot (RFC 2324, RFC 7168)";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 421:
@@ -1476,6 +1711,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "421 Misdirected Request (RFC 7540)";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 422:
                     this.session["X-ResponseAlert"] = "HTTP 422 Unprocessable Entity (WebDAV; RFC 4918).";
@@ -1484,6 +1722,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 422 Unprocessable Entity (WebDAV; RFC 4918).");
 
                     this.session["X-ResponseCodeDescription"] = "422 Unprocessable Entity (WebDAV; RFC 4918)";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 423:
@@ -1494,6 +1735,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "423 Locked (WebDAV; RFC 4918)";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 424:
                     this.session["X-ResponseAlert"] = "HTTP 424 Failed Dependency (WebDAV; RFC 4918).";
@@ -1502,6 +1746,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 424 Failed Dependency (WebDAV; RFC 4918).");
 
                     this.session["X-ResponseCodeDescription"] = "424 Failed Dependency (WebDAV; RFC 4918)";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 425:
@@ -1512,6 +1759,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "425 Too Early (RFC 8470)";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 426:
                     this.session["X-ResponseAlert"] = "HTTP 426 Upgrade Required.";
@@ -1521,6 +1771,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "426 Upgrade Required";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 428:
                     this.session["X-ResponseAlert"] = "HTTP 428 Precondition Required (RFC 6585).";
@@ -1529,6 +1782,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 428 Precondition Required (RFC 6585).");
 
                     this.session["X-ResponseCodeDescription"] = "428 Precondition Required (RFC 6585)";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 429:
@@ -1548,6 +1804,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "429 Too Many Requests (RFC 6585)";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 431:
                     this.session["X-ResponseAlert"] = "HTTP 431 Request Header Fields Too Large (RFC 6585).";
@@ -1557,6 +1816,9 @@ namespace Office365FiddlerInspector
 
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 431 Request Header Fields Too Large (RFC 6585).");
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 451:
                     this.session["X-ResponseAlert"] = "HTTP 451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect.";
@@ -1565,6 +1827,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect.");
 
                     this.session["X-ResponseCodeDescription"] = "451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 456:
@@ -1588,6 +1853,9 @@ namespace Office365FiddlerInspector
                             "https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx </a>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 456 Multi-Factor Required!");
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 456 (Multi Factor Auth 1) setting SCCL to 10.");
+                        SetSCCL(session, "10");
                     }
                     else if (this.session.utilFindInResponse("oauth_not_available", false) > 1)
                     {
@@ -1604,6 +1872,9 @@ namespace Office365FiddlerInspector
                             "https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx </a></p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 456 Multi-Factor Required!");
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 456 (Multi Factor Auth 2) setting SCCL to 10.");
+                        SetSCCL(session, "10");
                     }
                     else
                     {
@@ -1620,6 +1891,9 @@ namespace Office365FiddlerInspector
                             + "https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx </a></p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 456 Multi-Factor Required.");
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 456 (Multi Factor Auth?) setting SCCL to 10.");
+                        SetSCCL(session, "5");
                     }
 
                     break;
@@ -1655,6 +1929,9 @@ namespace Office365FiddlerInspector
 
                             this.session["X-ResponseCodeDescription"] = "500 Internal Server Error";
 
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 500 (Repeating Redirects) setting SCCL to 10.");
+                            SetSCCL(session, "10");
+
                             break;
                         }
                     }
@@ -1682,6 +1959,9 @@ namespace Office365FiddlerInspector
                                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 500 EWS Impersonate User Denied.");
 
                                 this.session["X-ResponseCodeDescription"] = "500 EWS Impersonate User Denied";
+
+                                FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 500 (EWS Impersonate User Denied) setting SCCL to 10.");
+                                SetSCCL(session, "10");
 
                                 break;
                             }
@@ -1715,6 +1995,9 @@ namespace Office365FiddlerInspector
 
                             this.session["X-ResponseCodeDescription"] = "500 OWA Something went wrong";
 
+                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 500 (OWA Something Went Wrong) setting SCCL to 10.");
+                            SetSCCL(session, "10");
+
                             break;
                         }
                     }
@@ -1740,6 +2023,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "500 Internal Server Error";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 501:
                     this.session["X-ResponseAlert"] = "HTTP 501 Not Implemented.";
@@ -1748,6 +2034,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 501 Not Implemented.");
 
                     this.session["X-ResponseCodeDescription"] = "501 Not Implemented";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 502:
@@ -1787,6 +2076,9 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseComments"] = "Telemetry failing is unlikely the cause of significant Office 365 client issues.";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. Telemetry False Positive.");
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 502 (Bad Gateway Telemetry False Positive) setting SCCL to 10.");
+                        SetSCCL(session, "10");
                     }
 
                     /////////////////////////////
@@ -1809,6 +2101,9 @@ namespace Office365FiddlerInspector
                             + "<p>To validate this above lookup the record, confirm it is a MX record and attempt to connect to the MX host on ports 25 and 443.</p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. EXO DNS False Positive.");
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 502 (Bad Gateway - EXO DNS False Positive) setting SCCL to 10.");
+                        SetSCCL(session, "10");
                     }
 
                     /////////////////////////////
@@ -1850,6 +2145,9 @@ namespace Office365FiddlerInspector
                             + "requests on port 80 to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. O365 AutoD onmicrosoft.com False Positive.");
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 502 (Office 365 AutoDiscover False Positive) setting SCCL to 10.");
+                        SetSCCL(session, "10");
                     }
 
                     /////////////////////////////
@@ -1884,6 +2182,9 @@ namespace Office365FiddlerInspector
                             + "redirects requests on port 80 to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. Vanity domain AutoD False Positive.");
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 502 (Bad Gateway - Vanity Domain AutoDiscover False Positive) setting SCCL to 10.");
+                        SetSCCL(session, "10");
                     }
 
                     /////////////////////////////
@@ -1901,6 +2202,9 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseComments"] = "This AutoDiscover request was refused by the server it was sent to. Check the raw tab for further details.";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. Exchange Autodiscover.");
+
+                        // Set SCCL to 0.
+                        SetSCCL(session, "0");
                     }
 
                     /////////////////////////////
@@ -1920,6 +2224,9 @@ namespace Office365FiddlerInspector
                             + "within your lan or something in a cloud provider's network?";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway (99).");
+
+                        // Set SCCL to 0.
+                        SetSCCL(session, "0");
                     }
 
                     this.session["X-ResponseCodeDescription"] = "502 Bad Gateway";
@@ -1978,6 +2285,9 @@ namespace Office365FiddlerInspector
                             + "Further investigation is advised. You could try hitting these endpoints a few times and see if you get an intermittent failure.</p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 503 Service Unavailable. FederatedStsUnreachable in response body!");
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 503 (ADFS Service Unavailable) setting SCCL to 10.");
+                        SetSCCL(session, "10");
                     }
                     /////////////////////////////
                     //
@@ -1994,6 +2304,9 @@ namespace Office365FiddlerInspector
                             + "it is healthy? Contactable? Contactable consistently or intermittently? Consider other session server responses in the 500's (500, 502 or 503) in conjunction with this session.";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 503 Service Unavailable (99).");
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 503 (Service Unavailable All Others) setting SCCL to 10.");
+                        SetSCCL(session, "5");
                     }
 
                     this.session["X-ResponseCodeDescription"] = "503 Service Unavailable";
@@ -2021,6 +2334,9 @@ namespace Office365FiddlerInspector
                             + "<p>Validate this by checking the webview and raw tabs for more information.</p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + "  HTTP 504 Gateway Timeout -- Internet Access Blocked.");
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 504 (Internet Access Blocked) setting SCCL to 10.");
+                        SetSCCL(session, "10");
                     }
 
                     /////////////////////////////
@@ -2037,6 +2353,9 @@ namespace Office365FiddlerInspector
                         this.session["X-SessionType"] = "Gateway Timeout";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 504 Gateway Timeout (99).");
+
+                        // Set SCCL to 0.
+                        SetSCCL(session, "0");
                     }
 
                     this.session["X-ResponseCodeDescription"] = "504 Gateway Timeout";
@@ -2050,6 +2369,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "505 HTTP Version Not Supported";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 506:
                     this.session["X-ResponseAlert"] = "HTTP 506 Variant Also Negotiates (RFC 2295).";
@@ -2058,6 +2380,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 506 Variant Also Negotiates (RFC 2295).");
 
                     this.session["X-ResponseCodeDescription"] = "506 Variant Also Negotiates (RFC 2295)";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 507:
@@ -2068,6 +2393,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "507 Insufficient Storage (WebDAV; RFC 4918)";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 508:
                     this.session["X-ResponseAlert"] = "HTTP 508 Loop Detected (WebDAV; RFC 5842).";
@@ -2076,6 +2404,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 508 Loop Detected (WebDAV; RFC 5842).");
 
                     this.session["X-ResponseCodeDescription"] = "508 Loop Detected (WebDAV; RFC 5842)";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 510:
@@ -2086,6 +2417,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "510 Not Extended (RFC 2774)";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 511:
                     this.session["X-ResponseAlert"] = "HTTP 511 Network Authentication Required (RFC 6585).";
@@ -2094,6 +2428,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 511 Network Authentication Required (RFC 6585).");
 
                     this.session["X-ResponseCodeDescription"] = "511 Network Authentication Required (RFC 6585)";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 #endregion
@@ -2107,6 +2444,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "103 Checkpoint";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 218:
                     this.session["X-ResponseAlert"] = "HTTP 218 This is fine (Apache Web Server).";
@@ -2115,6 +2455,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 218 This is fine (Apache Web Server).");
 
                     this.session["X-ResponseCodeDescription"] = "218 This is fine (Apache Web Server)";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 419:
@@ -2125,6 +2468,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "419 Page Expired (Laravel Framework)";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 420:
                     this.session["X-ResponseAlert"] = "HTTP 420 Method Failure (Spring Framework) or Enhance Your Calm (Twitter).";
@@ -2133,6 +2479,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 420 Method Failure (Spring Framework) or Enhance Your Calm (Twitter).");
 
                     this.session["X-ResponseCodeDescription"] = "420 Method Failure (Spring Framework) or Enhance Your Calm (Twitter)";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 430:
@@ -2143,6 +2492,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "430 Request Header Fields Too Large (Shopify)";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 450:
                     this.session["X-ResponseAlert"] = "HTTP 450 Blocked by Windows Parental Controls (Microsoft).";
@@ -2151,6 +2503,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 450 Blocked by Windows Parental Controls (Microsoft).");
 
                     this.session["X-ResponseCodeDescription"] = "450 Blocked by Windows Parental Controls (Microsoft)";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 498:
@@ -2161,6 +2516,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "498 Invalid Token (Esri)";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 499:
                     this.session["X-ResponseAlert"] = "HTTP 499 Token Required (Esri) or nginx Client Closed Request.";
@@ -2169,6 +2527,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 499 Token Required (Esri) or nginx Client Closed Request.");
 
                     this.session["X-ResponseCodeDescription"] = "499 Token Required (Esri) or nginx Client Closed Request";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 509:
@@ -2179,6 +2540,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "509 Bandwidth Limit Exceeded (Apache Web Server/cPanel)";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 529:
                     this.session["X-ResponseAlert"] = "HTTP 529 Site is overloaded.";
@@ -2187,6 +2551,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 529 Site is overloaded.");
 
                     this.session["X-ResponseCodeDescription"] = "529 Site is overloaded";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 530:
@@ -2197,6 +2564,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "530 Site is frozen or Cloudflare Error returned with 1xxx error.";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 598:
                     this.session["X-ResponseAlert"] = "HTTP 598 (Informal convention) Network read timeout error.";
@@ -2205,6 +2575,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 598 (Informal convention) Network read timeout error.");
 
                     this.session["X-ResponseCodeDescription"] = "598 (Informal convention) Network read timeout error";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 #endregion
@@ -2218,6 +2591,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "440 IIS Login Time-out";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 449:
                     this.session["X-ResponseAlert"] = "HTTP 449 IIS Retry With.";
@@ -2226,6 +2602,9 @@ namespace Office365FiddlerInspector
                     this.session["X-ResponseCodeDescription"] = "449 IIS Retry With";
 
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 449 IIS Retry With");
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 #endregion
@@ -2239,6 +2618,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "494 nginx Request header too large";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 495:
                     this.session["X-ResponseAlert"] = "HTTP 495 nginx SSL Certificate Error.";
@@ -2247,6 +2629,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 495 nginx SSL Certificate Error");
 
                     this.session["X-ResponseCodeDescription"] = "495 nginx SSL Certificate Error";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 496:
@@ -2257,6 +2642,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "496 nginx SSL Certificate Required";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 497:
                     this.session["X-ResponseAlert"] = "HTTP 497 nginx HTTP Request Sent to HTTPS Port.";
@@ -2265,6 +2653,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 497 nginx HTTP Request Sent to HTTPS Port");
 
                     this.session["X-ResponseCodeDescription"] = "497 nginx HTTP Request Sent to HTTPS Port";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 #endregion
@@ -2278,6 +2669,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "520 Cloudflare Web Server Returned an Unknown Error";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 521:
                     this.session["X-ResponseAlert"] = "HTTP 521 Cloudflare Web Server Is Down.";
@@ -2286,6 +2680,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 521 Cloudflare Web Server Is Down");
 
                     this.session["X-ResponseCodeDescription"] = "521 Cloudflare Web Server Is Down";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 522:
@@ -2296,6 +2693,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "522 Cloudflare Connection Timed Out";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 523:
                     this.session["X-ResponseAlert"] = "HTTP 523 Cloudflare Origin Is Unreachable.";
@@ -2304,6 +2704,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 523 Cloudflare Origin Is Unreachable");
 
                     this.session["X-ResponseCodeDescription"] = "523 Cloudflare Origin Is Unreachable";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 524:
@@ -2314,6 +2717,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "524 Cloudflare A Timeout Occurred";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 525:
                     this.session["X-ResponseAlert"] = "HTTP 525 Cloudflare SSL Handshake Failed.";
@@ -2322,6 +2728,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 525 Cloudflare SSL Handshake Failed");
 
                     this.session["X-ResponseCodeDescription"] = "525 Cloudflare SSL Handshake Failed";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 case 526:
@@ -2332,6 +2741,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "526 Cloudflare Invalid SSL Certificate";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 527:
                     this.session["X-ResponseAlert"] = "HTTP 527 Cloudflare Railgun Error.";
@@ -2340,6 +2752,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 527 Cloudflare Railgun Error");
 
                     this.session["X-ResponseCodeDescription"] = "527 Cloudflare Railgun Error";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 #endregion
@@ -2353,6 +2768,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "460 AWS Load balancer Timeout";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 463:
                     this.session["X-ResponseAlert"] = "HTTP 463 AWS X-Forwarded-For Header > 30 IP addresses.";
@@ -2362,6 +2780,9 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "463 AWS X-Forwarded-For Header > 30 IP addresses";
 
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
+
                     break;
                 case 561:
                     this.session["X-ResponseAlert"] = "HTTP 561 AWS Unauthorized.";
@@ -2370,6 +2791,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 561 AWS Unauthorized");
 
                     this.session["X-ResponseCodeDescription"] = "561 AWS Unauthorized";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                 #endregion
@@ -2392,6 +2816,9 @@ namespace Office365FiddlerInspector
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Session undefined in extension.");
 
                     this.session["X-ResponseCodeDescription"] = "Defaulted. HTTP Response Code undefined.";
+
+                    // Set SCCL to 0.
+                    SetSCCL(session, "0");
 
                     break;
                     //
@@ -2609,9 +3036,9 @@ namespace Office365FiddlerInspector
             {
                 this.session["X-ResponseServer"] = "X-Served-Name: " + this.session.oResponse["X-Server-Name"];
             }
-            else if (this.session.isTunnel == true)
+            else if ((this.session.isTunnel))
             {
-                this.session["X-ResponseServer"] = "Connect Tunnel";
+                this.session["X-ResponseServer"] = this.session["X-SessionType"];
             }
             #endregion
         }
@@ -2697,8 +3124,16 @@ namespace Office365FiddlerInspector
         // Function to highlight long running sessions.
         public void SetLongRunningSessions (Session session)
         {
-            // Code section for response code logic overrides (long running sessions).
+            // Avoid highlighting session roundtrip time if we already have confidence in the session classification.
+            GetSCCL(session);
+            if (iSCCL > iSCCLMid)
+            {
+                return;
+            }
+
             #region LongRunningSessions
+            // Code section for response code logic overrides (long running sessions).
+
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetLongRunningSessions.");
 
             double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
@@ -2773,6 +3208,12 @@ namespace Office365FiddlerInspector
         // Function to set Session Type column data.
         public void SetSessionType(Session session)
         {
+            // Avoid setting session type to something else if we already have confidence in the session classification.
+            GetSCCL(session);
+            if (iSCCL > iSCCLMid) {
+                return;
+            }
+
             #region SetSessionTypeColumn
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetSessionTypeColumn.");
 
@@ -2868,7 +3309,7 @@ namespace Office365FiddlerInspector
         // Functions where Authentication column is populated and SAML parser code lives.
         public void SetAuthentication(Session session)
         {
-            #region SetAuthenticationSAMLParser
+            
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetAuthentication.");
 
             this.session["X-Office365AuthType"] = "";
@@ -2887,9 +3328,24 @@ namespace Office365FiddlerInspector
             {
                 this.session["X-ProcessName"] = "Remote Capture";
             }
-            
-            // Determine if this session contains a SAML response.
-            if (this.session.utilFindInResponse("Issuer=", false) > 1 &&
+
+            if (!this.session.oRequest["Authorization"].Contains("Bearer") && !this.session.oRequest["Authorization"].Contains("Basic"))
+            {
+                SAMLParserFieldsNoData();
+                // Change which control appears for this session on the Office365 Auth inspector tab.
+                this.session["X-Office365AuthType"] = "Office365Auth";
+
+                this.session["X-Authentication"] = "No Auth Headers";
+                this.session["X-AuthenticationDesc"] = "No Auth Headers";
+
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " No Auth Headers found in session.");
+                return;
+            }
+
+            #region SetAuthenticationSAMLParser
+
+                // Determine if this session contains a SAML response.
+                if (this.session.utilFindInResponse("Issuer=", false) > 1 &&
                 this.session.utilFindInResponse("Attribute AttributeName=", false) > 1 &&
                 this.session.utilFindInResponse("NameIdentifier Format=", false) > 1 &&
                 this.session.utilFindInResponse("Attribute AttributeName=", false) > 1)
@@ -3262,17 +3718,6 @@ namespace Office365FiddlerInspector
 
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Basic Auth Token.");
             }
-            else
-            {
-                SAMLParserFieldsNoData();
-                // Change which control appears for this session on the Office365 Auth inspector tab.
-                this.session["X-Office365AuthType"] = "Office365Auth";
-
-                this.session["X-Authentication"] = "No Auth Headers";
-                this.session["X-AuthenticationDesc"] = "No Auth Headers";
-
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " No Auth Headers.");
-            }
             #endregion
         }
 
@@ -3312,5 +3757,22 @@ namespace Office365FiddlerInspector
             return wordCount;
         }
 
+        // Fuction to get Session Classification Confidence Level (SCCL).
+        public void GetSCCL( Session session)
+        {
+            // Avoid null object exceptions by setting this session flag to something
+            // rather than nothing, more attempting a Get operation.
+            if (this.session["X-SCCL"] == null || this.session["X-SCCL"] == "")
+            {
+                this.session["X-SCCL"] = "00";
+            }
+            iSCCL = int.Parse(this.session["X-SCCL"]);
+        }
+
+        // Fuction to set Session Classification Confidence Level (SCCL).
+        public void SetSCCL(Session session, string SCCL)
+        {
+            this.session["X-SCCL"] = SCCL;
+        }
     }
 }
