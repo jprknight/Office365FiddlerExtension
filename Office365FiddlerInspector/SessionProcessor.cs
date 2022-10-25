@@ -361,6 +361,8 @@ namespace Office365FiddlerInspector
                         SetSCCL(session, "5");
                         break;
                     case 200:
+                        this.session["X-ResponseCodeDescription"] = "200 OK";
+
                         // If this is a HTTP 200 all is well, set to 10 for no further analysis.
                         FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " Broad Logic Checks (connect tunnel) setting SCCL to 10.");
                         SetSCCL(session, "10");
@@ -610,6 +612,8 @@ namespace Office365FiddlerInspector
                                     + "</p><p>This is what we want to see, the mail.onmicrosoft.com redirect address (you may know this as the <b>target address</b> or "
                                     + "<b>remote routing address</b>) from On-Premise sends Outlook (MSI / Perpetual license) to Office 365 / Exchange Online.</p>";
 
+                                this.session["X-ResponseCodeDescription"] = "200 OK";
+
                                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address: " + RedirectAddress);
                                 SetSCCL(session, "0");
                             }
@@ -627,6 +631,8 @@ namespace Office365FiddlerInspector
                                     "</p><p>If this is an Office 365 mailbox the <b>targetAddress from On-Premise is not sending Outlook to Office 365</b>!</p>";
 
                                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD REDIRECT ADDR! : " + RedirectAddress);
+
+                                this.session["X-ResponseCodeDescription"] = "200 OK, Incorrect Redirect Address!";
 
                                 FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (AutoDiscover Incorrect Exchange Online Redirect Address) setting SCCL to 5.");
                                 SetSCCL(session, "10");
@@ -667,6 +673,8 @@ namespace Office365FiddlerInspector
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
 
+                        this.session["X-ResponseCodeDescription"] = "200 OK, Email address not found.";
+
                         FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (AutoDiscover Redirect Address Not Found) setting SCCL to 10.");
                         SetSCCL(session, "10");
 
@@ -697,6 +705,8 @@ namespace Office365FiddlerInspector
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML found.");
 
+                            this.session["X-ResponseCodeDescription"] = "200 OK";
+
                             FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (Exchange Online / Outlook MSI Autodiscover) setting SCCL to 5.");
                             SetSCCL(session, "5");
 
@@ -713,6 +723,8 @@ namespace Office365FiddlerInspector
                                 + " Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response.";
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML NOT found!");
+
+                            this.session["X-ResponseCodeDescription"] = "200 OK, Unexpected AutoDiscover XML response.";
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (Exchange Online / Outlook MSI Autodiscover Unusual Autodiscover Response) setting SCCL to 10.");
                             SetSCCL(session, "10");
@@ -738,6 +750,8 @@ namespace Office365FiddlerInspector
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML found.");
 
+                            this.session["X-ResponseCodeDescription"] = "200 OK";
+
                             FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (Exchange Online / Outlook MSI Autodiscover Expected Autodiscover Response) setting SCCL to 5.");
                             SetSCCL(session, "5");
 
@@ -754,6 +768,8 @@ namespace Office365FiddlerInspector
                                 + " Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response.";
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML NOT found!");
+
+                            this.session["X-ResponseCodeDescription"] = "200 OK, Unexpected XML response.";
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (Exchange Online / Outlook MSI Autodiscover Unusual Autodiscover Response) setting SCCL to 10.");
                             SetSCCL(session, "10");
@@ -783,6 +799,8 @@ namespace Office365FiddlerInspector
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 GetUnifiedGroupsSettings EWS call. User can create O365 Groups in Outlook.");
 
+                            this.session["X-ResponseCodeDescription"] = "200 OK";
+
                             FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (GetUnifiedGroupsSettings) setting SCCL to 5.");
                             SetSCCL(session, "5");
 
@@ -801,6 +819,8 @@ namespace Office365FiddlerInspector
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 GetUnifiedGroupsSettings EWS call. User cannot create O365 Groups in Outlook.");
 
+                            this.session["X-ResponseCodeDescription"] = "200 OK, User cannot create Unified Groups.";
+
                             FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (GetUnifiedGroupsSettings - Cannot create Office 365 Groups) setting SCCL to 10.");
                             SetSCCL(session, "10");
 
@@ -818,6 +838,8 @@ namespace Office365FiddlerInspector
                                 + "<GroupCreationEnabled>false</GroupCreationEnabled> was found in the response body. Check the Raw tab for more details.";
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 GetUnifiedGroupsSettings!");
+
+                            this.session["X-ResponseCodeDescription"] = "200 OK, GetUnifiedGroupsSettings not found.";
 
                             FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (GetUnifiedGroupsSettings not detected) setting SCCL to 5.");
                             SetSCCL(session, "5");
@@ -846,6 +868,8 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseComments"] = $"Scenario: {scenario} Types: {entityTypes} {clientRequestId}";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " 200 3S Suggestions call.");
+
+                        this.session["X-ResponseCodeDescription"] = "200 OK";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (search/api/v1/suggestions) setting SCCL to 5.");
                         SetSCCL(session, "5");
@@ -886,6 +910,8 @@ namespace Office365FiddlerInspector
                         this.session["X-ResponseComments"] = $"{requestId} $search:{queryStrings["$search"]} $top:{queryStrings["$top"]} $skip:{queryStrings["$skip"]} $select:{queryStrings["$select"]} $filter:{queryStrings["$filter"]}";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " 200 REST - People Request.");
+
+                        this.session["X-ResponseCodeDescription"] = "200 OK";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 (people) setting SCCL to 5.");
                         SetSCCL(session, "5");
