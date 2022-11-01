@@ -182,6 +182,10 @@ namespace Office365FiddlerInspector
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
 
+            ///////////////////////
+            ///
+            // Always run these functions on every session.
+
             // Broad logic checks on sessions regardless of response code.
             Instance.BroadLogicChecks(session);
 
@@ -197,6 +201,8 @@ namespace Office365FiddlerInspector
             // Set Elapsed Time for inspector with HTML mark-up.
             Instance.SetInspectorElapsedTime(session);
 
+            ///////////////////////
+            ///
             // From here on out only run functions where there isn't a high level of confidence
             // on session classification.
             GetSACL(session);
@@ -232,7 +238,7 @@ namespace Office365FiddlerInspector
                 Instance.SetResponseServer(session);
             }
 
-            // If session has not been definitely classified run Long Running Session override function.
+            // If session has not been classified run Long Running Session override function.
             // In relatively few cases has roundtrip time been highlighted as an issue by Fiddler alone.
             // So this is the last function to run after all other logic has been exhausted.
             // Typically network traces are used to validate the underlying network connectivity.
@@ -385,6 +391,7 @@ namespace Office365FiddlerInspector
                 {
                     case 403:
                         // If this is a HTTP 403 we need analysis on this session.
+                        // I have seen HTTP 403 connect tunnels actually show interesting data in authentication scenarios.
                         this.session["X-SessionType"] = "Connect Tunnel: " + TLS;
                         SetSACL(session, "5");
                         SetSTCL(session, "5");
@@ -393,6 +400,7 @@ namespace Office365FiddlerInspector
                     case 200:
                         this.session["X-ResponseCodeDescription"] = "200 OK";
 
+                        // I haven't seen anything interesting troubleshooting wise on HTTP 200 connect tunnels.
                         this.session["X-SessionType"] = "Connect Tunnel: " + TLS;
                         this.session["X-Authentication"] = "Connect Tunnel: " + TLS;
                         this.session["X-ResponseServer"] = "Connect Tunnel: " + TLS;
@@ -430,7 +438,7 @@ namespace Office365FiddlerInspector
                     + "https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under </a></p>"
                     + "<p>Beyond this the web administrator responsible for the server needs to stop the Apache web server from answering these requests.</p>";
 
-                this.session["X-SessionType"] = "!APACHE AUTODISCOVER!";
+                this.session["X-SessionType"] = "***APACHE AUTODISCOVER***";
 
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Apache is answering Autodiscover requests! Investigate this first!");
 
@@ -513,10 +521,10 @@ namespace Office365FiddlerInspector
 
                         this.session["X-ResponseCodeDescription"] = "200 OK";
 
-                        // Absolute certainly we don't want to do anything further with this session.
-                        SetSACL(session, "10");
+                        // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                        SetSACL(session, "5");
                         SetSTCL(session, "10");
-                        SetSRSCL(session, "10");
+                        SetSRSCL(session, "5");
 
                         break;
                     }
@@ -525,6 +533,12 @@ namespace Office365FiddlerInspector
                     //
                     // 200.2. Outlook MAPI traffic.
                     //
+
+                    // I thought about checking for outlook.exe in the logic here, but I have many sample traces where for some (unknown to me) reason,
+                    // the process is rundll.exe. This isn't really a fixable thing, since people using this tool are usually collecting traces from
+                    // various systems, and who wants to troubleshoot the troubleshooting anyway. Leaving this off, as most people just want to see if
+                    // they can get some information and solve the issue.
+
                     if (this.session.HostnameIs("outlook.office365.com") && (this.session.uriContains("/mapi/emsmdb/?MailboxId=")))
                     {
                         /////////////////////////////
@@ -535,7 +549,7 @@ namespace Office365FiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-SessionType"] = "!PROTOCOL DISABLED!";
+                            this.session["X-SessionType"] = "***PROTOCOL DISABLED***";
 
                             this.session["X-ResponseAlert"] = "<b><span style='color:red'>Store Error Protocol Disabled</span></b>";
                             this.session["X-ResponseComments"] = "<b><span style='color:red'>Store Error Protocol disabled found in response body.</span></b>"
@@ -678,6 +692,7 @@ namespace Office365FiddlerInspector
                             {
                                 this.session["ui-backcolor"] = HTMLColourGreen;
                                 this.session["ui-color"] = "black";
+
                                 this.session["X-SessionType"] = "On-Prem AutoD Redirect";
 
                                 this.session["X-ResponseAlert"] = "Exchange On-Premise Autodiscover redirect.";
@@ -689,10 +704,10 @@ namespace Office365FiddlerInspector
 
                                 this.session["X-ResponseCodeDescription"] = "200 OK";
 
-                                // Absolute certainly we don't want to do anything further with this session.
-                                SetSACL(session, "10");
+                                // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                                SetSACL(session, "5");
                                 SetSTCL(session, "10");
-                                SetSRSCL(session, "10");
+                                SetSRSCL(session, "5");
                             }
                             // Highlight if we got this far and do not have a redirect address which points to
                             // Exchange Online such as: contoso.mail.onmicrosoft.com.
@@ -700,6 +715,7 @@ namespace Office365FiddlerInspector
                             {
                                 this.session["ui-backcolor"] = HTMLColourRed;
                                 this.session["ui-color"] = "black";
+
                                 this.session["X-SessionType"] = "!AUTOD REDIRECT ADDR!";
 
                                 this.session["X-ResponseAlert"] = "!Exchange On-Premise Autodiscover redirect!";
@@ -711,10 +727,10 @@ namespace Office365FiddlerInspector
 
                                 this.session["X-ResponseCodeDescription"] = "200 OK, Incorrect Redirect Address!";
 
-                                // Absolute certainly we don't want to do anything further with this session.
-                                SetSACL(session, "10");
+                                // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                                SetSACL(session, "5");
                                 SetSTCL(session, "10");
-                                SetSRSCL(session, "10");
+                                SetSRSCL(session, "5");
                             }
                         }
                         break;
@@ -754,10 +770,10 @@ namespace Office365FiddlerInspector
 
                         this.session["X-ResponseCodeDescription"] = "200 OK, Email address not found.";
 
-                        // Absolute certainly we don't want to do anything further with this session.
-                        SetSACL(session, "10");
+                        // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                        SetSACL(session, "5");
                         SetSTCL(session, "10");
-                        SetSRSCL(session, "10");
+                        SetSRSCL(session, "5");
 
                         break;
                     }
@@ -799,6 +815,7 @@ namespace Office365FiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
+
                             this.session["X-SessionType"] = "!EXO MSI Autodiscover!";
 
                             this.session["X-ResponseAlert"] = "<b><span style='color:red'>Exchange Online / Outlook MSI Autodiscover - Unusual Autodiscover Response</span></b>";
@@ -809,10 +826,10 @@ namespace Office365FiddlerInspector
 
                             this.session["X-ResponseCodeDescription"] = "200 OK, Unexpected AutoDiscover XML response.";
 
-                            // Absolute certainly we don't want to do anything further with this session.
-                            SetSACL(session, "10");
+                            // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                            SetSACL(session, "5");
                             SetSTCL(session, "10");
-                            SetSRSCL(session, "10");
+                            SetSRSCL(session, "5");
 
                             break;
                         }
@@ -827,6 +844,7 @@ namespace Office365FiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourGreen;
                             this.session["ui-color"] = "black";
+
                             this.session["X-SessionType"] = "EXO CTR Autodiscover";
 
                             this.session["X-ResponseAlert"] = "Exchange Online / Outlook CTR Autodiscover.";
@@ -848,6 +866,7 @@ namespace Office365FiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
+
                             this.session["X-SessionType"] = "!EXO CTR Autodiscover!";
 
                             this.session["X-ResponseAlert"] = "<b><span style='color:red'>Exchange Online / Outlook CTR Autodiscover - Unusual Autodiscover Response</span></b>";
@@ -858,10 +877,10 @@ namespace Office365FiddlerInspector
 
                             this.session["X-ResponseCodeDescription"] = "200 OK, Unexpected XML response.";
 
-                            // Absolute certainly we don't want to do anything further with this session.
-                            SetSACL(session, "10");
+                            // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                            SetSACL(session, "5");
                             SetSTCL(session, "10");
-                            SetSRSCL(session, "10");
+                            SetSRSCL(session, "5");
 
                             break;
                         }
@@ -902,6 +921,7 @@ namespace Office365FiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourGreen;
                             this.session["ui-color"] = "black";
+
                             this.session["X-SessionType"] = "EWS GetUnifiedGroupsSettings";
 
                             this.session["X-ResponseAlert"] = "<b><span style='color:red'>GetUnifiedGroupsSettings EWS call</span></b>";
@@ -912,10 +932,10 @@ namespace Office365FiddlerInspector
 
                             this.session["X-ResponseCodeDescription"] = "200 OK, User cannot create Unified Groups.";
 
-                            // Absolute certainly we don't want to do anything further with this session.
-                            SetSACL(session, "10");
+                            // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                            SetSACL(session, "5");
                             SetSTCL(session, "10");
-                            SetSRSCL(session, "10");
+                            SetSRSCL(session, "5");
 
                             break;
                         }
@@ -1018,6 +1038,31 @@ namespace Office365FiddlerInspector
                         break;
                     }
 
+                    /////////////////////////////
+                    //
+                    // 200.11. Any other EWS call.
+                    //
+                    else if (this.session.HostnameIs("outlook.office365.com") &&
+                        (this.session.uriContains("ews/exchange.asmx")))
+                    {
+                        this.session["ui-backcolor"] = HTMLColourGreen;
+                        this.session["ui-color"] = "black";
+                        this.session["X-SessionType"] = "Exchange Web Services";
+
+                        this.session["X-ResponseAlert"] = "Exchange Web Services (EWS) call.";
+                        this.session["X-ResponseComments"] = "Exchange Web Services (EWS) call.";
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 EWS call.");
+
+                        this.session["X-ResponseCodeDescription"] = "200 OK";
+
+                        // Possible something more to be found, let further processing try to pick up something.
+                        SetSACL(session, "5");
+                        SetSTCL(session, "5");
+                        SetSRSCL(session, "5");
+
+                        break;
+                    }
 
                     /////////////////////////////
                     //
@@ -1356,7 +1401,7 @@ namespace Office365FiddlerInspector
                     {
                         this.session["ui-backcolor"] = HTMLColourGreen;
                         this.session["ui-color"] = "black";
-                        this.session["X-SessionType"] = "Autodiscover Redirect";
+                        this.session["X-SessionType"] = "Redirect";
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:green'>Redirect.</span></b>";
                         this.session["X-ResponseComments"] = "Redirects within Office 365 client applications or servers are not unusual. "
@@ -1453,7 +1498,10 @@ namespace Office365FiddlerInspector
                         // Exchange Online, highlight.
                         this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
-                        this.session["X-SessionType"] = "!UNEXPECTED LOCATION!";
+
+                        this.session["X-Authentication"] = "***UNEXPECTED LOCATION***";
+                        this.session["X-SessionType"] = "***UNEXPECTED LOCATION***";
+                        this.session["X-ResponseServer"] = "***UNEXPECTED LOCATION***";
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 307 Temporary Redirect</span></b>";
                         this.session["X-ResponseComments"] = "<b>Temporary Redirects have been seen to redirect Exchange Online Autodiscover "
@@ -1464,7 +1512,7 @@ namespace Office365FiddlerInspector
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 307 On-Prem Temp Redirect - Unexpected location!");
 
-                        // Absolute certainly we don't want to do anything further with this session.
+                        // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
                         SetSACL(session, "10");
                         SetSTCL(session, "10");
                         SetSRSCL(session, "10");
@@ -1537,7 +1585,7 @@ namespace Office365FiddlerInspector
 
                     /////////////////////////////
                     //
-                    //  HTTP 401: UNAUTHORIZED.
+                    //  HTTP 401: UNAUTHORIZED / AUTHENTICATION CHALLENGE.
                     //
 
                     /////////////////////////////
@@ -1553,7 +1601,7 @@ namespace Office365FiddlerInspector
                     {
                         this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
-                        this.session["X-SessionType"] = "Autodiscover Auth Challenge";
+                        this.session["X-Authentication"] = "Autodiscover Auth Challenge";
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:orange'>Autodiscover Authentication Challenge</span></b>";
                         this.session["X-ResponseComments"] = "Autodiscover Authentication Challenge. If the host for this session is autodiscover-s.outlook.com this is likely Outlook "
@@ -1562,11 +1610,55 @@ namespace Office365FiddlerInspector
                             + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. "
                             + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>";
 
-                        // Absolute certainly we don't want to do anything further with this session.
+                        // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
                         SetSACL(session, "10");
                         SetSTCL(session, "10");
-                        SetSRSCL(session, "10");
+                        SetSRSCL(session, "5");
 
+                    }
+
+                    /////////////////////////////
+                    //
+                    // 401.2 Exchange AutoDiscover
+                    if (this.session.uriContains("/Autodiscover/Autodiscover.xml"))
+                    {
+                        this.session["ui-backcolor"] = HTMLColourOrange;
+                        this.session["ui-color"] = "black";
+
+                        this.session["X-Authentication"] = "Autodiscover Auth Challenge";
+                        this.session["X-SessionType"] = "Exchange Autodiscover";
+
+                        this.session["X-ResponseAlert"] = "<b><span style='color:orange'>Autodiscover Authentication Challenge</span></b>";
+                        this.session["X-ResponseComments"] = "Autodiscover Authentication Challenge."
+                            + "<p><b>These are expected</b> and are not an issue as long as a subsequent "
+                            + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. "
+                            + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>";
+
+                        // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                        SetSACL(session, "10");
+                        SetSTCL(session, "10");
+                        SetSRSCL(session, "5");
+                    }
+
+                    /////////////////////////////
+                    //
+                    // 401.3 Any Exchange Web Services
+                    else if (this.session.uriContains("/EWS/Exchange.asmx"))
+                    {
+                        this.session["ui-backcolor"] = HTMLColourOrange;
+                        this.session["ui-color"] = "black";
+                        this.session["X-SessionType"] = "Exchange Web Services";
+                        this.session["X-Authentication"] = "Auth Challenge";
+
+                        this.session["X-ResponseAlert"] = "Exchange Web Services (EWS) call.";
+                        this.session["X-ResponseComments"] = "Exchange Web Services (EWS) call.";
+
+                        FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 EWS call.");
+
+                        // Absolute certainly we don't want to do anything further for Session Type with this session.
+                        SetSACL(session, "10");
+                        SetSTCL(session, "10");
+                        SetSRSCL(session, "5");
                     }
                     /////////////////////////////
                     //
@@ -1575,22 +1667,22 @@ namespace Office365FiddlerInspector
                     {
                         this.session["ui-backcolor"] = HTMLColourOrange;
                         this.session["ui-color"] = "black";
-                        this.session["X-SessionType"] = "Auth Challenge";
+                        this.session["X-Authentication"] = "Auth Challenge";
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:orange'>Authentication Challenge</span></b>";
                         this.session["X-ResponseComments"] = "Authentication Challenge. <b>These are expected</b> and are not an issue as long as a subsequent "
                             + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. "
                             + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>";
+
+                        // Nothing meaningful here, let further processing try to pick up something.
+                        SetSACL(session, "5");
+                        SetSTCL(session, "5");
+                        SetSRSCL(session, "5");
                     }
 
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 401 Auth Challenge.");
 
                     this.session["X-ResponseCodeDescription"] = "401 Unauthorized (RFC 7235)";
-
-                    // Nothing meaningful here, let further processing try to pick up something.
-                    SetSACL(session, "0");
-                    SetSTCL(session, "0");
-                    SetSRSCL(session, "0");
 
                     break;
                 case 402:
@@ -1618,7 +1710,7 @@ namespace Office365FiddlerInspector
                     {
                         this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
-                        this.session["X-SessionType"] = "WEB PROXY BLOCK";
+                        this.session["X-SessionType"] = "***WEB PROXY BLOCK***";
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 403 Access Denied - WEB PROXY BLOCK!</span></b>";
                         this.session["X-ResponseComments"] = "<b><span style='color:red'>Is your firewall or web proxy blocking Outlook connectivity?</span></b> "
@@ -1632,10 +1724,10 @@ namespace Office365FiddlerInspector
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
 
-                        // Absolute certainly we don't want to do anything further with this session.
-                        SetSACL(session, "10");
+                        // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                        SetSACL(session, "5");
                         SetSTCL(session, "10");
-                        SetSRSCL(session, "10");
+                        SetSRSCL(session, "5");
                     }
                     else
                     {
@@ -1738,6 +1830,7 @@ namespace Office365FiddlerInspector
                     //
                     this.session["ui-backcolor"] = HTMLColourRed;
                     this.session["ui-color"] = "black";
+
                     this.session["X-SessionType"] = "HTTP 407 Proxy Auth Required";
 
                     this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 407: Proxy Authentication Required</span></b>";
@@ -1754,10 +1847,10 @@ namespace Office365FiddlerInspector
 
                     this.session["X-ResponseCodeDescription"] = "407 Proxy Authentication Required (RFC 7235)";
 
-                    // Absolute certainly we don't want to do anything further with this session.
-                    SetSACL(session, "10");
+                    // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                    SetSACL(session, "5");
                     SetSTCL(session, "10");
-                    SetSRSCL(session, "10");
+                    SetSRSCL(session, "5");
 
                     break;
                 case 408:
@@ -2073,6 +2166,7 @@ namespace Office365FiddlerInspector
                     {
                         this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
+
                         this.session["X-SessionType"] = "!Multi-Factor Auth!";
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 456 Multi-Factor Authentication</span></b>";
@@ -2085,15 +2179,16 @@ namespace Office365FiddlerInspector
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 456 Multi-Factor Required!");
 
-                        // Absolute certainly we don't want to do anything further with this session.
-                        SetSACL(session, "10");
+                        // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                        SetSACL(session, "5");
                         SetSTCL(session, "10");
-                        SetSRSCL(session, "10");
+                        SetSRSCL(session, "5");
                     }
                     else if (this.session.utilFindInResponse("oauth_not_available", false) > 1)
                     {
                         this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
+
                         this.session["X-SessionType"] = "!Multi-Factor Auth!";
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 456 Multi-Factor Authentication</span></b>";
@@ -2106,10 +2201,10 @@ namespace Office365FiddlerInspector
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 456 Multi-Factor Required!");
 
-                        // Absolute certainly we don't want to do anything further with this session.
-                        SetSACL(session, "10");
+                        // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                        SetSACL(session, "5");
                         SetSTCL(session, "10");
-                        SetSRSCL(session, "10");
+                        SetSRSCL(session, "5");
                     }
                     else
                     {
@@ -2153,7 +2248,8 @@ namespace Office365FiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-SessionType"] = "!REPEATING REDIRECTS DETECTED!";
+
+                            this.session["X-SessionType"] = "***REPEATING REDIRECTS DETECTED***";
 
                             this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 500 Internal Server Error - Repeating redirects detected</span></b>";
                             this.session["X-ResponseComments"] = "<b><span style='color:red'>Repeating redirects detected</span></b> found in this session response. "
@@ -2166,10 +2262,10 @@ namespace Office365FiddlerInspector
 
                             this.session["X-ResponseCodeDescription"] = "500 Internal Server Error";
 
-                            // Absolute certainly we don't want to do anything further with this session.
-                            SetSACL(session, "10");
+                            // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                            SetSACL(session, "5");
                             SetSTCL(session, "10");
-                            SetSRSCL(session, "10");
+                            SetSRSCL(session, "5");
 
                             break;
                         }
@@ -2188,7 +2284,8 @@ namespace Office365FiddlerInspector
                             {
                                 this.session["ui-backcolor"] = HTMLColourRed;
                                 this.session["ui-color"] = "black";
-                                this.session["X-SessionType"] = "!EWS Impersonate User Denied!";
+                                
+                                this.session["X-SessionType"] = "***EWS Impersonate User Denied***";
 
                                 this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 500 Internal Server Error - EWS Impersonate User Denied</span></b>";
                                 this.session["X-ResponseComments"] = "<b><span style='color:red'>EWS Impersonate User Denied</span></b> found in this session response. "
@@ -2199,10 +2296,10 @@ namespace Office365FiddlerInspector
 
                                 this.session["X-ResponseCodeDescription"] = "500 EWS Impersonate User Denied";
 
-                                // Absolute certainly we don't want to do anything further with this session.
-                                SetSACL(session, "10");
+                                // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                                SetSACL(session, "5");
                                 SetSTCL(session, "10");
-                                SetSRSCL(session, "10");
+                                SetSRSCL(session, "5");
 
                                 break;
                             }
@@ -2223,7 +2320,8 @@ namespace Office365FiddlerInspector
                         {
                             this.session["ui-backcolor"] = HTMLColourRed;
                             this.session["ui-color"] = "black";
-                            this.session["X-SessionType"] = "!OWA SOMETHING WENT WRONG!";
+
+                            this.session["X-SessionType"] = "***OWA SOMETHING WENT WRONG***";
 
                             this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 500 Internal Server Error - OWA Something went wrong.</span></b>";
                             this.session["X-ResponseComments"] = "<b><span style='color:red'>OWA - Something went wrong</span></b> found in this session response. "
@@ -2236,10 +2334,10 @@ namespace Office365FiddlerInspector
 
                             this.session["X-ResponseCodeDescription"] = "500 OWA Something went wrong";
 
-                            // Absolute certainly we don't want to do anything further with this session.
-                            SetSACL(session, "10");
+                            // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                            SetSACL(session, "5");
                             SetSTCL(session, "10");
-                            SetSRSCL(session, "10");
+                            SetSRSCL(session, "5");
 
                             break;
                         }
@@ -2317,6 +2415,7 @@ namespace Office365FiddlerInspector
                     {
                         this.session["ui-backcolor"] = HTMLColourBlue;
                         this.session["ui-color"] = "black";
+
                         this.session["X-SessionType"] = "False Positive";
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:green'>False Positive</span></b>";
@@ -2324,10 +2423,10 @@ namespace Office365FiddlerInspector
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. Telemetry False Positive.");
 
-                        // Absolute certainly we don't want to do anything further with this session.
-                        SetSACL(session, "10");
+                        // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                        SetSACL(session, "5");
                         SetSTCL(session, "10");
-                        SetSRSCL(session, "10");
+                        SetSRSCL(session, "5");
                     }
 
                     /////////////////////////////
@@ -2342,7 +2441,10 @@ namespace Office365FiddlerInspector
                     {
                         this.session["ui-backcolor"] = HTMLColourBlue;
                         this.session["ui-color"] = "black";
+
+                        this.session["X-Authentication"] = "False Positive";
                         this.session["X-SessionType"] = "False Positive";
+                        this.session["X-ResponseServer"] = "False Positive";
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:green'>False Positive</span></b>";
                         this.session["X-ResponseComments"] = "<b><span style='color:green'>False positive on HTTP 502</span></b>. "
@@ -2351,7 +2453,7 @@ namespace Office365FiddlerInspector
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. EXO DNS False Positive.");
 
-                        // Absolute certainly we don't want to do anything further with this session.
+                        // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
                         SetSACL(session, "10");
                         SetSTCL(session, "10");
                         SetSRSCL(session, "10");
@@ -2370,7 +2472,10 @@ namespace Office365FiddlerInspector
                     {
                         this.session["ui-backcolor"] = HTMLColourBlue;
                         this.session["ui-color"] = "black";
+
+                        this.session["X-Authentication"] = "False Positive";
                         this.session["X-SessionType"] = "False Positive";
+                        this.session["X-ResponseServer"] = "False Positive";
 
                         string AutoDFalsePositiveDomain;
                         string AutoDFalsePositiveResponseBody = this.session.GetResponseBodyAsString();
@@ -2386,18 +2491,19 @@ namespace Office365FiddlerInspector
                             AutoDFalsePositiveDomain = "<Domain not detected by extension>";
                         }
                         
-
                         this.session["X-ResponseAlert"] = "<b><span style='color:green'>False Positive</span></b>";
                         this.session["X-ResponseComments"] = "<b><span style='color:green'>False Positive</span></b>. By design Office 365 Autodiscover does not respond to "
                             + AutoDFalsePositiveDomain
                             + " on port 443. "
                             + "<p>Validate this message by confirming the Host IP (if shown) is an Office 365 Host/IP address and perform a telnet to it on port 80.</p>"
                             + "<p>If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects "
-                            + "requests on port 80 to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>";
+                            + "requests on port 80 to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>"
+                            + "<p>The reason for this is Microsoft does not maintain SSL certificates for every tenant domain name registered on the .onmicrosoft.com domain."
+                            + "AutoDiscover redirects to autodiscover-s.outlook.com which does accept connections on 443 and Microsoft does maintain SSL certificates for this endpoint.</p>";
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. O365 AutoD onmicrosoft.com False Positive.");
 
-                        // Absolute certainly we don't want to do anything further with this session.
+                        // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
                         SetSACL(session, "10");
                         SetSTCL(session, "10");
                         SetSRSCL(session, "10");
@@ -2425,7 +2531,10 @@ namespace Office365FiddlerInspector
                     {
                         this.session["ui-backcolor"] = HTMLColourBlue;
                         this.session["ui-color"] = "black";
-                        this.session["X-SessionType"] = "Autodiscover Possible False Positive?";
+
+                        this.session["X-Authentication"] = "AutoD False Positive";
+                        this.session["X-SessionType"] = "AutoD False Positive";
+                        this.session["X-ResponseServer"] = "AutoD False Positive";
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:orange'>Autodiscover Possible False Positive?</span></b>";
                         this.session["X-ResponseComments"] = "Autoddiscover Possible False Positive. By design Office 365 endpoints such as autodiscover.contoso.onmicrosoft.com "
@@ -2436,7 +2545,7 @@ namespace Office365FiddlerInspector
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. Vanity domain AutoD False Positive.");
 
-                        // Absolute certainly we don't want to do anything further with this session.
+                        // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
                         SetSACL(session, "10");
                         SetSTCL(session, "10");
                         SetSRSCL(session, "10");
@@ -2523,7 +2632,7 @@ namespace Office365FiddlerInspector
                     {
                         this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
-                        this.session["X-SessionType"] = "!FederatedSTSUnreachable!";
+                        this.session["X-SessionType"] = "***FederatedSTSUnreachable***";
 
                         string RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=" + this.session.oRequest["X-User-Identity"] + "&xml=1";
 
@@ -2545,10 +2654,10 @@ namespace Office365FiddlerInspector
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 503 Service Unavailable. FederatedStsUnreachable in response body!");
 
-                        // Absolute certainly we don't want to do anything further with this session.
-                        SetSACL(session, "10");
+                        // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                        SetSACL(session, "5");
                         SetSTCL(session, "10");
-                        SetSRSCL(session, "10");
+                        SetSRSCL(session, "5");
                     }
                     /////////////////////////////
                     //
@@ -2589,7 +2698,7 @@ namespace Office365FiddlerInspector
                     {
                         this.session["ui-backcolor"] = HTMLColourRed;
                         this.session["ui-color"] = "black";
-                        this.session["X-SessionType"] = "!INTERNET BLOCKED!";
+                        this.session["X-SessionType"] = "***INTERNET BLOCKED***";
 
                         this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 504 Gateway Timeout -- Internet Access Blocked</span></b>";
                         this.session["X-ResponseComments"] = "Detected the keywords 'internet' and 'access' and 'blocked'. Potentially the computer this trace was collected "
@@ -2598,10 +2707,10 @@ namespace Office365FiddlerInspector
 
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + "  HTTP 504 Gateway Timeout -- Internet Access Blocked.");
 
-                        // Absolute certainly we don't want to do anything further with this session.
-                        SetSACL(session, "10");
+                        // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
+                        SetSACL(session, "5");
                         SetSTCL(session, "10");
-                        SetSRSCL(session, "10");
+                        SetSRSCL(session, "5");
                     }
 
                     /////////////////////////////
@@ -3713,17 +3822,9 @@ namespace Office365FiddlerInspector
 
             this.session = session;
 
-            // Set process name, split and exclude port used.
-            if (this.session.LocalProcess != String.Empty) {
-                string[] ProcessName = this.session.LocalProcess.Split(':');
-                this.session["X-ProcessName"] = ProcessName[0];
-            }
-            // No local process to split.
-            else
-            {
-                this.session["X-ProcessName"] = "Remote Capture";
-            }
+            SetProcess(session);
 
+            // Logic check so we don't walk through the SAML Parser on every session.
             if (this.session.oRequest["Authorization"].Contains("Bearer") || this.session.oRequest["Authorization"].Contains("Basic")
                 || this.session.uriContains("adfs/ls"))
             {
@@ -3746,7 +3847,6 @@ namespace Office365FiddlerInspector
                 SetSACL(session, "10");
 
                 return;
-
             }
 
             #region SetAuthenticationSAMLParser
@@ -4210,6 +4310,7 @@ namespace Office365FiddlerInspector
         }
 
         // Functions to set session confidence levels.
+        #region SessionConfidenceFunctions
 
         // Get Session Authentication Confidence Level.
         public void GetSACL(Session session)
@@ -4264,5 +4365,6 @@ namespace Office365FiddlerInspector
         {
             this.session["X-SRSCL"] = SRSCL;
         }
+        #endregion
     }
 }
