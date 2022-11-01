@@ -8,7 +8,7 @@ namespace Office365FiddlerInspector
     public class SessionProcessor : ActivationService
     {
         // Initialize code section, changes infrequently.
-        #region StaticCodeInitialize
+        #region Initialize
 
         // Colour codes for sessions. Softer tones, easier on the eye than standard red, orange and green.
         string HTMLColourBlue = "#81BEF7";
@@ -35,17 +35,18 @@ namespace Office365FiddlerInspector
 
         // Session Authentication Confidence Level.
         private int iSACL;
+
         // Session Type Confidence Level.
         private int iSTCL;
+
         // Session Response Server Confidence Level.
         private int iSRSCL;
 
-        // Low: Session classification has low confidence and/or Session Type column is not set.
-        private int iLow = 0;
-        // Mid: Session classification has some confidence, but overriding Session Type function should be run just in case.
-        private int iMid = 5;
-        // High: Session classification has high level of confidence, session type is set, and any overriding functions should not be run.
-        private int iHigh = 10;
+        // How are session classifications used?
+        // Low - 0 : Session classification has low confidence, any and all subsequent functions should be run to
+        // further attempt to classify the session.
+        // Mid - 5 : Session classification has some confidence, but overriding functions should be run just in case.
+        // High - 10 : Session classification has high level of confidence and any overriding functions should not be run.
 
         public SessionProcessor() {}
 
@@ -156,10 +157,11 @@ namespace Office365FiddlerInspector
             FiddlerApplication.UI.lvSessions.EndUpdate();
             #endregion
         }
-
+        #endregion
 
         public void OnPeekAtResponseHeaders(Session session)
         {
+            #region PeekAtResponseHeaders
             /////////////////////////////
             ///
             // *** START HERE***
@@ -249,9 +251,8 @@ namespace Office365FiddlerInspector
             {
                 Instance.SetLongRunningSessions(session);
             }
+            #endregion
         }
-
-        #endregion
 
         // Function containing broad logic checks on sessions regardless of response code.
         public void BroadLogicChecks (Session session)
@@ -327,56 +328,12 @@ namespace Office365FiddlerInspector
                     // This can happen when live tracing traffic. The request/responses cannot be read fast enough to get accurate results.
                 }
 
+                // 11/1/2022 -- There was some old code accompanying this comment, leaving this as it might be useful information for the future.
+
                 // Trying to check session response body for a string value using !this.session.bHasResponse does not impact performance, but is not reliable.
                 // Using this.session.GetResponseBodyAsString().Length == 0 kills performance. Fiddler wouldn't even load with this code in place.
                 // Ideally looking to do: if (this.session.utilFindInResponse("CONNECT tunnel, through which encrypted HTTPS traffic flows", false) > 1)
                 // Only works reliably when loading a SAZ file and request/response data is immediately available to do logic checks against.
-
-                // Different code paths based on whether the session has been loaded from a SAZ file or not.
-
-                // If this session was loaded from a SAZ file, check it for usable data in the response body.
-                // If not usable data is found, mark it up and return. No further processing needed.
-                /*
-                if (this.session.isFlagSet(SessionFlags.LoadedFromSAZ))
-                {
-                    if (this.session.utilFindInResponse("CONNECT tunnel, through which encrypted HTTPS traffic flows", false) > 1)
-                    {
-                        this.session["ui-backcolor"] = HTMLColourOrange;
-                        this.session["ui-color"] = "black";
-
-                        this.session["X-SessionType"] = "Connect Tunnel" + TLS;
-
-                        this.session["X-ResponseAlert"] = "Connect Tunnel";
-                        this.session["X-ResponseComments"] = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
-                            + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
-                            + "<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>";
-
-                        FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " (LoadSaz true) has connect tunnel in response.");
-                    }
-                }
-                */
-                // Otherwise this is a live data collection.
-                // Don't bother trying to check the response body, it isn't reliable (notes above).
-                // Mark it up anyway. In all likelihood code below in overrides will alter the session headers to replace this data.
-                /*
-                else
-                {
-                    this.session["ui-backcolor"] = HTMLColourOrange;
-                    this.session["ui-color"] = "black";
-
-                    this.session["X-SessionType"] = "Connect Tunnel: " + TLS;
-
-                    this.session["X-ResponseAlert"] = "Connect Tunnel";
-                    this.session["X-ResponseComments"] = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
-                        + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
-                        + "<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>";
-
-                    FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " is a connect tunnel.");
-                }
-                */
-
-                // if (this.session.isFlagSet(SessionFlags.LoadedFromSAZ)) also seems unreliable, unnecessarily complex and no longer needed since logic
-                // only plays when sessions are loaded from SAZ file.
 
                 this.session["ui-backcolor"] = HTMLColourOrange;
                 this.session["ui-color"] = "black";
@@ -385,7 +342,6 @@ namespace Office365FiddlerInspector
                 this.session["X-ResponseComments"] = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
                     + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
                     + "<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>";
-
 
                 switch (this.session.responseCode)
                 {
@@ -450,6 +406,256 @@ namespace Office365FiddlerInspector
                 return;
             }
 
+            #endregion
+        }
+
+        // Function to calculate session age on Inspector.
+        public void CalculateSessionAge(Session session)
+        {
+            #region CalculateSessionAge
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running CalculateSessionAge.");
+
+            String TimeSpanDaysText;
+            String TimeSpanHoursText;
+            String TimeSpanMinutesText;
+
+            DateTime SessionDateTime = this.session.Timers.ClientBeginRequest;
+            DateTime DateTimeNow = DateTime.Now;
+            TimeSpan CalcDataAge = DateTimeNow - SessionDateTime;
+            int TimeSpanDays = CalcDataAge.Days;
+            int TimeSpanHours = CalcDataAge.Hours;
+            int TimeSpanMinutes = CalcDataAge.Minutes;
+
+            if (TimeSpanDays == 1)
+            {
+                TimeSpanDaysText = TimeSpanDays + " day, ";
+            }
+            else
+            {
+                TimeSpanDaysText = TimeSpanDays + " days, ";
+            }
+
+            if (TimeSpanHours == 1)
+            {
+                TimeSpanHoursText = TimeSpanHours + " hour, ";
+            }
+            else
+            {
+                TimeSpanHoursText = TimeSpanHours + " hours, ";
+            }
+
+            if (TimeSpanMinutes == 1)
+            {
+                TimeSpanMinutesText = TimeSpanMinutes + " minute ago.";
+            }
+            else
+            {
+                TimeSpanMinutesText = TimeSpanMinutes + " minutes ago.";
+            }
+
+            String DataAge = TimeSpanDaysText + TimeSpanHoursText + TimeSpanMinutesText;
+
+            this.session["X-DataCollected"] = SessionDateTime.ToString("dddd, MMMM dd, yyyy h:mm tt");
+
+            if (TimeSpanDays <= 7)
+            {
+                this.session["X-DataAge"] = $"<b><span style='color:green'>{DataAge}</span></b>";
+
+                this.session["X-CalculatedSessionAge"] = "<p>Session collected within 7 days, data freshness is good. Best case scenario for correlating this data to backend server logs.</p>";
+            }
+            else if (TimeSpanDays > 7 && TimeSpanDays < 14)
+            {
+                this.session["X-DataAge"] = $"<b><span style='color:orange'>{DataAge}</span></b>";
+
+                this.session["X-CalculatedSessionAge"] = "<p>Session collected within 14 days, data freshness is good, <b><span style='color:orange'>but not ideal</span></b>. "
+                    + "Depending on the backend system, <b><span style='color:orange'>correlating this data to server logs might be possible</span></b>.</p>";
+            }
+            else if (TimeSpanDays >= 14 && TimeSpanDays < 30)
+            {
+                this.session["X-DataAge"] = $"<b><span style='color:orange'>{DataAge}</span></b>";
+
+                this.session["X-CalculatedSessionAge"] = "<p><b><span style='color:red'>Session collected between 14 and 30 days ago</span></b>. "
+                    + "Correlating with any backend server logs is <b><span style='color:red'>likely impossible</span></b>. Many systems don't keep logs this long.</p>";
+            }
+            else
+            {
+                this.session["X-DataAge"] = $"<b><span style='color:red'>{DataAge}</span></b>";
+
+                this.session["X-CalculatedSessionAge"] = "<p><b><span style='color:red'>Session collected more than 30 days ago</span></b>. "
+                    + "Correlating with any backend server logs is <b><span style='color:red'>very likely impossible</span></b>. Many systems don't keep logs this long.</p>";
+            }
+            #endregion
+        }
+
+        // Function to set Server Think Time and Transit Time for use within Inspector.
+        public void SetServerThinkTimeTransitTime(Session session)
+        {
+            #region ServerThinkTimeTransitTime
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetServerThinkTimeTransitTime.");
+
+            // ServerGotRequest, ServerBeginResponse or ServerDoneResponse can be blank. If so do not try to calculate and output 'Server Think Time' or 'Transmit Time', we end up with a hideously large number.
+            if (this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff") != "0:00:00.000" &&
+                this.session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff") != "0:00:00.000" &&
+                this.session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
+            {
+
+                double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
+                double ServerSeconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalSeconds);
+
+                // transit time = elapsed time - server think time.
+
+                double ElapsedMilliseconds = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds);
+
+                double dTransitTimeMilliseconds = ElapsedMilliseconds - ServerMilliseconds;
+                if (dTransitTimeMilliseconds < 0)
+                {
+                    dTransitTimeMilliseconds = 0;
+                }
+
+                int iTransitTimeSeconds = (int)Math.Round(dTransitTimeMilliseconds / 1000);
+
+                // If 1/10th of the session elapsed time is more than the server think time, network roundtrip loses.
+                if (ElapsedMilliseconds / 10 > ServerMilliseconds && ElapsedMilliseconds > Preferences.GetSlowRunningSessionThreshold())
+                {
+                    this.session["X-SessionTimersDescription"] = "<p>The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.</p>" +
+                        "<p>If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.</p>" +
+                        "<p>Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.<p>";
+
+
+
+                    // Highlight server think time in green.
+                    if (ServerMilliseconds < 1000)
+                    {
+                        this.session["X-ServerThinkTime"] = $"<b><span style='color:green'>{ServerMilliseconds}ms.</span></b>";
+                    }
+                    else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
+                    {
+                        this.session["X-ServerThinkTime"] = $"<b><span style='color:green'>{ServerSeconds} second ({ServerMilliseconds}ms).</span></b>";
+                    }
+                    else
+                    {
+                        this.session["X-ServerThinkTime"] = $"<b><span style='color:green'>{ServerSeconds} seconds ({ServerMilliseconds}ms).</span></b>";
+                    }
+
+                    // Highlight transit time in red.
+                    if (dTransitTimeMilliseconds < 1000)
+                    {
+                        this.session["X-TransitTime"] = $"<b><span style='color:red'>{dTransitTimeMilliseconds}ms.</span></b>";
+                    }
+                    else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
+                    {
+                        this.session["X-TransitTime"] = $"<b><span style='color:red'>{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms).</span></b>";
+                    }
+                    else
+                    {
+                        this.session["X-TransitTime"] = $"<b><span style='color:red'>{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms).</span></b>";
+                    }
+                }
+                else
+                {
+                    if (ServerMilliseconds < 1000)
+                    {
+                        this.session["X-ServerThinkTime"] = $"{ServerMilliseconds}ms";
+                    }
+                    else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
+                    {
+                        this.session["X-ServerThinkTime"] = $"{ServerSeconds} second ({ServerMilliseconds}ms).";
+                    }
+                    else
+                    {
+                        this.session["X-ServerThinkTime"] = $"{ServerSeconds} seconds ({ServerMilliseconds}ms).";
+                    }
+
+                    if (dTransitTimeMilliseconds < 1000)
+                    {
+                        this.session["X-TransitTime"] = $"{dTransitTimeMilliseconds}ms";
+                    }
+                    else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
+                    {
+                        this.session["X-TransitTime"] = $"{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms).";
+                    }
+                    else
+                    {
+                        this.session["X-TransitTime"] = $"{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms).";
+                    }
+                }
+            }
+            else
+            {
+                this.session["X-ServerThinkTime"] = "Insufficient data";
+                this.session["X-TransitTime"] = "Insufficient data";
+            }
+            #endregion
+        }
+
+        // Function where Elapsed Time column data is populated.
+        public void SetElapsedTime(Session session)
+        {
+            #region ElapsedTime
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetElapsedTime.");
+
+            // Populate the ElapsedTime column.
+            if (session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") != "0:00:00.000" && session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
+            {
+                double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds);
+
+                session["X-ElapsedTime"] = Milliseconds + "ms";
+            }
+            else
+            {
+                session["X-ElapsedTime"] = "No Data";
+            }
+            #endregion
+        }
+
+        // Function to set the Elapsed Time for the inspector. HTML mark up.
+        public void SetInspectorElapsedTime(Session session)
+        {
+            #region InspectorElapsedTime
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetInspectorElapsedTime.");
+
+            // ClientDoneResponse can be blank. If so do not try to calculate and output Elapsed Time, we end up with a hideously large number.
+            if (this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
+            {
+                double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
+                double ClientSeconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalSeconds);
+
+                // If the roundtrip time is less than 1 second show the result in milliseconds.
+                if (ClientMilliseconds == 0)
+                {
+                    this.session["X-InspectorElapsedTime"] = $"{ClientMilliseconds}ms";
+                }
+                else if (ClientMilliseconds < 1000)
+                {
+                    this.session["X-InspectorElapsedTime"] = $"{ClientMilliseconds}ms";
+                }
+                // If the roundtrip is over warning and under slow running thresholds; orange.
+                else if (ClientMilliseconds > Preferences.GetWarningSessionTimeThreshold() && ClientMilliseconds < Preferences.GetSlowRunningSessionThreshold())
+                {
+                    this.session["X-InspectorElapsedTime"] = $"<b><span style='color:orange'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>";
+                }
+                // If roundtrip is over slow running threshold; red.
+                else if (ClientMilliseconds > Preferences.GetSlowRunningSessionThreshold())
+                {
+                    this.session["X-InspectorElapsedTime"] = $"<b><span style='color:red'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>";
+                }
+                // If the roundtrip time is more than 1 second show the result in seconds.
+                else
+                {
+                    if (ClientSeconds == 1)
+                    {
+                        this.session["X-InspectorElapsedTime"] = $"{ClientSeconds} second({ClientMilliseconds}ms).";
+                    }
+                    else
+                    {
+                        this.session["X-InspectorElapsedTime"] = $"{ClientSeconds} seconds ({ClientMilliseconds}ms).";
+                    }
+                }
+            }
+            else
+            {
+                this.session["X-InspectorElapsedTime"] = "Insufficient data";
+            }
             #endregion
         }
 
@@ -1516,6 +1722,8 @@ namespace Office365FiddlerInspector
                         SetSACL(session, "10");
                         SetSTCL(session, "10");
                         SetSRSCL(session, "10");
+
+                        return;
                     }
                     else
                     {
@@ -2457,6 +2665,8 @@ namespace Office365FiddlerInspector
                         SetSACL(session, "10");
                         SetSTCL(session, "10");
                         SetSRSCL(session, "10");
+
+                        return;
                     }
 
                     /////////////////////////////
@@ -2507,6 +2717,8 @@ namespace Office365FiddlerInspector
                         SetSACL(session, "10");
                         SetSTCL(session, "10");
                         SetSRSCL(session, "10");
+
+                        return;
                     }
 
                     /////////////////////////////
@@ -2549,6 +2761,8 @@ namespace Office365FiddlerInspector
                         SetSACL(session, "10");
                         SetSTCL(session, "10");
                         SetSRSCL(session, "10");
+
+                        return;
                     }
 
                     /////////////////////////////
@@ -3275,547 +3489,10 @@ namespace Office365FiddlerInspector
             }
         }
 
-        // Function where Elapsed Time column data is populated.
-        public void SetElapsedTime(Session session)
-        {
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetElapsedTime.");
-
-            #region ElapsedTimeColumn
-            // Populate the ElapsedTime column.
-            if (session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") != "0:00:00.000" && session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
-            {
-                double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds);
-
-                session["X-ElapsedTime"] = Milliseconds + "ms";
-            }
-            else
-            {
-                session["X-ElapsedTime"] = "No Data";
-            }
-            #endregion
-        }
-
-        // Function to set the Elapsed Time for the inspector. HTML mark up.
-        public void SetInspectorElapsedTime(Session session)
-        {
-            #region InspectorElapsedTime
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetInspectorElapsedTime.");
-
-            // ClientDoneResponse can be blank. If so do not try to calculate and output Elapsed Time, we end up with a hideously large number.
-            if (this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
-            {
-                double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
-                double ClientSeconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalSeconds);
-
-                // If the roundtrip time is less than 1 second show the result in milliseconds.
-                if (ClientMilliseconds == 0)
-                {
-                    this.session["X-InspectorElapsedTime"] = $"{ClientMilliseconds}ms";
-                }
-                else if (ClientMilliseconds < 1000)
-                {
-                    this.session["X-InspectorElapsedTime"] = $"{ClientMilliseconds}ms";
-                }
-                // If the roundtrip is over warning and under slow running thresholds; orange.
-                else if (ClientMilliseconds > Preferences.GetWarningSessionTimeThreshold() && ClientMilliseconds < Preferences.GetSlowRunningSessionThreshold())
-                {
-                    this.session["X-InspectorElapsedTime"] = $"<b><span style='color:orange'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>";
-                }
-                // If roundtrip is over slow running threshold; red.
-                else if (ClientMilliseconds > Preferences.GetSlowRunningSessionThreshold())
-                {
-                    this.session["X-InspectorElapsedTime"] = $"<b><span style='color:red'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>";
-                }
-                // If the roundtrip time is more than 1 second show the result in seconds.
-                else
-                {
-                    if (ClientSeconds == 1)
-                    {
-                        this.session["X-InspectorElapsedTime"] = $"{ClientSeconds} second({ClientMilliseconds}ms).";
-                    }
-                    else
-                    {
-                        this.session["X-InspectorElapsedTime"] = $"{ClientSeconds} seconds ({ClientMilliseconds}ms).";
-                    }
-                }
-            }
-            else
-            {
-                this.session["X-InspectorElapsedTime"] = "Insufficient data";
-            }
-            #endregion
-        }
-
-        // Function to set Server Think Time and Transit Time for use within Inspector.
-        public void SetServerThinkTimeTransitTime(Session session)
-        {
-            #region ServerThinkTimeTransitTime
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetServerThinkTimeTransitTime.");
-
-            // ServerGotRequest, ServerBeginResponse or ServerDoneResponse can be blank. If so do not try to calculate and output 'Server Think Time' or 'Transmit Time', we end up with a hideously large number.
-            if (this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff") != "0:00:00.000" &&
-                this.session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff") != "0:00:00.000" &&
-                this.session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
-            {
-
-                double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
-                double ServerSeconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalSeconds);
-
-                // transit time = elapsed time - server think time.
-
-                double ElapsedMilliseconds = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds);
-
-                double dTransitTimeMilliseconds = ElapsedMilliseconds - ServerMilliseconds;
-                if (dTransitTimeMilliseconds < 0 )
-                {
-                    dTransitTimeMilliseconds = 0;
-                }
-
-                int iTransitTimeSeconds = (int)Math.Round(dTransitTimeMilliseconds / 1000);
-
-                // If 1/10th of the session elapsed time is more than the server think time, network roundtrip loses.
-                if (ElapsedMilliseconds / 10 > ServerMilliseconds && ElapsedMilliseconds > Preferences.GetSlowRunningSessionThreshold())
-                {
-                    this.session["X-SessionTimersDescription"] = "<p>The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.</p>" +
-                        "<p>If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.</p>" +
-                        "<p>Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.<p>";
-                    
-                    
-                    
-                    // Highlight server think time in green.
-                    if (ServerMilliseconds < 1000)
-                    {
-                        this.session["X-ServerThinkTime"] = $"<b><span style='color:green'>{ServerMilliseconds}ms.</span></b>";
-                    }
-                    else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
-                    {
-                        this.session["X-ServerThinkTime"] = $"<b><span style='color:green'>{ServerSeconds} second ({ServerMilliseconds}ms).</span></b>";
-                    }
-                    else
-                    {
-                        this.session["X-ServerThinkTime"] = $"<b><span style='color:green'>{ServerSeconds} seconds ({ServerMilliseconds}ms).</span></b>";
-                    }
-                    
-                    // Highlight transit time in red.
-                    if (dTransitTimeMilliseconds < 1000)
-                    {
-                        this.session["X-TransitTime"] = $"<b><span style='color:red'>{dTransitTimeMilliseconds}ms.</span></b>";
-                    }
-                    else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
-                    {
-                        this.session["X-TransitTime"] = $"<b><span style='color:red'>{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms).</span></b>";
-                    }
-                    else
-                    {
-                        this.session["X-TransitTime"] = $"<b><span style='color:red'>{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms).</span></b>";
-                    }
-                }
-                else
-                {
-                    if (ServerMilliseconds < 1000)
-                    {
-                        this.session["X-ServerThinkTime"] = $"{ServerMilliseconds}ms";
-                    }
-                    else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
-                    {
-                        this.session["X-ServerThinkTime"] = $"{ServerSeconds} second ({ServerMilliseconds}ms).";
-                    }
-                    else
-                    {
-                        this.session["X-ServerThinkTime"] = $"{ServerSeconds} seconds ({ServerMilliseconds}ms).";
-                    }
-
-                    if (dTransitTimeMilliseconds < 1000)
-                    {
-                        this.session["X-TransitTime"] = $"{dTransitTimeMilliseconds}ms";
-                    }
-                    else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
-                    {
-                        this.session["X-TransitTime"] = $"{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms).";
-                    }
-                    else
-                    {
-                        this.session["X-TransitTime"] = $"{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms).";
-                    }
-                }
-            }
-            else
-            {
-                this.session["X-ServerThinkTime"] = "Insufficient data";
-                this.session["X-TransitTime"] = "Insufficient data";
-            }
-            #endregion
-        }
-
-        // Function where the Response Server column is populated.
-        public void SetResponseServer(Session session)
-        {
-            #region ResponseServer
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetResponseServer.");
-
-            this.session = session;
-
-            // Populate Response Server on session in order of preference from common to obsure.
-
-            // If the response server header is not null or blank then populate it into the response server value.
-            if ((this.session.oResponse["Server"] != null) && (this.session.oResponse["Server"] != ""))
-            {
-                this.session["X-ResponseServer"] = this.session.oResponse["Server"];
-                SetSRSCL(session, "10");
-            }
-            // Else if the reponnse Host header is not null or blank then populate it into the response server value
-            // Some traffic identifies a host rather than a response server.
-            else if ((this.session.oResponse["Host"] != null && (this.session.oResponse["Host"] != "")))
-            {
-                this.session["X-ResponseServer"] = "Host: " + this.session.oResponse["Host"];
-                SetSRSCL(session, "10");
-            }
-            // Else if the response PoweredBy header is not null or blank then populate it into the response server value.
-            // Some Office 365 servers respond as X-Powered-By ASP.NET.
-            else if ((this.session.oResponse["X-Powered-By"] != null) && (this.session.oResponse["X-Powered-By"] != ""))
-            {
-                this.session["X-ResponseServer"] = "X-Powered-By: " + this.session.oResponse["X-Powered-By"];
-                SetSRSCL(session, "10");
-            }
-            // Else if the response X-Served-By header is not null or blank then populate it into the response server value.
-            else if ((this.session.oResponse["X-Served-By"] != null && (this.session.oResponse["X-Served-By"] != "")))
-            {
-                this.session["X-ResponseServer"] = "X-Served-By: " + this.session.oResponse["X-Served-By"];
-                SetSRSCL(session, "10");
-            }
-            // Else if the response X-Served-By header is not null or blank then populate it into the response server value.
-            else if ((this.session.oResponse["X-Server-Name"] != null && (this.session.oResponse["X-Server-Name"] != "")))
-            {
-                this.session["X-ResponseServer"] = "X-Served-Name: " + this.session.oResponse["X-Server-Name"];
-                SetSRSCL(session, "10");
-            }
-            else if ((this.session.isTunnel))
-            {
-                this.session["X-ResponseServer"] = this.session["X-SessionType"];
-                SetSRSCL(session, "10");
-            }
-            #endregion
-        }
-
-        // Function to calculate session age on Inspector.
-        public void CalculateSessionAge(Session session)
-        {
-            #region CalculateSessionAge
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running CalculateSessionAge.");
-
-            String TimeSpanDaysText;
-            String TimeSpanHoursText;
-            String TimeSpanMinutesText;
-
-            DateTime SessionDateTime = this.session.Timers.ClientBeginRequest;
-            DateTime DateTimeNow = DateTime.Now;
-            TimeSpan CalcDataAge = DateTimeNow - SessionDateTime;
-            int TimeSpanDays = CalcDataAge.Days;
-            int TimeSpanHours = CalcDataAge.Hours;
-            int TimeSpanMinutes = CalcDataAge.Minutes;
-
-            if (TimeSpanDays == 1)
-            {
-                TimeSpanDaysText = TimeSpanDays + " day, ";
-            }
-            else
-            {
-                TimeSpanDaysText = TimeSpanDays + " days, ";
-            }
-
-            if (TimeSpanHours == 1)
-            {
-                TimeSpanHoursText = TimeSpanHours + " hour, ";
-            }
-            else
-            {
-                TimeSpanHoursText = TimeSpanHours + " hours, ";
-            }
-
-            if (TimeSpanMinutes == 1)
-            {
-                TimeSpanMinutesText = TimeSpanMinutes + " minute ago.";
-            }
-            else
-            {
-                TimeSpanMinutesText = TimeSpanMinutes + " minutes ago.";
-            }
-
-            String DataAge = TimeSpanDaysText + TimeSpanHoursText + TimeSpanMinutesText;
-
-            this.session["X-DataCollected"] = SessionDateTime.ToString("dddd, MMMM dd, yyyy h:mm tt");
-
-            if (TimeSpanDays <= 7)
-            {
-                this.session["X-DataAge"] = $"<b><span style='color:green'>{DataAge}</span></b>";
-
-                this.session["X-CalculatedSessionAge"] = "<p>Session collected within 7 days, data freshness is good. Best case scenario for correlating this data to backend server logs.</p>";
-            }
-            else if (TimeSpanDays > 7 && TimeSpanDays < 14)
-            {
-                this.session["X-DataAge"] = $"<b><span style='color:orange'>{DataAge}</span></b>";
-
-                this.session["X-CalculatedSessionAge"] = "<p>Session collected within 14 days, data freshness is good, <b><span style='color:orange'>but not ideal</span></b>. "
-                    + "Depending on the backend system, <b><span style='color:orange'>correlating this data to server logs might be possible</span></b>.</p>";
-            }
-            else if (TimeSpanDays >= 14 && TimeSpanDays < 30)
-            {
-                this.session["X-DataAge"] = $"<b><span style='color:orange'>{DataAge}</span></b>";
-
-                this.session["X-CalculatedSessionAge"] = "<p><b><span style='color:red'>Session collected between 14 and 30 days ago</span></b>. "
-                    + "Correlating with any backend server logs is <b><span style='color:red'>likely impossible</span></b>. Many systems don't keep logs this long.</p>";
-            }
-            else
-            {
-                this.session["X-DataAge"] = $"<b><span style='color:red'>{DataAge}</span></b>";
-
-                this.session["X-CalculatedSessionAge"] = "<p><b><span style='color:red'>Session collected more than 30 days ago</span></b>. "
-                    + "Correlating with any backend server logs is <b><span style='color:red'>very likely impossible</span></b>. Many systems don't keep logs this long.</p>";
-            }
-            #endregion
-        }
-
-        // Function to set Session Type column data.
-        public void SetSessionType(Session session)
-        {
-            #region SetSessionType
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetSessionTypeColumn.");
-
-            // Return if SessionType already has a value.
-            // Quite often ResponseCodeLogic has already stamped a more specific SessionType value.
-            if (this.session["X-SessionType"] != null)
-            {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " SessionType already set return.");
-                return;
-            }
-
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetSessionType");
-
-            /////////////////////////////
-            ///
-            /// Set Session Type
-            /// 
-            if (this.session.fullUrl.Contains("WSSecurity"))
-            {
-                this.session["X-SessionType"] = "Free/Busy";
-                SetSTCL(session, "10");
-            }
-            else if (this.session.fullUrl.Contains("GetUserAvailability"))
-            {
-                this.session["X-SessionType"] = "Free/Busy";
-                SetSTCL(session, "10");
-            }
-            else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1)
-            {
-                this.session["X-SessionType"] = "Free/Busy";
-                SetSTCL(session, "10");
-            }
-            // EWS.
-            else if (this.session.fullUrl.Contains("outlook.office365.com/EWS")) { 
-                this.session["X-SessionType"] = "Exchange Web Services";
-                SetSTCL(session, "10");
-            }
-            // Generic Office 365.
-            else if (this.session.fullUrl.Contains(".onmicrosoft.com") && (!(this.session.hostname.Contains("live.com")))) { 
-                this.session["X-SessionType"] = "Office 365 Authentication";
-                SetSTCL(session, "10");
-            }
-            else if (this.session.fullUrl.Contains("outlook.office365.com")) { 
-                this.session["X-SessionType"] = "Office 365";
-                SetSTCL(session, "10");
-            }
-            else if (this.session.fullUrl.Contains("outlook.office.com")) { 
-                this.session["X-SessionType"] = "Office 365";
-                SetSTCL(session, "10");
-            }
-            // Office 365 Authentication.
-            else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com")) { 
-                this.session["X-SessionType"] = "Office 365 Authentication";
-                SetSTCL(session, "10");
-            }
-            // ADFS Authentication.
-            else if (this.session.fullUrl.Contains("adfs/services/trust/mex")) { 
-                this.session["X-SessionType"] = "ADFS Authentication";
-                SetSTCL(session, "10");
-            }
-            // Undetermined, but related to local process.
-            else if (this.session.LocalProcess.Contains("outlook")) { 
-                this.session["X-SessionType"] = "Outlook";
-                SetSTCL(session, "10");
-            }
-            else if (this.session.LocalProcess.Contains("iexplore")) { 
-                this.session["X-SessionType"] = "Internet Explorer";
-                SetSTCL(session, "10");
-            }
-            else if (this.session.LocalProcess.Contains("chrome")) { 
-                this.session["X-SessionType"] = "Chrome";
-                SetSTCL(session, "10");
-            }
-            else if (this.session.LocalProcess.Contains("firefox")) { 
-                this.session["X-SessionType"] = "Firefox";
-                SetSTCL(session, "10");
-            }
-            else if (this.session.LocalProcess.Contains("edge"))
-            {
-                this.session["X-SessionType"] = "Edge";
-                SetSTCL(session, "10");
-            }
-            else if (this.session.LocalProcess.Contains("safari"))
-            {
-                this.session["X-SessionType"] = "Safari";
-                SetSTCL(session, "10");
-            }
-            // Everything else.
-            else
-            {
-                this.session["X-SessionType"] = "Not Classified";
-                // Commented out setting colours on sessions not recognised.
-                // Find in Fiddler will highlight sessions as yellow, so this would make reviewing find results difficult.
-                //this.session["ui-backcolor"] = "yellow";
-                //this.session["ui-color"] = "black";
-
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Session not classified in extension.");
-
-                this.session["X-ResponseAlert"] = "Unclassified";
-                this.session["X-ResponseComments"] = "The Office 365 Fiddler Extension does not yet have a way to classify this session."
-                    + "<p>If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: "
-                    + "<a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'>https://github.com/jprknight/Office365FiddlerExtension</a>.</p>";
-                SetSTCL(session, "5");
-            }
-
-            /////////////////////////////
-            //
-            // Session Type overrides
-            //
-            // If the local process is null or blank, then we are analysing traffic from a remote client such as a mobile device.
-            // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
-
-            if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
-            {
-                // Traffic has a null or blank local process value.
-                SetProcess(session);
-                SetSTCL(session, "10");
-            }
-            else
-            {
-                // If the traffic is not related to any of the below processes call it out.
-                // So if for example lync.exe is the process write that to the Session Type column.
-                if (!(this.session.LocalProcess.Contains("outlook") ||
-                    this.session.LocalProcess.Contains("searchprotocolhost") ||
-                    this.session.LocalProcess.Contains("iexplore") ||
-                    this.session.LocalProcess.Contains("chrome") ||
-                    this.session.LocalProcess.Contains("firefox") ||
-                    this.session.LocalProcess.Contains("edge") ||
-                    this.session.LocalProcess.Contains("safari") ||
-                    this.session.LocalProcess.Contains("w3wp")))
-                {
-                    // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
-                    {
-                        SetProcess(session);
-                        this.session["X-SessionType"] = this.session["X-ProcessName"];
-                        SetSTCL(session, "10");
-                    }
-                }
-            }
-            #endregion
-        }
-
-        // Function to highlight long running sessions.
-        public void SetLongRunningSessions(Session session)
-        {
-            #region LongRunningSessions
-            // Code section for response code logic overrides (long running sessions).
-
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetLongRunningSessions.");
-
-            double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
-
-            double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
-
-            // Warn on a 2.5 second roundtrip time.
-            if (ClientMilliseconds > Preferences.GetWarningSessionTimeThreshold() && ClientMilliseconds < Preferences.GetSlowRunningSessionThreshold())
-            {
-                if (this.session["X-SessionType"] == null)
-                {
-                    this.session["ui-backcolor"] = HTMLColourOrange;
-                    this.session["ui-color"] = "black";
-
-                    this.session["X-SessionType"] = "Roundtrip Time Warning";
-
-                    this.session["X-ResponseAlert"] = "<b><span style='color:orange'>Roundtrip Time Warning</span></b>";
-                }
-
-                this.session["X-ResponseComments"] += "This session took more than 2.5 seconds to complete. "
-                    + "A small number of sessions completing roundtrip in this timeframe is not necessary sign of an issue.";
-            }
-            // If the overall session time runs longer than 5,000ms or 5 seconds.
-            else if (ClientMilliseconds > Preferences.GetSlowRunningSessionThreshold())
-            {
-                if (this.session["X-SessionType"] == null)
-                {
-                    this.session["ui-backcolor"] = HTMLColourRed;
-                    this.session["ui-color"] = "black";
-
-                    this.session["X-SessionType"] = "Long Running Client Session";
-
-                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>Long Running Client Session</span></b>";
-                }
-
-                this.session["X-ResponseComments"] += "<p><b><span style='color:red'>Long running session found</span></b>. A small number of long running sessions in the < 10 "
-                    + "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue.</p>"
-                    + "<p>If, however, you are troubleshooting an application performance issue, consider the number of sessions which "
-                    + "have this warning. Investigate any proxy device or load balancer in your network, "
-                    + "or any other device sitting between the client computer and access to the application server the data resides on.</p>"
-                    + "<p>Try the divide and conquer approach. What can you remove or bypass from the equation to see if the application then performs "
-                    + "normally?</p>";
-
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Long running client session.");
-            }
-            // If the Office 365 server think time runs longer than 5,000ms or 5 seconds.
-            else if (ServerMilliseconds > Preferences.GetSlowRunningSessionThreshold())
-            {
-                if (this.session["X-SessionType"] == null)
-                {
-                    this.session["ui-backcolor"] = HTMLColourRed;
-                    this.session["ui-color"] = "black";
-
-                    this.session["X-SessionType"] = "Long Running Server Session";
-
-                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>Long Running Server Session</span></b>";
-                }
-
-                this.session["X-ResponseComments"] += "Long running Server session found. A small number of long running sessions in the < 10 "
-                    + "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue."
-                    + "<p>If, however, you are troubleshooting an application performance issue, consider the number of sessions which "
-                    + "have this warning alongany proxy device in your network, "
-                    + "or any other device sitting between the client computer and access to the internet."
-                    + "Try the divide and conquer approach. What can you remove or bypass from the equation to see if the application then performs "
-                    + "normally?</p>";
-
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Long running Office 365 session.");
-            }
-            #endregion
-        }
-
-        public void SetProcess(Session session)
-        {
-            // Set process name, split and exclude port used.
-            if (this.session.LocalProcess != String.Empty)
-            {
-                string[] ProcessName = this.session.LocalProcess.Split(':');
-                this.session["X-ProcessName"] = ProcessName[0];
-            }
-            // No local process to split.
-            else
-            {
-                this.session["X-ProcessName"] = "Remote Capture";
-            }
-        }
-
         // Functions where Authentication column is populated and SAML parser code lives.
         public void SetAuthentication(Session session)
         {
-            
+            #region SetAuthentication
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetAuthentication.");
 
             this.session["X-Office365AuthType"] = "";
@@ -3831,8 +3508,8 @@ namespace Office365FiddlerInspector
                 // Do nothing here, this is a session which is detected to have auth headers.
                 // Let the Auth / SAML parser run through.
             }
-            else 
-            { 
+            else
+            {
                 // 
                 SAMLParserFieldsNoData();
                 // Change which control appears for this session on the Office365 Auth inspector tab.
@@ -3851,275 +3528,275 @@ namespace Office365FiddlerInspector
 
             #region SetAuthenticationSAMLParser
 
-                // Determine if this session contains a SAML response.
-                if (this.session.utilFindInResponse("Issuer=", false) > 1 &&
-                this.session.utilFindInResponse("Attribute AttributeName=", false) > 1 &&
-                this.session.utilFindInResponse("NameIdentifier Format=", false) > 1 &&
-                this.session.utilFindInResponse("Attribute AttributeName=", false) > 1)
+            // Determine if this session contains a SAML response.
+            if (this.session.utilFindInResponse("Issuer=", false) > 1 &&
+            this.session.utilFindInResponse("Attribute AttributeName=", false) > 1 &&
+            this.session.utilFindInResponse("NameIdentifier Format=", false) > 1 &&
+            this.session.utilFindInResponse("Attribute AttributeName=", false) > 1)
+            {
+                this.session["X-Authentication"] = "SAML Request/Response";
+
+                this.session["X-SessionType"] = "SAML Request/Response";
+
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " SAML Request/Response.");
+
+                // wrap all of this in a check to see if the SAML token came back from an ADFS endpoint.
+                // If it didn't we don't have the labs setup to validate how 3rd-party IDPs format things
+                // out for SAML tokens.
+                if (this.session.uriContains("adfs/ls"))
                 {
-                    this.session["X-Authentication"] = "SAML Request/Response";
+                    // Used in session analysis. Needs to be set here to override the unclassified response.
+                    this.session["X-ResponseComments"] = "ADFS SAML response found. See below for SAML response parser.";
 
-                    this.session["X-SessionType"] = "SAML Request/Response";
+                    // Used in Auth column and Office365 Auth inspector tab.
+                    this.session["X-AuthenticationDesc"] = "ADFS SAML response found. See below for SAML response parser.";
 
-                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " SAML Request/Response.");
+                    // Change which control appears for this session on the Office365 Auth inspector tab.
+                    this.session["X-Office365AuthType"] = "SAMLResponseParser";
 
-                    // wrap all of this in a check to see if the SAML token came back from an ADFS endpoint.
-                    // If it didn't we don't have the labs setup to validate how 3rd-party IDPs format things
-                    // out for SAML tokens.
-                    if (this.session.uriContains("adfs/ls"))
+                    // JK 6/30/2021
+                    // All the below logic was build with an ADFS SAML token from a lab environment.
+                    // Discovered the makeup of SAML tokens from other providers do not follow the exact
+                    // same structure.
+                    // Added try catch statements and validation checks on string lengths prior to attempting
+                    // substring operations to prevent running into "Length cannot be less than zero" exceptions.
+
+                    #region Issuer
+
+                    if ((this.session.utilFindInResponse("Issuer=", false) > 1) && (this.session.utilFindInResponse("IssueInstant=", false) > 1))
                     {
-                        // Used in session analysis. Needs to be set here to override the unclassified response.
-                        this.session["X-ResponseComments"] = "ADFS SAML response found. See below for SAML response parser.";
-
-                        // Used in Auth column and Office365 Auth inspector tab.
-                        this.session["X-AuthenticationDesc"] = "ADFS SAML response found. See below for SAML response parser.";
-
-                        // Change which control appears for this session on the Office365 Auth inspector tab.
-                        this.session["X-Office365AuthType"] = "SAMLResponseParser";
-
-                        // JK 6/30/2021
-                        // All the below logic was build with an ADFS SAML token from a lab environment.
-                        // Discovered the makeup of SAML tokens from other providers do not follow the exact
-                        // same structure.
-                        // Added try catch statements and validation checks on string lengths prior to attempting
-                        // substring operations to prevent running into "Length cannot be less than zero" exceptions.
-
-                        #region Issuer
-
-                        if ((this.session.utilFindInResponse("Issuer=", false) > 1) && (this.session.utilFindInResponse("IssueInstant=", false) > 1))
+                        FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML token issuer.");
+                        string Issuer;
+                        try
                         {
-                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML token issuer.");
-                            string Issuer;
-                            try
+                            // Pull issuer data from response.
+                            string IssuerSessionBody = this.session.ToString();
+                            int IssuerStartIndex = IssuerSessionBody.IndexOf("Issuer=");
+                            int IssuerEndIndex = IssuerSessionBody.IndexOf("IssueInstant=");
+                            int IssuerLength = IssuerEndIndex - IssuerStartIndex;
+                            if (IssuerLength > 0)
                             {
-                                // Pull issuer data from response.
-                                string IssuerSessionBody = this.session.ToString();
-                                int IssuerStartIndex = IssuerSessionBody.IndexOf("Issuer=");
-                                int IssuerEndIndex = IssuerSessionBody.IndexOf("IssueInstant=");
-                                int IssuerLength = IssuerEndIndex - IssuerStartIndex;
-                                if (IssuerLength > 0)
-                                {
-                                    Issuer = IssuerSessionBody.Substring(IssuerStartIndex, IssuerLength);
-                                    Issuer = Issuer.Replace("&quot;", "");
-                                    Issuer = Issuer.Replace("Issuer=", "");
-                                }
-                                else
-                                {
-                                    Issuer = "Issuer in SAML token could not be determined.";
-                                }
-
+                                Issuer = IssuerSessionBody.Substring(IssuerStartIndex, IssuerLength);
+                                Issuer = Issuer.Replace("&quot;", "");
+                                Issuer = Issuer.Replace("Issuer=", "");
                             }
-                            catch (Exception e)
+                            else
                             {
-                                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML token issuer could not be determined. {e}");
                                 Issuer = "Issuer in SAML token could not be determined.";
                             }
 
-                            // Populate X flag on session.
-                            this.session["X-Issuer"] = Issuer;
                         }
-                        else
+                        catch (Exception e)
                         {
-                            this.session["X-Issuer"] = "Issuer in SAML token could not be determined.";
+                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML token issuer could not be determined. {e}");
+                            Issuer = "Issuer in SAML token could not be determined.";
                         }
 
-                        #endregion
+                        // Populate X flag on session.
+                        this.session["X-Issuer"] = Issuer;
+                    }
+                    else
+                    {
+                        this.session["X-Issuer"] = "Issuer in SAML token could not be determined.";
+                    }
 
-                        #region SigningCertificate
+                    #endregion
 
-                        // Pull the x509 signing certificate data.
-                        if ((this.session.utilFindInResponse("&lt;X509Certificate>", false) > 1) && (this.session.utilFindInResponse("&lt;/X509Certificate>", false) > 1))
+                    #region SigningCertificate
+
+                    // Pull the x509 signing certificate data.
+                    if ((this.session.utilFindInResponse("&lt;X509Certificate>", false) > 1) && (this.session.utilFindInResponse("&lt;/X509Certificate>", false) > 1))
+                    {
+                        FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML signing certificate.");
+
+                        string x509SigningCertificate;
+                        try
                         {
-                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML signing certificate.");
-
-                            string x509SigningCertificate;
-                            try
+                            string x509SigningCertSessionBody = this.session.ToString();
+                            int x509SigningCertificateStartIndex = x509SigningCertSessionBody.IndexOf("&lt;X509Certificate>") + 20; // 20 to shift to start of the selection.
+                            int x509SigningCertificateEndIndex = x509SigningCertSessionBody.IndexOf("&lt;/X509Certificate>");
+                            int x509SigningCertificateLength = x509SigningCertificateEndIndex - x509SigningCertificateStartIndex;
+                            if (x509SigningCertificateLength > 0)
                             {
-                                string x509SigningCertSessionBody = this.session.ToString();
-                                int x509SigningCertificateStartIndex = x509SigningCertSessionBody.IndexOf("&lt;X509Certificate>") + 20; // 20 to shift to start of the selection.
-                                int x509SigningCertificateEndIndex = x509SigningCertSessionBody.IndexOf("&lt;/X509Certificate>");
-                                int x509SigningCertificateLength = x509SigningCertificateEndIndex - x509SigningCertificateStartIndex;
-                                if (x509SigningCertificateLength > 0)
-                                {
-                                    x509SigningCertificate = x509SigningCertSessionBody.Substring(x509SigningCertificateStartIndex, x509SigningCertificateLength);
-                                }
-                                else
-                                {
-                                    x509SigningCertificate = "SAML signing certificate could not be determined.";
-                                }
-
+                                x509SigningCertificate = x509SigningCertSessionBody.Substring(x509SigningCertificateStartIndex, x509SigningCertificateLength);
                             }
-                            catch (Exception e)
+                            else
                             {
-                                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML signing certificate could not be determined. {e}");
                                 x509SigningCertificate = "SAML signing certificate could not be determined.";
                             }
 
-                            this.session["X-SigningCertificate"] = x509SigningCertificate;
+                        }
+                        catch (Exception e)
+                        {
+                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML signing certificate could not be determined. {e}");
+                            x509SigningCertificate = "SAML signing certificate could not be determined.";
                         }
 
-                        #endregion
+                        this.session["X-SigningCertificate"] = x509SigningCertificate;
+                    }
 
-                        #region AttributeNameUPN
-                        if ((this.session.utilFindInResponse("&lt;saml:Attribute AttributeName=&quot;UPN", false) > 1) &&
-                            (this.session.utilFindInResponse("&lt;/saml:Attribute>", false) > 1))
+                    #endregion
+
+                    #region AttributeNameUPN
+                    if ((this.session.utilFindInResponse("&lt;saml:Attribute AttributeName=&quot;UPN", false) > 1) &&
+                        (this.session.utilFindInResponse("&lt;/saml:Attribute>", false) > 1))
+                    {
+                        FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML AttributeNameUPN.");
+
+                        string AttributeNameUPN;
+                        try
                         {
-                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML AttributeNameUPN.");
-
-                            string AttributeNameUPN;
-                            try
+                            string AttributeNameUPNSessionBody = this.session.ToString();
+                            int AttributeNameUPNStartIndex = AttributeNameUPNSessionBody.IndexOf("&lt;saml:Attribute AttributeName=&quot;UPN");
+                            int AttributeNameUPNEndIndex = AttributeNameUPNSessionBody.IndexOf("&lt;/saml:Attribute>");
+                            int AttributeNameUPNLength = AttributeNameUPNEndIndex - AttributeNameUPNStartIndex;
+                            if (AttributeNameUPNLength > 0)
                             {
-                                string AttributeNameUPNSessionBody = this.session.ToString();
-                                int AttributeNameUPNStartIndex = AttributeNameUPNSessionBody.IndexOf("&lt;saml:Attribute AttributeName=&quot;UPN");
-                                int AttributeNameUPNEndIndex = AttributeNameUPNSessionBody.IndexOf("&lt;/saml:Attribute>");
-                                int AttributeNameUPNLength = AttributeNameUPNEndIndex - AttributeNameUPNStartIndex;
-                                if (AttributeNameUPNLength > 0)
+                                AttributeNameUPN = AttributeNameUPNSessionBody.Substring(AttributeNameUPNStartIndex, AttributeNameUPNLength);
+                                AttributeNameUPN = AttributeNameUPN.Replace("&quot;", "\"");
+                                AttributeNameUPN = AttributeNameUPN.Replace("&lt;", "<");
+                                // Now split the two lines with a new line for easier reading in the user control.
+                                int SplitAttributeNameUPNStartIndex = AttributeNameUPN.IndexOf("<saml:AttributeValue>") + 21;
+
+                                int SplitAttributeNameUPNEndIndex = AttributeNameUPN.IndexOf("</saml:AttributeValue>");
+                                int SplitAttributeNameLength = SplitAttributeNameUPNEndIndex - SplitAttributeNameUPNStartIndex;
+
+                                //string AttributeNameUPNFirstLine = AttributeNameUPN.Substring(0, SplitAttributeNameUPNStartIndex);
+                                //string AttributeNameUPNSecondLine = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex);
+
+                                if (SplitAttributeNameLength > 0)
                                 {
-                                    AttributeNameUPN = AttributeNameUPNSessionBody.Substring(AttributeNameUPNStartIndex, AttributeNameUPNLength);
-                                    AttributeNameUPN = AttributeNameUPN.Replace("&quot;", "\"");
-                                    AttributeNameUPN = AttributeNameUPN.Replace("&lt;", "<");
-                                    // Now split the two lines with a new line for easier reading in the user control.
-                                    int SplitAttributeNameUPNStartIndex = AttributeNameUPN.IndexOf("<saml:AttributeValue>") + 21;
-
-                                    int SplitAttributeNameUPNEndIndex = AttributeNameUPN.IndexOf("</saml:AttributeValue>");
-                                    int SplitAttributeNameLength = SplitAttributeNameUPNEndIndex - SplitAttributeNameUPNStartIndex;
-
-                                    //string AttributeNameUPNFirstLine = AttributeNameUPN.Substring(0, SplitAttributeNameUPNStartIndex);
-                                    //string AttributeNameUPNSecondLine = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex);
-
-                                    if (SplitAttributeNameLength > 0)
-                                    {
-                                        AttributeNameUPN = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex, SplitAttributeNameLength);
-                                    }
-                                    else
-                                    {
-                                        AttributeNameUPN = "SAML AttributeNameUPN could not be determined.";
-                                    }
+                                    AttributeNameUPN = AttributeNameUPN.Substring(SplitAttributeNameUPNStartIndex, SplitAttributeNameLength);
                                 }
                                 else
                                 {
                                     AttributeNameUPN = "SAML AttributeNameUPN could not be determined.";
                                 }
-
                             }
-                            catch (Exception e)
+                            else
                             {
-                                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML AttributeNameUPN could not be determined. {e}");
                                 AttributeNameUPN = "SAML AttributeNameUPN could not be determined.";
                             }
 
-                            // Populate X flag on session.
-                            this.session["X-AttributeNameUPN"] = AttributeNameUPN;
                         }
-                        else
+                        catch (Exception e)
                         {
-                            this.session["X-AttributeNameUPN"] = "Data points not found for AttributeNameUPN";
+                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML AttributeNameUPN could not be determined. {e}");
+                            AttributeNameUPN = "SAML AttributeNameUPN could not be determined.";
                         }
 
-                        #endregion
+                        // Populate X flag on session.
+                        this.session["X-AttributeNameUPN"] = AttributeNameUPN;
+                    }
+                    else
+                    {
+                        this.session["X-AttributeNameUPN"] = "Data points not found for AttributeNameUPN";
+                    }
 
-                        #region NameIdentifierFormat
-                        /////////////////////////////
-                        //
-                        // NameIdentifierFormat.
+                    #endregion
 
-                        if ((this.session.utilFindInResponse("&lt;saml:NameIdentifier Format", false) > 1) &&
-                            (this.session.utilFindInResponse("&lt;saml:SubjectConfirmation>", false) > 1))
+                    #region NameIdentifierFormat
+                    /////////////////////////////
+                    //
+                    // NameIdentifierFormat.
+
+                    if ((this.session.utilFindInResponse("&lt;saml:NameIdentifier Format", false) > 1) &&
+                        (this.session.utilFindInResponse("&lt;saml:SubjectConfirmation>", false) > 1))
+                    {
+                        FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML NameIdentifierFormat.");
+
+                        string NameIdentifierFormat;
+                        try
                         {
-                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML NameIdentifierFormat.");
-
-                            string NameIdentifierFormat;
-                            try
+                            string NameIdentifierFormatSessionBody = this.session.ToString();
+                            int NameIdentifierFormatStartIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:NameIdentifier Format");
+                            int NameIdentifierFormatEndIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:SubjectConfirmation>");
+                            int NameIdentifierFormatLength = NameIdentifierFormatEndIndex - NameIdentifierFormatStartIndex;
+                            if (NameIdentifierFormatLength > 0)
                             {
-                                string NameIdentifierFormatSessionBody = this.session.ToString();
-                                int NameIdentifierFormatStartIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:NameIdentifier Format");
-                                int NameIdentifierFormatEndIndex = NameIdentifierFormatSessionBody.IndexOf("&lt;saml:SubjectConfirmation>");
-                                int NameIdentifierFormatLength = NameIdentifierFormatEndIndex - NameIdentifierFormatStartIndex;
-                                if (NameIdentifierFormatLength > 0)
-                                {
-                                    NameIdentifierFormat = NameIdentifierFormatSessionBody.Substring(NameIdentifierFormatStartIndex, NameIdentifierFormatLength);
-                                    NameIdentifierFormat = NameIdentifierFormat.Replace("&quot;", "\"");
-                                    NameIdentifierFormat = NameIdentifierFormat.Replace("&lt;", "<");
-                                }
-                                else
-                                {
-                                    NameIdentifierFormat = "SAML NameIdentifierFormat could not be determined.";
-                                }
+                                NameIdentifierFormat = NameIdentifierFormatSessionBody.Substring(NameIdentifierFormatStartIndex, NameIdentifierFormatLength);
+                                NameIdentifierFormat = NameIdentifierFormat.Replace("&quot;", "\"");
+                                NameIdentifierFormat = NameIdentifierFormat.Replace("&lt;", "<");
                             }
-                            catch (Exception e)
+                            else
                             {
-                                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML NameIdentifierFormat could not be determined. {e}");
                                 NameIdentifierFormat = "SAML NameIdentifierFormat could not be determined.";
                             }
-
-                            // Populate X flag on session.
-                            this.session["X-NameIdentifierFormat"] = NameIdentifierFormat;
                         }
-                        else
+                        catch (Exception e)
                         {
-                            this.session["X-NameIdentifierFormat"] = "Data points not found for NameIdentifierFormat";
+                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML NameIdentifierFormat could not be determined. {e}");
+                            NameIdentifierFormat = "SAML NameIdentifierFormat could not be determined.";
                         }
 
-                        #endregion
+                        // Populate X flag on session.
+                        this.session["X-NameIdentifierFormat"] = NameIdentifierFormat;
+                    }
+                    else
+                    {
+                        this.session["X-NameIdentifierFormat"] = "Data points not found for NameIdentifierFormat";
+                    }
 
-                        #region AttributeNameImmutableID
-                        if ((this.session.utilFindInResponse("&lt;saml:NameIdentifier Format", false) > 1) &&
-                            (this.session.utilFindInResponse("&lt;saml:SubjectConfirmation>", false) > 1))
+                    #endregion
+
+                    #region AttributeNameImmutableID
+                    if ((this.session.utilFindInResponse("&lt;saml:NameIdentifier Format", false) > 1) &&
+                        (this.session.utilFindInResponse("&lt;saml:SubjectConfirmation>", false) > 1))
+                    {
+                        FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML AttributeNameImmutableID.");
+
+                        string AttributeNameImmutibleID;
+                        try
                         {
-                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML AttributeNameImmutableID.");
+                            string AttributeNameImmutableIDSessionBody = this.session.ToString();
+                            int AttributeNameImmutableIDStartIndex = AttributeNameImmutableIDSessionBody.IndexOf("AttributeName=&quot;ImmutableID");
+                            int AttributeNameImmutibleIDEndIndex = AttributeNameImmutableIDSessionBody.IndexOf("&lt;/saml:AttributeStatement>");
+                            int AttributeNameImmutibleIDLength = AttributeNameImmutibleIDEndIndex - AttributeNameImmutableIDStartIndex;
 
-                            string AttributeNameImmutibleID;
-                            try
+                            if (AttributeNameImmutibleIDLength > 0)
                             {
-                                string AttributeNameImmutableIDSessionBody = this.session.ToString();
-                                int AttributeNameImmutableIDStartIndex = AttributeNameImmutableIDSessionBody.IndexOf("AttributeName=&quot;ImmutableID");
-                                int AttributeNameImmutibleIDEndIndex = AttributeNameImmutableIDSessionBody.IndexOf("&lt;/saml:AttributeStatement>");
-                                int AttributeNameImmutibleIDLength = AttributeNameImmutibleIDEndIndex - AttributeNameImmutableIDStartIndex;
+                                AttributeNameImmutibleID = AttributeNameImmutableIDSessionBody.Substring(AttributeNameImmutableIDStartIndex, AttributeNameImmutibleIDLength);
+                                AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&quot;", "\"");
+                                AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&lt;", "<");
+                                // Now split out response with a newline for easier reading.
+                                int SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("<saml:AttributeValue>") + 21; // Add 21 characters to shift where the newline is placed.
+                                                                                                                                              //string AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
+                                                                                                                                              //string AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
+                                                                                                                                              //AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
+                                                                                                                                              // Second split
+                                int SplitAttributeNameImmutibleIDEndIndex = AttributeNameImmutibleID.IndexOf("</saml:AttributeValue></saml:Attribute>");
+                                int SubstringLength = SplitAttributeNameImmutibleIDEndIndex - SplitAttributeNameImmutibleIDStartIndex;
 
-                                if (AttributeNameImmutibleIDLength > 0)
+                                if (SubstringLength > 0)
                                 {
-                                    AttributeNameImmutibleID = AttributeNameImmutableIDSessionBody.Substring(AttributeNameImmutableIDStartIndex, AttributeNameImmutibleIDLength);
-                                    AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&quot;", "\"");
-                                    AttributeNameImmutibleID = AttributeNameImmutibleID.Replace("&lt;", "<");
-                                    // Now split out response with a newline for easier reading.
-                                    int SplitAttributeNameImmutibleIDStartIndex = AttributeNameImmutibleID.IndexOf("<saml:AttributeValue>") + 21; // Add 21 characters to shift where the newline is placed.
-                                    //string AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
-                                    //string AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
-                                    //AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
-                                    // Second split
-                                    int SplitAttributeNameImmutibleIDEndIndex = AttributeNameImmutibleID.IndexOf("</saml:AttributeValue></saml:Attribute>");
-                                    int SubstringLength = SplitAttributeNameImmutibleIDEndIndex - SplitAttributeNameImmutibleIDStartIndex;
-
-                                    if (SubstringLength > 0)
-                                    {
-                                        AttributeNameImmutibleID = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex, SubstringLength);
-                                    }
-                                    else
-                                    {
-                                        AttributeNameImmutibleID = "SAML AttributeNameImmutibleID could not be determined.";
-                                    }
-                                    //AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
-                                    //AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
-                                    //AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
+                                    AttributeNameImmutibleID = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex, SubstringLength);
                                 }
                                 else
                                 {
                                     AttributeNameImmutibleID = "SAML AttributeNameImmutibleID could not be determined.";
                                 }
+                                //AttributeNameImmutibleIDFirstLine = AttributeNameImmutibleID.Substring(0, SplitAttributeNameImmutibleIDStartIndex);
+                                //AttributeNameImmutibleIDSecondLine = AttributeNameImmutibleID.Substring(SplitAttributeNameImmutibleIDStartIndex);
+                                //AttributeNameImmutibleID = AttributeNameImmutibleIDFirstLine + Environment.NewLine + AttributeNameImmutibleIDSecondLine;
                             }
-                            catch (Exception e)
+                            else
                             {
-                                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML AttributeNameImmutibleID could not be determined. {e}");
                                 AttributeNameImmutibleID = "SAML AttributeNameImmutibleID could not be determined.";
                             }
-
-                            // Populate X flag on session.
-                            this.session["X-AttributeNameImmutableID"] = AttributeNameImmutibleID;
                         }
-                        else
+                        catch (Exception e)
                         {
-                            this.session["X-AttributeNameImmutableID"] = "Data points not found for AttributeNameImmutibleID";
+                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SAML AttributeNameImmutibleID could not be determined. {e}");
+                            AttributeNameImmutibleID = "SAML AttributeNameImmutibleID could not be determined.";
                         }
+
+                        // Populate X flag on session.
+                        this.session["X-AttributeNameImmutableID"] = AttributeNameImmutibleID;
+                    }
+                    else
+                    {
+                        this.session["X-AttributeNameImmutableID"] = "Data points not found for AttributeNameImmutibleID";
+                    }
                     #endregion
 
                     // Set SCCL to 10, stop any further session processing.
@@ -4271,6 +3948,307 @@ namespace Office365FiddlerInspector
                 SetSACL(session, "10");
             }
             #endregion
+            #endregion
+        }
+
+        // Function to set Session Type column data.
+        public void SetSessionType(Session session)
+        {
+            #region SetSessionType
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetSessionTypeColumn.");
+
+            // Return if SessionType already has a value.
+            // Quite often ResponseCodeLogic has already stamped a more specific SessionType value.
+            if (this.session["X-SessionType"] != null)
+            {
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " SessionType already set return.");
+                return;
+            }
+
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetSessionType");
+
+            /////////////////////////////
+            ///
+            /// Set Session Type
+            /// 
+            if (this.session.fullUrl.Contains("WSSecurity"))
+            {
+                this.session["X-SessionType"] = "Free/Busy";
+                SetSTCL(session, "10");
+            }
+            else if (this.session.fullUrl.Contains("GetUserAvailability"))
+            {
+                this.session["X-SessionType"] = "Free/Busy";
+                SetSTCL(session, "10");
+            }
+            else if (this.session.utilFindInResponse("GetUserAvailability", false) > 1)
+            {
+                this.session["X-SessionType"] = "Free/Busy";
+                SetSTCL(session, "10");
+            }
+            // EWS.
+            else if (this.session.fullUrl.Contains("outlook.office365.com/EWS"))
+            {
+                this.session["X-SessionType"] = "Exchange Web Services";
+                SetSTCL(session, "10");
+            }
+            // Generic Office 365.
+            else if (this.session.fullUrl.Contains(".onmicrosoft.com") && (!(this.session.hostname.Contains("live.com"))))
+            {
+                this.session["X-SessionType"] = "Office 365 Authentication";
+                SetSTCL(session, "10");
+            }
+            else if (this.session.fullUrl.Contains("outlook.office365.com"))
+            {
+                this.session["X-SessionType"] = "Office 365";
+                SetSTCL(session, "10");
+            }
+            else if (this.session.fullUrl.Contains("outlook.office.com"))
+            {
+                this.session["X-SessionType"] = "Office 365";
+                SetSTCL(session, "10");
+            }
+            // Office 365 Authentication.
+            else if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com"))
+            {
+                this.session["X-SessionType"] = "Office 365 Authentication";
+                SetSTCL(session, "10");
+            }
+            // ADFS Authentication.
+            else if (this.session.fullUrl.Contains("adfs/services/trust/mex"))
+            {
+                this.session["X-SessionType"] = "ADFS Authentication";
+                SetSTCL(session, "10");
+            }
+            // Undetermined, but related to local process.
+            else if (this.session.LocalProcess.Contains("outlook"))
+            {
+                this.session["X-SessionType"] = "Outlook";
+                SetSTCL(session, "10");
+            }
+            else if (this.session.LocalProcess.Contains("iexplore"))
+            {
+                this.session["X-SessionType"] = "Internet Explorer";
+                SetSTCL(session, "10");
+            }
+            else if (this.session.LocalProcess.Contains("chrome"))
+            {
+                this.session["X-SessionType"] = "Chrome";
+                SetSTCL(session, "10");
+            }
+            else if (this.session.LocalProcess.Contains("firefox"))
+            {
+                this.session["X-SessionType"] = "Firefox";
+                SetSTCL(session, "10");
+            }
+            else if (this.session.LocalProcess.Contains("edge"))
+            {
+                this.session["X-SessionType"] = "Edge";
+                SetSTCL(session, "10");
+            }
+            else if (this.session.LocalProcess.Contains("safari"))
+            {
+                this.session["X-SessionType"] = "Safari";
+                SetSTCL(session, "10");
+            }
+            // Everything else.
+            else
+            {
+                this.session["X-SessionType"] = "Not Classified";
+                // Commented out setting colours on sessions not recognised.
+                // Find in Fiddler will highlight sessions as yellow, so this would make reviewing find results difficult.
+                //this.session["ui-backcolor"] = "yellow";
+                //this.session["ui-color"] = "black";
+
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Session not classified in extension.");
+
+                this.session["X-ResponseAlert"] = "Unclassified";
+                this.session["X-ResponseComments"] = "The Office 365 Fiddler Extension does not yet have a way to classify this session."
+                    + "<p>If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: "
+                    + "<a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'>https://github.com/jprknight/Office365FiddlerExtension</a>.</p>";
+                SetSTCL(session, "5");
+            }
+
+            /////////////////////////////
+            //
+            // Session Type overrides
+            //
+            // If the local process is null or blank, then we are analysing traffic from a remote client such as a mobile device.
+            // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
+
+            if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
+            {
+                // Traffic has a null or blank local process value.
+                SetProcess(session);
+                SetSTCL(session, "10");
+            }
+            else
+            {
+                // If the traffic is not related to any of the below processes call it out.
+                // So if for example lync.exe is the process write that to the Session Type column.
+                if (!(this.session.LocalProcess.Contains("outlook") ||
+                    this.session.LocalProcess.Contains("searchprotocolhost") ||
+                    this.session.LocalProcess.Contains("iexplore") ||
+                    this.session.LocalProcess.Contains("chrome") ||
+                    this.session.LocalProcess.Contains("firefox") ||
+                    this.session.LocalProcess.Contains("edge") ||
+                    this.session.LocalProcess.Contains("safari") ||
+                    this.session.LocalProcess.Contains("w3wp")))
+                {
+                    // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
+                    {
+                        SetProcess(session);
+                        this.session["X-SessionType"] = this.session["X-ProcessName"];
+                        SetSTCL(session, "10");
+                    }
+                }
+            }
+            #endregion
+        }
+
+        // Function where the Response Server column is populated.
+        public void SetResponseServer(Session session)
+        {
+            #region ResponseServer
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetResponseServer.");
+
+            this.session = session;
+
+            // Populate Response Server on session in order of preference from common to obsure.
+
+            // If the response server header is not null or blank then populate it into the response server value.
+            if ((this.session.oResponse["Server"] != null) && (this.session.oResponse["Server"] != ""))
+            {
+                this.session["X-ResponseServer"] = this.session.oResponse["Server"];
+                SetSRSCL(session, "10");
+            }
+            // Else if the reponnse Host header is not null or blank then populate it into the response server value
+            // Some traffic identifies a host rather than a response server.
+            else if ((this.session.oResponse["Host"] != null && (this.session.oResponse["Host"] != "")))
+            {
+                this.session["X-ResponseServer"] = "Host: " + this.session.oResponse["Host"];
+                SetSRSCL(session, "10");
+            }
+            // Else if the response PoweredBy header is not null or blank then populate it into the response server value.
+            // Some Office 365 servers respond as X-Powered-By ASP.NET.
+            else if ((this.session.oResponse["X-Powered-By"] != null) && (this.session.oResponse["X-Powered-By"] != ""))
+            {
+                this.session["X-ResponseServer"] = "X-Powered-By: " + this.session.oResponse["X-Powered-By"];
+                SetSRSCL(session, "10");
+            }
+            // Else if the response X-Served-By header is not null or blank then populate it into the response server value.
+            else if ((this.session.oResponse["X-Served-By"] != null && (this.session.oResponse["X-Served-By"] != "")))
+            {
+                this.session["X-ResponseServer"] = "X-Served-By: " + this.session.oResponse["X-Served-By"];
+                SetSRSCL(session, "10");
+            }
+            // Else if the response X-Served-By header is not null or blank then populate it into the response server value.
+            else if ((this.session.oResponse["X-Server-Name"] != null && (this.session.oResponse["X-Server-Name"] != "")))
+            {
+                this.session["X-ResponseServer"] = "X-Served-Name: " + this.session.oResponse["X-Server-Name"];
+                SetSRSCL(session, "10");
+            }
+            else if ((this.session.isTunnel))
+            {
+                this.session["X-ResponseServer"] = this.session["X-SessionType"];
+                SetSRSCL(session, "10");
+            }
+            #endregion
+        }
+
+        // Function to highlight long running sessions.
+        public void SetLongRunningSessions(Session session)
+        {
+            #region LongRunningSessions
+            // Code section for response code logic overrides (long running sessions).
+
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetLongRunningSessions.");
+
+            double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
+
+            double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
+
+            // Warn on a 2.5 second roundtrip time.
+            if (ClientMilliseconds > Preferences.GetWarningSessionTimeThreshold() && ClientMilliseconds < Preferences.GetSlowRunningSessionThreshold())
+            {
+                if (this.session["X-SessionType"] == null)
+                {
+                    this.session["ui-backcolor"] = HTMLColourOrange;
+                    this.session["ui-color"] = "black";
+
+                    this.session["X-SessionType"] = "Roundtrip Time Warning";
+
+                    this.session["X-ResponseAlert"] = "<b><span style='color:orange'>Roundtrip Time Warning</span></b>";
+                }
+
+                this.session["X-ResponseComments"] += "This session took more than 2.5 seconds to complete. "
+                    + "A small number of sessions completing roundtrip in this timeframe is not necessary sign of an issue.";
+            }
+            // If the overall session time runs longer than 5,000ms or 5 seconds.
+            else if (ClientMilliseconds > Preferences.GetSlowRunningSessionThreshold())
+            {
+                if (this.session["X-SessionType"] == null)
+                {
+                    this.session["ui-backcolor"] = HTMLColourRed;
+                    this.session["ui-color"] = "black";
+
+                    this.session["X-SessionType"] = "Long Running Client Session";
+
+                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>Long Running Client Session</span></b>";
+                }
+
+                this.session["X-ResponseComments"] += "<p><b><span style='color:red'>Long running session found</span></b>. A small number of long running sessions in the < 10 "
+                    + "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue.</p>"
+                    + "<p>If, however, you are troubleshooting an application performance issue, consider the number of sessions which "
+                    + "have this warning. Investigate any proxy device or load balancer in your network, "
+                    + "or any other device sitting between the client computer and access to the application server the data resides on.</p>"
+                    + "<p>Try the divide and conquer approach. What can you remove or bypass from the equation to see if the application then performs "
+                    + "normally?</p>";
+
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Long running client session.");
+            }
+            // If the Office 365 server think time runs longer than 5,000ms or 5 seconds.
+            else if (ServerMilliseconds > Preferences.GetSlowRunningSessionThreshold())
+            {
+                if (this.session["X-SessionType"] == null)
+                {
+                    this.session["ui-backcolor"] = HTMLColourRed;
+                    this.session["ui-color"] = "black";
+
+                    this.session["X-SessionType"] = "Long Running Server Session";
+
+                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>Long Running Server Session</span></b>";
+                }
+
+                this.session["X-ResponseComments"] += "Long running Server session found. A small number of long running sessions in the < 10 "
+                    + "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue."
+                    + "<p>If, however, you are troubleshooting an application performance issue, consider the number of sessions which "
+                    + "have this warning alongany proxy device in your network, "
+                    + "or any other device sitting between the client computer and access to the internet."
+                    + "Try the divide and conquer approach. What can you remove or bypass from the equation to see if the application then performs "
+                    + "normally?</p>";
+
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Long running Office 365 session.");
+            }
+            #endregion
+        }
+
+        // Functions which support population fo data into fields, inspector etc.
+        #region UtilityFunctions
+
+        public void SetProcess(Session session)
+        {
+            // Set process name, split and exclude port used.
+            if (this.session.LocalProcess != String.Empty)
+            {
+                string[] ProcessName = this.session.LocalProcess.Split(':');
+                this.session["X-ProcessName"] = ProcessName[0];
+            }
+            // No local process to split.
+            else
+            {
+                this.session["X-ProcessName"] = "Remote Capture";
+            }
         }
 
         public void SAMLParserFieldsNoData()
@@ -4365,6 +4343,7 @@ namespace Office365FiddlerInspector
         {
             this.session["X-SRSCL"] = SRSCL;
         }
+        #endregion
         #endregion
     }
 }
