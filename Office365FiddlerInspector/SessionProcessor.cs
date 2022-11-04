@@ -159,6 +159,7 @@ namespace Office365FiddlerInspector
         }
         #endregion
 
+        // This is the main function where everything is called from.
         public void OnPeekAtResponseHeaders(Session session)
         {
             #region PeekAtResponseHeaders
@@ -663,6 +664,7 @@ namespace Office365FiddlerInspector
         // https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
         public void ResponseCodeLogic (Session session)
         {
+            #region ResponseCodeLogic
             FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " Running ResponseCodeLogic.");
 
             switch (this.session.responseCode)
@@ -3487,6 +3489,7 @@ namespace Office365FiddlerInspector
                     /////////////////////////////
                     #endregion
             }
+            #endregion
         }
 
         // Functions where Authentication column is populated and SAML parser code lives.
@@ -4233,7 +4236,7 @@ namespace Office365FiddlerInspector
             #endregion
         }
 
-        // Functions which support population fo data into fields, inspector etc.
+        // Functions which support population of data into fields, inspector etc.
         #region UtilityFunctions
 
         public void SetProcess(Session session)
