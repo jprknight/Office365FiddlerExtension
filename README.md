@@ -2,9 +2,13 @@
 <a href="https://aka.ms/O365FiddlerExtensionUpdateUrl" target="_blank">Download the latest release</a> of the Office 365 Fiddler Extension.
 
 ## Extension Purpose
-The Office 365 Fiddler Extension is an Office 365 centric parser to efficiently troubleshoot Office 365 client application connectivity and functionality.
+This Fiddler Extension is an Office 365 centric parser to efficiently troubleshoot Office 365 client application connectivity and functionality.
 
-The extension alters the standard Fiddler UI:
+## How To Use The Extension
+1. Reproduce an issue / behaviour: Use Fiddler Classic, FiddlerCap, or FiddlerAnywhere to collect a trace (decrypt traffic) on the computer where the issue is seen. Save the result as a SAZ file.
+2. Review the result (SAZ) file: On your own computer install Fiddler Classic, install the extension, and open the SAZ file.
+
+## How The Extension Alters The Standard Fiddler UI
 
 * Colourisation of sessions.
 * Add column 'Elapsed Time'.
