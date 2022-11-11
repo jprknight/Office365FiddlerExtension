@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office365FiddlerInspector", "Office365FiddlerInspector\Office365FiddlerInspector.csproj", "{5D9F84F0-77F3-45F5-8DA9-C89DB69BD643}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Office 365 Fiddler Extension", "Office 365 Fiddler Extension\Office 365 Fiddler Extension.vdproj", "{D2B4EF50-95AC-4B79-A2C5-C04EC0281D35}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,8 +15,6 @@ Global
 		{5D9F84F0-77F3-45F5-8DA9-C89DB69BD643}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{5D9F84F0-77F3-45F5-8DA9-C89DB69BD643}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D9F84F0-77F3-45F5-8DA9-C89DB69BD643}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D2B4EF50-95AC-4B79-A2C5-C04EC0281D35}.Debug|Any CPU.ActiveCfg = Debug
-		{D2B4EF50-95AC-4B79-A2C5-C04EC0281D35}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
