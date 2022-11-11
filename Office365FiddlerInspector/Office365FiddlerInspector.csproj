@@ -236,6 +236,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="ApplicationInsights.config" />
+    <None Include="Deploy-Office365FiddlerExtension.ps1" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
