@@ -22,8 +22,9 @@
 #   v1.1    Jeremy Knight   11/10/2022  Re-write.
 #   v1.2    Jeremy Knight   11/11/2022  Added upgrade option.
 #                                       Consolidated reused code.
-#
-
+#   v1.3    Jeremy Knight   11/14/2022  Manually set deployment folder.
+#                                       Complete message.
+# 
 Function Download { 
     # Only download a new zip file if it doesn't already exist.
     if (!(Test-Path "$($env:UserProfile)\Downloads\$Script:ZipFileName" -ErrorAction SilentlyContinue)) {
@@ -78,8 +79,10 @@ Function Install {
                 Write-Host $_
             }
             if ($Erorr.count -eq 0) {
+                CleanDownloadFile
                 Write-Host ""
-                Write-Host "$Script:Operation successful." -ForegroundColor Green
+                Write-Host "$Script:Operation complete, exiting." -ForegroundColor Green
+                Exit
             }
         }
     }
@@ -95,20 +98,8 @@ Function Uninstall {
     $RemovedFilesCount = 0
     $Folders = @("$Script:FiddlerScriptsPath", "$Script:FiddlerInspectorsPath")
 
-    # Includes legacy EXO Fiddler Extension files, so these can be processed.
-    $InstallFiles = @('Office365FiddlerInspector.dll',
-    'Office365FiddlerInspector.dll.config',
-    'Office365FiddlerInspector.pdb',
-    'Microsoft.ApplicationInsights.AspNetCore.dll',
-    'Microsoft.ApplicationInsights.AspNetCore.xml',
-    'Microsoft.ApplicationInsights.dll',
-    'Microsoft.ApplicationInsights.xml',
-    'EXOFiddlerInspector.dll',
-    'EXOFiddlerInspector.dll.config',
-    'EXOFiddlerInspector.pdb')
-
     foreach ($Folder in $Folders) {
-        foreach ($File in $InstallFiles) {
+        foreach ($File in $Script:InstallFiles) {
             if (Test-Path "$Folder\$File" -ErrorAction SilentlyContinue) {
                 $Error.Clear()
                 try {
@@ -180,7 +171,8 @@ $Menu = {
     Write-Host "1) Install" -ForegroundColor Cyan
     Write-Host "2) Upgrade" -ForegroundColor Cyan
     Write-Host "3) Uninstall" -ForegroundColor Cyan
-    Write-Host "4) Exit" -ForegroundColor Cyan
+    Write-Host "4) Set Fiddler Path" -ForegroundColor Cyan
+    Write-Host "5) Exit" -ForegroundColor Cyan
     Write-Host ""
 }
 
@@ -214,6 +206,19 @@ Function WebVersionCheck {
 }
 
 Function SetGlobals {
+
+    # Includes legacy EXO Fiddler Extension files, so these can be processed.
+    $Script:InstallFiles = @('Office365FiddlerInspector.dll',
+    'Office365FiddlerInspector.dll.config',
+    'Office365FiddlerInspector.pdb',
+    'Microsoft.ApplicationInsights.AspNetCore.dll',
+    'Microsoft.ApplicationInsights.AspNetCore.xml',
+    'Microsoft.ApplicationInsights.dll',
+    'Microsoft.ApplicationInsights.xml',
+    'EXOFiddlerInspector.dll',
+    'EXOFiddlerInspector.dll.config',
+    'EXOFiddlerInspector.pdb')
+
     $Script:DownloadPath = "$($env:UserProfile)\Downloads\"
     $Script:ZipFileName = "Office365FiddlerExtension.zip"
     [bool]$Script:bZipDownload = Test-Path "$Script:DownloadPath\$Script:ZipFileName" -ErrorAction SilentlyContinue
@@ -237,6 +242,20 @@ Function SetFiddlerPaths {
     }
 }
 
+Function ManuallySetFiddlerPath {
+    Write-Host "Enter a path to manually override where Fiddler is installed."
+    $Path = Read-Host "Path"
+
+    if (Test-Path "$Path\Fiddler.exe") {
+        Write-Host ""
+        Write-Host "Fiddler.exe found in the path, updating." -ForegroundColor Green
+        $Script:FiddlerPath = $Path
+    }
+    else {
+        Write-Host ""
+        Write-Host "Fiddler.exe not found in the path." -ForegroundColor Red
+    }
+}
 Function CleanDownloadFile {
     If (Test-Path "$($env:UserProfile)\Downloads\$Script:ZipFileName" -ErrorAction SilentlyContinue) {
         $Error.Clear()
@@ -266,7 +285,6 @@ Do {
         1 {
             $Script:Operation = "Install"
             Install
-            CleanDownloadFile
         }
         2 {
             $Script:Operation = "Upgrade"
@@ -279,5 +297,8 @@ Do {
             Uninstall
             CleanDownloadFile
         }
+        4 {
+            ManuallySetFiddlerPath
+        }
     }
-} While ($Selection -ne 4)
+} While ($Selection -ne 5)
