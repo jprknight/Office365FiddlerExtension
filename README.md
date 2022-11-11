@@ -1,5 +1,7 @@
 ## Download
-Download with the PowerShell deployment script: Invoke-Expression (New-Object Net.WebClient).DownloadString('https://aka.ms/Deploy-Office365FiddlerExtension')
+Download with the PowerShell deployment script: 
+
+Invoke-Expression (New-Object Net.WebClient).DownloadString('https://aka.ms/Deploy-Office365FiddlerExtension')
 
 <a href="https://aka.ms/O365FiddlerExtensionUpdateUrl" target="_blank">Download the latest release</a> of the Office 365 Fiddler Extension.
 
