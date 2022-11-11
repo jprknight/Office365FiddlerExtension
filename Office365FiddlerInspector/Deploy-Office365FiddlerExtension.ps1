@@ -95,8 +95,20 @@ Function Uninstall {
     $RemovedFilesCount = 0
     $Folders = @("$Script:FiddlerScriptsPath", "$Script:FiddlerInspectorsPath")
 
+    # Includes legacy EXO Fiddler Extension files, so these can be processed.
+    $InstallFiles = @('Office365FiddlerInspector.dll',
+    'Office365FiddlerInspector.dll.config',
+    'Office365FiddlerInspector.pdb',
+    'Microsoft.ApplicationInsights.AspNetCore.dll',
+    'Microsoft.ApplicationInsights.AspNetCore.xml',
+    'Microsoft.ApplicationInsights.dll',
+    'Microsoft.ApplicationInsights.xml',
+    'EXOFiddlerInspector.dll',
+    'EXOFiddlerInspector.dll.config',
+    'EXOFiddlerInspector.pdb')
+
     foreach ($Folder in $Folders) {
-        foreach ($File in $Script:AllFiles) {
+        foreach ($File in $InstallFiles) {
             if (Test-Path "$Folder\$File" -ErrorAction SilentlyContinue) {
                 $Error.Clear()
                 try {
@@ -112,9 +124,15 @@ Function Uninstall {
             }
         }
     }
-    if ($RemovedFilesCount -gt 0) {
+    if ($RemovedFilesCount -eq 0) {
+        Write-Host ""
+        Write-Host "$Script:Operation removed $RemovedFilesCount files." -ForegroundColor Red
+    }
+    else {
+        Write-Host ""
         Write-Host "$Script:Operation removed $RemovedFilesCount files." -ForegroundColor Green
     }
+    
 }
 
 $Menu = {
@@ -196,18 +214,6 @@ Function WebVersionCheck {
 }
 
 Function SetGlobals {
-    # Includes legacy EXO Fiddler Extension files, so these can be processed.
-    $Script:InstallFiles = @('Office365FiddlerInspector.dll',
-    'Office365FiddlerInspector.dll.config',
-    'Office365FiddlerInspector.pdb',
-    'Microsoft.ApplicationInsights.AspNetCore.dll',
-    'Microsoft.ApplicationInsights.AspNetCore.xml',
-    'Microsoft.ApplicationInsights.dll',
-    'Microsoft.ApplicationInsights.xml',
-    'EXOFiddlerInspector.dll',
-    'EXOFiddlerInspector.dll.config',
-    'EXOFiddlerInspector.pdb')
-
     $Script:DownloadPath = "$($env:UserProfile)\Downloads\"
     $Script:ZipFileName = "Office365FiddlerExtension.zip"
     [bool]$Script:bZipDownload = Test-Path "$Script:DownloadPath\$Script:ZipFileName" -ErrorAction SilentlyContinue
