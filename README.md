@@ -26,7 +26,7 @@ This Fiddler Extension is an Office 365 centric parser to efficiently troublesho
 ## Known limitations
 * Extension only alters, enhances sessions when loaded from a SAZ file.
 * Extension does not act on live captured sessions. In this scenario, session analysis can be inaccurate.
-* Extension does not act on import, such as importing a HTTP archives. However, a HAR file can be imported, saved as a SAZ file, then loaded for the extension to work.
+* Extension does not act on import, such as importing a HTTP archive. However, a HAR file can be imported, saved as a SAZ file, then loaded for the extension to work.
 
 ## Project Links
 
