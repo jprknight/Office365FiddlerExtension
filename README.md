@@ -15,6 +15,7 @@ This Fiddler Extension is an Office 365 centric parser to efficiently troublesho
 ## Functionality Breakdown
 
 ### Colourisation of sessions
+The extension enhances the default experience of Fiddler by colouring sessions in line with the session analysis performed.
 Think traffic lights, with some extras.
   * Red -- Something red is really broken, start here first.
   * Black -- Something might be broken, but these may not be the underlying cause.
@@ -25,6 +26,7 @@ Think traffic lights, with some extras.
 * **Response Inspector Tab** - Look for Session Analysis, for helpful information on any given session.
 * **Office 365 Menu** - Turn off/on extension features.
 ### Session Columns
+Columns are added into the session view on the left side of Fiddler, scroll the view to the right if you don't immediately see them. Re-order the columns to your preferences.
 * **Elapsed Time** - The roundtrip time for the request/response.
 * **Response Server** - What kind of device / server responded to the request.
 * **Session Type** - What kind of session was detected.
