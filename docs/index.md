@@ -1,4 +1,27 @@
-## Welcome to GitHub Pages
+## Office 365 Fiddler Extension
+
+### What Does it do?
+
+This Fiddler Extension is an Office 365 centric parser to efficiently troubleshoot Office 365 client application connectivity and functionality.
+
+### Functionality Breakdown
+[x] Colourisation of sessions.
+Add column 'Elapsed Time'.
+Add column 'Response Server'.
+Add column 'Session Type'.
+Add column 'Host IP'.
+Add column 'Authentication'.
+Add an 'Office 365' response inspector tab. - Look for Session Analysis, for helpful information on any given session.
+Add an 'Office 365' menu to turn off/on extension and extension features.
+
+### How to Use the Extension?
+
+1. Reproduce an issue / behaviour: Use Fiddler Classic, FiddlerCap, or FiddlerAnywhere to collect a trace (decrypt traffic) on the computer where the issue is seen. Save the result as a SAZ file, and transfer to your own computer.
+2. Review the result (SAZ) file: On your own computer install Fiddler Classic, install the extension, and open the SAZ file.
+
+### How to Get the Extension
+
+`Invoke-Expression (New-Object Net.WebClient).DownloadString('https://aka.ms/Deploy-Office365FiddlerExtension')`
 
 You can use the [editor on GitHub](https://github.com/jprknight/Office365FiddlerExtension/edit/master/docs/index.md) to maintain and preview the content for your website in Markdown files.
 
