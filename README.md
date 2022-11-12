@@ -7,7 +7,7 @@ This Fiddler Extension is an Office 365 centric parser to efficiently troublesho
 1. Reproduce an issue / behaviour: Use Fiddler Classic, FiddlerCap, or FiddlerAnywhere to collect a trace (decrypt traffic) on the computer where the issue is seen. Save the result as a SAZ file, and transfer to your own computer.
 2. Review the result (SAZ) file: On your own computer install Fiddler Classic, install the extension, and open the SAZ file.
 
-### Deployment Script
+## Deployment Script
 
 The best way to get the Office 365 Fiddler Extension is via the deployment script. Run the below in PowerShell on your computer: 
 
