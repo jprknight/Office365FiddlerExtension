@@ -15,11 +15,11 @@ This Fiddler Extension is an Office 365 centric parser to efficiently troublesho
 ## Functionality Breakdown
 
 * Colourisation of sessions -- Think traffic lights, with some extras.
-** Red -- Something red is really broken, start here first.
-** Black -- Something might be broken, but these may not be the underlying cause.
-** Orange -- Something which may be a concern, see Session Analysis on the response inspector for details.
-** Blue -- False positive detected, most prominiently HTTP 502's, see Session Analysis on the response inspector for details.
-** Green -- Nothing bad detected.
+  * Red -- Something red is really broken, start here first.
+  * Black -- Something might be broken, but these may not be the underlying cause.
+  * Orange -- Something which may be a concern, see Session Analysis on the response inspector for details.
+  * Blue -- False positive detected, most prominiently HTTP 502's, see Session Analysis on the response inspector for details.
+  * Green -- Nothing bad detected.
 
 * Add an 'Office 365' response inspector tab. - Look for Session Analysis, for helpful information on any given session.
 * Add an 'Office 365' menu to turn off/on extension and extension features.
