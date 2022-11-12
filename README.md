@@ -1,7 +1,7 @@
 ## Download
 
 ### Deployment Script
-Download with the PowerShell deployment script: 
+The best way to get the Office 365 Fiddler Extension is via the deployment script. Run the below in PowerShell on your computer: 
 
 `Invoke-Expression (New-Object Net.WebClient).DownloadString('https://aka.ms/Deploy-Office365FiddlerExtension')`
 
