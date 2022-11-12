@@ -4,14 +4,12 @@
 Download with the PowerShell deployment script: 
 
 `Invoke-Expression (New-Object Net.WebClient).DownloadString('https://aka.ms/Deploy-Office365FiddlerExtension')`
-### Zip File Download
-<a href="https://aka.ms/O365FiddlerExtensionUpdateUrl" target="_blank">Download the latest release</a> of the Office 365 Fiddler Extension.
 
 ## Extension Purpose
 This Fiddler Extension is an Office 365 centric parser to efficiently troubleshoot Office 365 client application connectivity and functionality.
 
 ## How To Use The Extension
-1. Reproduce an issue / behaviour: Use Fiddler Classic, FiddlerCap, or FiddlerAnywhere to collect a trace (decrypt traffic) on the computer where the issue is seen. Save the result as a SAZ file.
+1. Reproduce an issue / behaviour: Use Fiddler Classic, FiddlerCap, or FiddlerAnywhere to collect a trace (decrypt traffic) on the computer where the issue is seen. Save the result as a SAZ file, and transfer to your own computer.
 2. Review the result (SAZ) file: On your own computer install Fiddler Classic, install the extension, and open the SAZ file.
 
 ## How The Extension Alters The Standard Fiddler UI
@@ -22,8 +20,13 @@ This Fiddler Extension is an Office 365 centric parser to efficiently troublesho
 * Add column 'Session Type'.
 * Add column 'Host IP'.
 * Add column 'Authentication'.
-* Add an 'Office 365' response inspector tab.
+* Add an 'Office 365' response inspector tab. - Look for Session Analysis, for helpful information on any given session.
 * Add an 'Office 365' menu to turn off/on extension and extension features.
+
+## Known limitations
+* Extension only alters, enhances sessions when loaded from a SAZ file.
+* Extension does not act on live captured sessions. In this scenario, session analysis can be inaccurate.
+* Extension does not act on import, such as importing a HTTP archives. However, a HAR file can be imported, saved as a SAZ file, then loaded for the extension to work.
 
 ## Project Links
 
