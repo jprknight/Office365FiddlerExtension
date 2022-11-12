@@ -12,16 +12,23 @@ This Fiddler Extension is an Office 365 centric parser to efficiently troublesho
 1. Reproduce an issue / behaviour: Use Fiddler Classic, FiddlerCap, or FiddlerAnywhere to collect a trace (decrypt traffic) on the computer where the issue is seen. Save the result as a SAZ file, and transfer to your own computer.
 2. Review the result (SAZ) file: On your own computer install Fiddler Classic, install the extension, and open the SAZ file.
 
-## How The Extension Alters The Standard Fiddler UI
+## Functionality Breakdown
 
-* Colourisation of sessions.
-* Add column 'Elapsed Time'.
-* Add column 'Response Server'.
-* Add column 'Session Type'.
-* Add column 'Host IP'.
-* Add column 'Authentication'.
+* Colourisation of sessions -- Think traffic lights, with some extras.
+** Red -- Something red is really broken, start here first.
+** Black -- Something might be broken, but these may not be the underlying cause.
+** Orange -- Something which may be a concern, see Session Analysis on the response inspector for details.
+** Blue -- False positive detected, most prominiently HTTP 502's, see Session Analysis on the response inspector for details.
+** Green -- Nothing bad detected.
+
 * Add an 'Office 365' response inspector tab. - Look for Session Analysis, for helpful information on any given session.
 * Add an 'Office 365' menu to turn off/on extension and extension features.
+
+* Add column 'Elapsed Time' -- The roundtrip time for the request/response.
+* Add column 'Response Server' -- What kind of device / server responded to the request.
+* Add column 'Session Type' -- What kind of session was detected.
+* Add column 'Host IP' -- IP address of the device / server which responded.
+* Add column 'Authentication' -- Authentication details detected in the session.
 
 ## Known limitations
 * Extension only alters, enhances sessions when loaded from a SAZ file.
