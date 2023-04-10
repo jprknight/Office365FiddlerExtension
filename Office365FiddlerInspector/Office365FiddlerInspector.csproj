@@ -187,6 +187,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ruleset\BroadLogicChecks.cs" />
+    <Compile Include="Ruleset\CalculateSessionAge.cs" />
+    <Compile Include="Ruleset\ServerThinkTimeTransitTime.cs" />
     <Compile Include="Tabs\Office365TabPage.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="About.cs" />

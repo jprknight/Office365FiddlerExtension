@@ -2,6 +2,7 @@
 using Fiddler;
 using System.Linq;
 using Office365FiddlerInspector.Services;
+using Office365FiddlerInspector.Ruleset;
 
 namespace Office365FiddlerInspector
 {
@@ -17,14 +18,12 @@ namespace Office365FiddlerInspector
         string HTMLColourGrey = "#BDBDBD";
         string HTMLColourOrange = "#F59758";
 
-        string TLS;
-
         private static SessionProcessor _instance;
 
         public static SessionProcessor Instance => _instance ?? (_instance = new SessionProcessor());
 
         private bool IsInitialized { get; set; }
-
+        
         internal Session session { get; set; }
 
         private string searchTerm;
@@ -54,6 +53,7 @@ namespace Office365FiddlerInspector
         {
             // Stop HandleLoadSaz and further processing if the extension is not enabled.
             if (!Preferences.ExtensionEnabled)
+
             {
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: Extension not enabled, exiting.");
                 return;
@@ -190,20 +190,24 @@ namespace Office365FiddlerInspector
             // Always run these functions on every session.
 
             // Broad logic checks on sessions regardless of response code.
-            Instance.BroadLogicChecks(session);
+            BroadLogicChecks broadLogiccChecks = new BroadLogicChecks();
+            broadLogiccChecks.FiddlerUpdateSessions(session);
+            broadLogiccChecks.ConnectTunnelSessions(session);
+            broadLogiccChecks.ApacheAutodiscover(session);
 
             // Calculate Session Age for inspector with HTML mark-up.
-            Instance.CalculateSessionAge(session);
+            CalculateSessionAge calculateSessionAge = new CalculateSessionAge();
+            calculateSessionAge.SessionAge(session);
 
             // Set Server Think Time and Transit Time for inspector with HTML mark-up.
-            Instance.SetServerThinkTimeTransitTime(session);
+            ServerThinkTimeTransitTime setServerThinkTimeTransitTime = new ServerThinkTimeTransitTime();
+            setServerThinkTimeTransitTime.SetServerThinkTimeTransitTime(session);
 
             // Set Elapsed Time column data.
-            Instance.SetElapsedTime(session);
-
-            // Set Elapsed Time for inspector with HTML mark-up.
-            Instance.SetInspectorElapsedTime(session);
-
+            SessionElapsedTime sessionElapsedTime = new SessionElapsedTime();
+            sessionElapsedTime.SetElapsedTime(session);
+            sessionElapsedTime.SetInspectorElapsedTime(session);
+            
             ///////////////////////
             ///
             // From here on out only run functions where there isn't a high level of confidence
@@ -255,410 +259,7 @@ namespace Office365FiddlerInspector
             #endregion
         }
 
-        // Function containing broad logic checks on sessions regardless of response code.
-        public void BroadLogicChecks (Session session)
-        {
-            #region BroadLogicChecks
-            /////////////////////////////
-            //
-            //  Broader logic checks, where the response code cannot or should not be used as in the switch statement.
-            //
-
-            // Very likely the first session captured when running Fiddler.
-            if (this.session.hostname == "www.fiddler2.com")
-            {
-                this.session["ui-backcolor"] = HTMLColourGrey;
-                this.session["ui-color"] = "black";
-
-                this.session["X-SessionType"] = "Fiddler Update Check";
-                this.session["X-Authentication"] = "Fiddler Update Check";
-                this.session["X-ResponseServer"] = "Fiddler Update Check";
-
-                this.session["X-ResponseAlert"] = "Fiddler Update Check";
-
-                this.session["X-ResponseComments"] = "This is Fiddler itself checking for updates. It has nothing to do with the Office 365 Fiddler Extension.";
-
-                FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " Broad Logic Checks (www.fiddler2.com) setting SCCL to 10.");
-
-                // Absolute certainly we don't want to do anything further with this session.
-                SetSACL(session, "10");
-                SetSTCL(session, "10");
-                SetSRSCL(session, "10");
-
-                return;
-            }
-
-            /////////////////////////////
-            //
-            // Connect Tunnel.
-            //
-            // Check for connect tunnel with no usable data in the response body.
-            //
-            // This check does not work for sessions which have not been loaded from a SAZ file.
-            // My best guess is this is a timing issue, where the data is not immediately available when this check runs.
-            // SetSessionType makes exactly the same call later on down the code path and it works.
-            if (this.session.isTunnel)
-            {
-                // TLS 1.0 in request/response pair.
-
-                // Request:
-                //   Version: 3.1 (TLS/1.0)
-
-                //Response:
-                //   Secure Protocol: Tls
-                //   Cipher: Aes256 256bits
-                //   Hash Algorithm: Sha1 160bits
-
-                if (this.session.utilFindInResponse("Secure Protocol: Tls10", false) > 1 || this.session.utilFindInResponse("(TLS/1.0)", false) > 1)
-                {
-                    TLS = "TLS 1.0";
-                }
-                // TLS 1.1 in request/response pair.
-                else if (this.session.utilFindInResponse("Secure Protocol: Tls11", false) > 1 || this.session.utilFindInRequest("(TLS/1.1)", false) > 1)
-                {
-                    TLS = "TLS 1.1";
-                }
-                // TLS 1.2 in request/response pair.
-                else if (this.session.utilFindInRequest("Secure Protocol: Tls12", false) > 1 || this.session.utilFindInRequest("(TLS/1.2)", false) > 1)
-                {
-                    TLS = "TLS 1.2";
-                }
-                else
-                {
-                    // If we cannot determine the TLS version do nothing.
-                    // This can happen when live tracing traffic. The request/responses cannot be read fast enough to get accurate results.
-                }
-
-                // 11/1/2022 -- There was some old code accompanying this comment, leaving this as it might be useful information for the future.
-
-                // Trying to check session response body for a string value using !this.session.bHasResponse does not impact performance, but is not reliable.
-                // Using this.session.GetResponseBodyAsString().Length == 0 kills performance. Fiddler wouldn't even load with this code in place.
-                // Ideally looking to do: if (this.session.utilFindInResponse("CONNECT tunnel, through which encrypted HTTPS traffic flows", false) > 1)
-                // Only works reliably when loading a SAZ file and request/response data is immediately available to do logic checks against.
-
-                this.session["ui-backcolor"] = HTMLColourOrange;
-                this.session["ui-color"] = "black";
-
-                this.session["X-ResponseAlert"] = "Connect Tunnel";
-                this.session["X-ResponseComments"] = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
-                    + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
-                    + "<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>";
-
-                switch (this.session.responseCode)
-                {
-                    case 403:
-                        // If this is a HTTP 403 we need analysis on this session.
-                        // I have seen HTTP 403 connect tunnels actually show interesting data in authentication scenarios.
-                        this.session["X-SessionType"] = "Connect Tunnel: " + TLS;
-                        SetSACL(session, "5");
-                        SetSTCL(session, "5");
-                        SetSRSCL(session, "5");
-                        break;
-                    case 200:
-                        this.session["X-ResponseCodeDescription"] = "200 OK";
-
-                        // I haven't seen anything interesting troubleshooting wise on HTTP 200 connect tunnels.
-                        this.session["X-SessionType"] = "Connect Tunnel: " + TLS;
-                        this.session["X-Authentication"] = "Connect Tunnel: " + TLS;
-                        this.session["X-ResponseServer"] = "Connect Tunnel: " + TLS;
-
-                        // Absolute certainly we don't want to do anything further with this session.
-                        SetSACL(session, "10");
-                        SetSTCL(session, "10");
-                        SetSRSCL(session, "10");
-                        break;
-                    default:
-                        // Do nothing.
-                        break;
-                }
-
-                FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " Broad Logic Checks (connect tunnel).");
-
-                return;
-            }
-
-            /////////////////////////////
-            //
-            // From a scenario where Apache Web Server found to be answering Autodiscover calls and throwing HTTP 301 & 405 responses.
-            // This is typically seen on the root domain Autodiscover call made from Outlook if GetO365Explicit is not used.
-            //
-            if ((this.session.url.Contains("autodiscover") && (this.session.oResponse["server"].Contains("Apache"))))
-            {
-                this.session["ui-backcolor"] = HTMLColourRed;
-                this.session["ui-color"] = "black";
-
-                this.session["X-ResponseAlert"] = "Apache is answering Autodiscover requests!";
-                this.session["X-ResponseComments"] = "<b><span style='color:red'>An Apache Web Server(Unix/Linux) is answering Autodiscover requests!</span></b>"
-                    + "<p>This should not be happening. Consider disabling Root Domain Autodiscover lookups.</p>"
-                    + "<p>See ExcludeHttpsRootDomain on </p>"
-                    + "<p><a href='https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under' target='_blank'>"
-                    + "https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under </a></p>"
-                    + "<p>Beyond this the web administrator responsible for the server needs to stop the Apache web server from answering these requests.</p>";
-
-                this.session["X-SessionType"] = "***APACHE AUTODISCOVER***";
-
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Apache is answering Autodiscover requests! Investigate this first!");
-
-                // Absolute certainly we don't want to do anything further with this session.
-                SetSACL(session, "10");
-                SetSTCL(session, "10");
-                SetSRSCL(session, "10");
-
-                return;
-            }
-
-            #endregion
-        }
-
-        // Function to calculate session age on Inspector.
-        public void CalculateSessionAge(Session session)
-        {
-            #region CalculateSessionAge
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running CalculateSessionAge.");
-
-            String TimeSpanDaysText;
-            String TimeSpanHoursText;
-            String TimeSpanMinutesText;
-
-            DateTime SessionDateTime = this.session.Timers.ClientBeginRequest;
-            DateTime DateTimeNow = DateTime.Now;
-            TimeSpan CalcDataAge = DateTimeNow - SessionDateTime;
-            int TimeSpanDays = CalcDataAge.Days;
-            int TimeSpanHours = CalcDataAge.Hours;
-            int TimeSpanMinutes = CalcDataAge.Minutes;
-
-            if (TimeSpanDays == 1)
-            {
-                TimeSpanDaysText = TimeSpanDays + " day, ";
-            }
-            else
-            {
-                TimeSpanDaysText = TimeSpanDays + " days, ";
-            }
-
-            if (TimeSpanHours == 1)
-            {
-                TimeSpanHoursText = TimeSpanHours + " hour, ";
-            }
-            else
-            {
-                TimeSpanHoursText = TimeSpanHours + " hours, ";
-            }
-
-            if (TimeSpanMinutes == 1)
-            {
-                TimeSpanMinutesText = TimeSpanMinutes + " minute ago.";
-            }
-            else
-            {
-                TimeSpanMinutesText = TimeSpanMinutes + " minutes ago.";
-            }
-
-            String DataAge = TimeSpanDaysText + TimeSpanHoursText + TimeSpanMinutesText;
-
-            this.session["X-DataCollected"] = SessionDateTime.ToString("dddd, MMMM dd, yyyy h:mm tt");
-
-            if (TimeSpanDays <= 7)
-            {
-                this.session["X-DataAge"] = $"<b><span style='color:green'>{DataAge}</span></b>";
-
-                this.session["X-CalculatedSessionAge"] = "<p>Session collected within 7 days, data freshness is good. Best case scenario for correlating this data to backend server logs.</p>";
-            }
-            else if (TimeSpanDays > 7 && TimeSpanDays < 14)
-            {
-                this.session["X-DataAge"] = $"<b><span style='color:orange'>{DataAge}</span></b>";
-
-                this.session["X-CalculatedSessionAge"] = "<p>Session collected within 14 days, data freshness is good, <b><span style='color:orange'>but not ideal</span></b>. "
-                    + "Depending on the backend system, <b><span style='color:orange'>correlating this data to server logs might be possible</span></b>.</p>";
-            }
-            else if (TimeSpanDays >= 14 && TimeSpanDays < 30)
-            {
-                this.session["X-DataAge"] = $"<b><span style='color:orange'>{DataAge}</span></b>";
-
-                this.session["X-CalculatedSessionAge"] = "<p><b><span style='color:red'>Session collected between 14 and 30 days ago</span></b>. "
-                    + "Correlating with any backend server logs is <b><span style='color:red'>likely impossible</span></b>. Many systems don't keep logs this long.</p>";
-            }
-            else
-            {
-                this.session["X-DataAge"] = $"<b><span style='color:red'>{DataAge}</span></b>";
-
-                this.session["X-CalculatedSessionAge"] = "<p><b><span style='color:red'>Session collected more than 30 days ago</span></b>. "
-                    + "Correlating with any backend server logs is <b><span style='color:red'>very likely impossible</span></b>. Many systems don't keep logs this long.</p>";
-            }
-            #endregion
-        }
-
-        // Function to set Server Think Time and Transit Time for use within Inspector.
-        public void SetServerThinkTimeTransitTime(Session session)
-        {
-            #region ServerThinkTimeTransitTime
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetServerThinkTimeTransitTime.");
-
-            // ServerGotRequest, ServerBeginResponse or ServerDoneResponse can be blank. If so do not try to calculate and output 'Server Think Time' or 'Transmit Time', we end up with a hideously large number.
-            if (this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff") != "0:00:00.000" &&
-                this.session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff") != "0:00:00.000" &&
-                this.session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
-            {
-
-                double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
-                double ServerSeconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalSeconds);
-
-                // transit time = elapsed time - server think time.
-
-                double ElapsedMilliseconds = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds);
-
-                double dTransitTimeMilliseconds = ElapsedMilliseconds - ServerMilliseconds;
-                if (dTransitTimeMilliseconds < 0)
-                {
-                    dTransitTimeMilliseconds = 0;
-                }
-
-                int iTransitTimeSeconds = (int)Math.Round(dTransitTimeMilliseconds / 1000);
-
-                // If 1/10th of the session elapsed time is more than the server think time, network roundtrip loses.
-                if (ElapsedMilliseconds / 10 > ServerMilliseconds && ElapsedMilliseconds > Preferences.GetSlowRunningSessionThreshold())
-                {
-                    this.session["X-SessionTimersDescription"] = "<p>The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.</p>" +
-                        "<p>If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.</p>" +
-                        "<p>Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.<p>";
-
-
-
-                    // Highlight server think time in green.
-                    if (ServerMilliseconds < 1000)
-                    {
-                        this.session["X-ServerThinkTime"] = $"<b><span style='color:green'>{ServerMilliseconds}ms.</span></b>";
-                    }
-                    else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
-                    {
-                        this.session["X-ServerThinkTime"] = $"<b><span style='color:green'>{ServerSeconds} second ({ServerMilliseconds}ms).</span></b>";
-                    }
-                    else
-                    {
-                        this.session["X-ServerThinkTime"] = $"<b><span style='color:green'>{ServerSeconds} seconds ({ServerMilliseconds}ms).</span></b>";
-                    }
-
-                    // Highlight transit time in red.
-                    if (dTransitTimeMilliseconds < 1000)
-                    {
-                        this.session["X-TransitTime"] = $"<b><span style='color:red'>{dTransitTimeMilliseconds}ms.</span></b>";
-                    }
-                    else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
-                    {
-                        this.session["X-TransitTime"] = $"<b><span style='color:red'>{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms).</span></b>";
-                    }
-                    else
-                    {
-                        this.session["X-TransitTime"] = $"<b><span style='color:red'>{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms).</span></b>";
-                    }
-                }
-                else
-                {
-                    if (ServerMilliseconds < 1000)
-                    {
-                        this.session["X-ServerThinkTime"] = $"{ServerMilliseconds}ms";
-                    }
-                    else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
-                    {
-                        this.session["X-ServerThinkTime"] = $"{ServerSeconds} second ({ServerMilliseconds}ms).";
-                    }
-                    else
-                    {
-                        this.session["X-ServerThinkTime"] = $"{ServerSeconds} seconds ({ServerMilliseconds}ms).";
-                    }
-
-                    if (dTransitTimeMilliseconds < 1000)
-                    {
-                        this.session["X-TransitTime"] = $"{dTransitTimeMilliseconds}ms";
-                    }
-                    else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
-                    {
-                        this.session["X-TransitTime"] = $"{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms).";
-                    }
-                    else
-                    {
-                        this.session["X-TransitTime"] = $"{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms).";
-                    }
-                }
-            }
-            else
-            {
-                this.session["X-ServerThinkTime"] = "Insufficient data";
-                this.session["X-TransitTime"] = "Insufficient data";
-            }
-            #endregion
-        }
-
-        // Function where Elapsed Time column data is populated.
-        public void SetElapsedTime(Session session)
-        {
-            #region ElapsedTime
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetElapsedTime.");
-
-            // Populate the ElapsedTime column.
-            if (session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") != "0:00:00.000" && session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
-            {
-                double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds);
-
-                session["X-ElapsedTime"] = Milliseconds + "ms";
-            }
-            else
-            {
-                session["X-ElapsedTime"] = "No Data";
-            }
-            #endregion
-        }
-
-        // Function to set the Elapsed Time for the inspector. HTML mark up.
-        public void SetInspectorElapsedTime(Session session)
-        {
-            #region InspectorElapsedTime
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetInspectorElapsedTime.");
-
-            // ClientDoneResponse can be blank. If so do not try to calculate and output Elapsed Time, we end up with a hideously large number.
-            if (this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
-            {
-                double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
-                double ClientSeconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalSeconds);
-
-                // If the roundtrip time is less than 1 second show the result in milliseconds.
-                if (ClientMilliseconds == 0)
-                {
-                    this.session["X-InspectorElapsedTime"] = $"{ClientMilliseconds}ms";
-                }
-                else if (ClientMilliseconds < 1000)
-                {
-                    this.session["X-InspectorElapsedTime"] = $"{ClientMilliseconds}ms";
-                }
-                // If the roundtrip is over warning and under slow running thresholds; orange.
-                else if (ClientMilliseconds > Preferences.GetWarningSessionTimeThreshold() && ClientMilliseconds < Preferences.GetSlowRunningSessionThreshold())
-                {
-                    this.session["X-InspectorElapsedTime"] = $"<b><span style='color:orange'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>";
-                }
-                // If roundtrip is over slow running threshold; red.
-                else if (ClientMilliseconds > Preferences.GetSlowRunningSessionThreshold())
-                {
-                    this.session["X-InspectorElapsedTime"] = $"<b><span style='color:red'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>";
-                }
-                // If the roundtrip time is more than 1 second show the result in seconds.
-                else
-                {
-                    if (ClientSeconds == 1)
-                    {
-                        this.session["X-InspectorElapsedTime"] = $"{ClientSeconds} second({ClientMilliseconds}ms).";
-                    }
-                    else
-                    {
-                        this.session["X-InspectorElapsedTime"] = $"{ClientSeconds} seconds ({ClientMilliseconds}ms).";
-                    }
-                }
-            }
-            else
-            {
-                this.session["X-InspectorElapsedTime"] = "Insufficient data";
-            }
-            #endregion
-        }
+        
 
         // Function containing switch statement for response code logic.
         // https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
@@ -671,134 +272,27 @@ namespace Office365FiddlerInspector
             {
                 // Note, the breakdown of response codes, for example 200.5, has no formal meaning.
                 // It's just an easy way to organise the content.
-
-                #region HTTP0
                 case 0:
-                    /////////////////////////////
-                    //
-                    //  HTTP 0: No Response.
-                    this.session["ui-backcolor"] = HTMLColourRed;
-                    this.session["ui-color"] = "black";
-                    this.session["X-SessionType"] = "!NO RESPONSE!";
-
-                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 0 - No Response</span></b>";
-
-                    this.session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are "
-                        + "troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could "
-                        + "be cause for concern."
-                        + "<p>If you are not seeing expected client traffic, consider if network traces should be collected. Review if there is an underlying "
-                        + "network issue such as congestion on routers, which could be causing issues. The Network Connection Status Indicator (NCSI) on the "
-                        + "client computer might also be an area to investigate.</p>";
-
-                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 0 No response");
-
-                    this.session["X-ResponseCodeDescription"] = "0 No Response";
-
-                    // This actually isn't very useful, let further processing try to pick up something.
-                    SetSACL(session, "5");
-                    SetSTCL(session, "5");
-                    SetSRSCL(session, "5");
-
+                    HTTP_0 http_0 = new HTTP_0();
+                    http_0.NoSessionResponse(session);
+                    
                     break;
-                #endregion
-
-                #region HTTP200s
                 case 200:
-                    /////////////////////////////
-                    //
-                    // 200.1. Connection blocked by Client Access Rules.
-                    // 
 
-                    if (this.session.fullUrl.Contains("outlook.office365.com/mapi")
-                        && this.session.utilFindInResponse("Connection blocked by Client Access Rules", false) > 1)
+                    HTTP_200 http_200 = new HTTP_200();
+
+                    http_200.HTTP_200_ClientAccessRule(session);
+                    
+                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
                     {
-                        this.session["ui-backcolor"] = HTMLColourRed;
-                        this.session["ui-color"] = "black";
-
-                        this.session["X-SessionType"] = "!CLIENT ACCESS RULE!";
-
-                        this.session["X-ResponseAlert"] = "<b><span style='color:red'>CLIENT ACCESS RULE</span></b>";
-                        this.session["X-ResponseComments"] = "<b><span style='color:red'>A client access rule has blocked MAPI connectivity to the mailbox</span></b>. "
-                            + "<p>Check if the <b><span style='color:red'>client access rule includes OutlookAnywhere</span></b>.</p>"
-                            + "<p>Per <a href='https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules' target='_blank'>"
-                            + "https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules </a>, <br />"
-                            + "OutlookAnywhere includes MAPI over HTTP.<p>"
-                            + "<p>Remove OutlookAnywhere from the client access rule, wait 1 hour, then test again.</p>";
-
-                        FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200.1 Connection blocked by Client Access Rules.");
-
-                        this.session["X-ResponseCodeDescription"] = "200 OK";
-
-                        // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
-                        SetSACL(session, "5");
-                        SetSTCL(session, "10");
-                        SetSRSCL(session, "5");
-
                         break;
                     }
 
-                    /////////////////////////////
-                    //
-                    // 200.2. Outlook MAPI traffic.
-                    //
+                    http_200.HTTP_200_M365_Outlook_Mapi(session);
 
-                    // I thought about checking for outlook.exe in the logic here, but I have many sample traces where for some (unknown to me) reason,
-                    // the process is rundll.exe. This isn't really a fixable thing, since people using this tool are usually collecting traces from
-                    // various systems, and who wants to troubleshoot the troubleshooting anyway. Leaving this off, as most people just want to see if
-                    // they can get some information and solve the issue.
-
-                    if (this.session.HostnameIs("outlook.office365.com") && (this.session.uriContains("/mapi/emsmdb/?MailboxId=")))
+                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
                     {
-                        /////////////////////////////
-                        //
-                        // Protocol Disabled.
-                        //
-                        if (this.session.utilFindInResponse("ProtocolDisabled", false) > 1)
-                        {
-                            this.session["ui-backcolor"] = HTMLColourRed;
-                            this.session["ui-color"] = "black";
-                            this.session["X-SessionType"] = "***PROTOCOL DISABLED***";
-
-                            this.session["X-ResponseAlert"] = "<b><span style='color:red'>Store Error Protocol Disabled</span></b>";
-                            this.session["X-ResponseComments"] = "<b><span style='color:red'>Store Error Protocol disabled found in response body.</span></b>"
-                                + "Expect user to <b>NOT be able to connect using connecting client application.</b>.";
-
-                            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Store Error Protocol Disabled.");
-
-                            this.session["X-ResponseCodeDescription"] = "200 OK - <b><span style='color:red'>PROTOCOL DISABLED</span></b>";
-
-                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 Outlook MAPI traffic return.");
-
-                            // Absolute certainly we don't want to do anything further with this session.
-                            SetSACL(session, "10");
-                            SetSTCL(session, "10");
-                            SetSRSCL(session, "10");
-
-                            return;
-                        } 
-                        else
-                        {
-                            this.session["ui-backcolor"] = HTMLColourGreen;
-                            this.session["ui-color"] = "black";
-
-                            this.session["X-SessionType"] = "Outlook MAPI";
-
-                            this.session["X-ResponseAlert"] = "Outlook for Windows MAPI traffic";
-                            this.session["X-ResponseComments"] = "This is normal Outlook MAPI over HTTP traffic to an Exchange Online mailbox.";
-
-                            // No FiddlerApplication logging here.
-
-                            this.session["X-ResponseCodeDescription"] = "200 OK";
-                            
-                            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 Outlook MAPI traffic.");
-
-                            // Possible something more to be found, let further processing try to pick up something.
-                            SetSACL(session, "5");
-                            SetSTCL(session, "5");
-                            SetSRSCL(session, "5");
-
-                            break;
-                        }
+                        break;
                     }
 
                     /////////////////////////////
