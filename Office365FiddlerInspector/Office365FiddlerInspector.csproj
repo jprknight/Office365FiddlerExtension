@@ -247,6 +247,9 @@
     <Compile Include="Ruleset\HTTP_500s\HTTP_503.cs" />
     <Compile Include="Ruleset\HTTP_500s\HTTP_504.cs" />
     <Compile Include="Ruleset\SelectivelyRun\SetAuthentication.cs" />
+    <Compile Include="Ruleset\SelectivelyRun\SetLongRunningSessions.cs" />
+    <Compile Include="Ruleset\SelectivelyRun\SetResponseServer.cs" />
+    <Compile Include="Ruleset\SelectivelyRun\SetSessionType.cs" />
     <Compile Include="Tabs\Office365TabPage.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="About.cs" />
