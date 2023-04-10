@@ -184,5 +184,19 @@ namespace Office365FiddlerInspector.Services
             session["X-SRSCL"] = SRSCL;
         }
 
+        public static void SetProcess(Session session)
+        {
+            // Set process name, split and exclude port used.
+            if (session.LocalProcess != String.Empty)
+            {
+                string[] ProcessName = session.LocalProcess.Split(':');
+                session["X-ProcessName"] = ProcessName[0];
+            }
+            // No local process to split.
+            else
+            {
+                session["X-ProcessName"] = "Remote Capture";
+            }
+        }
     }
 }

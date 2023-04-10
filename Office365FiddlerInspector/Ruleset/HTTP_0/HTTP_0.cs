@@ -14,7 +14,7 @@ namespace Office365FiddlerInspector.Ruleset
 
         public static HTTP_0 Instance => _instance ?? (_instance = new HTTP_0());
 
-        public void NoSessionResponse(Session session)
+        public void HTTP_0_NoSessionResponse(Session session)
         {
             /////////////////////////////
             //
