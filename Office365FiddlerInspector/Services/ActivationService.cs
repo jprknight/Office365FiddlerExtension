@@ -12,7 +12,7 @@ namespace Office365FiddlerInspector.Services
     /// </summary>
     public abstract class ActivationService : IAutoTamper
     {
-        
+        internal Session session { get; set; }
 
         /// <summary>
         /// This should be consider the main constructor for the extension. It's called after the UI has loaded.
@@ -103,7 +103,7 @@ namespace Office365FiddlerInspector.Services
             }
 
             // Call the main fuction which runs through all session logic checks.
-            SessionProcessor.Instance.OnPeekAtResponseHeaders(session);
+            SessionProcessor.Instance.OnPeekAtResponseHeaders(this.session);
 
             session.RefreshUI();
         }

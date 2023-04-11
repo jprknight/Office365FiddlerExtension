@@ -8,12 +8,8 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class SessionElapsedTime : ActivationService
+    class SessionElapsedTime
     {
-
-        private static SessionElapsedTime _instance;
-
-        public static SessionElapsedTime Instance => _instance ?? (_instance = new SessionElapsedTime());
 
         // Function where Elapsed Time column data is populated.
         public void SetElapsedTime(Session session)

@@ -8,16 +8,8 @@ using Office365FiddlerInspector.Services;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class BroadLogicChecks : ActivationService
+    class BroadLogicChecks
     {
-        public static void Initialize()
-        {
-        }
-
-        private static BroadLogicChecks _instance;
-
-        public static BroadLogicChecks Instance => _instance ?? (_instance = new BroadLogicChecks());
-
         public void FiddlerUpdateSessions (Session session)
         {
             // Very likely the first session captured when running Fiddler.
@@ -37,9 +29,9 @@ namespace Office365FiddlerInspector.Ruleset
                 FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + session.id + " Broad Logic Checks (www.fiddler2.com) setting SCCL to 10.");
 
                 // Absolute certainly we don't want to do anything further with this session.
-                Preferences.SetSACL(session, "10");
-                Preferences.SetSTCL(session, "10");
-                Preferences.SetSRSCL(session, "10");
+                SessionProcessor.Instance.SetSACL(session, "10");
+                SessionProcessor.Instance.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetSRSCL(session, "10");
 
                 return;
             }
@@ -110,9 +102,9 @@ namespace Office365FiddlerInspector.Ruleset
                         // If this is a HTTP 403 we need analysis on this session.
                         // I have seen HTTP 403 connect tunnels actually show interesting data in authentication scenarios.
                         session["X-SessionType"] = "Connect Tunnel: " + TLS;
-                        Preferences.SetSACL(session, "5");
-                        Preferences.SetSTCL(session, "5");
-                        Preferences.SetSRSCL(session, "5");
+                        SessionProcessor.Instance.SetSACL(session, "5");
+                        SessionProcessor.Instance.SetSTCL(session, "5");
+                        SessionProcessor.Instance.SetSRSCL(session, "5");
                         break;
                     case 200:
                         session["X-ResponseCodeDescription"] = "200 OK";
@@ -123,9 +115,9 @@ namespace Office365FiddlerInspector.Ruleset
                         session["X-ResponseServer"] = "Connect Tunnel: " + TLS;
 
                         // Absolute certainly we don't want to do anything further with this session.
-                        Preferences.SetSACL(session, "10");
-                        Preferences.SetSTCL(session, "10");
-                        Preferences.SetSRSCL(session, "10");
+                        SessionProcessor.Instance.SetSACL(session, "10");
+                        SessionProcessor.Instance.SetSTCL(session, "10");
+                        SessionProcessor.Instance.SetSRSCL(session, "10");
                         break;
                     default:
                         // Do nothing.
@@ -162,9 +154,9 @@ namespace Office365FiddlerInspector.Ruleset
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " Apache is answering Autodiscover requests! Investigate this first!");
 
                 // Absolute certainly we don't want to do anything further with this session.
-                Preferences.SetSACL(session, "10");
-                Preferences.SetSTCL(session, "10");
-                Preferences.SetSRSCL(session, "10");
+                SessionProcessor.Instance.SetSACL(session, "10");
+                SessionProcessor.Instance.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetSRSCL(session, "10");
                 return;
             }
         }

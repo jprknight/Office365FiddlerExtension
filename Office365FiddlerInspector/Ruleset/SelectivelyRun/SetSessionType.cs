@@ -8,8 +8,9 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class SetSessionType : ActivationService
+    class SetSessionType
     {
+        internal Session session { get; set; }
 
         // Function to set Session Type column data.
         public void SetSessionTypeData(Session session)
@@ -37,7 +38,7 @@ namespace Office365FiddlerInspector.Ruleset
             if (session.fullUrl.Contains("WSSecurity"))
             {
                 session["X-SessionType"] = "Free/Busy";
-                Preferences.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetSTCL(this.session, "10");
             }
 
             if (session["X-SACL"] == "10" || session["X-STCL"] == "10" || session["X-SRSCL"] == "10")
@@ -48,7 +49,7 @@ namespace Office365FiddlerInspector.Ruleset
             if (session.fullUrl.Contains("GetUserAvailability"))
             {
                 session["X-SessionType"] = "Free/Busy";
-                Preferences.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetSTCL(this.session, "10");
             }
 
             if (session["X-SACL"] == "10" || session["X-STCL"] == "10" || session["X-SRSCL"] == "10")
@@ -59,7 +60,7 @@ namespace Office365FiddlerInspector.Ruleset
             if (session.utilFindInResponse("GetUserAvailability", false) > 1)
             {
                 session["X-SessionType"] = "Free/Busy";
-                Preferences.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetSTCL(this.session, "10");
             }
 
             if (session["X-SACL"] == "10" || session["X-STCL"] == "10" || session["X-SRSCL"] == "10")
@@ -71,7 +72,7 @@ namespace Office365FiddlerInspector.Ruleset
             if (session.fullUrl.Contains("outlook.office365.com/EWS"))
             {
                 session["X-SessionType"] = "Exchange Web Services";
-                Preferences.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetSTCL(this.session, "10");
             }
 
             if (session["X-SACL"] == "10" || session["X-STCL"] == "10" || session["X-SRSCL"] == "10")
@@ -83,7 +84,7 @@ namespace Office365FiddlerInspector.Ruleset
             if (session.fullUrl.Contains(".onmicrosoft.com") && (!(session.hostname.Contains("live.com"))))
             {
                 session["X-SessionType"] = "Office 365 Authentication";
-                Preferences.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetSTCL(this.session, "10");
             }
 
             if (session["X-SACL"] == "10" || session["X-STCL"] == "10" || session["X-SRSCL"] == "10")
@@ -94,7 +95,7 @@ namespace Office365FiddlerInspector.Ruleset
             if (session.fullUrl.Contains("outlook.office365.com"))
             {
                 session["X-SessionType"] = "Office 365";
-                Preferences.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetSTCL(this.session, "10");
             }
 
             if (session["X-SACL"] == "10" || session["X-STCL"] == "10" || session["X-SRSCL"] == "10")
@@ -105,7 +106,7 @@ namespace Office365FiddlerInspector.Ruleset
             if (session.fullUrl.Contains("outlook.office.com"))
             {
                 session["X-SessionType"] = "Office 365";
-                Preferences.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetSTCL(this.session, "10");
             }
 
             if (session["X-SACL"] == "10" || session["X-STCL"] == "10" || session["X-SRSCL"] == "10")
@@ -117,7 +118,7 @@ namespace Office365FiddlerInspector.Ruleset
             if (session.url.Contains("login.microsoftonline.com") || session.HostnameIs("login.microsoftonline.com"))
             {
                 session["X-SessionType"] = "Office 365 Authentication";
-                Preferences.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetSTCL(this.session, "10");
             }
 
             if (session["X-SACL"] == "10" || session["X-STCL"] == "10" || session["X-SRSCL"] == "10")
@@ -129,7 +130,7 @@ namespace Office365FiddlerInspector.Ruleset
             if (session.fullUrl.Contains("adfs/services/trust/mex"))
             {
                 session["X-SessionType"] = "ADFS Authentication";
-                Preferences.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetSTCL(this.session, "10");
             }
 
             if (session["X-SACL"] == "10" || session["X-STCL"] == "10" || session["X-SRSCL"] == "10")
@@ -141,7 +142,7 @@ namespace Office365FiddlerInspector.Ruleset
             if (session.LocalProcess.Contains("outlook"))
             {
                 session["X-SessionType"] = "Outlook";
-                Preferences.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetSTCL(this.session, "10");
             }
 
             if (session["X-SACL"] == "10" || session["X-STCL"] == "10" || session["X-SRSCL"] == "10")
@@ -153,7 +154,7 @@ namespace Office365FiddlerInspector.Ruleset
             if (session.LocalProcess.Contains("iexplore"))
             {
                 session["X-SessionType"] = "Internet Explorer";
-                Preferences.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetSTCL(this.session, "10");
             }
 
             if (session["X-SACL"] == "10" || session["X-STCL"] == "10" || session["X-SRSCL"] == "10")
@@ -165,7 +166,7 @@ namespace Office365FiddlerInspector.Ruleset
             if (session.LocalProcess.Contains("chrome"))
             {
                 session["X-SessionType"] = "Chrome";
-                Preferences.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetSTCL(this.session, "10");
             }
 
             if (session["X-SACL"] == "10" || session["X-STCL"] == "10" || session["X-SRSCL"] == "10")
@@ -177,7 +178,7 @@ namespace Office365FiddlerInspector.Ruleset
             if (session.LocalProcess.Contains("firefox"))
             {
                 session["X-SessionType"] = "Firefox";
-                Preferences.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetSTCL(this.session, "10");
             }
 
             if (session["X-SACL"] == "10" || session["X-STCL"] == "10" || session["X-SRSCL"] == "10")
@@ -189,7 +190,7 @@ namespace Office365FiddlerInspector.Ruleset
             if (session.LocalProcess.Contains("edge"))
             {
                 session["X-SessionType"] = "Edge";
-                Preferences.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetSTCL(this.session, "10");
             }
 
             if (session["X-SACL"] == "10" || session["X-STCL"] == "10" || session["X-SRSCL"] == "10")
@@ -201,7 +202,7 @@ namespace Office365FiddlerInspector.Ruleset
             if (session.LocalProcess.Contains("safari"))
             {
                 session["X-SessionType"] = "Safari";
-                Preferences.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetSTCL(this.session, "10");
             }
 
             if (session["X-SACL"] == "10" || session["X-STCL"] == "10" || session["X-SRSCL"] == "10")
@@ -223,7 +224,7 @@ namespace Office365FiddlerInspector.Ruleset
             session["X-ResponseComments"] = "The Office 365 Fiddler Extension does not yet have a way to classify this session."
                 + "<p>If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: "
                 + "<a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'>https://github.com/jprknight/Office365FiddlerExtension</a>.</p>";
-            Preferences.SetSTCL(session, "5");
+            SessionProcessor.Instance.SetSTCL(this.session, "5");
             
 
             /////////////////////////////
@@ -236,8 +237,8 @@ namespace Office365FiddlerInspector.Ruleset
             if ((session.LocalProcess == null) || (session.LocalProcess == ""))
             {
                 // Traffic has a null or blank local process value.
-                Preferences.SetProcess(session);
-                Preferences.SetSTCL(session, "10");
+                SessionProcessor.Instance.SetProcess(this.session);
+                SessionProcessor.Instance.SetSTCL(this.session, "10");
             }
             else
             {
@@ -254,9 +255,9 @@ namespace Office365FiddlerInspector.Ruleset
                 {
                     // Everything which is not detected as related to Exchange, Outlook or OWA in some way.
                     {
-                        Preferences.SetProcess(session);
+                        SessionProcessor.Instance.SetProcess(this.session);
                         session["X-SessionType"] = session["X-ProcessName"];
-                        Preferences.SetSTCL(session, "10");
+                        SessionProcessor.Instance.SetSTCL(this.session, "10");
                     }
                 }
             }

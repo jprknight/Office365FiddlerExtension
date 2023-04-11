@@ -8,11 +8,8 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class ServerThinkTimeTransitTime : ActivationService
+    class ServerThinkTimeTransitTime
     {
-        private static ServerThinkTimeTransitTime _instance;
-
-        public static ServerThinkTimeTransitTime Instance => _instance ?? (_instance = new ServerThinkTimeTransitTime());
 
         // Function to set Server Think Time and Transit Time for use within Inspector.
         public void SetServerThinkTimeTransitTime(Session session)

@@ -8,16 +8,12 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class CalculateSessionAge : ActivationService
+    class CalculateSessionAge
     {
-        private static CalculateSessionAge _instance;
-
-        public static CalculateSessionAge Instance => _instance ?? (_instance = new CalculateSessionAge());
 
         // Function to calculate session age on Inspector.
         public void SessionAge(Session session)
         {
-            #region CalculateSessionAge
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " Running CalculateSessionAge.");
 
             String TimeSpanDaysText;
@@ -89,8 +85,6 @@ namespace Office365FiddlerInspector.Ruleset
                 session["X-CalculatedSessionAge"] = "<p><b><span style='color:red'>Session collected more than 30 days ago</span></b>. "
                     + "Correlating with any backend server logs is <b><span style='color:red'>very likely impossible</span></b>. Many systems don't keep logs this long.</p>";
             }
-            #endregion
         }
-
     }
 }

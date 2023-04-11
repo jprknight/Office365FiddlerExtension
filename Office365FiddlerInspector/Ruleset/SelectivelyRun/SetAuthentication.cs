@@ -8,8 +8,9 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class SetAuthentication : ActivationService
+    class SetAuthentication
     {
+        internal Session session { get; set; }
 
         // Functions where Authentication column is populated and SAML parser code lives.
         public void SetAuthenticationData(Session session)
@@ -18,7 +19,7 @@ namespace Office365FiddlerInspector.Ruleset
 
             session["X-Office365AuthType"] = "";
 
-            Preferences.SetProcess(session);
+            SessionProcessor.Instance.SetProcess(this.session);
 
             // Logic check so we don't walk through the SAML Parser on every session.
             if (session.oRequest["Authorization"].Contains("Bearer") || session.oRequest["Authorization"].Contains("Basic")
@@ -30,7 +31,7 @@ namespace Office365FiddlerInspector.Ruleset
             else
             {
                 // 
-                SAMLParserFieldsNoData(session);
+                SAMLParserFieldsNoData(this.session);
                 // Change which control appears for this session on the Office365 Auth inspector tab.
                 session["X-Office365AuthType"] = "Office365Auth";
 
@@ -40,7 +41,7 @@ namespace Office365FiddlerInspector.Ruleset
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " No Auth Headers found in session.");
 
                 // Set SCCL to 10, stop any further session processing.
-                Preferences.SetSACL(session, "10");
+                SessionProcessor.Instance.SetSACL(this.session, "10");
 
                 return;
             }
@@ -310,8 +311,8 @@ namespace Office365FiddlerInspector.Ruleset
                     }
 
                     // Set SCCL to 10, stop any further session processing.
-                    Preferences.SetSACL(session, "10");
-                    Preferences.SetSTCL(session, "10");
+                    SessionProcessor.Instance.SetSACL(this.session, "10");
+                    SessionProcessor.Instance.SetSTCL(this.session, "10");
                 }
                 else
                 {
@@ -334,14 +335,14 @@ namespace Office365FiddlerInspector.Ruleset
                     session["X-AttributeNameImmutableID"] = "SAML token issued by third-party IDP. SAML response parser not running.";
 
                     // Set SCCL to 10, stop any further session processing.
-                    Preferences.SetSACL(session, "10");
+                    SessionProcessor.Instance.SetSACL(this.session, "10");
                 }
 
             }
             // Determine if Modern Authentication is enabled in session request.
             else if (session.oRequest["Authorization"] == "Bearer" || session.oRequest["Authorization"] == "Basic")
             {
-                SAMLParserFieldsNoData(session);
+                SAMLParserFieldsNoData(this.session);
 
                 // Change which control appears for this session on the Office365 Auth inspector tab.
                 session["X-Office365AuthType"] = "Office365Auth";
@@ -349,11 +350,11 @@ namespace Office365FiddlerInspector.Ruleset
                 // Looking for the following in a response body:
                 // x-ms-diagnostics: 4000000;reason="Flighting is not enabled for domain 'user@contoso.com'.";error_category="oauth_not_available"
 
-                int KeywordFourMillion = SearchSessionForWord(session, "4000000");
-                int KeywordFlighting = SearchSessionForWord(session, "Flighting");
-                int Keywordenabled = SearchSessionForWord(session, "enabled");
-                int Keyworddomain = SearchSessionForWord(session, "domain");
-                int Keywordoauth_not_available = SearchSessionForWord(session, "oauth_not_available");
+                int KeywordFourMillion = SearchSessionForWord(this.session, "4000000");
+                int KeywordFlighting = SearchSessionForWord(this.session, "Flighting");
+                int Keywordenabled = SearchSessionForWord(this.session, "enabled");
+                int Keyworddomain = SearchSessionForWord(this.session, "domain");
+                int Keywordoauth_not_available = SearchSessionForWord(this.session, "oauth_not_available");
 
                 // Check if all the above checks have a value of at least 1. 
                 // If they do, then the Office 365 workload (Exchange Online / Skype etc) is configured with Modern Authentication disabled.
@@ -377,7 +378,7 @@ namespace Office365FiddlerInspector.Ruleset
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " Modern Auth Disabled.");
 
                     // Set SCCL to 10, stop any further session processing.
-                    Preferences.SetSACL(session, "10");
+                    SessionProcessor.Instance.SetSACL(this.session, "10");
                 }
 
                 // Now get specific to find out what the client can do.
@@ -392,7 +393,7 @@ namespace Office365FiddlerInspector.Ruleset
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " Client Modern Auth.");
 
                     // Set SCCL to 10, stop any further session processing.
-                    Preferences.SetSACL(session, "10");
+                    SessionProcessor.Instance.SetSACL(this.session, "10");
                 }
                 // If the session request header Authorization equals Basic this is a Basic Auth capable client.
                 else if (session.oRequest["Authorization"] == "Basic")
@@ -408,7 +409,7 @@ namespace Office365FiddlerInspector.Ruleset
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " Outlook Basic Auth.");
 
                     // Set SCCL to 10, stop any further session processing.
-                    Preferences.SetSACL(session, "10");
+                    SessionProcessor.Instance.SetSACL(this.session, "10");
                 }
             }
             // Now we can check for Authorization headers which contain Bearer or Basic, signifying security tokens are being passed
@@ -417,7 +418,7 @@ namespace Office365FiddlerInspector.Ruleset
             // Bearer == Modern Authentication.
             else if (session.oRequest["Authorization"].Contains("Bearer"))
             {
-                SAMLParserFieldsNoData(session);
+                SAMLParserFieldsNoData(this.session);
 
                 session["X-Authentication"] = "Modern Auth Token";
 
@@ -426,12 +427,12 @@ namespace Office365FiddlerInspector.Ruleset
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " Modern Auth Token.");
 
                 // Set SCCL to 10, stop any further session processing.
-                Preferences.SetSACL(session, "10");
+                SessionProcessor.Instance.SetSACL(this.session, "10");
             }
             // Basic == Basic Authentication.
             else if (session.oRequest["Authorization"].Contains("Basic"))
             {
-                SAMLParserFieldsNoData(session);
+                SAMLParserFieldsNoData(this.session);
 
                 session["X-Authentication"] = "Basic Auth Token";
 
@@ -441,12 +442,12 @@ namespace Office365FiddlerInspector.Ruleset
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " Basic Auth Token.");
 
                 // Set SCCL to 10, stop any further session processing.
-                Preferences.SetSACL(session, "10");
+                SessionProcessor.Instance.SetSACL(this.session, "10");
             }
             // ADFS session with no other defining features yet classified.
             else
             {
-                SAMLParserFieldsNoData(session);
+                SAMLParserFieldsNoData(this.session);
 
                 session["X-Authentication"] = "ADFS";
 
@@ -455,7 +456,7 @@ namespace Office365FiddlerInspector.Ruleset
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " ADFS.");
 
                 // Set SCCL to 10, stop any further session processing.
-                Preferences.SetSACL(session, "10");
+                SessionProcessor.Instance.SetSACL(this.session, "10");
             }
 
         }

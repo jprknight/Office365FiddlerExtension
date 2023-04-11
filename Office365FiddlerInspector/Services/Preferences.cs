@@ -115,7 +115,6 @@ namespace Office365FiddlerInspector.Services
             set { _DisableWebCalls = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.NeverWebCall", value); }
         }
 
-
         // Colour codes for sessions. Softer tones, easier on the eye than standard red, orange and green.
         public static String HTMLColourBlue => "#81BEF7";
         public static String HTMLColourGreen => "#81F7BA";
@@ -123,80 +122,5 @@ namespace Office365FiddlerInspector.Services
         public static String HTMLColourGrey => "#BDBDBD";
         public static String HTMLColourOrange =>  "#F59758";
 
-        private static int iSACL;
-
-        // Session Type Confidence Level.
-        private static int iSTCL;
-
-        // Session Response Server Confidence Level.
-        private static int iSRSCL;
-
-        public static void GetSACL(Session session)
-        {
-            // Avoid null object exceptions by setting this session flag to something
-            // rather than nothing.
-            if (session["X-SACL"] == null || session["X-SACL"] == "")
-            {
-                session["X-SACL"] = "00";
-            }
-            iSACL = int.Parse(session["X-SACL"]);
-        }
-
-        // Set Session Authentication Confidence Level.
-        public static void SetSACL(Session session, string SACL)
-        {
-            session["X-SACL"] = SACL;
-        }
-
-        // Get Session Type Confidence Level.
-        public static void GetSTCL(Session session)
-        {
-            // Avoid null object exceptions by setting this session flag to something
-            // rather than nothing.
-            if (session["X-STCL"] == null || session["X-STCL"] == "")
-            {
-                session["X-STCL"] = "00";
-            }
-            iSTCL = int.Parse(session["X-STCL"]);
-        }
-
-        // Set Session Type Confidence Level.
-        public static void SetSTCL(Session session, string STCL)
-        {
-            session["X-STCL"] = STCL;
-        }
-
-        // Get Session Response Server Confidence Level.
-        public static void GetSRSCL(Session session)
-        {
-            // Avoid null object exceptions by setting this session flag to something
-            // rather than nothing.
-            if (session["X-SRSCL"] == null || session["X-SRSCL"] == "")
-            {
-                session["X-SRSCL"] = "00";
-            }
-            iSRSCL = int.Parse(session["X-SRSCL"]);
-        }
-
-        // Set Session Response Server Confidence Level.
-        public static void SetSRSCL(Session session, string SRSCL)
-        {
-            session["X-SRSCL"] = SRSCL;
-        }
-
-        public static void SetProcess(Session session)
-        {
-            // Set process name, split and exclude port used.
-            if (session.LocalProcess != String.Empty)
-            {
-                string[] ProcessName = session.LocalProcess.Split(':');
-                session["X-ProcessName"] = ProcessName[0];
-            }
-            // No local process to split.
-            else
-            {
-                session["X-ProcessName"] = "Remote Capture";
-            }
-        }
     }
 }

@@ -8,24 +8,25 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class HTTP_0 : ActivationService
+    class HTTP_0
     {
-        private static HTTP_0 _instance;
+        //private static HTTP_0 _instance;
 
-        public static HTTP_0 Instance => _instance ?? (_instance = new HTTP_0());
+        //public static HTTP_0 Instance => _instance ?? (_instance = new HTTP_0());
 
+        internal Session session { get; set; }
         public void HTTP_0_NoSessionResponse(Session session)
         {
             /////////////////////////////
             //
             //  HTTP 0: No Response.
-            session["ui-backcolor"] = Preferences.HTMLColourRed;
-            session["ui-color"] = "black";
-            session["X-SessionType"] = "!NO RESPONSE!";
+            this.session["ui-backcolor"] = Preferences.HTMLColourRed;
+            this.session["ui-color"] = "black";
+            this.session["X-SessionType"] = "!NO RESPONSE!";
 
-            session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 0 - No Response</span></b>";
+            this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 0 - No Response</span></b>";
 
-            session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are "
+            this.session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are "
                 + "troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could "
                 + "be cause for concern."
                 + "<p>If you are not seeing expected client traffic, consider if network traces should be collected. Review if there is an underlying "
@@ -34,12 +35,12 @@ namespace Office365FiddlerInspector.Ruleset
 
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " HTTP 0 No response");
 
-            session["X-ResponseCodeDescription"] = "0 No Response";
+            this.session["X-ResponseCodeDescription"] = "0 No Response";
 
             // This actually isn't very useful, let further processing try to pick up something.
-            Preferences.SetSACL(session, "5");
-            Preferences.SetSTCL(session, "5");
-            Preferences.SetSRSCL(session, "5");
+            SessionProcessor.Instance.SetSACL(this.session, "5");
+            SessionProcessor.Instance.SetSTCL(this.session, "5");
+            SessionProcessor.Instance.SetSRSCL(this.session, "5");
         }   
     }
 }
