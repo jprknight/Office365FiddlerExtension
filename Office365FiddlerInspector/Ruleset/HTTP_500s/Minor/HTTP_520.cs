@@ -8,22 +8,25 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class HTTP_520
+    class HTTP_520 : ActivationService
     {
-        internal Session session { get; set; }
+        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+
         public void HTTP_520_Web_Server_Returned_an_Unknown_Error(Session session)
         {
-            session["X-ResponseAlert"] = "HTTP 520 Cloudflare Web Server Returned an Unknown Error.";
-            session["X-ResponseComments"] = Preferences.GetStrNoKnownIssue();
+            this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " HTTP 520 Cloudflare Web Server Returned an Unknown Error");
+            this.session["X-ResponseAlert"] = "HTTP 520 Cloudflare Web Server Returned an Unknown Error.";
+            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
 
-            session["X-ResponseCodeDescription"] = "520 Cloudflare Web Server Returned an Unknown Error";
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 520 Cloudflare Web Server Returned an Unknown Error");
+
+            this.session["X-ResponseCodeDescription"] = "520 Cloudflare Web Server Returned an Unknown Error";
 
             // Nothing meaningful here, let further processing try to pick up something.
-            SessionProcessor.Instance.SetSACL(this.session, "0");
-            SessionProcessor.Instance.SetSTCL(this.session, "0");
-            SessionProcessor.Instance.SetSRSCL(this.session, "0");
+            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

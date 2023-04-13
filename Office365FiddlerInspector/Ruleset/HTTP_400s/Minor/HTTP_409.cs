@@ -8,22 +8,25 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class HTTP_409
+    class HTTP_409 : ActivationService
     {
-        internal Session session { get; set; }
+        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+
         public void HTTP_409_Conflict(Session session)
         {
-            session["X-ResponseAlert"] = "HTTP 409 Conflict.";
-            session["X-ResponseComments"] = Preferences.GetStrNoKnownIssue();
+            this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " HTTP 409 Conflict.");
+            this.session["X-ResponseAlert"] = "HTTP 409 Conflict.";
+            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
 
-            session["X-ResponseCodeDescription"] = "409 Conflict";
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 409 Conflict.");
+
+            this.session["X-ResponseCodeDescription"] = "409 Conflict";
 
             // Nothing meaningful here, let further processing try to pick up something.
-            SessionProcessor.Instance.SetSACL(this.session, "0");
-            SessionProcessor.Instance.SetSTCL(this.session, "0");
-            SessionProcessor.Instance.SetSRSCL(this.session, "0");
+            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

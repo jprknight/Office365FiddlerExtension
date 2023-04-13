@@ -8,48 +8,43 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class HTTP_302
+    class HTTP_302 : ActivationService
     {
-        internal Session session { get; set; }
+        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+
         public void HTTP_302_Redirect(Session session)
         {
-            /////////////////////////////
-            //
-            //  HTTP 302: Found / Redirect.
-            //            
+            this.session = session;
+
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 302 Found / Redirect.");
+
+            getSetSessionFlags.SetUIBackColour(this.session, "Green");
+            getSetSessionFlags.SetUITextColour(this.session, "Black");
+
+            getSetSessionFlags.SetResponseCodeDescription(this.session, "302 Redirect / Found");
 
             // Exchange Autodiscover redirects.
-            if (session.uriContains("autodiscover"))
+            if (this.session.uriContains("autodiscover"))
             {
-                session["ui-backcolor"] = Preferences.HTMLColourGreen;
-                session["ui-color"] = "black";
-                session["X-SessionType"] = "Autodiscover Redirect";
-
-                session["X-ResponseAlert"] = "<b><span style='color:green'>Exchange Autodiscover redirect.</span></b>";
-                session["X-ResponseComments"] = "This type of traffic is typically an Autodiscover redirect response from Exchange On-Premise "
-                    + "sending the Outlook client to connect to Exchange Online.";
+                getSetSessionFlags.SetSessionType(this.session, "Autodiscover Redirect");
+                getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:green'>Exchange Autodiscover redirect.</span></b>");
+                getSetSessionFlags.SetXResponseComments(this.session, "This type of traffic is typically an Autodiscover redirect response from "
+                    + "Exchange On-Premise sending the Outlook client to connect to Exchange Online.");
             }
             // All other HTTP 302 Redirects.
             else
             {
-                session["ui-backcolor"] = Preferences.HTMLColourGreen;
-                session["ui-color"] = "black";
-                session["X-SessionType"] = "Redirect";
-
-                session["X-ResponseAlert"] = "<b><span style='color:green'>Redirect.</span></b>";
-                session["X-ResponseComments"] = "Redirects within Office 365 client applications or servers are not unusual. "
+                getSetSessionFlags.SetSessionType(this.session, "Redirect");
+                getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:green'>Redirect.</span></b>");
+                getSetSessionFlags.SetXResponseComments(this.session, "Redirects within Office 365 client applications or servers are not unusual. "
                     + "The only potential downfall is too many of them. However if this happens you would normally see a too many "
-                    + "redirects exception thrown as a server response.";
+                    + "redirects exception thrown as a server response.");
             }
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " HTTP 302 Found / Redirect.");
-
-            session["X-ResponseCodeDescription"] = "302 Found";
-
             // Possible something more to be found, let further processing try to pick up something.
-            SessionProcessor.Instance.SetSACL(this.session, "5");
-            SessionProcessor.Instance.SetSTCL(this.session, "5");
-            SessionProcessor.Instance.SetSRSCL(this.session, "5");
+            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "5");
+            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "5");
+            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "5");
         }
     }
 }

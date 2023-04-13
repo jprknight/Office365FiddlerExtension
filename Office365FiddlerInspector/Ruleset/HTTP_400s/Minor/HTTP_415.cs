@@ -8,23 +8,25 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class HTTP_415
+    class HTTP_415 : ActivationService
     {
-        internal Session session { get; set; }
+        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+
         public void HTTP_415_UnSupported_Media_Type(Session session)
         {
+            this.session = session;
 
-            session["X-ResponseAlert"] = "HTTP 415 Unsupported Media Type (RFC 7231).";
-            session["X-ResponseComments"] = Preferences.GetStrNoKnownIssue();
+            this.session["X-ResponseAlert"] = "HTTP 415 Unsupported Media Type (RFC 7231).";
+            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " HTTP 415 Unsupported Media Type (RFC 7231).");
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 415 Unsupported Media Type (RFC 7231).");
 
-            session["X-ResponseCodeDescription"] = "415 Unsupported Media Type (RFC 7231)";
+            this.session["X-ResponseCodeDescription"] = "415 Unsupported Media Type (RFC 7231)";
 
             // Nothing meaningful here, let further processing try to pick up something.
-            SessionProcessor.Instance.SetSACL(this.session, "0");
-            SessionProcessor.Instance.SetSTCL(this.session, "0");
-            SessionProcessor.Instance.SetSRSCL(this.session, "0");
+            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

@@ -8,22 +8,25 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class HTTP_416
+    class HTTP_416 : ActivationService
     {
-        internal Session session { get; set; }
+        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+
         public void HTTP_416_Range_Not_Satisfiable(Session session)
         {
-            session["X-ResponseAlert"] = "HTTP 416 Range Not Satisfiable (RFC 7233).";
-            session["X-ResponseComments"] = Preferences.GetStrNoKnownIssue();
+            this.session = session;
 
-            session["X-ResponseCodeDescription"] = "416 Range Not Satisfiable (RFC 7233)";
+            this.session["X-ResponseAlert"] = "HTTP 416 Range Not Satisfiable (RFC 7233).";
+            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " HTTP 416 Range Not Satisfiable (RFC 7233).");
+            this.session["X-ResponseCodeDescription"] = "416 Range Not Satisfiable (RFC 7233)";
+
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 416 Range Not Satisfiable (RFC 7233).");
 
             // Nothing meaningful here, let further processing try to pick up something.
-            SessionProcessor.Instance.SetSACL(this.session, "0");
-            SessionProcessor.Instance.SetSTCL(this.session, "0");
-            SessionProcessor.Instance.SetSRSCL(this.session, "0");
+            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

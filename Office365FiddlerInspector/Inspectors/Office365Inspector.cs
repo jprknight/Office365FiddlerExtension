@@ -206,6 +206,8 @@ namespace Office365FiddlerInspector.Inspectors
         /// </summary>
         /// <param name="_session"></param>
         /// <returns></returns>
+        // public async Task ParseHTTPResponse(Session session)
+        // REVIEW THIS - AWAIT. Can this be done or would it break things.
         public async Task ParseHTTPResponse(Session session)
         {
             try

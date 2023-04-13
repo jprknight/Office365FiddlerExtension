@@ -8,22 +8,25 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class HTTP_510
+    class HTTP_510 : ActivationService
     {
-        internal Session session { get; set; }
+        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+
         public void HTTP_510_Not_Extended(Session session)
         {
-            session["X-ResponseAlert"] = "HTTP 510 Not Extended (RFC 2774).";
-            session["X-ResponseComments"] = Preferences.GetStrNoKnownIssue();
+            this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " HTTP 510 Not Extended (RFC 2774).");
+            this.session["X-ResponseAlert"] = "HTTP 510 Not Extended (RFC 2774).";
+            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
 
-            session["X-ResponseCodeDescription"] = "510 Not Extended (RFC 2774)";
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 510 Not Extended (RFC 2774).");
+
+            this.session["X-ResponseCodeDescription"] = "510 Not Extended (RFC 2774)";
 
             // Nothing meaningful here, let further processing try to pick up something.
-            SessionProcessor.Instance.SetSACL(this.session, "0");
-            SessionProcessor.Instance.SetSTCL(this.session, "0");
-            SessionProcessor.Instance.SetSRSCL(this.session, "0");
+            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

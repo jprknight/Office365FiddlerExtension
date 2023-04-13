@@ -8,22 +8,25 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class HTTP_495
+    class HTTP_495 : ActivationService
     {
-        internal Session session { get; set; }
+        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+
         public void HTTP_495_SSL_Certificate_Error(Session session)
         {
-            session["X-ResponseAlert"] = "HTTP 495 nginx SSL Certificate Error.";
-            session["X-ResponseComments"] = Preferences.GetStrNoKnownIssue();
+            this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " HTTP 495 nginx SSL Certificate Error");
+            this.session["X-ResponseAlert"] = "HTTP 495 nginx SSL Certificate Error.";
+            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
 
-            session["X-ResponseCodeDescription"] = "495 nginx SSL Certificate Error";
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 495 nginx SSL Certificate Error");
+
+            this.session["X-ResponseCodeDescription"] = "495 nginx SSL Certificate Error";
 
             // Nothing meaningful here, let further processing try to pick up something.
-            SessionProcessor.Instance.SetSACL(this.session, "0");
-            SessionProcessor.Instance.SetSTCL(this.session, "0");
-            SessionProcessor.Instance.SetSRSCL(this.session, "0");
+            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

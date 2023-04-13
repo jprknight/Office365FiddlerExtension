@@ -13,26 +13,9 @@ namespace Office365FiddlerInspector
 
         private bool IsInitialized { get; set; }
 
-        //////////////////////////
-        // Session Classification Confidence Levels.
-        //
-
-        // Session Authentication Confidence Level.
-        private int iSACL;
-
-        // Session Type Confidence Level.
-        private int iSTCL;
-
-        // Session Response Server Confidence Level.
-        private int iSRSCL;
-
-        // How are session classifications used?
-        // Low - 0 : Session classification has low confidence, any and all subsequent functions should be run to
-        // further attempt to classify the session.
-        // Mid - 5 : Session classification has some confidence, but overriding functions should be run just in case.
-        // High - 10 : Session classification has high level of confidence and any overriding functions should not be run.
-
         public SessionProcessor() { }
+
+        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
 
         public void Initialize()
         {
@@ -81,31 +64,31 @@ namespace Office365FiddlerInspector
 
             foreach (var session in e.arrSessions)
             {
-                this.session.oFlags.Remove("UI-BACKCOLOR");
-                this.session.oFlags.Remove("UI-COLOR");
-                this.session.oFlags.Remove("X-SESSIONTYPE");
-                this.session.oFlags.Remove("X-ATTRIBUTENAMEIMMUTABLEID");
-                this.session.oFlags.Remove("X-ATTRIBUTENAMEUPN");
-                this.session.oFlags.Remove("X-AUTHENTICATION");
-                this.session.oFlags.Remove("X-AUTHENTICATIONDESC");
-                this.session.oFlags.Remove("X-ELAPSEDTIME");
-                this.session.oFlags.Remove("X-RESPONSESERVER");
-                this.session.oFlags.Remove("X-ISSUER");
-                this.session.oFlags.Remove("X-NAMEIDENTIFIERFORMAT");
-                this.session.oFlags.Remove("X-OFFICE365AUTHTYPE");
-                this.session.oFlags.Remove("X-PROCESSNAME");
-                this.session.oFlags.Remove("X-RESPONSEALERT");
-                this.session.oFlags.Remove("X-RESPONSECOMMENTS");
-                this.session.oFlags.Remove("X-RESPONSECODEDESCRIPTION");
-                this.session.oFlags.Remove("X-DATAAGE");
-                this.session.oFlags.Remove("X-DATACOLLECTED");
-                this.session.oFlags.Remove("X-SERVERTHINKTIME");
-                this.session.oFlags.Remove("X-TRANSITTIME");
-                this.session.oFlags.Remove("X-CALCULATEDSESSIONAGE");
-                this.session.oFlags.Remove("X-PROCESSINFO");
-                this.session.oFlags.Remove("X-SACL");
-                this.session.oFlags.Remove("X-STCL");
-                this.session.oFlags.Remove("X-SRSCL");
+                session.oFlags.Remove("UI-BACKCOLOR");
+                session.oFlags.Remove("UI-COLOR");
+                session.oFlags.Remove("X-SESSIONTYPE");
+                session.oFlags.Remove("X-ATTRIBUTENAMEIMMUTABLEID");
+                session.oFlags.Remove("X-ATTRIBUTENAMEUPN");
+                session.oFlags.Remove("X-AUTHENTICATION");
+                session.oFlags.Remove("X-AUTHENTICATIONDESC");
+                session.oFlags.Remove("X-ELAPSEDTIME");
+                session.oFlags.Remove("X-RESPONSESERVER");
+                session.oFlags.Remove("X-ISSUER");
+                session.oFlags.Remove("X-NAMEIDENTIFIERFORMAT");
+                session.oFlags.Remove("X-OFFICE365AUTHTYPE");
+                session.oFlags.Remove("X-PROCESSNAME");
+                session.oFlags.Remove("X-RESPONSEALERT");
+                session.oFlags.Remove("X-RESPONSECOMMENTS");
+                session.oFlags.Remove("X-RESPONSECODEDESCRIPTION");
+                session.oFlags.Remove("X-DATAAGE");
+                session.oFlags.Remove("X-DATACOLLECTED");
+                session.oFlags.Remove("X-SERVERTHINKTIME");
+                session.oFlags.Remove("X-TRANSITTIME");
+                session.oFlags.Remove("X-CALCULATEDSESSIONAGE");
+                session.oFlags.Remove("X-PROCESSINFO");
+                session.oFlags.Remove("X-SACL");
+                session.oFlags.Remove("X-STCL");
+                session.oFlags.Remove("X-SRSCL");
             }
 
             FiddlerApplication.UI.lvSessions.EndUpdate();
@@ -150,8 +133,6 @@ namespace Office365FiddlerInspector
             ///
             /////////////////////////////
 
-//            this.session = session;
-
             // This wasn't a popular decision. Enabling live session processing again, even though it's known TLS and other types of
             // detections may not work 100% when doing live trace analysis.
 
@@ -171,10 +152,10 @@ namespace Office365FiddlerInspector
             // Always run these functions on every session.
 
             // Broad logic checks on sessions regardless of response code.
-            BroadLogicChecks broadLogiccChecks = new BroadLogicChecks();
-            broadLogiccChecks.FiddlerUpdateSessions(this.session);
-            broadLogiccChecks.ConnectTunnelSessions(this.session);
-            broadLogiccChecks.ApacheAutodiscover(this.session);
+            BroadLogicChecks broadLogicChecks = new BroadLogicChecks();
+            broadLogicChecks.FiddlerUpdateSessions(this.session);
+            broadLogicChecks.ConnectTunnelSessions(this.session);
+            broadLogicChecks.ApacheAutodiscover(this.session);
 
             // Calculate Session Age for inspector with HTML mark-up.
             CalculateSessionAge calculateSessionAge = new CalculateSessionAge();
@@ -193,18 +174,16 @@ namespace Office365FiddlerInspector
             ///
             // From here on out only run functions where there isn't a high level of confidence
             // on session classification.
-            GetSACL(this.session);
-            GetSTCL(this.session);
-            GetSRSCL(this.session);
-            if (iSACL < 10 || iSTCL < 10 || iSTCL < 10)
+            if (getSetSessionFlags.GetSessionAuthenticationConfidenceLevel(this.session) < 10 ||
+                getSetSessionFlags.GetSessionTypeConfidenceLevel(this.session) < 10 ||
+                getSetSessionFlags.GetSessionResponseServerConfidenceLevel(this.session) < 10)
             {
                 // Response code based logic. This is the big one.
                 Instance.ResponseCodeLogic(this.session);
             }
 
             // If the session does not already have a high auth classification confidence, run.
-            GetSACL(this.session);
-            if (iSACL < 10)
+            if (getSetSessionFlags.GetSessionAuthenticationConfidenceLevel(this.session) < 10)
             {
                 // Set Authentication column data and SAML Response Parser for inspector.
                 SetAuthentication setAuthentication = new SetAuthentication();
@@ -212,8 +191,7 @@ namespace Office365FiddlerInspector
             }
 
             // If the session does not already have a high session type classification confidence, run.
-            GetSTCL(this.session);
-            if (iSTCL < 10)
+            if (getSetSessionFlags.GetSessionTypeConfidenceLevel(this.session) < 10)
             {
                 // If SSCL is low run Session Type override function.
                 SetSessionType setSessionType = new SetSessionType();
@@ -221,8 +199,7 @@ namespace Office365FiddlerInspector
             }
 
             // If the session does not already have a high response server classification confidence, run.
-            GetSRSCL(this.session);
-            if (iSRSCL < 10)
+            if (getSetSessionFlags.GetSessionResponseServerConfidenceLevel(this.session) < 10)
             {
                 // Set Response Server column data.
                 SetResponseServer setResponseServer = new SetResponseServer();
@@ -234,10 +211,9 @@ namespace Office365FiddlerInspector
             // In relatively few cases has roundtrip time been highlighted as an issue by Fiddler alone.
             // So this is the last function to run after all other logic has been exhausted.
             // Typically network traces are used to validate the underlying network connectivity.
-            GetSACL(this.session);
-            GetSTCL(this.session);
-            GetSRSCL(this.session);
-            if (iSACL < 10 || iSTCL < 10 || iSTCL < 10)
+            if (getSetSessionFlags.GetSessionAuthenticationConfidenceLevel(this.session) < 10 ||
+                getSetSessionFlags.GetSessionResponseServerConfidenceLevel(this.session) < 10 ||
+                getSetSessionFlags.GetSessionTypeConfidenceLevel(this.session) < 10)
             {
                 SetLongRunningSessions setLongRunningSessions = new SetLongRunningSessions();
                 setLongRunningSessions.SetLongRunningSessionsData(this.session);
@@ -268,77 +244,77 @@ namespace Office365FiddlerInspector
 
                     http_200.HTTP_200_ClientAccessRule(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_200.HTTP_200_Outlook_Mapi(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_200.HTTP_200_Outlook_RPC(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_200.HTTP_200_Outlook_NSPI(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_200.HTTP_200_OnPremise_AutoDiscover_Redirect(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_200.HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_200.HTTP_200_EXO_M365_AutoDiscover(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_200.HTTP_200_Unified_Groups_Settings(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_200.HTTP_200_3S_Suggestions(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_200.HTTP_200_REST_People_Request(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_200.HTTP_200_Any_Other_Exchange_EWS(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
@@ -429,21 +405,21 @@ namespace Office365FiddlerInspector
                     HTTP_401 http_401 = new HTTP_401();
                     http_401.HTTP_401_Exchange_Online_AutoDiscover(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_401.HTTP_401_Exchange_OnPremise_AutoDiscover(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_401.HTTP_401_EWS(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
@@ -623,21 +599,21 @@ namespace Office365FiddlerInspector
                     HTTP_500 http_500 = new HTTP_500();
                     http_500.HTTP_500_Internal_Server_Error_Repeating_Redirects(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_500.HTTP_500_Internal_Server_Error_Impersonate_User_Denied(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_500.HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
@@ -652,35 +628,35 @@ namespace Office365FiddlerInspector
                     HTTP_502 http_502 = new HTTP_502();
                     http_502.HTTP_502_Bad_Gateway_Telemetry_False_Positive(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_502.HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_502.HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_502.HTTP_502_Bad_Gateway_Vanity_Domain_M365_AutoDiscover_False_Positive(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     http_502.HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
@@ -691,7 +667,7 @@ namespace Office365FiddlerInspector
                     HTTP_503 http_503 = new HTTP_503();
                     http_503.HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable(this.session);
 
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
@@ -701,12 +677,12 @@ namespace Office365FiddlerInspector
                 case 504:
                     HTTP_504 http_504 = new HTTP_504();
                     http_504.HTTP_504_Gateway_Timeout_Internet_Access_Blocked(this.session);
-                    
-                    if (this.session["X-SACL"] == "10" || this.session["X-STCL"] == "10" || this.session["X-SRSCL"] == "10")
+
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
-                    
+
                     http_504.HTTP_504_Gateway_Timeout_Anything_Else(this.session);
                     break;
                 case 505:
@@ -786,100 +762,24 @@ namespace Office365FiddlerInspector
                     HTTP_598 http_598 = new HTTP_598();
                     http_598.HTTP_598_Network_Read_Timeout_Error(this.session);
                     break;
-                /////////////////////////////
-                // Fallen into default, so undefined in the extension.
-                // Mark the session as such.
                 default:
-                    // Commented out setting colours on sessions not recognised.
-                    // Find in Fiddler will highlight sessions as yellow, so this would make reviewing find results difficult.
-                    //this.session["ui-backcolor"] = "Yellow";
-                    //this.session["ui-color"] = "black";
-                    this.session["X-SessionType"] = "Undefined";
-
-                    this.session["X-ResponseAlert"] = "Undefined.";
-                    this.session["X-ResponseComments"] = "No specific information on this session in the Office 365 Fiddler Extension.<br />"
-                        + Preferences.GetStrNoKnownIssue();
-
+                    // Not setting colours on sessions not recognised.
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Session undefined in extension.");
 
-                    this.session["X-ResponseCodeDescription"] = "Defaulted. HTTP Response Code undefined.";
+                    getSetSessionFlags.SetUIBackColour(this.session, "Gray");
+                    getSetSessionFlags.SetUITextColour(this.session, "Black");
+
+                    getSetSessionFlags.SetSessionType(this.session, "Undefined");
+                    getSetSessionFlags.SetXResponseAlert(this.session, "Undefined");
+                    getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
+
+                    getSetSessionFlags.SetResponseCodeDescription(this.session, "Defaulted. HTTP Response Code undefined.");
 
                     // Nothing meaningful here, let further processing try to pick up something.
-                    SetSACL(this.session, "0");
-                    SetSTCL(this.session, "0");
-                    SetSRSCL(this.session, "0");
-
+                    getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+                    getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
+                    getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
                     break;
-                    //
-                    /////////////////////////////
-            }
-        }
-
-        public void GetSACL(Session session)
-        {
-            // Avoid null object exceptions by setting this session flag to something
-            // rather than nothing.
-            if (this.session["X-SACL"] == null || this.session["X-SACL"] == "")
-            {
-                this.session["X-SACL"] = "00";
-            }
-            iSACL = int.Parse(this.session["X-SACL"]);
-        }
-
-        // Set Session Authentication Confidence Level.
-        public void SetSACL(Session session, string SACL)
-        {
-            this.session["X-SACL"] = SACL;
-        }
-
-        // Get Session Type Confidence Level.
-        public void GetSTCL(Session session)
-        {
-            // Avoid null object exceptions by setting this session flag to something
-            // rather than nothing.
-            if (this.session["X-STCL"] == null || this.session["X-STCL"] == "")
-            {
-                this.session["X-STCL"] = "00";
-            }
-            iSTCL = int.Parse(session["X-STCL"]);
-        }
-
-        // Set Session Type Confidence Level.
-        public void SetSTCL(Session session, string STCL)
-        {
-            this.session["X-STCL"] = STCL;
-        }
-
-        // Get Session Response Server Confidence Level.
-        public void GetSRSCL(Session session)
-        {
-            // Avoid null object exceptions by setting this session flag to something
-            // rather than nothing.
-            if (this.session["X-SRSCL"] == null || this.session["X-SRSCL"] == "")
-            {
-                this.session["X-SRSCL"] = "00";
-            }
-            iSRSCL = int.Parse(this.session["X-SRSCL"]);
-        }
-
-        // Set Session Response Server Confidence Level.
-        public void SetSRSCL(Session session, string SRSCL)
-        {
-            session["X-SRSCL"] = SRSCL;
-        }
-
-        public void SetProcess(Session session)
-        {
-            // Set process name, split and exclude port used.
-            if (session.LocalProcess != String.Empty)
-            {
-                string[] ProcessName = session.LocalProcess.Split(':');
-                session["X-ProcessName"] = ProcessName[0];
-            }
-            // No local process to split.
-            else
-            {
-                session["X-ProcessName"] = "Remote Capture";
             }
         }
     }

@@ -8,23 +8,28 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class HTTP_306
+    class HTTP_306 : ActivationService
     {
-        internal Session session { get; set; }
+        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
         public void HTTP_306_Switch_Proxy(Session session)
         {
+            this.session = session;
 
-            session["X-ResponseAlert"] = "HTTP 306 Switch Proxy";
-            session["X-ResponseComments"] = Preferences.GetStrNoKnownIssue();
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 306 Switch Proxy.");
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " HTTP 306 Switch Proxy.");
+            // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
+            getSetSessionFlags.SetUIBackColour(this.session, "Gray");
+            getSetSessionFlags.SetUITextColour(this.session, "Black");
 
-            session["X-ResponseCodeDescription"] = "306 Switch Proxy";
+            getSetSessionFlags.SetResponseCodeDescription(this.session, "306 Switch Proxy");
+
+            getSetSessionFlags.SetXResponseAlert(this.session, "HTTP 306 Switch Proxy");
+            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
-            SessionProcessor.Instance.SetSACL(this.session, "0");
-            SessionProcessor.Instance.SetSTCL(this.session, "0");
-            SessionProcessor.Instance.SetSRSCL(this.session, "0");
+            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

@@ -8,11 +8,14 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class HTTP_503
+    class HTTP_503 : ActivationService
     {
-        internal Session session { get; set; }
+        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+
         public void HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable(Session session)
         {
+            this.session = session;
+
             /////////////////////////////
             //
             //  HTTP 503: SERVICE UNAVAILABLE.
@@ -42,16 +45,16 @@ namespace Office365FiddlerInspector.Ruleset
             wordCount = matchQuery503.Count();
             if (wordCount > 0)
             {
-                session["ui-backcolor"] = Preferences.HTMLColourRed;
-                session["ui-color"] = "black";
-                session["X-SessionType"] = "***FederatedSTSUnreachable***";
+                this.session["ui-backcolor"] = Preferences.HTMLColourRed;
+                this.session["ui-color"] = "black";
+                this.session["X-SessionType"] = "***FederatedSTSUnreachable***";
 
-                session["X-ResponseCodeDescription"] = "503 Federation Service Unavailable";
+                this.session["X-ResponseCodeDescription"] = "503 Federation Service Unavailable";
 
-                string RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=" + session.oRequest["X-User-Identity"] + "&xml=1";
+                string RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=" + this.session.oRequest["X-User-Identity"] + "&xml=1";
 
-                session["X-ResponseAlert"] = "<b><span style='color:red'>FederatedSTSUnreachable</span></b>";
-                session["X-ResponseComments"] = "<b><span style='color:red'>HTTP 503: FederatedSTSUnreachable</span></b>."
+                this.session["X-ResponseAlert"] = "<b><span style='color:red'>FederatedSTSUnreachable</span></b>";
+                this.session["X-ResponseComments"] = "<b><span style='color:red'>HTTP 503: FederatedSTSUnreachable</span></b>."
                     + "<b><span style='color:red'>The fedeation service is unreachable or unavailable</span></b>."
                     + "<p><b><span style='color:red'>Troubleshoot this issue first before doing anything else.</span></b></p>"
                     + "<p>Check the Raw tab for additional details.</p>"
@@ -66,37 +69,39 @@ namespace Office365FiddlerInspector.Ruleset
                     + "<p>If however you get the expected responses, this <b>does not neccessarily mean the federation service / everything authentication is healthy</b>. "
                     + "Further investigation is advised. You could try hitting these endpoints a few times and see if you get an intermittent failure.</p>";
 
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " HTTP 503 Service Unavailable. FederatedStsUnreachable in response body!");
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 503 Service Unavailable. FederatedStsUnreachable in response body!");
 
                 // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
-                SessionProcessor.Instance.SetSACL(this.session, "5");
-                SessionProcessor.Instance.SetSTCL(this.session, "10");
-                SessionProcessor.Instance.SetSRSCL(this.session, "5");
+                getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "5");
+                getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "10");
+                getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "5");
             }
         }
 
         public void HTTP_503_Service_Unavailable_Everything_Else(Session session)
         {
+            this.session = session;
+
             /////////////////////////////
             //
             // 503.99. Everything else.
             //
-            session["ui-backcolor"] = Preferences.HTMLColourRed;
-            session["ui-color"] = "black";
-            session["X-SessionType"] = "!Service Unavailable!";
+            this.session["ui-backcolor"] = Preferences.HTMLColourRed;
+            this.session["ui-color"] = "black";
+            getSetSessionFlags.SetSessionType(this.session, "!Service Unavailable!");
 
-            session["X-ResponseCodeDescription"] = "503 Service Unavailable";
+            this.session["X-ResponseCodeDescription"] = "503 Service Unavailable";
 
-            session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 503 Service Unavailable</span></b>";
-            session["X-ResponseComments"] = "<b><span style='color:red'>Server that was contacted in this session reports it is unavailable</span></b>. Look at the server that issued this response, "
+            this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 503 Service Unavailable</span></b>";
+            this.session["X-ResponseComments"] = "<b><span style='color:red'>Server that was contacted in this session reports it is unavailable</span></b>. Look at the server that issued this response, "
                 + "it is healthy? Contactable? Contactable consistently or intermittently? Consider other session server responses in the 500's (500, 502 or 503) in conjunction with this session.";
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " HTTP 503 Service Unavailable (99).");
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 503 Service Unavailable (99).");
 
             // Possible something more to be found, let further processing try to pick up something.
-            SessionProcessor.Instance.SetSACL(this.session, "5");
-            SessionProcessor.Instance.SetSTCL(this.session, "5");
-            SessionProcessor.Instance.SetSRSCL(this.session, "5");
+            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "5");
+            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "5");
+            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "5");
         }
     }
 }

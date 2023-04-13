@@ -8,25 +8,28 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class HTTP_202
+    class HTTP_202 : ActivationService
     {
-        internal Session session { get; set; }
+        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+
         public void HTTP_202_Accepted(Session session)
         {
-            session["ui-backcolor"] = Preferences.HTMLColourGreen;
-            session["ui-color"] = "black";
+            this.session = session;
 
-            session["X-ResponseAlert"] = "202 Accepted";
-            session["X-ResponseComments"] = Preferences.GetStrNoKnownIssue();
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 202 Accepted.");
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " HTTP 202 Accepted.");
+            getSetSessionFlags.SetUIBackColour(this.session, "Green");
+            getSetSessionFlags.SetUITextColour(this.session, "Black");
 
-            session["X-ResponseCodeDescription"] = "202 Accepted";
+            getSetSessionFlags.SetResponseCodeDescription(this.session, "202 Accepted");
+
+            getSetSessionFlags.SetXResponseAlert(this.session, "202 Accepted");
+            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
-            SessionProcessor.Instance.SetSACL(this.session, "0");
-            SessionProcessor.Instance.SetSTCL(this.session, "0");
-            SessionProcessor.Instance.SetSRSCL(this.session, "0");
+            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

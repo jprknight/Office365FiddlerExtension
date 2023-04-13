@@ -19,8 +19,6 @@ namespace Office365FiddlerInspector.Services
         /// </summary>
         public async void OnLoad()
         {
-            
-
             MenuUI.Instance.Initialize();
             if (Preferences.ExecutionCount == 0)
             {
@@ -64,7 +62,6 @@ namespace Office365FiddlerInspector.Services
             }
         }
 
-
         public async void OnBeforeUnload()
         {
             if (Preferences.DisableWebCalls)
@@ -103,7 +100,7 @@ namespace Office365FiddlerInspector.Services
             }
 
             // Call the main fuction which runs through all session logic checks.
-            SessionProcessor.Instance.OnPeekAtResponseHeaders(this.session);
+            SessionProcessor.Instance.OnPeekAtResponseHeaders(session);
 
             session.RefreshUI();
         }

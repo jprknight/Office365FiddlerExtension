@@ -114,13 +114,5 @@ namespace Office365FiddlerInspector.Services
             get => DisableWebCalls = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.NeverWebCall", false);
             set { _DisableWebCalls = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.NeverWebCall", value); }
         }
-
-        // Colour codes for sessions. Softer tones, easier on the eye than standard red, orange and green.
-        public static String HTMLColourBlue => "#81BEF7";
-        public static String HTMLColourGreen => "#81F7BA";
-        public static String HTMLColourRed => "#F06141";
-        public static String HTMLColourGrey => "#BDBDBD";
-        public static String HTMLColourOrange =>  "#F59758";
-
     }
 }

@@ -8,22 +8,24 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class HTTP_449
+    class HTTP_449 : ActivationService
     {
-        internal Session session { get; set; }
+        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
         public void HTTP_449_IIS_Retry_With(Session session)
         {
-            session["X-ResponseAlert"] = "HTTP 449 IIS Retry With.";
-            session["X-ResponseComments"] = Preferences.GetStrNoKnownIssue();
+            this.session = session;
 
-            session["X-ResponseCodeDescription"] = "449 IIS Retry With";
+            this.session["X-ResponseAlert"] = "HTTP 449 IIS Retry With.";
+            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " HTTP 449 IIS Retry With");
+            this.session["X-ResponseCodeDescription"] = "449 IIS Retry With";
+
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 449 IIS Retry With");
 
             // Nothing meaningful here, let further processing try to pick up something.
-            SessionProcessor.Instance.SetSACL(this.session, "0");
-            SessionProcessor.Instance.SetSTCL(this.session, "0");
-            SessionProcessor.Instance.SetSRSCL(this.session, "0");
+            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

@@ -8,13 +8,16 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class CalculateSessionAge
+    class CalculateSessionAge : ActivationService
     {
+        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
 
-        // Function to calculate session age on Inspector.
+        // Calculate session age on Inspector.
         public void SessionAge(Session session)
         {
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " Running CalculateSessionAge.");
+            this.session = session;
+
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running CalculateSessionAge.");
 
             String TimeSpanDaysText;
             String TimeSpanHoursText;
@@ -56,34 +59,34 @@ namespace Office365FiddlerInspector.Ruleset
 
             String DataAge = TimeSpanDaysText + TimeSpanHoursText + TimeSpanMinutesText;
 
-            session["X-DataCollected"] = SessionDateTime.ToString("dddd, MMMM dd, yyyy h:mm tt");
+            getSetSessionFlags.SetXDateDataCollected(this.session, SessionDateTime.ToString("dddd, MMMM dd, yyyy h:mm tt"));
 
             if (TimeSpanDays <= 7)
             {
-                session["X-DataAge"] = $"<b><span style='color:green'>{DataAge}</span></b>";
+                getSetSessionFlags.SetXDataAge(this.session, $"<b><span style='color:green'>{DataAge}</span></b>");
 
-                session["X-CalculatedSessionAge"] = "<p>Session collected within 7 days, data freshness is good. Best case scenario for correlating this data to backend server logs.</p>";
+                getSetSessionFlags.SetXCalculatedSessionAge(this.session, "<p>Session collected within 7 days, data freshness is good. Best case scenario for correlating this data to backend server logs.</p>");
             }
             else if (TimeSpanDays > 7 && TimeSpanDays < 14)
             {
-                session["X-DataAge"] = $"<b><span style='color:orange'>{DataAge}</span></b>";
+                getSetSessionFlags.SetXDataAge(this.session, $"<b><span style='color:orange'>{DataAge}</span></b>");
 
-                session["X-CalculatedSessionAge"] = "<p>Session collected within 14 days, data freshness is good, <b><span style='color:orange'>but not ideal</span></b>. "
-                    + "Depending on the backend system, <b><span style='color:orange'>correlating this data to server logs might be possible</span></b>.</p>";
+                getSetSessionFlags.SetXCalculatedSessionAge(this.session, "<p>Session collected within 14 days, data freshness is good, <b><span style='color:orange'>but not ideal</span></b>. "
+                    + "Depending on the backend system, <b><span style='color:orange'>correlating this data to server logs might be possible</span></b>.</p>");
             }
             else if (TimeSpanDays >= 14 && TimeSpanDays < 30)
             {
-                session["X-DataAge"] = $"<b><span style='color:orange'>{DataAge}</span></b>";
+                getSetSessionFlags.SetXDataAge(this.session, $"<b><span style='color:orange'>{DataAge}</span></b>");
 
-                session["X-CalculatedSessionAge"] = "<p><b><span style='color:red'>Session collected between 14 and 30 days ago</span></b>. "
-                    + "Correlating with any backend server logs is <b><span style='color:red'>likely impossible</span></b>. Many systems don't keep logs this long.</p>";
+                getSetSessionFlags.SetXCalculatedSessionAge(this.session, "<p><b><span style='color:red'>Session collected between 14 and 30 days ago</span></b>. "
+                    + "Correlating with any backend server logs is <b><span style='color:red'>likely impossible</span></b>. Many systems don't keep logs this long.</p>");
             }
             else
             {
-                session["X-DataAge"] = $"<b><span style='color:red'>{DataAge}</span></b>";
+                getSetSessionFlags.SetXDataAge(this.session, $"<b><span style='color:red'>{DataAge}</span></b>");
 
-                session["X-CalculatedSessionAge"] = "<p><b><span style='color:red'>Session collected more than 30 days ago</span></b>. "
-                    + "Correlating with any backend server logs is <b><span style='color:red'>very likely impossible</span></b>. Many systems don't keep logs this long.</p>";
+                getSetSessionFlags.SetXCalculatedSessionAge(this.session, "<p><b><span style='color:red'>Session collected more than 30 days ago</span></b>. "
+                    + "Correlating with any backend server logs is <b><span style='color:red'>very likely impossible</span></b>. Many systems don't keep logs this long.</p>");
             }
         }
     }

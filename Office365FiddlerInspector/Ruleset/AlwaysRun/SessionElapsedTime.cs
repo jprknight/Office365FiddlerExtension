@@ -8,73 +8,78 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class SessionElapsedTime
+    class SessionElapsedTime : ActivationService
     {
+        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
 
         // Function where Elapsed Time column data is populated.
         public void SetElapsedTime(Session session)
         {
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " Running SetElapsedTime.");
+            this.session = session;
+
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetElapsedTime.");
 
             // Populate the ElapsedTime column.
-            if (session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") != "0:00:00.000" && session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
+            if (this.session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") != "0:00:00.000" && this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
             {
-                double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds);
+                double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
 
-                session["X-ElapsedTime"] = Milliseconds + "ms";
+                getSetSessionFlags.SetXElapsedTime(this.session, Milliseconds + "ms");
             }
             else
             {
-                session["X-ElapsedTime"] = "No Data";
+                getSetSessionFlags.SetXElapsedTime(this.session, "No Data");
             }
         }
 
         // Function to set the Elapsed Time for the inspector. HTML mark up.
         public void SetInspectorElapsedTime(Session session)
         {
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " Running SetInspectorElapsedTime.");
+            this.session = session;
+
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetInspectorElapsedTime.");
 
             // ClientDoneResponse can be blank. If so do not try to calculate and output Elapsed Time, we end up with a hideously large number.
-            if (session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
+            if (this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
             {
-                double ClientMilliseconds = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalMilliseconds);
-                double ClientSeconds = Math.Round((session.Timers.ClientDoneResponse - session.Timers.ClientBeginRequest).TotalSeconds);
+                double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
+                double ClientSeconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalSeconds);
 
                 // If the roundtrip time is less than 1 second show the result in milliseconds.
                 if (ClientMilliseconds == 0)
                 {
-                    session["X-InspectorElapsedTime"] = $"{ClientMilliseconds}ms";
+                    getSetSessionFlags.SetXInspectorElapsedTime(this.session, $"{ClientMilliseconds}ms");
                 }
                 else if (ClientMilliseconds < 1000)
                 {
-                    session["X-InspectorElapsedTime"] = $"{ClientMilliseconds}ms";
+                    getSetSessionFlags.SetXInspectorElapsedTime(this.session, $"{ClientMilliseconds}ms");
                 }
                 // If the roundtrip is over warning and under slow running thresholds; orange.
                 else if (ClientMilliseconds > Preferences.GetWarningSessionTimeThreshold() && ClientMilliseconds < Preferences.GetSlowRunningSessionThreshold())
                 {
-                    session["X-InspectorElapsedTime"] = $"<b><span style='color:orange'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>";
+                    getSetSessionFlags.SetXInspectorElapsedTime(this.session, $"<b><span style='color:orange'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>");
                 }
                 // If roundtrip is over slow running threshold; red.
                 else if (ClientMilliseconds > Preferences.GetSlowRunningSessionThreshold())
                 {
-                    session["X-InspectorElapsedTime"] = $"<b><span style='color:red'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>";
+                    getSetSessionFlags.SetXInspectorElapsedTime(this.session, $"<b><span style='color:red'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>");
                 }
                 // If the roundtrip time is more than 1 second show the result in seconds.
                 else
                 {
                     if (ClientSeconds == 1)
                     {
-                        session["X-InspectorElapsedTime"] = $"{ClientSeconds} second({ClientMilliseconds}ms).";
+                        getSetSessionFlags.SetXInspectorElapsedTime(this.session, $"{ClientSeconds} second({ClientMilliseconds}ms).");
                     }
                     else
                     {
-                        session["X-InspectorElapsedTime"] = $"{ClientSeconds} seconds ({ClientMilliseconds}ms).";
+                        getSetSessionFlags.SetXInspectorElapsedTime(this.session, $"{ClientSeconds} seconds ({ClientMilliseconds}ms).");
                     }
                 }
             }
             else
             {
-                session["X-InspectorElapsedTime"] = "Insufficient data";
+                getSetSessionFlags.SetXInspectorElapsedTime(this.session, "Insufficient data");
             }
         }
     }

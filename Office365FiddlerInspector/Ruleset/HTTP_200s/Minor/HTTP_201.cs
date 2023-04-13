@@ -8,29 +8,28 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class HTTP_201
+    class HTTP_201 : ActivationService
     {
-        internal Session session { get; set; }
+        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+
         public void HTTP_201_Created(Session session)
         {
-            /////////////////////////////
-            //
-            //  HTTP 201: Created.
-            //
-            session["ui-backcolor"] = Preferences.HTMLColourGreen;
-            session["ui-color"] = "black";
+            this.session = session;
 
-            session["X-ResponseAlert"] = "HTTP 201 Created.";
-            session["X-ResponseComments"] = Preferences.GetStrNoKnownIssue();
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 201 Created.");
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " HTTP 201 Created.");
+            getSetSessionFlags.SetUIBackColour(this.session, "Green");
+            getSetSessionFlags.SetUITextColour(this.session, "Black");
 
-            session["X-ResponseCodeDescription"] = "201 Created";
+            getSetSessionFlags.SetResponseCodeDescription(this.session, "201 Created");
+
+            getSetSessionFlags.SetXResponseAlert(this.session, "HTTP 201 Created.");
+            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
-            SessionProcessor.Instance.SetSACL(this.session, "0");
-            SessionProcessor.Instance.SetSTCL(this.session, "0");
-            SessionProcessor.Instance.SetSRSCL(this.session, "0");
+            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

@@ -8,29 +8,29 @@ using Fiddler;
 
 namespace Office365FiddlerInspector.Ruleset
 {
-    class HTTP_405
+    class HTTP_405 : ActivationService
     {
-        internal Session session { get; set; }
+        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+
         public void HTTP_405_Method_Not_Allowed(Session session)
         {
-            /////////////////////////////
-            //
-            //  HTTP 405: Method Not Allowed.
-            //
-            session["ui-backcolor"] = Preferences.HTMLColourOrange;
-            session["ui-color"] = "black";
+            this.session = session;
 
-            session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 405: Method Not Allowed</span></b>";
-            session["X-ResponseComments"] = "Method Not Allowed";
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 405 Method not allowed.");
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + session.id + " HTTP 405 Method not allowed.");
+            getSetSessionFlags.SetUIBackColour(this.session, "Orange");
+            getSetSessionFlags.SetUITextColour(this.session, "Black");
 
-            session["X-ResponseCodeDescription"] = "405 Method Not Allowed";
+            getSetSessionFlags.SetResponseCodeDescription(this.session, "405 Method Not Allowed");
+
+            getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 405: Method Not Allowed</span></b>");
+            getSetSessionFlags.SetXResponseComments(this.session, "Method Not Allowed");
+            // REVIEW THIS -- Add some more comments.
 
             // Nothing meaningful here, let further processing try to pick up something.
-            SessionProcessor.Instance.SetSACL(this.session, "0");
-            SessionProcessor.Instance.SetSTCL(this.session, "0");
-            SessionProcessor.Instance.SetSRSCL(this.session, "0");
+            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
+            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }
