@@ -16,12 +16,16 @@ namespace Office365FiddlerInspector.Ruleset
         {
             this.session = session;
 
-            this.session["X-ResponseAlert"] = "HTTP 415 Unsupported Media Type (RFC 7231).";
-            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
-
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 415 Unsupported Media Type (RFC 7231).");
 
-            this.session["X-ResponseCodeDescription"] = "415 Unsupported Media Type (RFC 7231)";
+            // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
+            getSetSessionFlags.SetUIBackColour(this.session, "Gray");
+            getSetSessionFlags.SetUITextColour(this.session, "Black");
+
+            getSetSessionFlags.SetResponseCodeDescription(this.session, "415 Unsupported Media Type (RFC 7231)");
+
+            this.session["X-ResponseAlert"] = "HTTP 415 Unsupported Media Type (RFC 7231).";
+            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
             getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");

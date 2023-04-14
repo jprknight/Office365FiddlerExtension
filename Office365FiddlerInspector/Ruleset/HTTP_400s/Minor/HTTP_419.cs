@@ -16,12 +16,16 @@ namespace Office365FiddlerInspector.Ruleset
         {
             this.session = session;
 
-            this.session["X-ResponseAlert"] = "HTTP 419 Page Expired (Laravel Framework).";
-            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
-
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 419 Page Expired (Laravel Framework).");
 
-            this.session["X-ResponseCodeDescription"] = "419 Page Expired (Laravel Framework)";
+            // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
+            getSetSessionFlags.SetUIBackColour(this.session, "Gray");
+            getSetSessionFlags.SetUITextColour(this.session, "Black");
+
+            getSetSessionFlags.SetResponseCodeDescription(this.session, "419 Page Expired (Laravel Framework)");
+
+            getSetSessionFlags.SetXResponseAlert(this.session, "HTTP 419 Page Expired (Laravel Framework).");
+            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
             getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");

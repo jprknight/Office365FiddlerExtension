@@ -16,12 +16,16 @@ namespace Office365FiddlerInspector.Ruleset
         {
             this.session = session;
 
-            this.session["X-ResponseAlert"] = "HTTP 418 I'm a teapot (RFC 2324, RFC 7168).";
-            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
-
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 418 I'm a teapot (RFC 2324, RFC 7168).");
 
-            this.session["X-ResponseCodeDescription"] = "418 I'm a teapot (RFC 2324, RFC 7168)";
+            // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
+            getSetSessionFlags.SetUIBackColour(this.session, "Gray");
+            getSetSessionFlags.SetUITextColour(this.session, "Black");
+
+            getSetSessionFlags.SetResponseCodeDescription(this.session, "418 I'm a teapot (RFC 2324, RFC 7168)");
+
+            getSetSessionFlags.SetXResponseAlert(this.session, "HTTP 418 I'm a teapot (RFC 2324, RFC 7168).");
+            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
             getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");

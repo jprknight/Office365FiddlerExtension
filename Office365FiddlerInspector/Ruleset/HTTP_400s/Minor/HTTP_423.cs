@@ -16,12 +16,16 @@ namespace Office365FiddlerInspector.Ruleset
         {
             this.session = session;
 
-            this.session["X-ResponseAlert"] = "HTTP 423 Locked (WebDAV; RFC 4918).";
-            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
-
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 423 Locked (WebDAV; RFC 4918).");
 
-            this.session["X-ResponseCodeDescription"] = "423 Locked (WebDAV; RFC 4918)";
+            // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
+            getSetSessionFlags.SetUIBackColour(this.session, "Gray");
+            getSetSessionFlags.SetUITextColour(this.session, "Black");
+
+            getSetSessionFlags.SetResponseCodeDescription(this.session, "423 Locked (WebDAV; RFC 4918)");
+
+            getSetSessionFlags.SetXResponseAlert(this.session, "HTTP 423 Locked (WebDAV; RFC 4918).");
+            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
             getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");

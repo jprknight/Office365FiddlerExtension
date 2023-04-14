@@ -16,12 +16,16 @@ namespace Office365FiddlerInspector.Ruleset
         {
             this.session = session;
 
-            this.session["X-ResponseAlert"] = "HTTP 412 Precondition Failed (RFC 7232).";
-            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
-
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 412 Precondition Failed (RFC 7232).");
 
-            this.session["X-ResponseCodeDescription"] = "412 Precondition Failed (RFC 7232)";
+            // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
+            getSetSessionFlags.SetUIBackColour(this.session, "Gray");
+            getSetSessionFlags.SetUITextColour(this.session, "Black");
+
+            getSetSessionFlags.SetResponseCodeDescription(this.session, "412 Precondition Failed (RFC 7232)");
+
+            getSetSessionFlags.SetXResponseAlert(this.session, "HTTP 412 Precondition Failed (RFC 7232).");
+            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
             getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
