@@ -21,7 +21,8 @@ namespace Office365FiddlerInspector.Ruleset
 
             // Return if SessionType already has a value.
             // Quite often ResponseCodeLogic has already stamped a more specific SessionType value.
-            if (session["X-SessionType"] != null)
+            // REVIEW THIS, should this be Session Type confidence level?
+            if (getSetSessionFlags.GetSessionType(this.session) != null)
             {
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " SessionType already set return.");
                 return;

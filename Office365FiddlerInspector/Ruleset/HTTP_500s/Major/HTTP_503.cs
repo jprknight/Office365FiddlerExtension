@@ -45,16 +45,19 @@ namespace Office365FiddlerInspector.Ruleset
             wordCount = matchQuery503.Count();
             if (wordCount > 0)
             {
-                this.session["ui-backcolor"] = Preferences.HTMLColourRed;
-                this.session["ui-color"] = "black";
-                this.session["X-SessionType"] = "***FederatedSTSUnreachable***";
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 503 Service Unavailable. FederatedStsUnreachable in response body!");
 
-                this.session["X-ResponseCodeDescription"] = "503 Federation Service Unavailable";
+                getSetSessionFlags.SetUIBackColour(this.session, "Red");
+                getSetSessionFlags.SetUITextColour(this.session, "Black");
+
+                getSetSessionFlags.SetResponseCodeDescription(this.session, "503 Federation Service Unavailable");
+
+                this.session["X-SessionType"] = "***FederatedSTSUnreachable***";
 
                 string RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=" + this.session.oRequest["X-User-Identity"] + "&xml=1";
 
-                this.session["X-ResponseAlert"] = "<b><span style='color:red'>FederatedSTSUnreachable</span></b>";
-                this.session["X-ResponseComments"] = "<b><span style='color:red'>HTTP 503: FederatedSTSUnreachable</span></b>."
+                getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>FederatedSTSUnreachable</span></b>");
+                getSetSessionFlags.SetXResponseComments(this.session, "<b><span style='color:red'>HTTP 503: FederatedSTSUnreachable</span></b>."
                     + "<b><span style='color:red'>The fedeation service is unreachable or unavailable</span></b>."
                     + "<p><b><span style='color:red'>Troubleshoot this issue first before doing anything else.</span></b></p>"
                     + "<p>Check the Raw tab for additional details.</p>"
@@ -67,9 +70,7 @@ namespace Office365FiddlerInspector.Ruleset
                     + "<b>MEXURL</b>: Normally expected to show long stream of XML data.<br />"
                     + "<p>If any of these show the HTTP 503 Service Unavailable this <b>confirms some kind of failure on the federation service</b>.</p>"
                     + "<p>If however you get the expected responses, this <b>does not neccessarily mean the federation service / everything authentication is healthy</b>. "
-                    + "Further investigation is advised. You could try hitting these endpoints a few times and see if you get an intermittent failure.</p>";
-
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 503 Service Unavailable. FederatedStsUnreachable in response body!");
+                    + "Further investigation is advised. You could try hitting these endpoints a few times and see if you get an intermittent failure.</p>");
 
                 // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
                 getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "5");
@@ -86,17 +87,18 @@ namespace Office365FiddlerInspector.Ruleset
             //
             // 503.99. Everything else.
             //
-            this.session["ui-backcolor"] = Preferences.HTMLColourRed;
-            this.session["ui-color"] = "black";
-            getSetSessionFlags.SetSessionType(this.session, "!Service Unavailable!");
-
-            this.session["X-ResponseCodeDescription"] = "503 Service Unavailable";
-
-            this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 503 Service Unavailable</span></b>";
-            this.session["X-ResponseComments"] = "<b><span style='color:red'>Server that was contacted in this session reports it is unavailable</span></b>. Look at the server that issued this response, "
-                + "it is healthy? Contactable? Contactable consistently or intermittently? Consider other session server responses in the 500's (500, 502 or 503) in conjunction with this session.";
-
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 503 Service Unavailable (99).");
+
+            getSetSessionFlags.SetUIBackColour(this.session, "Red");
+            getSetSessionFlags.SetUITextColour(this.session, "Black");
+
+            getSetSessionFlags.SetResponseCodeDescription(this.session, "503 Service Unavailable");
+
+            getSetSessionFlags.SetSessionType(this.session, "!Service Unavailable!");
+            getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 503 Service Unavailable</span></b>");
+            getSetSessionFlags.SetXResponseComments(this.session, "<b><span style='color:red'>Server that was contacted in this session reports "
+                + "it is unavailable</span></b>. Look at the server that issued this response, it is healthy? Contactable? "
+                + "Contactable consistently or intermittently? Consider other session server responses in the 500's (500, 502 or 503) in conjunction with this session.");
 
             // Possible something more to be found, let further processing try to pick up something.
             getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "5");

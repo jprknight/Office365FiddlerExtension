@@ -16,12 +16,16 @@ namespace Office365FiddlerInspector.Ruleset
         {
             this.session = session;
 
-            this.session["X-ResponseAlert"] = "HTTP 431 Request Header Fields Too Large (RFC 6585).";
-            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
-
-            this.session["X-ResponseCodeDescription"] = "431 Request Header Fields Too Large (RFC 6585)";
-
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 431 Request Header Fields Too Large (RFC 6585).");
+
+            // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
+            getSetSessionFlags.SetUIBackColour(this.session, "Gray");
+            getSetSessionFlags.SetUITextColour(this.session, "Black");
+
+            getSetSessionFlags.SetResponseCodeDescription(this.session, "431 Request Header Fields Too Large (RFC 6585)");
+
+            getSetSessionFlags.SetXResponseAlert(this.session, "HTTP 431 Request Header Fields Too Large (RFC 6585).");
+            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
             getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");

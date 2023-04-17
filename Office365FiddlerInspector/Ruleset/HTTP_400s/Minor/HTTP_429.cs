@@ -16,21 +16,19 @@ namespace Office365FiddlerInspector.Ruleset
         {
             this.session = session;
 
-            /////////////////////////////
-            //
-            //  HTTP 429: Too Many Requests.
-            //
-            this.session["ui-backcolor"] = Preferences.HTMLColourOrange;
-            this.session["ui-color"] = "black";
-            getSetSessionFlags.SetSessionType(this.session, "HTTP 429 Too Many Requests");
-
-            this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 429 Too Many Requests</span></b>";
-            this.session["X-ResponseComments"] = "These responses need to be taken into context with the rest of the sessions in the trace. " +
-                "A small number is probably not an issue, larger numbers of these could be cause for concern.";
-
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 429 Too many requests.");
 
-            session["X-ResponseCodeDescription"] = "429 Too Many Requests (RFC 6585)";
+            // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
+            getSetSessionFlags.SetUIBackColour(this.session, "Orange");
+            getSetSessionFlags.SetUITextColour(this.session, "Black");
+
+            getSetSessionFlags.SetResponseCodeDescription(this.session, "429 Too Many Requests (RFC 6585)");
+
+            getSetSessionFlags.SetSessionType(this.session, "HTTP 429 Too Many Requests");
+
+            getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 429 Too Many Requests</span></b>");
+            getSetSessionFlags.SetXResponseComments(this.session,"These responses need to be taken into context with the rest of the " + 
+                "sessions in the trace. A small number is probably not an issue, larger numbers of these could be cause for concern.");
 
             // Nothing meaningful here, let further processing try to pick up something.
             getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");

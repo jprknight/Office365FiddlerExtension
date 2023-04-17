@@ -25,22 +25,21 @@ namespace Office365FiddlerInspector.Ruleset
             {
                 if (this.session.HostnameIs("outlook.office365.com"))
                 {
-                    this.session["ui-backcolor"] = Preferences.HTMLColourRed;
-                    this.session["ui-color"] = "black";
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 500 Internal Server Error.");
+
+                    getSetSessionFlags.SetUIBackColour(this.session, "Red");
+                    getSetSessionFlags.SetUITextColour(this.session, "Black");
+
+                    getSetSessionFlags.SetResponseCodeDescription(this.session, "500 Internal Server Error");
 
                     getSetSessionFlags.SetSessionType(this.session, "***REPEATING REDIRECTS DETECTED***");
-
-                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 500 Internal Server Error - Repeating redirects detected</span></b>";
-                    this.session["X-ResponseComments"] = "<b><span style='color:red'>Repeating redirects detected</span></b> found in this session response. "
+                    getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 500 Internal Server Error - Repeating redirects detected</span></b>");
+                    getSetSessionFlags.SetXResponseComments(this.session, "<b><span style='color:red'>Repeating redirects detected</span></b> found in this session response. "
                         + "This response has been seen with OWA and federated domains. Is this issue seen with non-federated user accounts? "
                         + "If not this might suggest an issue with a federation service. "
                         + "<p>Alternatively does the impacted account have too many roles assigned? Too many roles on an account have been seen as a cause of this type of issue.</p>"
-                        + "<p>Otherwise this might be an issue which needs to be raised to Microsoft support.</p>";
-
-                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 500 Internal Server Error.");
-
-                    this.session["X-ResponseCodeDescription"] = "500 Internal Server Error";
-
+                        + "<p>Otherwise this might be an issue which needs to be raised to Microsoft support.</p>");
+                    
                     // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
                     getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "5");
                     getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "10");
@@ -64,19 +63,18 @@ namespace Office365FiddlerInspector.Ruleset
                 {
                     if (this.session.uriContains("/EWS/Exchange.asmx"))
                     {
-                        this.session["ui-backcolor"] = Preferences.HTMLColourRed;
-                        this.session["ui-color"] = "black";
-
-                        getSetSessionFlags.SetSessionType(this.session, "***EWS Impersonate User Denied***");
-
-                        this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 500 Internal Server Error - EWS Impersonate User Denied</span></b>";
-                        this.session["X-ResponseComments"] = "<b><span style='color:red'>EWS Impersonate User Denied</span></b> found in this session response. "
-                            + "Check the service account in use has impersonation rights on the mailbox you are trying to work with."
-                            + "Are the impersonation permissions given directly on the service account or via a security group?</p>";
-
                         FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 500 EWS Impersonate User Denied.");
 
-                        this.session["X-ResponseCodeDescription"] = "500 EWS Impersonate User Denied";
+                        getSetSessionFlags.SetUIBackColour(this.session, "Red");
+                        getSetSessionFlags.SetUITextColour(this.session, "Black");
+
+                        getSetSessionFlags.SetResponseCodeDescription(this.session, "500 EWS Impersonate User Denied");
+
+                        getSetSessionFlags.SetSessionType(this.session, "***EWS Impersonate User Denied***");
+                        getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 500 Internal Server Error - EWS Impersonate User Denied</span></b>");
+                        getSetSessionFlags.SetXResponseComments(this.session, "<b><span style='color:red'>EWS Impersonate User Denied</span></b> found in this session response. "
+                            + "Check the service account in use has impersonation rights on the mailbox you are trying to work with."
+                            + "Are the impersonation permissions given directly on the service account or via a security group?</p>");
 
                         // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
                         getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "5");
@@ -103,21 +101,20 @@ namespace Office365FiddlerInspector.Ruleset
             {
                 if (this.session.HostnameIs("outlook.office365.com"))
                 {
-                    this.session["ui-backcolor"] = Preferences.HTMLColourRed;
-                    this.session["ui-color"] = "black";
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 500 Internal Server Error - OWA Something went wrong.");
+
+                    getSetSessionFlags.SetUIBackColour(this.session, "Red");
+                    getSetSessionFlags.SetUITextColour(this.session, "Black");
+
+                    getSetSessionFlags.SetResponseCodeDescription(this.session, "500 OWA Something went wrong");
 
                     getSetSessionFlags.SetSessionType(this.session, "***OWA SOMETHING WENT WRONG***");
-
-                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 500 Internal Server Error - OWA Something went wrong.</span></b>";
-                    this.session["X-ResponseComments"] = "<b><span style='color:red'>OWA - Something went wrong</span></b> found in this session response. "
+                    getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 500 Internal Server Error - OWA Something went wrong.</span></b>");
+                    getSetSessionFlags.SetXResponseComments(this.session, "<b><span style='color:red'>OWA - Something went wrong</span></b> found in this session response. "
                         + "<p>Check the response Raw and Webview tabs to see what further details can be pulled on the issue.</p>"
                         + "<p>Does the issue reproduce with federated and non-federated (managed) domains?</p>"
                         + "<p>Does the issue reproduce in different browsers?</p>"
-                        + "<p>Otherwise this might be an issue which needs to be raised to Microsoft support.</p>";
-
-                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 500 Internal Server Error - OWA Something went wrong.");
-
-                    this.session["X-ResponseCodeDescription"] = "500 OWA Something went wrong";
+                        + "<p>Otherwise this might be an issue which needs to be raised to Microsoft support.</p>");
 
                     // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
                     getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "5");
@@ -139,18 +136,18 @@ namespace Office365FiddlerInspector.Ruleset
             // Pick up any 500 Internal Server Error and write data into the comments box.
             // Specific scenario on Outlook and Office 365 invalid DNS lookup.
             // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
-            this.session["ui-backcolor"] = Preferences.HTMLColourRed;
-            this.session["ui-color"] = "black";
-            getSetSessionFlags.SetSessionType(this.session, "!HTTP 500 Internal Server Error!");
-
-            this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 500 Internal Server Error</span></b>";
-            this.session["X-ResponseComments"] = "Consider the server that issued this response, "
-                + "look at the IP address in the 'Host IP' column and lookup where it is hosted to know who should be looking at "
-                + "the issue.";
-
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 500 Internal Server Error.");
 
-            this.session["X-ResponseCodeDescription"] = "500 Internal Server Error";
+            getSetSessionFlags.SetUIBackColour(this.session, "Red");
+            getSetSessionFlags.SetUITextColour(this.session, "Black");
+
+            getSetSessionFlags.SetResponseCodeDescription(this.session, "500 Internal Server Error");
+
+            getSetSessionFlags.SetSessionType(this.session, "!HTTP 500 Internal Server Error!");
+            getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 500 Internal Server Error</span></b>");
+            getSetSessionFlags.SetXResponseComments(this.session, "Consider the server that issued this response, "
+                + "look at the IP address in the 'Host IP' column and lookup where it is hosted to know who should be looking at "
+                + "the issue.");
 
             // Possible something more to be found, let further processing try to pick up something.
             getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "5");

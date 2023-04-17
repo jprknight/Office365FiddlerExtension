@@ -19,7 +19,7 @@ namespace Office365FiddlerInspector.Ruleset
 
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetAuthentication.");
 
-            this.session["X-Office365AuthType"] = "";
+            getSetSessionFlags.SetXOffice365AuthType(this.session, "");
 
             getSetSessionFlags.SetProcess(this.session);
 
@@ -32,19 +32,19 @@ namespace Office365FiddlerInspector.Ruleset
             }
             else
             {
-                // 
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " No Auth Headers found in session.");
+                
                 SAMLParserFieldsNoData(this.session);
                 // Change which control appears for this session on the Office365 Auth inspector tab.
-                this.session["X-Office365AuthType"] = "Office365Auth";
+                getSetSessionFlags.SetXOffice365AuthType(this.session, "Office365Auth");
 
-                this.session["X-Authentication"] = "No Auth Headers";
-                this.session["X-AuthenticationDesc"] = "No Auth Headers";
-
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " No Auth Headers found in session.");
-
+                getSetSessionFlags.SetXAuthentication(this.session, "No Auth Headers");
+                getSetSessionFlags.SetXAuthenticationDescription(this.session, "No Auth Headers");
+                
                 // Set SCCL to 10, stop any further session processing.
                 getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "10");
 
+                // REVIEW THIS.
                 return;
             }
 
@@ -56,11 +56,11 @@ namespace Office365FiddlerInspector.Ruleset
                 this.session.utilFindInResponse("NameIdentifier Format=", false) > 1 &&
                 this.session.utilFindInResponse("Attribute AttributeName=", false) > 1)
             {
-                this.session["X-Authentication"] = "SAML Request/Response";
-
-                this.session["X-SessionType"] = "SAML Request/Response";
-
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " SAML Request/Response.");
+
+                getSetSessionFlags.SetXAuthenticationDescription(this.session, "SAML Request/Response");
+
+                getSetSessionFlags.SetSessionType(this.session, "SAML Request/Response");
 
                 // wrap all of this in a check to see if the SAML token came back from an ADFS endpoint.
                 // If it didn't we don't have the labs setup to validate how 3rd-party IDPs format things
@@ -68,13 +68,13 @@ namespace Office365FiddlerInspector.Ruleset
                 if (this.session.uriContains("adfs/ls"))
                 {
                     // Used in session analysis. Needs to be set here to override the unclassified response.
-                    this.session["X-ResponseComments"] = "ADFS SAML response found. See below for SAML response parser.";
+                    getSetSessionFlags.SetXResponseComments(this.session, "ADFS SAML response found. See below for SAML response parser.");
 
                     // Used in Auth column and Office365 Auth inspector tab.
-                    this.session["X-AuthenticationDesc"] = "ADFS SAML response found. See below for SAML response parser.";
+                    getSetSessionFlags.SetXAuthenticationDescription(this.session, "ADFS SAML response found. See below for SAML response parser.");
 
                     // Change which control appears for this session on the Office365 Auth inspector tab.
-                    this.session["X-Office365AuthType"] = "SAMLResponseParser";
+                    getSetSessionFlags.SetXOffice365AuthType(this.session, "SAMLResponseParser");
 
                     // JK 6/30/2021
                     // All the below logic was build with an ADFS SAML token from a lab environment.
@@ -115,11 +115,11 @@ namespace Office365FiddlerInspector.Ruleset
                         }
 
                         // Populate X flag on session.
-                        this.session["X-Issuer"] = Issuer;
+                        getSetSessionFlags.SetSamlTokenIssuer(this.session, Issuer);
                     }
                     else
                     {
-                        this.session["X-Issuer"] = "Issuer in SAML token could not be determined.";
+                        getSetSessionFlags.SetSamlTokenIssuer(this.session, "Issuer in SAML token could not be determined.");
                     }
 
                     // SigningCertificate
@@ -152,7 +152,7 @@ namespace Office365FiddlerInspector.Ruleset
                             x509SigningCertificate = "SAML signing certificate could not be determined.";
                         }
 
-                        this.session["X-SigningCertificate"] = x509SigningCertificate;
+                        getSetSessionFlags.SetSamlTokenSigningCertificate(this.session, x509SigningCertificate);
                     }
 
                     // AttributeNameUPN
@@ -204,11 +204,11 @@ namespace Office365FiddlerInspector.Ruleset
                         }
 
                         // Populate X flag on session.
-                        this.session["X-AttributeNameUPN"] = AttributeNameUPN;
+                        getSetSessionFlags.SetSamlTokenAttributeNameUPN(this.session, AttributeNameUPN);
                     }
                     else
                     {
-                        this.session["X-AttributeNameUPN"] = "Data points not found for AttributeNameUPN";
+                        getSetSessionFlags.SetSamlTokenAttributeNameUPN(this.session, "Data points not found for AttributeNameUPN");
                     }
 
                     // NameIdentifierFormat
@@ -246,11 +246,11 @@ namespace Office365FiddlerInspector.Ruleset
                         }
 
                         // Populate X flag on session.
-                        this.session["X-NameIdentifierFormat"] = NameIdentifierFormat;
+                        getSetSessionFlags.SetSamlTokenNameIdentifierFormat(this.session, NameIdentifierFormat);
                     }
                     else
                     {
-                        this.session["X-NameIdentifierFormat"] = "Data points not found for NameIdentifierFormat";
+                        getSetSessionFlags.SetSamlTokenNameIdentifierFormat(this.session, "Data points not found for NameIdentifierFormat");
                     }
 
                     // AttributeNameImmutableID
@@ -306,11 +306,11 @@ namespace Office365FiddlerInspector.Ruleset
                         }
 
                         // Populate X flag on session.
-                        this.session["X-AttributeNameImmutableID"] = AttributeNameImmutibleID;
+                        getSetSessionFlags.SetSamlTokenAttributeNameImmutibleID(this.session, AttributeNameImmutibleID);
                     }
                     else
                     {
-                        this.session["X-AttributeNameImmutableID"] = "Data points not found for AttributeNameImmutibleID";
+                        getSetSessionFlags.SetSamlTokenAttributeNameImmutibleID(this.session, "Data points not found for AttributeNameImmutibleID");
                     }
 
                     // Set SCCL to 10, stop any further session processing.
@@ -319,23 +319,26 @@ namespace Office365FiddlerInspector.Ruleset
                 }
                 else
                 {
-                    this.session["X-ResponseComments"] = "Third-party SAML response found. SAML response parser not running.";
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Third-party SAML response found. SAML response parser not running.");
+
+                    getSetSessionFlags.SetXResponseComments(this.session, "Third-party SAML response found. SAML response parser not running.");
 
                     // Used in Auth column and Office365 Auth inspector tab.
-                    this.session["X-AuthenticationDesc"] = "Third-party SAML response found. SAML response parser not running.";
+                    getSetSessionFlags.SetXAuthenticationDescription(this.session, "Third-party SAML response found. SAML response parser not running.");
 
                     // Change which control appears for this session on the Office365 Auth inspector tab.
-                    this.session["X-Office365AuthType"] = "SAMLResponseParser";
+                    // REVIEW THIS. Is it needed?
+                    getSetSessionFlags.SetXOffice365AuthType(this.session, "SAMLResponseParser");
 
-                    this.session["X-Issuer"] = "SAML token issued by third-party IDP. SAML response parser not running.";
+                    getSetSessionFlags.SetSamlTokenIssuer(this.session, "SAML token issued by third-party IDP. SAML response parser not running.");
 
-                    this.session["X-SigningCertificate"] = "SAML token issued by third-party IDP. SAML response parser not running.";
+                    getSetSessionFlags.SetSamlTokenSigningCertificate(this.session, "SAML token issued by third-party IDP. SAML response parser not running.");
 
-                    this.session["X-AttributeNameUPN"] = "SAML token issued by third-party IDP. SAML response parser not running.";
+                    getSetSessionFlags.SetSamlTokenAttributeNameUPN(this.session, "SAML token issued by third-party IDP. SAML response parser not running.");
 
-                    this.session["X-NameIdentifierFormat"] = "SAML token issued by third-party IDP. SAML response parser not running.";
+                    getSetSessionFlags.SetSamlTokenNameIdentifierFormat(this.session, "SAML token issued by third-party IDP. SAML response parser not running.");
 
-                    this.session["X-AttributeNameImmutableID"] = "SAML token issued by third-party IDP. SAML response parser not running.";
+                    getSetSessionFlags.SetSamlTokenAttributeNameImmutibleID(this.session, "SAML token issued by third-party IDP. SAML response parser not running.");
 
                     // Set SCCL to 10, stop any further session processing.
                     getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "10");
@@ -348,7 +351,8 @@ namespace Office365FiddlerInspector.Ruleset
                 SAMLParserFieldsNoData(this.session);
 
                 // Change which control appears for this session on the Office365 Auth inspector tab.
-                this.session["X-Office365AuthType"] = "Office365Auth";
+                // REVIEW THIS. Is this needed?
+                getSetSessionFlags.SetXOffice365AuthType(this.session, "Office365Auth");
 
                 // Looking for the following in a response body:
                 // x-ms-diagnostics: 4000000;reason="Flighting is not enabled for domain 'user@contoso.com'.";error_category="oauth_not_available"
@@ -364,11 +368,13 @@ namespace Office365FiddlerInspector.Ruleset
                 if (KeywordFourMillion > 0 && KeywordFlighting > 0 && Keywordenabled > 0 &&
                     Keyworddomain > 0 && Keywordoauth_not_available > 0 && this.session.HostnameIs("autodiscover-s.outlook.com"))
                 {
-                    this.session["X-Authentication"] = "Modern Auth Disabled";
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Modern Auth Disabled.");
+
+                    getSetSessionFlags.SetXAuthentication(this.session, "Modern Auth Disabled");
 
                     DateTime today = DateTime.Today;
 
-                    this.session["X-AuthenticationDesc"] = "Office 365 workload has Modern Authentication disabled. "
+                    getSetSessionFlags.SetXAuthenticationDescription(this.session, "Office 365 workload has Modern Authentication disabled. "
                         + $"At this point in {today:yyyy} there isn't a good reason to not have Modern Authentication turned on or having a plan to turn it on."
                         + "<p>MutiFactor Authentication will not work as expected while Modern Authentication "
                         + "is disabled in the Office 365 workload."
@@ -376,9 +382,9 @@ namespace Office365FiddlerInspector.Ruleset
                         + "<p>Outlook 2010 and older do not support Modern Authentication and by extension MutliFactor Authentication.</p>"
                         + "<p>Outlook 2013 supports modern authentication with updates and the EnableADAL registry key set to 1.</p>"
                         + "<p>See https://support.microsoft.com/en-us/help/4041439/modern-authentication-configuration-requirements-for-transition-from-o </p>"
-                        + "<p>Outlook 2016 or newer. No updates or registry keys needed for Modern Authentication.</p>";
+                        + "<p>Outlook 2016 or newer. No updates or registry keys needed for Modern Authentication.</p>");
 
-                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Modern Auth Disabled.");
+                    
 
                     // Set SCCL to 10, stop any further session processing.
                     getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "10");
@@ -388,12 +394,12 @@ namespace Office365FiddlerInspector.Ruleset
                 // If the session request header Authorization equals Bearer this is a Modern Auth capable client.
                 if (this.session.oRequest["Authorization"] == "Bearer")
                 {
-                    this.session["X-Authentication"] = "Client Modern Auth Capable";
-
-                    this.session["X-AuthenticationDesc"] = this.session["X-ProcessName"] + " is stating it is Modern Authentication capable. "
-                        + "Whether it is used or not will depend on whether Modern Authentication is enabled in the Office 365 service.";
-
                     FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Client Modern Auth.");
+
+                    getSetSessionFlags.SetXAuthentication(this.session, "Client Modern Auth Capable");
+
+                    getSetSessionFlags.SetXAuthenticationDescription(this.session, this.session["X-ProcessName"] + " is stating it is Modern Authentication capable. "
+                        + "Whether it is used or not will depend on whether Modern Authentication is enabled in the Office 365 service.");
 
                     // Set SCCL to 10, stop any further session processing.
                     getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "10");
@@ -401,15 +407,15 @@ namespace Office365FiddlerInspector.Ruleset
                 // If the session request header Authorization equals Basic this is a Basic Auth capable client.
                 else if (this.session.oRequest["Authorization"] == "Basic")
                 {
-                    this.session["X-Authentication"] = "Client Basic Auth Capable";
+                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Outlook Basic Auth.");
 
-                    this.session["X-AuthenticationDesc"] = this.session["X-ProcessName"] + " is stating it is Basic Authentication capable. "
+                    getSetSessionFlags.SetXAuthentication(this.session, "Client Basic Auth Capable");
+
+                    getSetSessionFlags.SetXAuthenticationDescription(this.session, this.session["X-ProcessName"] + " is stating it is Basic Authentication capable. "
                         + "Whether it is used or not will depend on whether Basic Authentication is enabled in the Office 365 service."
                         + "<p>If this is Outlook, in all likelihood this is an Outlook 2013 (updated prior to Modern Auth), Outlook 2010 or an "
                         + "older Outlook client, which does not support Modern Authentication.<br />"
-                        + "MutiFactor Authentication will not work as expected with Basic Authentication only capable Outlook clients</p>";
-
-                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Outlook Basic Auth.");
+                        + "MutiFactor Authentication will not work as expected with Basic Authentication only capable Outlook clients</p>");
 
                     // Set SCCL to 10, stop any further session processing.
                     getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "10");
@@ -421,13 +427,13 @@ namespace Office365FiddlerInspector.Ruleset
             // Bearer == Modern Authentication.
             else if (this.session.oRequest["Authorization"].Contains("Bearer"))
             {
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Modern Auth Token.");
+
                 SAMLParserFieldsNoData(this.session);
 
-                this.session["X-Authentication"] = "Modern Auth Token";
+                getSetSessionFlags.SetXAuthentication(this.session, "Modern Auth Token");
 
-                this.session["X-AuthenticationDesc"] = this.session["X-ProcessName"] + " accessing resources with a Modern Authentication security token.";
-
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Modern Auth Token.");
+                getSetSessionFlags.SetXAuthenticationDescription(this.session, this.session["X-ProcessName"] + " accessing resources with a Modern Authentication security token.");
 
                 // Set SCCL to 10, stop any further session processing.
                 getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "10");
@@ -435,14 +441,14 @@ namespace Office365FiddlerInspector.Ruleset
             // Basic == Basic Authentication.
             else if (this.session.oRequest["Authorization"].Contains("Basic"))
             {
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Basic Auth Token.");
+
                 SAMLParserFieldsNoData(this.session);
 
-                this.session["X-Authentication"] = "Basic Auth Token";
+                getSetSessionFlags.SetXAuthentication(this.session, "Basic Auth Token");
 
-                this.session["X-AuthenticationDesc"] = $"Process '{this.session["X-ProcessName"]}' accessing resources with a Basic Authentication security token.<br />"
-                    + "<b><span style='color:red'>It's time to think about Modern Authentication!</span></b>";
-
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Basic Auth Token.");
+                getSetSessionFlags.SetXAuthenticationDescription(this.session, $"Process '{this.session["X-ProcessName"]}' accessing resources with a Basic Authentication security token.<br />"
+                    + "<b><span style='color:red'>It's time to think about Modern Authentication!</span></b>");
 
                 // Set SCCL to 10, stop any further session processing.
                 getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "10");
@@ -450,14 +456,14 @@ namespace Office365FiddlerInspector.Ruleset
             // ADFS session with no other defining features yet classified.
             else
             {
-                SAMLParserFieldsNoData(this.session);
-
-                this.session["X-Authentication"] = "ADFS";
-
-                this.session["X-AuthenticationDesc"] = $"Process '{session["X-ProcessName"]}' communicating with ADFS at {session.hostname}.<br />";
-
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " ADFS.");
 
+                SAMLParserFieldsNoData(this.session);
+
+                getSetSessionFlags.SetXAuthentication(this.session, "ADFS");
+
+                getSetSessionFlags.SetXAuthenticationDescription(this.session, $"Process '{session["X-ProcessName"]}' communicating with ADFS at {session.hostname}.<br />");
+                
                 // Set SCCL to 10, stop any further session processing.
                 getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "10");
             }
@@ -466,10 +472,10 @@ namespace Office365FiddlerInspector.Ruleset
 
         private void SAMLParserFieldsNoData(Session session)
         {
-            this.session["X-Issuer"] = "No SAML Data in session";
-            this.session["X-AttributeNameUPN"] = "No SAML Data in session";
-            this.session["X-NameIdentifierFormat"] = "No SAML Data in session";
-            this.session["X-AttributeNameImmutableID"] = "No SAML Data in session";
+            getSetSessionFlags.SetSamlTokenIssuer(this.session, "No SAML Data in session");
+            getSetSessionFlags.SetSamlTokenAttributeNameUPN(this.session, "No SAML Data in session");
+            getSetSessionFlags.SetSamlTokenNameIdentifierFormat(this.session, "No SAML Data in session");
+            getSetSessionFlags.SetSamlTokenAttributeNameImmutibleID(this.session, "No SAML Data in session");
         }
 
         private int SearchSessionForWord(Session session, string searchTerm)

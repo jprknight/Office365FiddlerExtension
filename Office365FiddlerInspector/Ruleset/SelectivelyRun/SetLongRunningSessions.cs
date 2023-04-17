@@ -31,62 +31,72 @@ namespace Office365FiddlerInspector.Ruleset
             {
                 if (this.session["X-SessionType"] == null)
                 {
-                    this.session["ui-backcolor"] = Preferences.HTMLColourOrange;
-                    this.session["ui-color"] = "black";
+                    getSetSessionFlags.SetUIBackColour(this.session, "Orange");
+                    getSetSessionFlags.SetUITextColour(this.session, "Black");
 
                     getSetSessionFlags.SetSessionType(this.session, "Roundtrip Time Warning");
 
-                    this.session["X-ResponseAlert"] = "<b><span style='color:orange'>Roundtrip Time Warning</span></b>";
+                    getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:orange'>Roundtrip Time Warning</span></b>");
                 }
 
-                this.session["X-ResponseComments"] += "This session took more than 2.5 seconds to complete. "
-                    + "A small number of sessions completing roundtrip in this timeframe is not necessary sign of an issue.";
+                getSetSessionFlags.SetXResponseComments(this.session, "This session took more than 2.5 seconds to complete. "
+                    + "A small number of sessions completing roundtrip in this timeframe is not necessary sign of an issue.");
+                // REVIEW THIS. += Think about how to handle this.
+                
+                //this.session["X-ResponseComments"] += "This session took more than 2.5 seconds to complete. "
+                  //  + "A small number of sessions completing roundtrip in this timeframe is not necessary sign of an issue.";
             }
             // If the overall session time runs longer than 5,000ms or 5 seconds.
             else if (ClientMilliseconds > Preferences.GetSlowRunningSessionThreshold())
             {
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Long running client session.");
+
                 if (this.session["X-SessionType"] == null)
                 {
-                    this.session["ui-backcolor"] = Preferences.HTMLColourRed;
-                    this.session["ui-color"] = "black";
-
+                    getSetSessionFlags.SetUIBackColour(this.session, "Red");
+                    getSetSessionFlags.SetUITextColour(this.session, "Black");
+                    
                     getSetSessionFlags.SetSessionType(this.session, "Long Running Client Session");
 
-                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>Long Running Client Session</span></b>";
+                    getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>Long Running Client Session</span></b>");
                 }
 
-                this.session["X-ResponseComments"] += "<p><b><span style='color:red'>Long running session found</span></b>. A small number of long running sessions in the < 10 "
+                getSetSessionFlags.SetXResponseComments(this.session, "<p><b><span style='color:red'>Long running session found</span></b>. A small number of long running sessions in the < 10 "
                     + "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue.</p>"
                     + "<p>If, however, you are troubleshooting an application performance issue, consider the number of sessions which "
                     + "have this warning. Investigate any proxy device or load balancer in your network, "
                     + "or any other device sitting between the client computer and access to the application server the data resides on.</p>"
                     + "<p>Try the divide and conquer approach. What can you remove or bypass from the equation to see if the application then performs "
-                    + "normally?</p>";
+                    + "normally?</p>");
+                    // REVIEW THIS. += Think about how to handle this.
+                //this.session["X-ResponseComments"] += ;
 
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Long running client session.");
             }
             // If the Office 365 server think time runs longer than 5,000ms or 5 seconds.
             else if (ServerMilliseconds > Preferences.GetSlowRunningSessionThreshold())
             {
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Long running Office 365 session.");
+
                 if (this.session["X-SessionType"] == null)
                 {
-                    this.session["ui-backcolor"] = Preferences.HTMLColourRed;
-                    this.session["ui-color"] = "black";
+                    getSetSessionFlags.SetUIBackColour(this.session, "Red");
+                    getSetSessionFlags.SetUITextColour(this.session, "Black");
 
                     getSetSessionFlags.SetSessionType(this.session, "Long Running Server Session");
 
-                    this.session["X-ResponseAlert"] = "<b><span style='color:red'>Long Running Server Session</span></b>";
+                    getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>Long Running Server Session</span></b>");
                 }
 
-                this.session["X-ResponseComments"] += "Long running Server session found. A small number of long running sessions in the < 10 "
+                // REVIEW THIS. += think about how to handle this.
+                getSetSessionFlags.SetXResponseComments(this.session, "Long running Server session found. A small number of long running sessions in the < 10 "
                     + "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue."
                     + "<p>If, however, you are troubleshooting an application performance issue, consider the number of sessions which "
                     + "have this warning alongany proxy device in your network, "
                     + "or any other device sitting between the client computer and access to the internet."
                     + "Try the divide and conquer approach. What can you remove or bypass from the equation to see if the application then performs "
-                    + "normally?</p>";
+                    + "normally?</p>");
+                //this.session["X-ResponseComments"] += ;
 
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Long running Office 365 session.");
             }
         }
     }

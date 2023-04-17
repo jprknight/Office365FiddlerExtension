@@ -17,23 +17,25 @@ namespace Office365FiddlerInspector.Services
         // Colour codes for sessions. Softer tones, easier on the eye than standard red, orange and green.
         public void SetUIBackColour(Session session, String Colour)
         {
-            switch (Colour) {
+            this.session = session;
+
+            switch (Colour.ToLower()) {
                 case "blue":
                     this.session["ui-backcolor"] = "#81BEF7";
                     break;
-                case "Green":
+                case "green":
                     this.session["ui-backcolor"] = "#81F7BA";
                     break;
-                case "Red":
+                case "red":
                     this.session["ui-backcolor"] = "#F06141";
                     break;
-                case "Gray":
+                case "gray":
                     this.session["ui-backcolor"] = "#BDBDBD";
                     break;
-                case "Orange":
+                case "orange":
                     this.session["ui-backcolor"] = "#F59758";
                     break;
-                case "Black":
+                case "black":
                     this.session["ui-backcolor"] = "#000000";
                     break;
                 default:
@@ -45,12 +47,14 @@ namespace Office365FiddlerInspector.Services
 
         public void SetUITextColour(Session session, String Colour)
         {
-            switch (Colour)
+            this.session = session;
+
+            switch (Colour.ToLower())
             {
-                case "Black":
+                case "black":
                     this.session["ui-color"] = "#000000";
                     break;
-                case "Red":
+                case "red":
                     this.session["ui-color"] = "#F06141";
                     break;
                 default:
@@ -162,6 +166,12 @@ namespace Office365FiddlerInspector.Services
             this.session["X-ResponseCodeDescription"] = ResponseCodeDescription;
         }
 
+        public String GetSessionType(Session session)
+        {
+            this.session = session;
+            return this.session["X-Session-Type"];
+        }
+
         public void SetSessionType(Session session, String SessionType)
         {
             this.session = session;
@@ -172,6 +182,48 @@ namespace Office365FiddlerInspector.Services
         {
             this.session = session;
             this.session["X-Authentication"] = Authentication;
+        }
+
+        public void SetXAuthenticationDescription(Session session, String AuthenticationDescription)
+        {
+            this.session = session;
+            this.session["X-AuthenticationDesc"] = AuthenticationDescription;
+        }
+
+        public void SetXOffice365AuthType(Session session, String AuthType)
+        {
+            this.session = session;
+            this.session["X-Office365AuthType"] = AuthType;
+        }
+        
+        public void SetSamlTokenIssuer(Session session, String SAMLTokenIssuer)
+        {
+            this.session = session;
+            this.session["X-Issuer"] = SAMLTokenIssuer;
+        }
+
+        public void SetSamlTokenSigningCertificate(Session session, String  SamlTokenSigningCertificate)
+        {
+            this.session = session;
+            this.session["X-SigningCertificate"] = SamlTokenSigningCertificate;
+        }
+
+        public void SetSamlTokenAttributeNameUPN(Session session, String SamlTokenAttributeNameUPN)
+        {
+            this.session = session;
+            this.session["X-AttributeNameUPN"] = SamlTokenAttributeNameUPN;
+        }
+
+        public void SetSamlTokenNameIdentifierFormat(Session session, String NameIdentifierFormat)
+        {
+            this.session = session;
+            this.session["X-NameIdentifierFormat"] = NameIdentifierFormat;
+        }
+
+        public void SetSamlTokenAttributeNameImmutibleID(Session session, String AttributeNameImmutibleID)
+        {
+            this.session = session;
+            this.session["X-AttributeNameImmutableID"] = AttributeNameImmutibleID;
         }
 
         public void SetXResponseServer(Session session, String ResponseServer)
@@ -235,7 +287,7 @@ namespace Office365FiddlerInspector.Services
             this.session["X-TransitTime"] = TransitTime;
         }
 
-        public void SetXElapsedTime(Session sesssion, String ElapsedTime)
+        public void SetXElapsedTime(Session session, String ElapsedTime)
         {
             this.session = session;
             this.session["X-ElapsedTime"] = ElapsedTime;

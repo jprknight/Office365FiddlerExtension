@@ -249,7 +249,21 @@ namespace Office365FiddlerInspector
                         break;
                     }
 
-                    http_200.HTTP_200_Outlook_Mapi(this.session);
+                    http_200.HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled(this.session);
+
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
+                    {
+                        break;
+                    }
+                    
+                    http_200.HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi(this.session);
+
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
+                    {
+                        break;
+                    }
+
+                    http_200.HTTP_200_Outlook_Exchange_OnPremise_Mapi(this.session);
 
                     if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
@@ -270,7 +284,7 @@ namespace Office365FiddlerInspector
                         break;
                     }
 
-                    http_200.HTTP_200_OnPremise_AutoDiscover_Redirect(this.session);
+                    http_200.HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found(this.session);
 
                     if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
@@ -284,7 +298,14 @@ namespace Office365FiddlerInspector
                         break;
                     }
 
-                    http_200.HTTP_200_EXO_M365_AutoDiscover(this.session);
+                    http_200.HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun(this.session);
+
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
+                    {
+                        break;
+                    }
+
+                    http_200.HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun(this.session);
 
                     if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {

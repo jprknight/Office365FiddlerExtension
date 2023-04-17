@@ -22,18 +22,19 @@ namespace Office365FiddlerInspector.Ruleset
                 (this.session.utilFindInResponse("internet", false) > 1) &&
                 (this.session.utilFindInResponse("blocked", false) > 1))
             {
-                this.session["ui-backcolor"] = Preferences.HTMLColourRed;
-                this.session["ui-color"] = "black";
+                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + "  HTTP 504 Gateway Timeout -- Internet Access Blocked.");
+
+                getSetSessionFlags.SetUIBackColour(this.session, "Red");
+                getSetSessionFlags.SetUITextColour(this.session, "Black");
+
+                getSetSessionFlags.SetResponseCodeDescription(this.session, "504 Gateway Timeout - Internet Access Blocked");
+
                 getSetSessionFlags.SetSessionType(this.session, "***INTERNET BLOCKED***");
 
-                this.session["X-ResponseCodeDescription"] = "504 Gateway Timeout - Internet Access Blocked";
-
-                this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 504 Gateway Timeout -- Internet Access Blocked</span></b>";
-                this.session["X-ResponseComments"] = "Detected the keywords 'internet' and 'access' and 'blocked'. Potentially the computer this trace was collected "
+                getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 504 Gateway Timeout -- Internet Access Blocked</span></b>");
+                getSetSessionFlags.SetXResponseComments(this.session, "Detected the keywords 'internet' and 'access' and 'blocked'. Potentially the computer this trace was collected "
                     + "from has been <b><span style='color:red'>quaratined for internet access by a LAN based network security device</span></b>."
-                    + "<p>Validate this by checking the webview and raw tabs for more information.</p>";
-
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + "  HTTP 504 Gateway Timeout -- Internet Access Blocked.");
+                    + "<p>Validate this by checking the webview and raw tabs for more information.</p>");
 
                 // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
                 getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "5");
@@ -48,18 +49,18 @@ namespace Office365FiddlerInspector.Ruleset
 
             /////////////////////////////
             // 504.99. Pick up any other 504 Gateway Timeout and write data into the comments box.
-            this.session["ui-backcolor"] = Preferences.HTMLColourRed;
-            this.session["ui-color"] = "black";
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 504 Gateway Timeout (99).");
 
-            this.session["X-ResponseAlert"] = "<b><span style='color:red'>HTTP 504 Gateway Timeout</span></b>";
-            this.session["X-ResponseComments"] = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting "
-                + "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.";
+            getSetSessionFlags.SetUIBackColour(this.session, "Red");
+            getSetSessionFlags.SetUITextColour(this.session, "Black");
+
+            getSetSessionFlags.SetResponseCodeDescription(this.session, "504 Gateway Timeout");
+
+            getSetSessionFlags.SetXResponseComments(this.session, "<b><span style='color:red'>HTTP 504 Gateway Timeout</span></b>");
+            getSetSessionFlags.SetXResponseComments(this.session, "The quantity of these types of server errors need to be considered in context with what you are troubleshooting "
+                + "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.");
 
             getSetSessionFlags.SetSessionType(this.session, "Gateway Timeout");
-
-            this.session["X-ResponseCodeDescription"] = "504 Gateway Timeout";
-
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 504 Gateway Timeout (99).");
 
             // Nothing meaningful here, let further processing try to pick up something.
             getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");

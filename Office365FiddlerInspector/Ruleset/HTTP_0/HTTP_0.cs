@@ -19,6 +19,7 @@ namespace Office365FiddlerInspector.Ruleset
             /////////////////////////////
             //
             //  HTTP 0: No Response.
+            //
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 0 No response");
 
             getSetSessionFlags.SetUIBackColour(this.session, "Red");
