@@ -10,27 +10,29 @@ namespace Office365FiddlerInspector.Ruleset
 {
     class HTTP_494 : ActivationService
     {
-        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+        private static HTTP_494 _instance;
+
+        public static HTTP_494 Instance => _instance ?? (_instance = new HTTP_494());
 
         public void HTTP_494_Request_Header_Too_Large(Session session)
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 494 nginx Request header too large");
+            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 494 nginx Request header too large");
 
             // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
-            getSetSessionFlags.SetUIBackColour(this.session, "Gray");
-            getSetSessionFlags.SetUITextColour(this.session, "Black");
+            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");
+            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-            getSetSessionFlags.SetResponseCodeDescription(this.session, "494 nginx Request header too large");
+            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "494 nginx Request header too large");
 
-            getSetSessionFlags.SetXResponseAlert(this.session, "HTTP 494 nginx Request header too large.");
-            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
+            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "HTTP 494 nginx Request header too large.");
+            GetSetSessionFlags.Instance.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
-            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

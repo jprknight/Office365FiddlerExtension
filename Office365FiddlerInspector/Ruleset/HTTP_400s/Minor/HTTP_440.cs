@@ -10,27 +10,29 @@ namespace Office365FiddlerInspector.Ruleset
 {
     class HTTP_440 : ActivationService
     {
-        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+        private static HTTP_440 _instance;
+
+        public static HTTP_440 Instance => _instance ?? (_instance = new HTTP_440());
 
         public void HTTP_440_IIS_Login_Timeout(Session session)
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 440 IIS Login Time-out");
+            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 440 IIS Login Time-out");
 
             // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
-            getSetSessionFlags.SetUIBackColour(this.session, "Gray");
-            getSetSessionFlags.SetUITextColour(this.session, "Black");
+            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");
+            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-            getSetSessionFlags.SetResponseCodeDescription(this.session, "440 IIS Login Time-out");
+            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "440 IIS Login Time-out");
 
-            getSetSessionFlags.SetXResponseAlert(this.session, "HTTP 440 IIS Login Time-out.");
-            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
+            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "HTTP 440 IIS Login Time-out.");
+            GetSetSessionFlags.Instance.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
-            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

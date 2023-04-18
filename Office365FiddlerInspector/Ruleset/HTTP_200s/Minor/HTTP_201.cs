@@ -10,7 +10,9 @@ namespace Office365FiddlerInspector.Ruleset
 {
     class HTTP_201 : ActivationService
     {
-        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+        private static HTTP_201 _instance;
+
+        public static HTTP_201 Instance => _instance ?? (_instance = new HTTP_201());
 
         public void HTTP_201_Created(Session session)
         {
@@ -18,18 +20,18 @@ namespace Office365FiddlerInspector.Ruleset
 
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 201 Created.");
 
-            getSetSessionFlags.SetUIBackColour(this.session, "Green");
-            getSetSessionFlags.SetUITextColour(this.session, "Black");
+            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Green");
+            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-            getSetSessionFlags.SetResponseCodeDescription(this.session, "201 Created");
+            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "201 Created");
 
-            getSetSessionFlags.SetXResponseAlert(this.session, "HTTP 201 Created.");
-            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
+            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "HTTP 201 Created.");
+            GetSetSessionFlags.Instance.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
-            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

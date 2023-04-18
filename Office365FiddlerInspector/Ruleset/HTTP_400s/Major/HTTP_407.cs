@@ -10,7 +10,9 @@ namespace Office365FiddlerInspector.Ruleset
 {
     class HTTP_407 : ActivationService
     {
-        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+        private static HTTP_407 _instance;
+
+        public static HTTP_407 Instance => _instance ?? (_instance = new HTTP_407());
 
         public void HTTP_407_Proxy_Auth_Required(Session session)
         {
@@ -18,14 +20,14 @@ namespace Office365FiddlerInspector.Ruleset
 
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 407 Proxy Authentication Required.");
 
-            getSetSessionFlags.SetUIBackColour(this.session, "Red");
-            getSetSessionFlags.SetUITextColour(this.session, "Black");
+            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
+            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-            getSetSessionFlags.SetResponseCodeDescription(this.session, "407 Proxy Authentication Required (RFC 7235)");
+            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "407 Proxy Authentication Required (RFC 7235)");
 
-            getSetSessionFlags.SetSessionType(this.session, "HTTP 407 Proxy Auth Required");
-            getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 407: Proxy Authentication Required</span></b>");
-            getSetSessionFlags.SetXResponseComments(this.session, "<b><span style='color:red'>Proxy Authentication Required</span></b>"
+            GetSetSessionFlags.Instance.SetSessionType(this.session, "HTTP 407 Proxy Auth Required");
+            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 407: Proxy Authentication Required</span></b>");
+            GetSetSessionFlags.Instance.SetXResponseComments(this.session, "<b><span style='color:red'>Proxy Authentication Required</span></b>"
                 + "<p>Seeing these when investigating an Office 365 connectivity is a <b>big indicator of an issue</b>.</p>"
                 + "<p>Look to engage the network or security team who is responsible for the proxy infrastructure and give them "
                 + "the information from these HTTP 407 sessions to troubleshoot with.</p>"
@@ -35,9 +37,9 @@ namespace Office365FiddlerInspector.Ruleset
                 + "https://docs.microsoft.com/en-us/microsoft-365/enterprise/microsoft-365-network-connectivity-principles?view=o365-worldwide#microsoft-365-connectivity-principles </a></p>");
 
             // Set confidence level for Session Authentication, Session Type, and Session Response Server.
-            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "10");
-            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "5");
+            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
+            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
+            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
         }
     }
 }

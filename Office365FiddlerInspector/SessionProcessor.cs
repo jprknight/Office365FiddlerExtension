@@ -103,17 +103,18 @@ namespace Office365FiddlerInspector
             // Whether the extension is loaded or not and what the enable/disble option looks like would be determined elsewhere.
             //MenuUI.Instance.MiEnabled.Checked = Preferences.ExtensionEnabled;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: LoadSaz with Extension Enabled {Preferences.ExtensionEnabled}.");
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: LoadSaz with Extension Enabled: {Preferences.ExtensionEnabled}.");
 
             foreach (var session in e.arrSessions)
             {
+                this.session = session;
 
                 if (Preferences.ExtensionEnabled)
                 {
                     // Call the main fuction which runs through all session logic checks.
-                    Instance.OnPeekAtResponseHeaders(session);
+                    Instance.OnPeekAtResponseHeaders(this.session);
 
-                    session.RefreshUI();
+                    this.session.RefreshUI();
                 }
             }
             FiddlerApplication.UI.lvSessions.EndUpdate();
@@ -225,178 +226,175 @@ namespace Office365FiddlerInspector
         // https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
         public void ResponseCodeLogic(Session session)
         {
+            this.session = session;
+
             FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " Running ResponseCodeLogic.");
 
             switch (this.session.responseCode)
             {
                 case 0:
-                    HTTP_0 http_0 = new HTTP_0();
-                    http_0.HTTP_0_NoSessionResponse(this.session);
-                    //HTTP_0.Instance.HTTP_0_NoSessionResponse(this.session);
+                    HTTP_0.Instance.HTTP_0_NoSessionResponse(this.session);
                     break;
                 case 103:
-                    HTTP_103 http_103 = new HTTP_103();
-                    http_103.HTTP_100_Checkpoint(this.session);
+                    HTTP_103.Instance.HTTP_103_Checkpoint(this.session);
                     break;
                 case 200:
+                    HTTP_200.Instance.HTTP_200_ClientAccessRule(this.session);
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
+                    {
+                        break;
+                    }
 
-                    HTTP_200 http_200 = new HTTP_200();
+                    ///////////////////////////////
 
-                    http_200.HTTP_200_ClientAccessRule(this.session);
+                    HTTP_200.Instance.HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled(this.session);
 
                     if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
-                    http_200.HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled(this.session);
+                    ///////////////////////////////
 
+                    HTTP_200.Instance.HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi(this.session);
                     if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
+
+                    ///////////////////////////////
+
+                    HTTP_200.Instance.HTTP_200_Outlook_Exchange_OnPremise_Mapi(this.session);
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
+                    {
+                        break;
+                    }
+
+                    ///////////////////////////////
+
+                    HTTP_200.Instance.HTTP_200_Outlook_RPC(this.session);
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
+                    {
+                        break;
+                    }
+
+                    ///////////////////////////////
+
+                    HTTP_200.Instance.HTTP_200_Outlook_NSPI(this.session);
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
+                    {
+                        break;
+                    }
+
+                    ///////////////////////////////
+
+                    HTTP_200.Instance.HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found(this.session);
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
+                    {
+                        break;
+                    }
+
+                    ///////////////////////////////
+
+                    HTTP_200.Instance.HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound(this.session);
+                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
+                    {
+                        break;
+                    }
+
+                    ///////////////////////////////
                     
-                    http_200.HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi(this.session);
-
+                    HTTP_200.Instance.HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun(this.session);
                     if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
-                    http_200.HTTP_200_Outlook_Exchange_OnPremise_Mapi(this.session);
+                    ///////////////////////////////
 
+                    HTTP_200.Instance.HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun(this.session);
                     if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
-                    http_200.HTTP_200_Outlook_RPC(this.session);
+                    ///////////////////////////////
 
+                    HTTP_200.Instance.HTTP_200_Unified_Groups_Settings(this.session);
                     if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
-                    http_200.HTTP_200_Outlook_NSPI(this.session);
+                    ///////////////////////////////
 
+                    HTTP_200.Instance.HTTP_200_3S_Suggestions(this.session);
                     if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
-                    http_200.HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found(this.session);
+                    ///////////////////////////////
 
+                    HTTP_200.Instance.HTTP_200_REST_People_Request(this.session);
                     if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
-                    http_200.HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound(this.session);
+                    ///////////////////////////////
 
+                    HTTP_200.Instance.HTTP_200_Any_Other_Exchange_EWS(this.session);
                     if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
-                    http_200.HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun(this.session);
+                    ///////////////////////////////
 
-                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
-                    {
-                        break;
-                    }
-
-                    http_200.HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun(this.session);
-
-                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
-                    {
-                        break;
-                    }
-
-                    http_200.HTTP_200_Unified_Groups_Settings(this.session);
-
-                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
-                    {
-                        break;
-                    }
-
-                    http_200.HTTP_200_3S_Suggestions(this.session);
-
-                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
-                    {
-                        break;
-                    }
-
-                    http_200.HTTP_200_REST_People_Request(this.session);
-
-                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
-                    {
-                        break;
-                    }
-
-                    http_200.HTTP_200_Any_Other_Exchange_EWS(this.session);
-
-                    if (getSetSessionFlags.GetAnySessionConfidenceLevelTen(this.session))
-                    {
-                        break;
-                    }
-
-                    http_200.HTTP_200_Lurking_Errors(this.session);
+                    HTTP_200.Instance.HTTP_200_Lurking_Errors(this.session);
                     break;
                 case 201:
-                    HTTP_201 http_201 = new HTTP_201();
-                    http_201.HTTP_201_Created(this.session);
+                    HTTP_201.Instance.HTTP_201_Created(this.session);
                     break;
                 case 202:
-                    HTTP_202 http_202 = new HTTP_202();
-                    http_202.HTTP_202_Accepted(this.session);
+                    HTTP_202.Instance.HTTP_202_Accepted(this.session);
                     break;
                 case 203:
-                    HTTP_203 http_203 = new HTTP_203();
-                    http_203.HTTP_203_NonAuthoritive_Answer(this.session);
+                    HTTP_203.Instance.HTTP_203_NonAuthoritive_Answer(this.session);
                     break;
                 case 204:
-                    HTTP_204 http_204 = new HTTP_204();
-                    http_204.HTTP_204_No_Content(this.session);
+                    HTTP_204.Instance.HTTP_204_No_Content(this.session);
                     break;
                 case 205:
-                    HTTP_205 http_205 = new HTTP_205();
-                    http_205.HTTP_205_Reset_Content(this.session);
+                    HTTP_205.Instance.HTTP_205_Reset_Content(this.session);
                     break;
                 case 206:
-                    HTTP_206 http_206 = new HTTP_206();
-                    http_206.HTTP_206_Partial_Content(this.session);
+                    HTTP_206.Instance.HTTP_206_Partial_Content(this.session);
                     break;
                 case 207:
-                    HTTP_207 http_207 = new HTTP_207();
-                    http_207.HTTP_207_Multi_Status(this.session);
+                    HTTP_207.Instance.HTTP_207_Multi_Status(this.session);
                     break;
                 case 208:
-                    HTTP_208 http_208 = new HTTP_208();
-                    http_208.HTTP_208_Already_Reported(this.session);
+                    HTTP_208.Instance.HTTP_208_Already_Reported(this.session);
                     break;
                 case 218:
-                    HTTP_218 http_218 = new HTTP_218();
-                    http_218.HTTP_218_This_Is_Fine_Apache_Web_Server(this.session);
+                    HTTP_218.Instance.HTTP_218_This_Is_Fine_Apache_Web_Server(this.session);
                     break;
                 case 226:
-                    HTTP_226 http_226 = new HTTP_226();
-                    http_226.HTTP_226_IM_Used(this.session);
+                    HTTP_226.Instance.HTTP_226_IM_Used(this.session);
                     break;
                 case 300:
-                    HTTP_300 http_300 = new HTTP_300();
-                    http_300.HTTP_300_Multiple_Choices(this.session);
+                    HTTP_300.Instance.HTTP_300_Multiple_Choices(this.session);
                     break;
                 case 301:
-                    HTTP_301 http_301 = new HTTP_301();
-                    http_301.HTTP_301_Permanently_Moved(this.session);
+                    HTTP_301.Instance.HTTP_301_Permanently_Moved(this.session);
                     break;
                 case 302:
-                    HTTP_302 http_302 = new HTTP_302();
-                    http_302.HTTP_302_Redirect(this.session);
+                    HTTP_302.Instance.HTTP_302_Redirect(this.session);    
                     break;
                 case 303:
-                    HTTP_303 http_303 = new HTTP_303();
-                    http_303.HTTP_303_See_Other(this.session);
+                    HTTP_303.Instance.HTTP_303_See_Other(this.session);
                     break;
                 case 304:
                     HTTP_304 http_304 = new HTTP_304();

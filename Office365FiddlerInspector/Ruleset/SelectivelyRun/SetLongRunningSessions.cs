@@ -29,7 +29,7 @@ namespace Office365FiddlerInspector.Ruleset
             // Warn on a 2.5 second roundtrip time.
             if (ClientMilliseconds > Preferences.GetWarningSessionTimeThreshold() && ClientMilliseconds < Preferences.GetSlowRunningSessionThreshold())
             {
-                if (this.session["X-SessionType"] == null)
+                if (getSetSessionFlags.GetSessionType(this.session) == null)
                 {
                     getSetSessionFlags.SetUIBackColour(this.session, "Orange");
                     getSetSessionFlags.SetUITextColour(this.session, "Black");
@@ -51,7 +51,7 @@ namespace Office365FiddlerInspector.Ruleset
             {
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Long running client session.");
 
-                if (this.session["X-SessionType"] == null)
+                if (getSetSessionFlags.GetSessionType(this.session) == null)
                 {
                     getSetSessionFlags.SetUIBackColour(this.session, "Red");
                     getSetSessionFlags.SetUITextColour(this.session, "Black");
@@ -77,7 +77,7 @@ namespace Office365FiddlerInspector.Ruleset
             {
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Long running Office 365 session.");
 
-                if (this.session["X-SessionType"] == null)
+                if (getSetSessionFlags.GetSessionType(this.session) == null)
                 {
                     getSetSessionFlags.SetUIBackColour(this.session, "Red");
                     getSetSessionFlags.SetUITextColour(this.session, "Black");

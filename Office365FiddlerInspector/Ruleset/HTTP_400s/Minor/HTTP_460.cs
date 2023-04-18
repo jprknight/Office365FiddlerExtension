@@ -10,27 +10,29 @@ namespace Office365FiddlerInspector.Ruleset
 {
     class HTTP_460 : ActivationService
     {
-        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+        private static HTTP_460 _instance;
+
+        public static HTTP_460 Instance => _instance ?? (_instance = new HTTP_460());
 
         public void HTTP_460_Load_Balancer_Timeout(Session session)
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 460 AWS Load balancer Timeout");
+            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 460 AWS Load balancer Timeout");
 
             // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
-            getSetSessionFlags.SetUIBackColour(this.session, "Gray");
-            getSetSessionFlags.SetUITextColour(this.session, "Black");
+            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");
+            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-            getSetSessionFlags.SetResponseCodeDescription(this.session, "460 AWS Load balancer Timeout");
+            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "460 AWS Load balancer Timeout");
 
-            getSetSessionFlags.SetXResponseAlert(this.session, "HTTP 460 AWS Load balancer Timeout.");
-            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
+            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "HTTP 460 AWS Load balancer Timeout.");
+            GetSetSessionFlags.Instance.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
-            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

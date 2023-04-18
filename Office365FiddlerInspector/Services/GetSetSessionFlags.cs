@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Fiddler;
+using Microsoft.AspNetCore.Http.Authentication;
+using Office365FiddlerInspector.Ruleset;
 
 namespace Office365FiddlerInspector.Services
 {
@@ -13,6 +15,12 @@ namespace Office365FiddlerInspector.Services
 
         private static GetSetSessionFlags _instance;
         public static GetSetSessionFlags Instance => _instance ?? (_instance = new GetSetSessionFlags());
+
+        public void WriteToFiddlerLog(Session session, String Log)
+        {
+            this.session = session;
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} {Log}");
+        }
 
         // Colour codes for sessions. Softer tones, easier on the eye than standard red, orange and green.
         public void SetUIBackColour(Session session, String Colour)
@@ -144,6 +152,12 @@ namespace Office365FiddlerInspector.Services
             this.session["X-SRSCL"] = SessionResponseServerConfidenceLevel;
         }
 
+        public String GetProcess(Session session)
+        {
+            this.session = session;
+            return this.session["X-ProcessName"];
+        }
+
         public void SetProcess(Session session)
         {
             this.session = session;
@@ -158,6 +172,12 @@ namespace Office365FiddlerInspector.Services
             {
                 session["X-ProcessName"] = "Remote Capture";
             }
+        }
+
+        public String GetResponseCodeDescription(Session session)
+        {
+            this.session = session;
+            return this.session["X-ResponseCodeDescription"];
         }
 
         public void SetResponseCodeDescription(Session session, String ResponseCodeDescription)
@@ -178,10 +198,22 @@ namespace Office365FiddlerInspector.Services
             this.session["X-SessionType"] = SessionType;
         }
 
+        public string GetXAuthentication(Session session)
+        {
+            this.session = session;
+            return this.session["X-Authentication"];
+        }
+
         public void SetXAuthentication(Session session, String Authentication)
         {
             this.session = session;
             this.session["X-Authentication"] = Authentication;
+        }
+
+        public string GetXAuthenticationDescription(Session session)
+        {
+            this.session = session;
+            return this.session["X-AuthenticationDesc"];
         }
 
         public void SetXAuthenticationDescription(Session session, String AuthenticationDescription)
@@ -190,16 +222,34 @@ namespace Office365FiddlerInspector.Services
             this.session["X-AuthenticationDesc"] = AuthenticationDescription;
         }
 
+        public string GetXOffice365AuthType(Session session)
+        {
+            this.session = session;
+            return this.session["X-Office365AuthType"];
+        }
+
         public void SetXOffice365AuthType(Session session, String AuthType)
         {
             this.session = session;
             this.session["X-Office365AuthType"] = AuthType;
         }
         
+        public string GetSamlTokenIssuer(Session session)
+        {
+            this.session = session;
+            return this.session["X-Issuer"];
+        }
+
         public void SetSamlTokenIssuer(Session session, String SAMLTokenIssuer)
         {
             this.session = session;
             this.session["X-Issuer"] = SAMLTokenIssuer;
+        }
+
+        public string GetSamlTokenSigningCertificate(Session session)
+        {
+            this.session = session;
+            return this.session["X-SigningCertificate"];
         }
 
         public void SetSamlTokenSigningCertificate(Session session, String  SamlTokenSigningCertificate)
@@ -208,10 +258,22 @@ namespace Office365FiddlerInspector.Services
             this.session["X-SigningCertificate"] = SamlTokenSigningCertificate;
         }
 
+        public string GetSamlTokenAttributeNameUPN(Session session)
+        {
+            this.session = session;
+            return this.session["X-AttributeNameUPN"];
+        }
+
         public void SetSamlTokenAttributeNameUPN(Session session, String SamlTokenAttributeNameUPN)
         {
             this.session = session;
             this.session["X-AttributeNameUPN"] = SamlTokenAttributeNameUPN;
+        }
+
+        public string GetSamlTokenNameIdentifierFormat(Session session)
+        {
+            this.session = session;
+            return this.session["X-NameIdentifierFormat"];
         }
 
         public void SetSamlTokenNameIdentifierFormat(Session session, String NameIdentifierFormat)
@@ -220,10 +282,22 @@ namespace Office365FiddlerInspector.Services
             this.session["X-NameIdentifierFormat"] = NameIdentifierFormat;
         }
 
+        public string GetSamlTokenAttributeNameImmutibleID(Session session)
+        {
+            this.session = session;
+            return this.session["X-AttributeNameImmutableID"];
+        }
+
         public void SetSamlTokenAttributeNameImmutibleID(Session session, String AttributeNameImmutibleID)
         {
             this.session = session;
             this.session["X-AttributeNameImmutableID"] = AttributeNameImmutibleID;
+        }
+
+        public String GetXResponseServer(Session session)
+        {
+            this.session = session;
+            return this.session["X-ResponseServer"];
         }
 
         public void SetXResponseServer(Session session, String ResponseServer)
@@ -236,6 +310,12 @@ namespace Office365FiddlerInspector.Services
         {
             this.session = session;
             this.session["X-ResponseAlert"] = ResponseAlert;
+        }
+
+        public string GetXResponseComments (Session session)
+        {
+            this.session = session;
+            return this.session["X-ResponseComments"];
         }
 
         public void SetXResponseComments(Session session, String ResponseComments)
@@ -252,10 +332,22 @@ namespace Office365FiddlerInspector.Services
                 + "<a href='https://aka.ms/Office365FiddlerExtension' target='_blank'>https://aka.ms/Office365FiddlerExtension</a>.</p>";
         }
 
+        public String GetXDataCollected(Session session)
+        {
+            this.session = session;
+            return this.session["X-DataCollected"];
+        }
+
         public void SetXDateDataCollected(Session session, String DateDataCollected)
         {
             this.session = session;
             this.session["X-DataCollected"] = DateDataCollected;
+        }
+
+        public String GetXDataAge(Session session)
+        {
+            this.session = session;
+            return this.session["X-DataAge"];
         }
 
         public void SetXDataAge(Session session, String DataAge)
@@ -264,10 +356,22 @@ namespace Office365FiddlerInspector.Services
             this.session["X-DataAge"] = DataAge;
         }
 
+        public string GetXCalculatedSessionAge(Session session)
+        {
+            this.session = session;
+            return this.session["X-CalculatedSessionAge"];
+        }
+
         public void SetXCalculatedSessionAge(Session session, String CalculatedSessionAge)
         {
             this.session = session;
             this.session["X-CalculatedSessionAge"] = CalculatedSessionAge;
+        }
+
+        public string GetXSessionTimersDescription(Session session)
+        {
+            this.session = session;
+            return this.session["X-SessionTimersDescription"];
         }
 
         public void SetXSessionTimersDescription(Session session, String SessionTimersDescription)
@@ -276,14 +380,27 @@ namespace Office365FiddlerInspector.Services
             this.session["X-SessionTimersDescription"] = SessionTimersDescription;
         }
 
+        public string GetXServerThinkTime(Session session)
+        {
+            this.session = session;
+            return this.session["X-ServerThinkTime"];
+        }
+
         public void SetXServerThinkTime(Session session, String ServerThinkTime)
         {
             this.session = session;
             this.session["X-ServerThinkTime"] = ServerThinkTime;
         }
 
+        public string GetXTransitTime(Session session)
+        {
+            this.session = session;
+            return this.session["X-TransitTime"];
+        }
+
         public void SetXTransitTime(Session session, String TransitTime)
         {
+            this.session = session;
             this.session["X-TransitTime"] = TransitTime;
         }
 
@@ -291,6 +408,12 @@ namespace Office365FiddlerInspector.Services
         {
             this.session = session;
             this.session["X-ElapsedTime"] = ElapsedTime;
+        }
+
+        public String GetXInspectorElapsedTime(Session session)
+        {
+            this.session = session;
+            return this.session["X-InspectorElapsedTime"];
         }
 
         public void SetXInspectorElapsedTime(Session session, String InspectorElapsedTime)

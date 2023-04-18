@@ -10,27 +10,29 @@ namespace Office365FiddlerInspector.Ruleset
 {
     class HTTP_499 : ActivationService
     {
-        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+        private static HTTP_499 _instance;
+
+        public static HTTP_499 Instance => _instance ?? (_instance = new HTTP_499());
 
         public void HTTP_499_Token_Required_or_Client_Closed_Request(Session session)
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 499 Token Required (Esri) or nginx Client Closed Request.");
+            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 499 Token Required (Esri) or nginx Client Closed Request.");
 
             // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
-            getSetSessionFlags.SetUIBackColour(this.session, "Gray");
-            getSetSessionFlags.SetUITextColour(this.session, "Black");
+            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");
+            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-            getSetSessionFlags.SetResponseCodeDescription(this.session, "499 Token Required (Esri) or nginx Client Closed Request");
+            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "499 Token Required (Esri) or nginx Client Closed Request");
 
-            getSetSessionFlags.SetXResponseAlert(this.session, "HTTP 499 Token Required (Esri) or nginx Client Closed Request.");
-            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
+            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "HTTP 499 Token Required (Esri) or nginx Client Closed Request.");
+            GetSetSessionFlags.Instance.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
-            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

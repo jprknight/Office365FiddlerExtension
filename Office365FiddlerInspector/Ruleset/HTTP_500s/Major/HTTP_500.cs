@@ -10,7 +10,9 @@ namespace Office365FiddlerInspector.Ruleset
 {
     class HTTP_500 : ActivationService
     {
-        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+        private static HTTP_500 _instance;
+
+        public static HTTP_500 Instance => _instance ?? (_instance = new HTTP_500());
 
         public void HTTP_500_Internal_Server_Error_Repeating_Redirects(Session session)
         {
@@ -25,25 +27,25 @@ namespace Office365FiddlerInspector.Ruleset
             {
                 if (this.session.HostnameIs("outlook.office365.com"))
                 {
-                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 500 Internal Server Error.");
+                    GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 500 Internal Server Error.");
 
-                    getSetSessionFlags.SetUIBackColour(this.session, "Red");
-                    getSetSessionFlags.SetUITextColour(this.session, "Black");
+                    GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
+                    GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-                    getSetSessionFlags.SetResponseCodeDescription(this.session, "500 Internal Server Error");
+                    GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "500 Internal Server Error");
 
-                    getSetSessionFlags.SetSessionType(this.session, "***REPEATING REDIRECTS DETECTED***");
-                    getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 500 Internal Server Error - Repeating redirects detected</span></b>");
-                    getSetSessionFlags.SetXResponseComments(this.session, "<b><span style='color:red'>Repeating redirects detected</span></b> found in this session response. "
+                    GetSetSessionFlags.Instance.SetSessionType(this.session, "***REPEATING REDIRECTS DETECTED***");
+                    GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 500 Internal Server Error - Repeating redirects detected</span></b>");
+                    GetSetSessionFlags.Instance.SetXResponseComments(this.session, "<b><span style='color:red'>Repeating redirects detected</span></b> found in this session response. "
                         + "This response has been seen with OWA and federated domains. Is this issue seen with non-federated user accounts? "
                         + "If not this might suggest an issue with a federation service. "
                         + "<p>Alternatively does the impacted account have too many roles assigned? Too many roles on an account have been seen as a cause of this type of issue.</p>"
                         + "<p>Otherwise this might be an issue which needs to be raised to Microsoft support.</p>");
                     
                     // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
-                    getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                    getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "10");
-                    getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                    GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
+                    GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
+                    GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
                 }
             }
         }
@@ -63,23 +65,23 @@ namespace Office365FiddlerInspector.Ruleset
                 {
                     if (this.session.uriContains("/EWS/Exchange.asmx"))
                     {
-                        FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 500 EWS Impersonate User Denied.");
+                        GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 500 EWS Impersonate User Denied.");
 
-                        getSetSessionFlags.SetUIBackColour(this.session, "Red");
-                        getSetSessionFlags.SetUITextColour(this.session, "Black");
+                        GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
+                        GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-                        getSetSessionFlags.SetResponseCodeDescription(this.session, "500 EWS Impersonate User Denied");
+                        GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "500 EWS Impersonate User Denied");
 
-                        getSetSessionFlags.SetSessionType(this.session, "***EWS Impersonate User Denied***");
-                        getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 500 Internal Server Error - EWS Impersonate User Denied</span></b>");
-                        getSetSessionFlags.SetXResponseComments(this.session, "<b><span style='color:red'>EWS Impersonate User Denied</span></b> found in this session response. "
+                        GetSetSessionFlags.Instance.SetSessionType(this.session, "***EWS Impersonate User Denied***");
+                        GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 500 Internal Server Error - EWS Impersonate User Denied</span></b>");
+                        GetSetSessionFlags.Instance.SetXResponseComments(this.session, "<b><span style='color:red'>EWS Impersonate User Denied</span></b> found in this session response. "
                             + "Check the service account in use has impersonation rights on the mailbox you are trying to work with."
                             + "Are the impersonation permissions given directly on the service account or via a security group?</p>");
 
                         // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
-                        getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                        getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "10");
-                        getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                        GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
+                        GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
+                        GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
                     }
                 }
             }
@@ -101,25 +103,25 @@ namespace Office365FiddlerInspector.Ruleset
             {
                 if (this.session.HostnameIs("outlook.office365.com"))
                 {
-                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 500 Internal Server Error - OWA Something went wrong.");
+                    GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 500 Internal Server Error - OWA Something went wrong.");
 
-                    getSetSessionFlags.SetUIBackColour(this.session, "Red");
-                    getSetSessionFlags.SetUITextColour(this.session, "Black");
+                    GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
+                    GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-                    getSetSessionFlags.SetResponseCodeDescription(this.session, "500 OWA Something went wrong");
+                    GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "500 OWA Something went wrong");
 
-                    getSetSessionFlags.SetSessionType(this.session, "***OWA SOMETHING WENT WRONG***");
-                    getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 500 Internal Server Error - OWA Something went wrong.</span></b>");
-                    getSetSessionFlags.SetXResponseComments(this.session, "<b><span style='color:red'>OWA - Something went wrong</span></b> found in this session response. "
+                    GetSetSessionFlags.Instance.SetSessionType(this.session, "***OWA SOMETHING WENT WRONG***");
+                    GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 500 Internal Server Error - OWA Something went wrong.</span></b>");
+                    GetSetSessionFlags.Instance.SetXResponseComments(this.session, "<b><span style='color:red'>OWA - Something went wrong</span></b> found in this session response. "
                         + "<p>Check the response Raw and Webview tabs to see what further details can be pulled on the issue.</p>"
                         + "<p>Does the issue reproduce with federated and non-federated (managed) domains?</p>"
                         + "<p>Does the issue reproduce in different browsers?</p>"
                         + "<p>Otherwise this might be an issue which needs to be raised to Microsoft support.</p>");
 
                     // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
-                    getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                    getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "10");
-                    getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                    GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
+                    GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
+                    GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
                 }
             }
         }
@@ -136,23 +138,23 @@ namespace Office365FiddlerInspector.Ruleset
             // Pick up any 500 Internal Server Error and write data into the comments box.
             // Specific scenario on Outlook and Office 365 invalid DNS lookup.
             // < Discuss and confirm thinking here, validate with a working trace. Is this a true false positive? Highlight in green? >
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 500 Internal Server Error.");
+            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 500 Internal Server Error.");
 
-            getSetSessionFlags.SetUIBackColour(this.session, "Red");
-            getSetSessionFlags.SetUITextColour(this.session, "Black");
+            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
+            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-            getSetSessionFlags.SetResponseCodeDescription(this.session, "500 Internal Server Error");
+            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "500 Internal Server Error");
 
-            getSetSessionFlags.SetSessionType(this.session, "!HTTP 500 Internal Server Error!");
-            getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 500 Internal Server Error</span></b>");
-            getSetSessionFlags.SetXResponseComments(this.session, "Consider the server that issued this response, "
+            GetSetSessionFlags.Instance.SetSessionType(this.session, "!HTTP 500 Internal Server Error!");
+            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 500 Internal Server Error</span></b>");
+            GetSetSessionFlags.Instance.SetXResponseComments(this.session, "Consider the server that issued this response, "
                 + "look at the IP address in the 'Host IP' column and lookup where it is hosted to know who should be looking at "
                 + "the issue.");
 
             // Possible something more to be found, let further processing try to pick up something.
-            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "5");
-            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "5");
+            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
+            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "5");
+            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
         }
     }
 }

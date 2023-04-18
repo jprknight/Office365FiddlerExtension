@@ -10,7 +10,9 @@ namespace Office365FiddlerInspector.Ruleset
 {
     class HTTP_502 : ActivationService
     {
-        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+        private static HTTP_502 _instance;
+
+        public static HTTP_502 Instance => _instance ?? (_instance = new HTTP_502());
 
         public void HTTP_502_Bad_Gateway_Telemetry_False_Positive(Session session)
         {
@@ -38,21 +40,21 @@ namespace Office365FiddlerInspector.Ruleset
             if ((this.session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443") &&
                 (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. Telemetry False Positive.");
+                GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 502 Bad Gateway. Telemetry False Positive.");
 
-                getSetSessionFlags.SetUIBackColour(this.session, "Blue");
-                getSetSessionFlags.SetUITextColour(this.session, "Black");
+                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Blue");
+                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-                getSetSessionFlags.SetResponseCodeDescription(this.session, "502 Bad Gateway False Positive");
+                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "502 Bad Gateway False Positive");
 
-                getSetSessionFlags.SetSessionType(this.session, "False Positive");
-                getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:green'>False Positive</span></b>");
-                getSetSessionFlags.SetXResponseComments(this.session, "Telemetry failing is unlikely the cause of significant Office 365 client issues.");
+                GetSetSessionFlags.Instance.SetSessionType(this.session, "False Positive");
+                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:green'>False Positive</span></b>");
+                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "Telemetry failing is unlikely the cause of significant Office 365 client issues.");
                 
                 // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
-                getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "10");
-                getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
+                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
+                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
             }
         }
 
@@ -70,26 +72,26 @@ namespace Office365FiddlerInspector.Ruleset
                 (this.session.utilFindInResponse("DNS Lookup for ", false) > 1) &&
                 (this.session.utilFindInResponse(" failed.", false) > 1))
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. EXO DNS False Positive.");
+                GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 502 Bad Gateway. EXO DNS False Positive.");
 
-                getSetSessionFlags.SetUIBackColour(this.session, "Blue");
-                getSetSessionFlags.SetUITextColour(this.session, "Black");
+                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Blue");
+                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-                getSetSessionFlags.SetResponseCodeDescription(this.session, "502 Bad Gateway False Positive");
+                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "502 Bad Gateway False Positive");
 
-                getSetSessionFlags.SetXAuthentication(this.session, "False Positive");
-                getSetSessionFlags.SetSessionType(this.session, "False Positive");
-                getSetSessionFlags.SetXResponseServer(this.session, "False Positive");
+                GetSetSessionFlags.Instance.SetXAuthentication(this.session, "False Positive");
+                GetSetSessionFlags.Instance.SetSessionType(this.session, "False Positive");
+                GetSetSessionFlags.Instance.SetXResponseServer(this.session, "False Positive");
 
-                getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:green'>False Positive</span></b>");
-                getSetSessionFlags.SetXResponseComments(this.session, "<b><span style='color:green'>False positive on HTTP 502</span></b>. "
+                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:green'>False Positive</span></b>");
+                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "<b><span style='color:green'>False positive on HTTP 502</span></b>. "
                     + "By design, the host only accepts connections on port 25, port 443 is not available."
                     + "<p>To validate this above lookup the record, confirm it is a MX record and attempt to connect to the MX host on ports 25 and 443.</p>");
 
                 // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
-                getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "10");
-                getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "10");
-                getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "10");
+                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "10");
+                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
+                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "10");
             }
         }
 
@@ -108,16 +110,17 @@ namespace Office365FiddlerInspector.Ruleset
                 //(this.session.utilFindInResponse("ConnectionRefused ", false) > 1) &&
                 (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. O365 AutoD onmicrosoft.com False Positive.");
+                GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 502 Bad Gateway. O365 AutoD onmicrosoft.com False Positive.");
 
-                getSetSessionFlags.SetUIBackColour(this.session, "Blue");
-                getSetSessionFlags.SetUITextColour(this.session, "Black");
+                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Blue");
+                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-                getSetSessionFlags.SetResponseCodeDescription(this.session, "502 Bad Gateway False Positive");
+                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "502 Bad Gateway False Positive");
 
-                getSetSessionFlags.SetXAuthentication(this.session, "False Positive");
-                getSetSessionFlags.SetSessionType(this.session, "False Positive");
-                getSetSessionFlags.SetXResponseComments(this.session, "False Positive");
+                GetSetSessionFlags.Instance.SetXAuthentication(this.session, "False Positive");
+                GetSetSessionFlags.Instance.SetSessionType(this.session, "False Positive");
+                GetSetSessionFlags.Instance.SetXResponseServer(this.session, "False Positive");
+                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "False Positive");
 
                 string AutoDFalsePositiveDomain;
                 string AutoDFalsePositiveResponseBody = this.session.GetResponseBodyAsString();
@@ -133,8 +136,8 @@ namespace Office365FiddlerInspector.Ruleset
                     AutoDFalsePositiveDomain = "<Domain not detected by extension>";
                 }
 
-                getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:green'>False Positive</span></b>");
-                getSetSessionFlags.SetXResponseComments(this.session, "<b><span style='color:green'>False Positive</span></b>. By design Office 365 Autodiscover does not respond to "
+                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:green'>False Positive</span></b>");
+                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "<b><span style='color:green'>False Positive</span></b>. By design Office 365 Autodiscover does not respond to "
                     + AutoDFalsePositiveDomain
                     + " on port 443. "
                     + "<p>Validate this message by confirming the Host IP (if shown) is an Office 365 Host/IP address and perform a telnet to it on port 80.</p>"
@@ -144,9 +147,9 @@ namespace Office365FiddlerInspector.Ruleset
                     + "AutoDiscover redirects to autodiscover-s.outlook.com which does accept connections on 443 and Microsoft does maintain SSL certificates for this endpoint.</p>");
 
                 // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
-                getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "10");
-                getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "10");
-                getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "10");
+                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "10");
+                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
+                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "10");
             }
         }
 
@@ -174,19 +177,19 @@ namespace Office365FiddlerInspector.Ruleset
             if ((this.session.utilFindInResponse("autodiscover.", false) > 1) &&
                 (this.session.utilFindInResponse("target machine actively refused it", false) > 1))
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. Vanity domain AutoD False Positive.");
+                GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 502 Bad Gateway. Vanity domain AutoD False Positive.");
 
-                getSetSessionFlags.SetUIBackColour(this.session, "Blue");
-                getSetSessionFlags.SetUITextColour(this.session, "Black");
+                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Blue");
+                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-                getSetSessionFlags.SetResponseCodeDescription(this.session, "502 Bad Gateway False Positive");
+                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "502 Bad Gateway False Positive");
 
-                getSetSessionFlags.SetXAuthentication(this.session, "AutoD False Positive");
-                getSetSessionFlags.SetSessionType(this.session, "AutoD False Positive");
-                getSetSessionFlags.SetXResponseServer(this.session, "AutoD False Positive");
+                GetSetSessionFlags.Instance.SetXAuthentication(this.session, "AutoD False Positive");
+                GetSetSessionFlags.Instance.SetSessionType(this.session, "AutoD False Positive");
+                GetSetSessionFlags.Instance.SetXResponseServer(this.session, "AutoD False Positive");
 
-                getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:orange'>Autodiscover Possible False Positive?</span></b>");
-                getSetSessionFlags.SetXResponseComments(this.session, "Autoddiscover Possible False Positive. By design Office 365 endpoints such as "
+                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:orange'>Autodiscover Possible False Positive?</span></b>");
+                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "Autoddiscover Possible False Positive. By design Office 365 endpoints such as "
                     + "autodiscover.contoso.onmicrosoft.com do not respond on port 443. "
                     + "<p>Validate this message by confirming this is an Office 365 Host/IP address and perform a telnet to it on port 80.</p>"
                     + "<p>If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design "
@@ -194,9 +197,9 @@ namespace Office365FiddlerInspector.Ruleset
                     + "target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>");
 
                 // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
-                getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "10");
-                getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "10");
-                getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "10");
+                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "10");
+                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
+                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "10");
             }
         }
 
@@ -211,21 +214,21 @@ namespace Office365FiddlerInspector.Ruleset
             if ((this.session.utilFindInResponse("target machine actively refused it", false) > 1) &&
                         (this.session.utilFindInResponse("autodiscover", false) > 1))
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway. Exchange Autodiscover.");
+                GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 502 Bad Gateway. Exchange Autodiscover.");
 
-                getSetSessionFlags.SetUIBackColour(this.session, "Red");
-                getSetSessionFlags.SetUITextColour(this.session, "Black");
+                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
+                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-                getSetSessionFlags.SetResponseCodeDescription(this.session, "502 Bad Gateway");
+                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "502 Bad Gateway");
 
-                getSetSessionFlags.SetSessionType(this.session, "!AUTODISCOVER!");
-                getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>AUTODISCOVER</span></b>");
-                getSetSessionFlags.SetXResponseComments(this.session, "This AutoDiscover request was refused by the server it was sent to. Check the raw tab for further details.");
+                GetSetSessionFlags.Instance.SetSessionType(this.session, "!AUTODISCOVER!");
+                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:red'>AUTODISCOVER</span></b>");
+                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "This AutoDiscover request was refused by the server it was sent to. Check the raw tab for further details.");
 
                 // Possible something more to be found, let further processing try to pick up something.
-                getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "5");
-                getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
+                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "5");
+                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
             }
         }
 
@@ -240,23 +243,23 @@ namespace Office365FiddlerInspector.Ruleset
 
             // Pick up any other 502 Bad Gateway call it out.
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 502 Bad Gateway (99).");
+            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 502 Bad Gateway (99).");
 
-            getSetSessionFlags.SetUIBackColour(this.session, "Red");
-            getSetSessionFlags.SetUITextColour(this.session, "Black");
+            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
+            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-            getSetSessionFlags.SetResponseCodeDescription(this.session, "502 Bad Gateway");
+            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "502 Bad Gateway");
 
-            getSetSessionFlags.SetSessionType(this.session, "!Bad Gateway!");
-            getSetSessionFlags.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 502 Bad Gateway</span></b>");
-            getSetSessionFlags.SetXResponseComments(this.session, "Potential to cause the issue you are investigating. "
+            GetSetSessionFlags.Instance.SetSessionType(this.session, "!Bad Gateway!");
+            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 502 Bad Gateway</span></b>");
+            GetSetSessionFlags.Instance.SetXResponseComments(this.session, "Potential to cause the issue you are investigating. "
                 + "Do you see expected responses beyond this session in the trace? Is the Host IP for the device issuing this response with a subnet "
                 + "within your lan or something in a cloud provider's network?");
 
             // Nothing meaningful here, let further processing try to pick up something.
-            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

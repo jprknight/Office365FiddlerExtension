@@ -10,7 +10,9 @@ namespace Office365FiddlerInspector.Ruleset
 {
     class HTTP_208 : ActivationService
     {
-        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+        private static HTTP_208 _instance;
+
+        public static HTTP_208 Instance => _instance ?? (_instance = new HTTP_208());
 
         public void HTTP_208_Already_Reported(Session session)
         {
@@ -19,18 +21,18 @@ namespace Office365FiddlerInspector.Ruleset
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 208 Already Reported (WebDAV; RFC 5842).");
 
             // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
-            getSetSessionFlags.SetUIBackColour(this.session, "Gray");
-            getSetSessionFlags.SetUITextColour(this.session, "Black");
+            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");
+            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-            getSetSessionFlags.SetResponseCodeDescription(this.session, "208 Already Reported (WebDAV; RFC 5842)");
+            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "208 Already Reported (WebDAV; RFC 5842)");
 
-            getSetSessionFlags.SetXResponseAlert(this.session, "HTTP 208 Already Reported (WebDAV; RFC 5842).");
-            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
+            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "HTTP 208 Already Reported (WebDAV; RFC 5842).");
+            GetSetSessionFlags.Instance.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
-            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

@@ -10,7 +10,9 @@ namespace Office365FiddlerInspector.Ruleset
 {
     class HTTP_304 : ActivationService
     {
-        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+        private static HTTP_304 _instance;
+
+        public static HTTP_304 Instance => _instance ?? (_instance = new HTTP_304());
 
         public void HTTP_304_Not_Modified(Session session)
         {
@@ -18,18 +20,18 @@ namespace Office365FiddlerInspector.Ruleset
 
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 304 Not modified.");
 
-            getSetSessionFlags.SetUIBackColour(this.session, "Green");
-            getSetSessionFlags.SetUITextColour(this.session, "Black");
+            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Green");
+            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-            getSetSessionFlags.SetResponseCodeDescription(this.session, "304 Not Modified (RFC 7232)");
-
-            getSetSessionFlags.SetXResponseAlert(this.session, "HTTP 304 Not Modified");
-            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
+            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "304 Not Modified (RFC 7232)");
+            GetSetSessionFlags.Instance.SetSessionType(this.session, "304 Not Modified");
+            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "HTTP 304 Not Modified");
+            GetSetSessionFlags.Instance.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
-            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

@@ -10,7 +10,9 @@ namespace Office365FiddlerInspector.Ruleset
 {
     class HTTP_301 : ActivationService
     {
-        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+        private static HTTP_301 _instance;
+
+        public static HTTP_301 Instance => _instance ?? (_instance = new HTTP_301());
 
         public void HTTP_301_Permanently_Moved(Session session)
         {
@@ -18,18 +20,18 @@ namespace Office365FiddlerInspector.Ruleset
 
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 301 Moved Permanently.");
 
-            getSetSessionFlags.SetUIBackColour(this.session, "Green");
-            getSetSessionFlags.SetUITextColour(this.session, "Black");
+            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Green");
+            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-            getSetSessionFlags.SetResponseCodeDescription(this.session, "301 Moved Permanently");
+            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "301 Moved Permanently");
 
-            getSetSessionFlags.SetXResponseAlert(this.session, "HTTP 301 Moved Permanently");
-            getSetSessionFlags.SetXResponseComments(this.session, "Nothing of concern here at this time.");
+            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "HTTP 301 Moved Permanently");
+            GetSetSessionFlags.Instance.SetXResponseComments(this.session, "Nothing of concern here at this time.");
 
             // Nothing meaningful here, let further processing try to pick up something.
-            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

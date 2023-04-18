@@ -14,6 +14,8 @@ namespace Office365FiddlerInspector.Inspectors
     /// </summary>
     public class Office365Inspector : Inspector2, IResponseInspector2
     {
+        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+
         public Office365Inspector()
         {
 
@@ -222,6 +224,7 @@ namespace Office365FiddlerInspector.Inspectors
                     return;
                 }
 
+                /*
                 if (!this.session.isFlagSet(SessionFlags.LoadedFromSAZ))
                 {
                     // Clear ResultsString.
@@ -234,6 +237,7 @@ namespace Office365FiddlerInspector.Inspectors
                     Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
                     return;
                 }
+                */
 
                 // Clear ResultsString.
                 Clear();
@@ -271,7 +275,7 @@ namespace Office365FiddlerInspector.Inspectors
                 ResultsString.AppendLine("Response Code");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine($"<a href='https://en.wikipedia.org/wiki/List_of_HTTP_status_codes' target='_blank'>{this.session["X-ResponseCodeDescription"]}</a>");
+                ResultsString.AppendLine($"<a href='https://en.wikipedia.org/wiki/List_of_HTTP_status_codes' target='_blank'>{getSetSessionFlags.GetResponseCodeDescription(this.session)}</a>");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -280,7 +284,7 @@ namespace Office365FiddlerInspector.Inspectors
                 ResultsString.AppendLine("Session Captured");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session["X-DataCollected"]);
+                ResultsString.AppendLine(getSetSessionFlags.GetXDataCollected(this.session));
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -298,7 +302,7 @@ namespace Office365FiddlerInspector.Inspectors
                 ResultsString.AppendLine("Capture was");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session["X-DataAge"]);
+                ResultsString.AppendLine(getSetSessionFlags.GetXDataAge(this.session));
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -307,30 +311,30 @@ namespace Office365FiddlerInspector.Inspectors
                 ResultsString.AppendLine("Process");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session["X-ProcessName"]);
+                ResultsString.AppendLine(getSetSessionFlags.GetProcess(this.session));
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
-                if (this.session["X-ResponseServer"] != null)
+                if (getSetSessionFlags.GetXResponseServer(this.session) != null)
                 {
                     ResultsString.AppendLine("<tr>");
                     ResultsString.AppendLine("<td>");
                     ResultsString.AppendLine("Response Server");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(this.session["X-ResponseServer"]);
+                    ResultsString.AppendLine(getSetSessionFlags.GetXResponseServer(this.session));
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
                 }
 
-                if (this.session["X-InspectorElapsedTime"] != "Insufficient data")
+                if (getSetSessionFlags.GetXInspectorElapsedTime(this.session) != "Insufficient data")
                 {
                     ResultsString.AppendLine("<tr>");
                     ResultsString.AppendLine("<td>");
                     ResultsString.AppendLine("Elapsed Time");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(this.session["X-InspectorElapsedTime"]);
+                    ResultsString.AppendLine(getSetSessionFlags.GetXInspectorElapsedTime(this.session));
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
                 }
@@ -341,25 +345,25 @@ namespace Office365FiddlerInspector.Inspectors
                 // Session Analysis.
                 ResultsString.AppendLine("<h2>Session Analysis</h2>");
 
-                ResultsString.AppendLine($"<p>{this.session["X-ResponseComments"]}</p>");
+                ResultsString.AppendLine($"<p>{getSetSessionFlags.GetXResponseComments(this.session)}</p>");
 
                 // Session Age.
                 ResultsString.AppendLine($"<h2>Session Age</h2>");
 
-                ResultsString.AppendLine($"<p>{this.session["X-CalculatedSessionAge"]}</p>");
+                ResultsString.AppendLine($"<p>{getSetSessionFlags.GetXCalculatedSessionAge(this.session)}</p>");
 
                 // Authentication
                 #region Authentication
-                if (this.session["X-AUTHENTICATION"] != "No Auth Headers")
+                if (getSetSessionFlags.GetXAuthentication(this.session) != "No Auth Headers")
                 {
                     ResultsString.AppendLine("<h2>Authentication</h2>");
 
-                    ResultsString.AppendLine($"<h3>{this.session["X-AUTHENTICATION"]}</h3>");
+                    ResultsString.AppendLine($"<h3>{getSetSessionFlags.GetXAuthentication(this.session)}</h3>");
 
-                    ResultsString.AppendLine($"<p>{this.session["X-AUTHENTICATIONDESC"]}</p>");
+                    ResultsString.AppendLine($"<p>{getSetSessionFlags.GetXAuthenticationDescription(this.session)}</p>");
                 }
 
-                if (this.session["X-Office365AuthType"] == "SAMLResponseParser")
+                if (getSetSessionFlags.GetXOffice365AuthType(this.session) == "SAMLResponseParser")
                 {
 
                     ResultsString.AppendLine("<h2>SAML Response Parser</h2>");
@@ -370,7 +374,7 @@ namespace Office365FiddlerInspector.Inspectors
                     ResultsString.AppendLine("Issuer");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(this.session["X-ISSUER"]);
+                    ResultsString.AppendLine(getSetSessionFlags.GetSamlTokenIssuer(this.session));
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
 
@@ -379,7 +383,7 @@ namespace Office365FiddlerInspector.Inspectors
                     ResultsString.AppendLine("Attribute Name Immutable Id");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(this.session["X-ATTRIBUTENAMEIMMUTABLEID"]);
+                    ResultsString.AppendLine(getSetSessionFlags.GetSamlTokenAttributeNameImmutibleID(this.session));
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
 
@@ -388,7 +392,7 @@ namespace Office365FiddlerInspector.Inspectors
                     ResultsString.AppendLine("Attribute Name UPN");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(this.session["X-ATTRIBUTENAMEUPN"]);
+                    ResultsString.AppendLine(getSetSessionFlags.GetSamlTokenAttributeNameUPN(this.session));
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
 
@@ -397,7 +401,7 @@ namespace Office365FiddlerInspector.Inspectors
                     ResultsString.AppendLine("Name Identifier Format");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(this.session["X-NAMEIDENTIFIERFORMAT"]);
+                    ResultsString.AppendLine(getSetSessionFlags.GetSamlTokenNameIdentifierFormat(this.session));
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
 
@@ -405,7 +409,7 @@ namespace Office365FiddlerInspector.Inspectors
 
                     ResultsString.AppendLine("<p>Copy and save the below text into a .cer file to view the signing certificate.</p>");
                     ResultsString.AppendLine("-----BEGIN CERTIFICATE-----<br />");
-                    ResultsString.AppendLine($"{this.session["X-SigningCertificate"]}<br />");
+                    ResultsString.AppendLine($"{getSetSessionFlags.GetSamlTokenSigningCertificate(this.session)}<br />");
                     ResultsString.AppendLine("-----END CERTIFICATE-----");
                 }
                 #endregion
@@ -456,7 +460,7 @@ namespace Office365FiddlerInspector.Inspectors
                 ResultsString.AppendLine("Elapsed Time");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session["X-InspectorElapsedTime"]);
+                ResultsString.AppendLine(getSetSessionFlags.GetXInspectorElapsedTime(this.session));
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -518,7 +522,7 @@ namespace Office365FiddlerInspector.Inspectors
                 ResultsString.AppendLine("Server Think Time");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session["X-ServerThinkTime"]);
+                ResultsString.AppendLine(getSetSessionFlags.GetXServerThinkTime(this.session));
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -527,14 +531,14 @@ namespace Office365FiddlerInspector.Inspectors
                 ResultsString.AppendLine("Transit Time");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.session["X-TransitTime"]);
+                ResultsString.AppendLine(getSetSessionFlags.GetXTransitTime(this.session));
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
                 ResultsString.AppendLine("</table>");
                 #endregion
 
-                ResultsString.AppendLine($"<p>{this.session["X-SessionTimersDescription"]}</p>");
+                ResultsString.AppendLine($"<p>{getSetSessionFlags.GetXSessionTimersDescription(this.session)}</p>");
 
                 ResultsString.AppendLine("<p>For an explantion of session timers refer to: <a href='https://aka.ms/Timers-Definitions' target='_blank'>https://aka.ms/Timers-Definitions</a>.</p>");
 

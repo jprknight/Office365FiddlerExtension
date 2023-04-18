@@ -10,26 +10,29 @@ namespace Office365FiddlerInspector.Ruleset
 {
     class HTTP_497 : ActivationService
     {
-        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+        private static HTTP_497 _instance;
+
+        public static HTTP_497 Instance => _instance ?? (_instance = new HTTP_497());
+
         public void HTTP_497_Request_Sent_To_HTTPS_Port(Session session)
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 497 nginx HTTP Request Sent to HTTPS Port");
+            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 497 nginx HTTP Request Sent to HTTPS Port");
 
             // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
-            getSetSessionFlags.SetUIBackColour(this.session, "Gray");
-            getSetSessionFlags.SetUITextColour(this.session, "Black");
+            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");
+            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-            getSetSessionFlags.SetResponseCodeDescription(this.session, "497 nginx HTTP Request Sent to HTTPS Port");
+            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "497 nginx HTTP Request Sent to HTTPS Port");
 
-            getSetSessionFlags.SetXResponseAlert(this.session, "HTTP 497 nginx HTTP Request Sent to HTTPS Port.");
-            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
+            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "HTTP 497 nginx HTTP Request Sent to HTTPS Port.");
+            GetSetSessionFlags.Instance.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
-            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

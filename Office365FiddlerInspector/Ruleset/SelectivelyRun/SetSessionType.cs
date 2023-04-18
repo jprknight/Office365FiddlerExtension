@@ -214,17 +214,13 @@ namespace Office365FiddlerInspector.Ruleset
             // Everything else.
 
             getSetSessionFlags.SetSessionType(this.session, "Not Classified");
-            // Commented out setting colours on sessions not recognised.
-            // Find in Fiddler will highlight sessions as yellow, so this would make reviewing find results difficult.
-            //this.session["ui-backcolor"] = "yellow";
-            //this.session["ui-color"] = "black";
 
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Session not classified in extension.");
 
-            this.session["X-ResponseAlert"] = "Unclassified";
-            this.session["X-ResponseComments"] = "The Office 365 Fiddler Extension does not yet have a way to classify this session."
+            getSetSessionFlags.SetXResponseAlert(this.session, "Unclassified");
+            getSetSessionFlags.SetXResponseComments(this.session, "The Office 365 Fiddler Extension does not yet have a way to classify this session."
                 + "<p>If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: "
-                + "<a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'>https://github.com/jprknight/Office365FiddlerExtension</a>.</p>";
+                + "<a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'>https://github.com/jprknight/Office365FiddlerExtension</a>.</p>");
             getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "5");
             
 

@@ -398,7 +398,7 @@ namespace Office365FiddlerInspector.Ruleset
 
                     getSetSessionFlags.SetXAuthentication(this.session, "Client Modern Auth Capable");
 
-                    getSetSessionFlags.SetXAuthenticationDescription(this.session, this.session["X-ProcessName"] + " is stating it is Modern Authentication capable. "
+                    getSetSessionFlags.SetXAuthenticationDescription(this.session, getSetSessionFlags.GetProcess(this.session) + " is stating it is Modern Authentication capable. "
                         + "Whether it is used or not will depend on whether Modern Authentication is enabled in the Office 365 service.");
 
                     // Set SCCL to 10, stop any further session processing.
@@ -411,7 +411,7 @@ namespace Office365FiddlerInspector.Ruleset
 
                     getSetSessionFlags.SetXAuthentication(this.session, "Client Basic Auth Capable");
 
-                    getSetSessionFlags.SetXAuthenticationDescription(this.session, this.session["X-ProcessName"] + " is stating it is Basic Authentication capable. "
+                    getSetSessionFlags.SetXAuthenticationDescription(this.session, getSetSessionFlags.GetProcess(this.session) + " is stating it is Basic Authentication capable. "
                         + "Whether it is used or not will depend on whether Basic Authentication is enabled in the Office 365 service."
                         + "<p>If this is Outlook, in all likelihood this is an Outlook 2013 (updated prior to Modern Auth), Outlook 2010 or an "
                         + "older Outlook client, which does not support Modern Authentication.<br />"
@@ -433,7 +433,7 @@ namespace Office365FiddlerInspector.Ruleset
 
                 getSetSessionFlags.SetXAuthentication(this.session, "Modern Auth Token");
 
-                getSetSessionFlags.SetXAuthenticationDescription(this.session, this.session["X-ProcessName"] + " accessing resources with a Modern Authentication security token.");
+                getSetSessionFlags.SetXAuthenticationDescription(this.session, getSetSessionFlags.GetProcess(this.session) + " accessing resources with a Modern Authentication security token.");
 
                 // Set SCCL to 10, stop any further session processing.
                 getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "10");
@@ -447,7 +447,7 @@ namespace Office365FiddlerInspector.Ruleset
 
                 getSetSessionFlags.SetXAuthentication(this.session, "Basic Auth Token");
 
-                getSetSessionFlags.SetXAuthenticationDescription(this.session, $"Process '{this.session["X-ProcessName"]}' accessing resources with a Basic Authentication security token.<br />"
+                getSetSessionFlags.SetXAuthenticationDescription(this.session, $"Process '{getSetSessionFlags.GetProcess(this.session)}' accessing resources with a Basic Authentication security token.<br />"
                     + "<b><span style='color:red'>It's time to think about Modern Authentication!</span></b>");
 
                 // Set SCCL to 10, stop any further session processing.
@@ -462,7 +462,7 @@ namespace Office365FiddlerInspector.Ruleset
 
                 getSetSessionFlags.SetXAuthentication(this.session, "ADFS");
 
-                getSetSessionFlags.SetXAuthenticationDescription(this.session, $"Process '{session["X-ProcessName"]}' communicating with ADFS at {session.hostname}.<br />");
+                getSetSessionFlags.SetXAuthenticationDescription(this.session, $"Process '{getSetSessionFlags.GetProcess(this.session)}' communicating with ADFS at {session.hostname}.<br />");
                 
                 // Set SCCL to 10, stop any further session processing.
                 getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "10");

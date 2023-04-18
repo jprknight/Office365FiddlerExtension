@@ -10,27 +10,29 @@ namespace Office365FiddlerInspector.Ruleset
 {
     class HTTP_418 : ActivationService
     {
-        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+        private static HTTP_418 _instance;
+
+        public static HTTP_418 Instance => _instance ?? (_instance = new HTTP_418());
 
         public void HTTP_418_Im_A_Teapot(Session session)
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 418 I'm a teapot (RFC 2324, RFC 7168).");
+            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 418 I'm a teapot (RFC 2324, RFC 7168).");
 
             // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
-            getSetSessionFlags.SetUIBackColour(this.session, "Gray");
-            getSetSessionFlags.SetUITextColour(this.session, "Black");
+            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");
+            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
 
-            getSetSessionFlags.SetResponseCodeDescription(this.session, "418 I'm a teapot (RFC 2324, RFC 7168)");
+            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "418 I'm a teapot (RFC 2324, RFC 7168)");
 
-            getSetSessionFlags.SetXResponseAlert(this.session, "HTTP 418 I'm a teapot (RFC 2324, RFC 7168).");
-            getSetSessionFlags.SetXResponseCommentsNoKnownIssue(this.session);
+            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "HTTP 418 I'm a teapot (RFC 2324, RFC 7168).");
+            GetSetSessionFlags.Instance.SetXResponseCommentsNoKnownIssue(this.session);
 
             // Nothing meaningful here, let further processing try to pick up something.
-            getSetSessionFlags.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionTypeConfidenceLevel(this.session, "0");
-            getSetSessionFlags.SetSessionResponseServerConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
+            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }
