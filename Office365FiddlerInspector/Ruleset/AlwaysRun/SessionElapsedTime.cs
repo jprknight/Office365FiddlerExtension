@@ -10,7 +10,9 @@ namespace Office365FiddlerInspector.Ruleset
 {
     class SessionElapsedTime : ActivationService
     {
-        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+        private static SessionElapsedTime _instance;
+
+        public static SessionElapsedTime Instance => _instance ?? (_instance = new SessionElapsedTime());
 
         // Function where Elapsed Time column data is populated.
         public void SetElapsedTime(Session session)
@@ -24,11 +26,11 @@ namespace Office365FiddlerInspector.Ruleset
             {
                 double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
 
-                getSetSessionFlags.SetXElapsedTime(this.session, Milliseconds + "ms");
+                GetSetSessionFlags.Instance.SetXElapsedTime(this.session, Milliseconds + "ms");
             }
             else
             {
-                getSetSessionFlags.SetXElapsedTime(this.session, "No Data");
+                GetSetSessionFlags.Instance.SetXElapsedTime(this.session, "No Data");
             }
         }
 
@@ -48,38 +50,38 @@ namespace Office365FiddlerInspector.Ruleset
                 // If the roundtrip time is less than 1 second show the result in milliseconds.
                 if (ClientMilliseconds == 0)
                 {
-                    getSetSessionFlags.SetXInspectorElapsedTime(this.session, $"{ClientMilliseconds}ms");
+                    GetSetSessionFlags.Instance.SetXInspectorElapsedTime(this.session, $"{ClientMilliseconds}ms");
                 }
                 else if (ClientMilliseconds < 1000)
                 {
-                    getSetSessionFlags.SetXInspectorElapsedTime(this.session, $"{ClientMilliseconds}ms");
+                    GetSetSessionFlags.Instance.SetXInspectorElapsedTime(this.session, $"{ClientMilliseconds}ms");
                 }
                 // If the roundtrip is over warning and under slow running thresholds; orange.
                 else if (ClientMilliseconds > Preferences.GetWarningSessionTimeThreshold() && ClientMilliseconds < Preferences.GetSlowRunningSessionThreshold())
                 {
-                    getSetSessionFlags.SetXInspectorElapsedTime(this.session, $"<b><span style='color:orange'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>");
+                    GetSetSessionFlags.Instance.SetXInspectorElapsedTime(this.session, $"<b><span style='color:orange'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>");
                 }
                 // If roundtrip is over slow running threshold; red.
                 else if (ClientMilliseconds > Preferences.GetSlowRunningSessionThreshold())
                 {
-                    getSetSessionFlags.SetXInspectorElapsedTime(this.session, $"<b><span style='color:red'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>");
+                    GetSetSessionFlags.Instance.SetXInspectorElapsedTime(this.session, $"<b><span style='color:red'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>");
                 }
                 // If the roundtrip time is more than 1 second show the result in seconds.
                 else
                 {
                     if (ClientSeconds == 1)
                     {
-                        getSetSessionFlags.SetXInspectorElapsedTime(this.session, $"{ClientSeconds} second({ClientMilliseconds}ms).");
+                        GetSetSessionFlags.Instance.SetXInspectorElapsedTime(this.session, $"{ClientSeconds} second({ClientMilliseconds}ms).");
                     }
                     else
                     {
-                        getSetSessionFlags.SetXInspectorElapsedTime(this.session, $"{ClientSeconds} seconds ({ClientMilliseconds}ms).");
+                        GetSetSessionFlags.Instance.SetXInspectorElapsedTime(this.session, $"{ClientSeconds} seconds ({ClientMilliseconds}ms).");
                     }
                 }
             }
             else
             {
-                getSetSessionFlags.SetXInspectorElapsedTime(this.session, "Insufficient data");
+                GetSetSessionFlags.Instance.SetXInspectorElapsedTime(this.session, "Insufficient data");
             }
         }
     }

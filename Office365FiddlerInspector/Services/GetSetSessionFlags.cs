@@ -22,6 +22,11 @@ namespace Office365FiddlerInspector.Services
             FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} {Log}");
         }
 
+        public void WriteToFiddlerLogNoSession(String Log)
+        {
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {Log}");
+        }
+
         // Colour codes for sessions. Softer tones, easier on the eye than standard red, orange and green.
         public void SetUIBackColour(Session session, String Colour)
         {

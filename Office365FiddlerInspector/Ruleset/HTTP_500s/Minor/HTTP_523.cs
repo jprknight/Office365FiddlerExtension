@@ -17,8 +17,7 @@ namespace Office365FiddlerInspector.Ruleset
         public void HTTP_523_Origin_Is_Unreachable(Session session)
         {
             this.session = session;
-
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 523 Cloudflare Origin Is Unreachable");
+            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 523 Cloudflare Origin Is Unreachable");
 
             // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
             GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");

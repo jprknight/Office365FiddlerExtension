@@ -10,7 +10,9 @@ namespace Office365FiddlerInspector.Ruleset
 {
     class ServerThinkTimeTransitTime : ActivationService
     {
-        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
+        private static ServerThinkTimeTransitTime _instance;
+
+        public static ServerThinkTimeTransitTime Instance => _instance ?? (_instance = new ServerThinkTimeTransitTime());
 
         // Set Server Think Time and Transit Time for Inspector.
         public void SetServerThinkTimeTransitTime(Session session)
@@ -44,71 +46,71 @@ namespace Office365FiddlerInspector.Ruleset
                 // If 1/10th of the session elapsed time is more than the server think time, network roundtrip loses.
                 if (ElapsedMilliseconds / 10 > ServerMilliseconds && ElapsedMilliseconds > Preferences.GetSlowRunningSessionThreshold())
                 {
-                    getSetSessionFlags.SetXSessionTimersDescription(this.session, "<p>The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.</p>" +
+                    GetSetSessionFlags.Instance.SetXSessionTimersDescription(this.session, "<p>The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.</p>" +
                         "<p>If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.</p>" +
                         "<p>Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.<p>");
 
                     // Highlight server think time in green.
                     if (ServerMilliseconds < 1000)
                     {
-                        getSetSessionFlags.SetXServerThinkTime(this.session, $"<b><span style='color:green'>{ServerMilliseconds}ms.</span></b>");
+                        GetSetSessionFlags.Instance.SetXServerThinkTime(this.session, $"<b><span style='color:green'>{ServerMilliseconds}ms.</span></b>");
                     }
                     else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
                     {
-                        getSetSessionFlags.SetXServerThinkTime(this.session, $"<b><span style='color:green'>{ServerSeconds} second ({ServerMilliseconds}ms).</span></b>");
+                        GetSetSessionFlags.Instance.SetXServerThinkTime(this.session, $"<b><span style='color:green'>{ServerSeconds} second ({ServerMilliseconds}ms).</span></b>");
                     }
                     else
                     {
-                        getSetSessionFlags.SetXServerThinkTime(this.session, $"<b><span style='color:green'>{ServerSeconds} seconds ({ServerMilliseconds}ms).</span></b>");
+                        GetSetSessionFlags.Instance.SetXServerThinkTime(this.session, $"<b><span style='color:green'>{ServerSeconds} seconds ({ServerMilliseconds}ms).</span></b>");
                     }
 
                     // Highlight transit time in red.
                     if (dTransitTimeMilliseconds < 1000)
                     {
-                        getSetSessionFlags.SetXTransitTime(this.session, $"<b><span style='color:red'>{dTransitTimeMilliseconds}ms.</span></b>");
+                        GetSetSessionFlags.Instance.SetXTransitTime(this.session, $"<b><span style='color:red'>{dTransitTimeMilliseconds}ms.</span></b>");
                     }
                     else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
                     {
-                        getSetSessionFlags.SetXTransitTime(this.session, $"<b><span style='color:red'>{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms).</span></b>");
+                        GetSetSessionFlags.Instance.SetXTransitTime(this.session, $"<b><span style='color:red'>{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms).</span></b>");
                     }
                     else
                     {
-                        getSetSessionFlags.SetXTransitTime(this.session, $"<b><span style='color:red'>{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms).</span></b>");
+                        GetSetSessionFlags.Instance.SetXTransitTime(this.session, $"<b><span style='color:red'>{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms).</span></b>");
                     }
                 }
                 else
                 {
                     if (ServerMilliseconds < 1000)
                     {
-                        getSetSessionFlags.SetXServerThinkTime(this.session, $"{ServerMilliseconds}ms");
+                        GetSetSessionFlags.Instance.SetXServerThinkTime(this.session, $"{ServerMilliseconds}ms");
                     }
                     else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
                     {
-                        getSetSessionFlags.SetXServerThinkTime(this.session, $"{ServerSeconds} second ({ServerMilliseconds}ms).");
+                        GetSetSessionFlags.Instance.SetXServerThinkTime(this.session, $"{ServerSeconds} second ({ServerMilliseconds}ms).");
                     }
                     else
                     {
-                        getSetSessionFlags.SetXServerThinkTime(this.session, $"{ServerSeconds} seconds ({ServerMilliseconds}ms).");
+                        GetSetSessionFlags.Instance.SetXServerThinkTime(this.session, $"{ServerSeconds} seconds ({ServerMilliseconds}ms).");
                     }
 
                     if (dTransitTimeMilliseconds < 1000)
                     {
-                        getSetSessionFlags.SetXTransitTime(this.session, $"{dTransitTimeMilliseconds}ms");
+                        GetSetSessionFlags.Instance.SetXTransitTime(this.session, $"{dTransitTimeMilliseconds}ms");
                     }
                     else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
                     {
-                        getSetSessionFlags.SetXTransitTime(this.session, $"{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms).");
+                        GetSetSessionFlags.Instance.SetXTransitTime(this.session, $"{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms).");
                     }
                     else
                     {
-                        getSetSessionFlags.SetXTransitTime(this.session, $"{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms).");
+                        GetSetSessionFlags.Instance.SetXTransitTime(this.session, $"{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms).");
                     }
                 }
             }
             else
             {
-                getSetSessionFlags.SetXServerThinkTime(this.session, "Insufficient data");
-                getSetSessionFlags.SetXTransitTime(this.session, "Insufficient data");
+                GetSetSessionFlags.Instance.SetXServerThinkTime(this.session, "Insufficient data");
+                GetSetSessionFlags.Instance.SetXTransitTime(this.session, "Insufficient data");
             }
         }
     }

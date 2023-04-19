@@ -72,9 +72,10 @@ namespace Office365FiddlerInspector.Inspectors
         /// <summary>
         /// Update the view with parsed and diagnosed data
         /// </summary>
-        private async void ParseSession(Session _session)
+        private async void ParseSession(Session session)
         {
-            await ParseHTTPResponse(_session);
+            this.session = session;
+            await ParseHTTPResponse(this.session);
         }
 
         public void SaveSessionData(Session oS)
@@ -86,10 +87,10 @@ namespace Office365FiddlerInspector.Inspectors
         /// This is called every time this inspector is shown
         /// </summary>
         /// <param name="oS">Session object passed by Fiddler</param>
-        public override void AssignSession(Session oS)
+        public override void AssignSession(Session session)
         {
-            this.session = oS;
-            base.AssignSession(oS);
+            this.session = session;
+            base.AssignSession(session);
         }
 
         /// <summary>
@@ -125,11 +126,11 @@ namespace Office365FiddlerInspector.Inspectors
         /// </summary>
         /// <param name="oS">the session object passed by Fiddler</param>
         /// <returns>Int between 0-100 with 100 being the most confident</returns>
-        public override int ScoreForSession(Session oS)
+        public override int ScoreForSession(Session session)
         {
             if (null == this.session)
             {
-                this.session = oS;
+                this.session = session;
             }
 
             if (null == this.BaseHeaders)

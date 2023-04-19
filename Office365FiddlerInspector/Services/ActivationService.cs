@@ -4,6 +4,7 @@ using Office365FiddlerInspector.UI;
 using O365FiddlerInspector.UI;
 using System.Text;
 using System;
+using System.Reflection;
 
 namespace Office365FiddlerInspector.Services
 {

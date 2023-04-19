@@ -10,6 +10,10 @@ namespace Office365FiddlerInspector.Ruleset
 {
     class BroadLogicChecks : ActivationService
     {
+        private static BroadLogicChecks _instance;
+
+        public static BroadLogicChecks Instance => _instance ?? (_instance = new BroadLogicChecks());
+
         public void FiddlerUpdateSessions (Session session)
         {
             this.session = session;
