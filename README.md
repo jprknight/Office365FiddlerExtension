@@ -49,7 +49,6 @@ Columns are added into the session view on the left side of Fiddler, scroll the 
 
 ## Known limitations
 
-* Extension only alters, enhances sessions when loaded from a SAZ file.
 * ~~Extension does not act on live captured sessions. In this scenario, session analysis can be inaccurate.~~
 * Extension does not act on import, such as importing a HTTP archive. However, a HAR file can be imported, saved as a SAZ file, then loaded for the extension to work.
 
