@@ -13,6 +13,10 @@ The best way to get the Office 365 Fiddler Extension is via the deployment scrip
 
 `Invoke-Expression (New-Object Net.WebClient).DownloadString('https://aka.ms/Deploy-Office365FiddlerExtension')`
 
+Don't want to use the aka.ms short link, or not working? Use this instead:
+
+`Invoke-Expression (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerInspector/Deploy-Office365FiddlerExtension.ps1')`
+
 ![Office 365 Fiddler Extension Deployment Script](https://github.com/jprknight/Office365FiddlerExtension/blob/master/docs/Office365FiddlerExtensionDeploymentScript.png)
 
 ## Functionality Breakdown
@@ -45,7 +49,7 @@ Columns are added into the session view on the left side of Fiddler, scroll the 
 
 ## Known limitations
 
-* Extension only alters, enhances sessions when loaded from a SAZ file.
+~~* Extension only alters, enhances sessions when loaded from a SAZ file.~~
 * Extension does not act on live captured sessions. In this scenario, session analysis can be inaccurate.
 * Extension does not act on import, such as importing a HTTP archive. However, a HAR file can be imported, saved as a SAZ file, then loaded for the extension to work.
 
