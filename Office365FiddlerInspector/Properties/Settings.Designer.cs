@@ -58,7 +58,34 @@ namespace Office365FiddlerInspector.Properties {
                 return ((string)(this["ReportIssuesURL"]));
             }
         }
-
-        public string DefaultRuleset { get; internal set; }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("19000101")]
+        public string RuleSetVersion {
+            get {
+                return ((string)(this["RuleSetVersion"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygien" +
+            "e/RulesetVersion")]
+        public string BetaRuleSetURL {
+            get {
+                return ((string)(this["BetaRuleSetURL"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Master/Rule" +
+            "setVersion")]
+        public string MasterRuleSetURL {
+            get {
+                return ((string)(this["MasterRuleSetURL"]));
+            }
+        }
     }
 }

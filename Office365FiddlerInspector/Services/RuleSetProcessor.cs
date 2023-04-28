@@ -1,9 +1,11 @@
 ﻿using Fiddler;
 using Microsoft.CSharp;
+using Office365FiddlerInspector.Properties;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
@@ -93,79 +95,158 @@ namespace Office365FiddlerInspector.Services
 
         public async Task UpdateRulesAsync()
         {
-            using (var httpClient = new HttpClient())
+            // Shutdown the web calls before they begin if the preference is set.
+            if (Preferences.DisableWebCalls)
+            {
+                GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession("Web calls disabled. Not looking for ruleset updates.");
+                return;
+            }
+
+            // REVIEW THIS.
+            // Think about writing some code so ruleset checks are only done once per 24/48/72/168 hours.
+            // Ruleset won't change that frequently, so there's probably no reason to call out to the Github repro on every Fiddler start.
+
+            // Pull the version file to see if there is a version ruleset to update on.
+            using (var versionCheck = new HttpClient())
             {
                 try
                 {
-                    // You may want to post a separate version file so you can check if the version is newer first
-                    // Alternatively if you can assume the file size is different you can pass HttpMethod.Head as the method
-                    // and then pull the Content-Length from response.Headers and compare to the non-Base64 size
-
-                    var response = await httpClient.GetAsync("https://raw.githubusercontent.com/username/repo/master/file.json");
-                    response.EnsureSuccessStatusCode();
-
-                    // You can do this two ways, but probably should do it the async way as your ruleset could get large
-                    var async = true;
-                    var jsonString = string.Empty;
-
-                    // Synchronous way (not recommended but simpler, blocks thread, higher memory footprint while deserializing)
-                    if (!async)
+                    var response = await versionCheck.GetAsync("https://somedummyurlwhichwontwork");
+                    // If we're running the beta ruleset, look to the Fiddler application preference for the URL to go to for the rulesetVersion file.
+                    // This will likely be a rolling URL based on the branch name used at any time.
+                    if (Preferences.BetaRuleSet)
                     {
-                        jsonString = await response.Content.ReadAsStringAsync();
-
-                        // Deserialize JSON and overwrite the ruleset.  You may want to merge or do something else
-                        Rules = JsonSerializer.Deserialize<Dictionary<string, Rule>>(jsonString);
+                        response = await versionCheck.GetAsync(Properties.Settings.Default.BetaRuleSetURL);
                     }
+                    // Here we're not using the beta ruleset, so pull it from the master branch.
                     else
                     {
-                        // More complex, can probably be optimized but if you end up with a large ruleset
-                        // you want to do the http get and the deserialization asynchronously
-                        using (var stream = await response.Content.ReadAsStreamAsync())
-                        {
-                            Rules = await JsonSerializer.DeserializeAsync<Dictionary<string, Rule>>(stream);
-
-                            // Get the string for storage
-                            stream.Position = 0;
-                            using (var reader = new StreamReader(stream))
-                            {
-                                jsonString = await reader.ReadToEndAsync();
-                            }
-                        }
+                        response = await versionCheck.GetAsync(Properties.Settings.Default.MasterRuleSetURL);
                     }
 
-                    // Save base64 version to settings as the new default
-                    Properties.Settings.Default.DefaultRuleset = Convert.ToBase64String(Encoding.UTF8.GetBytes(jsonString));
+                    //var response = await versionCheck.GetAsync("https://raw.githubusercontent.com/username/repo/master/file.json");
+                    response.EnsureSuccessStatusCode();
+
+                    var jsonString = string.Empty;
+
+                    using (var stream = await response.Content.ReadAsStreamAsync())
+                    {
+                        Rules = await JsonSerializer.DeserializeAsync<Dictionary<string, Rule>>(stream);
+
+                        stream.Position = 0;
+                        using (var reader = new StreamReader(stream))
+                        {
+                            jsonString = await reader.ReadToEndAsync();
+                        }
+
+                        // jsonString came back as empty.
+                        if (jsonString == null)
+                        {
+                            GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Error retrieving ruleset from Github: jsonString null.");
+                        }
+                        // jsonString has something in it. See if the version value on Github is newer than what we have stored locally.
+                        else
+                        {
+                            // There's a newer ruleset published the the Github repo.
+                            if (int.Parse(jsonString) >= int.Parse(Properties.Settings.Default.RuleSetVersion))
+                            {
+                                GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Local ruleset is behind Github ruleset.");
+
+                                // Call a function here which does:
+                                // * Pulls all rule files, decodes them and looks for differences, if differences are found store in local file overwriting any existing content.
+                                // * Or checks each rule from something different and if different store in local file overwriting any existing content.
+                                // * Assuming all the above finished without issue, bump the ruleset version number in Settings.
+                            }
+                            // There's not a newer ruleset published to the Github repo.
+                            else
+                            {
+                                GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Local ruleset is up to date with Github ruleset.");
+                                return;
+                            }
+
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
                     GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Error retrieving ruleset from Github {ex}");
                 }
+
+
+                using (var httpClient = new HttpClient())
+                {
+                    try
+                    {
+                        // You may want to post a separate version file so you can check if the version is newer first
+                        // Alternatively if you can assume the file size is different you can pass HttpMethod.Head as the method
+                        // and then pull the Content-Length from response.Headers and compare to the non-Base64 size
+
+                        var response = await httpClient.GetAsync("https://raw.githubusercontent.com/username/repo/master/file.json");
+                        response.EnsureSuccessStatusCode();
+
+                        // You can do this two ways, but probably should do it the async way as your ruleset could get large
+                        var async = true;
+                        var jsonString = string.Empty;
+
+                        // Synchronous way (not recommended but simpler, blocks thread, higher memory footprint while deserializing)
+                        if (!async)
+                        {
+                            jsonString = await response.Content.ReadAsStringAsync();
+
+                            // Deserialize JSON and overwrite the ruleset.  You may want to merge or do something else
+                            Rules = JsonSerializer.Deserialize<Dictionary<string, Rule>>(jsonString);
+                        }
+                        else
+                        {
+                            // More complex, can probably be optimized but if you end up with a large ruleset
+                            // you want to do the http get and the deserialization asynchronously
+                            using (var stream = await response.Content.ReadAsStreamAsync())
+                            {
+                                Rules = await JsonSerializer.DeserializeAsync<Dictionary<string, Rule>>(stream);
+
+                                // Get the string for storage
+                                stream.Position = 0;
+                                using (var reader = new StreamReader(stream))
+                                {
+                                    jsonString = await reader.ReadToEndAsync();
+                                }
+                            }
+                        }
+
+                        // Save base64 version to settings as the new default
+                        Properties.Settings.Default.DefaultRuleset = Convert.ToBase64String(Encoding.UTF8.GetBytes(jsonString));
+                    }
+                    catch (Exception ex)
+                    {
+                        GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Error retrieving ruleset from Github {ex}");
+                    }
+                }
             }
         }
-    }
 
-    public enum RuleType
-    {
-        Informational,
-        Security,
-        Performance,
-        Bug,
-        Unknown
-    }
-    public enum RuleAction
-    {
-        Ignore,
-        Link,
-        Note,
-        Flag,
-        WhoKnows
-    }
+        public enum RuleType
+        {
+            Informational,
+            Security,
+            Performance,
+            Bug,
+            Unknown
+        }
+        public enum RuleAction
+        {
+            Ignore,
+            Link,
+            Note,
+            Flag,
+            WhoKnows
+        }
 
-    public class Rule
-    {
-        public RuleType RuleType { get; set; }
-        public string RuleRegex { get; set; }
-        public string RuleResult { get; set; }
-        public RuleAction RuleAction { get; set; }
+        public class Rule
+        {
+            public RuleType RuleType { get; set; }
+            public string RuleRegex { get; set; }
+            public string RuleResult { get; set; }
+            public RuleAction RuleAction { get; set; }
+        }
     }
 }

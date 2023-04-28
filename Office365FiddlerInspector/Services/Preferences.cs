@@ -1,4 +1,5 @@
 ﻿using Fiddler;
+using Office365FiddlerInspector.Ruleset;
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Office365FiddlerInspector.Services
 {
-    public static class Preferences
+    public class Preferences
     {
         public static void Initialize()
         {
@@ -16,7 +17,7 @@ namespace Office365FiddlerInspector.Services
         /// This is the low water mark for what is considered a slow running session, considering a number of factors.
         /// Exchange response times are typically going to be much quicker than this. In the < 300ms range.
         /// </summary>
-        public static int GetSlowRunningSessionThreshold()
+        public  int GetSlowRunningSessionThreshold()
         {
             return 5000;
         }
@@ -105,6 +106,12 @@ namespace Office365FiddlerInspector.Services
         {
             get => DisableWebCalls = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.NeverWebCall", false);
             set { _DisableWebCalls = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.NeverWebCall", value); }
+        }
+
+        public static bool BetaRuleSet
+        {
+            get => BetaRuleSet = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.BetaRuleSet", false);
+            set { BetaRuleSet = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.BetaRuleSet", value); }
         }
     }
 }
