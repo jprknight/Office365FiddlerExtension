@@ -18,7 +18,7 @@ namespace Office365FiddlerInspector.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 103 Checkpoint.");
+            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 103 Checkpoint.");
 
             GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");
             GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");

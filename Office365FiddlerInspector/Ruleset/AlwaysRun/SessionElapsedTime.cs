@@ -19,7 +19,7 @@ namespace Office365FiddlerInspector.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetElapsedTime.");
+            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "Running SetElapsedTime.");
 
             // Populate the ElapsedTime column.
             if (this.session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") != "0:00:00.000" && this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
@@ -39,7 +39,7 @@ namespace Office365FiddlerInspector.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Running SetInspectorElapsedTime.");
+            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "Running SetInspectorElapsedTime.");
 
             // ClientDoneResponse can be blank. If so do not try to calculate and output Elapsed Time, we end up with a hideously large number.
             if (this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")

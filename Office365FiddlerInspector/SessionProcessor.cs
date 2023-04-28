@@ -777,7 +777,7 @@ namespace Office365FiddlerInspector
                     break;
                 default:
                     // Not setting colours on sessions not recognised.
-                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Session undefined in extension.");
+                    GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "Session undefined in extension.");
 
                     GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");
                     GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");

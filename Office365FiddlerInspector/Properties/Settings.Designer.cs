@@ -58,5 +58,7 @@ namespace Office365FiddlerInspector.Properties {
                 return ((string)(this["ReportIssuesURL"]));
             }
         }
+
+        public string DefaultRuleset { get; internal set; }
     }
 }

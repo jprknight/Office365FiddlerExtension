@@ -138,7 +138,7 @@ namespace Office365FiddlerInspector.Ruleset
             //
             if ((this.session.url.Contains("autodiscover") && (this.session.oResponse["server"].Contains("Apache"))))
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " Apache is answering Autodiscover requests! Investigate this first!");
+                GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "Apache is answering Autodiscover requests! Investigate this first!");
 
                 GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
                 GetSetSessionFlags.Instance.SetUITextColour(this.session, "black");
