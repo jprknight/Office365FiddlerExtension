@@ -87,5 +87,14 @@ namespace Office365FiddlerInspector.Properties {
                 return ((string)(this["MasterRuleSetURL"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseBetaRuleSet {
+            get {
+                return ((bool)(this["UseBetaRuleSet"]));
+            }
+        }
     }
 }

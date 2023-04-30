@@ -175,6 +175,17 @@ namespace Office365FiddlerInspector.Services
             }
             #endregion
 
+            // Use the beta ruleset.
+            if (Properties.Settings.Default.UseBetaRuleSet)
+            {
+
+            }
+            // Use the master / normal / production ruleset.
+            else
+            {
+
+            }
+
             using (var httpClient = new HttpClient())
             {
                 try
