@@ -172,55 +172,55 @@ namespace Office365FiddlerInspector.Services
                 {
                     GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Error retrieving ruleset from Github {ex}");
                 }
-                #endregion
+            }
+            #endregion
 
-                using (var httpClient = new HttpClient())
+            using (var httpClient = new HttpClient())
+            {
+                try
                 {
-                    try
+                    // You may want to post a separate version file so you can check if the version is newer first
+                    // Alternatively if you can assume the file size is different you can pass HttpMethod.Head as the method
+                    // and then pull the Content-Length from response.Headers and compare to the non-Base64 size
+
+                    var response = await httpClient.GetAsync("https://raw.githubusercontent.com/username/repo/master/file.json");
+                    response.EnsureSuccessStatusCode();
+
+                    // You can do this two ways, but probably should do it the async way as your ruleset could get large
+                    var async = true;
+                    var jsonString = string.Empty;
+
+                    // Synchronous way (not recommended but simpler, blocks thread, higher memory footprint while deserializing)
+                    if (!async)
                     {
-                        // You may want to post a separate version file so you can check if the version is newer first
-                        // Alternatively if you can assume the file size is different you can pass HttpMethod.Head as the method
-                        // and then pull the Content-Length from response.Headers and compare to the non-Base64 size
+                        jsonString = await response.Content.ReadAsStringAsync();
 
-                        var response = await httpClient.GetAsync("https://raw.githubusercontent.com/username/repo/master/file.json");
-                        response.EnsureSuccessStatusCode();
-
-                        // You can do this two ways, but probably should do it the async way as your ruleset could get large
-                        var async = true;
-                        var jsonString = string.Empty;
-
-                        // Synchronous way (not recommended but simpler, blocks thread, higher memory footprint while deserializing)
-                        if (!async)
+                        // Deserialize JSON and overwrite the ruleset.  You may want to merge or do something else
+                        Rules = JsonSerializer.Deserialize<Dictionary<string, Rule>>(jsonString);
+                    }
+                    else
+                    {
+                        // More complex, can probably be optimized but if you end up with a large ruleset
+                        // you want to do the http get and the deserialization asynchronously
+                        using (var stream = await response.Content.ReadAsStreamAsync())
                         {
-                            jsonString = await response.Content.ReadAsStringAsync();
+                            Rules = await JsonSerializer.DeserializeAsync<Dictionary<string, Rule>>(stream);
 
-                            // Deserialize JSON and overwrite the ruleset.  You may want to merge or do something else
-                            Rules = JsonSerializer.Deserialize<Dictionary<string, Rule>>(jsonString);
-                        }
-                        else
-                        {
-                            // More complex, can probably be optimized but if you end up with a large ruleset
-                            // you want to do the http get and the deserialization asynchronously
-                            using (var stream = await response.Content.ReadAsStreamAsync())
+                            // Get the string for storage
+                            stream.Position = 0;
+                            using (var reader = new StreamReader(stream))
                             {
-                                Rules = await JsonSerializer.DeserializeAsync<Dictionary<string, Rule>>(stream);
-
-                                // Get the string for storage
-                                stream.Position = 0;
-                                using (var reader = new StreamReader(stream))
-                                {
-                                    jsonString = await reader.ReadToEndAsync();
-                                }
+                                jsonString = await reader.ReadToEndAsync();
                             }
                         }
+                    }
 
-                        // Save base64 version to settings as the new default
-                        Properties.Settings.Default.DefaultRuleset = Convert.ToBase64String(Encoding.UTF8.GetBytes(jsonString));
-                    }
-                    catch (Exception ex)
-                    {
-                        GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Error retrieving ruleset from Github {ex}");
-                    }
+                    // Save base64 version to settings as the new default
+                    Properties.Settings.Default.DefaultRuleset = Convert.ToBase64String(Encoding.UTF8.GetBytes(jsonString));
+                }
+                catch (Exception ex)
+                {
+                    GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Error retrieving ruleset from Github {ex}");
                 }
             }
         }
