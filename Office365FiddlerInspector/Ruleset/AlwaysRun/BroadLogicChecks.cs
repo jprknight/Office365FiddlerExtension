@@ -18,9 +18,10 @@ namespace Office365FiddlerInspector.Ruleset
         {
             this.session = session;
 
-            // Very likely the first session captured when running Fiddler.
+            
             if (this.session.hostname == "www.fiddler2.com" && this.session.uriContains("UpdateCheck.aspx"))
             {
+                // Very likely the first session captured when running Fiddler.
                 GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "Broad Logic Checks (www.fiddler2.com).");
 
                 GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");
@@ -31,7 +32,6 @@ namespace Office365FiddlerInspector.Ruleset
                 GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "Fiddler Update Check");
                 GetSetSessionFlags.Instance.SetXResponseComments(this.session, "This is Fiddler itself checking for updates. It has nothing to do with the Office 365 Fiddler Extension.");            
 
-                // Absolute certainly we don't want to do anything further with this session.
                 GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "10");
                 GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
                 GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "10");
@@ -42,9 +42,9 @@ namespace Office365FiddlerInspector.Ruleset
         {
             this.session = session;
 
-            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "Broad Logic Checks (connect tunnel).");
+            
 
-            string TLS;
+            
 
             // Connect Tunnel.
             //
@@ -55,6 +55,9 @@ namespace Office365FiddlerInspector.Ruleset
             // SetSessionType makes exactly the same call later on down the code path and it works.
             if (this.session.isTunnel)
             {
+                string TLS;
+
+                GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "Broad Logic Checks (connect tunnel).");
                 // TLS 1.0 in request/response pair.
 
                 // Request:
@@ -67,7 +70,7 @@ namespace Office365FiddlerInspector.Ruleset
 
                 if (this.session.utilFindInResponse("Secure Protocol: Tls10", false) > 1 || this.session.utilFindInResponse("(TLS/1.0)", false) > 1)
                 {
-                    TLS = "TLS 1.0";
+                    string TLS = "TLS 1.0";
                 }
                 // TLS 1.1 in request/response pair.
                 else if (this.session.utilFindInResponse("Secure Protocol: Tls11", false) > 1 || this.session.utilFindInRequest("(TLS/1.1)", false) > 1)
