@@ -1,0 +1,17 @@
+if (this.session.hostname == "www.fiddler2.com" && this.session.uriContains("UpdateCheck.aspx"))
+{
+	// Very likely the first session captured when running Fiddler.
+	GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "Broad Logic Checks (www.fiddler2.com).");
+
+	GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");
+	GetSetSessionFlags.Instance.SetUITextColour(this.session, "black");
+
+	GetSetSessionFlags.Instance.SetSessionType(this.session, "Fiddler Update Check");
+	GetSetSessionFlags.Instance.SetXResponseServer(this.session, "Fiddler Update Check");
+	GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "Fiddler Update Check");
+	GetSetSessionFlags.Instance.SetXResponseComments(this.session, "This is Fiddler itself checking for updates. It has nothing to do with the Office 365 Fiddler Extension.");            
+
+	GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "10");
+	GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
+	GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "10");
+}
