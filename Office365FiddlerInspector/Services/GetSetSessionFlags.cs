@@ -24,9 +24,10 @@ namespace Office365FiddlerInspector.Services
             FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} {Log}");
         }
 
-        public void SetOffice365FiddlerExtensionJson(String Json)
+        public void SetOffice365FiddlerExtensionJson(Session session, String Json)
         {
-            this.session["Office365FiddlerExtensionJson"] = Json;
+            this.session = session;
+            this.session["X-Office365FiddlerExtensionJson"] = Json;
         }
 
         public void WriteToFiddlerLogNoSession(String Log)

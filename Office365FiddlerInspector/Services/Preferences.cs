@@ -17,7 +17,7 @@ namespace Office365FiddlerInspector.Services
         /// This is the low water mark for what is considered a slow running session, considering a number of factors.
         /// Exchange response times are typically going to be much quicker than this. In the < 300ms range.
         /// </summary>
-        public  int GetSlowRunningSessionThreshold()
+        public static int GetSlowRunningSessionThreshold()
         {
             return 5000;
         }

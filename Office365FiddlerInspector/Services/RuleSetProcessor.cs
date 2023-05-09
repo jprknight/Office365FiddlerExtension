@@ -16,10 +16,10 @@ using System.Threading.Tasks;
 namespace Office365FiddlerInspector.Services
 {
     internal class Program
-    {
+    {/*
         private static readonly Lazy<RulesetSingleton> _instance = new Lazy<RulesetSingleton>(() => new RulesetSingleton());
         public static RulesetSingleton Ruleset => _instance.Value;
-
+        
         static async Task Main(string[] args)
         {
             /*
@@ -41,7 +41,7 @@ namespace Office365FiddlerInspector.Services
                     "RuleAction": 2
                 }
             }
-            */
+            
 
             // Example of how to programatically create rules and serialize into json:
             var sampleJson = CreateSampleRules();
@@ -55,18 +55,7 @@ namespace Office365FiddlerInspector.Services
             await Ruleset.UpdateRulesAsync();
             Console.WriteLine($"Updated ruleset contains {Ruleset.Rules.Count} rules.");
         }
-
-        static string CreateBroadLogicChecksRules()
-        {
-            var Ruleset = new Dictionary<string, Rule>();
-
-
-
-
-            return Ruleset;
-
-        }
-
+    
         static string CreateSampleRules()
         {
             var Ruleset = new Dictionary<string, Rule>();
@@ -270,6 +259,6 @@ namespace Office365FiddlerInspector.Services
             public string RuleRegex { get; set; }
             public string RuleResult { get; set; }
             public RuleAction RuleAction { get; set; }
-        }
+        }*/
     }
 }
