@@ -56,6 +56,17 @@ namespace Office365FiddlerInspector.Services
             Console.WriteLine($"Updated ruleset contains {Ruleset.Rules.Count} rules.");
         }
 
+        static string CreateBroadLogicChecksRules()
+        {
+            var Ruleset = new Dictionary<string, Rule>();
+
+
+
+
+            return Ruleset;
+
+        }
+
         static string CreateSampleRules()
         {
             var Ruleset = new Dictionary<string, Rule>();

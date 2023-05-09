@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Fiddler;
 using Office365FiddlerInspector.Services;
+using Newtonsoft.Json;
 
 namespace Office365FiddlerInspector.Ruleset
 {
@@ -18,33 +19,54 @@ namespace Office365FiddlerInspector.Ruleset
         {
             this.session = session;
 
-            
             if (this.session.hostname == "www.fiddler2.com" && this.session.uriContains("UpdateCheck.aspx"))
             {
-                // Very likely the first session captured when running Fiddler.
-                GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "Broad Logic Checks (www.fiddler2.com).");
 
-                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");
-                GetSetSessionFlags.Instance.SetUITextColour(this.session, "black");
-
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "Fiddler Update Check");
-                GetSetSessionFlags.Instance.SetXResponseServer(this.session, "Fiddler Update Check");
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "Fiddler Update Check");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "This is Fiddler itself checking for updates. It has nothing to do with the Office 365 Fiddler Extension.");            
-
-                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "10");
-                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
-                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "10");
+                var mySessionFlags = new SessionFlags()
+                {
+                    SectionTitle = "Broad Logic Checks (www.fiddler2.com).",
+                    UIBackColour = "Gray",
+                    UITextColour = "Black",
+                    SessionType = "Fiddler Update Check",
+                    ResponseServer = "Fiddler Update Check",
+                    ResponseAlert = "Fiddler Update Check",
+                    ResponseComments = "This is Fiddler itself checking for updates. It has nothing to do with the Office 365 Fiddler Extension.",
+                    SessionAuthenticationConfidenceLevel = 10,
+                    SessionTypeConfidenceLevel = 10,
+                    SessionResponseServerConfidenceLevel = 10
+                };
+                    
+                var mySessionFlagsJson = JsonConvert.SerializeObject(mySessionFlags);
+                GetSetSessionFlags.Instance.SetOffice365FiddlerExtensionJson(this.session, mySessionFlagsJson);
             }
+        }
+
+        public class SessionFlags
+        {
+            public string SectionTitle { get; set; }
+
+            public string UIBackColour { get; set;}
+
+            public string UITextColour { get;set;}
+
+            public string SessionType { get; set;}
+
+            public string ResponseServer { get; set;}
+
+            public string ResponseAlert { get; set;}
+            
+            public string ResponseComments { get; set;}
+
+            public int SessionAuthenticationConfidenceLevel { get; set;}
+
+            public int SessionTypeConfidenceLevel { get; set;}
+
+            public int SessionResponseServerConfidenceLevel { get;set;}
         }
 
         public void ConnectTunnelSessions(Session session)
         {
             this.session = session;
-
-            
-
-            
 
             // Connect Tunnel.
             //
@@ -70,7 +92,7 @@ namespace Office365FiddlerInspector.Ruleset
 
                 if (this.session.utilFindInResponse("Secure Protocol: Tls10", false) > 1 || this.session.utilFindInResponse("(TLS/1.0)", false) > 1)
                 {
-                    string TLS = "TLS 1.0";
+                    TLS = "TLS 1.0";
                 }
                 // TLS 1.1 in request/response pair.
                 else if (this.session.utilFindInResponse("Secure Protocol: Tls11", false) > 1 || this.session.utilFindInRequest("(TLS/1.1)", false) > 1)

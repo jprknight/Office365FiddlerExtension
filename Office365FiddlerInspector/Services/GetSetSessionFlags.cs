@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Fiddler;
 using Microsoft.AspNetCore.Http.Authentication;
+using Newtonsoft.Json;
 using Office365FiddlerInspector.Ruleset;
+using static Office365FiddlerInspector.Ruleset.BroadLogicChecks;
 
 namespace Office365FiddlerInspector.Services
 {
@@ -20,6 +22,11 @@ namespace Office365FiddlerInspector.Services
         {
             this.session = session;
             FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} {Log}");
+        }
+
+        public void SetOffice365FiddlerExtensionJson(String Json)
+        {
+            this.session["Office365FiddlerExtensionJson"] = Json;
         }
 
         public void WriteToFiddlerLogNoSession(String Log)
