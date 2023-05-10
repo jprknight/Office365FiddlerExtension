@@ -59,17 +59,20 @@ namespace Office365FiddlerInspector.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("19000101")]
-        public string RuleSetVersion {
+        public global::System.DateTime LocalMasterRulesetLastUpdated {
             get {
-                return ((string)(this["RuleSetVersion"]));
+                return ((global::System.DateTime)(this["LocalMasterRulesetLastUpdated"]));
+            }
+            set {
+                this["LocalMasterRulesetLastUpdated"] = value;
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
         [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygien" +
             "e/RulesetVersion")]
         public string BetaRuleSetURL {
@@ -80,6 +83,7 @@ namespace Office365FiddlerInspector.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
         [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Master/Rule" +
             "setVersion")]
         public string MasterRuleSetURL {
@@ -90,7 +94,7 @@ namespace Office365FiddlerInspector.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool UseBetaRuleSet {
             get {
                 return ((bool)(this["UseBetaRuleSet"]));
@@ -103,6 +107,48 @@ namespace Office365FiddlerInspector.Properties {
         public bool UseInternalRuleSet {
             get {
                 return ((bool)(this["UseInternalRuleSet"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime RemoteRulesetNextCheck {
+            get {
+                return ((global::System.DateTime)(this["RemoteRulesetNextCheck"]));
+            }
+            set {
+                this["RemoteRulesetNextCheck"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime LocalBetaRulesetLastUpdated {
+            get {
+                return ((global::System.DateTime)(this["LocalBetaRulesetLastUpdated"]));
+            }
+            set {
+                this["LocalBetaRulesetLastUpdated"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://aka.ms/Office365FiddlerExtensionRawContent")]
+        public string PrimaryExtensionJsonFileURL {
+            get {
+                return ((string)(this["PrimaryExtensionJsonFileURL"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension")]
+        public string SecondaryExtensionJsonFileURL {
+            get {
+                return ((string)(this["SecondaryExtensionJsonFileURL"]));
             }
         }
     }

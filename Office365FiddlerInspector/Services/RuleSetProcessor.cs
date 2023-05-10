@@ -1,4 +1,5 @@
 ﻿using Fiddler;
+using FiddlerCore.Utilities.SmartAssembly.Attributes;
 using Microsoft.CSharp;
 using Office365FiddlerInspector.Properties;
 using System;
@@ -15,8 +16,120 @@ using System.Threading.Tasks;
 
 namespace Office365FiddlerInspector.Services
 {
-    internal class Program
-    {/*
+    class RuleSetProcessor : ActivationService
+    {   
+        // Check the ruleset version stored in local settings is older than the version in the Github repo.
+        // If it's newer call the <to be named> function to pull down updates.
+        public async void RulesetVersionCheck()
+        {
+            if (Preferences.DisableWebCalls)
+            {
+                GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"DisableWebCalls is enabled, no ruleset update check performed.");
+                return;
+            }
+
+            if (DateTime.Now < Properties.Settings.Default.LocalMasterRulesetLastUpdated) 
+            {
+                GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Rules have been checked within the last 24 hours, no ruleset update check performed.");
+                return;
+            }
+
+            #region RulesetVersionCheck
+            // Pull the version file to see if there is a version ruleset to update on.
+            using (var versionCheck = new HttpClient())
+            {
+                try
+                {
+                    var response = await versionCheck.GetAsync("https://somedummyurlwhichwontwork");
+                    // If we're running the beta ruleset, look to the Fiddler application preference for the URL to go to for the rulesetVersion file.
+                    // This will likely be a rolling URL based on the branch name used at any time.
+                    if (Preferences.BetaRuleSet)
+                    {
+                        response = await versionCheck.GetAsync(Properties.Settings.Default.BetaRuleSetURL);
+                    }
+                    // Here we're not using the beta ruleset, so pull it from the master branch.
+                    else
+                    {
+                        response = await versionCheck.GetAsync(Properties.Settings.Default.MasterRuleSetURL);
+                    }
+
+                    //var response = await versionCheck.GetAsync("https://raw.githubusercontent.com/username/repo/master/file.json");
+                    response.EnsureSuccessStatusCode();
+
+                    var jsonString = string.Empty;
+
+                    using (var stream = await response.Content.ReadAsStreamAsync())
+                    {
+                        //Rules = await JsonSerializer.DeserializeAsync<Dictionary<string, Rule>>(stream);
+
+                        stream.Position = 0;
+                        using (var reader = new StreamReader(stream))
+                        {
+                            jsonString = await reader.ReadToEndAsync();
+                        }
+
+                        // jsonString came back as empty.
+                        if (jsonString == null)
+                        {
+                            GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Error retrieving ruleset from Github: jsonString null.");
+                        }
+                        // jsonString has something in it. See if the version value on Github is newer than what we have stored locally.
+                        else
+                        {
+                            // There's a newer ruleset published the the Github repo.
+                            if (int.Parse(jsonString) >= int.Parse(Properties.Settings.Default.LocalMasterRulesetLastUpdated))
+                            {
+                                GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Local ruleset is behind Github ruleset.");
+
+                                // Call a function here which does:
+                                // * Pulls all rule files, decodes them and looks for differences, if differences are found store in local file overwriting any existing content.
+                                // * Or checks each rule from something different and if different store in local file overwriting any existing content.
+                                // * Assuming all the above finished without issue, bump the ruleset version number in Settings.
+                            }
+                            // There's not a newer ruleset published to the Github repo.
+                            else
+                            {
+                                GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Local ruleset is up to date with Github ruleset.");
+                                return;
+                            }
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Error retrieving ruleset from Github {ex}");
+                }
+            }
+            #endregion
+        }
+
+        public async void DiscoverBroadLogicChecks()
+        {
+
+        }
+
+        public async void UpdateRulesetFromGithub()
+        {
+            // Do all the things.
+            // If ruleset update to local is succesful, set the date/time in the properties.
+            // Do this for a logic check to make sure we only check for ruleset updates once every 24 hours.
+            Boolean done = false;
+            if (done == true)
+            {
+                if (Preferences.BetaRuleSet)
+                {
+                    Settings.Default.RemoteBetaRuleSetLastUpdated = DateTime.Now.AddHours(24);
+                }
+                else
+                {
+                    Properties.Settings.Default.RemoteMasterRulesetLastUpdated = DateTime.Now.AddHours(24);
+                }
+                    
+            }
+        }
+
+
         private static readonly Lazy<RulesetSingleton> _instance = new Lazy<RulesetSingleton>(() => new RulesetSingleton());
         public static RulesetSingleton Ruleset => _instance.Value;
         
@@ -40,7 +153,7 @@ namespace Office365FiddlerInspector.Services
                     "RuleResult": "This is a new feature yo",
                     "RuleAction": 2
                 }
-            }
+            }*/
             
 
             // Example of how to programatically create rules and serialize into json:
@@ -106,74 +219,7 @@ namespace Office365FiddlerInspector.Services
             // Think about writing some code so ruleset checks are only done once per 24/48/72/168 hours.
             // Ruleset won't change that frequently, so there's probably no reason to call out to the Github repro on every Fiddler start.
 
-            #region RulesetVersionCheck
-            // Pull the version file to see if there is a version ruleset to update on.
-            using (var versionCheck = new HttpClient())
-            {
-                try
-                {
-                    var response = await versionCheck.GetAsync("https://somedummyurlwhichwontwork");
-                    // If we're running the beta ruleset, look to the Fiddler application preference for the URL to go to for the rulesetVersion file.
-                    // This will likely be a rolling URL based on the branch name used at any time.
-                    if (Preferences.BetaRuleSet)
-                    {
-                        response = await versionCheck.GetAsync(Properties.Settings.Default.BetaRuleSetURL);
-                    }
-                    // Here we're not using the beta ruleset, so pull it from the master branch.
-                    else
-                    {
-                        response = await versionCheck.GetAsync(Properties.Settings.Default.MasterRuleSetURL);
-                    }
-
-                    //var response = await versionCheck.GetAsync("https://raw.githubusercontent.com/username/repo/master/file.json");
-                    response.EnsureSuccessStatusCode();
-
-                    var jsonString = string.Empty;
-
-                    using (var stream = await response.Content.ReadAsStreamAsync())
-                    {
-                        Rules = await JsonSerializer.DeserializeAsync<Dictionary<string, Rule>>(stream);
-
-                        stream.Position = 0;
-                        using (var reader = new StreamReader(stream))
-                        {
-                            jsonString = await reader.ReadToEndAsync();
-                        }
-
-                        // jsonString came back as empty.
-                        if (jsonString == null)
-                        {
-                            GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Error retrieving ruleset from Github: jsonString null.");
-                        }
-                        // jsonString has something in it. See if the version value on Github is newer than what we have stored locally.
-                        else
-                        {
-                            // There's a newer ruleset published the the Github repo.
-                            if (int.Parse(jsonString) >= int.Parse(Properties.Settings.Default.RuleSetVersion))
-                            {
-                                GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Local ruleset is behind Github ruleset.");
-
-                                // Call a function here which does:
-                                // * Pulls all rule files, decodes them and looks for differences, if differences are found store in local file overwriting any existing content.
-                                // * Or checks each rule from something different and if different store in local file overwriting any existing content.
-                                // * Assuming all the above finished without issue, bump the ruleset version number in Settings.
-                            }
-                            // There's not a newer ruleset published to the Github repo.
-                            else
-                            {
-                                GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Local ruleset is up to date with Github ruleset.");
-                                return;
-                            }
-
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Error retrieving ruleset from Github {ex}");
-                }
-            }
-            #endregion
+           
 
             // Use the beta ruleset.
             if (Properties.Settings.Default.UseBetaRuleSet)
@@ -259,6 +305,6 @@ namespace Office365FiddlerInspector.Services
             public string RuleRegex { get; set; }
             public string RuleResult { get; set; }
             public RuleAction RuleAction { get; set; }
-        }*/
+        }
     }
 }

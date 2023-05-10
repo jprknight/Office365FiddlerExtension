@@ -297,6 +297,7 @@
     <Compile Include="Ruleset\SelectivelyRun\SetSessionType.cs" />
     <Compile Include="Services\RuleSetProcessor.cs" />
     <Compile Include="Services\GetSetSessionFlags.cs" />
+    <Compile Include="Services\SessionFlagProcessor.cs" />
     <Compile Include="Tabs\Office365TabPage.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="About.cs" />

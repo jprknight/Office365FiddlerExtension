@@ -6,6 +6,8 @@ using Office365FiddlerInspector.Services;
 using System.Text;
 using O365FiddlerInspector.UI;
 using Office365FiddlerInspector.UI;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Office365FiddlerInspector.Inspectors
 {
@@ -245,6 +247,18 @@ namespace Office365FiddlerInspector.Inspectors
 
                 this.session = session;
 
+                SessionFlagProcessor sessionFlagProcessor = new SessionFlagProcessor();
+
+                var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(this.session["Microsoft365FiddlerExtensionJson"]);
+
+                var dictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(this.session["Microsoft365FiddlerExtensionJson"]);
+
+                foreach (var item in dictionary)
+                {
+                    var key = item.Key;
+                    var value = item.Value;
+                }
+
                 // HTML Header.
                 ResultsString.AppendLine("<html>");
                 ResultsString.AppendLine("<title></title>");
@@ -323,6 +337,7 @@ namespace Office365FiddlerInspector.Inspectors
                     ResultsString.AppendLine("Response Server");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine("TEST:" + ExtensionSessionFlags.ResponseServer + ":TEST");
                     ResultsString.AppendLine(getSetSessionFlags.GetXResponseServer(this.session));
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
@@ -346,6 +361,7 @@ namespace Office365FiddlerInspector.Inspectors
                 // Session Analysis.
                 ResultsString.AppendLine("<h2>Session Analysis</h2>");
 
+                ResultsString.AppendLine(ExtensionSessionFlags.ResponseComments);
                 ResultsString.AppendLine($"<p>{getSetSessionFlags.GetXResponseComments(this.session)}</p>");
 
                 // Session Age.

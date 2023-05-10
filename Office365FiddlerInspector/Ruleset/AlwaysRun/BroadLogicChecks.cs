@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Fiddler;
 using Office365FiddlerInspector.Services;
 using Newtonsoft.Json;
+using System.Web.Caching;
 
 namespace Office365FiddlerInspector.Ruleset
 {
@@ -15,6 +16,8 @@ namespace Office365FiddlerInspector.Ruleset
 
         public static BroadLogicChecks Instance => _instance ?? (_instance = new BroadLogicChecks());
 
+        SessionFlagProcessor sessionFlagProcessor = new SessionFlagProcessor();
+
         public void FiddlerUpdateSessions (Session session)
         {
             this.session = session;
@@ -22,7 +25,7 @@ namespace Office365FiddlerInspector.Ruleset
             if (this.session.hostname == "www.fiddler2.com" && this.session.uriContains("UpdateCheck.aspx"))
             {
 
-                var mySessionFlags = new SessionFlags()
+                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
                     SectionTitle = "Broad Logic Checks (www.fiddler2.com).",
                     UIBackColour = "Gray",
@@ -36,32 +39,9 @@ namespace Office365FiddlerInspector.Ruleset
                     SessionResponseServerConfidenceLevel = 10
                 };
                     
-                var mySessionFlagsJson = JsonConvert.SerializeObject(mySessionFlags);
-                GetSetSessionFlags.Instance.SetOffice365FiddlerExtensionJson(this.session, mySessionFlagsJson);
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                sessionFlagProcessor.SetExtensionSessionFlagJson(this.session, sessionFlagsJson);
             }
-        }
-
-        public class SessionFlags
-        {
-            public string SectionTitle { get; set; }
-
-            public string UIBackColour { get; set;}
-
-            public string UITextColour { get;set;}
-
-            public string SessionType { get; set;}
-
-            public string ResponseServer { get; set;}
-
-            public string ResponseAlert { get; set;}
-            
-            public string ResponseComments { get; set;}
-
-            public int SessionAuthenticationConfidenceLevel { get; set;}
-
-            public int SessionTypeConfidenceLevel { get; set;}
-
-            public int SessionResponseServerConfidenceLevel { get;set;}
         }
 
         public void ConnectTunnelSessions(Session session)
@@ -118,35 +98,54 @@ namespace Office365FiddlerInspector.Ruleset
                 // Ideally looking to do: if (this.session.utilFindInResponse("CONNECT tunnel, through which encrypted HTTPS traffic flows", false) > 1)
                 // Only works reliably when loading a SAZ file and request/response data is immediately available to do logic checks against.
 
-                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Orange");
-                GetSetSessionFlags.Instance.SetUITextColour(this.session, "black");
-
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "Connect Tunnel");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
-                    + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
-                    + "<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>");
-
                 switch (this.session.responseCode)
                 {
                     case 403:
                         // If this is a HTTP 403 we need analysis on this session.
                         // I have seen HTTP 403 connect tunnels actually show interesting data in authentication scenarios.
-                        GetSetSessionFlags.Instance.SetSessionType(this.session, "Connect Tunnel: " + TLS);
-                        GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                        GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "5");
-                        GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                        var sessionFlags403 = new SessionFlagProcessor.ExtensionSessionFlags()
+                        {
+                            SectionTitle = "Broad Logic Checks (www.fiddler2.com).",
+                            UIBackColour = "Orange",
+                            UITextColour = "Black",
+
+                            ResponseServer = "Connect Tunnel",
+                            ResponseAlert = "Connect Tunnel",
+                            ResponseComments = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
+                            + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
+                            + "<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>",
+                            SessionType = "Connect Tunnel: " + TLS,
+                            SessionAuthenticationConfidenceLevel = 5,
+                            SessionTypeConfidenceLevel = 5,
+                            SessionResponseServerConfidenceLevel = 5
+
+                        };
+
+                        var sessionFlagsJson403 = JsonConvert.SerializeObject(sessionFlags403);
+                        sessionFlagProcessor.SetExtensionSessionFlagJson(this.session, sessionFlagsJson403);
                         break;
                     case 200:
-                        GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK");
+                        var sessionFlags200 = new SessionFlagProcessor.ExtensionSessionFlags()
+                        {
+                            SectionTitle = "Broad Logic Checks (www.fiddler2.com).",
+                            UIBackColour = "Orange",
+                            UITextColour = "Black",
 
-                        GetSetSessionFlags.Instance.SetSessionType(this.session, "Connect Tunnel: " + TLS);
-                        GetSetSessionFlags.Instance.SetXAuthentication(this.session, "Connect Tunnel: " + TLS);
-                        GetSetSessionFlags.Instance.SetXResponseServer(this.session, "Connect Tunnel: " + TLS);
+                            ResponseCodeDescription = "200 OK",
+                            ResponseServer = "Connect Tunnel",
+                            ResponseAlert = "Connect Tunnel",
+                            ResponseComments = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
+                            + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
+                            + "<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>",
+                            SessionType = "Connect Tunnel: " + TLS,
+                            Authentication = "Connect Tunnel: " + TLS,
+                            SessionAuthenticationConfidenceLevel = 10,
+                            SessionTypeConfidenceLevel = 10,
+                            SessionResponseServerConfidenceLevel = 10
+                        };
 
-                        // Absolute certainly we don't want to do anything further with this session.
-                        GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "10");
-                        GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
-                        GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "10");
+                        var sessionFlagsJson200 = JsonConvert.SerializeObject(sessionFlags200);
+                        sessionFlagProcessor.SetExtensionSessionFlagJson(this.session, sessionFlagsJson200);
                         break;
                 }
             }
@@ -165,22 +164,29 @@ namespace Office365FiddlerInspector.Ruleset
             {
                 GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "Apache is answering Autodiscover requests! Investigate this first!");
 
-                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
-                GetSetSessionFlags.Instance.SetUITextColour(this.session, "black");
+                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                {
+                    SectionTitle = "Broad Logic Checks (www.fiddler2.com).",
+                    UIBackColour = "Red",
+                    UITextColour = "Black",
 
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "***APACHE AUTODISCOVER***");
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "Apache is answering Autodiscover requests!");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "<b><span style='color:red'>An Apache Web Server(Unix/Linux) is answering Autodiscover requests!</span></b>"
+                    ResponseCodeDescription = "200 OK",
+                    ResponseServer = "!APACHE!",
+                    ResponseAlert = "Apache is answering Autodiscover requests!",
+                    ResponseComments = "<b><span style='color:red'>An Apache Web Server (Unix/Linux) is answering Autodiscover requests!</span></b>"
                     + "<p>This should not be happening. Consider disabling Root Domain Autodiscover lookups.</p>"
                     + "<p>See ExcludeHttpsRootDomain on </p>"
                     + "<p><a href='https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under' target='_blank'>"
                     + "https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under </a></p>"
-                    + "<p>Beyond this the web administrator responsible for the server needs to stop the Apache web server from answering these requests.</p>");
+                    + "<p>Beyond this the web administrator responsible for the server needs to stop the Apache web server from answering these requests.</p>",
+                    SessionType = "***APACHE AUTODISCOVER ***",
+                    SessionAuthenticationConfidenceLevel = 10,
+                    SessionTypeConfidenceLevel = 10,
+                    SessionResponseServerConfidenceLevel = 10
+                };
 
-                // Absolute certainly we don't want to do anything further with this session.
-                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "10");
-                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
-                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "10");
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                sessionFlagProcessor.SetExtensionSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
     }
