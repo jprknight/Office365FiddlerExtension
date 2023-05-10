@@ -1,5 +1,5 @@
 {
-  "AlwaysRun": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Ruleset/AlwaysRun/AlwaysRun.json",
+  "AlwaysRun": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/RulesetJson/AlwaysRun/AlwaysRun.json",
   "HTTP_0s": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Ruleset/HTTP_0s/HTTP_0s.json",
   "HTTP_100s": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Ruleset/HTTP_100s/HTTP_100s.json",
   "HTTP_200s": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Ruleset/HTTP_200s/HTTP_200s.json",
