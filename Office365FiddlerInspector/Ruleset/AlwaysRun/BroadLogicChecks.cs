@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Fiddler;
-using Office365FiddlerInspector.Services;
+using Office365FiddlerExtension.Services;
 using Newtonsoft.Json;
 using System.Web.Caching;
 

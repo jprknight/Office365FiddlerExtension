@@ -119,11 +119,11 @@ namespace Office365FiddlerInspector.Services
             {
                 if (Preferences.BetaRuleSet)
                 {
-                    Settings.Default.RemoteBetaRuleSetLastUpdated = DateTime.Now.AddHours(24);
+                    Properties.Settings.Default.LocalBetaRulesetLastUpdated = DateTime.Now.AddHours(24);
                 }
                 else
                 {
-                    Properties.Settings.Default.RemoteMasterRulesetLastUpdated = DateTime.Now.AddHours(24);
+                    Properties.Settings.Default.LocalMasterRulesetLastUpdated = DateTime.Now.AddHours(24);
                 }
                     
             }

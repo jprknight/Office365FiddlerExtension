@@ -7,8 +7,8 @@
     <ProjectGuid>{5D9F84F0-77F3-45F5-8DA9-C89DB69BD643}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Office365FiddlerInspector</RootNamespace>
-    <AssemblyName>Office365FiddlerInspector</AssemblyName>
+    <RootNamespace>Office365FiddlerExtension</RootNamespace>
+    <AssemblyName>Office365FiddlerExtension</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -295,6 +295,7 @@
     <Compile Include="Ruleset\SelectivelyRun\SetLongRunningSessions.cs" />
     <Compile Include="Ruleset\SelectivelyRun\SetResponseServer.cs" />
     <Compile Include="Ruleset\SelectivelyRun\SetSessionType.cs" />
+    <Compile Include="Services\ExtensionURLProcessor.cs" />
     <Compile Include="Services\RuleSetProcessor.cs" />
     <Compile Include="Services\GetSetSessionFlags.cs" />
     <Compile Include="Services\SessionFlagProcessor.cs" />
@@ -353,6 +354,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="RulesetJson\Ruleset.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="update.xml" />
@@ -360,7 +362,9 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="RulesetJson\AlwaysRun\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /y /s "$(TargetDir)*.*" "C:\Tools\Fiddler\Scripts"
@@ -380,4 +384,5 @@ xcopy /y /s "$(TargetDir)*.*" "C:\Tools\Fiddler\Inspectors"
   <Import Project="..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.11.0\build\Microsoft.ApplicationInsights.PerfCounterCollector.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.11.0\build\Microsoft.ApplicationInsights.PerfCounterCollector.targets')" />
   <Import Project="..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.11.0\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.11.0\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets')" />
   <Import Project="..\packages\Microsoft.ApplicationInsights.WindowsServer.2.11.0\build\Microsoft.ApplicationInsights.WindowsServer.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.2.11.0\build\Microsoft.ApplicationInsights.WindowsServer.targets')" />
+  <ProjectExtensions />
 </Project>

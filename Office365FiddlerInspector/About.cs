@@ -2,9 +2,9 @@
 using System.Windows.Forms;
 using Fiddler;
 using System.Xml;
-using Office365FiddlerInspector.Services;
+using Office365FiddlerExtension.Services;
 
-namespace Office365FiddlerInspector
+namespace Office365FiddlerExtension
 {
     class About : ActivationService
     {

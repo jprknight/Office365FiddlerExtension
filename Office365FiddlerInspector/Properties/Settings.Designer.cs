@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Office365FiddlerInspector.Properties {
+namespace Office365FiddlerExtension.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
