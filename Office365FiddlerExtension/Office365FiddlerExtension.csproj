@@ -354,6 +354,11 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="RulesetJson\AlwaysRun\AlwaysRun.json" />
+    <None Include="RulesetJson\AlwaysRun\BroadLogicChecks.json" />
+    <None Include="RulesetJson\AlwaysRun\CalculateSessionAge.json" />
+    <None Include="RulesetJson\AlwaysRun\SessionElapsedTime.json" />
+    <None Include="RulesetJson\AlwaysRun\ServerThinkTimeTransitTime.json" />
     <None Include="RulesetJson\Ruleset.json" />
   </ItemGroup>
   <ItemGroup>
@@ -362,9 +367,7 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="RulesetJson\AlwaysRun\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /y /s "$(TargetDir)*.*" "C:\Tools\Fiddler\Scripts"
