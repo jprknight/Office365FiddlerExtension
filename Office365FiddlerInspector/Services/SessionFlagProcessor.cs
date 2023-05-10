@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Fiddler;
 
-namespace Office365FiddlerInspector.Services
+namespace Office365FiddlerExtension.Services
 {
     internal class SessionFlagProcessor : ActivationService
     {

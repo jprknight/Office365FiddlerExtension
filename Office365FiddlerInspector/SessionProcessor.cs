@@ -1,9 +1,9 @@
 ﻿using Fiddler;
-using Office365FiddlerInspector.Ruleset;
-using Office365FiddlerInspector.Services;
+using Office365FiddlerExtension.Ruleset;
+using Office365FiddlerExtension.Services;
 using System;
 
-namespace Office365FiddlerInspector
+namespace Office365FiddlerExtension
 {
     public class SessionProcessor : ActivationService
     {

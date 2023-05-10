@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using Fiddler;
 
-namespace O365FiddlerInspector.UI
+namespace Office365FiddlerExtension.UI
 {
     public partial class Office365ResponseControl : UserControl
     {

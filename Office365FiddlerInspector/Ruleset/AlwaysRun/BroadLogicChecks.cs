@@ -8,7 +8,7 @@ using Office365FiddlerExtension.Services;
 using Newtonsoft.Json;
 using System.Web.Caching;
 
-namespace Office365FiddlerInspector.Ruleset
+namespace Office365FiddlerExtension.Ruleset
 {
     class BroadLogicChecks : ActivationService
     {

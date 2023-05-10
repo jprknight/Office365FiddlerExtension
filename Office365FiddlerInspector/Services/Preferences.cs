@@ -1,11 +1,12 @@
 ﻿using Fiddler;
-using Office365FiddlerInspector.Ruleset;
+using Office365FiddlerExtension.Ruleset;
+using Office365FiddlerInspector;
 using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Office365FiddlerInspector.Services
+namespace Office365FiddlerExtension.Services
 {
     public class Preferences
     {

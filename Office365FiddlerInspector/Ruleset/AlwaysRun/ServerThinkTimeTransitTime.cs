@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 
-namespace Office365FiddlerInspector.Ruleset
+namespace Office365FiddlerExtension.Ruleset
 {
     class ServerThinkTimeTransitTime : ActivationService
     {

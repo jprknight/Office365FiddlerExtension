@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Office365FiddlerInspector.Services;
+using Office365FiddlerExtension.Services;
 using Fiddler;
 
-namespace Office365FiddlerInspector.Ruleset
+namespace Office365FiddlerExtension.Ruleset
 {
     class HTTP_200 : ActivationService
     {

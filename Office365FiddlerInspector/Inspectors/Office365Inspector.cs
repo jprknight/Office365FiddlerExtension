@@ -2,14 +2,13 @@
 using Fiddler;
 using System;
 using System.Threading.Tasks;
-using Office365FiddlerInspector.Services;
+using Office365FiddlerExtension.Services;
 using System.Text;
-using O365FiddlerInspector.UI;
-using Office365FiddlerInspector.UI;
+using Office365FiddlerExtension.UI;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace Office365FiddlerInspector.Inspectors
+namespace Office365FiddlerExtension.Inspectors
 {
     /// <summary>
     /// Base class, generic inspector

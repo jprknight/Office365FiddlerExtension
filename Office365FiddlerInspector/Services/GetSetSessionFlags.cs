@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Fiddler;
 using Microsoft.AspNetCore.Http.Authentication;
 using Newtonsoft.Json;
-using Office365FiddlerInspector.Ruleset;
-using static Office365FiddlerInspector.Ruleset.BroadLogicChecks;
+using Office365FiddlerExtension.Ruleset;
+using static Office365FiddlerExtension.Ruleset.BroadLogicChecks;
 
-namespace Office365FiddlerInspector.Services
+namespace Office365FiddlerExtension.Services
 {
     // The name SessionFlags is already taken by Fiddler, changed to resolve abiquity.
     class GetSetSessionFlags : ActivationService

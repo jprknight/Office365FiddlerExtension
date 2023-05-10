@@ -1,7 +1,7 @@
 ﻿using Fiddler;
 using FiddlerCore.Utilities.SmartAssembly.Attributes;
 using Microsoft.CSharp;
-using Office365FiddlerInspector.Properties;
+using Office365FiddlerExtension.Properties;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Office365FiddlerInspector.Services
+namespace Office365FiddlerExtension.Services
 {
     class RuleSetProcessor : ActivationService
     {   
@@ -130,8 +130,8 @@ namespace Office365FiddlerInspector.Services
         }
 
 
-        private static readonly Lazy<RulesetSingleton> _instance = new Lazy<RulesetSingleton>(() => new RulesetSingleton());
-        public static RulesetSingleton Ruleset => _instance.Value;
+        //private static readonly Lazy<RulesetSingleton> _instance = new Lazy<RulesetSingleton>(() => new RulesetSingleton());
+        //public static RulesetSingleton Ruleset => _instance.Value;
         
         static async Task Main(string[] args)
         {
@@ -155,7 +155,7 @@ namespace Office365FiddlerInspector.Services
                 }
             }*/
             
-
+            /*
             // Example of how to programatically create rules and serialize into json:
             var sampleJson = CreateSampleRules();
             Console.WriteLine($"Sample json:{Environment.NewLine}{sampleJson}");
@@ -167,8 +167,9 @@ namespace Office365FiddlerInspector.Services
             Console.WriteLine("Updating rules from GitHub...");
             await Ruleset.UpdateRulesAsync();
             Console.WriteLine($"Updated ruleset contains {Ruleset.Rules.Count} rules.");
+            */
         }
-    
+    /*
         static string CreateSampleRules()
         {
             var Ruleset = new Dictionary<string, Rule>();
@@ -306,5 +307,6 @@ namespace Office365FiddlerInspector.Services
             public string RuleResult { get; set; }
             public RuleAction RuleAction { get; set; }
         }
+    */
     }
 }

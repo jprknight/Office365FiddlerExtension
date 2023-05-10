@@ -5,7 +5,7 @@ using System.Management;
 using System.Text;
 using Fiddler;
 
-namespace Office365FiddlerInspector.Services
+namespace Office365FiddlerExtension.Services
 {
     public partial class TelemetryService
     {

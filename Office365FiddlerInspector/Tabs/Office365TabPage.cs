@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Fiddler;
-using Office365FiddlerInspector.Services;
+using Office365FiddlerExtension.Services;
 using Office365FiddlerInspector.UI;
 
-namespace Office365FiddlerInspector
+namespace Office365FiddlerExtension
 { 
     public class Office365FiddlerExtensionTabPage : IFiddlerExtension
     {

@@ -1,12 +1,12 @@
 ﻿using Fiddler;
 using System.Windows.Forms;
-using Office365FiddlerInspector.UI;
-using O365FiddlerInspector.UI;
+using Office365FiddlerExtension.UI;
+//using O365FiddlerInspector.UI;
 using System.Text;
 using System;
 using System.Reflection;
 
-namespace Office365FiddlerInspector.Services
+namespace Office365FiddlerExtension.Services
 {
     /// <summary>
     /// Global application initializer.

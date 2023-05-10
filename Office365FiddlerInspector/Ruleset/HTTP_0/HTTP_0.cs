@@ -1,7 +1,7 @@
-﻿using Office365FiddlerInspector.Services;
+﻿using Office365FiddlerExtension.Services;
 using Fiddler;
 
-namespace Office365FiddlerInspector.Ruleset
+namespace Office365FiddlerExtension.Ruleset
 {
     class HTTP_0 : ActivationService
     {
