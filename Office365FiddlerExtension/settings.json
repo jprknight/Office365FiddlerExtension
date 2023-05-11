@@ -1,0 +1,8 @@
+{
+  "UpdateURL": "https://aka.ms/Office365FiddlerExtensionUpdateCheckUrl",
+  "InstallerURL": "https://aka.ms/O365FiddlerExtensionUpdateUrl",
+  "WikiURL": "https://aka.ms/O365FiddlerExtensionWiki",
+  "ReportIssuesURL": "https://aka.ms/O365FiddlerExtensionIssues",
+  "BetaRuleSetURL": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/RulesetVersion",
+  "MasterRuleSetURL": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Master/RulesetVersion"
+}
