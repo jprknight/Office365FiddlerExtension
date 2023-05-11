@@ -24,6 +24,7 @@
 #                                       Consolidated reused code.
 #   v1.3    Jeremy Knight   11/14/2022  Manually set deployment folder.
 #                                       Complete message.
+#   v1.4    Jeremy Knight   5/11/2023   Amendment for output files update.
 # 
 Function Download { 
     # Only download a new zip file if it doesn't already exist.
@@ -217,7 +218,10 @@ Function SetGlobals {
     'Microsoft.ApplicationInsights.xml',
     'EXOFiddlerInspector.dll',
     'EXOFiddlerInspector.dll.config',
-    'EXOFiddlerInspector.pdb')
+    'EXOFiddlerInspector.pdb',    
+    'Office365FiddlerExtension.dll',
+    'Office365FiddlerExtension.dll.config',
+    'Office365FiddlerExtension.pdb')
 
     $Script:DownloadPath = "$($env:UserProfile)\Downloads\"
     $Script:ZipFileName = "Office365FiddlerExtension.zip"

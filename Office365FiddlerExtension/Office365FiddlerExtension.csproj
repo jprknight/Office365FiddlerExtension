@@ -295,10 +295,10 @@
     <Compile Include="Ruleset\SelectivelyRun\SetLongRunningSessions.cs" />
     <Compile Include="Ruleset\SelectivelyRun\SetResponseServer.cs" />
     <Compile Include="Ruleset\SelectivelyRun\SetSessionType.cs" />
-    <Compile Include="Services\ExtensionURLProcessor.cs" />
     <Compile Include="Services\RuleSetProcessor.cs" />
     <Compile Include="Services\GetSetSessionFlags.cs" />
     <Compile Include="Services\SessionFlagProcessor.cs" />
+    <Compile Include="Services\SettingsProcessor.cs" />
     <Compile Include="Tabs\Office365TabPage.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="About.cs" />
@@ -361,6 +361,7 @@
     <None Include="RulesetJson\AlwaysRun\ServerThinkTimeTransitTime.json" />
     <None Include="RulesetJson\HTTP_0\HTTP_0.json" />
     <None Include="RulesetJson\Ruleset.json" />
+    <None Include="settings.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="RulesetJson\RulesetStructure.txt" />

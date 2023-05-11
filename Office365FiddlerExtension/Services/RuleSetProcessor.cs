@@ -1,6 +1,7 @@
 ﻿using Fiddler;
 using FiddlerCore.Utilities.SmartAssembly.Attributes;
 using Microsoft.CSharp;
+using Microsoft.Win32;
 using Office365FiddlerExtension.Properties;
 using System;
 using System.CodeDom.Compiler;
@@ -76,8 +77,9 @@ namespace Office365FiddlerExtension.Services
                         // jsonString has something in it. See if the version value on Github is newer than what we have stored locally.
                         else
                         {
+                            // REVIEW THIS
                             // There's a newer ruleset published the the Github repo.
-                            if (int.Parse(jsonString) >= int.Parse(Properties.Settings.Default.LocalMasterRulesetLastUpdated))
+                            /*if (int.Parse(jsonString) >= int.Parse(Properties.Settings.Default.LocalMasterRulesetLastUpdated))
                             {
                                 GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Local ruleset is behind Github ruleset.");
 
@@ -91,7 +93,7 @@ namespace Office365FiddlerExtension.Services
                             {
                                 GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Local ruleset is up to date with Github ruleset.");
                                 return;
-                            }
+                            }*/
 
                         }
                     }

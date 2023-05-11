@@ -249,7 +249,7 @@ namespace Office365FiddlerExtension.Inspectors
                 SessionFlagProcessor sessionFlagProcessor = new SessionFlagProcessor();
 
                 var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(this.session["Microsoft365FiddlerExtensionJson"]);
-
+                
                 var dictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(this.session["Microsoft365FiddlerExtensionJson"]);
 
                 foreach (var item in dictionary)

@@ -132,23 +132,26 @@ namespace Office365FiddlerExtension.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://aka.ms/Office365FiddlerExtensionRawContent")]
-        public string PrimaryExtensionJsonFileURL {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string _SettingsJson {
             get {
-                return ((string)(this["PrimaryExtensionJsonFileURL"]));
+                return ((string)(this["_SettingsJson"]));
+            }
+            set {
+                this["_SettingsJson"] = value;
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension")]
-        public string SecondaryExtensionJsonFileURL {
+        public global::System.DateTime _SettingsJsonLastUpdated {
             get {
-                return ((string)(this["SecondaryExtensionJsonFileURL"]));
+                return ((global::System.DateTime)(this["_SettingsJsonLastUpdated"]));
+            }
+            set {
+                this["_SettingsJsonLastUpdated"] = value;
             }
         }
     }
