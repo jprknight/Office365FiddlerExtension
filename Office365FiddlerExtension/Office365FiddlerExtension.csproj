@@ -359,9 +359,11 @@
     <None Include="RulesetJson\AlwaysRun\CalculateSessionAge.json" />
     <None Include="RulesetJson\AlwaysRun\SessionElapsedTime.json" />
     <None Include="RulesetJson\AlwaysRun\ServerThinkTimeTransitTime.json" />
+    <None Include="RulesetJson\HTTP_0\HTTP_0.json" />
     <None Include="RulesetJson\Ruleset.json" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="RulesetJson\RulesetStructure.txt" />
     <Content Include="update.xml" />
   </ItemGroup>
   <ItemGroup>
