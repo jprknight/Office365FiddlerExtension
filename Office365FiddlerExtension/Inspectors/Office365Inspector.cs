@@ -298,7 +298,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("Session Captured");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(getSetSessionFlags.GetXDataCollected(this.session));
+                ResultsString.AppendLine(ExtensionSessionFlags.DateDataCollected);
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 

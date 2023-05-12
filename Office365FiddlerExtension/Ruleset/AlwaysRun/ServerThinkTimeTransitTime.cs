@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
+using Newtonsoft.Json;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -13,6 +14,8 @@ namespace Office365FiddlerExtension.Ruleset
         private static ServerThinkTimeTransitTime _instance;
 
         public static ServerThinkTimeTransitTime Instance => _instance ?? (_instance = new ServerThinkTimeTransitTime());
+
+        SessionFlagProcessor sessionFlagProcessor = new SessionFlagProcessor();
 
         // Set Server Think Time and Transit Time for Inspector.
         public void SetServerThinkTimeTransitTime(Session session)
@@ -53,64 +56,142 @@ namespace Office365FiddlerExtension.Ruleset
                     // Highlight server think time in green.
                     if (ServerMilliseconds < 1000)
                     {
-                        GetSetSessionFlags.Instance.SetXServerThinkTime(this.session, $"<b><span style='color:green'>{ServerMilliseconds}ms.</span></b>");
+                        var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                        {
+                            ServerThinkTime = $"<b><span style='color:green'>{ServerMilliseconds}ms.</span></b>"
+                        };
+
+                        var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                        sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                     else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
                     {
-                        GetSetSessionFlags.Instance.SetXServerThinkTime(this.session, $"<b><span style='color:green'>{ServerSeconds} second ({ServerMilliseconds}ms).</span></b>");
+                        var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                        {
+                            ServerThinkTime = $"<b><span style='color:green'>{ServerSeconds} second ({ServerMilliseconds}ms).</span></b>"
+                        };
+
+                        var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                        sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                     else
                     {
-                        GetSetSessionFlags.Instance.SetXServerThinkTime(this.session, $"<b><span style='color:green'>{ServerSeconds} seconds ({ServerMilliseconds}ms).</span></b>");
+                        var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                        {
+                            ServerThinkTime = $"<b><span style='color:green'>{ServerSeconds} seconds ({ServerMilliseconds}ms).</span></b>"
+                        };
+
+                        var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                        sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
 
                     // Highlight transit time in red.
                     if (dTransitTimeMilliseconds < 1000)
                     {
-                        GetSetSessionFlags.Instance.SetXTransitTime(this.session, $"<b><span style='color:red'>{dTransitTimeMilliseconds}ms.</span></b>");
+                        var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                        {
+                            TransitTime = $"<b><span style='color:red'>{dTransitTimeMilliseconds}ms.</span></b>"
+                        };
+
+                        var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                        sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                     else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
                     {
-                        GetSetSessionFlags.Instance.SetXTransitTime(this.session, $"<b><span style='color:red'>{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms).</span></b>");
+                        var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                        {
+                            TransitTime = $"<b><span style='color:red'>{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms).</span></b>"
+                        };
+
+                        var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                        sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                     else
                     {
-                        GetSetSessionFlags.Instance.SetXTransitTime(this.session, $"<b><span style='color:red'>{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms).</span></b>");
+                        var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                        {
+                            TransitTime = $"<b><span style='color:red'>{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms).</span></b>"
+                        };
+
+                        var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                        sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                 }
                 else
                 {
                     if (ServerMilliseconds < 1000)
                     {
-                        GetSetSessionFlags.Instance.SetXServerThinkTime(this.session, $"{ServerMilliseconds}ms");
+                        var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                        {
+                            ServerThinkTime = $"{ServerMilliseconds}ms"
+                        };
+
+                        var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                        sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                     else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
                     {
-                        GetSetSessionFlags.Instance.SetXServerThinkTime(this.session, $"{ServerSeconds} second ({ServerMilliseconds}ms).");
+                        var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                        {
+                            ServerThinkTime = $"{ServerSeconds} second ({ServerMilliseconds}ms)."
+                        };
+
+                        var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                        sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                     else
                     {
-                        GetSetSessionFlags.Instance.SetXServerThinkTime(this.session, $"{ServerSeconds} seconds ({ServerMilliseconds}ms).");
+                        var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                        {
+                            ServerThinkTime = $"{ServerSeconds} seconds ({ServerMilliseconds}ms)."
+                        };
+
+                        var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                        sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
 
                     if (dTransitTimeMilliseconds < 1000)
                     {
-                        GetSetSessionFlags.Instance.SetXTransitTime(this.session, $"{dTransitTimeMilliseconds}ms");
+                        var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                        {
+                            TransitTime = $"{dTransitTimeMilliseconds}ms"
+                        };
+
+                        var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                        sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                     else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
                     {
-                        GetSetSessionFlags.Instance.SetXTransitTime(this.session, $"{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms).");
+                        var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                        {
+                            TransitTime = $"{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms)."
+                        };
+
+                        var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                        sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                     else
                     {
-                        GetSetSessionFlags.Instance.SetXTransitTime(this.session, $"{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms).");
+                        var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                        {
+                            TransitTime = $"{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms)."
+                        };
+
+                        var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                        sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                 }
             }
             else
             {
-                GetSetSessionFlags.Instance.SetXServerThinkTime(this.session, "Insufficient data");
-                GetSetSessionFlags.Instance.SetXTransitTime(this.session, "Insufficient data");
+                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                {
+                    ServerThinkTime = "Insufficient data",
+                    TransitTime = "Insufficient data"
+                };
+
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
     }

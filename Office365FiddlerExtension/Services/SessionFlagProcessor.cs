@@ -21,34 +21,112 @@ namespace Office365FiddlerExtension.Services
         {
             this.session = session;
 
+            var JsonSettings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
             // pull Json for any session flags already set.
             var existingSessionFlags = this.session["Microsoft365FiddlerExtensionJson"];
-            var existingSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(existingSessionFlags);
+            var existingSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(existingSessionFlags, JsonSettings);
 
             // Pull Json for new session flags passed into function.
-            var newSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(Json);
+            var updatedSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(Json, JsonSettings);
 
             // Add the new SectionTitle to any existing value.
-            newSessionFlagsJson.SectionTitle += existingSessionFlagsJson.SectionTitle;
+            string SectionTitle = existingSessionFlagsJson.SectionTitle + " " + updatedSessionFlagsJson.SectionTitle;
+            updatedSessionFlagsJson.SectionTitle = SectionTitle;
 
-            // Replace all other values with new values.
-            newSessionFlagsJson.UIBackColour = existingSessionFlagsJson.UIBackColour;
-            newSessionFlagsJson.UITextColour = existingSessionFlagsJson.UITextColour;
+            // Replace all other values with new values as long as we don't pass in a null value.
             
-            newSessionFlagsJson.SessionType = existingSessionFlagsJson.SessionType;
+            // UIBackColour
+            if (updatedSessionFlagsJson.UIBackColour == null)
+            {
+                updatedSessionFlagsJson.UIBackColour = existingSessionFlagsJson.UIBackColour;
+            }
             
-            newSessionFlagsJson.ResponseCodeDescription = existingSessionFlagsJson.ResponseCodeDescription;
-            newSessionFlagsJson.ResponseServer = existingSessionFlagsJson.ResponseServer;
-            newSessionFlagsJson.ResponseAlert = existingSessionFlagsJson.ResponseAlert;
-            newSessionFlagsJson.ResponseComments = existingSessionFlagsJson.ResponseComments;
+            // UITextColour
+            if (updatedSessionFlagsJson.UITextColour == null)
+            {
+                updatedSessionFlagsJson.UITextColour = existingSessionFlagsJson.UITextColour;
+            }
+            
+            // Session Type
+            if (updatedSessionFlagsJson.SessionType == null)
+            {
+                updatedSessionFlagsJson.SessionType = existingSessionFlagsJson.SessionType;
+            }
+            
+            // Response Code Description
+            if (updatedSessionFlagsJson.ResponseCodeDescription == null)
+            {
+                updatedSessionFlagsJson.ResponseCodeDescription = existingSessionFlagsJson.ResponseCodeDescription;
+            }
+            
+            // Response Server
+            if (updatedSessionFlagsJson.ResponseServer == null)
+            {
+                updatedSessionFlagsJson.ResponseServer = existingSessionFlagsJson.ResponseServer;
+            }
+            
+            // Response Alert
+            if (updatedSessionFlagsJson.ResponseAlert == null)
+            {
+                updatedSessionFlagsJson.ResponseAlert = existingSessionFlagsJson.ResponseAlert;
+            }
+            
+            // Response Comments
+            if (updatedSessionFlagsJson.ResponseComments == null)
+            {
+                updatedSessionFlagsJson.ResponseComments = existingSessionFlagsJson.ResponseComments;
+            }
 
-            newSessionFlagsJson.Authentication = existingSessionFlagsJson.Authentication;
+            // Data Age
+            if (updatedSessionFlagsJson.DataAge == null)
+            {
+                updatedSessionFlagsJson.DataAge = existingSessionFlagsJson.DataAge;
+            }
+            
+            // Calculated Session Age
+            if (updatedSessionFlagsJson.CalculatedSessionAge == null)
+            {
+                updatedSessionFlagsJson.CalculatedSessionAge = existingSessionFlagsJson.CalculatedSessionAge;
+            }
+            
+            // Date Data Collected
+            if (updatedSessionFlagsJson.DateDataCollected == null)
+            {
+                updatedSessionFlagsJson.DateDataCollected = existingSessionFlagsJson.DateDataCollected;
+            }
 
-            newSessionFlagsJson.SessionAuthenticationConfidenceLevel = existingSessionFlagsJson.SessionAuthenticationConfidenceLevel;
-            newSessionFlagsJson.SessionResponseServerConfidenceLevel = existingSessionFlagsJson.SessionResponseServerConfidenceLevel;
-            newSessionFlagsJson.SessionTypeConfidenceLevel = existingSessionFlagsJson.SessionTypeConfidenceLevel;
+            // Server Think Time
+            if (updatedSessionFlagsJson.ServerThinkTime == null)
+            {
+                updatedSessionFlagsJson.ServerThinkTime = existingSessionFlagsJson.ServerThinkTime;
+            }
 
-            var newJson = JsonConvert.SerializeObject(newSessionFlagsJson, Formatting.Indented);
+            // Transit Time
+            if (updatedSessionFlagsJson.TransitTime == null)
+            {
+                updatedSessionFlagsJson.TransitTime = existingSessionFlagsJson.TransitTime;
+            }
+
+            // Authentication
+            if (updatedSessionFlagsJson.Authentication == null)
+            {
+                updatedSessionFlagsJson.Authentication = existingSessionFlagsJson.Authentication;
+            }
+
+            // Session Confidence Levels
+            // REVIEW THIS. These are ints, so they'll never be null. Does it make sense here to check updated value is greater than
+            // existing value and only update if that's the case?
+            // For now just updating these with passed values as these should always be set on logic from the ruleset.
+            updatedSessionFlagsJson.SessionAuthenticationConfidenceLevel = existingSessionFlagsJson.SessionAuthenticationConfidenceLevel;
+            updatedSessionFlagsJson.SessionResponseServerConfidenceLevel = existingSessionFlagsJson.SessionResponseServerConfidenceLevel;
+            updatedSessionFlagsJson.SessionTypeConfidenceLevel = existingSessionFlagsJson.SessionTypeConfidenceLevel;
+
+            var newJson = JsonConvert.SerializeObject(updatedSessionFlagsJson, Formatting.Indented);
 
             // Save the new Json to the session flag.
             this.session["Microsoft365FiddlerExtensionJson"] = newJson;           
@@ -71,6 +149,18 @@ namespace Office365FiddlerExtension.Services
             public string ResponseAlert { get; set; }
 
             public string ResponseComments { get; set; }
+
+            public string DataAge { get; set; }
+
+            public string CalculatedSessionAge { get; set; }
+
+            public string DateDataCollected { get; set; }
+
+            public string SessionTimersDescription { get; set; }
+
+            public string ServerThinkTime { get; set; }
+
+            public string TransitTime { get; set; }
 
             public string Authentication { get; set; }
 

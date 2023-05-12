@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
+using Newtonsoft.Json;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -13,6 +14,8 @@ namespace Office365FiddlerExtension.Ruleset
         private static CalculateSessionAge _instance;
 
         public static CalculateSessionAge Instance => _instance ?? (_instance = new CalculateSessionAge());
+
+        SessionFlagProcessor sessionFlagProcessor = new SessionFlagProcessor();
 
         // Calculate session age on Inspector.
         public void SessionAge(Session session)
@@ -61,34 +64,60 @@ namespace Office365FiddlerExtension.Ruleset
 
             String DataAge = TimeSpanDaysText + TimeSpanHoursText + TimeSpanMinutesText;
 
-            GetSetSessionFlags.Instance.SetXDateDataCollected(this.session, SessionDateTime.ToString("dddd, MMMM dd, yyyy h:mm tt"));
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                DateDataCollected = SessionDateTime.ToString("dddd, MMMM dd, yyyy h:mm tt")
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
 
             if (TimeSpanDays <= 7)
             {
-                GetSetSessionFlags.Instance.SetXDataAge(this.session, $"<b><span style='color:green'>{DataAge}</span></b>");
+                sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                {
+                    DataAge = $"<b><span style='color:green'>{DataAge}</span></b>",
+                    CalculatedSessionAge = "<p>Session collected within 7 days, data freshness is good. Best case scenario for correlating this data to backend server logs.</p>"
+                };
 
-                GetSetSessionFlags.Instance.SetXCalculatedSessionAge(this.session, "<p>Session collected within 7 days, data freshness is good. Best case scenario for correlating this data to backend server logs.</p>");
+                sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             else if (TimeSpanDays > 7 && TimeSpanDays < 14)
             {
-                GetSetSessionFlags.Instance.SetXDataAge(this.session, $"<b><span style='color:orange'>{DataAge}</span></b>");
+                sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                {
+                    DataAge = $"<b><span style='color:orange'>{DataAge}</span></b>",
+                    CalculatedSessionAge = "<p>Session collected within 14 days, data freshness is good, <b><span style='color:orange'>but not ideal</span></b>. "
+                    + "Depending on the backend system, <b><span style='color:orange'>correlating this data to server logs might be possible</span></b>.</p>"
+                };
 
-                GetSetSessionFlags.Instance.SetXCalculatedSessionAge(this.session, "<p>Session collected within 14 days, data freshness is good, <b><span style='color:orange'>but not ideal</span></b>. "
-                    + "Depending on the backend system, <b><span style='color:orange'>correlating this data to server logs might be possible</span></b>.</p>");
+                sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             else if (TimeSpanDays >= 14 && TimeSpanDays < 30)
             {
-                GetSetSessionFlags.Instance.SetXDataAge(this.session, $"<b><span style='color:orange'>{DataAge}</span></b>");
+                sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                {
+                    DataAge = $"<b><span style='color:orange'>{DataAge}</span></b>",
+                    CalculatedSessionAge = "<p><b><span style='color:red'>Session collected between 14 and 30 days ago</span></b>. "
+                    + "Correlating with any backend server logs is <b><span style='color:red'>likely impossible</span></b>. Many systems don't keep logs this long.</p>"
+                };
 
-                GetSetSessionFlags.Instance.SetXCalculatedSessionAge(this.session, "<p><b><span style='color:red'>Session collected between 14 and 30 days ago</span></b>. "
-                    + "Correlating with any backend server logs is <b><span style='color:red'>likely impossible</span></b>. Many systems don't keep logs this long.</p>");
+                sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             else
             {
-                GetSetSessionFlags.Instance.SetXDataAge(this.session, $"<b><span style='color:red'>{DataAge}</span></b>");
+                sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                {
+                    DataAge = $"<b><span style='color:red'>{DataAge}</span></b>",
+                    CalculatedSessionAge = "<p><b><span style='color:red'>Session collected more than 30 days ago</span></b>. "
+                    + "Correlating with any backend server logs is <b><span style='color:red'>very likely impossible</span></b>. Many systems don't keep logs this long.</p>"
+                };
 
-                GetSetSessionFlags.Instance.SetXCalculatedSessionAge(this.session, "<p><b><span style='color:red'>Session collected more than 30 days ago</span></b>. "
-                    + "Correlating with any backend server logs is <b><span style='color:red'>very likely impossible</span></b>. Many systems don't keep logs this long.</p>");
+                sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
     }
