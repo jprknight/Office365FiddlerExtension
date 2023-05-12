@@ -38,9 +38,9 @@ namespace Office365FiddlerExtension.Ruleset
                     SessionTypeConfidenceLevel = 10,
                     SessionResponseServerConfidenceLevel = 10
                 };
-                    
+                
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                sessionFlagProcessor.SetExtensionSessionFlagJson(this.session, sessionFlagsJson);
+                sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
 
@@ -122,7 +122,7 @@ namespace Office365FiddlerExtension.Ruleset
                         };
 
                         var sessionFlagsJson403 = JsonConvert.SerializeObject(sessionFlags403);
-                        sessionFlagProcessor.SetExtensionSessionFlagJson(this.session, sessionFlagsJson403);
+                        sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson403);
                         break;
                     case 200:
                         var sessionFlags200 = new SessionFlagProcessor.ExtensionSessionFlags()
@@ -145,7 +145,7 @@ namespace Office365FiddlerExtension.Ruleset
                         };
 
                         var sessionFlagsJson200 = JsonConvert.SerializeObject(sessionFlags200);
-                        sessionFlagProcessor.SetExtensionSessionFlagJson(this.session, sessionFlagsJson200);
+                        sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson200);
                         break;
                 }
             }
@@ -186,7 +186,7 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                sessionFlagProcessor.SetExtensionSessionFlagJson(this.session, sessionFlagsJson);
+                sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
     }

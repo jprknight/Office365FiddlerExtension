@@ -106,7 +106,7 @@ namespace Office365FiddlerExtension.Services
             #endregion
         }
 
-        public async void DiscoverBroadLogicChecks()
+        public async void UpdateAlwaysRunRules()
         {
 
         }
