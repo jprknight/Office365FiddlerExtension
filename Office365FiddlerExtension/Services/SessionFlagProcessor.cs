@@ -10,29 +10,40 @@ namespace Office365FiddlerExtension.Services
 {
     class SessionFlagProcessor : ActivationService
     {
+        /*
         public void SetExtensionSessionFlagJson(Session session, String Json)
         {
             this.session = session;
             this.session["Microsoft365FiddlerExtensionJson"] = Json;
-        }
+        }*/
+
+        private static SessionFlagProcessor _instance;
+        public static SessionFlagProcessor Instance => _instance ?? (_instance = new SessionFlagProcessor());
 
         // Take any updates to session flags and save them into the session Json.
-        public void UpdateSessionFlagJson(Session session, String Json)
+        public void UpdateSessionFlagJson(Session session, String JsonData)
         {
             this.session = session;
-
+            /*
             var JsonSettings = new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
                 MissingMemberHandling = MissingMemberHandling.Ignore
-            };
+            };*/
+
+            // Make sure all session flags have something to start out with, even if all values are null.
+            var existingSessionFlags = "{\"SectionTitle\":null,\"UIBackColour\":null,\"UITextColour\":null,\"SessionType\":null,\"ResponseCodeDescription\":null,\"ResponseServer\":null,\"ResponseAlert\":null,\"ResponseComments\":null,\"Authentication\":null,\"SessionAuthenticationConfidenceLevel\":0,\"SessionTypeConfidenceLevel\":0,\"SessionResponseServerConfidenceLevel\":0}";
+            var existingSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(existingSessionFlags);
 
             // pull Json for any session flags already set.
-            var existingSessionFlags = this.session["Microsoft365FiddlerExtensionJson"];
-            var existingSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(existingSessionFlags, JsonSettings);
+            if (this.session["Microsoft365FiddlerExtensionJson"] != null)
+            {
+                existingSessionFlags = this.session["Microsoft365FiddlerExtensionJson"];
+                existingSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(existingSessionFlags);
+            }
 
             // Pull Json for new session flags passed into function.
-            var updatedSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(Json, JsonSettings);
+            var updatedSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(JsonData);
 
             // Add the new SectionTitle to any existing value.
             string SectionTitle = existingSessionFlagsJson.SectionTitle + " " + updatedSessionFlagsJson.SectionTitle;
@@ -126,10 +137,10 @@ namespace Office365FiddlerExtension.Services
             updatedSessionFlagsJson.SessionResponseServerConfidenceLevel = existingSessionFlagsJson.SessionResponseServerConfidenceLevel;
             updatedSessionFlagsJson.SessionTypeConfidenceLevel = existingSessionFlagsJson.SessionTypeConfidenceLevel;
 
-            var newJson = JsonConvert.SerializeObject(updatedSessionFlagsJson, Formatting.Indented);
+            var newJsonData = JsonConvert.SerializeObject(updatedSessionFlagsJson, Formatting.Indented);
 
             // Save the new Json to the session flag.
-            this.session["Microsoft365FiddlerExtensionJson"] = newJson;           
+            this.session["Microsoft365FiddlerExtensionJson"] = newJsonData;           
         }
 
         public class ExtensionSessionFlags
