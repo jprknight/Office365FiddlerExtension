@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
+using Newtonsoft.Json;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -16,51 +17,65 @@ namespace Office365FiddlerExtension.Ruleset
 
         public void HTTP_200_ClientAccessRule(Session session)
         {
+            // Connection blocked by Client Access Rules.
+
             this.session = session;
 
-            /////////////////////////////
-            //
-            // 200.1. Connection blocked by Client Access Rules.
-            // 
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200.1 Connection blocked by Client Access Rules.");
 
-            if (this.session.fullUrl.Contains("outlook.office365.com/mapi")
-                && this.session.utilFindInResponse("Connection blocked by Client Access Rules", false) > 1)
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
+            // If this session has already been classified with a confidence of 10. Return.
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200.1 Connection blocked by Client Access Rules.");
-
-                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
-                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
-
-                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK");
-
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "!CLIENT ACCESS RULE!");
-
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:red'>CLIENT ACCESS RULE</span></b>");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "<b><span style='color:red'>A client access rule has blocked MAPI connectivity to the mailbox</span></b>. "
-                    + "<p>Check if the <b><span style='color:red'>client access rule includes OutlookAnywhere</span></b>.</p>"
-                    + "<p>Per <a href='https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules' target='_blank'>"
-                    + "https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules </a>, <br />"
-                    + "OutlookAnywhere includes MAPI over HTTP.<p>"
-                    + "<p>Remove OutlookAnywhere from the client access rule, wait 1 hour, then test again.</p>");
-
-                // Set confidence level for Session Authentication, Session Type, and Session Response Server.
-                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
-                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                return;
             }
+
+            // If the session content doesn't match the intended rule, return.
+            if (!this.session.fullUrl.Contains("outlook.office365.com/mapi") &&
+                (!(this.session.utilFindInResponse("Connection blocked by Client Access Rules", false) > 1)))
+            {
+            return;
+            }
+
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_200s",
+                UIBackColour = "Red",
+                UITextColour = "Black",
+
+                SessionType = "!CLIENT ACCESS RULE!",
+                ResponseCodeDescription = "200 OK",
+                ResponseAlert = "<b><span style='color:red'>CLIENT ACCESS RULE</span></b>",
+                ResponseComments = "<b><span style='color:red'>A client access rule has blocked MAPI connectivity to the mailbox</span></b>. "
+                + "<p>Check if the <b><span style='color:red'>client access rule includes OutlookAnywhere</span></b>.</p>"
+                + "<p>Per <a href='https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules' target='_blank'>"
+                + "https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules </a>, <br />"
+                + "OutlookAnywhere includes MAPI over HTTP.<p>"
+                + "<p>Remove OutlookAnywhere from the client access rule, wait 1 hour, then test again.</p>",
+
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
+                SessionResponseServerConfidenceLevel = 5
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            
         }
 
         public void HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled(Session session)
         {
-            /////////////////////////////
-            //
-            // 200.2. Outlook MAPI traffic.
-            //
+            // Microsoft365 Outlook MAPI traffic, protocol disabled.
 
-            // Microsoft365 MAPI traffic, protocol disabled.
+            this.session = session;
+
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 Store Error Protocol Disabled.");
+
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
 
             // If this session has already been classified with a confidence of 10. Return.
-            if (GetSetSessionFlags.Instance.GetSessionTypeConfidenceLevel(this.session) == 10)
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
             {
                 return;
             }
@@ -77,44 +92,37 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            /////////////////////////////
-            //
-            // Protocol Disabled.
-            //
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_200s",
+                UIBackColour = "Red",
+                UITextColour = "Black",
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Store Error Protocol Disabled.");
+                SessionType = "***PROTOCOL DISABLED***",
+                ResponseCodeDescription = "200 OK - <b><span style='color:red'>PROTOCOL DISABLED</span></b>",
+                ResponseAlert = "<b><span style='color:red'>Store Error Protocol Disabled</span></b>",
+                ResponseComments = "<b><span style='color:red'>Store Error Protocol disabled found in response body.</span></b>"
+                + "Expect user to <b>NOT be able to connect using connecting client application.</b>.",
 
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+                SessionAuthenticationConfidenceLevel = 10,
+                SessionTypeConfidenceLevel = 10,
+                SessionResponseServerConfidenceLevel = 10
+            };
 
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK - <b><span style='color:red'>PROTOCOL DISABLED</span></b>");
-
-            GetSetSessionFlags.Instance.SetSessionType(this.session, "***PROTOCOL DISABLED***");
-
-            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:red'>Store Error Protocol Disabled</span></b>");
-            GetSetSessionFlags.Instance.SetXResponseComments(this.session, "<b><span style='color:red'>Store Error Protocol disabled found in response body.</span></b>"
-                + "Expect user to <b>NOT be able to connect using connecting client application.</b>.");
-
-            // Absolute certainly we don't want to do anything further with this session.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "10");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "10");
-
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi(Session session)
         {
             this.session = session;
 
-            /////////////////////////////
-            //
-            // 200.2. Outlook MAPI traffic.
-            //
-
             // Microsoft 365 normal working MAPI traffic.
 
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
             // If this session has already been classified with a confidence of 10. Return.
-            if (GetSetSessionFlags.Instance.GetSessionTypeConfidenceLevel(this.session) == 10)
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
             {
                 return;
             }
@@ -125,21 +133,26 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 Outlook Exchange Online / Microsoft365 MAPI traffic.");
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtention: {this.session.id} HTTP 200 Outlook Exchange Online / Microsoft365 MAPI traffic.");
 
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Green");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_200s",
+                UIBackColour = "Green",
+                UITextColour = "Black",
 
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK");
+                SessionType = "Outlook M365 MAPI",
+                ResponseCodeDescription = "200 OK",
+                ResponseAlert = "Outlook for Windows M365 MAPI traffic",
+                ResponseComments = "This is normal Outlook MAPI over HTTP traffic to an Exchange Online / Microsoft365 mailbox.",
 
-            GetSetSessionFlags.Instance.SetSessionType(this.session, "Outlook M365 MAPI");
-            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "Outlook for Windows M365 MAPI traffic");
-            GetSetSessionFlags.Instance.SetXResponseComments(this.session, "This is normal Outlook MAPI over HTTP traffic to an Exchange Online / Microsoft365 mailbox.");
+                SessionAuthenticationConfidenceLevel = 10,
+                SessionTypeConfidenceLevel = 10,
+                SessionResponseServerConfidenceLevel = 10
+            };
 
-            // Possible something more to be found, let further processing try to pick up something.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void HTTP_200_Outlook_Exchange_OnPremise_Mapi(Session session)
@@ -147,8 +160,10 @@ namespace Office365FiddlerExtension.Ruleset
             // Exchange On-Premise mailbox.
             this.session = session;
 
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
             // If this session has already been classified with a confidence of 10. Return.
-            if (GetSetSessionFlags.Instance.GetSessionTypeConfidenceLevel(this.session) == 10)
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
             {
                 return;
             }
@@ -159,29 +174,36 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 Outlook Exchange OnPremise MAPI traffic.");
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtention: {this.session.id} HTTP 200 Outlook Exchange OnPremise MAPI traffic.");
 
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Green");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_200s",
+                UIBackColour = "Green",
+                UITextColour = "Black",
 
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK");
+                SessionType = "Outlook MAPI",
+                ResponseCodeDescription = "200 OK",
+                ResponseAlert = "Outlook for Windows MAPI traffic",
+                ResponseComments = "This is normal Outlook MAPI over HTTP traffic to an Exchange OnPremise mailbox.",
 
-            GetSetSessionFlags.Instance.SetSessionType(this.session, "Outlook MAPI");
-            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "Outlook for Windows MAPI traffic");
-            GetSetSessionFlags.Instance.SetXResponseComments(this.session, "This is normal Outlook MAPI over HTTP traffic to an Exchange OnPremise mailbox.");
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 5,
+                SessionResponseServerConfidenceLevel = 5
+            };
 
-            // Possible something more to be found, let further processing try to pick up something.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "5");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void HTTP_200_Outlook_RPC(Session session)
         {
             this.session = session;
 
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
             // If this session has already been classified with a confidence of 10. Return.
-            if (GetSetSessionFlags.Instance.GetSessionTypeConfidenceLevel(this.session) == 10)
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
             {
                 return;
             }
@@ -192,30 +214,31 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            /////////////////////////////
-            //
-            // 200.3. Outlook RPC traffic.
-            //
+            // Outlook RPC traffic.
 
             // Guessing at this time Outlook's RPC over HTTP looks like this when connected to an Exchange On-Premise mailbox.
             // REVIEW THIS *Need to validate*
             
-            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 Outlook RPC traffic break.");
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtention: {this.session.id} HTTP 200 Outlook RPC traffic break.");
 
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Green");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_200s",
+                UIBackColour = "Green",
+                UITextColour = "Black",
 
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK");
+                SessionType = "Outlook RPC",
+                ResponseCodeDescription = "200 OK",
+                ResponseAlert = "Outlook for Windows RPC traffic",
+                ResponseComments = "This is normal Outlook RPC over HTTP traffic to an Exchange On-Premise mailbox.",
 
-            GetSetSessionFlags.Instance.SetSessionType(this.session, "Outlook RPC");
-            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "Outlook for Windows RPC traffic");
-            GetSetSessionFlags.Instance.SetXResponseComments(this.session, "This is normal Outlook RPC over HTTP traffic to an Exchange On-Premise mailbox.");
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 5,
+                SessionResponseServerConfidenceLevel = 5
+            };
 
-            // Possible something more to be found, let further processing try to pick up something.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "5");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
-            
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);          
         }
 
         public void HTTP_200_Outlook_NSPI(Session session)
@@ -227,8 +250,10 @@ namespace Office365FiddlerExtension.Ruleset
             // 200.4. Outlook Name Service Provider Interface (NSPI) traffic.
             //
 
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
             // If this session has already been classified with a confidence of 10. Return.
-            if (GetSetSessionFlags.Instance.GetSessionTypeConfidenceLevel(this.session) == 10)
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
             {
                 return;
             }
@@ -241,27 +266,34 @@ namespace Office365FiddlerExtension.Ruleset
             
             FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 Outlook NSPI traffic.");
 
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Green");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_200s",
+                UIBackColour = "Green",
+                UITextColour = "Black",
 
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK");
+                SessionType = "Outlook NSPI",
+                ResponseCodeDescription = "200 OK",
+                ResponseAlert = "Outlook for Windows NSPI traffic",
+                ResponseComments = "This is normal Outlook traffic to an Exchange On-Premise mailbox. Name Service Provider Interface (NSPI).",
 
-            GetSetSessionFlags.Instance.SetSessionType(this.session, "Outlook NSPI");
-            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "Outlook for Windows NSPI traffic");
-            GetSetSessionFlags.Instance.SetXResponseComments(this.session, "This is normal Outlook traffic to an Exchange On-Premise mailbox. Name Service Provider Interface (NSPI).");
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
+                SessionResponseServerConfidenceLevel = 5
+            };
 
-            // Possible something more to be found, let further processing try to pick up something.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found(Session session)
         {
             this.session = session;
 
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
             // If this session has already been classified with a confidence of 10. Return.
-            if (GetSetSessionFlags.Instance.GetSessionTypeConfidenceLevel(this.session) == 10)
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
             {
                 return;
             }
@@ -315,23 +347,28 @@ namespace Office365FiddlerExtension.Ruleset
             {
                 FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " Exchange OnPremise Autodiscover redirect to Exchange Online / Microsoft365.");
 
-                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Green");
-                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                {
+                    SectionTitle = "HTTP_200s",
+                    UIBackColour = "Green",
+                    UITextColour = "Black",
 
-                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK");
-
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "On-Prem AutoD Redirect");
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "Exchange On-Premise Autodiscover redirect.");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "Exchange On-Premise Autodiscover redirect address to Exchange Online found."
+                    SessionType = "On-Prem AutoD Redirect",
+                    ResponseCodeDescription = "200 OK",
+                    ResponseAlert = "Exchange On-Premise Autodiscover redirect.",
+                    ResponseComments = "Exchange On-Premise Autodiscover redirect address to Exchange Online found."
                     + "<p>RedirectAddress: "
                     + RedirectAddress
                     + "</p><p>This is what we want to see, the mail.onmicrosoft.com redirect address (you may know this as the <b>target address</b> or "
-                    + "<b>remote routing address</b>) from On-Premise sends Outlook (MSI / Perpetual license) to Office 365 / Exchange Online.</p>");
+                    + "<b>remote routing address</b>) from On-Premise sends Outlook (MSI / Perpetual license) to Office 365 / Exchange Online.</p>",
 
-                // Set confidence level for Session Authentication, Session Type, and Session Response Server.
-                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
-                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                    SessionAuthenticationConfidenceLevel = 5,
+                    SessionTypeConfidenceLevel = 10,
+                    SessionResponseServerConfidenceLevel = 5
+                };
+
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             else
             {
@@ -339,30 +376,40 @@ namespace Office365FiddlerExtension.Ruleset
                 // Exchange Online / Microsoft365 such as: contoso.mail.onmicrosoft.com.
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD REDIRECT ADDR! : " + RedirectAddress);
 
-                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
-                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                {
+                    SectionTitle = "HTTP_200s",
+                    UIBackColour = "Red",
+                    UITextColour = "Black",
 
-                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK, Incorrect Redirect Address!");
-
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "!AUTOD REDIRECT ADDR!");
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "!Exchange On-Premise Autodiscover redirect!");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." +
+                    SessionType = "!AUTOD REDIRECT ADDR!",
+                    ResponseCodeDescription = "200 OK, Incorrect Redirect Address!",
+                    ResponseServer = "Fiddler Update Check",
+                    ResponseAlert = "!Exchange On-Premise Autodiscover redirect!",
+                    ResponseComments = "Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." +
                     "<p>RedirectAddress: " + RedirectAddress +
-                    "</p><p>If this is an Office 365 mailbox the <b>targetAddress from On-Premise is not sending Outlook to Office 365</b>!</p>");
+                    "</p><p>If this is an Office 365 mailbox the <b>targetAddress from On-Premise is not sending Outlook to Office 365</b>!</p>",
 
-                // Set confidence level for Session Authentication, Session Type, and Session Response Server.
-                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
-                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                    SessionAuthenticationConfidenceLevel = 5,
+                    SessionTypeConfidenceLevel = 10,
+                    SessionResponseServerConfidenceLevel = 5
+                };
+
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
 
         public void HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound(Session session)
         {
+            // Exchange On-Premise Autodiscover redirect - address can't be found
+
             this.session = session;
 
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
             // If this session has already been classified with a confidence of 10. Return.
-            if (GetSetSessionFlags.Instance.GetSessionTypeConfidenceLevel(this.session) == 10)
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
             {
                 return;
             }
@@ -372,11 +419,7 @@ namespace Office365FiddlerExtension.Ruleset
             {
                 return;
             }
-
-            /////////////////////////////
-            //
-            // 200.6. Exchange On-Premise Autodiscover redirect - address can't be found
-            //
+            
             if ((this.session.utilFindInResponse("<Message>The email address can't be found.</Message>", false) > 1) &&
                 (this.session.utilFindInResponse("<ErrorCode>500</ErrorCode>", false) > 1))
             {
@@ -392,25 +435,31 @@ namespace Office365FiddlerExtension.Ruleset
                     </Response>
                 </Autodiscover>
                 */
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
+                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
 
-                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
-                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                {
+                    SectionTitle = "HTTP_200s",
+                    UIBackColour = "Red",
+                    UITextColour = "Black",
 
-                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK, !Email address not found!");
-
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "!NO AUTOD REDIRECT ADDR!");
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:red'>Exchange On-Premise Autodiscover Redirect</span></b>");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "Exchange On-Premise Autodiscover redirect address can't be found. "
+                    SessionType = "!NO AUTOD REDIRECT ADDR!",
+                    ResponseCodeDescription = "200 OK, !Email address not found!",
+                    ResponseServer = "Fiddler Update Check",
+                    ResponseAlert = "<b><span style='color:red'>Exchange On-Premise Autodiscover Redirect</span></b>",
+                    ResponseComments = "Exchange On-Premise Autodiscover redirect address can't be found. "
                     + "Look for other On-Premise Autodiscover responses, we may have a "
                     + "valid Autodiscover targetAddress from On-Premise in another session in this trace."
                     + "Seeing some redirects return a HTTP 500 from Exchange OnPremise have been seen in a normal, working Outlook "
-                    + "client which can connect to the Exchange Online mailbox.");
+                    + "client which can connect to the Exchange Online mailbox.",
 
-                // Set confidence level for Session Authentication, Session Type, and Session Response Server.
-                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
-                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                    SessionAuthenticationConfidenceLevel = 5,
+                    SessionTypeConfidenceLevel = 10,
+                    SessionResponseServerConfidenceLevel = 5
+                };
+
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
 
@@ -418,8 +467,10 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
             // If this session has already been classified with a confidence of 10. Return.
-            if (GetSetSessionFlags.Instance.GetSessionTypeConfidenceLevel(this.session) == 10)
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
             {
                 return;
             }
@@ -444,41 +495,51 @@ namespace Office365FiddlerExtension.Ruleset
                     (this.session.utilFindInResponse("<MailStore>", false) > 1) &&
                     (this.session.utilFindInResponse("<ExternalUrl>", false) > 1))
                 {
-                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML found.");
+                    FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML found.");
 
-                    GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Green");
-                    GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+                    var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                    {
+                        SectionTitle = "HTTP_200s",
+                        UIBackColour = "Green",
+                        UITextColour = "Black",
 
-                    GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK");
+                        SessionType = "EXO MSI Autodiscover",
+                        ResponseCodeDescription = "200 OK",
+                        ResponseAlert = "Exchange Online / Outlook MSI Autodiscover.",
+                        ResponseComments = "For Autodiscover calls which go to autodiscover-s.outlook.com this is likely an Outlook (MSI / perpetual license) client"
+                        + " being redirected from Exchange On-Premise to Exchange Online.",
 
-                    GetSetSessionFlags.Instance.SetSessionType(this.session, "EXO MSI Autodiscover");
-                    GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "Exchange Online / Outlook MSI Autodiscover.");
-                    GetSetSessionFlags.Instance.SetXResponseComments(this.session, "For Autodiscover calls which go to autodiscover-s.outlook.com this is likely an Outlook (MSI / perpetual license) client"
-                        + " being redirected from Exchange On-Premise to Exchange Online.");
+                        SessionAuthenticationConfidenceLevel = 5,
+                        SessionTypeConfidenceLevel = 10,
+                        SessionResponseServerConfidenceLevel = 5
+                    };
 
-                    // Possible something more to be found, let further processing try to pick up something.
-                    GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                    GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "5");
-                    GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                    var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                    SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                 }
                 else
                 {
-                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML NOT found!");
+                    FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML NOT found!");
 
-                    GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
-                    GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+                    var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                    {
+                        SectionTitle = "HTTP_200s",
+                        UIBackColour = "Red",
+                        UITextColour = "Black",
 
-                    GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK, Unexpected AutoDiscover XML response.");
+                        SessionType = "!EXO MSI Autodiscover!",
+                        ResponseCodeDescription = "200 OK, Unexpected AutoDiscover XML response.",
+                        ResponseAlert = "<b><span style='color:red'>Exchange Online / Outlook MSI Autodiscover - Unusual Autodiscover Response</span></b>",
+                        ResponseComments = "This session was detected as an Autodiscover response from Exchange Online. However the response did not contain "
+                        + "the expected XML data. Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response.",
 
-                    GetSetSessionFlags.Instance.SetSessionType(this.session, "!EXO MSI Autodiscover!");
-                    GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:red'>Exchange Online / Outlook MSI Autodiscover - Unusual Autodiscover Response</span></b>");
-                    GetSetSessionFlags.Instance.SetXResponseComments(this.session, "This session was detected as an Autodiscover response from Exchange Online. However the response did not contain "
-                        + "the expected XML data. Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response.");
+                        SessionAuthenticationConfidenceLevel = 5,
+                        SessionTypeConfidenceLevel = 10,
+                        SessionResponseServerConfidenceLevel = 5
+                    };
 
-                    // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
-                    GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                    GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
-                    GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                    var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                    SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                 }
             }
         }
@@ -487,8 +548,10 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
             // If this session has already been classified with a confidence of 10. Return.
-            if (GetSetSessionFlags.Instance.GetSessionTypeConfidenceLevel(this.session) == 10)
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
             {
                 return;
             }
@@ -507,40 +570,51 @@ namespace Office365FiddlerExtension.Ruleset
                     (this.session.utilFindInResponse("<MailStore>", false) > 1) &&
                     (this.session.utilFindInResponse("<ExternalUrl>", false) > 1))
                 {
-                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML found.");
+                    FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML found.");
 
-                    GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Green");
-                    GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+                    var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                    {
+                        SectionTitle = "HTTP_200s",
+                        UIBackColour = "Green",
+                        UITextColour = "Black",
 
-                    GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK");
+                        SessionType = "EXO CTR Autodiscover",
+                        ResponseCodeDescription = "200 OK",
+                        ResponseAlert = "Exchange Online / Outlook CTR Autodiscover.",
+                        ResponseComments = "For Autodiscover calls which go to outlook.office365.com this is likely an Outlook Click-To-Run (Downloaded or "
+                        + "deployed from Office365) client being redirected from Exchange On-Premise to Exchange Online.",
 
-                    GetSetSessionFlags.Instance.SetSessionType(this.session, "EXO CTR Autodiscover");
-                    GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "Exchange Online / Outlook CTR Autodiscover.");
-                    GetSetSessionFlags.Instance.SetXResponseComments(this.session, "For Autodiscover calls which go to outlook.office365.com this is likely an Outlook Click-To-Run (Downloaded or "
-                        + "deployed from Office365) client being redirected from Exchange On-Premise to Exchange Online.");
+                        SessionAuthenticationConfidenceLevel = 5,
+                        SessionTypeConfidenceLevel = 5,
+                        SessionResponseServerConfidenceLevel = 5
+                    };
 
-                    // Possible something more to be found, let further processing try to pick up something.
-                    GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                    GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "5");
-                    GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                    var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                    SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                 }
                 else
                 {
-                    FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML NOT found!");
+                    FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML NOT found!");
 
-                    GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
-                    GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+                    var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                    {
+                        SectionTitle = "HTTP_200s",
+                        UIBackColour = "Red",
+                        UITextColour = "Black",
 
-                    GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK, !Unexpected XML response.!");
+                        SessionType = "Outlook AutoDiscover XML NOT found!",
+                        ResponseCodeDescription = "200 OK, !Unexpected XML response!",
+                        ResponseAlert = "<b><span style='color:red'>Exchange Online / Outlook CTR Autodiscover - Unusual Autodiscover Response</span></b>",
+                        ResponseComments = "This session was detected as an Autodiscover response from Exchange Online. However the response did not contain "
+                        + "the expected XML data. Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response.",
 
-                    GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:red'>Exchange Online / Outlook CTR Autodiscover - Unusual Autodiscover Response</span></b>");
-                    GetSetSessionFlags.Instance.SetXResponseComments(this.session, "This session was detected as an Autodiscover response from Exchange Online. However the response did not contain "
-                        + "the expected XML data. Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response.");
+                        SessionAuthenticationConfidenceLevel = 5,
+                        SessionTypeConfidenceLevel = 10,
+                        SessionResponseServerConfidenceLevel = 5
+                    };
 
-                    // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
-                    GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                    GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
-                    GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                    var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                    SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                 }
             }
         }
@@ -549,8 +623,10 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
             // If this session has already been classified with a confidence of 10. Return.
-            if (GetSetSessionFlags.Instance.GetSessionTypeConfidenceLevel(this.session) == 10)
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
             {
                 return;
             }
@@ -571,73 +647,90 @@ namespace Office365FiddlerExtension.Ruleset
             // User can create Office 365 gropus.
             if (this.session.utilFindInResponse("<GroupCreationEnabled>true</GroupCreationEnabled>", false) > 1)
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 GetUnifiedGroupsSettings EWS call. User can create O365 Groups in Outlook.");
+                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 GetUnifiedGroupsSettings EWS call. User can create O365 Groups in Outlook.");
 
-                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Green");
-                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                {
+                    SectionTitle = "HTTP_200s",
+                    UIBackColour = "Green",
+                    UITextColour = "Black",
 
-                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK");
+                    SessionType = "EWS GetUnifiedGroupsSettings",
+                    ResponseCodeDescription = "200 OK",
+                    ResponseAlert = "GetUnifiedGroupsSettings EWS call.",
+                    ResponseComments = "<GroupCreationEnabled>true</GroupCreationEnabled> found in response body. "
+                    + "Expect user to be able to create Office 365 groups in Outlook.",
 
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "EWS GetUnifiedGroupsSettings");
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "GetUnifiedGroupsSettings EWS call.");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "<GroupCreationEnabled>true</GroupCreationEnabled> found in response body. "
-                    + "Expect user to be able to create Office 365 groups in Outlook.");
+                    SessionAuthenticationConfidenceLevel = 5,
+                    SessionTypeConfidenceLevel = 10,
+                    SessionResponseServerConfidenceLevel = 5
+                };
 
-                // Possible something more to be found, let further processing try to pick up something.
-                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "5");
-                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             // User cannot create Office 365 groups. Not an error condition in and of itself.
             else if (this.session.utilFindInResponse("<GroupCreationEnabled>false</GroupCreationEnabled>", false) > 1)
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 GetUnifiedGroupsSettings EWS call. User cannot create O365 Groups in Outlook.");
+                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 GetUnifiedGroupsSettings EWS call. User cannot create O365 Groups in Outlook.");
 
-                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Green");
-                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                {
+                    SectionTitle = "HTTP_200s",
+                    UIBackColour = "Green",
+                    UITextColour = "Black",
 
-                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK, User cannot create Unified Groups.");
+                    SessionType = "EWS GetUnifiedGroupsSettings",
+                    ResponseCodeDescription = "200 OK, User cannot create Unified Groups.",
+                    ResponseAlert = "<b><span style='color:red'>GetUnifiedGroupsSettings EWS call</span></b>",
+                    ResponseComments = "<GroupCreationEnabled>false</GroupCreationEnabled> found in response body. "
+                    + "Expect user to <b>NOT be able to create Office 365 groups</b> in Outlook.",
 
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "EWS GetUnifiedGroupsSettings");
+                    SessionAuthenticationConfidenceLevel = 5,
+                    SessionTypeConfidenceLevel = 10,
+                    SessionResponseServerConfidenceLevel = 5
+                };
 
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:red'>GetUnifiedGroupsSettings EWS call</span></b>");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "<GroupCreationEnabled>false</GroupCreationEnabled> found in response body. "
-                    + "Expect user to <b>NOT be able to create Office 365 groups</b> in Outlook.");
-
-                // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
-                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
-                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             // Did not see the expected keyword in the response body. This is the error condition.
             else
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 GetUnifiedGroupsSettings!");
+                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 GetUnifiedGroupsSettings!");
 
-                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
-                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                {
+                    SectionTitle = "HTTP_200s",
+                    UIBackColour = "Green",
+                    UITextColour = "Black",
 
-                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK, GetUnifiedGroupsSettings not found.");
+                    SessionType = "!EWS GetUnifiedGroupsSettings!",
+                    ResponseCodeDescription = "200 OK, GetUnifiedGroupsSettings not found.",
+                    ResponseAlert = "GetUnifiedGroupsSettings EWS call",
+                    ResponseComments = "Though GetUnifiedGroupsSettings scenario was detected neither <GroupCreationEnabled>true</GroupCreationEnabled> or"
+                    + "<GroupCreationEnabled>false</GroupCreationEnabled> was found in the response body. Check the Raw tab for more details.",
 
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "!EWS GetUnifiedGroupsSettings!");
+                    SessionAuthenticationConfidenceLevel = 5,
+                    SessionTypeConfidenceLevel = 5,
+                    SessionResponseServerConfidenceLevel = 5
+                };
 
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "GetUnifiedGroupsSettings EWS call");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "Though GetUnifiedGroupsSettings scenario was detected neither <GroupCreationEnabled>true</GroupCreationEnabled> or"
-                    + "<GroupCreationEnabled>false</GroupCreationEnabled> was found in the response body. Check the Raw tab for more details.");
-
-                // Possible something more to be found, let further processing try to pick up something.
-                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "5");
-                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
 
         public void HTTP_200_3S_Suggestions(Session session)
         {
+            // 200.9. 3S Suggestions call.
+
             this.session = session;
 
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
             // If this session has already been classified with a confidence of 10. Return.
-            if (GetSetSessionFlags.Instance.GetSessionTypeConfidenceLevel(this.session) == 10)
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
             {
                 return;
             }
@@ -647,19 +740,8 @@ namespace Office365FiddlerExtension.Ruleset
             {
                 return;
             }
-
-            /////////////////////////////
-            //
-            // 200.9. 3S Suggestions call.
-            //
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " 200 3S Suggestions call.");
-
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Green");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
-
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK");
-
-            GetSetSessionFlags.Instance.SetSessionType(this.session, "3S Suggestions");
+            
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} 200 3S Suggestions call.");
 
             Uri uri = new Uri(this.session.fullUrl);
             var queryStrings = System.Web.HttpUtility.ParseQueryString(uri.Query);
@@ -667,21 +749,34 @@ namespace Office365FiddlerExtension.Ruleset
             var entityTypes = queryStrings["entityTypes"] ?? "entityTypes not specified in url";
             var clientRequestId = this.session.RequestHeaders.Where(x => x.Name.Equals("client-request-id")).FirstOrDefault();
 
-            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "3S Suggestions");
-            GetSetSessionFlags.Instance.SetXResponseComments(this.session, $"Scenario: {scenario} Types: {entityTypes} {clientRequestId}");
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_200s",
+                UIBackColour = "Green",
+                UITextColour = "Black",
 
-            // Possible something more to be found, let further processing try to pick up something.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "5");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                SessionType = "3S Suggestions",
+                ResponseCodeDescription = "200 OK",
+                ResponseAlert = "3S Suggestions",
+                ResponseComments = $"Scenario: {scenario} Types: {entityTypes} {clientRequestId}",
+
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 5,
+                SessionResponseServerConfidenceLevel = 5
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void HTTP_200_REST_People_Request(Session session)
         {
             this.session = session;
 
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
             // If this session has already been classified with a confidence of 10. Return.
-            if (GetSetSessionFlags.Instance.GetSessionTypeConfidenceLevel(this.session) == 10)
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
             {
                 return;
             }
@@ -697,12 +792,7 @@ namespace Office365FiddlerExtension.Ruleset
             // 200.10. REST - People Request.
             //
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " 200 REST - People Request.");
-
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Green");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
-
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK");
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} 200 REST - People Request.");
 
             Uri uri = new Uri(this.session.fullUrl);
             var queryStrings = System.Web.HttpUtility.ParseQueryString(uri.Query);
@@ -723,71 +813,130 @@ namespace Office365FiddlerExtension.Ruleset
 
             var requestId = this.session.ResponseHeaders.Where(x => x.Name.Equals("request-id")).FirstOrDefault();
 
-            GetSetSessionFlags.Instance.SetSessionType(this.session, $"REST People {sessionType}");
-            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, $"REST People {sessionType}");
-            GetSetSessionFlags.Instance.SetXResponseComments(this.session, $"{requestId} $search:{queryStrings["$search"]} $top:{queryStrings["$top"]} $skip:{queryStrings["$skip"]} $select:{queryStrings["$select"]} $filter:{queryStrings["$filter"]}");
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_200s",
+                UIBackColour = "Green",
+                UITextColour = "Black",
 
-            // Possible something more to be found, let further processing try to pick up something.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "5");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                SessionType = $"REST People {sessionType}",
+                ResponseCodeDescription = "200 OK",
+                ResponseAlert = $"REST People {sessionType}",
+                ResponseComments = $"{requestId} $search:{queryStrings["$search"]} $top:{queryStrings["$top"]} $skip:{queryStrings["$skip"]} $select:{queryStrings["$select"]} $filter:{queryStrings["$filter"]}",
+
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 5,
+                SessionResponseServerConfidenceLevel = 5
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
-        public void HTTP_200_Any_Other_Exchange_EWS(Session session)
+        public void HTTP_200_Microsoft365_Any_Other_Exchange_EWS(Session session)
         {
+            // Any other (Microsoft365 / EXO) EWS call.
+
             this.session = session;
 
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
             // If this session has already been classified with a confidence of 10. Return.
-            if (GetSetSessionFlags.Instance.GetSessionTypeConfidenceLevel(this.session) == 10)
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
             {
                 return;
             }
 
             // If this isn't an EWS call, return.
-            if (!this.session.uriContains("ews/exchange.asmx")) {
+            if (!this.session.uriContains("ews/exchange.asmx"))
+            {
                 return;
             }
 
-            /////////////////////////////
-            //
-            // 200.11. Any other EWS call.
-            //
+            if (!this.session.HostnameIs("outlook.office365.com"))
+            {
+                return;
+            }
+
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 EXO / M365 EWS call.");
+
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_200s",
+                UIBackColour = "Green",
+                UITextColour = "Black",
+
+                SessionType = "Exchange Online / Microsoft365 Web Services",
+                ResponseCodeDescription = "200 OK",
+                ResponseAlert = "Exchange Online / Microsoft365 Web Services (EWS) call.",
+                ResponseComments = "Exchange Online / Microsoft365 Web Services (EWS) call.",
+
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 5,
+                SessionResponseServerConfidenceLevel = 5
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            
+        }
+
+        public void HTTP_200_OnPremise_Any_Other_Exchange_EWS(Session session)
+        {
+            // Any other EWS call.
+            // Note: There are some companies who have vanity domains for Office 365. They are the outliers for this scenario.
+
+            this.session = session;
+
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
+            // If this session has already been classified with a confidence of 10. Return.
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            // If this isn't an EWS call, return.
+            if (!this.session.uriContains("ews/exchange.asmx"))
+            {
+                return;
+            }
+
             if (this.session.HostnameIs("outlook.office365.com"))
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 EXO / M365 EWS call.");
-
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "Exchange Online / Microsoft365 Web Services");
-
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "Exchange Online / Microsoft365 Web Services (EWS) call.");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "Exchange Online / Microsoft365 Web Services (EWS) call.");
+                return;
             }
-            else
+
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 OnPremise EWS call.");
+
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 OnPremise EWS call.");
-                
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "Exchange OnPremise Web Services");
+                SectionTitle = "HTTP_200s",
+                UIBackColour = "Green",
+                UITextColour = "Black",
 
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "Exchange OnPremise Web Services (EWS) call.");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "Exchange OnPremise Web Services (EWS) call.");
-            }
+                SessionType = "Exchange OnPremise Web Services",
+                ResponseCodeDescription = "200 OK",
+                ResponseAlert = "Exchange OnPremise Web Services (EWS) call.",
+                ResponseComments = "Exchange OnPremise Web Services (EWS) call.",
 
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Green");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 5,
+                SessionResponseServerConfidenceLevel = 5
+            };
 
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK");
-
-            // Possible something more to be found, let further processing try to pick up something.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "5");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void HTTP_200_Lurking_Errors(Session session)
         {
             this.session = session;
 
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
             // If this session has already been classified with a confidence of 10. Return.
-            if (GetSetSessionFlags.Instance.GetSessionTypeConfidenceLevel(this.session) == 10)
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
             {
                 return;
             }
@@ -883,52 +1032,56 @@ namespace Office365FiddlerExtension.Ruleset
                 // Red text on black background.
                 // The only issue here is when sessions contain javascript and other web source code, this tends to produce false positives.
 
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 FAILURE LURKING!?");
+                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 FAILURE LURKING!?");
 
-                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Black");
-                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Red");
+                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                {
+                    SectionTitle = "HTTP_200s",
+                    UIBackColour = "Green",
+                    UITextColour = "Red",
 
-                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK, but possibly bad.");
-
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "!FAILURE LURKING!");
-
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:red'>'error', 'failed' or 'exception' found in response body</span></b>");
-                // REVIEW THIS.
-                // There was a += on this XResponseComments. This probably means the response comments were being combined with other detections.
-                // Something to think about and come back to.
-                // REVIEW THIS.
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "<p>Session response body was scanned and errors or failures were found in response body. "
+                    SessionType = "!FAILURE LURKING!",
+                    ResponseCodeDescription = "200 OK, but possibly bad.",
+                    ResponseAlert = "<b><span style='color:red'>'error', 'failed' or 'exception' found in response body</span></b>",
+                    ResponseComments = "<p>Session response body was scanned and errors or failures were found in response body. "
                     + "Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review.</p>"
                     + "<p>After splitting all words in the response body the following were found:</p>"
                     + "<p>" + wordCountErrorText + "</p>"
                     + "<p>" + wordCountFailedText + "</p>"
                     + "<p>" + wordCountExceptionText + "</p>"
                     + "<p>Check the content body of the response for any failures you recognise. You may find <b>false positives, "
-                    + "if lots of Javascript or other web code</b> is being loaded.</p>");
+                    + "if lots of Javascript or other web code</b> is being loaded.</p>",
 
-                // Possible something more to be found, let further processing try to pick up something.
-                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "5");
-                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                    SessionAuthenticationConfidenceLevel = 5,
+                    SessionTypeConfidenceLevel = 5,
+                    SessionResponseServerConfidenceLevel = 5
+                };
+
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             else
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 OK");
+                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 OK");
 
-                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Green");
-                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                {
+                    SectionTitle = "",
+                    UIBackColour = "Green",
+                    UITextColour = "Black",
 
-                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "200 OK");
+                    SessionType = "200 OK",
+                    ResponseCodeDescription = "200 OK",
+                    ResponseAlert = "HTTP 200 OK, with no errors, failed, or exceptions found.",
+                    ResponseComments = "HTTP 200 OK, with no errors, failed, or exceptions found.",
 
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "200 OK");
+                    SessionAuthenticationConfidenceLevel = 5,
+                    SessionTypeConfidenceLevel = 5,
+                    SessionResponseServerConfidenceLevel = 5
+                };
 
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "HTTP 200 OK, with no errors, failed, or exceptions found.");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "HTTP 200 OK, with no errors, failed, or exceptions found.");
-
-                // Possible something more to be found, let further processing try to pick up something.
-                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "5");
-                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
     }

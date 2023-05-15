@@ -18,19 +18,21 @@ namespace Office365FiddlerExtension.Services
         private static GetSetSessionFlags _instance;
         public static GetSetSessionFlags Instance => _instance ?? (_instance = new GetSetSessionFlags());
 
+        /*
         public void WriteToFiddlerLog(Session session, String Log)
         {
             this.session = session;
             FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} {Log}");
         }
+        
 
         public void WriteToFiddlerLogNoSession(String Log)
         {
             FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {Log}");
-        }
+        }*/
 
         // Colour codes for sessions. Softer tones, easier on the eye than standard red, orange and green.
-        public void SetUIBackColour(Session session, String Colour)
+        /*public void SetUIBackColour(Session session, String Colour)
         {
             this.session = session;
 
@@ -76,7 +78,7 @@ namespace Office365FiddlerExtension.Services
                     this.session["ui-color"] = "#000000";
                     break;
             }
-        }
+        }*/
 
         // SESSION CLASSIFICATIONS
 
@@ -86,6 +88,7 @@ namespace Office365FiddlerExtension.Services
         // Mid;  5  : Session classification has some confidence, but overriding functions should be run just in case.
         // High; 10 : Session classification has high level of confidence and any overriding functions should not be run.
 
+        /*
         public Boolean GetAnySessionConfidenceLevelTen(Session session)
         {
             this.session = session;
@@ -158,6 +161,7 @@ namespace Office365FiddlerExtension.Services
             this.session = session;
             this.session["X-SRSCL"] = SessionResponseServerConfidenceLevel;
         }
+        
 
         public String GetProcess(Session session)
         {
@@ -179,7 +183,6 @@ namespace Office365FiddlerExtension.Services
             {
                 session["X-ProcessName"] = "Remote Capture";
             }
-        }
 
         public String GetResponseCodeDescription(Session session)
         {
@@ -331,14 +334,6 @@ namespace Office365FiddlerExtension.Services
             this.session["X-ResponseComments"] = ResponseComments;
         }
 
-        public void SetXResponseCommentsNoKnownIssue(Session session)
-        {
-            this.session = session;
-            this.session["X-ResponseComments"] = "<p>No known issue with Office 365 and this type of session. If you have a suggestion for an improvement, "
-                + "create an issue or better yet a pull request in the project Github repository: "
-                + "<a href='https://aka.ms/Office365FiddlerExtension' target='_blank'>https://aka.ms/Office365FiddlerExtension</a>.</p>";
-        }
-
         public String GetXDataCollected(Session session)
         {
             this.session = session;
@@ -427,6 +422,6 @@ namespace Office365FiddlerExtension.Services
         {
             this.session = session;
             this.session["X-InspectorElapsedTime"] = InspectorElapsedTime;
-        }
+        }*/
     }
 }

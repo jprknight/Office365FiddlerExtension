@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
+using Newtonsoft.Json;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -18,7 +19,26 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 411 Length Required.");
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 411 Length Required.");
+
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "",
+                UIBackColour = "Green",
+                UITextColour = "Black",
+
+                SessionType = "",
+                ResponseCodeDescription = "",
+                ResponseAlert = "",
+                ResponseComments = "",
+
+                SessionAuthenticationConfidenceLevel = 10,
+                SessionTypeConfidenceLevel = 10,
+                SessionResponseServerConfidenceLevel = 10
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
 
             // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
             GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");

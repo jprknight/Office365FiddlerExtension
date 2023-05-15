@@ -16,14 +16,13 @@ namespace Office365FiddlerExtension.Ruleset
 
         public static BroadLogicChecks Instance => _instance ?? (_instance = new BroadLogicChecks());
 
-        SessionFlagProcessor sessionFlagProcessor = new SessionFlagProcessor();
-
         public void FiddlerUpdateSessions (Session session)
         {
             this.session = session;
 
             if (this.session.hostname == "www.fiddler2.com" && this.session.uriContains("UpdateCheck.aspx"))
             {
+                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Fiddler Updates.");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -36,20 +35,13 @@ namespace Office365FiddlerExtension.Ruleset
                     ResponseAlert = "Fiddler Update Check",
                     ResponseComments = "This is Fiddler itself checking for updates. It has nothing to do with the Office 365 Fiddler Extension.",
 
-                    DataAge = null,
-                            DateDataCollected = null,
-                            SessionTimersDescription = null,
-                            ServerThinkTime = null,
-                            TransitTime = null,
-                            Authentication = null,
-
                     SessionAuthenticationConfidenceLevel = 10,
                     SessionTypeConfidenceLevel = 10,
                     SessionResponseServerConfidenceLevel = 10
                 };
                 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
 
@@ -67,8 +59,9 @@ namespace Office365FiddlerExtension.Ruleset
             if (this.session.isTunnel)
             {
                 string TLS;
+                
+                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Broad Logic Checks (connect tunnel).");
 
-                GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "Broad Logic Checks (connect tunnel).");
                 // TLS 1.0 in request/response pair.
 
                 // Request:
@@ -125,13 +118,6 @@ namespace Office365FiddlerExtension.Ruleset
                         + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
                         + "<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>",
 
-                        DataAge = null,
-                        DateDataCollected = null,
-                        SessionTimersDescription = null,
-                        ServerThinkTime = null,
-                        TransitTime = null,
-                        Authentication = null,
-
                         SessionAuthenticationConfidenceLevel = 5,
                         SessionTypeConfidenceLevel = 5,
                         SessionResponseServerConfidenceLevel = 5
@@ -174,7 +160,6 @@ namespace Office365FiddlerExtension.Ruleset
                         UITextColour = "Black",
 
                         SessionType = "Connect Tunnel: " + TLS,
-                        ResponseCodeDescription = null,
                         ResponseServer = "Connect Tunnel",
                         ResponseAlert = "Connect Tunnel",
                         ResponseComments = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
@@ -206,7 +191,7 @@ namespace Office365FiddlerExtension.Ruleset
             //
             if ((this.session.url.Contains("autodiscover") && (this.session.oResponse["server"].Contains("Apache"))))
             {
-                GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "Apache is answering Autodiscover requests! Investigate this first!");
+                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Apache is answering Autodiscover requests! Investigate this first!.");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -231,7 +216,7 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
     }

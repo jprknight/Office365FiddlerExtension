@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
+using Newtonsoft.Json;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -18,23 +19,27 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            // Somewhat highlight these, they have been seen in Fiddler traces while troubleshooting Microsoft 365 issues.
-            // Though they don't appear to directly contribute to anything of interest.
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 204 No content.");
 
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Orange");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_204s",
+                UIBackColour = "Orange",
+                UITextColour = "Black",
 
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "204 No Content");
-            GetSetSessionFlags.Instance.SetSessionType(this.session, "204 No Content");
-            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "HTTP 204 No Content.");
-            GetSetSessionFlags.Instance.SetXResponseComments(this.session, "The quantity of these types of server errors need to be considered in context with what you are troubleshooting "
-                + "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.");
+                SessionType = "204 No Content",
+                ResponseCodeDescription = "204 No Content",
+                ResponseAlert = "HTTP 204 No Content.",
+                ResponseComments = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting "
+                + "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.",
 
-            // Nothing meaningful here, let further processing try to pick up something.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 5,
+                SessionResponseServerConfidenceLevel = 5
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
+using Newtonsoft.Json;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -18,21 +19,26 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 420 Method Failure (Spring Framework) or Enhance Your Calm (Twitter).");
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 420 Method Failure (Spring Framework) or Enhance Your Calm (Twitter).");
 
-            // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_420s",
+                UIBackColour = "Gray",
+                UITextColour = "Black",
 
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "420 Method Failure (Spring Framework) or Enhance Your Calm (Twitter)");
+                SessionType = "420 Method Failure (Spring Framework) or Enhance Your Calm (Twitter)",
+                ResponseCodeDescription = "420 Method Failure (Spring Framework) or Enhance Your Calm (Twitter)",
+                ResponseAlert = "HTTP 420 Method Failure (Spring Framework) or Enhance Your Calm (Twitter).",
+                ResponseComments = SessionProcessor.Instance.ResponseCommentsNoKnownIssue(),
 
-            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "HTTP 420 Method Failure (Spring Framework) or Enhance Your Calm (Twitter).");
-            GetSetSessionFlags.Instance.SetXResponseCommentsNoKnownIssue(this.session);
+                SessionAuthenticationConfidenceLevel = 0,
+                SessionTypeConfidenceLevel = 0,
+                SessionResponseServerConfidenceLevel = 0
+            };
 
-            // Nothing meaningful here, let further processing try to pick up something.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

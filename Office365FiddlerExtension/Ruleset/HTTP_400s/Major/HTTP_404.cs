@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
+using Newtonsoft.Json;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -18,22 +19,27 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 404 Not found.");
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 404 Not found.");
 
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Orange");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "",
+                UIBackColour = "Orange",
+                UITextColour = "Black",
 
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "404 Not Found");
+                SessionType = "HTTP 404 Not Found",
+                ResponseCodeDescription = "404 Not Found",
+                ResponseAlert = "<b><span style='color:red'>HTTP 404 Not Found</span></b>",
+                ResponseComments = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting "
+                + "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.",
 
-            GetSetSessionFlags.Instance.SetSessionType(this.session, "HTTP 404 Not Found");
-            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 404 Not Found</span></b>");
-            GetSetSessionFlags.Instance.SetXResponseComments(this.session, "The quantity of these types of server errors need to be considered in context with what you are troubleshooting " +
-                "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.");
-            
-            // Nothing meaningful here, let further processing try to pick up something.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
+                SessionAuthenticationConfidenceLevel = 0,
+                SessionTypeConfidenceLevel = 0,
+                SessionResponseServerConfidenceLevel = 0
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

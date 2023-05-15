@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
+using Newtonsoft.Json;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -14,39 +15,59 @@ namespace Office365FiddlerExtension.Ruleset
 
         public static HTTP_302 Instance => _instance ?? (_instance = new HTTP_302());
 
-        public void HTTP_302_Redirect(Session session)
+        public void HTTP_302_Redirect_AutoDiscover(Session session)
+        {
+            this.session = session;
+
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 302 AutoDiscover Found / Redirect.");
+
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_302s",
+                UIBackColour = "Green",
+                UITextColour = "Black",
+
+                SessionType = "Autodiscover Redirect",
+                ResponseCodeDescription = "302 Redirect / Found",
+                ResponseAlert = "<b><span style='color:green'>Exchange Autodiscover redirect.</span></b>",
+                ResponseComments = "This type of traffic is typically an Autodiscover redirect response from "
+                    + "Exchange On-Premise sending the Outlook client to connect to Exchange Online.",
+
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 5,
+                SessionResponseServerConfidenceLevel = 5
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+        }
+
+        public void HTTP_302_Redirect_AllOthers(Session session)
         {
             this.session = session;
 
             FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 302 Found / Redirect.");
 
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Green");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
-
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "302 Redirect / Found");
-
-            // Exchange Autodiscover redirects.
-            if (this.session.uriContains("autodiscover"))
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "Autodiscover Redirect");
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:green'>Exchange Autodiscover redirect.</span></b>");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "This type of traffic is typically an Autodiscover redirect response from "
-                    + "Exchange On-Premise sending the Outlook client to connect to Exchange Online.");
-            }
-            // All other HTTP 302 Redirects.
-            else
-            {
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "Redirect");
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:green'>Redirect.</span></b>");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "Redirects within Office 365 client applications or servers are not unusual. "
+                SectionTitle = "HTTP_302s",
+                UIBackColour = "Green",
+                UITextColour = "Black",
+
+                SessionType = "Redirect",
+                ResponseCodeDescription = "302 Redirect / Found",
+                ResponseAlert = "<b><span style='color:green'>Redirect.</span></b>",
+                ResponseComments = "Redirects within Office 365 client applications or servers are not unusual. "
                     + "The only potential downfall is too many of them. However if this happens you would normally see a too many "
-                    + "redirects exception thrown as a server response.");
-            }
+                    + "redirects exception thrown as a server response.",
 
-            // Possible something more to be found, let further processing try to pick up something.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "5");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 5,
+                SessionResponseServerConfidenceLevel = 5
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

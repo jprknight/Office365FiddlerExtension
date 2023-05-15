@@ -15,14 +15,12 @@ namespace Office365FiddlerExtension.Ruleset
 
         public static CalculateSessionAge Instance => _instance ?? (_instance = new CalculateSessionAge());
 
-        SessionFlagProcessor sessionFlagProcessor = new SessionFlagProcessor();
-
         // Calculate session age on Inspector.
         public void SessionAge(Session session)
         {
             this.session = session;
 
-            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "Running CalculateSessionAge.");
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running CalculateSessionAge.");
 
             String TimeSpanDaysText;
             String TimeSpanHoursText;
@@ -70,7 +68,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
 
             if (TimeSpanDays <= 7)
             {
@@ -81,7 +79,7 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             else if (TimeSpanDays > 7 && TimeSpanDays < 14)
             {
@@ -93,7 +91,7 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             else if (TimeSpanDays >= 14 && TimeSpanDays < 30)
             {
@@ -105,7 +103,7 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             else
             {
@@ -117,7 +115,7 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                sessionFlagProcessor.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
     }

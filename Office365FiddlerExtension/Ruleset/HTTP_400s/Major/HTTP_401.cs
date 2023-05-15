@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
+using Newtonsoft.Json;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -16,12 +17,10 @@ namespace Office365FiddlerExtension.Ruleset
 
         public void HTTP_401_Exchange_Online_AutoDiscover(Session session)
         {
+            // 401.1. Exchange Online Autodiscover
+
             this.session = session;
 
-            /////////////////////////////
-            //
-            // 401.1. Exchange Online Autodiscover
-            //
             // Make sure this session is an Exchange Online Autodiscover request.
             // Non-ClickToRun clients redirect to https://autodiscover-s.outlook.com/Autodiscover/AutoDiscover.xml
             // ClickToRun clients use to https://outlook.office365.com/Autodiscover/AutoDiscover.xml.
@@ -29,60 +28,73 @@ namespace Office365FiddlerExtension.Ruleset
                 || (this.session.hostname == "outlook.office365.com")
                 && (this.session.uriContains("autodiscover.xml")))
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 401 Auth Challenge.");
+                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 401 Auth Challenge.");
 
-                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Orange");
-                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
-                
-                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "401 Unauthorized (RFC 7235)");
+                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                {
+                    SectionTitle = "HTTP_401s",
+                    UIBackColour = "Orange",
+                    UITextColour = "Black",
 
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "Microsoft365 AutoDiscover");
-                GetSetSessionFlags.Instance.SetXAuthentication(this.session, "Autodiscover Microsoft365 Auth Challenge");
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:orange'>Autodiscover Authentication Challenge</span></b>");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "Autodiscover Authentication Challenge. If the host for this session is autodiscover-s.outlook.com this is likely Outlook "
+                    SessionType = "Microsoft365 AutoDiscover",
+                    ResponseCodeDescription = "401 Unauthorized (RFC 7235)",
+                    ResponseAlert = "<b><span style='color:orange'>Autodiscover Authentication Challenge</span></b>",
+                    ResponseComments = "Autodiscover Authentication Challenge. If the host for this session is autodiscover-s.outlook.com this is likely Outlook "
                     + "(MSI / perpetual license) being redirected from Exchange On-Premise."
                     + "<p><b>These are expected</b> and are not an issue as long as a subsequent "
                     + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. "
-                    + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>");
+                    + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>",
+                    Authentication = "Autodiscover Microsoft365 Auth Challenge",
 
-                // Set confidence level for Session Authentication, Session Type, and Session Response Server.
-                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "10");
-                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
-                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                    SessionAuthenticationConfidenceLevel = 10,
+                    SessionTypeConfidenceLevel = 10,
+                    SessionResponseServerConfidenceLevel = 5
+                };
+
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
 
         public void HTTP_401_Exchange_OnPremise_AutoDiscover(Session session)
         {
+            // Exchange OnPremise AutoDiscover
+
             this.session = session;
 
-            /////////////////////////////
-            //
-            // 401.2 Exchange AutoDiscover
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10 || ExtensionSessionFlags.SessionAuthenticationConfidenceLevel == 10)
+            {
+                return;
+            }
+
             if (this.session.uriContains("/Autodiscover/Autodiscover.xml"))
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 401 Auth Challenge.");
+                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 401 Auth Challenge.");
 
-                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Orange");
-                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                {
+                    SectionTitle = "HTTP_401s",
+                    UIBackColour = "Orange",
+                    UITextColour = "Black",
 
-                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "401 Unauthorized (RFC 7235)");
-
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "Exchange OnPremise AutoDiscover");
-                GetSetSessionFlags.Instance.SetXAuthentication(this.session, "Autodiscover OnPremise Auth Challenge");
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "Exchange Autodiscover");
-                GetSetSessionFlags.Instance.SetProcess(this.session);
-
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:orange'>Autodiscover Authentication Challenge</span></b>");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "Autodiscover Authentication Challenge."
+                    SessionType = "Exchange OnPremise AutoDiscover",
+                    ResponseCodeDescription = "401 Unauthorized (RFC 7235)",
+                    ResponseAlert = "<b><span style='color:orange'>Autodiscover Authentication Challenge</span></b>",
+                    ResponseComments = "Autodiscover Authentication Challenge."
                     + "<p><b>These are expected</b> and are not an issue as long as a subsequent "
                     + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. "
-                    + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>");
+                    + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>",
+                    Authentication = "Autodiscover OnPremise Auth Challenge",
 
-                // Set confidence level for Session Authentication, Session Type, and Session Response Server.
-                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "10");
-                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
-                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                    SessionAuthenticationConfidenceLevel = 10,
+                    SessionTypeConfidenceLevel = 10,
+                    SessionResponseServerConfidenceLevel = 5
+                };
+
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
 
@@ -95,22 +107,27 @@ namespace Office365FiddlerExtension.Ruleset
             // 401.3 Any Exchange Web Services
             if (session.uriContains("/EWS/Exchange.asmx"))
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 401 EWS call.");
+                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 401 EWS call.");
 
-                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Orange");
-                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                {
+                    SectionTitle = "",
+                    UIBackColour = "Orange",
+                    UITextColour = "Black",
 
-                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "Exchange Web Services (EWS) call.");
+                    SessionType = "Exchange Web Services",
+                    ResponseCodeDescription = "Exchange Web Services (EWS) call.",
+                    ResponseAlert = "Exchange Web Services (EWS) call.",
+                    ResponseComments = "Exchange Web Services (EWS) call.",
+                    Authentication = "Auth Challenge",
 
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "Exchange Web Services");
-                GetSetSessionFlags.Instance.SetXAuthentication(this.session, "Auth Challenge");
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "Exchange Web Services (EWS) call.");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "Exchange Web Services (EWS) call.");                
+                    SessionAuthenticationConfidenceLevel = 10,
+                    SessionTypeConfidenceLevel = 10,
+                    SessionResponseServerConfidenceLevel = 5
+                };
 
-                // Absolute certainly we don't want to do anything further for Session Type with this session.
-                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "10");
-                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
-                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
 
@@ -118,27 +135,29 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            /////////////////////////////
-            //
-            // 401.99 Everything else.
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 401 Auth Challenge.");
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 401 Auth Challenge.");
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "",
+                UIBackColour = "Orange",
+                UITextColour = "Black",
 
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Orange");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
-
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "401 Unauthorized (RFC 7235)");
-            GetSetSessionFlags.Instance.SetSessionType(this.session, "401 Unauthorized");
-            GetSetSessionFlags.Instance.SetXAuthentication(this.session, "Auth Challenge");
-            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:orange'>Authentication Challenge</span></b>");
-            GetSetSessionFlags.Instance.SetXResponseComments(this.session, "Authentication Challenge. <b>These are expected</b> and are not an issue as long as a subsequent "
+                SessionType = "401 Unauthorized",
+                ResponseCodeDescription = "401 Unauthorized (RFC 7235)",
+                ResponseAlert = "<b><span style='color:orange'>Authentication Challenge</span></b>",
+                ResponseComments = "Authentication Challenge. <b>These are expected</b> and are not an issue as long as a subsequent "
                 + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. "
-                + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>");
+                + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>",
+                Authentication = "Auth Challenge",
 
-            // Nothing meaningful here, let further processing try to pick up something.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "5");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 5,
+                SessionResponseServerConfidenceLevel = 5
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

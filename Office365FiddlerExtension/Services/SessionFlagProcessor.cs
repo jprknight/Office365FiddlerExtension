@@ -20,6 +20,25 @@ namespace Office365FiddlerExtension.Services
         private static SessionFlagProcessor _instance;
         public static SessionFlagProcessor Instance => _instance ?? (_instance = new SessionFlagProcessor());
 
+        public string GetSessionJsonData(Session session) 
+        { 
+            this.session = session;
+            return this.session["Microsoft365FiddlerExtensionJson"];
+        }
+
+        public Boolean GetAnySessionConfidenceLevelTen(Session session)
+        {
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(GetSessionJsonData(this.session));
+
+            if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel == 10 ||
+                ExtensionSessionFlags.SessionTypeConfidenceLevel == 10 ||
+                ExtensionSessionFlags.SessionResponseServerConfidenceLevel == 10)
+            {
+                return true;
+            }
+            return false;
+        }
+
         // Take any updates to session flags and save them into the session Json.
         public void UpdateSessionFlagJson(Session session, String JsonData)
         {
@@ -172,6 +191,10 @@ namespace Office365FiddlerExtension.Services
             public string ServerThinkTime { get; set; }
 
             public string TransitTime { get; set; }
+
+            public string ElapsedTime { get; set; }
+
+            public string InspectorElapsedTime { get; set; }
 
             public string Authentication { get; set; }
 
