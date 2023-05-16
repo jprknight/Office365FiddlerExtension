@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
+using Newtonsoft.Json;
 
 namespace Office365FiddlerExtension.Ruleset
 {

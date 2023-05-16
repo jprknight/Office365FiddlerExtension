@@ -289,7 +289,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("Response Code");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine($"<a href='https://en.wikipedia.org/wiki/List_of_HTTP_status_codes' target='_blank'>{getSetSessionFlags.GetResponseCodeDescription(this.session)}</a>");
+                ResultsString.AppendLine($"<a href='https://en.wikipedia.org/wiki/List_of_HTTP_status_codes' target='_blank'>{ExtensionSessionFlags.ResponseCodeDescription}</a>");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -316,7 +316,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("Capture was");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(getSetSessionFlags.GetXDataAge(this.session));
+                ResultsString.AppendLine(ExtensionSessionFlags.DataAge);
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -329,27 +329,26 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
-                if (getSetSessionFlags.GetXResponseServer(this.session) != null)
+                if (ExtensionSessionFlags.ResponseServer != null)
                 {
                     ResultsString.AppendLine("<tr>");
                     ResultsString.AppendLine("<td>");
                     ResultsString.AppendLine("Response Server");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine("TEST:" + ExtensionSessionFlags.ResponseServer + ":TEST");
-                    ResultsString.AppendLine(getSetSessionFlags.GetXResponseServer(this.session));
+                    ResultsString.AppendLine(ExtensionSessionFlags.ResponseServer);
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
                 }
 
-                if (getSetSessionFlags.GetXInspectorElapsedTime(this.session) != "Insufficient data")
+                if (ExtensionSessionFlags.InspectorElapsedTime != "Insufficient data")
                 {
                     ResultsString.AppendLine("<tr>");
                     ResultsString.AppendLine("<td>");
                     ResultsString.AppendLine("Elapsed Time");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(getSetSessionFlags.GetXInspectorElapsedTime(this.session));
+                    ResultsString.AppendLine(ExtensionSessionFlags.InspectorElapsedTime);
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
                 }
@@ -360,21 +359,20 @@ namespace Office365FiddlerExtension.Inspectors
                 // Session Analysis.
                 ResultsString.AppendLine("<h2>Session Analysis</h2>");
 
-                ResultsString.AppendLine(ExtensionSessionFlags.ResponseComments);
-                ResultsString.AppendLine($"<p>{getSetSessionFlags.GetXResponseComments(this.session)}</p>");
+                ResultsString.AppendLine($"<p>{ExtensionSessionFlags.ResponseComments}</p>");
 
                 // Session Age.
                 ResultsString.AppendLine($"<h2>Session Age</h2>");
 
-                ResultsString.AppendLine($"<p>{getSetSessionFlags.GetXCalculatedSessionAge(this.session)}</p>");
+                ResultsString.AppendLine($"<p>{ExtensionSessionFlags.CalculatedSessionAge}</p>");
 
                 // Authentication
                 #region Authentication
-                if (getSetSessionFlags.GetXAuthentication(this.session) != "No Auth Headers")
+                if (ExtensionSessionFlags.Authentication != "No Auth Headers")
                 {
                     ResultsString.AppendLine("<h2>Authentication</h2>");
 
-                    ResultsString.AppendLine($"<h3>{getSetSessionFlags.GetXAuthentication(this.session)}</h3>");
+                    ResultsString.AppendLine($"<h3>{ExtensionSessionFlags.Authentication}</h3>");
 
                     ResultsString.AppendLine($"<p>{getSetSessionFlags.GetXAuthenticationDescription(this.session)}</p>");
                 }
@@ -476,7 +474,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("Elapsed Time");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(getSetSessionFlags.GetXInspectorElapsedTime(this.session));
+                ResultsString.AppendLine(ExtensionSessionFlags.InspectorElapsedTime);
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -538,7 +536,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("Server Think Time");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(getSetSessionFlags.GetXServerThinkTime(this.session));
+                ResultsString.AppendLine(ExtensionSessionFlags.ServerThinkTime);
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -547,14 +545,14 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("Transit Time");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(getSetSessionFlags.GetXTransitTime(this.session));
+                ResultsString.AppendLine(ExtensionSessionFlags.TransitTime);
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
                 ResultsString.AppendLine("</table>");
                 #endregion
 
-                ResultsString.AppendLine($"<p>{getSetSessionFlags.GetXSessionTimersDescription(this.session)}</p>");
+                ResultsString.AppendLine($"<p>{ExtensionSessionFlags.SessionTimersDescription}</p>");
 
                 ResultsString.AppendLine("<p>For an explantion of session timers refer to: <a href='https://aka.ms/Timers-Definitions' target='_blank'>https://aka.ms/Timers-Definitions</a>.</p>");
 

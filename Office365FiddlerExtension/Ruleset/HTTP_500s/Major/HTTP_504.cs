@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
+using Newtonsoft.Json;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -16,58 +17,82 @@ namespace Office365FiddlerExtension.Ruleset
 
         public void HTTP_504_Gateway_Timeout_Internet_Access_Blocked(Session session)
         {
+            // HTTP 504 Bad Gateway 'internet has been blocked'
+
             this.session = session;
 
-            /////////////////////////////
-            // 504.1. HTTP 504 Bad Gateway 'internet has been blocked'
-            if ((this.session.utilFindInResponse("access", false) > 1) &&
-                (this.session.utilFindInResponse("internet", false) > 1) &&
-                (this.session.utilFindInResponse("blocked", false) > 1))
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
             {
-                GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, " HTTP 504 Gateway Timeout -- Internet Access Blocked.");
-
-                GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
-                GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
-
-                GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "504 Gateway Timeout - Internet Access Blocked");
-
-                GetSetSessionFlags.Instance.SetSessionType(this.session, "***INTERNET BLOCKED***");
-
-                GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "<b><span style='color:red'>HTTP 504 Gateway Timeout -- Internet Access Blocked</span></b>");
-                GetSetSessionFlags.Instance.SetXResponseComments(this.session, "Detected the keywords 'internet' and 'access' and 'blocked'. Potentially the computer this trace was collected "
-                    + "from has been <b><span style='color:red'>quaratined for internet access by a LAN based network security device</span></b>."
-                    + "<p>Validate this by checking the webview and raw tabs for more information.</p>");
-
-                // Set confidence level for Session Authentication (SACL), Session Type (STCL), and Session Response Server (SRSCL).
-                GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "5");
-                GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "10");
-                GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "5");
+                return;
             }
+
+            if (!(this.session.utilFindInResponse("internet", false) > 1) &&
+                !(this.session.utilFindInResponse("access", false) > 1) &&
+                !(this.session.utilFindInResponse("blocked", false) > 1))
+            {
+                return;
+            }
+
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 504 Gateway Timeout -- Internet Access Blocked.");
+
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_504s",
+                UIBackColour = "Red",
+                UITextColour = "Black",
+
+                SessionType = "***INTERNET BLOCKED***",
+                ResponseCodeDescription = "504 Gateway Timeout - Internet Access Blocked",
+                ResponseAlert = "<b><span style='color:red'>HTTP 504 Gateway Timeout -- Internet Access Blocked</span></b>",
+                ResponseComments = "Detected the keywords 'internet' and 'access' and 'blocked'. Potentially the computer this trace was collected "
+                + "from has been <b><span style='color:red'>quaratined for internet access by a LAN based network security device</span></b>."
+                + "<p>Validate this by checking the webview and raw tabs for more information.</p>",
+
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
+                SessionResponseServerConfidenceLevel = 5
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
         }
 
         public void HTTP_504_Gateway_Timeout_Anything_Else(Session session)
         {
+            // Pick up any other 504 Gateway Timeout and write data into the comments box.
+
             this.session = session;
 
-            /////////////////////////////
-            // 504.99. Pick up any other 504 Gateway Timeout and write data into the comments box.
-            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 504 Gateway Timeout (99).");
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
 
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Red");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
 
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "504 Gateway Timeout");
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 504 Gateway Timeout.");
 
-            GetSetSessionFlags.Instance.SetXResponseComments(this.session, "<b><span style='color:red'>HTTP 504 Gateway Timeout</span></b>");
-            GetSetSessionFlags.Instance.SetXResponseComments(this.session, "The quantity of these types of server errors need to be considered in context with what you are troubleshooting "
-                + "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.");
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_504s",
+                UIBackColour = "Red",
+                UITextColour = "Black",
 
-            GetSetSessionFlags.Instance.SetSessionType(this.session, "Gateway Timeout");
+                SessionType = "Gateway Timeout",
+                ResponseCodeDescription = "504 Gateway Timeout",
+                ResponseAlert = "<b><span style='color:red'>HTTP 504 Gateway Timeout</span></b>",
+                ResponseComments = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting "
+                + "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.",
 
-            // Nothing meaningful here, let further processing try to pick up something.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 5,
+                SessionResponseServerConfidenceLevel = 5
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

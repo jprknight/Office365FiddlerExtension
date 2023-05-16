@@ -25,13 +25,13 @@ namespace Office365FiddlerExtension.Services
         {
             if (Preferences.DisableWebCalls)
             {
-                GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"DisableWebCalls is enabled, no ruleset update check performed.");
+                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: DisableWebCalls is enabled, no ruleset update check performed.");
                 return;
             }
 
             if (DateTime.Now < Properties.Settings.Default.LocalMasterRulesetLastUpdated) 
             {
-                GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Rules have been checked within the last 24 hours, no ruleset update check performed.");
+                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: Rules have been checked within the last 24 hours, no ruleset update check performed.");
                 return;
             }
 

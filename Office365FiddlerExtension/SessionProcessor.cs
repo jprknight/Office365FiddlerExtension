@@ -715,29 +715,28 @@ namespace Office365FiddlerExtension
                     http_499.HTTP_499_Token_Required_or_Client_Closed_Request(this.session);
                     break;
                 case 500:
-                    HTTP_500 http_500 = new HTTP_500();
-                    http_500.HTTP_500_Internal_Server_Error_Repeating_Redirects(this.session);
+                    HTTP_500.Instance.HTTP_500_Internal_Server_Error_Repeating_Redirects(this.session);
 
                     if (SessionFlagProcessor.Instance.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
-                    http_500.HTTP_500_Internal_Server_Error_Impersonate_User_Denied(this.session);
+                    HTTP_500.Instance.HTTP_500_Internal_Server_Error_Impersonate_User_Denied(this.session);
 
                     if (SessionFlagProcessor.Instance.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
-                    http_500.HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong(this.session);
+                    HTTP_500.Instance.HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong(this.session);
 
                     if (SessionFlagProcessor.Instance.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
-                    http_500.HTTP_500_Internal_Server_Error_All_Others(this.session);
+                    HTTP_500.Instance.HTTP_500_Internal_Server_Error_All_Others(this.session);
                     break;
                 case 501:
                     HTTP_501 http_501 = new HTTP_501();

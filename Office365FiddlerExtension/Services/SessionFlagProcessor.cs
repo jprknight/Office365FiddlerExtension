@@ -39,6 +39,22 @@ namespace Office365FiddlerExtension.Services
             return false;
         }
 
+        public void SetProcess(Session session)
+        {
+            this.session = session;
+            // Set process name, split and exclude port used.
+            if (session.LocalProcess != String.Empty)
+            {
+                string[] ProcessName = session.LocalProcess.Split(':');
+                session["X-ProcessName"] = ProcessName[0];
+            }
+            // No local process to split.
+            else
+            {
+                session["X-ProcessName"] = "Remote Capture";
+            }
+        }
+
         // Take any updates to session flags and save them into the session Json.
         public void UpdateSessionFlagJson(Session session, String JsonData)
         {

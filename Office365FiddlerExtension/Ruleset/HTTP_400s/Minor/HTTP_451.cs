@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
+using Newtonsoft.Json;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -18,21 +19,26 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect.");
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect.");
 
-            // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "",
+                UIBackColour = "Gray",
+                UITextColour = "Black",
 
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect");
+                SessionType = "451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect",
+                ResponseCodeDescription = "451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect",
+                ResponseAlert = "HTTP 451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect.",
+                ResponseComments = SessionProcessor.Instance.ResponseCommentsNoKnownIssue(),
 
-            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "HTTP 451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect.");
-            GetSetSessionFlags.Instance.SetXResponseCommentsNoKnownIssue(this.session);
+                SessionAuthenticationConfidenceLevel = 0,
+                SessionTypeConfidenceLevel = 0,
+                SessionResponseServerConfidenceLevel = 0
+            };
 
-            // Nothing meaningful here, let further processing try to pick up something.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

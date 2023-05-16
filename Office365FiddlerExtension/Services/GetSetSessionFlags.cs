@@ -168,7 +168,7 @@ namespace Office365FiddlerExtension.Services
             this.session = session;
             return this.session["X-ProcessName"];
         }
-
+        
         public void SetProcess(Session session)
         {
             this.session = session;
@@ -183,7 +183,8 @@ namespace Office365FiddlerExtension.Services
             {
                 session["X-ProcessName"] = "Remote Capture";
             }
-
+        }
+            
         public String GetResponseCodeDescription(Session session)
         {
             this.session = session;
