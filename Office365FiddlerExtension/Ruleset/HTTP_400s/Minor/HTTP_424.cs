@@ -19,7 +19,6 @@ namespace Office365FiddlerExtension.Ruleset
             this.session = session;
 
             FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 424 Failed Dependency (WebDAV; RFC 4918).");
-            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
