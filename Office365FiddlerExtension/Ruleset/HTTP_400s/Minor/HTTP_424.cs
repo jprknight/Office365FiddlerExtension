@@ -18,21 +18,27 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "HTTP 424 Failed Dependency (WebDAV; RFC 4918).");
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 424 Failed Dependency (WebDAV; RFC 4918).");
+            GetSetSessionFlags.Instance.WriteToFiddlerLog(this.session, "");
 
-            // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_424s",
+                UIBackColour = "Gray",
+                UITextColour = "Black",
 
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "424 Failed Dependency (WebDAV; RFC 4918)");
+                SessionType = "424 Failed Dependency (WebDAV; RFC 4918)",
+                ResponseCodeDescription = "424 Failed Dependency (WebDAV; RFC 4918)",
+                ResponseAlert = "HTTP 424 Failed Dependency (WebDAV; RFC 4918).",
+                ResponseComments = SessionProcessor.Instance.ResponseCommentsNoKnownIssue(),
 
-            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "HTTP 424 Failed Dependency (WebDAV; RFC 4918).");
-            GetSetSessionFlags.Instance.SetXResponseCommentsNoKnownIssue(this.session);
+                SessionAuthenticationConfidenceLevel = 0,
+                SessionTypeConfidenceLevel = 0,
+                SessionResponseServerConfidenceLevel = 0
+            };
 
-            // Nothing meaningful here, let further processing try to pick up something.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }
