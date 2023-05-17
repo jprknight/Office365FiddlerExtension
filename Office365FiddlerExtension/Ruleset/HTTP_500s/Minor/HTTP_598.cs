@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
+using Newtonsoft.Json;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -18,21 +19,26 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 598 (Informal convention) Network read timeout error.");
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 598 (Informal convention) Network read timeout error.");
 
-            // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_598s",
+                UIBackColour = "Gray",
+                UITextColour = "Black",
 
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "598 (Informal convention) Network read timeout error");
+                SessionType = "598 (Informal convention) Network read timeout error",
+                ResponseCodeDescription = "598 (Informal convention) Network read timeout error",
+                ResponseAlert = "HTTP 598 (Informal convention) Network read timeout error.",
+                ResponseComments = SessionProcessor.Instance.ResponseCommentsNoKnownIssue(),
 
-            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "HTTP 598 (Informal convention) Network read timeout error.");
-            GetSetSessionFlags.Instance.SetXResponseCommentsNoKnownIssue(this.session);
+                SessionAuthenticationConfidenceLevel = 0,
+                SessionTypeConfidenceLevel = 0,
+                SessionResponseServerConfidenceLevel = 0
+            };
 
-            // Nothing meaningful here, let further processing try to pick up something.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

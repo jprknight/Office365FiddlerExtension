@@ -72,7 +72,7 @@ namespace Office365FiddlerExtension.Services
                         // jsonString came back as empty.
                         if (jsonString == null)
                         {
-                            GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Error retrieving ruleset from Github: jsonString null.");
+                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: Error retrieving ruleset from Github: jsonString null.");
                         }
                         // jsonString has something in it. See if the version value on Github is newer than what we have stored locally.
                         else
@@ -100,7 +100,7 @@ namespace Office365FiddlerExtension.Services
                 }
                 catch (Exception ex)
                 {
-                    GetSetSessionFlags.Instance.WriteToFiddlerLogNoSession($"Error retrieving ruleset from Github {ex}");
+                    FiddlerApplication.Log.LogString($"Office365FiddlerExtension: Error retrieving ruleset from Github {ex}.");
                 }
             }
             #endregion

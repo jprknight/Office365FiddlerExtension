@@ -291,10 +291,10 @@
     <Compile Include="Ruleset\HTTP_500s\Minor\HTTP_530.cs" />
     <Compile Include="Ruleset\HTTP_500s\Minor\HTTP_561.cs" />
     <Compile Include="Ruleset\HTTP_500s\Minor\HTTP_598.cs" />
-    <Compile Include="Ruleset\SelectivelyRun\SetAuthentication.cs" />
-    <Compile Include="Ruleset\SelectivelyRun\SetLongRunningSessions.cs" />
-    <Compile Include="Ruleset\SelectivelyRun\SetResponseServer.cs" />
-    <Compile Include="Ruleset\SelectivelyRun\SetSessionType.cs" />
+    <Compile Include="Ruleset\SelectivelyRun\Authentication.cs" />
+    <Compile Include="Ruleset\SelectivelyRun\LongRunningSessions.cs" />
+    <Compile Include="Ruleset\SelectivelyRun\ResponseServer.cs" />
+    <Compile Include="Ruleset\SelectivelyRun\SessionType.cs" />
     <Compile Include="Services\RuleSetProcessor.cs" />
     <Compile Include="Services\GetSetSessionFlags.cs" />
     <Compile Include="Services\SessionFlagProcessor.cs" />

@@ -26,7 +26,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
-                    SectionTitle = "Broad Logic Checks (www.fiddler2.com).",
+                    SectionTitle = "Broad Logic Checks",
                     UIBackColour = "Gray",
                     UITextColour = "Black",
 
@@ -107,7 +107,7 @@ namespace Office365FiddlerExtension.Ruleset
                     // I have seen HTTP 403 connect tunnels actually show interesting data in authentication scenarios.
                     var sessionFlags403 = new SessionFlagProcessor.ExtensionSessionFlags()
                     {
-                        SectionTitle = "Broad Logic Checks (www.fiddler2.com).",
+                        SectionTitle = "Broad Logic Checks",
                         UIBackColour = "Orange",
                         UITextColour = "Black",
 
@@ -130,7 +130,7 @@ namespace Office365FiddlerExtension.Ruleset
                 case 200:
                     var sessionFlags200 = new SessionFlagProcessor.ExtensionSessionFlags()
                     {
-                        SectionTitle = "Broad Logic Checks (www.fiddler2.com).",
+                        SectionTitle = "Broad Logic Checks",
                         UIBackColour = "Orange",
                         UITextColour = "Black",
 
@@ -155,7 +155,7 @@ namespace Office365FiddlerExtension.Ruleset
                 default:
                     var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                     {
-                        SectionTitle = "Broad Logic Checks (www.fiddler2.com).",
+                        SectionTitle = "Broad Logic Checks",
                         UIBackColour = "Orange",
                         UITextColour = "Black",
 
@@ -195,7 +195,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
-                    SectionTitle = "Broad Logic Checks (www.fiddler2.com).",
+                    SectionTitle = "Broad Logic Checks",
                     UIBackColour = "Red",
                     UITextColour = "Black",
 

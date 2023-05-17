@@ -23,36 +23,22 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "",
-                UIBackColour = "Green",
+                SectionTitle = "HTTP_411s",
+                UIBackColour = "Gray",
                 UITextColour = "Black",
 
-                SessionType = "",
-                ResponseCodeDescription = "",
-                ResponseAlert = "",
-                ResponseComments = "",
+                SessionType = "411 Length Required",
+                ResponseCodeDescription = "411 Length Required",
+                ResponseAlert = "HTTP 411 Length Required.",
+                ResponseComments = SessionProcessor.Instance.ResponseCommentsNoKnownIssue(),
 
-                SessionAuthenticationConfidenceLevel = 10,
-                SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 10
+                SessionAuthenticationConfidenceLevel = 0,
+                SessionTypeConfidenceLevel = 0,
+                SessionResponseServerConfidenceLevel = 0
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
-
-            // Setting to gray, to be convinced these are important to Microsoft 365 traffic.
-            GetSetSessionFlags.Instance.SetUIBackColour(this.session, "Gray");
-            GetSetSessionFlags.Instance.SetUITextColour(this.session, "Black");
-
-            GetSetSessionFlags.Instance.SetResponseCodeDescription(this.session, "411 Length Required");
-
-            GetSetSessionFlags.Instance.SetXResponseAlert(this.session, "HTTP 411 Length Required.");
-            GetSetSessionFlags.Instance.SetXResponseCommentsNoKnownIssue(this.session);
-
-            // Nothing meaningful here, let further processing try to pick up something.
-            GetSetSessionFlags.Instance.SetSessionAuthenticationConfidenceLevel(this.session, "0");
-            GetSetSessionFlags.Instance.SetSessionTypeConfidenceLevel(this.session, "0");
-            GetSetSessionFlags.Instance.SetSessionResponseServerConfidenceLevel(this.session, "0");
         }
     }
 }

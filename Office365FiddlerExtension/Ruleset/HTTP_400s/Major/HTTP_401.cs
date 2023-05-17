@@ -152,7 +152,7 @@ namespace Office365FiddlerExtension.Ruleset
                 Authentication = "Auth Challenge",
 
                 SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
                 SessionResponseServerConfidenceLevel = 5
             };
 

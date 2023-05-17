@@ -19,13 +19,6 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             // Looking for the term "Access Denied" or "Access Blocked" in session response.
             // Specific scenario where a web proxy is blocking traffic from reaching the internet.
             if (this.session.utilFindInResponse("Access Denied", false) > 1 || session.utilFindInResponse("Access Blocked", false) > 1)
@@ -34,7 +27,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_403s",
+                    SectionTitle = "HTTP_403s_Proxy_Block",
                     UIBackColour = "Red",
                     UITextColour = "Black",
 
@@ -66,22 +59,13 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: {this.session.id } HTTP 403 Forbidden. EWS Language not set on mailbox.");
-
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             if (this.session.fullUrl.Contains("outlook.office365.com/EWS") || this.session.fullUrl.Contains("outlook.office365.com/ews"))
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 403 EWS Forbidden.");
-
-                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 403 Forbidden. EWS Language not set on mailbox.");
+                //REVIEW THIS.
+                var sessionFlags_HTTP403_EWS = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_403s",
+                    SectionTitle = "HTTP_403s_EWS_Mailbox_Language",
                     UIBackColour = "Red",
                     UITextColour = "Black",
 
@@ -98,6 +82,8 @@ namespace Office365FiddlerExtension.Ruleset
                     SessionTypeConfidenceLevel = 10,
                     SessionResponseServerConfidenceLevel = 5
                 };
+                var sessionFlagsJson_HTTP403_EWS = JsonConvert.SerializeObject(sessionFlags_HTTP403_EWS);
+                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson_HTTP403_EWS);
             }
         }
 
@@ -107,18 +93,11 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: {this.session.id } HTTP 403 Forbidden.");
-
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 403 Forbidden.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_403s",
+                SectionTitle = "HTTP_403s_Generic",
                 UIBackColour = "Red",
                 UITextColour = "Black",
 
@@ -133,10 +112,9 @@ namespace Office365FiddlerExtension.Ruleset
                 + "https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-2010/dd877045(v=exchg.140) </a></p>",
 
                 SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
                 SessionResponseServerConfidenceLevel = 5
             };
-
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);          
         }

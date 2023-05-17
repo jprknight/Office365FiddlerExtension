@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Office365FiddlerExtension.Ruleset;
 using Office365FiddlerExtension.Services;
 using System;
+using System.Runtime.Serialization;
 using static Office365FiddlerExtension.Services.SessionFlagProcessor;
 
 namespace Office365FiddlerExtension
@@ -126,32 +127,11 @@ namespace Office365FiddlerExtension
         {
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            /////////////////////////////
-            ///
-            // *** START HERE***
-            //
-            // This function is where all the things happen, where everything else is called from,
-            // and the order of operations is determined.
-            ///
-            /////////////////////////////
-
-            // This wasn't a popular decision. Enabling live session processing again, even though it's known TLS and other types of
-            // detections may not work 100% when doing live trace analysis.
-
-            //if (!this.session.isFlagSet(SessionFlags.LoadedFromSAZ))
-            //{
-            // Live sessions, return.
-            //    FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " live session, diliberate return.");
-            //    return;
-            //}
-
             // Decode session requests/responses.
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
 
-            ///////////////////////
+            ///////////////////////////////
             ///
             // Always run these functions on every session.
 
@@ -170,64 +150,200 @@ namespace Office365FiddlerExtension
             SessionElapsedTime.Instance.SetElapsedTime(this.session);
             SessionElapsedTime.Instance.SetInspectorElapsedTime(this.session);
 
-            ///////////////////////
+            ///////////////////////////////
             ///
             // From here on out only run functions where there isn't a high level of confidence
             // on session classification.
-            if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel < 10 ||
-                ExtensionSessionFlags.SessionTypeConfidenceLevel < 10 ||
-                ExtensionSessionFlags.SessionResponseServerConfidenceLevel < 10)
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel != 10)
             {
-                // Response code based logic. This is the big one.
                 Instance.ResponseCodeLogic(this.session);
             }
 
+            ///////////////////////////////
+            // AUTHENTICATION
+            #region Authentication
             // If the session does not already have a high auth classification confidence, run.
-            if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel < 10)
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel != 10)
             {
-                // Set Authentication column data and SAML Response Parser for inspector.
-                SetAuthentication setAuthentication = new SetAuthentication();
-                setAuthentication.SetAuthenticationData(this.session);
+                Authentication.Instance.SetAuthentication_NoAuthHeaders(this.session);                
             }
 
-            // If the session does not already have a high session type classification confidence, run.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10) 
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel != 10)
             {
-                // If SSCL is low run Session Type override function.
-                SetSessionType setSessionType = new SetSessionType();
-                setSessionType.SetSessionTypeData(this.session);
+                Authentication.Instance.SetAuthentication_SAML_Parser(this.session);
             }
 
-            // If the session does not already have a high response server classification confidence, run.
-            if (ExtensionSessionFlags.SessionResponseServerConfidenceLevel < 10)
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel != 10)
             {
-                // Set Response Server column data.
-                SetResponseServer setResponseServer = new SetResponseServer();
-                setResponseServer.SetResponseServerData(this.session);
-                //Instance.SetResponseServer(this.session);
+                Authentication.Instance.SetAuthentication_Basic_Modern_Auth_Disabled(this.session);
             }
 
-            // If session has not been classified run Long Running Session override function.
-            // In relatively few cases has roundtrip time been highlighted as an issue by Fiddler alone.
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel != 10)
+            {
+                Authentication.Instance.SetAuthentication_Modern_Auth_Capable_Client(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel != 10)
+            {
+                Authentication.Instance.SetAuthentication_Basic_Auth_Capable_Client(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel != 10)
+            {
+                Authentication.Instance.SetAuthentication_Modern_Auth_Client_Using_Token(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel != 10)
+            {
+                Authentication.Instance.SetAuthentication_Basic_Auth_Client_Using_Token(this.session);
+            }
+            #endregion
+
+            ///////////////////////////////
+            // SESSION TYPE
+            #region SessionType
+            // If the session does not already have a high session type classification confidence, run these functions.
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel != 10) 
+            {
+                SessionType.Instance.SetSessionType_FreeBusy(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel != 10)
+            {
+                SessionType.Instance.SetSessionType_Microsoft365_EWS(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel != 10)
+            {
+                SessionType.Instance.SetSessionType_EWS(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel != 10)
+            {
+                SessionType.Instance.SetSessionType_Microsoft365_Authentication(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel != 10)
+            {
+                SessionType.Instance.SetSessionType_ADFS_Authentication(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel != 10)
+            {
+                SessionType.Instance.SetSessionType_General_Microsoft365(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel != 10)
+            {
+                SessionType.Instance.SetSessionType_Office_Applications(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel != 10)
+            {
+                SessionType.Instance.SetSessionType_Internet_Browsers(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel != 10)
+            {
+                SessionType.Instance.SetSessionType_Remote_Capture(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel != 10)
+            {
+                SessionType.Instance.SetSessionType_Unclassified(this.session);
+            }
+            #endregion
+
+            ///////////////////////////////
+            // RESPONSE SERVER
+            #region ResponseServer
+            // If the session does not already have a high response server classification confidence, run
+            // this function as a last effort to classify the session type.
+            // None of these overlap, so not checking SessionResponseServerConfidenceLevel before running each function.
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionResponseServerConfidenceLevel != 10)
+            {
+                ResponseServer.Instance.SetResponseServer_Server(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionResponseServerConfidenceLevel != 10)
+            {
+                ResponseServer.Instance.SetResponseServer_Host(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionResponseServerConfidenceLevel != 10)
+            {
+                ResponseServer.Instance.SetResponseServer_PoweredBy(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionResponseServerConfidenceLevel != 10)
+            {
+                ResponseServer.Instance.SetResponseServer_ServedBy(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionResponseServerConfidenceLevel != 10)
+            {
+                ResponseServer.Instance.SetResponseServer_ServerName(this.session);
+            }
+            #endregion
+
+            ///////////////////////////////
+            // LONG RUNNING SESSIONS
+            #region LongRunningSessions
+            // If session has not been classified run Long Running Session override functions.
+            // In relatively few scenarios has roundtrip time been an underlying cause.
             // So this is the last function to run after all other logic has been exhausted.
             // Typically network traces are used to validate the underlying network connectivity.
-            if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel < 10 ||
-                ExtensionSessionFlags.SessionTypeConfidenceLevel < 10 ||
-                ExtensionSessionFlags.SessionResponseServerConfidenceLevel < 10)
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SessionTypeConfidenceLevel {ExtensionSessionFlags.SessionTypeConfidenceLevel}.");
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel != 10)
             {
-                SetLongRunningSessions setLongRunningSessions = new SetLongRunningSessions();
-                setLongRunningSessions.SetLongRunningSessionsData(this.session);
-                //Instance.SetLongRunningSessions(this.session);
+                LongRunningSessions.Instance.LongRunningSessionsWarning(this.session);               
             }
 
-            // All session logic has now run. Set some session attributes based off of session flags set by logic.
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel != 10)
+            {
+                LongRunningSessions.Instance.LongRunningSessionsClientSlow(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel != 10)
+            {
+                LongRunningSessions.Instance.LongRunningSessionsServerSlow(this.session);
+            }
+            #endregion
+
+            // All session logic has now run. Set colours session flags.
             SetUIBackColour(this.session);
             SetUITextColour(this.session);
         }
 
         public string ResponseCommentsNoKnownIssue()
         {
-            return "<p>No known issue with Office 365 and this type of session. If you have a suggestion for an improvement, "
+            return "<p>No known issue with Microsoft365 and this type of session. If you have a suggestion for an improvement, "
                 + "create an issue or better yet a pull request in the project Github repository: "
                 + "<a href='https://aka.ms/Office365FiddlerExtension' target='_blank'>https://aka.ms/Office365FiddlerExtension</a>.</p>";
         }

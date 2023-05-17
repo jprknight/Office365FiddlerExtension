@@ -21,8 +21,6 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200.1 Connection blocked by Client Access Rules.");
-
             var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
 
             // If this session has already been classified with a confidence of 10. Return.
@@ -32,15 +30,21 @@ namespace Office365FiddlerExtension.Ruleset
             }
 
             // If the session content doesn't match the intended rule, return.
-            if (!this.session.fullUrl.Contains("outlook.office365.com/mapi") &&
-                (!(this.session.utilFindInResponse("Connection blocked by Client Access Rules", false) > 1)))
+            if (!this.session.fullUrl.Contains("outlook.office365.com/mapi"))
             {
-            return;
+                return;
             }
+
+            if (!(this.session.utilFindInResponse("Connection blocked by Client Access Rules", false) > 1))
+            {
+                return;
+            }
+
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 Connection blocked by Client Access Rules.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s",
+                SectionTitle = "HTTP_200s_Client_Access_Rule",
                 UIBackColour = "Red",
                 UITextColour = "Black",
 
@@ -70,8 +74,6 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 Store Error Protocol Disabled.");
-
             var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
 
             // If this session has already been classified with a confidence of 10. Return.
@@ -92,9 +94,11 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
+            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 Store Error Protocol Disabled.");
+
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s",
+                SectionTitle = "HTTP_200s_Mapi_Protocol_Disabled",
                 UIBackColour = "Red",
                 UITextColour = "Black",
 
@@ -104,9 +108,9 @@ namespace Office365FiddlerExtension.Ruleset
                 ResponseComments = "<b><span style='color:red'>Store Error Protocol disabled found in response body.</span></b>"
                 + "Expect user to <b>NOT be able to connect using connecting client application.</b>.",
 
-                SessionAuthenticationConfidenceLevel = 10,
+                SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 10
+                SessionResponseServerConfidenceLevel = 5
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -128,7 +132,12 @@ namespace Office365FiddlerExtension.Ruleset
             }
 
             // If the session hostname isn't outlook.office365.com and isn't MAPI traffic, return.
-            if (!this.session.HostnameIs("outlook.office365.com") && (!this.session.uriContains("/mapi/emsmdb/?MailboxId=")))
+            if (!this.session.HostnameIs("outlook.office365.com"))
+            {
+                return;
+            }
+
+            if (!this.session.uriContains("/mapi/emsmdb/?MailboxId="))
             {
                 return;
             }
@@ -137,7 +146,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s",
+                SectionTitle = "HTTP_200s_Microsoft365_Mapi",
                 UIBackColour = "Green",
                 UITextColour = "Black",
 
@@ -178,7 +187,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s",
+                SectionTitle = "HTTP_200s_Exchange_OnPremise_Mapi",
                 UIBackColour = "Green",
                 UITextColour = "Black",
 
@@ -223,7 +232,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s",
+                SectionTitle = "HTTP_200s_Outlook_RPC",
                 UIBackColour = "Green",
                 UITextColour = "Black",
 
@@ -268,7 +277,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s",
+                SectionTitle = "HTTP_200s_Outlook_NSPI",
                 UIBackColour = "Green",
                 UITextColour = "Black",
 
@@ -349,7 +358,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_200s",
+                    SectionTitle = "HTTP_200s_Redirect_Address",
                     UIBackColour = "Green",
                     UITextColour = "Black",
 
@@ -371,14 +380,14 @@ namespace Office365FiddlerExtension.Ruleset
                 SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             else
-            {
+            { // REVIEW THIS. REPEATED?
                 // Highlight if we got this far and we don't have a redirect address which points to
                 // Exchange Online / Microsoft365 such as: contoso.mail.onmicrosoft.com.
                 FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD REDIRECT ADDR! : " + RedirectAddress);
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_200s",
+                    SectionTitle = "HTTP_200s_Redirect_Address_Not_Found",
                     UIBackColour = "Red",
                     UITextColour = "Black",
 
@@ -439,7 +448,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_200s",
+                    SectionTitle = "HTTP_200s_Redirect_Address_Not_Found",
                     UIBackColour = "Red",
                     UITextColour = "Black",
 

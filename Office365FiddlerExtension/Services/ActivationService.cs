@@ -100,8 +100,10 @@ namespace Office365FiddlerExtension.Services
                 return;
             }
 
+            this.session = session;
+
             // Call the main fuction which runs through all session logic checks.
-            SessionProcessor.Instance.OnPeekAtResponseHeaders(session);
+            SessionProcessor.Instance.OnPeekAtResponseHeaders(this.session);
 
             session.RefreshUI();
         }

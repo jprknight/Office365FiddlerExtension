@@ -325,7 +325,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("Process");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(getSetSessionFlags.GetProcess(this.session));
+                ResultsString.AppendLine(ExtensionSessionFlags.ProcessName);
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -374,10 +374,10 @@ namespace Office365FiddlerExtension.Inspectors
 
                     ResultsString.AppendLine($"<h3>{ExtensionSessionFlags.Authentication}</h3>");
 
-                    ResultsString.AppendLine($"<p>{getSetSessionFlags.GetXAuthenticationDescription(this.session)}</p>");
+                    ResultsString.AppendLine($"<p>{ExtensionSessionFlags.AuthenticationDescription}</p>");
                 }
 
-                if (getSetSessionFlags.GetXOffice365AuthType(this.session) == "SAMLResponseParser")
+                if (ExtensionSessionFlags.AuthenticationType == "SAMLResponseParser")
                 {
 
                     ResultsString.AppendLine("<h2>SAML Response Parser</h2>");
@@ -388,7 +388,7 @@ namespace Office365FiddlerExtension.Inspectors
                     ResultsString.AppendLine("Issuer");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(getSetSessionFlags.GetSamlTokenIssuer(this.session));
+                    ResultsString.AppendLine(ExtensionSessionFlags.SamlTokenIssuer);
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
 
@@ -397,7 +397,7 @@ namespace Office365FiddlerExtension.Inspectors
                     ResultsString.AppendLine("Attribute Name Immutable Id");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(getSetSessionFlags.GetSamlTokenAttributeNameImmutibleID(this.session));
+                    ResultsString.AppendLine(ExtensionSessionFlags.SamlTokenAttributeNameImmutibleID);
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
 
@@ -406,7 +406,7 @@ namespace Office365FiddlerExtension.Inspectors
                     ResultsString.AppendLine("Attribute Name UPN");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(getSetSessionFlags.GetSamlTokenAttributeNameUPN(this.session));
+                    ResultsString.AppendLine(ExtensionSessionFlags.SamlTokenAttributeNameUPN);
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
 
@@ -415,7 +415,7 @@ namespace Office365FiddlerExtension.Inspectors
                     ResultsString.AppendLine("Name Identifier Format");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(getSetSessionFlags.GetSamlTokenNameIdentifierFormat(this.session));
+                    ResultsString.AppendLine(ExtensionSessionFlags.SamlTokenNameIdentifierFormat);
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
 
@@ -423,7 +423,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                     ResultsString.AppendLine("<p>Copy and save the below text into a .cer file to view the signing certificate.</p>");
                     ResultsString.AppendLine("-----BEGIN CERTIFICATE-----<br />");
-                    ResultsString.AppendLine($"{getSetSessionFlags.GetSamlTokenSigningCertificate(this.session)}<br />");
+                    ResultsString.AppendLine($"{ExtensionSessionFlags.SamlTokenSigningCertificate}<br />");
                     ResultsString.AppendLine("-----END CERTIFICATE-----");
                 }
                 #endregion
