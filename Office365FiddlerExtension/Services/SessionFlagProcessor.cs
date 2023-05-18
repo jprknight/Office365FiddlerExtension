@@ -70,7 +70,36 @@ namespace Office365FiddlerExtension.Services
             };*/
 
             // Make sure all session flags have something to start out with, even if all values are null.
-            var existingSessionFlags = "{\"SectionTitle\":null,\"UIBackColour\":null,\"UITextColour\":null,\"SessionType\":null,\"ResponseCodeDescription\":null,\"ResponseServer\":null,\"ResponseAlert\":null,\"ResponseComments\":null,\"Authentication\":null,\"SessionAuthenticationConfidenceLevel\":0,\"SessionTypeConfidenceLevel\":0,\"SessionResponseServerConfidenceLevel\":0}";
+            var existingSessionFlags = "{\"SectionTitle\":null," +
+                "\"SectionTitle\":null," +
+                "\"UIBackColour\":null," +
+                "\"UITextColour\":null," +
+                "\"SessionType\":null," +
+                "\"ResponseCodeDescription\":null," +
+                "\"ResponseServer\":null," +
+                "\"ResponseAlert\":null," +
+                "\"ResponseComments\":null," +
+                "\"DataAge\":null," +
+                "\"CalculatedSessionAge\":null," +
+                "\"DateDataCollected\":null," +
+                "\"SessionTimersDescription\":null," +
+                "\"ServerThinkTime\":null," +
+                "\"TransitTime\":null," +
+                "\"ElapsedTime\":null," +
+                "\"InspectorElapsedTime\":null," +
+                "\"Authentication\":null," +
+                "\"AuthenticationType\":null," +
+                "\"AuthenticationDescription\":null," +
+                "\"SamlTokenIssuer\":null," +
+                "\"SamlTokenSigningCertificate\":null," +
+                "\"SamlTokenAttributeNameUPN\":null," +
+                "\"SamlTokenNameIdentifierFormat\":null," +
+                "\"SamlTokenAttributeNameImmutibleID\":null," +
+                "\"ProcessName\":null," +
+                "\"SessionAuthenticationConfidenceLevel\":0," +
+                "\"SessionTypeConfidenceLevel\":0," +
+                "\"SessionResponseServerConfidenceLevel\":0}";
+
             var existingSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(existingSessionFlags);
 
             // pull Json for any session flags already set.
