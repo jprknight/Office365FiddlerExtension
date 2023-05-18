@@ -298,7 +298,7 @@
     <Compile Include="Services\RuleSetProcessor.cs" />
     <Compile Include="Services\SessionFlagProcessor.cs" />
     <Compile Include="Services\SettingsProcessor.cs" />
-    <Compile Include="Tabs\Office365TabPage.cs" />
+    <Compile Include="UI\Tabs\Office365TabPage.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="About.cs" />
     <Compile Include="SessionProcessor.cs" />
