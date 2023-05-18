@@ -22,13 +22,13 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running SetElapsedTime.");
 
-            // Populate the ElapsedTime column.
             if (this.session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") != "0:00:00.000" && this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
             {
                 double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
+                    SectionTitle = "SessionElapsedTime",
                     ElapsedTime = Milliseconds + "ms"
                 };
 
@@ -39,6 +39,7 @@ namespace Office365FiddlerExtension.Ruleset
             {
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
+                    SectionTitle = "SessionElapsedTime_NoData",
                     ElapsedTime = "No data"
                 };
 
@@ -65,6 +66,7 @@ namespace Office365FiddlerExtension.Ruleset
                 {
                     var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                     {
+                        SectionTitle = "InspectorElapsedTime_LessThanOneSecond",
                         InspectorElapsedTime = $"{ClientMilliseconds}ms"
                     };
 
@@ -76,6 +78,7 @@ namespace Office365FiddlerExtension.Ruleset
                 {
                     var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                     {
+                        SectionTitle = "InspectorElapsedTime_Warning",
                         InspectorElapsedTime = $"<b><span style='color:orange'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>"
                     };
 
@@ -87,6 +90,7 @@ namespace Office365FiddlerExtension.Ruleset
                 {
                     var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                     {
+                        SectionTitle = "InspectorElapsedTime_Slow",
                         InspectorElapsedTime = $"<b><span style='color:red'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>"
                     };
 
@@ -100,6 +104,7 @@ namespace Office365FiddlerExtension.Ruleset
                     {
                         var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                         {
+                            SectionTitle = "InspectorElapsedTime_MoreThanOneSecond",
                             InspectorElapsedTime = $"{ClientSeconds} second({ClientMilliseconds}ms)."
                         };
 
@@ -110,6 +115,7 @@ namespace Office365FiddlerExtension.Ruleset
                     {
                         var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                         {
+                            SectionTitle = "InspectorElapsedTime_Else",
                             InspectorElapsedTime = $"{ClientSeconds} seconds ({ClientMilliseconds}ms)."
                         };
 
@@ -122,6 +128,7 @@ namespace Office365FiddlerExtension.Ruleset
             {
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
+                    SectionTitle = "InspectorElapsedTime_Insufficient_Data",
                     InspectorElapsedTime = "Insufficient data"
                 };
 

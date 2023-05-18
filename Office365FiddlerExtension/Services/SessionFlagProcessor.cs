@@ -171,6 +171,18 @@ namespace Office365FiddlerExtension.Services
                 updatedSessionFlagsJson.TransitTime = existingSessionFlagsJson.TransitTime;
             }
 
+            // Elapsed Time
+            if (updatedSessionFlagsJson.ElapsedTime == null)
+            {
+                updatedSessionFlagsJson.ElapsedTime = existingSessionFlagsJson.ElapsedTime;
+            }
+
+            // Inspector Elapsed Time
+            if (updatedSessionFlagsJson.InspectorElapsedTime == null)
+            {
+                updatedSessionFlagsJson.InspectorElapsedTime = existingSessionFlagsJson.InspectorElapsedTime;
+            }
+
             // Authentication
             if (updatedSessionFlagsJson.Authentication == null)
             {
