@@ -10,18 +10,11 @@ namespace Office365FiddlerExtension.Services
 {
     class SessionFlagProcessor : ActivationService
     {
-        /*
-        public void SetExtensionSessionFlagJson(Session session, String Json)
-        {
-            this.session = session;
-            this.session["Microsoft365FiddlerExtensionJson"] = Json;
-        }*/
-
         private static SessionFlagProcessor _instance;
         public static SessionFlagProcessor Instance => _instance ?? (_instance = new SessionFlagProcessor());
 
-        public string GetSessionJsonData(Session session) 
-        { 
+        public string GetSessionJsonData(Session session)
+        {
             this.session = session;
             return this.session["Microsoft365FiddlerExtensionJson"];
         }
@@ -91,7 +84,17 @@ namespace Office365FiddlerExtension.Services
             var updatedSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(JsonData);
 
             // Add the new SectionTitle to any existing value.
-            string SectionTitle = existingSessionFlagsJson.SectionTitle + " " + updatedSessionFlagsJson.SectionTitle;
+            string SectionTitle;
+            
+            if (existingSessionFlagsJson.SectionTitle == null || existingSessionFlagsJson.SectionTitle.Length == 0)
+            {
+                SectionTitle = updatedSessionFlagsJson.SectionTitle;
+            }
+            else
+            {
+                SectionTitle = updatedSessionFlagsJson.SectionTitle + ", " + existingSessionFlagsJson.SectionTitle;
+            }
+            
             updatedSessionFlagsJson.SectionTitle = SectionTitle;
 
             // Replace all other values with new values as long as we don't pass in a null value.
@@ -223,16 +226,23 @@ namespace Office365FiddlerExtension.Services
             }
 
             // Session Confidence Levels
-            // REVIEW THIS. These are ints, so they'll never be null. Does it make sense here to check updated value is greater than
-            // existing value and only update if that's the case?
-            // For now just updating these with passed values as these should always be set on logic from the ruleset.
-            //updatedSessionFlagsJson.SessionAuthenticationConfidenceLevel = updatedSessionFlagsJson.SessionAuthenticationConfidenceLevel;
-            //updatedSessionFlagsJson.SessionResponseServerConfidenceLevel = updatedSessionFlagsJson.SessionResponseServerConfidenceLevel;
-            //SessionTypeConfidenceLevel = updatedSessionFlagsJson.SessionTypeConfidenceLevel;
 
-            //FiddlerApplication.Log.LogString($"Office365FiddlerExtension: SessionAuthenticationConfidenceLevel {updatedSessionFlagsJson.SessionAuthenticationConfidenceLevel}.");
-            //FiddlerApplication.Log.LogString($"Office365FiddlerExtension: SessionResponseServerConfidenceLevel {updatedSessionFlagsJson.SessionResponseServerConfidenceLevel}.");
-            //FiddlerApplication.Log.LogString($"Office365FiddlerExtension: SessionTypeConfidenceLevel {updatedSessionFlagsJson.SessionTypeConfidenceLevel}.");
+            // If the updated Session Confidence Levels are lower than the existing Session Confidence Levels, use the 
+            // existing Session Confidence Levels instead.
+            if (updatedSessionFlagsJson.SessionAuthenticationConfidenceLevel < existingSessionFlagsJson.SessionAuthenticationConfidenceLevel)
+            {
+                updatedSessionFlagsJson.SessionAuthenticationConfidenceLevel = existingSessionFlagsJson.SessionAuthenticationConfidenceLevel;
+            }
+
+            if (updatedSessionFlagsJson.SessionTypeConfidenceLevel < existingSessionFlagsJson.SessionTypeConfidenceLevel)
+            {
+                updatedSessionFlagsJson.SessionTypeConfidenceLevel = existingSessionFlagsJson.SessionTypeConfidenceLevel;
+            }
+
+            if (updatedSessionFlagsJson.SessionResponseServerConfidenceLevel < existingSessionFlagsJson.SessionResponseServerConfidenceLevel)
+            {
+                updatedSessionFlagsJson.SessionResponseServerConfidenceLevel = existingSessionFlagsJson.SessionResponseServerConfidenceLevel;
+            }
 
             var newJsonData = JsonConvert.SerializeObject(updatedSessionFlagsJson, Formatting.Indented);
 

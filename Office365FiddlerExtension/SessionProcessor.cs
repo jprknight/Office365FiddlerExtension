@@ -90,7 +90,7 @@ namespace Office365FiddlerExtension
                 session.oFlags.Remove("X-SACL");
                 session.oFlags.Remove("X-STCL");
                 session.oFlags.Remove("X-SRSCL");
-
+                session.oFlags.Remove("MICROSOFT365FIDDLEREXTENSIONJSON");
             }
 
             FiddlerApplication.UI.lvSessions.EndUpdate();

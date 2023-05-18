@@ -15,8 +15,6 @@ namespace Office365FiddlerExtension.Inspectors
     /// </summary>
     public class Office365Inspector : Inspector2, IResponseInspector2
     {
-        GetSetSessionFlags getSetSessionFlags = new GetSetSessionFlags();
-
         public Office365Inspector()
         {
 

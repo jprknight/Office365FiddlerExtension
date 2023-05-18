@@ -117,7 +117,7 @@ namespace Office365FiddlerExtension.Ruleset
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
                 SectionTitle = "",
-                UIBackColour = "Orange",
+                UIBackColour = "Red",
                 UITextColour = "Black",
 
                 SessionType = "Multi-Factor Auth?",
