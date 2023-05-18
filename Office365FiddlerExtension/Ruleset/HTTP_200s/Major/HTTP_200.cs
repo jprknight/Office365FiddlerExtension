@@ -155,9 +155,9 @@ namespace Office365FiddlerExtension.Ruleset
                 ResponseAlert = "Outlook for Windows M365 MAPI traffic",
                 ResponseComments = "This is normal Outlook MAPI over HTTP traffic to an Exchange Online / Microsoft365 mailbox.",
 
-                SessionAuthenticationConfidenceLevel = 10,
+                SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 10
+                SessionResponseServerConfidenceLevel = 5
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

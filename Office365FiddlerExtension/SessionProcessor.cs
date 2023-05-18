@@ -337,8 +337,21 @@ namespace Office365FiddlerExtension
             #endregion
 
             // All session logic has now run. Set colours session flags.
+            SetUIData(this.session);
+        }
+
+        public void SetUIData(Session session)
+        {
+            this.session = session;
+
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+
             SetUIBackColour(this.session);
             SetUITextColour(this.session);
+            this.session["X-ElapsedTIme"] = ExtensionSessionFlags.ElapsedTime;
+            this.session["X-Authentication"] = ExtensionSessionFlags.Authentication;
+            this.session["x-SessionType"] = ExtensionSessionFlags.SessionType;
+            this.session["X-ResponseServer"] = ExtensionSessionFlags.ResponseServer;
         }
 
         public string ResponseCommentsNoKnownIssue()
