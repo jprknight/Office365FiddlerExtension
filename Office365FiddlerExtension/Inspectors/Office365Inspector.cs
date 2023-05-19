@@ -161,7 +161,7 @@ namespace Office365FiddlerExtension.Inspectors
         public bool IsHTTP
         {
             get
-            {
+            { // REVIEW THIS. Does this make sense???
                 if (this.session != null && (this is IResponseInspector2))
                 {
                     this.session.utilDecodeRequest(true);

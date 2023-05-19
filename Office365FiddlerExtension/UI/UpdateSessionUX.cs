@@ -66,7 +66,6 @@ namespace Office365FiddlerExtension.UI
             this.session["X-Authentication"] = ExtensionSessionFlags.Authentication;
             this.session["x-SessionType"] = ExtensionSessionFlags.SessionType;
             this.session["X-ResponseServer"] = ExtensionSessionFlags.ResponseServer;
-            //this.session["X-Process"] = ExtensionSessionFlags.ProcessName;
         }
     }
 }
