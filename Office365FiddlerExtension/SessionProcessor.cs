@@ -129,6 +129,7 @@ namespace Office365FiddlerExtension
         public void OnPeekAtResponseHeaders(Session session)
         {
             this.session = session;
+            this.session = session;
 
             // Decode session requests/responses.
             this.session.utilDecodeRequest(true);
