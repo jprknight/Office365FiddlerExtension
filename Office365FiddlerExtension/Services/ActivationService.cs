@@ -1,7 +1,5 @@
 ﻿using Fiddler;
 using System.Windows.Forms;
-using Office365FiddlerExtension.UI;
-//using O365FiddlerInspector.UI;
 using System.Text;
 using System;
 using System.Reflection;
@@ -105,7 +103,7 @@ namespace Office365FiddlerExtension.Services
             // Call the main fuction which runs through all session logic checks.
             SessionProcessor.Instance.OnPeekAtResponseHeaders(this.session);
 
-            session.RefreshUI();
+            this.session.RefreshUI();
         }
 
         /// <summary>
