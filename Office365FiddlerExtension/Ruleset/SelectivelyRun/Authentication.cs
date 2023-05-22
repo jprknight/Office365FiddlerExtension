@@ -30,7 +30,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running SetAuthentication_NoAuthHeaders.");
 
-            SessionFlagProcessor.Instance.SetProcess(this.session);
+            ProcessName.Instance.SetProcessName(this.session);
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -70,6 +70,7 @@ namespace Office365FiddlerExtension.Ruleset
                         SessionType = "SAML Request/Response",
                         ResponseComments = "ADFS SAML response found. See below for SAML response parser.",
 
+                        Authentication = "SAMLResponseParser",
                         AuthenticationType = "SAMLResponseParser",
                         AuthenticationDescription = "ADFS SAML response found. See below for SAML response parser.",
 
@@ -177,7 +178,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            if (this.session.oRequest["Authorization"] != "Bearer")
+            if (!this.session.oRequest["Authorization"].Contains("Bearer"))
             {
                 return;
             }
@@ -203,7 +204,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            if (this.session.oRequest["Authorization"] != "Basic")
+            if (!this.session.oRequest["Authorization"].Contains("Basic"))
             {
                 return;
             }

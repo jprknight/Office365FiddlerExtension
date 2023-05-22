@@ -199,6 +199,7 @@
   <ItemGroup>
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks.cs" />
     <Compile Include="Ruleset\AlwaysRun\CalculateSessionAge.cs" />
+    <Compile Include="Ruleset\AlwaysRun\ProcessName.cs" />
     <Compile Include="Ruleset\HTTP_0\HTTP_0.cs" />
     <Compile Include="Ruleset\HTTP_100s\HTTP_103.cs" />
     <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200.cs" />

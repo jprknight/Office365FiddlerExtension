@@ -29,7 +29,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "SetResponseServer_Server",
+                SectionTitle = "ResponseServer_Server",
                 ResponseServer = this.session.oResponse["Server"],
 
                 SessionResponseServerConfidenceLevel = 10
@@ -52,7 +52,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "SetResponseServer_Host",
+                SectionTitle = "ResponseServer_Host",
                 ResponseServer = this.session.oResponse["Host"],
 
                 SessionResponseServerConfidenceLevel = 10
@@ -75,7 +75,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "SetResponseServer_PoweredBy",
+                SectionTitle = "ResponseServer_PoweredBy",
                 ResponseServer = this.session.oResponse["X-Powered-By"],
 
                 SessionResponseServerConfidenceLevel = 10
@@ -97,7 +97,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "SetResponseServer_ServedBy",
+                SectionTitle = "ResponseServer_ServedBy",
                 ResponseServer = this.session.oResponse["X-Served-By"],
 
                 SessionResponseServerConfidenceLevel = 10
@@ -119,7 +119,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "SetResponseServer_ServerName",
+                SectionTitle = "ResponseServer_ServerName",
                 ResponseServer = "X-Served-Name: " + this.session.oResponse["X-Server-Name"],
 
                 SessionResponseServerConfidenceLevel = 10

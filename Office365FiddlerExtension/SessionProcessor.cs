@@ -4,6 +4,7 @@ using Office365FiddlerExtension.Ruleset;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtension.UI;
 using System;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using static Office365FiddlerExtension.Services.SessionFlagProcessor;
 
@@ -149,6 +150,9 @@ namespace Office365FiddlerExtension
             // Set Elapsed Time column data.
             SessionElapsedTime.Instance.SetElapsedTime(this.session);
             SessionElapsedTime.Instance.SetInspectorElapsedTime(this.session);
+
+            // Set Process Name.
+            ProcessName.Instance.SetProcessName(this.session);
 
             ///////////////////////////////
             ///

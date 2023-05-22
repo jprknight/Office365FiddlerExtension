@@ -1046,7 +1046,7 @@ namespace Office365FiddlerExtension.Ruleset
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_200s",
-                    UIBackColour = "Green",
+                    UIBackColour = "Black",
                     UITextColour = "Red",
 
                     SessionType = "!FAILURE LURKING!",

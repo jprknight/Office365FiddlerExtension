@@ -6,7 +6,6 @@ using Office365FiddlerExtension.Services;
 using System.Text;
 using Office365FiddlerExtension.UI;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace Office365FiddlerExtension.Inspectors
 {
@@ -422,13 +421,22 @@ namespace Office365FiddlerExtension.Inspectors
                     ResultsString.AppendLine(ExtensionSessionFlags.SamlTokenNameIdentifierFormat);
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
-
                     ResultsString.AppendLine("</table>");
 
                     ResultsString.AppendLine("<p>Copy and save the below text into a .cer file to view the signing certificate.</p>");
                     ResultsString.AppendLine("-----BEGIN CERTIFICATE-----<br />");
-                    ResultsString.AppendLine($"{ExtensionSessionFlags.SamlTokenSigningCertificate}<br />");
-                    ResultsString.AppendLine("-----END CERTIFICATE-----");
+                    // REVIEW THIS. It'd be nice to split the cert string into 50 wide lines.
+
+                    string str = ExtensionSessionFlags.SamlTokenSigningCertificate;
+                    int chunkSize = 50;
+                    int stringLength = str.Length;
+                    for (int i = 0; i < stringLength; i += chunkSize)
+                    {
+                        if (i + chunkSize > stringLength) chunkSize = stringLength - i;
+                        ResultsString.AppendLine(str.Substring(i, chunkSize));
+
+                    }
+                    ResultsString.AppendLine("<br />-----END CERTIFICATE-----");
                 }
                 #endregion
 
@@ -553,10 +561,20 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
+                if (ExtensionSessionFlags.SessionTimersDescription != "Initial / Not detected")
+                {
+                    ResultsString.AppendLine("<tr>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine("Description");
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine(ExtensionSessionFlags.SessionTimersDescription);
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("</tr>");
+                }
+
                 ResultsString.AppendLine("</table>");
                 #endregion
-
-                ResultsString.AppendLine($"<p>{ExtensionSessionFlags.SessionTimersDescription}</p>");
 
                 ResultsString.AppendLine("<p>For an explantion of session timers refer to: <a href='https://aka.ms/Timers-Definitions' target='_blank'>https://aka.ms/Timers-Definitions</a>.</p>");
 
@@ -577,7 +595,6 @@ namespace Office365FiddlerExtension.Inspectors
                 Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
             }
         }
-
 
         /// <summary>
         /// Method Fiddler calls to clear the display

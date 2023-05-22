@@ -32,7 +32,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "SetSessionType",
+                SectionTitle = "SessionType_Free/Busy",
                 SessionType = "Free/Busy",
                 SessionTypeConfidenceLevel = 10
             };
@@ -54,7 +54,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "SetSessionType",
+                SectionTitle = "SessionType_Microsoft365_EWS",
                 SessionType = "Microsoft 365 Exchange Web Services",
                 SessionTypeConfidenceLevel = 10
             };
@@ -76,7 +76,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "SetSessionType",
+                SectionTitle = "SessionType_EWS",
                 SessionType = "Exchange Web Services",
                 SessionTypeConfidenceLevel = 10
             };
@@ -96,7 +96,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
-                    SectionTitle = "SetSessionType",
+                    SectionTitle = "SessionType_Microsoft365_Authentication",
                     SessionType = "Microsoft365 Authentication",
                     SessionTypeConfidenceLevel = 10
                 };
@@ -119,7 +119,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "SetSessionType",
+                SectionTitle = "SessionType_ADFS_Authentication",
                 SessionType = "ADFS Authentication",
                 SessionTypeConfidenceLevel = 10
             };
@@ -146,7 +146,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "SetSessionType",
+                SectionTitle = "SessionType_General_Microsoft365",
                 SessionType = "General Microsoft365",
                 SessionTypeConfidenceLevel = 10
             };
@@ -175,7 +175,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
-                    SectionTitle = "SetSessionType",
+                    SectionTitle = "SessionType_Office_Applications",
                     SessionType = this.session.LocalProcess.Split(':')[0],
                     SessionTypeConfidenceLevel = 10
                 };
@@ -201,7 +201,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
-                    SectionTitle = "SetSessionType",
+                    SectionTitle = "SessionType_Internet_Browsers",
                     SessionType = this.session.LocalProcess.Split(':')[0],
                     SessionTypeConfidenceLevel = 10
                 };
@@ -220,9 +220,9 @@ namespace Office365FiddlerExtension.Ruleset
             // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
             if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running SetSessionType_Internet_Browsers");
+                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running SessionType_Remote_Capture");
 
-                SessionFlagProcessor.Instance.SetProcess(this.session);
+                ProcessName.Instance.SetProcessName(this.session);
             }
         }
 
