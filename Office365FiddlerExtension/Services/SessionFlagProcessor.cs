@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Fiddler;
 using Newtonsoft.Json;
+using System.Text.Json;
+using Newtonsoft.Json.Linq;
+using System.Xml.Linq;
+using Office365FiddlerExtension.Ruleset;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -58,63 +64,78 @@ namespace Office365FiddlerExtension.Services
             SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
+        public void CreateExtensionSessionFlag(Session session)
+        {
+            this.session = session;
+
+            if (this.session["Microsoft365FiddlerExtensionJson"] == null)
+            {
+                var SessionFlagsData = new
+                {
+                    SectionTitle = "Initial / Not detected",
+                    UIBackColour = "Initial / Not detected",
+                    UITextColour = "Initial / Not detected",
+                    SessionType = "Initial / Not detected",
+                    ResponseCodeDescription = "Initial / Not detected",
+                    ResponseServer = "Initial / Not detected",
+                    ResponseAlert = "Initial / Not detected",
+                    ResponseComments = "Initial / Not detected",
+                    DataAge = "Initial / Not detected",
+                    CalculatedSessionAge = "Initial / Not detected",
+                    DateDataCollected = "Initial / Not detected",
+                    SessionTimersDescription = "Initial / Not detected",
+                    ServerThinkTime = "Initial / Not detected",
+                    TransitTime = "Initial / Not detected",
+                    ElapsedTime = "Initial / Not detected",
+                    InspectorElapsedTime = "Initial / Not detected",
+                    Authentication = "Initial / Not detected",
+                    AuthenticationType = "Initial / Not detected",
+                    AuthenticationDescription = "Initial / Not detected",
+                    SamlTokenIssuer = "Initial / Not detected",
+                    SamlTokenSigningCertificate = "Initial / Not detected",
+                    SamlTokenAttributeNameUPN = "Initial / Not detected",
+                    SamlTokenNameIdentifierFormat = "Initial / Not detected",
+                    SamlTokenAttributeNameImmutibleID = "Initial / Not detected",
+                    ProcessName = "Initial / Not detected",
+                    SessionAuthenticationConfidenceLevel = "0",
+                    SessionTypeConfidenceLevel = "0",
+                    SessionResponseServerConfidenceLevel = "0"
+                };
+
+                //Tranform the object to a Json object.
+                string jsonData = JsonConvert.SerializeObject(SessionFlagsData, Formatting.Indented);
+
+                // Save the new Json to the session flag.
+                this.session["Microsoft365FiddlerExtensionJson"] = jsonData;
+            }            
+        }
+
         // Take any updates to session flags and save them into the session Json.
         public void UpdateSessionFlagJson(Session session, String JsonData)
         {
             this.session = session;
-            
-            var JsonSettings = new JsonSerializerSettings
+
+            /*var JsonSettings = new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
                 MissingMemberHandling = MissingMemberHandling.Ignore
-            };
+            };*/
 
-            // Make sure all session flags have something to start out with, even if all values are null.
-            var existingSessionFlags = "{\"SectionTitle\":null," +
-                "\"SectionTitle\":null," +
-                "\"UIBackColour\":null," +
-                "\"UITextColour\":null," +
-                "\"SessionType\":null," +
-                "\"ResponseCodeDescription\":null," +
-                "\"ResponseServer\":null," +
-                "\"ResponseAlert\":null," +
-                "\"ResponseComments\":null," +
-                "\"DataAge\":null," +
-                "\"CalculatedSessionAge\":null," +
-                "\"DateDataCollected\":null," +
-                "\"SessionTimersDescription\":null," +
-                "\"ServerThinkTime\":null," +
-                "\"TransitTime\":null," +
-                "\"ElapsedTime\":null," +
-                "\"InspectorElapsedTime\":null," +
-                "\"Authentication\":null," +
-                "\"AuthenticationType\":null," +
-                "\"AuthenticationDescription\":null," +
-                "\"SamlTokenIssuer\":null," +
-                "\"SamlTokenSigningCertificate\":null," +
-                "\"SamlTokenAttributeNameUPN\":null," +
-                "\"SamlTokenNameIdentifierFormat\":null," +
-                "\"SamlTokenAttributeNameImmutibleID\":null," +
-                "\"ProcessName\":null," +
-                "\"SessionAuthenticationConfidenceLevel\":0," +
-                "\"SessionTypeConfidenceLevel\":0," +
-                "\"SessionResponseServerConfidenceLevel\":0}";
-
-            var existingSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(existingSessionFlags, JsonSettings);
-
-            // pull Json for any session flags already set.
-            if (this.session["Microsoft365FiddlerExtensionJson"] != null)
+            if (this.session["Microsoft365FiddlerExtensionJson"] == null)
             {
-                existingSessionFlags = this.session["Microsoft365FiddlerExtensionJson"];
-                existingSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(existingSessionFlags, JsonSettings);
+                CreateExtensionSessionFlag(this.session);
             }
+
+            var existingSessionFlags = this.session["Microsoft365FiddlerExtensionJson"];
+            var existingSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(existingSessionFlags);
+
 
             // Pull Json for new session flags passed into function.
             var updatedSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(JsonData);
 
             // Add the new SectionTitle to any existing value.
             string SectionTitle;
-            
+
             if (existingSessionFlagsJson.SectionTitle == null || existingSessionFlagsJson.SectionTitle.Length == 0)
             {
                 SectionTitle = updatedSessionFlagsJson.SectionTitle;
@@ -123,47 +144,47 @@ namespace Office365FiddlerExtension.Services
             {
                 SectionTitle = updatedSessionFlagsJson.SectionTitle + ", " + existingSessionFlagsJson.SectionTitle;
             }
-            
+
             updatedSessionFlagsJson.SectionTitle = SectionTitle;
 
             // Replace all other values with new values as long as we don't pass in a null value.
-            
+
             // UIBackColour
             if (updatedSessionFlagsJson.UIBackColour == null)
             {
                 updatedSessionFlagsJson.UIBackColour = existingSessionFlagsJson.UIBackColour;
             }
-            
+
             // UITextColour
             if (updatedSessionFlagsJson.UITextColour == null)
             {
                 updatedSessionFlagsJson.UITextColour = existingSessionFlagsJson.UITextColour;
             }
-            
+
             // Session Type
             if (updatedSessionFlagsJson.SessionType == null)
             {
                 updatedSessionFlagsJson.SessionType = existingSessionFlagsJson.SessionType;
             }
-            
+
             // Response Code Description
             if (updatedSessionFlagsJson.ResponseCodeDescription == null)
             {
                 updatedSessionFlagsJson.ResponseCodeDescription = existingSessionFlagsJson.ResponseCodeDescription;
             }
-            
+
             // Response Server
             if (updatedSessionFlagsJson.ResponseServer == null)
             {
                 updatedSessionFlagsJson.ResponseServer = existingSessionFlagsJson.ResponseServer;
             }
-            
+
             // Response Alert
             if (updatedSessionFlagsJson.ResponseAlert == null)
             {
                 updatedSessionFlagsJson.ResponseAlert = existingSessionFlagsJson.ResponseAlert;
             }
-            
+
             // Response Comments
             if (updatedSessionFlagsJson.ResponseComments == null)
             {
@@ -175,17 +196,22 @@ namespace Office365FiddlerExtension.Services
             {
                 updatedSessionFlagsJson.DataAge = existingSessionFlagsJson.DataAge;
             }
-            
+
             // Calculated Session Age
             if (updatedSessionFlagsJson.CalculatedSessionAge == null)
             {
                 updatedSessionFlagsJson.CalculatedSessionAge = existingSessionFlagsJson.CalculatedSessionAge;
             }
-            
+
             // Date Data Collected
             if (updatedSessionFlagsJson.DateDataCollected == null)
             {
                 updatedSessionFlagsJson.DateDataCollected = existingSessionFlagsJson.DateDataCollected;
+            }
+
+            if (updatedSessionFlagsJson.SessionTimersDescription == null)
+            {
+                updatedSessionFlagsJson.SessionTimersDescription = existingSessionFlagsJson.SessionTimersDescription;
             }
 
             // Server Think Time

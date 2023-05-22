@@ -114,12 +114,7 @@ namespace Office365FiddlerExtension
 
                 if (Preferences.ExtensionEnabled)
                 {
-                    // Call the main fuction which runs through all session logic checks.
                     Instance.OnPeekAtResponseHeaders(this.session);
-
-                    UpdateSessionUX.Instance.DressSessions(this.session);
-                    
-                    this.session.RefreshUI();
                 }
             }
             FiddlerApplication.UI.lvSessions.EndUpdate();
@@ -129,7 +124,8 @@ namespace Office365FiddlerExtension
         public void OnPeekAtResponseHeaders(Session session)
         {
             this.session = session;
-            this.session = session;
+
+            SessionFlagProcessor.Instance.CreateExtensionSessionFlag(this.session);
 
             // Decode session requests/responses.
             this.session.utilDecodeRequest(true);
@@ -339,6 +335,8 @@ namespace Office365FiddlerExtension
                 LongRunningSessions.Instance.LongRunningSessionsServerSlow(this.session);
             }
             #endregion
+
+            UpdateSessionUX.Instance.DressSessions(this.session);
         }
 
         public string ResponseCommentsNoKnownIssue()
