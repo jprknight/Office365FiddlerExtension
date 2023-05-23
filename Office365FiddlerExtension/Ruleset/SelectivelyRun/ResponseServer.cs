@@ -25,7 +25,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running SetResponseServer_Server.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetResponseServer_Server.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

@@ -375,8 +375,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /y /s "$(TargetDir)*.*" "C:\Tools\Fiddler\Scripts"
-xcopy /y /s "$(TargetDir)*.*" "C:\Tools\Fiddler\Inspectors"
-</PostBuildEvent>
+xcopy /y /s "$(TargetDir)*.*" "C:\Tools\Fiddler\Inspectors"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.11.0\build\Microsoft.ApplicationInsights.DependencyCollector.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.11.0\build\Microsoft.ApplicationInsights.DependencyCollector.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

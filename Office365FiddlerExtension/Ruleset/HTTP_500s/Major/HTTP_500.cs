@@ -31,7 +31,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 500 Internal Server Error.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 500 Internal Server Error.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -78,7 +78,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 500 EWS Impersonate User Denied.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 500 EWS Impersonate User Denied.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -118,7 +118,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 500 Internal Server Error - OWA Something went wrong.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 500 Internal Server Error - OWA Something went wrong.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -150,7 +150,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 500 Internal Server Error.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 500 Internal Server Error.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

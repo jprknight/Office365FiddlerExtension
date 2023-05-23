@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 301 Moved Permanently.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 301 Moved Permanently.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

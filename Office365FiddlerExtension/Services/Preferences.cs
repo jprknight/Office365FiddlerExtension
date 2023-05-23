@@ -14,6 +14,11 @@ namespace Office365FiddlerExtension.Services
         {
         }
 
+        public static string LogPrepend()
+        {
+            return "Office365FiddlerExtension";
+        }
+
         /// <summary>
         /// This is the low water mark for what is considered a slow running session, considering a number of factors.
         /// Exchange response times are typically going to be much quicker than this. In the < 300ms range.
@@ -67,23 +72,8 @@ namespace Office365FiddlerExtension.Services
                 // Whether the extension is enabled or disabled on loading Fiddler, it will show Enable.
                 // Stopping this to simplify the UI.
                 //MenuUI.Instance.MiEnabled.Text = ExtensionEnabled ? "Disable" : "Enable";
-                MenuUI.Instance.ExchangeOnlineTopMenu.Text = ExtensionEnabled ? "Office 365" : "Office 365 (Disabled)";
+                MenuUI.Instance.ExtensionMenu.Text = ExtensionEnabled ? "Office 365" : "Office 365 (Disabled)";
             }
-        }
-
-        private static bool _appLoggingEnabled;
-        public static bool AppLoggingEnabled
-        {
-            get => _appLoggingEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.AppLoggingEnabled", true);
-            // Removed AppLoggingEnabled Menu Item in the simplity update v1.71. Changed this to only allow a get.
-            // Disable appLoggingEnabled via the Fiddler application preference if needed.
-            // After leaving this on for several versions, no known issues raised. Making app logging enabled by default.
-            //set
-            //{
-            //    _appLoggingEnabled = value;
-            //    FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.AppLoggingEnabled", value);
-            //    MenuUI.Instance.miAppLoggingEnabled.Checked = AppLoggingEnabled;
-            //}
         }
 
         private static Int32 _executionCount;

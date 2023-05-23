@@ -18,13 +18,13 @@ namespace Office365FiddlerExtension.Services
             // If disable web calls is set, don't look for any URL updates.
             if (Preferences.DisableWebCalls)
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: DisableWebCalls is enabled, not checking for updates for settings.json.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: DisableWebCalls is enabled, not checking for updates for settings.json.");
                 return;
             }
 
             if (Properties.Settings.Default._SettingsJsonLastUpdated <  DateTime.Now.AddHours(24)) 
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: Updates for settings.json checked within 24 hours, no update check performed.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Updates for settings.json checked within 24 hours, no update check performed.");
                 return;
             }
 
@@ -63,14 +63,14 @@ namespace Office365FiddlerExtension.Services
                 catch (Exception ex)
                 {
                     exception = true;
-                    FiddlerApplication.Log.LogString($"Office365FiddlerExtension: Error retrieving settings from Github {ex}");
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Error retrieving settings from Github {ex}");
                 }
 
                 // If there is no exception here, update the settings last checked.
                 if (!exception)
                 {
                     var localSettingsJson = JsonConvert.DeserializeObject<SettingsJson>(Properties.Settings.Default._SettingsJson);
-                    FiddlerApplication.Log.LogString($"Office365FiddlerExtension: Local setting _SettingsJson updated from Github.");
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Local setting _SettingsJson updated from Github.");
                     localSettingsJson.SettingsLastUpdated = DateTime.Now;
                 }
             }

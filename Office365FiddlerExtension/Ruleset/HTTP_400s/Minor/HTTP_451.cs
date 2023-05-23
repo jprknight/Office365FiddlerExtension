@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

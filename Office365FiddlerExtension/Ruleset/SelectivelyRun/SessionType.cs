@@ -28,7 +28,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running SetSessionType_FreeBusy");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_FreeBusy");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -50,7 +50,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running SetSessionType_Microsoft365_EWS");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_Microsoft365_EWS");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -72,7 +72,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running SetSessionType_EWS");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_EWS");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -92,7 +92,7 @@ namespace Office365FiddlerExtension.Ruleset
             // This check needs to be inclusive, so we don't exclude sessions.
             if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com"))
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running SetSessionType_Microsoft365_Authentication");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_Microsoft365_Authentication");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -115,7 +115,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running SetSessionType_ADFS_Authentication");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_ADFS_Authentication");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -142,7 +142,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running SetSessionType_General_Microsoft365");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_General_Microsoft365");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -171,7 +171,7 @@ namespace Office365FiddlerExtension.Ruleset
                 || this.session.LocalProcess.Contains("lync")
                 || this.session.LocalProcess.Contains("w3wp"))
                 {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running SetSessionType_Office_Applications");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_Office_Applications");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -197,7 +197,7 @@ namespace Office365FiddlerExtension.Ruleset
                 || this.session.LocalProcess.Contains("safari")
                 || this.session.LocalProcess.Contains("brave"))
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running SetSessionType_Internet_Browsers");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_Internet_Browsers");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -220,7 +220,7 @@ namespace Office365FiddlerExtension.Ruleset
             // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
             if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running SessionType_Remote_Capture");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SessionType_Remote_Capture");
 
                 ProcessName.Instance.SetProcessName(this.session);
             }
@@ -231,7 +231,7 @@ namespace Office365FiddlerExtension.Ruleset
             
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running SetSessionType_Unclassified");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_Unclassified");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

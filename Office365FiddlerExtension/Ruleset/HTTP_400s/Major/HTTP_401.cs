@@ -28,7 +28,7 @@ namespace Office365FiddlerExtension.Ruleset
                 || (this.session.hostname == "outlook.office365.com")
                 && (this.session.uriContains("autodiscover.xml")))
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 401 Auth Challenge.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 401 Auth Challenge.");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -71,7 +71,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             if (this.session.uriContains("/Autodiscover/Autodiscover.xml"))
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 401 Auth Challenge.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 401 Auth Challenge.");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -107,7 +107,7 @@ namespace Office365FiddlerExtension.Ruleset
             // 401.3 Any Exchange Web Services
             if (session.uriContains("/EWS/Exchange.asmx"))
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 401 EWS call.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 401 EWS call.");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -135,7 +135,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 401 Auth Challenge.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 401 Auth Challenge.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

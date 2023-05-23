@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 496 nginx SSL Certificate Required.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 496 nginx SSL Certificate Required.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

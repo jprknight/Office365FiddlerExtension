@@ -29,7 +29,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running LongRunningSessionsWarning.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running LongRunningSessionsWarning.");
 
             // Warn on a 2.5 second roundtrip time. Using ClientMilliseconds here since that represents the complete round trip.
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
@@ -60,7 +60,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Long running client session.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Long running client session.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -96,7 +96,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Long running Office 365 session.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Long running Office 365 session.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 522 Cloudflare Connection Timed Out.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 522 Cloudflare Connection Timed Out.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 526 Cloudflare Invalid SSL Certificate.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 526 Cloudflare Invalid SSL Certificate.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

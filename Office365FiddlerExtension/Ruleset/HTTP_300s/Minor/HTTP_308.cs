@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 308 Permanent Redirect (RFC 7538).");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 308 Permanent Redirect (RFC 7538).");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

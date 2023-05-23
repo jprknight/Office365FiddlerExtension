@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 422 Unprocessable Entity (WebDAV; RFC 4918).");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 422 Unprocessable Entity (WebDAV; RFC 4918).");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

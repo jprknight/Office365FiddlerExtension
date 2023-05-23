@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 421 Misdirected Request (RFC 7540).");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 421 Misdirected Request (RFC 7540).");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

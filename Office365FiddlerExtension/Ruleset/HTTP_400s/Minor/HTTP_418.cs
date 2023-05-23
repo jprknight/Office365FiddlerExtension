@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 418 I'm a teapot (RFC 2324, RFC 7168).");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 418 I'm a teapot (RFC 2324, RFC 7168).");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

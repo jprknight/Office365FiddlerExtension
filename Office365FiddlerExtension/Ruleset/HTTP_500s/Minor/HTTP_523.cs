@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 523 Cloudflare Origin Is Unreachable.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 523 Cloudflare Origin Is Unreachable.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

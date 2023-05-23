@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 463 AWS X-Forwarded-For Header > 30 IP addresses.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 463 AWS X-Forwarded-For Header > 30 IP addresses.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

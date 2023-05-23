@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 499 Token Required (Esri) or nginx Client Closed Request.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 499 Token Required (Esri) or nginx Client Closed Request.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

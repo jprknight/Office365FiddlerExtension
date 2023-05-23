@@ -106,8 +106,8 @@ namespace Office365FiddlerExtension
                     {
                         // Execute the installer MSI URL, which will open in the user's default browser.
                         System.Diagnostics.Process.Start(Properties.Settings.Default.InstallerURL);
-                        FiddlerApplication.Log.LogString($"Office365FiddlerExtension: Version installed. v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}");
-                        FiddlerApplication.Log.LogString($"Office365FiddlerExtension: New Version Available. v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}");
+                        FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Version installed. v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}");
+                        FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: New Version Available. v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}");
                     }
                     // return this perference back to false, so we don't give this feedback unintentionally.
                     Preferences.ManualCheckForUpdate = false;

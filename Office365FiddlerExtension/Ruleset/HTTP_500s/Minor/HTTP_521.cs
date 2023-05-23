@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 521 Cloudflare Web Server Is Down.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 521 Cloudflare Web Server Is Down.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

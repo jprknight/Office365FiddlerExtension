@@ -25,13 +25,13 @@ namespace Office365FiddlerExtension.Services
         {
             if (Preferences.DisableWebCalls)
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: DisableWebCalls is enabled, no ruleset update check performed.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: DisableWebCalls is enabled, no ruleset update check performed.");
                 return;
             }
 
             if (DateTime.Now < Properties.Settings.Default.LocalMasterRulesetLastUpdated) 
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: Rules have been checked within the last 24 hours, no ruleset update check performed.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Rules have been checked within the last 24 hours, no ruleset update check performed.");
                 return;
             }
 
@@ -72,7 +72,7 @@ namespace Office365FiddlerExtension.Services
                         // jsonString came back as empty.
                         if (jsonString == null)
                         {
-                            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: Error retrieving ruleset from Github: jsonString null.");
+                            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Error retrieving ruleset from Github: jsonString null.");
                         }
                         // jsonString has something in it. See if the version value on Github is newer than what we have stored locally.
                         else
@@ -100,7 +100,7 @@ namespace Office365FiddlerExtension.Services
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"Office365FiddlerExtension: Error retrieving ruleset from Github {ex}.");
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Error retrieving ruleset from Github {ex}.");
                 }
             }
             #endregion

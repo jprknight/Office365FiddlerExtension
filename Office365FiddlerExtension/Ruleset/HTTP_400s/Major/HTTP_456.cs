@@ -31,7 +31,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
              
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 456 Multi-Factor Required!");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 456 Multi-Factor Required!");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -74,7 +74,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 456 Multi-Factor Required!");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 456 Multi-Factor Required!");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -112,7 +112,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 456 Multi-Factor Required.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 456 Multi-Factor Required.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

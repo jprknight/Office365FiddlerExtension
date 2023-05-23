@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 450 Blocked by Windows Parental Controls (Microsoft).");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 450 Blocked by Windows Parental Controls (Microsoft).");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

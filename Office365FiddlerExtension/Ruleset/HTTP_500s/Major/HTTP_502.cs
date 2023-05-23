@@ -34,7 +34,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 502 Bad Gateway. Telemetry False Positive.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 502 Bad Gateway. Telemetry False Positive.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -76,7 +76,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 502 Bad Gateway. EXO DNS False Positive.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 502 Bad Gateway. EXO DNS False Positive.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -124,7 +124,7 @@ namespace Office365FiddlerExtension.Ruleset
             }
 
             
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 502 Bad Gateway. O365 AutoD onmicrosoft.com False Positive.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 502 Bad Gateway. O365 AutoD onmicrosoft.com False Positive.");
 
             string AutoDFalsePositiveDomain;
             string AutoDFalsePositiveResponseBody = this.session.GetResponseBodyAsString();
@@ -200,7 +200,7 @@ namespace Office365FiddlerExtension.Ruleset
             System.Net.Sockets.SocketException No connection could be made because the target machine actively refused it 40.97.100.8:443                                                                                                                                                                                                                                                                                  
             */
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 502 Bad Gateway. Vanity domain AutoD False Positive.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 502 Bad Gateway. Vanity domain AutoD False Positive.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -248,7 +248,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 502 Bad Gateway. Exchange Autodiscover.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 502 Bad Gateway. Exchange Autodiscover.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -276,7 +276,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 502 Bad Gateway.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 502 Bad Gateway.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

@@ -33,7 +33,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 503 Service Unavailable. FederatedStsUnreachable in response body!");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 503 Service Unavailable. FederatedStsUnreachable in response body!");
 
             string RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=" + this.session.oRequest["X-User-Identity"] + "&xml=1";
 
@@ -83,7 +83,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 503 Service Unavailable.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 503 Service Unavailable.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

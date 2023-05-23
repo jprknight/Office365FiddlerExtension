@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 218 This is fine (Apache Web Server).");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 218 This is fine (Apache Web Server).");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

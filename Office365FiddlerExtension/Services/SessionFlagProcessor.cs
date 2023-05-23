@@ -48,7 +48,7 @@ namespace Office365FiddlerExtension.Services
 
             if (this.session["Microsoft365FiddlerExtensionJson"] == null)
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Json extension session flag not found. Creating.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Json extension session flag not found. Creating.");
 
                 var SessionFlagsData = new
                 {
@@ -88,6 +88,48 @@ namespace Office365FiddlerExtension.Services
                 // Save the new Json to the session flag.
                 this.session["Microsoft365FiddlerExtensionJson"] = jsonData;
             }           
+        }
+
+        // Process All Sesssions ; Menu item is clicked.
+        public void ProcessAllSessions()
+        {
+            var oSessions = FiddlerApplication.UI.GetAllSessions();
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Processing all {oSessions.Count()} current sessions.");
+
+            foreach (var session in oSessions)
+            {
+                this.session = session;
+                SessionProcessor.Instance.OnPeekAtResponseHeaders(this.session);
+            }
+
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Processed {oSessions.Count()} sessions.");
+        }
+
+        // Clear All Session Processing ; Menu item is clicked.
+        public void ClearAllSessionProcessing()
+        {
+            FiddlerApplication.Log.LogString("Office365FiddlerExtension: Clearing all current session procesing.");
+
+            var oSessions = FiddlerApplication.UI.GetAllSessions();
+            foreach (var session in oSessions)
+            {
+                this.session = session;
+
+                // Extension Json Data.
+                this.session["Microsoft365FiddlerExtensionJson"] = null;
+
+                // Session colours.
+                this.session["UI-BACKCOLOR"] = null;
+                this.session["UI-COLOR"] = null;
+
+                // Column data.
+                this.session["X-AUTHENTICATION"] = null;
+                this.session["X-ELAPSEDTIME"] = null;
+                this.session["X-RESPONSESERVER"] = null;
+                this.session["X-SESSIONTYPE"] = null;
+
+                this.session.RefreshUI();
+            }
         }
 
         // Take any updates to session flags and save them into the session Json.

@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 509 Bandwidth Limit Exceeded (Apache Web Server/cPanel).");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 509 Bandwidth Limit Exceeded (Apache Web Server/cPanel).");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

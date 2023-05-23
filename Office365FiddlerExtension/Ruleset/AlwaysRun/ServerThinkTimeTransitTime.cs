@@ -20,7 +20,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Running SetServerThinkTimeTransitTime.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetServerThinkTimeTransitTime.");
 
             // ServerGotRequest, ServerBeginResponse or ServerDoneResponse can be blank. If so do not try to calculate and output 'Server Think Time' or
             // 'Transmit Time', we end up with a hideously large number.

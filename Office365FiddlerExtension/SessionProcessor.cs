@@ -25,7 +25,7 @@ namespace Office365FiddlerExtension
             // Stop HandleLoadSaz and further processing if the extension is not enabled.
             if (!Preferences.ExtensionEnabled)
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: Extension not enabled, exiting.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Extension not enabled, exiting.");
                 return;
             }
 
@@ -107,7 +107,7 @@ namespace Office365FiddlerExtension
             // Whether the extension is loaded or not and what the enable/disble option looks like would be determined elsewhere.
             //MenuUI.Instance.MiEnabled.Checked = Preferences.ExtensionEnabled;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: LoadSaz with Extension Enabled: {Preferences.ExtensionEnabled}.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz with Extension Enabled: {Preferences.ExtensionEnabled}.");
 
             foreach (var session in e.arrSessions)
             {
@@ -321,7 +321,7 @@ namespace Office365FiddlerExtension
             // So this is the last function to run after all other logic has been exhausted.
             // Typically network traces are used to validate the underlying network connectivity.
             ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} SessionTypeConfidenceLevel {ExtensionSessionFlags.SessionTypeConfidenceLevel}.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} SessionTypeConfidenceLevel {ExtensionSessionFlags.SessionTypeConfidenceLevel}.");
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
             {
                 LongRunningSessions.Instance.LongRunningSessionsWarning(this.session);               

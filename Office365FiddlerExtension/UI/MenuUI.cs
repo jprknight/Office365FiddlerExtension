@@ -14,9 +14,13 @@ namespace Office365FiddlerExtension
 
         public MenuUI() { }
 
-        public MenuItem ExchangeOnlineTopMenu { get; set; }
+        public MenuItem ExtensionMenu { get; set; }
 
         public MenuItem MiEnabled { get; set; }
+
+        public MenuItem MiProcessAllSessions { get; set; }
+
+        public MenuItem MiClearAllSessionProcessing { get; set; }
 
         public MenuItem MiReleasesDownloadWebpage { get; set; }
 
@@ -27,6 +31,10 @@ namespace Office365FiddlerExtension
         public MenuItem MiAbout { get; set; }
 
         //private int iExecutionCount { get; set; }
+
+        public string MenuEnabled = "Office 365 (Enabled)";
+
+        public string MenuDisabled = "Office 365 (Disabled)";
 
         private bool IsInitialized { get; set; }
 
@@ -40,10 +48,14 @@ namespace Office365FiddlerExtension
             if (!IsInitialized)
             {
 
-                this.ExchangeOnlineTopMenu = new MenuItem(Preferences.ExtensionEnabled ? "Office 365" : "Office 365 (Disabled)");
+                this.ExtensionMenu = new MenuItem(Preferences.ExtensionEnabled ? MenuEnabled : MenuDisabled);
 
                 this.MiEnabled = new MenuItem("Enable", new EventHandler(this.MiEnabled_Click));
                 this.MiEnabled.Checked = Preferences.ExtensionEnabled;
+
+                this.MiProcessAllSessions = new MenuItem("Process All Sessions", new EventHandler(this.MiProcessAllSessions_Click));
+
+                this.MiClearAllSessionProcessing = new MenuItem("Clear All Session Processing", new EventHandler(this.MiClearAllSessionProcessing_Click));
 
                 this.MiReleasesDownloadWebpage = new MenuItem("&Releases Download Page", new System.EventHandler(this.MiReleasesDownloadWebpage_click));
 
@@ -54,7 +66,10 @@ namespace Office365FiddlerExtension
                 this.MiAbout = new MenuItem("&About", new System.EventHandler(this.MiAbout_Click));
 
                 // Add menu items to top level menu.
-                this.ExchangeOnlineTopMenu.MenuItems.AddRange(new MenuItem[] { this.MiEnabled,
+                this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { this.MiEnabled,
+                new MenuItem("-"),
+                this.MiProcessAllSessions,
+                this.MiClearAllSessionProcessing,
                 new MenuItem("-"),
                 this.MiReleasesDownloadWebpage,
                 this.MiWiki,
@@ -63,9 +78,69 @@ namespace Office365FiddlerExtension
                 this.MiAbout
             });
 
-                FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExchangeOnlineTopMenu);
+                FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExtensionMenu);
 
                 IsInitialized = true;
+            }
+        }
+
+        private void MiClearAllSessionProcessing_Click(object sender, EventArgs e)
+        {
+            if (Preferences.ExtensionEnabled)
+            {
+                SessionFlagProcessor.Instance.ClearAllSessionProcessing();
+            }
+            else
+            {
+                string message = "The extension is currently disabled. Do you want to enable it to be able to clear the extension processing on the currently loaded sessions?";
+
+                string caption = "Clear processing on all sessions: Enable the extension?";
+
+                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+
+                MessageBoxIcon icon = MessageBoxIcon.Question;
+
+                DialogResult result;
+
+                result = MessageBox.Show(message, caption, buttons, icon);
+
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    Preferences.ExtensionEnabled = true;
+                    this.MiEnabled.Checked = true;
+                    this.ExtensionMenu.Text = MenuEnabled;
+                    SessionFlagProcessor.Instance.ClearAllSessionProcessing();
+                }
+            }
+        }
+
+        private void MiProcessAllSessions_Click(object sender, EventArgs e)
+        {
+            if (Preferences.ExtensionEnabled)
+            {
+                SessionFlagProcessor.Instance.ProcessAllSessions();
+            }
+            else
+            {
+                string message = "The extension is currently disabled. Do you want to enable it to be able to process the currently loaded sessions?";
+
+                string caption = "Process all sessions: Enable the extension?";
+
+                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+
+                MessageBoxIcon icon = MessageBoxIcon.Question;
+
+                DialogResult result;
+
+                result = MessageBox.Show(message, caption, buttons, icon);
+                
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    Preferences.ExtensionEnabled = true;
+                    this.MiEnabled.Checked = true;
+                    this.ExtensionMenu.Text = MenuEnabled;
+                    SessionFlagProcessor.Instance.ProcessAllSessions();
+                }
             }
         }
 
@@ -105,7 +180,6 @@ namespace Office365FiddlerExtension
                 Preferences.ManualCheckForUpdate = true;
                 About.Instance.CheckForUpdate();
             }
-            
         }
     }
 }

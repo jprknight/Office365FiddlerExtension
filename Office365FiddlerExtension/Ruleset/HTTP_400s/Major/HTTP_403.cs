@@ -23,7 +23,7 @@ namespace Office365FiddlerExtension.Ruleset
             // Specific scenario where a web proxy is blocking traffic from reaching the internet.
             if (this.session.utilFindInResponse("Access Denied", false) > 1 || session.utilFindInResponse("Access Blocked", false) > 1)
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -61,7 +61,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             if (this.session.fullUrl.Contains("outlook.office365.com/EWS") || this.session.fullUrl.Contains("outlook.office365.com/ews"))
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 403 Forbidden. EWS Language not set on mailbox.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 403 Forbidden. EWS Language not set on mailbox.");
                 //REVIEW THIS.
                 var sessionFlags_HTTP403_EWS = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -93,7 +93,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 403 Forbidden.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 403 Forbidden.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

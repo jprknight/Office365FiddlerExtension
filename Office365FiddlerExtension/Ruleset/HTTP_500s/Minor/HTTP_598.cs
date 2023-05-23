@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 598 (Informal convention) Network read timeout error.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 598 (Informal convention) Network read timeout error.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

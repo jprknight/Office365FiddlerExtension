@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 497 nginx HTTP Request Sent to HTTPS Port.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 497 nginx HTTP Request Sent to HTTPS Port.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 505 HTTP Version Not Supported.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 505 HTTP Version Not Supported.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {

@@ -22,7 +22,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             if (this.session.hostname == "www.fiddler2.com" && this.session.uriContains("UpdateCheck.aspx"))
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Fiddler Updates.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Fiddler Updates.");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -61,7 +61,7 @@ namespace Office365FiddlerExtension.Ruleset
             {
                 string TLS;
                 
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Broad Logic Checks (connect tunnel).");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Broad Logic Checks (connect tunnel).");
 
                 // TLS 1.0 in request/response pair.
 
@@ -192,7 +192,7 @@ namespace Office365FiddlerExtension.Ruleset
             //
             if ((this.session.url.Contains("autodiscover") && (this.session.oResponse["server"].Contains("Apache"))))
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} Apache is answering Autodiscover requests! Investigate this first!.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Apache is answering Autodiscover requests! Investigate this first!.");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {

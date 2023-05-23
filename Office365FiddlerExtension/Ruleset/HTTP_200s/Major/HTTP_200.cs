@@ -40,7 +40,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 Connection blocked by Client Access Rules.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 Connection blocked by Client Access Rules.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -94,7 +94,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 Store Error Protocol Disabled.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 Store Error Protocol Disabled.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -444,7 +444,7 @@ namespace Office365FiddlerExtension.Ruleset
                     </Response>
                 </Autodiscover>
                 */
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -504,7 +504,7 @@ namespace Office365FiddlerExtension.Ruleset
                     (this.session.utilFindInResponse("<MailStore>", false) > 1) &&
                     (this.session.utilFindInResponse("<ExternalUrl>", false) > 1))
                 {
-                    FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML found.");
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML found.");
 
                     var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                     {
@@ -528,7 +528,7 @@ namespace Office365FiddlerExtension.Ruleset
                 }
                 else
                 {
-                    FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML NOT found!");
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML NOT found!");
 
                     var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                     {
@@ -579,7 +579,7 @@ namespace Office365FiddlerExtension.Ruleset
                     (this.session.utilFindInResponse("<MailStore>", false) > 1) &&
                     (this.session.utilFindInResponse("<ExternalUrl>", false) > 1))
                 {
-                    FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML found.");
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML found.");
 
                     var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                     {
@@ -603,7 +603,7 @@ namespace Office365FiddlerExtension.Ruleset
                 }
                 else
                 {
-                    FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML NOT found!");
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML NOT found!");
 
                     var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                     {
@@ -656,7 +656,7 @@ namespace Office365FiddlerExtension.Ruleset
             // User can create Office 365 gropus.
             if (this.session.utilFindInResponse("<GroupCreationEnabled>true</GroupCreationEnabled>", false) > 1)
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 GetUnifiedGroupsSettings EWS call. User can create O365 Groups in Outlook.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 GetUnifiedGroupsSettings EWS call. User can create O365 Groups in Outlook.");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -681,7 +681,7 @@ namespace Office365FiddlerExtension.Ruleset
             // User cannot create Office 365 groups. Not an error condition in and of itself.
             else if (this.session.utilFindInResponse("<GroupCreationEnabled>false</GroupCreationEnabled>", false) > 1)
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 GetUnifiedGroupsSettings EWS call. User cannot create O365 Groups in Outlook.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 GetUnifiedGroupsSettings EWS call. User cannot create O365 Groups in Outlook.");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -706,7 +706,7 @@ namespace Office365FiddlerExtension.Ruleset
             // Did not see the expected keyword in the response body. This is the error condition.
             else
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 GetUnifiedGroupsSettings!");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 GetUnifiedGroupsSettings!");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -750,7 +750,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
             
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} 200 3S Suggestions call.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} 200 3S Suggestions call.");
 
             Uri uri = new Uri(this.session.fullUrl);
             var queryStrings = System.Web.HttpUtility.ParseQueryString(uri.Query);
@@ -801,7 +801,7 @@ namespace Office365FiddlerExtension.Ruleset
             // 200.10. REST - People Request.
             //
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} 200 REST - People Request.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} 200 REST - People Request.");
 
             Uri uri = new Uri(this.session.fullUrl);
             var queryStrings = System.Web.HttpUtility.ParseQueryString(uri.Query);
@@ -867,7 +867,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 EXO / M365 EWS call.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 EXO / M365 EWS call.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -1041,7 +1041,7 @@ namespace Office365FiddlerExtension.Ruleset
                 // Red text on black background.
                 // The only issue here is when sessions contain javascript and other web source code, this tends to produce false positives.
 
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 FAILURE LURKING!?");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 FAILURE LURKING!?");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -1071,7 +1071,7 @@ namespace Office365FiddlerExtension.Ruleset
             }
             else
             {
-                FiddlerApplication.Log.LogString($"Office365FiddlerExtension: {this.session.id} HTTP 200 OK");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 OK");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
