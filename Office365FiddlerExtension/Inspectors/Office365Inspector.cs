@@ -76,10 +76,10 @@ namespace Office365FiddlerExtension.Inspectors
             await ParseHTTPResponse(this.session);
         }
 
-        public void SaveSessionData(Session oS)
+        /*public void SaveSessionData(Session session)
         {
-            this.session = oS;
-        }
+            this.session = session;
+        }*/
         
         /// <summary>
         /// This is called every time this inspector is shown
@@ -124,7 +124,7 @@ namespace Office365FiddlerExtension.Inspectors
         /// </summary>
         /// <param name="oS">the session object passed by Fiddler</param>
         /// <returns>Int between 0-100 with 100 being the most confident</returns>
-        public override int ScoreForSession(Session session)
+        /*public override int ScoreForSession(Session session)
         {
             if (null == this.session)
             {
@@ -151,13 +151,13 @@ namespace Office365FiddlerExtension.Inspectors
             {
                 return 0;
             }
-        }
+        }*/
 
 
         /// <summary>
         /// Gets a value indicating whether the message is MAPI protocol message.
         /// </summary>
-        public bool IsHTTP
+        /*public bool IsHTTP
         {
             get
             { // REVIEW THIS. Does this make sense???
@@ -186,7 +186,7 @@ namespace Office365FiddlerExtension.Inspectors
                     return false;
                 }
             }
-        }
+        }*/
 
         /// <summary>
         /// Called by Fiddler to add the MAPI inspector tab
@@ -211,17 +211,30 @@ namespace Office365FiddlerExtension.Inspectors
         // REVIEW THIS - AWAIT. Can this be done or would it break things.
         public async Task ParseHTTPResponse(Session session)
         {
-            try
+            this.session = session;
+
+            // Extension disabled.
+            if (!Preferences.ExtensionEnabled)
             {
-                // Extension disabled.
-                if (!Preferences.ExtensionEnabled)
-                {
-                    // Clear ResultsString.
-                    Clear();
-                    ResultsString.AppendLine("<br /><h2>Office 365 Fiddler Extension Disabled</h2>");
-                    Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
-                    return;
-                }
+                // Clear ResultsString.
+                Clear();
+                ResultsString.AppendLine("<br /><h2>Office 365 Fiddler Extension Disabled</h2>");
+                Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
+                return;
+            }
+
+            if (this.session["Microsoft365FiddlerExtensionJson"] == null)
+            {
+                // Clear ResultsString.
+                Clear();
+                ResultsString.AppendLine("<br /><h2>Office 365 Fiddler Extension</h2>");
+                ResultsString.AppendLine("<p>No session analysis. Use the \"Process All Sessions\" option from the Office365 extension menu to get session analysis.</p>");
+                Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
+                return;
+            }
+
+            try
+            {              
 
                 /*
                 if (!this.session.isFlagSet(SessionFlags.LoadedFromSAZ))

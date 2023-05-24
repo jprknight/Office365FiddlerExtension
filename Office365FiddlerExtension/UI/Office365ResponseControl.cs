@@ -6,6 +6,7 @@ namespace Office365FiddlerExtension.UI
 {
     public partial class Office365ResponseControl : UserControl
     {
+
         public static WebBrowser ResultsOutput { get; set; }
         public Office365ResponseControl()
         {
@@ -53,16 +54,23 @@ namespace Office365FiddlerExtension.UI
 
         private void Save_Click(object sender, System.EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = " Webpage, HTML only |*.html;*.htm";
-            if (sfd.ShowDialog() == DialogResult.OK)
+            if (webBrowserControl.DocumentText.Length == 0)
             {
-                using (StreamWriter sw = new StreamWriter(sfd.FileName))
+                MessageBox.Show("Nothing to save.");
+            }
+            else
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = " Webpage, HTML only |*.html;*.htm";
+                if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                    // Remove <br /> from output, not needed in HTML, introduced spacing for save button.
-                    string HTMLOutput = webBrowserControl.DocumentText.Replace("<br />", "");
-                    HTMLOutput += "<p>Data created from the <a href='https://aka.ms/Office365FiddlerExtensionUpdateURL' target='_blank'>Office 365 Fiddler Extension.</a></p>";
-                    sw.Write(HTMLOutput);
+                    using (StreamWriter sw = new StreamWriter(sfd.FileName))
+                    {
+                        // Remove <br /> from output, not needed in HTML, introduced spacing for save button.
+                        string HTMLOutput = webBrowserControl.DocumentText.Replace("<br />", "");
+                        HTMLOutput += "<p>Data created from the <a href='https://aka.ms/Office365FiddlerExtensionUpdateURL' target='_blank'>Office 365 Fiddler Extension.</a></p>";
+                        sw.Write(HTMLOutput);
+                    }
                 }
             }
         }

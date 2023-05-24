@@ -15,11 +15,11 @@ namespace Office365FiddlerExtension
         {
             if (Preferences.DisableWebCalls)
             {
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: CheckForUpdate: DisableWebCalls is true; Extension won't check for any updates.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: CheckForUpdate: DisableWebCalls is true; Extension won't check for any updates.");
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: CheckForUpdate begin.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: CheckForUpdate begin.");
 
             #region ReadVersionFromXML
 
@@ -79,7 +79,7 @@ namespace Office365FiddlerExtension
             {
                 #region UpdateAvailable
 
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: {DateTime.Now}: About.cs : Update Available.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {DateTime.Now}: About.cs : Update Available.");
 
                 FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.UpdateMessage", $"Update Available{Environment.NewLine}----------------" +
                     $"{Environment.NewLine}Currently using version: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
@@ -119,7 +119,7 @@ namespace Office365FiddlerExtension
             {
                 #region NoUpdateAvailable
 
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: CheckForUpdate: No update available.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: CheckForUpdate: No update available.");
 
                 if (Preferences.ManualCheckForUpdate)
                 {
@@ -140,7 +140,7 @@ namespace Office365FiddlerExtension
                 }
                 #endregion
             }
-            FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: CheckForUpdate done.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: CheckForUpdate done.");
         }
     }
 }

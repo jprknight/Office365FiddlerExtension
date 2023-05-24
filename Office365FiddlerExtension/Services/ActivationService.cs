@@ -28,7 +28,7 @@ namespace Office365FiddlerExtension.Services
 
             try
             {
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: Attempting to add columns to UI.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Attempting to add columns to UI.");
 
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Session Type", 150, "X-SessionType");
@@ -38,25 +38,25 @@ namespace Office365FiddlerExtension.Services
             }
             catch (Exception e)
             {
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: {0} Exception caught." + e);
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: {0} Exception caught." + e);
             }
 
-            FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: Finished adding columns to UI.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Finished adding columns to UI.");
 
             // If disable web calls is true dion't check for updates and don't call telemetry service.
             if (Preferences.DisableWebCalls)
             {
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: Telemetry Service DisableWebCalls is true.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Telemetry Service DisableWebCalls is true.");
                 
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: The Office 365 Fiddler Extension won't check for updates.");
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: The Office 365 Fiddler Extension won't send telemetry data.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: The Office 365 Fiddler Extension won't check for updates.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: The Office 365 Fiddler Extension won't send telemetry data.");
             }
             // Otherwise, check for updates and call telemetry service.
             else
             {
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: The Office 365 Fiddler Extension checking for updates.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: The Office 365 Fiddler Extension checking for updates.");
                 About.Instance.CheckForUpdate();
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: The Office 365 Fiddler Extension initializing telemetry service.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: The Office 365 Fiddler Extension initializing telemetry service.");
                 await TelemetryService.InitializeAsync();
             }
         }
@@ -69,7 +69,7 @@ namespace Office365FiddlerExtension.Services
             }
             else
             {
-                FiddlerApplication.Log.LogString($"OFFICE 365 EXTENSION: ActivationService: The Office 365 Fiddler Extension closing telemetry service client connection.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: The Office 365 Fiddler Extension closing telemetry service client connection.");
                 await TelemetryService.FlushClientAsync();
             }
                 

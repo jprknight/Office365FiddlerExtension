@@ -142,7 +142,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtention: {this.session.id} HTTP 200 Outlook Exchange Online / Microsoft365 MAPI traffic.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 Outlook Exchange Online / Microsoft365 MAPI traffic.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -183,7 +183,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtention: {this.session.id} HTTP 200 Outlook Exchange OnPremise MAPI traffic.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 Outlook Exchange OnPremise MAPI traffic.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -228,7 +228,7 @@ namespace Office365FiddlerExtension.Ruleset
             // Guessing at this time Outlook's RPC over HTTP looks like this when connected to an Exchange On-Premise mailbox.
             // REVIEW THIS *Need to validate*
             
-            FiddlerApplication.Log.LogString($"Office365FiddlerExtention: {this.session.id} HTTP 200 Outlook RPC traffic break.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()} : {this.session.id} HTTP 200 Outlook RPC traffic break.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -273,7 +273,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
             
-            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " HTTP 200 Outlook NSPI traffic.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: " + this.session.id + " HTTP 200 Outlook NSPI traffic.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
@@ -354,7 +354,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             if (RedirectAddress.Contains(".onmicrosoft.com"))
             {
-                FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " Exchange OnPremise Autodiscover redirect to Exchange Online / Microsoft365.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: " + this.session.id + " Exchange OnPremise Autodiscover redirect to Exchange Online / Microsoft365.");
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -383,7 +383,7 @@ namespace Office365FiddlerExtension.Ruleset
             { // REVIEW THIS. REPEATED?
                 // Highlight if we got this far and we don't have a redirect address which points to
                 // Exchange Online / Microsoft365 such as: contoso.mail.onmicrosoft.com.
-                FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD REDIRECT ADDR! : " + RedirectAddress);
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD REDIRECT ADDR! : " + RedirectAddress);
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
@@ -916,7 +916,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: " + this.session.id + " HTTP 200 OnPremise EWS call.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: " + this.session.id + " HTTP 200 OnPremise EWS call.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
