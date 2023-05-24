@@ -6,6 +6,7 @@ using Office365FiddlerExtension.UI;
 using System;
 using System.Diagnostics;
 using System.Runtime.Serialization;
+using System.Windows.Forms;
 using static Office365FiddlerExtension.Services.SessionFlagProcessor;
 
 namespace Office365FiddlerExtension
@@ -103,21 +104,24 @@ namespace Office365FiddlerExtension
         {
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
-            // Looking at this I can't see a good reason why it would be updated here.
-            // Whether the extension is loaded or not and what the enable/disble option looks like would be determined elsewhere.
-            //MenuUI.Instance.MiEnabled.Checked = Preferences.ExtensionEnabled;
-
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz with Extension Enabled: {Preferences.ExtensionEnabled}.");
 
             foreach (var session in e.arrSessions)
             {
                 this.session = session;
 
+                // Demonstrating we never hit session 1 on LoadSaz.
+                if (this.session.id == 1)
+                {
+                    MessageBox.Show($"This is session {this.session.id}");
+                }
+
                 if (Preferences.ExtensionEnabled)
                 {
                     Instance.OnPeekAtResponseHeaders(this.session);
                 }
             }
+
             FiddlerApplication.UI.lvSessions.EndUpdate();
         }
 

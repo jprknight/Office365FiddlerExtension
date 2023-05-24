@@ -30,8 +30,6 @@ namespace Office365FiddlerExtension
 
         public MenuItem MiAbout { get; set; }
 
-        //private int iExecutionCount { get; set; }
-
         public string MenuEnabled = "Office 365 (Enabled)";
 
         public string MenuDisabled = "Office 365 (Disabled)";

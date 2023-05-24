@@ -33,6 +33,7 @@ namespace Office365FiddlerExtension.Ruleset
                     SessionType = "Fiddler Update Check",
                     ResponseServer = "Fiddler Update Check",
                     ResponseAlert = "Fiddler Update Check",
+                    ResponseCodeDescription = "Fiddler Update Check",
                     ResponseComments = "This is Fiddler itself checking for updates. It has nothing to do with the Office 365 Fiddler Extension.",
                     Authentication = "Fiddler Update Check",
 

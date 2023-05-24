@@ -1,6 +1,4 @@
 ﻿using Fiddler;
-using Office365FiddlerExtension.Ruleset;
-using Office365FiddlerInspector;
 using System;
 using System.Diagnostics;
 using System.Reflection;
