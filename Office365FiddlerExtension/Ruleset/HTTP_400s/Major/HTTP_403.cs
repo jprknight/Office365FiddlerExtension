@@ -62,7 +62,7 @@ namespace Office365FiddlerExtension.Ruleset
             if (this.session.fullUrl.Contains("outlook.office365.com/EWS") || this.session.fullUrl.Contains("outlook.office365.com/ews"))
             {
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 403 Forbidden. EWS Language not set on mailbox.");
-                //REVIEW THIS.
+                
                 var sessionFlags_HTTP403_EWS = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_403s_EWS_Mailbox_Language",
@@ -105,7 +105,7 @@ namespace Office365FiddlerExtension.Ruleset
                 ResponseCodeDescription = "403 Forbidden",
                 ResponseAlert = "<b><span style='color:red'>HTTP 403 Forbidden</span></b>",
                 ResponseComments = "While HTTP 403's can be symptomatic of a proxy server blocking traffic, "
-                + "however the phrase 'Access Denied' was NOT detected in the response body."
+                + "however the phrase 'Access Denied' was not detected in the response body."
                 + "<p>A small number of HTTP 403's can be seen in normal working scenarios. Check the Raw and WebView tabs to look for anything which looks suspect.</p>"
                 + "<p>If you are troubleshooting Free/Busy (Meeting availability info) or setting Out of Office messages then you may be more interested in these.</p>"
                 + "<p>See: <a href='https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-2010/dd877045(v=exchg.140)' target='_blank'>"

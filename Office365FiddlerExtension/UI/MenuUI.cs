@@ -77,39 +77,14 @@ namespace Office365FiddlerExtension
             });
 
                 FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExtensionMenu);
-
+                UpdateMenuItems();
                 IsInitialized = true;
             }
         }
 
         private void MiClearAllSessionProcessing_Click(object sender, EventArgs e)
         {
-            if (Preferences.ExtensionEnabled)
-            {
-                SessionFlagProcessor.Instance.ClearAllSessionProcessing();
-            }
-            else
-            {
-                string message = "The extension is currently disabled. Do you want to enable it to be able to clear the extension processing on the currently loaded sessions?";
-
-                string caption = "Clear processing on all sessions: Enable the extension?";
-
-                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-
-                MessageBoxIcon icon = MessageBoxIcon.Question;
-
-                DialogResult result;
-
-                result = MessageBox.Show(message, caption, buttons, icon);
-
-                if (result == System.Windows.Forms.DialogResult.Yes)
-                {
-                    Preferences.ExtensionEnabled = true;
-                    this.MiEnabled.Checked = true;
-                    this.ExtensionMenu.Text = MenuEnabled;
-                    SessionFlagProcessor.Instance.ClearAllSessionProcessing();
-                }
-            }
+            SessionFlagProcessor.Instance.ClearAllSessionProcessing();
         }
 
         private void MiProcessAllSessions_Click(object sender, EventArgs e)
@@ -147,6 +122,21 @@ namespace Office365FiddlerExtension
         {
             MiEnabled.Checked = !MiEnabled.Checked;
             Preferences.ExtensionEnabled = MiEnabled.Checked;
+            UpdateMenuItems();
+        }
+
+        public void UpdateMenuItems()
+        {
+            if (Preferences.ExtensionEnabled)
+            {
+                this.ExtensionMenu.Text = MenuEnabled;
+                this.MiProcessAllSessions.Enabled = true;
+            }
+            else
+            {
+                this.ExtensionMenu.Text = MenuDisabled;
+                this.MiProcessAllSessions.Enabled = false;
+            }
         }
 
         public void MiWiki_Click(object sender, EventArgs e)

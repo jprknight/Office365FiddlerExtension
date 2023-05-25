@@ -218,7 +218,6 @@ namespace Office365FiddlerExtension.Services
                 return;
             }
 
-            // REVIEW THIS.
             // Think about writing some code so ruleset checks are only done once per 24/48/72/168 hours.
             // Ruleset won't change that frequently, so there's probably no reason to call out to the Github repro on every Fiddler start.
 

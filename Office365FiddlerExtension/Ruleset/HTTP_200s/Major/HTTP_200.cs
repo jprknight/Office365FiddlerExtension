@@ -380,7 +380,7 @@ namespace Office365FiddlerExtension.Ruleset
                 SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             else
-            { // REVIEW THIS. REPEATED?
+            {
                 // Highlight if we got this far and we don't have a redirect address which points to
                 // Exchange Online / Microsoft365 such as: contoso.mail.onmicrosoft.com.
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD REDIRECT ADDR! : " + RedirectAddress);

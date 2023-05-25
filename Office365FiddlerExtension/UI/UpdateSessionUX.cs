@@ -20,7 +20,7 @@ namespace Office365FiddlerExtension.UI
 
             var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
 
-            // Set session background colour.
+            // Set session background colour. Default to gray if undefined.
             switch (ExtensionSessionFlags.UIBackColour.ToLower())
             {
                 case "blue":
@@ -32,9 +32,6 @@ namespace Office365FiddlerExtension.UI
                 case "red":
                     this.session["ui-backcolor"] = "#F06141";
                     break;
-                case "gray":
-                    this.session["ui-backcolor"] = "#BDBDBD";
-                    break;
                 case "orange":
                     this.session["ui-backcolor"] = "#F59758";
                     break;
@@ -42,17 +39,14 @@ namespace Office365FiddlerExtension.UI
                     this.session["ui-backcolor"] = "#000000";
                     break;
                 default:
-                    // Default to pink, so we know if something isn't caught.
-                    this.session["ui-backcolor"] = "#FFC0CB";
+                    // Default to gray, so we know if something isn't caught.
+                    this.session["ui-backcolor"] = "#BDBDBD";
                     break;
             }
 
-            // Set session text colour.
+            // Set session text colour. Default to black.
             switch (ExtensionSessionFlags.UITextColour.ToLower())
             {
-                case "black":
-                    this.session["ui-color"] = "#000000";
-                    break;
                 case "red":
                     this.session["ui-color"] = "#F06141";
                     break;
@@ -66,6 +60,11 @@ namespace Office365FiddlerExtension.UI
             this.session["X-Authentication"] = ExtensionSessionFlags.Authentication;
             this.session["x-SessionType"] = ExtensionSessionFlags.SessionType;
             this.session["X-ResponseServer"] = ExtensionSessionFlags.ResponseServer;
+
+            if (this.session["X-HostIP"] == null)
+            {
+                this.session["X-HostIP"] = "Not Present";
+            }
 
             this.session.RefreshUI();
         }

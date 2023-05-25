@@ -110,7 +110,7 @@ namespace Office365FiddlerExtension
             {
                 this.session = session;
 
-                // Demonstrating we never hit session 1 on LoadSaz.
+                // REVIEW THIS -- Demonstrating we never hit session 1 on LoadSaz.
                 if (this.session.id == 1)
                 {
                     MessageBox.Show($"This is session {this.session.id}");
