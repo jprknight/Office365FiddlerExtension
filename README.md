@@ -31,6 +31,7 @@ Think traffic lights, with some extras.
 * Orange -- Something which may be a concern, see Session Analysis on the response inspector for details.
 * Blue -- False positive detected, most prominiently HTTP 502's, see Session Analysis on the response inspector for details.
 * Green -- Nothing bad detected.
+* Gray -- Unlikely to be of interest. 
 
 ### User Interface
 
