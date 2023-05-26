@@ -21,13 +21,6 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             if (!(this.session.utilFindInResponse("FederatedStsUnreachable", false) > 1))
             {
                 return;
@@ -76,13 +69,6 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 503 Service Unavailable.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
@@ -99,7 +85,7 @@ namespace Office365FiddlerExtension.Ruleset
                 + "Contactable consistently or intermittently? Consider other session server responses in the 500's (500, 502 or 503) in conjunction with this session.",
 
                 SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
                 SessionResponseServerConfidenceLevel = 5
             };
 

@@ -235,22 +235,6 @@ namespace Office365FiddlerExtension.Inspectors
 
             try
             {              
-
-                /*
-                if (!this.session.isFlagSet(SessionFlags.LoadedFromSAZ))
-                {
-                    // Clear ResultsString.
-                    Clear();
-                    ResultsString.AppendLine("<br /><h2><span style='color:red'>Session analysis not available on live sessions.</span></h2>");
-                    ResultsString.AppendLine("<p>Live analysis of sessions is known to provide inaccurate results.</p>"
-                        + "<p>Save these sessions as a SAZ file and load them back into Fiddler. Click <i>File, Save, All Sessions</i>.</p>"
-                        + "<p>Then click File, Load Archive... to open the SAZ file.</p>"
-                        + "</font></body></html>");
-                    Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
-                    return;
-                }
-                */
-
                 // Clear ResultsString.
                 Clear();
 
@@ -265,14 +249,6 @@ namespace Office365FiddlerExtension.Inspectors
                 };
 
                 var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(this.session["Microsoft365FiddlerExtensionJson"], JsonSettings);
-                /*
-                var dictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(this.session["Microsoft365FiddlerExtensionJson"]);
-
-                foreach (var item in dictionary)
-                {
-                    var key = item.Key;
-                    var value = item.Value;
-                }*/
 
                 // HTML Header.
                 ResultsString.AppendLine("<html>");
@@ -438,7 +414,6 @@ namespace Office365FiddlerExtension.Inspectors
 
                     ResultsString.AppendLine("<p>Copy and save the below text into a .cer file to view the signing certificate.</p>");
                     ResultsString.AppendLine("-----BEGIN CERTIFICATE-----<br />");
-                    // REVIEW THIS. It'd be nice to split the cert string into 50 wide lines.
 
                     string str = ExtensionSessionFlags.SamlTokenSigningCertificate;
                     int chunkSize = 50;
@@ -449,6 +424,7 @@ namespace Office365FiddlerExtension.Inspectors
                         ResultsString.AppendLine(str.Substring(i, chunkSize));
 
                     }
+
                     ResultsString.AppendLine("<br />-----END CERTIFICATE-----");
                 }
                 #endregion
@@ -574,7 +550,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
-                if (ExtensionSessionFlags.SessionTimersDescription != "Initial / Not detected")
+                if (ExtensionSessionFlags.SessionTimersDescription != null && ExtensionSessionFlags.SessionTimersDescription != "")
                 {
                     ResultsString.AppendLine("<tr>");
                     ResultsString.AppendLine("<td>");

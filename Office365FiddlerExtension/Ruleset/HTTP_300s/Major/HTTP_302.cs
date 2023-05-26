@@ -62,7 +62,7 @@ namespace Office365FiddlerExtension.Ruleset
                     + "redirects exception thrown as a server response.",
 
                 SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
                 SessionResponseServerConfidenceLevel = 5
             };
 

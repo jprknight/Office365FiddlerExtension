@@ -21,16 +21,17 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
+            if (!(this.session.utilFindInResponse("internet", false) > 1))
             {
                 return;
             }
 
-            if (!(this.session.utilFindInResponse("internet", false) > 1) &&
-                !(this.session.utilFindInResponse("access", false) > 1) &&
-                !(this.session.utilFindInResponse("blocked", false) > 1))
+            if (!(this.session.utilFindInResponse("access", false) > 1))
+            {
+                return;
+            }
+
+            if(!(this.session.utilFindInResponse("blocked", false) > 1))
             {
                 return;
             }
@@ -65,13 +66,6 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 504 Gateway Timeout.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
@@ -87,7 +81,7 @@ namespace Office365FiddlerExtension.Ruleset
                 + "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.",
 
                 SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
                 SessionResponseServerConfidenceLevel = 5
             };
 

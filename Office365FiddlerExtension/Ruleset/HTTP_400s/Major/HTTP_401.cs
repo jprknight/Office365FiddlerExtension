@@ -62,13 +62,6 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10 || ExtensionSessionFlags.SessionAuthenticationConfidenceLevel == 10)
-            {
-                return;
-            }
-
             if (this.session.uriContains("/Autodiscover/Autodiscover.xml"))
             {
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 401 Auth Challenge.");
@@ -116,7 +109,7 @@ namespace Office365FiddlerExtension.Ruleset
                     UITextColour = "Black",
 
                     SessionType = "Exchange Web Services",
-                    ResponseCodeDescription = "Exchange Web Services (EWS) call.",
+                    ResponseCodeDescription = "401 Exchange Web Services (EWS) call.",
                     ResponseAlert = "Exchange Web Services (EWS) call.",
                     ResponseComments = "Exchange Web Services (EWS) call.",
                     Authentication = "Auth Challenge",

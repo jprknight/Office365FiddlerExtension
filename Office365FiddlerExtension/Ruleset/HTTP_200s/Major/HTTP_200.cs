@@ -21,14 +21,6 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            // If this session has already been classified with a confidence of 10. Return.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             // If the session content doesn't match the intended rule, return.
             if (!this.session.fullUrl.Contains("outlook.office365.com/mapi"))
             {
@@ -74,14 +66,6 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            // If this session has already been classified with a confidence of 10. Return.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             // If this isn't Office 365 MAPI traffic, return.
             if (!this.session.HostnameIs("outlook.office365.com") && (!this.session.uriContains("/mapi/emsmdb/?MailboxId=")))
             {
@@ -123,14 +107,6 @@ namespace Office365FiddlerExtension.Ruleset
 
             // Microsoft 365 normal working MAPI traffic.
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            // If this session has already been classified with a confidence of 10. Return.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             // If the session hostname isn't outlook.office365.com and isn't MAPI traffic, return.
             if (!this.session.HostnameIs("outlook.office365.com"))
             {
@@ -169,14 +145,6 @@ namespace Office365FiddlerExtension.Ruleset
             // Exchange On-Premise mailbox.
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            // If this session has already been classified with a confidence of 10. Return.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             // If the session isn't MAPI traffic, return.
             if (!this.session.uriContains("/mapi/emsmdb/?MailboxId="))
             {
@@ -197,7 +165,40 @@ namespace Office365FiddlerExtension.Ruleset
                 ResponseComments = "This is normal Outlook MAPI over HTTP traffic to an Exchange OnPremise mailbox.",
 
                 SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
+                SessionResponseServerConfidenceLevel = 5
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+        }
+
+        public void HTTP_200_Outlook_Web_App(Session session)
+        {
+            // Exchange On-Premise mailbox.
+            this.session = session;
+
+            // If the session isn't MAPI traffic, return.
+            if (!this.session.uriContains("/owa/"))
+            {
+                return;
+            }
+
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 Outlook Web App.");
+
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_200s_Exchange_Outlook_Web_App",
+                UIBackColour = "Green",
+                UITextColour = "Black",
+
+                SessionType = "Outlook Web App",
+                ResponseCodeDescription = "200 OK",
+                ResponseAlert = "Outlook Web App",
+                ResponseComments = "This is normal Outlook Web App traffic to an Exchange mailbox.",
+
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
                 SessionResponseServerConfidenceLevel = 5
             };
 
@@ -208,14 +209,6 @@ namespace Office365FiddlerExtension.Ruleset
         public void HTTP_200_Outlook_RPC(Session session)
         {
             this.session = session;
-
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            // If this session has already been classified with a confidence of 10. Return.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
 
             // If the session isn't RPC traffic, return.
             if (!this.session.uriContains("/rpc/emsmdb/"))
@@ -254,18 +247,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            /////////////////////////////
-            //
-            // 200.4. Outlook Name Service Provider Interface (NSPI) traffic.
-            //
-
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            // If this session has already been classified with a confidence of 10. Return.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
+            // Outlook Name Service Provider Interface (NSPI) traffic.
 
             // If this isn't NSPI traffic, return.
             if (!this.session.uriContains("/mapi/nspi/"))
@@ -298,14 +280,6 @@ namespace Office365FiddlerExtension.Ruleset
         public void HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found(Session session)
         {
             this.session = session;
-
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            // If this session has already been classified with a confidence of 10. Return.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
 
             // if this session does not have redirectAddr in the response body, return.
             if (!(this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1))
@@ -415,14 +389,6 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            // If this session has already been classified with a confidence of 10. Return.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             // If this autodiscover redirect is from Microsoft 365, return.
             if (this.session.HostnameIs("autodiscover-s.outlook.com") || this.session.HostnameIs("autodiscover.outlook.com"))
             {
@@ -476,24 +442,13 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            // If this session has already been classified with a confidence of 10. Return.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             // If this session isn't a Autodiscover session, return; 
             if (!this.session.uriContains("autodiscover.xml"))
             {
                 return;
             }
 
-            /////////////////////////////
-            //
-            // 200.7. Exchange Online Autodiscover
-            //
+            // 200 Exchange Online Autodiscover
 
             // Make sure this session is an Exchange Online Autodiscover request.
             // Non-ClickToRun clients redirect to https://autodiscover-s.outlook.com/Autodiscover/AutoDiscover.xml
@@ -508,7 +463,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                     var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                     {
-                        SectionTitle = "HTTP_200s",
+                        SectionTitle = "HTTP_200s_MSI_AutoDiscover",
                         UIBackColour = "Green",
                         UITextColour = "Black",
 
@@ -532,7 +487,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                     var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                     {
-                        SectionTitle = "HTTP_200s",
+                        SectionTitle = "HTTP_200s_MSI_AutoDiscover",
                         UIBackColour = "Red",
                         UITextColour = "Black",
 
@@ -557,14 +512,6 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            // If this session has already been classified with a confidence of 10. Return.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             // If this session isn't a Autodiscover session, return; 
             if (!this.session.uriContains("autodiscover.xml"))
             {
@@ -583,7 +530,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                     var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                     {
-                        SectionTitle = "HTTP_200s",
+                        SectionTitle = "HTTP_200s_CTR_AutoDiscover",
                         UIBackColour = "Green",
                         UITextColour = "Black",
 
@@ -607,7 +554,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                     var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                     {
-                        SectionTitle = "HTTP_200s",
+                        SectionTitle = "HTTP_200s_CTR_AutoDiscover",
                         UIBackColour = "Red",
                         UITextColour = "Black",
 
@@ -631,14 +578,6 @@ namespace Office365FiddlerExtension.Ruleset
         public void HTTP_200_Unified_Groups_Settings(Session session)
         {
             this.session = session;
-
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            // If this session has already been classified with a confidence of 10. Return.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
             
             // If this session isn't for Microsoft 365 Unified Group Settings, return.
             if (!this.session.HostnameIs("outlook.office365.com") &&
@@ -660,7 +599,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_200s",
+                    SectionTitle = "HTTP_200s_Unfied_Groups_Settings",
                     UIBackColour = "Green",
                     UITextColour = "Black",
 
@@ -685,7 +624,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_200s",
+                    SectionTitle = "HTTP_200s_Unified_Groups_Settings",
                     UIBackColour = "Green",
                     UITextColour = "Black",
 
@@ -710,7 +649,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_200s",
+                    SectionTitle = "HTTP_200s_Unified_Groups_Settings",
                     UIBackColour = "Green",
                     UITextColour = "Black",
 
@@ -736,14 +675,6 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            // If this session has already been classified with a confidence of 10. Return.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             // If this isn't a 3G Suggestions call, return.
             if (!this.session.uriContains("search/api/v1/suggestions"))
             {
@@ -760,7 +691,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s",
+                SectionTitle = "HTTP_200s_3S_Suggestions",
                 UIBackColour = "Green",
                 UITextColour = "Black",
 
@@ -782,24 +713,11 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            // If this session has already been classified with a confidence of 10. Return.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             // if the session Uri isn't for People, return;
             if (!this.session.uriContains("people"))
             {
                 return;
             }
-
-            /////////////////////////////
-            //
-            // 200.10. REST - People Request.
-            //
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} 200 REST - People Request.");
 
@@ -824,7 +742,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s",
+                SectionTitle = "HTTP_200s_REST_People_Request",
                 UIBackColour = "Green",
                 UITextColour = "Black",
 
@@ -848,14 +766,6 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            // If this session has already been classified with a confidence of 10. Return.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             // If this isn't an EWS call, return.
             if (!this.session.uriContains("ews/exchange.asmx"))
             {
@@ -871,7 +781,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s",
+                SectionTitle = "HTTP_200s_Microsoft365_Any_Other_EWS",
                 UIBackColour = "Green",
                 UITextColour = "Black",
 
@@ -897,14 +807,6 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            // If this session has already been classified with a confidence of 10. Return.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             // If this isn't an EWS call, return.
             if (!this.session.uriContains("ews/exchange.asmx"))
             {
@@ -920,7 +822,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s",
+                SectionTitle = "HTTP_200s_OnPremise_Exchange_EWS",
                 UIBackColour = "Green",
                 UITextColour = "Black",
 
@@ -941,14 +843,6 @@ namespace Office365FiddlerExtension.Ruleset
         public void HTTP_200_Lurking_Errors(Session session)
         {
             this.session = session;
-
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            // If this session has already been classified with a confidence of 10. Return.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
 
             string searchTerm = "empty";
 
@@ -1045,7 +939,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_200s",
+                    SectionTitle = "HTTP_200s_Lurking_Errors",
                     UIBackColour = "Black",
                     UITextColour = "Red",
 
@@ -1075,7 +969,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
-                    SectionTitle = "",
+                    SectionTitle = "HTTP_200s_Lurking_Errors",
                     UIBackColour = "Green",
                     UITextColour = "Black",
 

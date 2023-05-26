@@ -19,13 +19,6 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             if (!(this.session.utilFindInResponse("you must use multi-factor authentication", false) > 1))
             {
                 return;
@@ -61,13 +54,6 @@ namespace Office365FiddlerExtension.Ruleset
         public void HTTP_456_OAuth_Not_Available(Session session)
         {
             this.session = session;
-
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
 
             if (!(session.utilFindInResponse("oauth_not_available", false) > 1))
             {
@@ -105,13 +91,6 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
-
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
-            {
-                return;
-            }
-
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 456 Multi-Factor Required.");
 
             var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
@@ -131,7 +110,7 @@ namespace Office365FiddlerExtension.Ruleset
                     + "https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx </a></p>",
 
                 SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
                 SessionResponseServerConfidenceLevel = 5
             };
 

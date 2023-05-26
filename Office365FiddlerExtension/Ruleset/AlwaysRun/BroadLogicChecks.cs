@@ -221,5 +221,41 @@ namespace Office365FiddlerExtension.Ruleset
                 SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
+
+        public void LoopBackTunnel(Session session)
+        {
+            this.session = session;
+
+            if (!this.session.uriContains("127.0.0.1"))
+            {
+                return;
+            }
+
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Loopback Tunnel.");
+
+            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            {
+                SectionTitle = "Broad Logic Checks",
+                UIBackColour = "Gray",
+                UITextColour = "Black",
+
+                SessionType = "Loopback Tunnel",
+                ResponseServer = "Loopback Tunnel",
+                ResponseAlert = "Loopback Tunnel",
+                ResponseCodeDescription = "Loopback Tunnel",
+                ResponseComments = "Seeing many or few of these? Either way these aren't Microsoft365 traffic sessions. "
+                + "They may be an indication of a proxy client forcing traffic down a certain network path?"
+                + "If there's no Microsoft365 client traffic in this Fiddler trace and it's suspected this could be a factor, "
+                + "change your network, try a different machine without any proxy client / proxy configuration in place.",
+                Authentication = "Loopback Tunnel",
+
+                SessionAuthenticationConfidenceLevel = 10,
+                SessionTypeConfidenceLevel = 10,
+                SessionResponseServerConfidenceLevel = 10
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+        }
     }
 }

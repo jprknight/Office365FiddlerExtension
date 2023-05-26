@@ -14,7 +14,25 @@ namespace Office365FiddlerExtension.UI
         private static UpdateSessionUX _instance;
         public static UpdateSessionUX Instance => _instance ?? (_instance = new UpdateSessionUX());
 
-        public void DressSessions(Session session)
+        public void NormaliseSession(Session session)
+        {
+            this.session = session;
+
+            // Extension Json Data.
+            this.session["Microsoft365FiddlerExtensionJson"] = null;
+
+            // Session colours.
+            this.session["UI-BACKCOLOR"] = "#FFFFFF";
+            this.session["UI-COLOR"] = "#000000";
+
+            // Column data.
+            this.session["X-AUTHENTICATION"] = null;
+            this.session["X-ELAPSEDTIME"] = null;
+            this.session["X-RESPONSESERVER"] = null;
+            this.session["X-SESSIONTYPE"] = null;
+        }
+
+        public void EnhanceSession(Session session)
         {
             this.session = session;
 

@@ -8,9 +8,9 @@ namespace Office365FiddlerExtension.Services
 {
     public class Preferences
     {
-        public static void Initialize()
+        /*public static void Initialize()
         {
-        }
+        }*/
 
         public static string LogPrepend()
         {
@@ -20,6 +20,9 @@ namespace Office365FiddlerExtension.Services
         /// <summary>
         /// This is the low water mark for what is considered a slow running session, considering a number of factors.
         /// Exchange response times are typically going to be much quicker than this. In the < 300ms range.
+        /// I haven't found that many Microsoft365 client issues have been resolved with Fiddler and slow session times.
+        /// So it's generally one of the last things to look at. If we're into slow network connectivity, Wireshark or
+        /// something like that is the better tool.
         /// </summary>
         public static int GetSlowRunningSessionThreshold()
         {
@@ -30,12 +33,6 @@ namespace Office365FiddlerExtension.Services
         public static int GetWarningSessionTimeThreshold()
         {
             return 2500;
-        }
-
-        // 1 second for a good time on a session.
-        public static int GetGoodSessionTimeThreshold()
-        {
-            return 1000;
         }
 
         public static Task<bool> SetDefaultPreferences()

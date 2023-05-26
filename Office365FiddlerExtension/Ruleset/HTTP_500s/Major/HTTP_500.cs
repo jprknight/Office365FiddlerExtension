@@ -165,7 +165,7 @@ namespace Office365FiddlerExtension.Ruleset
                 + "column and lookup where it is hosted to know who should be looking at the issue.",
 
                 SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
                 SessionResponseServerConfidenceLevel = 5
             };
 

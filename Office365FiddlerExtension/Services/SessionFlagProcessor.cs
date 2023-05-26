@@ -4,13 +4,9 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Fiddler;
 using Newtonsoft.Json;
-using System.Text.Json;
-using Newtonsoft.Json.Linq;
-using System.Xml.Linq;
-using Office365FiddlerExtension.Ruleset;
+using Office365FiddlerExtension.UI;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -52,31 +48,31 @@ namespace Office365FiddlerExtension.Services
 
                 var SessionFlagsData = new
                 {
-                    SectionTitle = "Initial / Not detected",
-                    UIBackColour = "Initial / Not detected",
-                    UITextColour = "Initial / Not detected",
-                    SessionType = "Initial / Not detected",
-                    ResponseCodeDescription = "Initial / Not detected",
-                    ResponseServer = "Initial / Not detected",
-                    ResponseAlert = "Initial / Not detected",
-                    ResponseComments = "Initial / Not detected",
-                    DataAge = "Initial / Not detected",
-                    CalculatedSessionAge = "Initial / Not detected",
-                    DateDataCollected = "Initial / Not detected",
-                    SessionTimersDescription = "Initial / Not detected",
-                    ServerThinkTime = "Initial / Not detected",
-                    TransitTime = "Initial / Not detected",
-                    ElapsedTime = "Initial / Not detected",
-                    InspectorElapsedTime = "Initial / Not detected",
-                    Authentication = "Initial / Not detected",
-                    AuthenticationType = "Initial / Not detected",
-                    AuthenticationDescription = "Initial / Not detected",
-                    SamlTokenIssuer = "Initial / Not detected",
-                    SamlTokenSigningCertificate = "Initial / Not detected",
-                    SamlTokenAttributeNameUPN = "Initial / Not detected",
-                    SamlTokenNameIdentifierFormat = "Initial / Not detected",
-                    SamlTokenAttributeNameImmutibleID = "Initial / Not detected",
-                    ProcessName = "Initial / Not detected",
+                    SectionTitle = "",
+                    UIBackColour = "",
+                    UITextColour = "",
+                    SessionType = "",
+                    ResponseCodeDescription = "",
+                    ResponseServer = "",
+                    ResponseAlert = "",
+                    ResponseComments = "",
+                    DataAge = "",
+                    CalculatedSessionAge = "",
+                    DateDataCollected = "",
+                    SessionTimersDescription = "",
+                    ServerThinkTime = "",
+                    TransitTime = "",
+                    ElapsedTime = "",
+                    InspectorElapsedTime = "",
+                    Authentication = "",
+                    AuthenticationType = "",
+                    AuthenticationDescription = "",
+                    SamlTokenIssuer = "",
+                    SamlTokenSigningCertificate = "",
+                    SamlTokenAttributeNameUPN = "",
+                    SamlTokenNameIdentifierFormat = "",
+                    SamlTokenAttributeNameImmutibleID = "",
+                    ProcessName = "",
                     SessionAuthenticationConfidenceLevel = "0",
                     SessionTypeConfidenceLevel = "0",
                     SessionResponseServerConfidenceLevel = "0"
@@ -115,18 +111,7 @@ namespace Office365FiddlerExtension.Services
             {
                 this.session = session;
 
-                // Extension Json Data.
-                this.session["Microsoft365FiddlerExtensionJson"] = null;
-
-                // Session colours.
-                this.session["UI-BACKCOLOR"] = null;
-                this.session["UI-COLOR"] = null;
-
-                // Column data.
-                this.session["X-AUTHENTICATION"] = null;
-                this.session["X-ELAPSEDTIME"] = null;
-                this.session["X-RESPONSESERVER"] = null;
-                this.session["X-SESSIONTYPE"] = null;
+                UpdateSessionUX.Instance.NormaliseSession(this.session);
 
                 this.session.RefreshUI();
             }

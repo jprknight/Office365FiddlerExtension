@@ -80,7 +80,7 @@ namespace Office365FiddlerExtension.Ruleset
                 + "<p>If this session is not for an Outlook process then the information above may not be relevant to the issue under investigation.</p>",
 
                 SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
                 SessionResponseServerConfidenceLevel = 5
             };
         }

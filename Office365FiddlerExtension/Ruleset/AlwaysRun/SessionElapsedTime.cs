@@ -28,7 +28,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                 var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
                 {
-                    SectionTitle = "SessionElapsedTime_Millis",
+                    SectionTitle = "SessionElapsedTime",
                     ElapsedTime = Milliseconds + "ms"
                 };
 

@@ -6,5 +6,7 @@
   "ReportIssuesURL": "https://aka.ms/O365FiddlerExtensionIssues",
   "BetaRuleSetURL": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/RulesetJson/Ruleset.json",
   "MasterRuleSetURL": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Master/Office365FiddlerExtension/RulesetJson/Ruleset.json",
-  "UpdateMessage": "A new version of the Office 365 Fiddler Extension is available."
+  "UpdateMessage": "A new version of the Office 365 Fiddler Extension is available.",
+  "WarningSessionTimeThreshold": "2500",
+  "SlowRunningSessionThreshold": "5000"
 }

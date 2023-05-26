@@ -25,6 +25,7 @@ namespace Office365FiddlerExtension.Ruleset
                 UITextColour = "Black",
 
                 SessionType = "!NO RESPONSE!",
+                ResponseServer = "!NO RESPONSE!",
                 ResponseCodeDescription = "0 No Response",
                 ResponseAlert = "<b><span style='color:red'>HTTP 0 - No Response</span></b>",
                 ResponseComments = "The quantity of these types of server errors need to be considered in context with what you are "
@@ -35,8 +36,8 @@ namespace Office365FiddlerExtension.Ruleset
                 + "client computer might also be an area to investigate.</p>",
 
                 SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 5,
-                SessionResponseServerConfidenceLevel = 5
+                SessionTypeConfidenceLevel = 10,
+                SessionResponseServerConfidenceLevel = 10
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
