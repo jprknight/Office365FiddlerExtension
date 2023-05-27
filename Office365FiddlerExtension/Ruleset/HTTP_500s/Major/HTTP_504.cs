@@ -38,7 +38,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 504 Gateway Timeout -- Internet Access Blocked.");
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_504s",
                 UIBackColour = "Red",
@@ -57,7 +57,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
         }
 
         public void HTTP_504_Gateway_Timeout_Anything_Else(Session session)
@@ -68,7 +68,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 504 Gateway Timeout.");
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_504s",
                 UIBackColour = "Red",
@@ -86,7 +86,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

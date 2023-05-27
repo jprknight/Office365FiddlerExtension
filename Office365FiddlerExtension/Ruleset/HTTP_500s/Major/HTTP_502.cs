@@ -33,7 +33,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 502 Bad Gateway. Telemetry False Positive.");
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_502s_Telemetry_False_Positive",
                 UIBackColour = "Blue",
@@ -50,7 +50,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
         }
 
         public void HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive(Session session)
@@ -76,7 +76,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 502 Bad Gateway. EXO DNS False Positive.");
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_502s_EXO_DNS_Lookup_False_Positive",
                 UIBackColour = "Blue",
@@ -97,7 +97,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
         }
 
         public void HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive(Session session)
@@ -138,7 +138,7 @@ namespace Office365FiddlerExtension.Ruleset
                 AutoDFalsePositiveDomain = "<Domain not detected by extension>";
             }
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_502s_EXO_AutoDiscover_False_Positive",
                 UIBackColour = "Blue",
@@ -164,7 +164,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover(Session session)
@@ -185,7 +185,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 502 Bad Gateway. Exchange Autodiscover.");
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_502s_Bad_Gateway_AutoDiscover_Anything_Else",
                 UIBackColour = "Red",
@@ -202,7 +202,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
         }
 
         public void HTTP_502_Bad_Gateway_Anything_Else(Session session)
@@ -213,7 +213,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 502 Bad Gateway.");
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_502s_Bad_Gateway_Anything_Else",
                 UIBackColour = "Red",
@@ -232,7 +232,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

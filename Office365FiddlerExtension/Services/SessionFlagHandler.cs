@@ -10,10 +10,10 @@ using Office365FiddlerExtension.UI;
 
 namespace Office365FiddlerExtension.Services
 {
-    class SessionFlagProcessor : ActivationService
+    class SessionFlagHandler : ActivationService
     {
-        private static SessionFlagProcessor _instance;
-        public static SessionFlagProcessor Instance => _instance ?? (_instance = new SessionFlagProcessor());
+        private static SessionFlagHandler _instance;
+        public static SessionFlagHandler Instance => _instance ?? (_instance = new SessionFlagHandler());
 
         public string GetSessionJsonData(Session session)
         {
@@ -25,9 +25,16 @@ namespace Office365FiddlerExtension.Services
             return this.session["Microsoft365FiddlerExtensionJson"];
         }
 
+        public string ResponseCommentsNoKnownIssue()
+        {
+            return "<p>No known issue with Microsoft365 and this type of session. If you have a suggestion for an improvement, "
+                + "create an issue or better yet a pull request in the project Github repository: "
+                + "<a href='https://aka.ms/Office365FiddlerExtension' target='_blank'>https://aka.ms/Office365FiddlerExtension</a>.</p>";
+        }
+
         public Boolean GetAnySessionConfidenceLevelTen(Session session)
         {
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(GetSessionJsonData(this.session));
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(GetSessionJsonData(this.session));
 
             if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel == 10 ||
                 ExtensionSessionFlags.SessionTypeConfidenceLevel == 10 ||
@@ -95,7 +102,7 @@ namespace Office365FiddlerExtension.Services
             foreach (var session in oSessions)
             {
                 this.session = session;
-                SessionProcessor.Instance.OnPeekAtResponseHeaders(this.session);
+                SessionHandler.Instance.OnPeekAtResponseHeaders(this.session);
             }
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Processed {oSessions.Count()} sessions.");

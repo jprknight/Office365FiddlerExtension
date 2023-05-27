@@ -21,7 +21,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: " + this.session.id + " HTTP 408 Request Timeout.");
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_408s",
                 UIBackColour = "Gray",
@@ -38,7 +38,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

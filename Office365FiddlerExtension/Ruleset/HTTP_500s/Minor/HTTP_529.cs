@@ -21,7 +21,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 529 Site is overloaded.");
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_529s",
                 UIBackColour = "Gray",
@@ -30,7 +30,7 @@ namespace Office365FiddlerExtension.Ruleset
                 SessionType = "529 Site is overloaded",
                 ResponseCodeDescription = "529 Site is overloaded",
                 ResponseAlert = "HTTP 529 Site is overloaded.",
-                ResponseComments = SessionProcessor.Instance.ResponseCommentsNoKnownIssue(),
+                ResponseComments = SessionFlagHandler.Instance.ResponseCommentsNoKnownIssue(),
 
                 SessionAuthenticationConfidenceLevel = 0,
                 SessionTypeConfidenceLevel = 0,
@@ -38,7 +38,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

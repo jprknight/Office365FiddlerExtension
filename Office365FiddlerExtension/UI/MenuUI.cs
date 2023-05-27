@@ -84,14 +84,14 @@ namespace Office365FiddlerExtension
 
         private void MiClearAllSessionProcessing_Click(object sender, EventArgs e)
         {
-            SessionFlagProcessor.Instance.ClearAllSessionProcessing();
+            SessionFlagHandler.Instance.ClearAllSessionProcessing();
         }
 
         private void MiProcessAllSessions_Click(object sender, EventArgs e)
         {
             if (Preferences.ExtensionEnabled)
             {
-                SessionFlagProcessor.Instance.ProcessAllSessions();
+                SessionFlagHandler.Instance.ProcessAllSessions();
             }
             else
             {
@@ -112,7 +112,7 @@ namespace Office365FiddlerExtension
                     Preferences.ExtensionEnabled = true;
                     this.MiEnabled.Checked = true;
                     this.ExtensionMenu.Text = MenuEnabled;
-                    SessionFlagProcessor.Instance.ProcessAllSessions();
+                    SessionFlagHandler.Instance.ProcessAllSessions();
                 }
             }
         }

@@ -21,7 +21,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 430 Request Header Fields Too Large (Shopify).");
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_430s",
                 UIBackColour = "Gray",
@@ -30,7 +30,7 @@ namespace Office365FiddlerExtension.Ruleset
                 SessionType = "430 Request Header Fields Too Large (Shopify)",
                 ResponseCodeDescription = "430 Request Header Fields Too Large (Shopify)",
                 ResponseAlert = "HTTP 430 Request Header Fields Too Large (Shopify).",
-                ResponseComments = SessionProcessor.Instance.ResponseCommentsNoKnownIssue(),
+                ResponseComments = SessionFlagHandler.Instance.ResponseCommentsNoKnownIssue(),
 
                 SessionAuthenticationConfidenceLevel = 0,
                 SessionTypeConfidenceLevel = 0,
@@ -38,7 +38,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

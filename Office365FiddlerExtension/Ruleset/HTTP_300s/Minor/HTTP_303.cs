@@ -21,7 +21,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 303 See Other.");
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_303s",
                 UIBackColour = "Gray",
@@ -30,7 +30,7 @@ namespace Office365FiddlerExtension.Ruleset
                 SessionType = "HTTP 303 See Other",
                 ResponseCodeDescription = "HTTP 303 See Other",
                 ResponseAlert = "HTTP 303 See Other",
-                ResponseComments = SessionProcessor.Instance.ResponseCommentsNoKnownIssue(),
+                ResponseComments = SessionFlagHandler.Instance.ResponseCommentsNoKnownIssue(),
 
                 SessionAuthenticationConfidenceLevel = 0,
                 SessionTypeConfidenceLevel = 0,
@@ -38,7 +38,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

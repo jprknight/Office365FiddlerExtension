@@ -25,7 +25,7 @@ namespace Office365FiddlerExtension.Ruleset
             {
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
 
-                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_403s_Proxy_Block",
                     UIBackColour = "Red",
@@ -49,7 +49,7 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
 
@@ -63,7 +63,7 @@ namespace Office365FiddlerExtension.Ruleset
             {
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 403 Forbidden. EWS Language not set on mailbox.");
                 
-                var sessionFlags_HTTP403_EWS = new SessionFlagProcessor.ExtensionSessionFlags()
+                var sessionFlags_HTTP403_EWS = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_403s_EWS_Mailbox_Language",
                     UIBackColour = "Red",
@@ -83,7 +83,7 @@ namespace Office365FiddlerExtension.Ruleset
                     SessionResponseServerConfidenceLevel = 5
                 };
                 var sessionFlagsJson_HTTP403_EWS = JsonConvert.SerializeObject(sessionFlags_HTTP403_EWS);
-                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson_HTTP403_EWS);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson_HTTP403_EWS);
             }
         }
 
@@ -95,7 +95,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 403 Forbidden.");
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_403s_Generic",
                 UIBackColour = "Red",
@@ -116,7 +116,7 @@ namespace Office365FiddlerExtension.Ruleset
                 SessionResponseServerConfidenceLevel = 5
             };
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);          
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);          
         }
     }
 }

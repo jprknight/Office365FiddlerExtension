@@ -24,7 +24,7 @@ namespace Office365FiddlerExtension.Services
                 await Preferences.SetDefaultPreferences();
             }
 
-            SessionProcessor.Instance.Initialize();
+            SessionHandler.Instance.Initialize();
 
             try
             {
@@ -101,7 +101,7 @@ namespace Office365FiddlerExtension.Services
             this.session = session;
 
             // Call the main fuction which runs through all session logic checks.
-            SessionProcessor.Instance.OnPeekAtResponseHeaders(this.session);
+            SessionHandler.Instance.OnPeekAtResponseHeaders(this.session);
 
             this.session.RefreshUI();
         }

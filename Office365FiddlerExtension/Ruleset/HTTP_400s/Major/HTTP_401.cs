@@ -30,7 +30,7 @@ namespace Office365FiddlerExtension.Ruleset
             {
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 401 Auth Challenge.");
 
-                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_401s",
                     UIBackColour = "Orange",
@@ -52,7 +52,7 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
 
@@ -66,7 +66,7 @@ namespace Office365FiddlerExtension.Ruleset
             {
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 401 Auth Challenge.");
 
-                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_401s",
                     UIBackColour = "Orange",
@@ -87,7 +87,7 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
 
@@ -102,7 +102,7 @@ namespace Office365FiddlerExtension.Ruleset
             {
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 401 EWS call.");
 
-                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     SectionTitle = "",
                     UIBackColour = "Orange",
@@ -120,7 +120,7 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
 
@@ -130,7 +130,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 401 Auth Challenge.");
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "",
                 UIBackColour = "Orange",
@@ -150,7 +150,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

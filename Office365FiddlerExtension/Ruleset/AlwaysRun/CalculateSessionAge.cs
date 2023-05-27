@@ -62,28 +62,28 @@ namespace Office365FiddlerExtension.Ruleset
 
             String DataAge = TimeSpanDaysText + TimeSpanHoursText + TimeSpanMinutesText;
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 DateDataCollected = SessionDateTime.ToString("dddd, MMMM dd, yyyy h:mm tt")
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
 
             if (TimeSpanDays <= 7)
             {
-                sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     DataAge = $"<b><span style='color:green'>{DataAge}</span></b>",
                     CalculatedSessionAge = "<p>Session collected within 7 days, data freshness is good. Best case scenario for correlating this data to backend server logs.</p>"
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             else if (TimeSpanDays > 7 && TimeSpanDays < 14)
             {
-                sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     DataAge = $"<b><span style='color:orange'>{DataAge}</span></b>",
                     CalculatedSessionAge = "<p>Session collected within 14 days, data freshness is good, <b><span style='color:orange'>but not ideal</span></b>. "
@@ -91,11 +91,11 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             else if (TimeSpanDays >= 14 && TimeSpanDays < 30)
             {
-                sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     DataAge = $"<b><span style='color:orange'>{DataAge}</span></b>",
                     CalculatedSessionAge = "<p><b><span style='color:red'>Session collected between 14 and 30 days ago</span></b>. "
@@ -103,11 +103,11 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             else
             {
-                sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     DataAge = $"<b><span style='color:red'>{DataAge}</span></b>",
                     CalculatedSessionAge = "<p><b><span style='color:red'>Session collected more than 30 days ago</span></b>. "
@@ -115,7 +115,7 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
     }

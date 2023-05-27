@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -32,7 +31,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             ProcessName.Instance.SetProcessName(this.session);
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "Authentication",
                 Authentication = "No Auth Headers",
@@ -43,7 +42,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void SetAuthentication_SAML_Parser(Session session)
@@ -64,7 +63,7 @@ namespace Office365FiddlerExtension.Ruleset
                 if (this.session.uriContains("adfs/ls"))
                 {
 
-                    var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                    var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                     {
                         SectionTitle = "Authentication",
                         SessionType = "SAML Request/Response",
@@ -79,7 +78,7 @@ namespace Office365FiddlerExtension.Ruleset
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                    SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
 
                     // JK 6/30/2021
                     // All the below logic was build with an ADFS SAML token from a lab environment.
@@ -102,7 +101,7 @@ namespace Office365FiddlerExtension.Ruleset
                 {
                     FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Third-party SAML response found. SAML response parser not running.");
 
-                    var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                    var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                     {
                         SectionTitle = "Authentication",
 
@@ -122,7 +121,7 @@ namespace Office365FiddlerExtension.Ruleset
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                    SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                 }
             }
         }
@@ -150,10 +149,10 @@ namespace Office365FiddlerExtension.Ruleset
 
                 DateTime today = DateTime.Today;
 
-                var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+                var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     SectionTitle = "Authentication",
-                    ResponseComments = SessionProcessor.Instance.ResponseCommentsNoKnownIssue(),
+                    ResponseComments = SessionFlagHandler.Instance.ResponseCommentsNoKnownIssue(),
 
                     Authentication = "Modern Auth Disabled",
                     AuthenticationDescription = "Microsoft365 workload has Modern Authentication disabled. "
@@ -170,7 +169,7 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
 
@@ -185,9 +184,9 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Client Modern Auth.");
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "Authentication",
                 Authentication = "Client Modern Auth Capable",
@@ -197,7 +196,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void SetAuthentication_Basic_Auth_Capable_Client(Session session)
@@ -211,9 +210,9 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Client Basic Auth.");
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "Authentication",
 
@@ -227,7 +226,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void SetAuthentication_Modern_Auth_Client_Using_Token(Session session)
@@ -241,9 +240,9 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Client Modern Auth Token.");
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "Authentication",
                 Authentication = "Modern Auth Token",
@@ -252,7 +251,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
 
         }
 
@@ -267,9 +266,9 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Client Basic Auth Token.");
             
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(SessionFlagProcessor.Instance.GetSessionJsonData(this.session));
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "Authentication",
 
@@ -280,7 +279,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         private void SetTokenIssuer(Session session)
@@ -289,14 +288,14 @@ namespace Office365FiddlerExtension.Ruleset
 
             if (!(this.session.utilFindInResponse("Issuer=", false) > 1) && !(this.session.utilFindInResponse("IssueInstant=", false) > 1))
             {
-                var sessionFlagsNotDetermined = new SessionFlagProcessor.ExtensionSessionFlags()
+                var sessionFlagsNotDetermined = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     SectionTitle = "Authentication (SetTokenIssuer)",
                     Authentication = "Issuer in SAML token could not be determined."
                 };
 
                 var sessionFlagsJsonNotDetermined = JsonConvert.SerializeObject(sessionFlagsNotDetermined);
-                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJsonNotDetermined);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJsonNotDetermined);
 
                 return;
             }
@@ -329,14 +328,14 @@ namespace Office365FiddlerExtension.Ruleset
                 Issuer = "Issuer in SAML token could not be determined.";
             }
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "Authentication (SetTokenIssuer)",
                 SamlTokenIssuer = Issuer
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         private void SetSigningCertificate(Session session)
@@ -345,14 +344,14 @@ namespace Office365FiddlerExtension.Ruleset
 
             if (!(this.session.utilFindInResponse("&lt;X509Certificate>", false) > 1) && !(this.session.utilFindInResponse("&lt;/X509Certificate>", false) > 1))
             {
-                var sessionFlagsNotDetermined = new SessionFlagProcessor.ExtensionSessionFlags()
+                var sessionFlagsNotDetermined = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     SectionTitle = "Authentication (SigningCertificate)",
                     SamlTokenSigningCertificate = "Data points not found for SigningCertificate."
                 };
 
                 var sessionFlagsJsonNotDetermined = JsonConvert.SerializeObject(sessionFlagsNotDetermined);
-                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJsonNotDetermined);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJsonNotDetermined);
 
                 return;
             }
@@ -382,14 +381,14 @@ namespace Office365FiddlerExtension.Ruleset
                 x509SigningCertificate = "SAML signing certificate could not be determined.";
             }
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "Authentication (SigningCertificate)",
                 SamlTokenSigningCertificate = x509SigningCertificate
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         private void SetAttributeNameUPN(Session session)
@@ -400,14 +399,14 @@ namespace Office365FiddlerExtension.Ruleset
                 !(this.session.utilFindInResponse("&lt;/saml:Attribute>", false) > 1))
             {
 
-                var sessionFlagsNotDetermined = new SessionFlagProcessor.ExtensionSessionFlags()
+                var sessionFlagsNotDetermined = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     SectionTitle = "Authentication (AttributeNameUPN)",
                     SamlTokenAttributeNameUPN = "Data points not found for AttributeNameUPN"
                 };
 
                 var sessionFlagsJsonNotDetermined = JsonConvert.SerializeObject(sessionFlagsNotDetermined);
-                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJsonNotDetermined);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJsonNotDetermined);
 
                 return;
             }
@@ -456,14 +455,14 @@ namespace Office365FiddlerExtension.Ruleset
                 AttributeNameUPN = "SAML AttributeNameUPN could not be determined.";
             }
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "Authentication (AttributeNameUPN)",
                 SamlTokenAttributeNameUPN = AttributeNameUPN,
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         private void SetNameIdentifierFormat(Session session)
@@ -474,14 +473,14 @@ namespace Office365FiddlerExtension.Ruleset
                 !(this.session.utilFindInResponse("&lt;saml:SubjectConfirmation>", false) > 1))
             {
 
-                var sessionFlagsNotDetermined = new SessionFlagProcessor.ExtensionSessionFlags()
+                var sessionFlagsNotDetermined = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     SectionTitle = "Authentication (NameIdentifierFormat)",
                     SamlTokenNameIdentifierFormat = "Data points not found for NameIdentifierFormat"
                 };
 
                 var sessionFlagsJsonNotDetermined = JsonConvert.SerializeObject(sessionFlagsNotDetermined);
-                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJsonNotDetermined);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJsonNotDetermined);
 
                 return;
             }
@@ -512,14 +511,14 @@ namespace Office365FiddlerExtension.Ruleset
                 NameIdentifierFormat = "SAML NameIdentifierFormat could not be determined.";
             }
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "Authentication (NameIdentifierFormat)",
                 SamlTokenNameIdentifierFormat = NameIdentifierFormat,
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         private void SetAttributeNameImmutableID(Session session)
@@ -531,14 +530,14 @@ namespace Office365FiddlerExtension.Ruleset
             if (!(this.session.utilFindInResponse("&lt;saml:NameIdentifier Format", false) > 1) &&
                 !(this.session.utilFindInResponse("&lt;saml:SubjectConfirmation>", false) > 1))
             {
-                var sessionFlagsNotDetermined = new SessionFlagProcessor.ExtensionSessionFlags()
+                var sessionFlagsNotDetermined = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     SectionTitle = "Authentication (TokenAttributeNameImmutibleID)",
                     SamlTokenAttributeNameImmutibleID = "Data points not found for TokenAttributeNameImmutibleID"
                 };
 
                 var sessionFlagsJsonNotDetermined = JsonConvert.SerializeObject(sessionFlagsNotDetermined);
-                SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJsonNotDetermined);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJsonNotDetermined);
 
                 return;
             }
@@ -591,20 +590,20 @@ namespace Office365FiddlerExtension.Ruleset
                 AttributeNameImmutibleID = "SAML AttributeNameImmutibleID could not be determined.";
             }
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "Authentication (TokenAttributeNameImmutibleID)",
                 SamlTokenAttributeNameImmutibleID = AttributeNameImmutibleID
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
         
 
         private void SAMLParserFieldsNoData(Session session)
         {
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "Authentication (SAMLParserFieldsNoData)",
                 SamlTokenIssuer = "No SAML Data in session",
@@ -614,7 +613,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         private int SearchSessionForWord(Session session, string searchTerm)

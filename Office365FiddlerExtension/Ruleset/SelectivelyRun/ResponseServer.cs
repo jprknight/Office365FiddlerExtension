@@ -27,7 +27,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetResponseServer_Server.");
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "ResponseServer_Server",
                 ResponseServer = this.session.oResponse["Server"],
@@ -36,7 +36,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void SetResponseServer_Host(Session session) 
@@ -50,7 +50,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "ResponseServer_Host",
                 ResponseServer = this.session.oResponse["Host"],
@@ -59,7 +59,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void SetResponseServer_PoweredBy(Session session) 
@@ -73,7 +73,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "ResponseServer_PoweredBy",
                 ResponseServer = this.session.oResponse["X-Powered-By"],
@@ -82,7 +82,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
         }
 
         public void SetResponseServer_ServedBy(Session session) 
@@ -95,7 +95,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "ResponseServer_ServedBy",
                 ResponseServer = this.session.oResponse["X-Served-By"],
@@ -104,7 +104,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
         }
 
         public void SetResponseServer_ServerName(Session session) 
@@ -117,7 +117,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "ResponseServer_ServerName",
                 ResponseServer = "X-Served-Name: " + this.session.oResponse["X-Server-Name"],
@@ -126,7 +126,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

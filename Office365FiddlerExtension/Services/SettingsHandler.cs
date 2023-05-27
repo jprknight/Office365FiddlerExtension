@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Office365FiddlerExtension.Services
 {
-    internal class SettingsProcessor
+    public class SettingsHandler
     {
         public async void GetSettingsFromGithub()
         {

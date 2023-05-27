@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
-using static Office365FiddlerExtension.Services.SessionFlagProcessor;
+using static Office365FiddlerExtension.Services.SessionFlagHandler;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -32,7 +32,7 @@ namespace Office365FiddlerExtension.Ruleset
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running LongRunningSessionsWarning.");
 
             // Warn on a 2.5 second roundtrip time. Using ClientMilliseconds here since that represents the complete round trip.
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "LongRunningSesions_Warning",
                 UIBackColour = "Orange",
@@ -45,7 +45,7 @@ namespace Office365FiddlerExtension.Ruleset
                 + "A small number of sessions completing roundtrip in this timeframe is not necessary sign of an issue."
             };
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void LongRunningSessionsClientSlow(Session session) {
@@ -62,7 +62,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Long running client session.");
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "LongRunningSessions_Client_Session",
                 UIBackColour = "Red",
@@ -81,7 +81,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void LongRunningSessionsServerSlow(Session session) {
@@ -98,7 +98,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Long running Office 365 session.");
 
-            var sessionFlags = new SessionFlagProcessor.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "LongRunningSessions_Server_Session",
                 UIBackColour = "Red",
@@ -117,7 +117,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagProcessor.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);           
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);           
         }
     }
 }

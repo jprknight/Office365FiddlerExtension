@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Office365FiddlerExtension.Services
 {
-    class RuleSetProcessor : ActivationService
+    class RuleSetHandler : ActivationService
     {   
         // Check the ruleset version stored in local settings is older than the version in the Github repo.
         // If it's newer call the <to be named> function to pull down updates.

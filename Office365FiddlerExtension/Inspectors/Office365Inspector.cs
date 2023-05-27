@@ -240,7 +240,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                 this.session = session;
 
-                SessionFlagProcessor sessionFlagProcessor = new SessionFlagProcessor();
+                SessionFlagHandler sessionFlagProcessor = new SessionFlagHandler();
 
                 var JsonSettings = new JsonSerializerSettings
                 {
@@ -248,7 +248,7 @@ namespace Office365FiddlerExtension.Inspectors
                     MissingMemberHandling = MissingMemberHandling.Ignore
                 };
 
-                var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagProcessor.ExtensionSessionFlags>(this.session["Microsoft365FiddlerExtensionJson"], JsonSettings);
+                var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(this.session["Microsoft365FiddlerExtensionJson"], JsonSettings);
 
                 // HTML Header.
                 ResultsString.AppendLine("<html>");
