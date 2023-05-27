@@ -6,7 +6,7 @@ using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtension
 {
-    class About : ActivationService
+    class About
     {
         private static About _instance;
         public static About Instance => _instance ?? (_instance = new About());

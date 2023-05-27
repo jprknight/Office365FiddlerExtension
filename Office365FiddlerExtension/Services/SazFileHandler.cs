@@ -68,12 +68,6 @@ namespace Office365FiddlerExtension.Services
             {
                 this.session = session;
 
-                // REVIEW THIS -- Demonstrating we never hit session 1 on LoadSaz.
-                if (this.session.id == 1)
-                {
-                    //MessageBox.Show($"This is session {this.session.id}");
-                }
-
                 if (Preferences.ExtensionEnabled)
                 {
                     SessionHandler.Instance.OnPeekAtResponseHeaders(this.session);
