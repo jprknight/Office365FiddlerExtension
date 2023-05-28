@@ -85,7 +85,7 @@ namespace Office365FiddlerExtension.Services
                     SessionResponseServerConfidenceLevel = "0"
                 };
 
-                //Tranform the object to a Json object.
+                // Transform the object to a Json object.
                 string jsonData = JsonConvert.SerializeObject(SessionFlagsData, Formatting.Indented);
 
                 // Save the new Json to the session flag.

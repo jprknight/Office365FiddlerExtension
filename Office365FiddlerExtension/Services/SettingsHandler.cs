@@ -84,4 +84,27 @@ namespace Office365FiddlerExtension.Services
         }
 
     }
+
+    public class ExtensionSettingsFlags
+    {
+        public string SettingsURL { get; set; }
+
+        public string WikiURL { get; set; }
+
+        public string ReportIssuesURL { get; set; }
+
+        public string BetaRuleSetURL { get; set; }
+
+        public string MasterRuleSetURL { get; set; }
+
+        public string UpdateMessage { get; set; }
+
+        public int WarningSessionTimeThreshold { get; set; }
+
+        public int SlowRunningSessionThreshold { get; set; }
+
+        public string ExtensionVersion { get; set; }
+
+        public DateTime SettingsJsonLastUpdated { get; set; }
+    }
 }

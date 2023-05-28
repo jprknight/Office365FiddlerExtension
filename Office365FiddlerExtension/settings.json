@@ -1,12 +1,11 @@
 {
   "SettingsURL": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/settings.json",
-  "UpdateURL": "https://aka.ms/Office365FiddlerExtensionUpdateCheckUrl",
-  "InstallerURL": "https://aka.ms/O365FiddlerExtensionUpdateUrl",
   "WikiURL": "https://aka.ms/O365FiddlerExtensionWiki",
   "ReportIssuesURL": "https://aka.ms/O365FiddlerExtensionIssues",
   "BetaRuleSetURL": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/RulesetJson/Ruleset.json",
   "MasterRuleSetURL": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Master/Office365FiddlerExtension/RulesetJson/Ruleset.json",
   "UpdateMessage": "A new version of the Office 365 Fiddler Extension is available.",
   "WarningSessionTimeThreshold": "2500",
-  "SlowRunningSessionThreshold": "5000"
+  "SlowRunningSessionThreshold": "5000",
+  "ExtensionVersion": "1.0.79"
 }

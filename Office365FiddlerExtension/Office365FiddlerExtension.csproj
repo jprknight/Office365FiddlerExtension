@@ -299,6 +299,7 @@
     <Compile Include="Services\RuleSetHandler.cs" />
     <Compile Include="Services\SessionFlagHandler.cs" />
     <Compile Include="Services\SettingsHandler.cs" />
+    <Compile Include="Services\UpdateHandler.cs" />
     <Compile Include="UI\Tabs\Office365TabPage.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="About.cs" />
