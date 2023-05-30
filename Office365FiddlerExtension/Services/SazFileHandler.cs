@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management.Instrumentation;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -65,7 +66,17 @@ namespace Office365FiddlerExtension.Services
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz with Extension Enabled: {Preferences.ExtensionEnabled}.");
 
-            MessageBox.Show("LoadSaz event fired!");
+            // Make sure LoadSaz only runs once per filename.
+            // LoadSaz has been run twice for the same filename, this shouldn't happen, return.
+            /*if (Properties.Settings.Default.LoadSazFilename == e.sFilename)
+            {
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz ran on the same filename ({e.sFilename}), returning.");
+                return;
+            }*/
+
+            Properties.Settings.Default.LoadSazFilename = e.sFilename;
+
+            MessageBox.Show($"LoadSaz event fired on {e.sFilename} from {Assembly.GetExecutingAssembly().GetName().CodeBase}");
 
             foreach (var session in e.arrSessions)
             {
