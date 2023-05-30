@@ -202,13 +202,7 @@ namespace Office365FiddlerExtension
             ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
             {
-                SessionType.Instance.SetSessionType_Remote_Capture(this.session);
-            }
-
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
-            {
-                SessionType.Instance.SetSessionType_Unclassified(this.session);
+                SessionType.Instance.SetSessionType_Unknown(this.session);
             }
             #endregion
 
@@ -246,6 +240,12 @@ namespace Office365FiddlerExtension
             if (ExtensionSessionFlags.SessionResponseServerConfidenceLevel < 10)
             {
                 ResponseServer.Instance.SetResponseServer_ServerName(this.session);
+            }
+
+            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            if (ExtensionSessionFlags.SessionResponseServerConfidenceLevel < 10)
+            {
+                ResponseServer.Instance.SetResponseServer_Unknown(this.session);
             }
             #endregion
 

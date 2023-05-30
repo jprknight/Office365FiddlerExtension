@@ -212,21 +212,7 @@ namespace Office365FiddlerExtension.Ruleset
             }
         }
 
-        public void SetSessionType_Remote_Capture(Session session)
-        {
-            this.session = session;
-
-            // If the local process is null or blank, then we are analysing traffic from a remote client such as a mobile device.
-            // Fiddler was acting as remote proxy when the data was captured: https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForiOS
-            if ((this.session.LocalProcess == null) || (this.session.LocalProcess == ""))
-            {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SessionType_Remote_Capture");
-
-                ProcessName.Instance.SetProcessName(this.session);
-            }
-        }
-
-        public void SetSessionType_Unclassified(Session session)
+        public void SetSessionType_Unknown(Session session)
         {
             
             this.session = session;

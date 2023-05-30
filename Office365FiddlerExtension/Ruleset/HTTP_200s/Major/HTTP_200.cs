@@ -41,7 +41,7 @@ namespace Office365FiddlerExtension.Ruleset
                 UITextColour = "Black",
 
                 SessionType = "!CLIENT ACCESS RULE!",
-                ResponseCodeDescription = "200 OK",
+                ResponseCodeDescription = "200 OK Client Access Rule",
                 ResponseAlert = "<b><span style='color:red'>CLIENT ACCESS RULE</span></b>",
                 ResponseComments = "<b><span style='color:red'>A client access rule has blocked MAPI connectivity to the mailbox</span></b>. "
                 + "<p>Check if the <b><span style='color:red'>client access rule includes OutlookAnywhere</span></b>.</p>"
@@ -127,7 +127,7 @@ namespace Office365FiddlerExtension.Ruleset
                 UITextColour = "Black",
 
                 SessionType = "Outlook M365 MAPI",
-                ResponseCodeDescription = "200 OK",
+                ResponseCodeDescription = "200 OK Microsoft365 / Exchange Online MAPI",
                 ResponseAlert = "Outlook for Windows M365 MAPI traffic",
                 ResponseComments = "This is normal Outlook MAPI over HTTP traffic to an Exchange Online / Microsoft365 mailbox.",
 
@@ -160,7 +160,7 @@ namespace Office365FiddlerExtension.Ruleset
                 UITextColour = "Black",
 
                 SessionType = "Outlook MAPI",
-                ResponseCodeDescription = "200 OK",
+                ResponseCodeDescription = "200 OK Exchange MAPI",
                 ResponseAlert = "Outlook for Windows MAPI traffic",
                 ResponseComments = "This is normal Outlook MAPI over HTTP traffic to an Exchange OnPremise mailbox.",
 
@@ -193,7 +193,7 @@ namespace Office365FiddlerExtension.Ruleset
                 UITextColour = "Black",
 
                 SessionType = "Outlook Web App",
-                ResponseCodeDescription = "200 OK",
+                ResponseCodeDescription = "200 OK Outlook Web App / OWA",
                 ResponseAlert = "Outlook Web App",
                 ResponseComments = "This is normal Outlook Web App traffic to an Exchange mailbox.",
 
@@ -230,7 +230,7 @@ namespace Office365FiddlerExtension.Ruleset
                 UITextColour = "Black",
 
                 SessionType = "Outlook RPC",
-                ResponseCodeDescription = "200 OK",
+                ResponseCodeDescription = "200 OK Outlook over RPC",
                 ResponseAlert = "Outlook for Windows RPC traffic",
                 ResponseComments = "This is normal Outlook RPC over HTTP traffic to an Exchange On-Premise mailbox.",
 
@@ -264,7 +264,7 @@ namespace Office365FiddlerExtension.Ruleset
                 UITextColour = "Black",
 
                 SessionType = "Outlook NSPI",
-                ResponseCodeDescription = "200 OK",
+                ResponseCodeDescription = "200 OK Outlook NSPI",
                 ResponseAlert = "Outlook for Windows NSPI traffic",
                 ResponseComments = "This is normal Outlook traffic to an Exchange On-Premise mailbox. Name Service Provider Interface (NSPI).",
 
@@ -337,7 +337,7 @@ namespace Office365FiddlerExtension.Ruleset
                     UITextColour = "Black",
 
                     SessionType = "On-Prem AutoD Redirect",
-                    ResponseCodeDescription = "200 OK",
+                    ResponseCodeDescription = "200 OK Redirect Address",
                     ResponseAlert = "Exchange On-Premise Autodiscover redirect.",
                     ResponseComments = "Exchange On-Premise Autodiscover redirect address to Exchange Online found."
                     + "<p>RedirectAddress: "
@@ -468,9 +468,9 @@ namespace Office365FiddlerExtension.Ruleset
                         UITextColour = "Black",
 
                         SessionType = "EXO MSI Autodiscover",
-                        ResponseCodeDescription = "200 OK",
-                        ResponseAlert = "Exchange Online / Outlook MSI Autodiscover.",
-                        ResponseComments = "For Autodiscover calls which go to autodiscover-s.outlook.com this is likely an Outlook (MSI / perpetual license) client"
+                        ResponseCodeDescription = "200 OK Outlook MSI AutoDiscover",
+                        ResponseAlert = "Exchange Online / Outlook MSI AutoDiscover.",
+                        ResponseComments = "For AutoDiscover calls which go to autodiscover-s.outlook.com this is likely an Outlook (MSI / perpetual license) client"
                         + " being redirected from Exchange On-Premise to Exchange Online.",
 
                         SessionAuthenticationConfidenceLevel = 5,
@@ -491,10 +491,10 @@ namespace Office365FiddlerExtension.Ruleset
                         UIBackColour = "Red",
                         UITextColour = "Black",
 
-                        SessionType = "!EXO MSI Autodiscover!",
+                        SessionType = "!EXO MSI AutoDiscover!",
                         ResponseCodeDescription = "200 OK, Unexpected AutoDiscover XML response.",
-                        ResponseAlert = "<b><span style='color:red'>Exchange Online / Outlook MSI Autodiscover - Unusual Autodiscover Response</span></b>",
-                        ResponseComments = "This session was detected as an Autodiscover response from Exchange Online. However the response did not contain "
+                        ResponseAlert = "<b><span style='color:red'>Exchange Online / Outlook MSI AutoDiscover - Unusual AutoDiscover Response</span></b>",
+                        ResponseComments = "This session was detected as an AutoDiscover response from Exchange Online. However the response did not contain "
                         + "the expected XML data. Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response.",
 
                         SessionAuthenticationConfidenceLevel = 5,
@@ -536,8 +536,8 @@ namespace Office365FiddlerExtension.Ruleset
 
                         SessionType = "EXO CTR Autodiscover",
                         ResponseCodeDescription = "200 OK",
-                        ResponseAlert = "Exchange Online / Outlook CTR Autodiscover.",
-                        ResponseComments = "For Autodiscover calls which go to outlook.office365.com this is likely an Outlook Click-To-Run (Downloaded or "
+                        ResponseAlert = "Exchange Online / Outlook CTR AutoDiscover.",
+                        ResponseComments = "For AutoDiscover calls which go to outlook.office365.com this is likely an Outlook Click-To-Run (Downloaded or "
                         + "deployed from Office365) client being redirected from Exchange On-Premise to Exchange Online.",
 
                         SessionAuthenticationConfidenceLevel = 5,
@@ -604,7 +604,7 @@ namespace Office365FiddlerExtension.Ruleset
                     UITextColour = "Black",
 
                     SessionType = "EWS GetUnifiedGroupsSettings",
-                    ResponseCodeDescription = "200 OK",
+                    ResponseCodeDescription = "200 OK Get Unified Groups Settings",
                     ResponseAlert = "GetUnifiedGroupsSettings EWS call.",
                     ResponseComments = "<GroupCreationEnabled>true</GroupCreationEnabled> found in response body. "
                     + "Expect user to be able to create Office 365 groups in Outlook.",
@@ -696,7 +696,7 @@ namespace Office365FiddlerExtension.Ruleset
                 UITextColour = "Black",
 
                 SessionType = "3S Suggestions",
-                ResponseCodeDescription = "200 OK",
+                ResponseCodeDescription = "200 OK 3S Suggestions",
                 ResponseAlert = "3S Suggestions",
                 ResponseComments = $"Scenario: {scenario} Types: {entityTypes} {clientRequestId}",
 
@@ -747,7 +747,7 @@ namespace Office365FiddlerExtension.Ruleset
                 UITextColour = "Black",
 
                 SessionType = $"REST People {sessionType}",
-                ResponseCodeDescription = "200 OK",
+                ResponseCodeDescription = "200 OK REST People Request",
                 ResponseAlert = $"REST People {sessionType}",
                 ResponseComments = $"{requestId} $search:{queryStrings["$search"]} $top:{queryStrings["$top"]} $skip:{queryStrings["$skip"]} $select:{queryStrings["$select"]} $filter:{queryStrings["$filter"]}",
 
@@ -786,7 +786,7 @@ namespace Office365FiddlerExtension.Ruleset
                 UITextColour = "Black",
 
                 SessionType = "Exchange Online / Microsoft365 Web Services",
-                ResponseCodeDescription = "200 OK",
+                ResponseCodeDescription = "200 OK Microsoft365 Other EWS",
                 ResponseAlert = "Exchange Online / Microsoft365 Web Services (EWS) call.",
                 ResponseComments = "Exchange Online / Microsoft365 Web Services (EWS) call.",
 
@@ -827,7 +827,7 @@ namespace Office365FiddlerExtension.Ruleset
                 UITextColour = "Black",
 
                 SessionType = "Exchange OnPremise Web Services",
-                ResponseCodeDescription = "200 OK",
+                ResponseCodeDescription = "200 OK Exchange Web Services / EWS",
                 ResponseAlert = "Exchange OnPremise Web Services (EWS) call.",
                 ResponseComments = "Exchange OnPremise Web Services (EWS) call.",
 
@@ -843,6 +843,32 @@ namespace Office365FiddlerExtension.Ruleset
         public void HTTP_200_Lurking_Errors(Session session)
         {
             this.session = session;
+
+            if (this.session.ResponseHeaders["Content-Type"].Contains("javascript"))
+            {
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 Javascript");
+
+                var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+                {
+                    SectionTitle = "HTTP_200s_Javascript",
+                    UIBackColour = "Green",
+                    UITextColour = "Black",
+
+                    SessionType = "HTTP 200 OK with Javascript",
+                    ResponseCodeDescription = "HTTP 200 OK with Javascript.",
+                    ResponseAlert = "HTTP 200 OK with Javascript.",
+                    ResponseComments = "<p>HTTP 200 OK response with javascript.</p>",
+
+                    SessionAuthenticationConfidenceLevel = 5,
+                    SessionTypeConfidenceLevel = 10,
+                    SessionResponseServerConfidenceLevel = 5
+                };
+
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+
+                return;
+            }
 
             string searchTerm = "empty";
 
@@ -965,7 +991,7 @@ namespace Office365FiddlerExtension.Ruleset
             }
             else
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 OK");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 200 OK Lurking Errors");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -973,8 +999,8 @@ namespace Office365FiddlerExtension.Ruleset
                     UIBackColour = "Green",
                     UITextColour = "Black",
 
-                    SessionType = "200 OK",
-                    ResponseCodeDescription = "200 OK",
+                    SessionType = "200 OK Lurking Errors",
+                    ResponseCodeDescription = "200 OK Lurking Errors",
                     ResponseAlert = "HTTP 200 OK, with no errors, failed, or exceptions found.",
                     ResponseComments = "HTTP 200 OK, with no errors, failed, or exceptions found.",
 

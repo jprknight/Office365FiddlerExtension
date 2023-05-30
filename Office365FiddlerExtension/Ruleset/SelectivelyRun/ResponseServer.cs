@@ -128,5 +128,21 @@ namespace Office365FiddlerExtension.Ruleset
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
+
+        public void SetResponseServer_Unknown(Session session)
+        {
+            this.session = session;
+
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+            {
+                SectionTitle = "ResponseServer_Unknown",
+                ResponseServer = "X-Served-Name: " + this.session.oResponse["X-Server-Name"],
+
+                SessionResponseServerConfidenceLevel = 1
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+        }
     }
 }

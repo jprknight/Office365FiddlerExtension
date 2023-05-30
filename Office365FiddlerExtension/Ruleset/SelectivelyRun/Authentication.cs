@@ -29,11 +29,9 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetAuthentication_NoAuthHeaders.");
 
-            ProcessName.Instance.SetProcessName(this.session);
-
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
-                SectionTitle = "Authentication",
+                SectionTitle = "Authentication_No_Auth_Headers",
                 Authentication = "No Auth Headers",
                 AuthenticationDescription = "No Auth Headers",
                 AuthenticationType = "No Auth Headers",
@@ -65,7 +63,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                     var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                     {
-                        SectionTitle = "Authentication",
+                        SectionTitle = "Authentication_SAML_Response_Parser",
                         SessionType = "SAML Request/Response",
                         ResponseComments = "ADFS SAML response found. See below for SAML response parser.",
 
@@ -103,7 +101,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                     var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                     {
-                        SectionTitle = "Authentication",
+                        SectionTitle = "Authentication_3rd_Party_Saml_Response",
 
                         SessionType = "3rd-party SAMLResponseParser",
                         ResponseComments = "Third-party SAML response found. SAML response parser not running.",
@@ -151,7 +149,7 @@ namespace Office365FiddlerExtension.Ruleset
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
-                    SectionTitle = "Authentication",
+                    SectionTitle = "Authentication_Modern_Auth_Disabled",
                     ResponseComments = SessionFlagHandler.Instance.ResponseCommentsNoKnownIssue(),
 
                     Authentication = "Modern Auth Disabled",
@@ -188,11 +186,12 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
-                SectionTitle = "Authentication",
+                SectionTitle = "Authentication_Modern_Auth_Capable_Client",
                 Authentication = "Client Modern Auth Capable",
                 AuthenticationDescription = ExtensionSessionFlags.ProcessName + " is stating it is Modern Authentication capable. "
                 + "Whether it is used or not will depend on whether Modern Authentication is enabled in the Office 365 service.",
-                SessionAuthenticationConfidenceLevel = 5
+
+                SessionAuthenticationConfidenceLevel = 10
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -214,7 +213,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
-                SectionTitle = "Authentication",
+                SectionTitle = "Authentication_Basic_Auth_Capable_Client",
 
                 Authentication = "Client Basic Auth Capable",
                 AuthenticationDescription = ExtensionSessionFlags.ProcessName + " is stating it is Basic Authentication capable. "
@@ -222,7 +221,8 @@ namespace Office365FiddlerExtension.Ruleset
                         + "<p>If this is Outlook, in all likelihood this is an Outlook 2013 (updated prior to Modern Auth), Outlook 2010 or an "
                         + "older Outlook client, which does not support Modern Authentication.<br />"
                         + "MutiFactor Authentication will not work as expected with Basic Authentication only capable Outlook clients</p>",
-                SessionAuthenticationConfidenceLevel = 5
+
+                SessionAuthenticationConfidenceLevel = 10
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -244,9 +244,10 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
-                SectionTitle = "Authentication",
+                SectionTitle = "Authentication_Modern_Auth_Client_Using_Token",
                 Authentication = "Modern Auth Token",
                 AuthenticationDescription = ExtensionSessionFlags.ProcessName + " accessing resources with a Modern Authentication security token.",
+
                 SessionAuthenticationConfidenceLevel = 10
             };
 
@@ -270,11 +271,12 @@ namespace Office365FiddlerExtension.Ruleset
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
-                SectionTitle = "Authentication",
+                SectionTitle = "Authentication_Basic_Auth_Client_Using_Token",
 
                 Authentication = "Client Basic Auth Token",
                 AuthenticationDescription = ExtensionSessionFlags.ProcessName + " accessing resources with a Basic Authentication security token.< br /> "
                     + "<b><span style='color:red'>It's time to think about Modern Authentication!</span></b>",
+
                 SessionAuthenticationConfidenceLevel = 10
             };
 

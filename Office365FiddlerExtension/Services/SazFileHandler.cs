@@ -6,6 +6,7 @@ using System.Linq;
 using System.Management.Instrumentation;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -63,6 +64,8 @@ namespace Office365FiddlerExtension.Services
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz with Extension Enabled: {Preferences.ExtensionEnabled}.");
+
+            MessageBox.Show("LoadSaz event fired!");
 
             foreach (var session in e.arrSessions)
             {
