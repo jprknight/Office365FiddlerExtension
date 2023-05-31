@@ -155,15 +155,12 @@ namespace Office365FiddlerExtension.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string LoadSazFilename {
             get {
                 return ((string)(this["LoadSazFilename"]));
-            }
-            set {
-                this["LoadSazFilename"] = value;
             }
         }
     }

@@ -74,7 +74,7 @@ namespace Office365FiddlerExtension.Services
                 return;
             }*/
 
-            Properties.Settings.Default.LoadSazFilename = e.sFilename;
+            //Preferences.LoadSazFilename = e.sFilename;
 
             MessageBox.Show($"LoadSaz event fired on {e.sFilename} from {Assembly.GetExecutingAssembly().GetName().CodeBase}");
 

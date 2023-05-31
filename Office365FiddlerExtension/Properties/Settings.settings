@@ -41,7 +41,7 @@
     <Setting Name="_SettingsJsonLastUpdated" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="LoadSazFilename" Type="System.String" Scope="User">
+    <Setting Name="LoadSazFilename" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

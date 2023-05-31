@@ -19,10 +19,8 @@ namespace Office365FiddlerExtension.Services
         public async void OnLoad()
         {
             MenuUI.Instance.Initialize();
-            if (Preferences.ExecutionCount == 0)
-            {
-                await Preferences.SetDefaultPreferences();
-            }
+
+            await Preferences.SetDefaultPreferences();
 
             SessionHandler.Instance.Initialize();
 

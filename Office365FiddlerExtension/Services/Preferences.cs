@@ -99,5 +99,11 @@ namespace Office365FiddlerExtension.Services
             get => BetaRuleSet = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.BetaRuleSet", false);
             set { BetaRuleSet = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.BetaRuleSet", value); }
         }
+
+        public static string LoadSazFilename
+        {
+            get => LoadSazFilename = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.LoadSazFilename", "");
+            set { LoadSazFilename = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.LoadSazFilename", value); }
+        }
     }
 }
