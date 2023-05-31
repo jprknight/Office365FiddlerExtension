@@ -93,12 +93,20 @@ namespace Office365FiddlerExtension.Services
         {
             if (!Preferences.ExtensionEnabled)
             {
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Extension not enabled, returning.");
                 return;
             }
 
             this.session = session;
 
             // Call the main fuction which runs through all session logic checks.
+            // REVIEW THIS - Is this needed? Live trace?
+            if (this.session.isFlagSet(SessionFlags.LoadedFromSAZ))
+            {
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Session loaded from Saz file, return.");
+                return;
+            }
+
             SessionHandler.Instance.OnPeekAtResponseHeaders(this.session);
 
             this.session.RefreshUI();

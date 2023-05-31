@@ -111,7 +111,7 @@ namespace Office365FiddlerExtension
                 {
                     Preferences.ExtensionEnabled = true;
                     this.MiEnabled.Checked = true;
-                    this.ExtensionMenu.Text = MenuEnabled;
+                    //this.ExtensionMenu.Text = MenuEnabled;
                     SessionFlagHandler.Instance.ProcessAllSessions();
                 }
             }
@@ -129,12 +129,12 @@ namespace Office365FiddlerExtension
         {
             if (Preferences.ExtensionEnabled)
             {
-                this.ExtensionMenu.Text = MenuEnabled;
+                //this.ExtensionMenu.Text = MenuEnabled;
                 this.MiProcessAllSessions.Enabled = true;
             }
             else
             {
-                this.ExtensionMenu.Text = MenuDisabled;
+                //this.ExtensionMenu.Text = MenuDisabled;
                 this.MiProcessAllSessions.Enabled = false;
             }
         }

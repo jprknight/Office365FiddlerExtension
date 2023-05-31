@@ -64,7 +64,7 @@ namespace Office365FiddlerExtension.Services
         {
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz with Extension Enabled: {Preferences.ExtensionEnabled}.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz with Extension Enabled: {Preferences.ExtensionEnabled}, {Assembly.GetExecutingAssembly().GetName().CodeBase}.");
 
             // Make sure LoadSaz only runs once per filename.
             // LoadSaz has been run twice for the same filename, this shouldn't happen, return.

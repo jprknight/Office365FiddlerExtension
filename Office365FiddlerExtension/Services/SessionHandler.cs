@@ -30,12 +30,11 @@ namespace Office365FiddlerExtension
                 return;
             }
 
-            FiddlerApplication.OnLoadSAZ += SazFileHandler.Instance.LoadSaz;
-
-            FiddlerApplication.OnSaveSAZ += SazFileHandler.Instance.SaveSaz;
-
             if (!IsInitialized)
             {
+                FiddlerApplication.OnLoadSAZ += SazFileHandler.Instance.LoadSaz;
+                FiddlerApplication.OnSaveSAZ += SazFileHandler.Instance.SaveSaz;
+
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 2, -1);
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", 2, -1);
                 FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Content-Type", 2, -1);
