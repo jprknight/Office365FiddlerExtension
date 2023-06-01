@@ -59,8 +59,6 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
-
             // The above scenario is not seem, however Temporary Redirects are not normally expected to be seen.
             // Highlight as a warning.
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 307 Temp Redirect.");

@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using static Office365FiddlerExtension.Services.SessionFlagHandler;
 
 namespace Office365FiddlerExtension.Services
 {

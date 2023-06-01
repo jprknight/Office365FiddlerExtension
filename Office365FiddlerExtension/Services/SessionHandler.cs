@@ -51,7 +51,6 @@ namespace Office365FiddlerExtension
             // From here on out only run functions where there isn't a high level of confidence
             // on session classification.
             var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
-            //var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
             {
                 Instance.ResponseCodeLogic(this.session);

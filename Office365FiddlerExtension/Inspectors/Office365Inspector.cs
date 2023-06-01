@@ -249,7 +249,7 @@ namespace Office365FiddlerExtension.Inspectors
                     MissingMemberHandling = MissingMemberHandling.Ignore
                 };
 
-                var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(this.session["Microsoft365FiddlerExtensionJson"], JsonSettings);
+                var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
 
                 // HTML Header.
                 ResultsString.AppendLine("<html>");

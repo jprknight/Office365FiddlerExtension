@@ -182,7 +182,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Client Modern Auth.");
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -209,7 +209,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Client Basic Auth.");
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -240,7 +240,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Client Modern Auth Token.");
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -267,7 +267,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Client Basic Auth Token.");
             
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {

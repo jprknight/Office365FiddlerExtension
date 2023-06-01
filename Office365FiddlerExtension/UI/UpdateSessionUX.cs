@@ -30,7 +30,7 @@ namespace Office365FiddlerExtension.UI
         {
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
 
             // Set session background colour. Default to gray if undefined.
             switch (ExtensionSessionFlags.UIBackColour.ToLower())
@@ -75,7 +75,7 @@ namespace Office365FiddlerExtension.UI
         {
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
 
             return ExtensionSessionFlags.ElapsedTime;
         }
@@ -85,7 +85,7 @@ namespace Office365FiddlerExtension.UI
         {
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
 
             return ExtensionSessionFlags.SessionType;
         }
@@ -95,7 +95,7 @@ namespace Office365FiddlerExtension.UI
         {
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
 
             return ExtensionSessionFlags.Authentication;
         }
@@ -105,7 +105,7 @@ namespace Office365FiddlerExtension.UI
         {
             this.session = session;
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
 
             return ExtensionSessionFlags.ResponseServer;
         }
@@ -114,7 +114,7 @@ namespace Office365FiddlerExtension.UI
         {
             this.session = session;
 
-            if (this.session["X-HostIP"]  != null && this.session["X-HostIP"] != "")
+            if (this.session["X-HostIP"] != null && this.session["X-HostIP"] != "")
             {
                 return this.session["X-HostIP"];
             }
