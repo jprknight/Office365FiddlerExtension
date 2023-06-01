@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Text;
 using System;
 using System.Reflection;
+using Office365FiddlerExtension.UI;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -14,63 +15,23 @@ namespace Office365FiddlerExtension.Services
         internal Session session { get; set; }
 
         /// <summary>
-        /// This should be consider the main constructor for the extension. It's called after the UI has loaded.
+        /// This should be considered the main constructor for the extension. 
+        /// It's called after the UI has loaded.
         /// </summary>
         public async void OnLoad()
         {
             MenuUI.Instance.Initialize();
 
-            await Preferences.SetDefaultPreferences();
-
-            SessionHandler.Instance.Initialize();
-
-            try
-            {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Attempting to add columns to UI.");
-
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, "X-ElapsedTime");
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Session Type", 150, "X-SessionType");
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 140, "X-Authentication");
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 110, "X-HostIP");
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 130, "X-ResponseServer");
-            }
-            catch (Exception e)
-            {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: {0} Exception caught." + e);
-            }
-
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Finished adding columns to UI.");
-
-            // If disable web calls is true dion't check for updates and don't call telemetry service.
-            if (Preferences.DisableWebCalls)
-            {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Telemetry Service DisableWebCalls is true.");
-                
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: The Office 365 Fiddler Extension won't check for updates.");
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: The Office 365 Fiddler Extension won't send telemetry data.");
-            }
-            // Otherwise, check for updates and call telemetry service.
-            else
-            {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: The Office 365 Fiddler Extension checking for updates.");
-                About.Instance.CheckForUpdate();
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: The Office 365 Fiddler Extension initializing telemetry service.");
-                await TelemetryService.InitializeAsync();
-            }
+            UserInterface.Instance.Initialize();
         }
 
         public async void OnBeforeUnload()
         {
-            if (Preferences.DisableWebCalls)
+            if (!Preferences.DisableWebCalls)
             {
-                // Do nothing.
-            }
-            else
-            {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: The Office 365 Fiddler Extension closing telemetry service client connection.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Closing telemetry service client connection.");
                 await TelemetryService.FlushClientAsync();
-            }
-                
+            } 
         }
 
         /// <summary>
@@ -124,5 +85,92 @@ namespace Office365FiddlerExtension.Services
         /// <param name="_session"></param>
         public void OnBeforeReturningError(Session _session) { }
 
+    }
+
+    public class UserInterface : ActivationService
+    {
+        private static UserInterface _instance;
+
+        public static UserInterface Instance => _instance ?? (_instance = new UserInterface());
+
+        private bool IsInitialized { get; set; }
+
+        public async void Initialize()
+        {
+            // Stop if extension is not enabled.
+            if (!Preferences.ExtensionEnabled)
+            {
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Extension not enabled, exiting.");
+                return;
+            }
+
+            if (!IsInitialized)
+            {
+                // Add Saz file event handlers.
+                FiddlerApplication.OnLoadSAZ += SazFileHandler.Instance.LoadSaz;
+                FiddlerApplication.OnSaveSAZ += SazFileHandler.Instance.SaveSaz;
+
+                await Preferences.SetDefaultPreferences();
+
+                try
+                {
+                    // Add columns to the UI and hock up to functions which populate data.
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Attempting to add columns to UI.");
+
+                    // FiddlerApplication.UI.lvSessions.AddBoundColumn("Column Title", int position, int width, Session Flag or function for data);
+                    // FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 2, 110, UpdateSessionUX.Instance.ElapsedTime);
+
+                    FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, UpdateSessionUX.Instance.ElapsedTime);
+                    FiddlerApplication.UI.lvSessions.AddBoundColumn("Session Type", 150, UpdateSessionUX.Instance.SessionType);
+                    FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 140, UpdateSessionUX.Instance.Authentication);
+                    FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 130, UpdateSessionUX.Instance.ResponseServer);
+                    FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 110, UpdateSessionUX.Instance.HostIP);                
+                }
+                catch (Exception e)
+                {
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: {0} Exception caught." + e);
+                }
+
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Finished adding columns to UI.");
+
+                // If disable web calls is true dion't check for updates and don't call telemetry service.
+                if (Preferences.DisableWebCalls)
+                {
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Telemetry Service DisableWebCalls is true.");
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Not checking for updates or sending telemetry data.");
+                }
+                // Otherwise, check for updates and call telemetry service.
+                else
+                {
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Checking for updates.");
+                    About.Instance.CheckForUpdate();
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Initializing telemetry service.");
+                    await TelemetryService.InitializeAsync();
+                }
+
+                // REVIEW THIS. Despite adding / ordering columns here nothing happens.
+                // Commenting out these seem to do nothing.
+                // Wondering if the user preferences / reordering comes into play and conflicts with this.
+                /*FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 15, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", 14, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Content-Type", 13, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Caching", 12, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Body", 11, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("URL", 10, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host", 9, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Protocol", 8, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 7, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Elapsed Time", 6, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Session Type", 5, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Authentication", 4, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host IP", 3, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Result", 1, -1);
+                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("#", 0, -1);*/
+                //FiddlerApplication.UI.Refresh();
+
+                IsInitialized = true;
+            }
+        }
     }
 }

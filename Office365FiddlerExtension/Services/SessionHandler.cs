@@ -3,11 +3,7 @@ using Newtonsoft.Json;
 using Office365FiddlerExtension.Ruleset;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtension.UI;
-using System;
-using System.Diagnostics;
-using System.Runtime.Serialization;
 using System.Windows.Forms;
-//using static Office365FiddlerExtension.Services.SessionFlagProcessor;
 
 namespace Office365FiddlerExtension
 {
@@ -17,50 +13,11 @@ namespace Office365FiddlerExtension
 
         public static SessionHandler Instance => _instance ?? (_instance = new SessionHandler());
 
-        private bool IsInitialized { get; set; }
-
-        public SessionHandler() { }
-
-        public void Initialize()
-        {
-            // Stop extension processing if not enabled.
-            if (!Preferences.ExtensionEnabled)
-            {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Extension not enabled, exiting.");
-                return;
-            }
-
-            if (!IsInitialized)
-            {
-                FiddlerApplication.OnLoadSAZ += SazFileHandler.Instance.LoadSaz;
-                FiddlerApplication.OnSaveSAZ += SazFileHandler.Instance.SaveSaz;
-
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 2, -1);
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", 2, -1);
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Content-Type", 2, -1);
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Caching", 2, -1);
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Body", 2, -1);
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("URL", 2, -1);
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host", 2, -1);
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Protocol", 2, -1);
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 2, -1);
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Elapsed Time", 2, -1);
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Session Type", 2, -1);
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Authentication", 2, -1);
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host IP", 2, -1);
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Result", 1, -1);
-                FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("#", 0, -1);
-
-                IsInitialized = true;
-            }
-        }
-
         public void OnPeekAtResponseHeaders(Session session)
         {
             this.session = session;
 
-            SessionFlagHandler.Instance.CreateExtensionSessionFlag(this.session);
+            //SessionFlagHandler.Instance.CreateExtensionSessionFlag(this.session);
 
             // Decode session requests/responses.
             this.session.utilDecodeRequest(true);
@@ -93,7 +50,8 @@ namespace Office365FiddlerExtension
             ///
             // From here on out only run functions where there isn't a high level of confidence
             // on session classification.
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
+            //var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
             {
                 Instance.ResponseCodeLogic(this.session);
@@ -103,43 +61,43 @@ namespace Office365FiddlerExtension
             // AUTHENTICATION
             #region Authentication
             // If the session does not already have a high auth classification confidence, run.
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel < 10)
             {
                 Authentication.Instance.SetAuthentication_NoAuthHeaders(this.session);                
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel < 10)
             {
                 Authentication.Instance.SetAuthentication_SAML_Parser(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel < 10)
             {
                 Authentication.Instance.SetAuthentication_Basic_Modern_Auth_Disabled(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel < 10)
             {
                 Authentication.Instance.SetAuthentication_Modern_Auth_Capable_Client(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel < 10)
             {
                 Authentication.Instance.SetAuthentication_Basic_Auth_Capable_Client(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel < 10)
             {
                 Authentication.Instance.SetAuthentication_Modern_Auth_Client_Using_Token(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel < 10)
             {
                 Authentication.Instance.SetAuthentication_Basic_Auth_Client_Using_Token(this.session);
@@ -150,55 +108,55 @@ namespace Office365FiddlerExtension
             // SESSION TYPE
             #region SessionType
             // If the session does not already have a high session type classification confidence, run these functions.
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10) 
             {
                 SessionType.Instance.SetSessionType_FreeBusy(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
             {
                 SessionType.Instance.SetSessionType_Microsoft365_EWS(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
             {
                 SessionType.Instance.SetSessionType_EWS(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
             {
                 SessionType.Instance.SetSessionType_Microsoft365_Authentication(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
             {
                 SessionType.Instance.SetSessionType_ADFS_Authentication(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
             {
                 SessionType.Instance.SetSessionType_General_Microsoft365(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
             {
                 SessionType.Instance.SetSessionType_Office_Applications(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
             {
                 SessionType.Instance.SetSessionType_Internet_Browsers(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
             {
                 SessionType.Instance.SetSessionType_Unknown(this.session);
@@ -211,37 +169,37 @@ namespace Office365FiddlerExtension
             // If the session does not already have a high response server classification confidence, run
             // this function as a last effort to classify the session type.
             // None of these overlap, so not checking SessionResponseServerConfidenceLevel before running each function.
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionResponseServerConfidenceLevel < 10)
             {
                 ResponseServer.Instance.SetResponseServer_Server(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionResponseServerConfidenceLevel < 10)
             {
                 ResponseServer.Instance.SetResponseServer_Host(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionResponseServerConfidenceLevel < 10)
             {
                 ResponseServer.Instance.SetResponseServer_PoweredBy(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionResponseServerConfidenceLevel < 10)
             {
                 ResponseServer.Instance.SetResponseServer_ServedBy(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionResponseServerConfidenceLevel < 10)
             {
                 ResponseServer.Instance.SetResponseServer_ServerName(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionResponseServerConfidenceLevel < 10)
             {
                 ResponseServer.Instance.SetResponseServer_Unknown(this.session);
@@ -255,19 +213,19 @@ namespace Office365FiddlerExtension
             // In relatively few scenarios has roundtrip time been an underlying cause.
             // So this is the last function to run after all other logic has been exhausted.
             // Typically network traces are used to validate the underlying network connectivity.
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
             {
                 LongRunningSessions.Instance.LongRunningSessionsWarning(this.session);               
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
             {
                 LongRunningSessions.Instance.LongRunningSessionsClientSlow(this.session);
             }
 
-            ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
             {
                 LongRunningSessions.Instance.LongRunningSessionsServerSlow(this.session);
@@ -285,7 +243,7 @@ namespace Office365FiddlerExtension
 
             FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " Running ResponseCodeLogic.");
 
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
 
             switch (this.session.responseCode)
             {
@@ -297,7 +255,7 @@ namespace Office365FiddlerExtension
                     break;
                 case 200:
                     HTTP_200.Instance.HTTP_200_ClientAccessRule(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -306,7 +264,7 @@ namespace Office365FiddlerExtension
                     ///////////////////////////////
 
                     HTTP_200.Instance.HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -315,7 +273,7 @@ namespace Office365FiddlerExtension
                     ///////////////////////////////
 
                     HTTP_200.Instance.HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -324,7 +282,7 @@ namespace Office365FiddlerExtension
                     ///////////////////////////////
 
                     HTTP_200.Instance.HTTP_200_Outlook_Exchange_OnPremise_Mapi(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -333,7 +291,7 @@ namespace Office365FiddlerExtension
                     ///////////////////////////////
 
                     HTTP_200.Instance.HTTP_200_Outlook_Web_App(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -342,7 +300,7 @@ namespace Office365FiddlerExtension
                     ///////////////////////////////
 
                     HTTP_200.Instance.HTTP_200_Outlook_RPC(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -351,7 +309,7 @@ namespace Office365FiddlerExtension
                     ///////////////////////////////
 
                     HTTP_200.Instance.HTTP_200_Outlook_NSPI(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -360,7 +318,7 @@ namespace Office365FiddlerExtension
                     ///////////////////////////////
 
                     HTTP_200.Instance.HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -369,7 +327,7 @@ namespace Office365FiddlerExtension
                     ///////////////////////////////
 
                     HTTP_200.Instance.HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -378,7 +336,7 @@ namespace Office365FiddlerExtension
                     ///////////////////////////////
                     
                     HTTP_200.Instance.HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -387,7 +345,7 @@ namespace Office365FiddlerExtension
                     ///////////////////////////////
 
                     HTTP_200.Instance.HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -396,7 +354,7 @@ namespace Office365FiddlerExtension
                     ///////////////////////////////
 
                     HTTP_200.Instance.HTTP_200_Unified_Groups_Settings(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -405,7 +363,7 @@ namespace Office365FiddlerExtension
                     ///////////////////////////////
 
                     HTTP_200.Instance.HTTP_200_3S_Suggestions(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -414,7 +372,7 @@ namespace Office365FiddlerExtension
                     ///////////////////////////////
 
                     HTTP_200.Instance.HTTP_200_REST_People_Request(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -423,7 +381,7 @@ namespace Office365FiddlerExtension
                     ///////////////////////////////
 
                     HTTP_200.Instance.HTTP_200_OnPremise_Any_Other_Exchange_EWS(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -432,7 +390,7 @@ namespace Office365FiddlerExtension
                     ///////////////////////////////
 
                     HTTP_200.Instance.HTTP_200_Microsoft365_Any_Other_Exchange_EWS(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -480,7 +438,7 @@ namespace Office365FiddlerExtension
                     break;
                 case 302:
                     HTTP_302.Instance.HTTP_302_Redirect_AutoDiscover(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -501,7 +459,7 @@ namespace Office365FiddlerExtension
                     break;
                 case 307:
                     HTTP_307.Instance.HTTP_307_AutoDiscover_Temporary_Redirect(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -516,21 +474,21 @@ namespace Office365FiddlerExtension
                     break;
                 case 401:
                     HTTP_401.Instance.HTTP_401_Exchange_Online_AutoDiscover(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (SessionFlagHandler.Instance.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     HTTP_401.Instance.HTTP_401_Exchange_OnPremise_AutoDiscover(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (SessionFlagHandler.Instance.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     HTTP_401.Instance.HTTP_401_EWS(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (SessionFlagHandler.Instance.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
@@ -543,13 +501,13 @@ namespace Office365FiddlerExtension
                     break;
                 case 403:
                     HTTP_403.Instance.HTTP_403_Forbidden_Proxy_Block(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
                     }
                     HTTP_403.Instance.HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -652,13 +610,13 @@ namespace Office365FiddlerExtension
                     break;
                 case 456:
                     HTTP_456.Instance.HTTP_456_Multi_Factor_Required(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
                     }
                     HTTP_456.Instance.HTTP_456_OAuth_Not_Available(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -691,21 +649,21 @@ namespace Office365FiddlerExtension
                     break;
                 case 500:
                     HTTP_500.Instance.HTTP_500_Internal_Server_Error_Repeating_Redirects(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (SessionFlagHandler.Instance.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     HTTP_500.Instance.HTTP_500_Internal_Server_Error_Impersonate_User_Denied(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (SessionFlagHandler.Instance.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     HTTP_500.Instance.HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (SessionFlagHandler.Instance.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
@@ -718,28 +676,28 @@ namespace Office365FiddlerExtension
                     break;
                 case 502:
                     HTTP_502.Instance.HTTP_502_Bad_Gateway_Telemetry_False_Positive(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (SessionFlagHandler.Instance.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     HTTP_502.Instance.HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (SessionFlagHandler.Instance.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     HTTP_502.Instance.HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (SessionFlagHandler.Instance.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
                     }
 
                     HTTP_502.Instance.HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (SessionFlagHandler.Instance.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
@@ -749,7 +707,7 @@ namespace Office365FiddlerExtension
                     break;
                 case 503:
                     HTTP_503.Instance.HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (SessionFlagHandler.Instance.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;
@@ -759,7 +717,7 @@ namespace Office365FiddlerExtension
                     break;
                 case 504:
                     HTTP_504.Instance.HTTP_504_Gateway_Timeout_Internet_Access_Blocked(this.session);
-                    ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
                     if (SessionFlagHandler.Instance.GetAnySessionConfidenceLevelTen(this.session))
                     {
                         break;

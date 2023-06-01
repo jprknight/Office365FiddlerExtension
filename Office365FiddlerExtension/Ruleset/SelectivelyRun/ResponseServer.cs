@@ -20,7 +20,12 @@ namespace Office365FiddlerExtension.Ruleset
             this.session = session;
 
             // If the response server header is null or blank then return. Otherwise, populate it into the response server value.
-            if ((this.session.oResponse["Server"] == null) || (this.session.oResponse["Server"] == ""))
+            if (this.session.oResponse["Server"] == null)
+            {
+                return;
+            }
+
+            if (this.session.oResponse["Server"] == "")
             {
                 return;
             }
@@ -45,7 +50,12 @@ namespace Office365FiddlerExtension.Ruleset
 
             // if the reponnse Host header is null or blank, return. Otherwise, populate it into the response server value.
             // Some traffic identifies a host rather than a response server.
-            if ((this.session.oResponse["Host"] == null || (this.session.oResponse["Host"] == "")))
+            if (this.session.oResponse["Host"] == null)
+            {
+                return;
+            }
+
+            if (this.session.oResponse["Host"] == "")
             {
                 return;
             }
@@ -68,7 +78,12 @@ namespace Office365FiddlerExtension.Ruleset
 
             // if the response PoweredBy header is null or blank, return. Otherwise, populate it into the response server value.
             // Some servers respond as X-Powered-By ASP.NET.
-            if ((this.session.oResponse["X-Powered-By"] == null) || (this.session.oResponse["X-Powered-By"] == ""))
+            if (this.session.oResponse["X-Powered-By"] == null)
+            {
+                return;
+            }
+
+            if (this.session.oResponse["X-Powered-By"] == "")
             {
                 return;
             }
@@ -90,7 +105,12 @@ namespace Office365FiddlerExtension.Ruleset
             this.session = session;
 
             // If the response X-Served-By header is null or blank, return. Otherwise, populate it into the response server value.
-            if ((this.session.oResponse["X-Served-By"] == null || (this.session.oResponse["X-Served-By"] == "")))
+            if (this.session.oResponse["X-Served-By"] == null)
+            {
+                return;
+            }
+
+            if ((this.session.oResponse["X-Served-By"] == ""))
             {
                 return;
             }
@@ -112,7 +132,12 @@ namespace Office365FiddlerExtension.Ruleset
             this.session = session;
 
             // If the response X-Served-By header is null or blank, return. Otherwise, populate it into the response server value.
-            if ((this.session.oResponse["X-Server-Name"] == null || (this.session.oResponse["X-Server-Name"] == "")))
+            if (this.session.oResponse["X-Server-Name"] == null)
+            {
+                return;
+            }
+
+            if (this.session.oResponse["X-Server-Name"] == "")
             {
                 return;
             }
@@ -120,7 +145,7 @@ namespace Office365FiddlerExtension.Ruleset
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "ResponseServer_ServerName",
-                ResponseServer = "X-Served-Name: " + this.session.oResponse["X-Server-Name"],
+                ResponseServer = "X-Server-Name: " + this.session.oResponse["X-Server-Name"],
 
                 SessionResponseServerConfidenceLevel = 10
             };
@@ -136,7 +161,7 @@ namespace Office365FiddlerExtension.Ruleset
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "ResponseServer_Unknown",
-                ResponseServer = "X-Served-Name: " + this.session.oResponse["X-Server-Name"],
+                ResponseServer = "Type Unknown",
 
                 SessionResponseServerConfidenceLevel = 1
             };

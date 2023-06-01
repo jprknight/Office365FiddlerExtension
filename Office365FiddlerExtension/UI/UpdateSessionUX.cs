@@ -24,12 +24,6 @@ namespace Office365FiddlerExtension.UI
             // Session colours.
             this.session["UI-BACKCOLOR"] = "#FFFFFF";
             this.session["UI-COLOR"] = "#000000";
-
-            // Column data.
-            this.session["X-AUTHENTICATION"] = null;
-            this.session["X-ELAPSEDTIME"] = null;
-            this.session["X-RESPONSESERVER"] = null;
-            this.session["X-SESSIONTYPE"] = null;
         }
 
         public void EnhanceSession(Session session)
@@ -73,18 +67,61 @@ namespace Office365FiddlerExtension.UI
                     break;
             }
 
-            // Set session flags used by columns added by the extension.
-            this.session["X-ElapsedTIme"] = ExtensionSessionFlags.ElapsedTime;
-            this.session["X-Authentication"] = ExtensionSessionFlags.Authentication;
-            this.session["x-SessionType"] = ExtensionSessionFlags.SessionType;
-            this.session["X-ResponseServer"] = ExtensionSessionFlags.ResponseServer;
-
-            if (this.session["X-HostIP"] == null)
-            {
-                this.session["X-HostIP"] = "Not Present";
-            }
-
             this.session.RefreshUI();
+        }
+
+        // Called by ActivationService to populate column data.
+        public string ElapsedTime (Session session)
+        {
+            this.session = session;
+
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+
+            return ExtensionSessionFlags.ElapsedTime;
+        }
+
+        // Called by ActivationService to populate column data.
+        public string SessionType(Session session)
+        {
+            this.session = session;
+
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+
+            return ExtensionSessionFlags.SessionType;
+        }
+
+        // Called by ActivationService to populate column data.
+        public string Authentication (Session session)
+        {
+            this.session = session;
+
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+
+            return ExtensionSessionFlags.Authentication;
+        }
+
+        // Called by ActivationService to populate column data.
+        public string ResponseServer (Session session)
+        {
+            this.session = session;
+
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+
+            return ExtensionSessionFlags.ResponseServer;
+        }
+
+        public string HostIP (Session session)
+        {
+            this.session = session;
+
+            if (this.session["X-HostIP"]  != null && this.session["X-HostIP"] != "")
+            {
+                return this.session["X-HostIP"];
+            }
+            else
+            {
+                return "Unknown";
+            }
         }
     }
 }

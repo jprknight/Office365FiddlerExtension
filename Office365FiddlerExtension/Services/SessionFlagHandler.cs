@@ -15,6 +15,12 @@ namespace Office365FiddlerExtension.Services
         private static SessionFlagHandler _instance;
         public static SessionFlagHandler Instance => _instance ?? (_instance = new SessionFlagHandler());
 
+        public ExtensionSessionFlags GetDeserializedSessionFlags(Session session)
+        {
+            this.session = session;
+            return JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+        }
+
         public string GetSessionJsonData(Session session)
         {
             this.session = session;

@@ -6,6 +6,7 @@ using Office365FiddlerExtension.Services;
 using System.Text;
 using Office365FiddlerExtension.UI;
 using Newtonsoft.Json;
+using Microsoft.Diagnostics.Instrumentation.Extensions.Intercept;
 
 namespace Office365FiddlerExtension.Inspectors
 {
@@ -320,6 +321,17 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine(ExtensionSessionFlags.ProcessName);
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
+
+                if ((this.session["X-HostIP"] != null) && (this.session["X-HostIP"] != "")) {
+                    ResultsString.AppendLine("<tr>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine("Host IP");
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("<td>");
+                    ResultsString.AppendLine(this.session["X-HostIP"]);
+                    ResultsString.AppendLine("</td>");
+                    ResultsString.AppendLine("</tr>");
+                }
 
                 if (ExtensionSessionFlags.ResponseServer != null)
                 {

@@ -23,6 +23,9 @@ namespace Office365FiddlerExtension.Services
             // Remove the session flags the extension adds to save space in the file and
             // mitigate errors thrown when loading a SAZ file which was saved with the extension enabled.
             // https://github.com/jprknight/Office365FiddlerExtension/issues/45
+            // 6/1/2023 Leaving all legacy session flags in here so the above issue isn't somehow reintroduced if 
+            // users open an old Saz file saved with a legacy version of the extension enabled. This code will fix up the
+            // file if re-saved.
 
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
@@ -64,19 +67,11 @@ namespace Office365FiddlerExtension.Services
         {
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz with Extension Enabled: {Preferences.ExtensionEnabled}, {Assembly.GetExecutingAssembly().GetName().CodeBase}.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz with Extension Enabled: {Preferences.ExtensionEnabled}, {Assembly.GetExecutingAssembly().GetName().CodeBase.Substring(8)}.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz processing: {e.sFilename}");
 
-            // Make sure LoadSaz only runs once per filename.
-            // LoadSaz has been run twice for the same filename, this shouldn't happen, return.
-            /*if (Properties.Settings.Default.LoadSazFilename == e.sFilename)
-            {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz ran on the same filename ({e.sFilename}), returning.");
-                return;
-            }*/
-
-            //Preferences.LoadSazFilename = e.sFilename;
-
-            MessageBox.Show($"LoadSaz event fired on {e.sFilename} from {Assembly.GetExecutingAssembly().GetName().CodeBase}");
+            // Testing to make sure LoadSaz function is called only once when the Fiddler application is opened by loading a SAZ file.
+            //MessageBox.Show($"LoadSaz event fired on {e.sFilename} from {Assembly.GetExecutingAssembly().GetName().CodeBase}");
 
             foreach (var session in e.arrSessions)
             {
@@ -87,6 +82,8 @@ namespace Office365FiddlerExtension.Services
                     SessionHandler.Instance.OnPeekAtResponseHeaders(this.session);
                 }
             }
+
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz processed: {e.sFilename}");
 
             FiddlerApplication.UI.lvSessions.EndUpdate();
         }
