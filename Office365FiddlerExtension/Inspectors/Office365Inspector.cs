@@ -76,11 +76,6 @@ namespace Office365FiddlerExtension.Inspectors
             this.session = session;
             await ParseHTTPResponse(this.session);
         }
-
-        /*public void SaveSessionData(Session session)
-        {
-            this.session = session;
-        }*/
         
         /// <summary>
         /// This is called every time this inspector is shown
@@ -117,80 +112,7 @@ namespace Office365FiddlerExtension.Inspectors
         public bool bReadOnly { get; set; }
 
         /// <summary>
-        /// Called by Fiddler to determine how confident this inspector is that it can
-        /// decode the data.  This is only called when the user hits enter or double-
-        /// clicks a session.  
-        /// If we score the highest out of the other inspectors, Fiddler will open this
-        /// inspector's tab and then call AssignSession.
-        /// </summary>
-        /// <param name="oS">the session object passed by Fiddler</param>
-        /// <returns>Int between 0-100 with 100 being the most confident</returns>
-        /*public override int ScoreForSession(Session session)
-        {
-            if (null == this.session)
-            {
-                this.session = session;
-            }
-
-            if (null == this.BaseHeaders)
-            {
-                if (this is IRequestInspector2)
-                {
-                    this.BaseHeaders = this.session.oRequest.headers;
-                }
-                else
-                {
-                    this.BaseHeaders = this.session.oResponse.headers;
-                }
-            }
-
-            if (this.IsHTTP)
-            {
-                return 100;
-            }
-            else
-            {
-                return 0;
-            }
-        }*/
-
-
-        /// <summary>
-        /// Gets a value indicating whether the message is MAPI protocol message.
-        /// </summary>
-        /*public bool IsHTTP
-        {
-            get
-            {
-                if (this.session != null && (this is IResponseInspector2))
-                {
-                    this.session.utilDecodeRequest(true);
-                    this.session.utilDecodeResponse(true);
-
-                    if (this.session.LocalProcess.Contains("outlook") ||
-                    this.session.LocalProcess.Contains("searchprotocolhost") ||
-                    this.session.LocalProcess.Contains("iexplore") ||
-                    this.session.LocalProcess.Contains("chrome") ||
-                    this.session.LocalProcess.Contains("firefox") ||
-                    this.session.LocalProcess.Contains("edge") ||
-                    this.session.LocalProcess.Contains("w3wp"))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }*/
-
-        /// <summary>
-        /// Called by Fiddler to add the MAPI inspector tab
+        /// Called by Fiddler to add the Office 365 inspector tab
         /// </summary>
         /// <param name="o">The tab control for the inspector</param>
         public override void AddToTab(TabPage o)

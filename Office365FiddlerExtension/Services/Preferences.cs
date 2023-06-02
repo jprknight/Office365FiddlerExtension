@@ -63,10 +63,7 @@ namespace Office365FiddlerExtension.Services
             {
                 _extensionEnabled = value;
                 FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.enabled", value);
-                // It's confusing to see the name of this menu item change only after a click of the menu item.
-                // Whether the extension is enabled or disabled on loading Fiddler, it will show Enable.
-                // Stopping this to simplify the UI.
-                //MenuUI.Instance.MiEnabled.Text = ExtensionEnabled ? "Disable" : "Enable";
+
                 MenuUI.Instance.ExtensionMenu.Text = ExtensionEnabled ? "Office 365 (Enabled)" : "Office 365 (Disabled)";
             }
         }
@@ -78,32 +75,28 @@ namespace Office365FiddlerExtension.Services
             set { _executionCount = value; FiddlerApplication.Prefs.SetInt32Pref("extensions.Office365FiddlerExtension.ExecutionCount", value); }
         }
 
-        private static bool _ManualCheckForUpdate;
+        private static string _extensionVersion;
 
-        public static bool ManualCheckForUpdate
+        public static string ExtensionVersion
         {
-            get => _ManualCheckForUpdate = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.ManualCheckForUpdate", false);
-            set { _ManualCheckForUpdate = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.ManualCheckForUpdate", value); }
+            get => _extensionVersion = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.ExtensionVersion", null);
+            set { _extensionVersion = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionVersion", value); }
         }
 
-        private static bool _DisableWebCalls;
+        private static string _extensionSettings;
 
-        public static bool DisableWebCalls
+        public static string ExtensionSettings
         {
-            get => DisableWebCalls = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.NeverWebCall", false);
-            set { _DisableWebCalls = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.NeverWebCall", value); }
+            get => _extensionSettings = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.ExtensionSettings", null);
+            set { _extensionSettings = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionSettings", value); }
         }
 
-        public static bool BetaRuleSet
-        {
-            get => BetaRuleSet = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.BetaRuleSet", false);
-            set { BetaRuleSet = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.BetaRuleSet", value); }
-        }
+        public static string _extensionURLs;
 
-        public static string LoadSazFilename
+        public static string ExtensionURLs
         {
-            get => LoadSazFilename = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.LoadSazFilename", "");
-            set { LoadSazFilename = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.LoadSazFilename", value); }
+            get => _extensionURLs = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.ExtensionURLs", null);
+            set { _extensionURLs = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionURLs", value); }
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Office365FiddlerExtension.Services
                     var response = await versionCheck.GetAsync("https://somedummyurlwhichwontwork");
                     // If we're running the beta ruleset, look to the Fiddler application preference for the URL to go to for the rulesetVersion file.
                     // This will likely be a rolling URL based on the branch name used at any time.
-                    if (Preferences.BetaRuleSet)
+                    if (Preferences.UseBetaRuleSet)
                     {
                         response = await versionCheck.GetAsync(Properties.Settings.Default.BetaRuleSetURL);
                     }
@@ -119,7 +119,7 @@ namespace Office365FiddlerExtension.Services
             Boolean done = false;
             if (done == true)
             {
-                if (Preferences.BetaRuleSet)
+                if (Preferences.UseBetaRuleSet)
                 {
                     Properties.Settings.Default.LocalBetaRulesetLastUpdated = DateTime.Now.AddHours(24);
                 }

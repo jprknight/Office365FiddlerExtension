@@ -352,6 +352,7 @@
     </None>
     <None Include="ApplicationInsights.config" />
     <None Include="Deploy-Office365FiddlerExtension.ps1" />
+    <None Include="ExtensionURLs.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -364,7 +365,7 @@
     <None Include="RulesetJson\AlwaysRun\ServerThinkTimeTransitTime.json" />
     <None Include="RulesetJson\HTTP_0\HTTP_0.json" />
     <None Include="RulesetJson\Ruleset.json" />
-    <None Include="settings.json" />
+    <None Include="ExtensionVersion.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="RulesetJson\RulesetStructure.txt" />

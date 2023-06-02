@@ -463,6 +463,12 @@ namespace Office365FiddlerExtension
                     {
                         break;
                     }
+                    HTTP_307.Instance.HTTP_307_Other_AutoDiscover_Redirects(this.session);
+                    ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
+                    if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
+                    {
+                        break;
+                    }
                     HTTP_307.Instance.HTTP_307_All_Other_Redirects(this.session);
                     break;
                 case 308:

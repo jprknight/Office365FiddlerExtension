@@ -1,0 +1,9 @@
+{
+  "ExtensionURLs": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionURLs.json",
+  "ExtensionVersion": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionVersion.json",
+  "Installer": "https://github.com/jprknight/EXOFiddlerExtension/releases/latest",
+  "Wiki": "https://github.com/jprknight/Office365FiddlerExtension/wiki",
+  "ReportIssues": "https://github.com/jprknight/Office365FiddlerExtension/issues",
+  "MasterRuleSet": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Master/Office365FiddlerExtension/RulesetJson/Ruleset.json",
+  "BetaRuleSet": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/RulesetJson/Ruleset.json"
+}

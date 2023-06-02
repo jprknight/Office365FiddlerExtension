@@ -18,6 +18,14 @@ namespace Office365FiddlerExtension
 
         public MenuItem MiEnabled { get; set; }
 
+        public MenuItem MiSessionAnalysis { get; set; }
+
+        public MenuItem MiOnFiddlerLoad { get; set; }
+
+        public MenuItem MiOnLoadSaz { get; set; }
+
+        public MenuItem MiOnLiveTrace { get; set; }
+
         public MenuItem MiProcessAllSessions { get; set; }
 
         public MenuItem MiClearAllSessionProcessing { get; set; }
@@ -51,6 +59,14 @@ namespace Office365FiddlerExtension
                 this.MiEnabled = new MenuItem("Enable", new EventHandler(this.MiEnabled_Click));
                 this.MiEnabled.Checked = Preferences.ExtensionEnabled;
 
+                this.MiSessionAnalysis = new MenuItem("Session Analysis");
+
+                this.MiOnFiddlerLoad = MiSessionAnalysis.MenuItems.Add("On Fiddler Load", new EventHandler(this.MiSessionAnalysisOnFiddlerLoad_Click));
+
+                this.MiOnLoadSaz = MiSessionAnalysis.MenuItems.Add("On Load Saz", new EventHandler(this.MiSessionAnalysisOnLoadSaz_Click));
+
+                this.MiOnLiveTrace = MiSessionAnalysis.MenuItems.Add("On Live Trace", new EventHandler(this.MiSessionAnalysisOnLiveTrace_Click));
+
                 this.MiProcessAllSessions = new MenuItem("Process All Sessions", new EventHandler(this.MiProcessAllSessions_Click));
 
                 this.MiClearAllSessionProcessing = new MenuItem("Clear All Session Processing", new EventHandler(this.MiClearAllSessionProcessing_Click));
@@ -65,6 +81,7 @@ namespace Office365FiddlerExtension
 
                 // Add menu items to top level menu.
                 this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { this.MiEnabled,
+                this.MiSessionAnalysis,
                 new MenuItem("-"),
                 this.MiProcessAllSessions,
                 this.MiClearAllSessionProcessing,
@@ -80,6 +97,21 @@ namespace Office365FiddlerExtension
                 UpdateMenuItems();
                 IsInitialized = true;
             }
+        }
+
+        private void MiSessionAnalysisOnLiveTrace_Click(object sender, EventArgs e)
+        {
+            //Preferences.SessionAnalysisOnLiveTrace = MiOnLiveTrace.Checked;
+        }
+
+        private void MiSessionAnalysisOnLoadSaz_Click(object sender, EventArgs e)
+        {
+            //Preferences.SessionAnalysisOnLoadSaz = MiOnLoadSaz.Checked;
+        }
+
+        private void MiSessionAnalysisOnFiddlerLoad_Click(object sender, EventArgs e)
+        {
+            //Preferences.SessionAnalysisOnFiddlerLoad = MiOnFiddlerLoad.Checked;
         }
 
         private void MiClearAllSessionProcessing_Click(object sender, EventArgs e)

@@ -54,7 +54,7 @@ namespace Office365FiddlerExtension.Ruleset
             }
         }
 
-        public void HTTP_307_All_Other_Redirects(Session session)
+        public void HTTP_307_Other_AutoDiscover_Redirects(Session session)
         {
 
             this.session = session;
@@ -76,6 +76,32 @@ namespace Office365FiddlerExtension.Ruleset
                 + "back to On-Premise resources, breaking Outlook connectivity. "
                 + "<p>Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place. </p>"
                 + "<p>If this session is not for an Outlook process then the information above may not be relevant to the issue under investigation.</p>",
+
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
+                SessionResponseServerConfidenceLevel = 5
+            };
+        }
+
+        public void HTTP_307_All_Other_Redirects(Session session)
+        {
+
+            this.session = session;
+
+            // The above scenario is not seem, however Temporary Redirects are not normally expected to be seen.
+            // Highlight as a warning.
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 307 Temp Redirect.");
+
+            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_307s",
+                UIBackColour = "Orange",
+                UITextColour = "Black",
+
+                SessionType = "",
+                ResponseCodeDescription = "307 Temporary Redirect",
+                ResponseAlert = "HTTP 307 Temporary Redirect",
+                ResponseComments = "<p>Temporary Redirects might be an indication of an issue, but aren't in themselves a smoking gun.</p>",
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 10,

@@ -110,6 +110,10 @@ namespace Office365FiddlerExtension.Services
                 FiddlerApplication.OnLoadSAZ += SazFileHandler.Instance.LoadSaz;
                 FiddlerApplication.OnSaveSAZ += SazFileHandler.Instance.SaveSaz;
 
+                SettingsHandler.Instance.CreateExtensionSettingsJsonFiddlerSetting();
+                SettingsHandler.Instance.CreateExtensionURLJsonFiddlerSetting();
+                SettingsHandler.Instance.CreateExtensionVersionJsonFiddlerSetting();
+
                 await Preferences.SetDefaultPreferences();
 
                 try

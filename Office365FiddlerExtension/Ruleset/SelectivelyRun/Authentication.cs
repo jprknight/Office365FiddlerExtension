@@ -128,7 +128,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            if (this.session.oRequest["Authorization"] != "Basic") {
+            if (!this.session.oRequest["Authorization"].Contains("Basic")) {
                 return;
             }
 
@@ -233,7 +233,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            if (this.session.oRequest["Authorization"] != "Bearer")
+            if (!this.session.oRequest["Authorization"].Contains("Bearer"))
             {
                 return;
             }
@@ -260,7 +260,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.session = session;
 
-            if (this.session.oRequest["Authorization"] != "Basic")
+            if (!this.session.oRequest["Authorization"].Contains("Basic"))
             {
                 return;
             }
