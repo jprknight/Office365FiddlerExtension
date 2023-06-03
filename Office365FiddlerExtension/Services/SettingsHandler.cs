@@ -9,7 +9,6 @@ using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using static Office365FiddlerExtension.Services.SessionFlagHandler;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -97,8 +96,6 @@ namespace Office365FiddlerExtension.Services
             {
                 return;
             }
-
-            // REVIEW THIS. UpdateURL needs to move to master once it's a valid URL.
 
             var VersionItems = new
             {
@@ -194,18 +191,21 @@ namespace Office365FiddlerExtension.Services
 
     }
 
-    public class ExtensionSettingsFlags
+    public class ExtensionURLs
     {
-        public string SettingsURL { get; set; }
+        public string Settings { get; set; }
 
-        public string WikiURL { get; set; }
+        public string Wiki { get; set; }
 
-        public string ReportIssuesURL { get; set; }
+        public string ReportIssues { get; set; }
 
         public string BetaRuleSetURL { get; set; }
 
         public string MasterRuleSetURL { get; set; }
+    }
 
+    public class ExtensionSettingsFlags
+    {
         public string UpdateMessage { get; set; }
 
         public int WarningSessionTimeThreshold { get; set; }
