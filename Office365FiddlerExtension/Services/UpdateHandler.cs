@@ -15,9 +15,13 @@ namespace Office365FiddlerExtension.Services
     {
         public async void CheckForExtensionUpdate()
         {
-            if (Preferences.DisableWebCalls)
+            var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            var ExtensionURLs = SettingsHandler.Instance.GetDeserializedExtensionURLs();
+            var ExtensionVersion = SettingsHandler.Instance.GetDeserializedExtentionVersion();
+
+            if (ExtensionSettings.NeverWebCall)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: CheckForUpdate: DisableWebCalls is true; Extension won't check for any updates.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: CheckForUpdate: NeverWebCall is true; Extension won't check for any updates.");
                 return;
             }
 
@@ -27,23 +31,24 @@ namespace Office365FiddlerExtension.Services
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
 
-            var SettingsJson = JsonConvert.DeserializeObject<ExtensionSettingsFlags>(Properties.Settings.Default.UpdateURL, JsonSettings); 
+            //var SettingsJson = JsonConvert.DeserializeObject<ExtensionSettingsFlags>(Properties.Settings.Default.UpdateURL, JsonSettings); 
             
-            DateTime LastUpdated = SettingsJson.SettingsJsonLastUpdated;
+            //DateTime LastUpdated = SettingsJson.SettingsJsonLastUpdated;
 
             // If an update check has been performed within 24 hours, return.
+            /*
             if (LastUpdated > DateTime.Now.AddHours(-24))
             {
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Updates for settings.json checked within 24 hours, no update check performed.");
                 return;
-            }
+            }*/
 
             // Connect to the Github and see if the settings.json file needs updating.
             using (var getSettings = new HttpClient())
             {
                 try
                 {
-                    var response = await getSettings.GetAsync(SettingsJson.SettingsURL);
+                    var response = await getSettings.GetAsync(ExtensionURLs.ExtensionVersionJson);
 
                     response.EnsureSuccessStatusCode();
 
@@ -65,19 +70,6 @@ namespace Office365FiddlerExtension.Services
                     FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Error retrieving settings from Github {ex}");
                 }
             }
-        }
-
-        public void UpdateSettingsJson(String JsonString)
-        {
-            var JsonSettings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-
-            var SettingsJson = JsonConvert.DeserializeObject<ExtensionSettingsFlags>(Properties.Settings.Default.UpdateURL, JsonSettings);
-
-            //ExtensionSettingsFlags.
         }
     }
 }

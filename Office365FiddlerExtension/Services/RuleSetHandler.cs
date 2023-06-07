@@ -23,13 +23,16 @@ namespace Office365FiddlerExtension.Services
         // If it's newer call the <to be named> function to pull down updates.
         public async void RulesetVersionCheck()
         {
-            if (Preferences.DisableWebCalls)
+            var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            var URLs = SettingsHandler.Instance.GetDeserializedExtensionURLs();
+
+            if (ExtensionSettings.NeverWebCall)
             {
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: DisableWebCalls is enabled, no ruleset update check performed.");
                 return;
             }
 
-            if (DateTime.Now < Properties.Settings.Default.LocalMasterRulesetLastUpdated) 
+            if (DateTime.Now < ExtensionSettings.LocalMasterRulesetLastUpdated) 
             {
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Rules have been checked within the last 24 hours, no ruleset update check performed.");
                 return;
@@ -44,14 +47,14 @@ namespace Office365FiddlerExtension.Services
                     var response = await versionCheck.GetAsync("https://somedummyurlwhichwontwork");
                     // If we're running the beta ruleset, look to the Fiddler application preference for the URL to go to for the rulesetVersion file.
                     // This will likely be a rolling URL based on the branch name used at any time.
-                    if (Preferences.UseBetaRuleSet)
+                    if (ExtensionSettings.UseBetaRuleSet)
                     {
-                        response = await versionCheck.GetAsync(Properties.Settings.Default.BetaRuleSetURL);
+                        response = await versionCheck.GetAsync(URLs.BetaRuleSet);
                     }
                     // Here we're not using the beta ruleset, so pull it from the master branch.
                     else
                     {
-                        response = await versionCheck.GetAsync(Properties.Settings.Default.MasterRuleSetURL);
+                        response = await versionCheck.GetAsync(URLs.MasterRuleSet);
                     }
 
                     //var response = await versionCheck.GetAsync("https://raw.githubusercontent.com/username/repo/master/file.json");
@@ -113,19 +116,21 @@ namespace Office365FiddlerExtension.Services
 
         public async void UpdateRulesetFromGithub()
         {
+            var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+
             // Do all the things.
             // If ruleset update to local is succesful, set the date/time in the properties.
             // Do this for a logic check to make sure we only check for ruleset updates once every 24 hours.
             Boolean done = false;
             if (done == true)
             {
-                if (Preferences.UseBetaRuleSet)
+                if (ExtensionSettings.UseBetaRuleSet)
                 {
-                    Properties.Settings.Default.LocalBetaRulesetLastUpdated = DateTime.Now.AddHours(24);
+                    ExtensionSettings.LocalBetaRulesetLastUpdated = DateTime.Now.AddHours(24);
                 }
                 else
                 {
-                    Properties.Settings.Default.LocalMasterRulesetLastUpdated = DateTime.Now.AddHours(24);
+                    ExtensionSettings.LocalMasterRulesetLastUpdated = DateTime.Now.AddHours(24);
                 }
                     
             }

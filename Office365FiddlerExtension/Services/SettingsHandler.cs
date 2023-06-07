@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,34 +25,88 @@ namespace Office365FiddlerExtension.Services
         /// <summary>
         /// Create settings if they don't exist. 
         /// </summary>
-        public void CreateExtensionSettingsJsonFiddlerSetting()
+        public void CreateExtensionSettings()
         {
-            if (Preferences.ExtensionSettings == null || Preferences.ExtensionSettings == "")
+            if (Preferences.ExtensionSettings != null)
             {
-                Version applicationVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                //MessageBox.Show("Execution settings not empty.");
+                return;
+            }
 
+            if (Preferences.ExtensionSettings != "")
+            {
+                //MessageBox.Show("Execution settings not empty.");
+                return;
+            }
+
+            int upgradeExecutionCount;
+            bool neverWebCall;
+            bool extensionEnabled;
+
+            if (Preferences.ExecutionCount > 0)
+            {
+                upgradeExecutionCount = Preferences.ExecutionCount;
+            }
+            else
+            {
+                upgradeExecutionCount = 0;
+            }
+
+            if (Preferences.NeverWebCall)
+            {
+                neverWebCall = true;
+            }
+            else
+            {
+                neverWebCall = false;
+            }
+
+            if (SettingsHandler.Instance.ExtensionEnabled)
+            {
+                extensionEnabled = true;
+            }
+            else
+            {
+                extensionEnabled= false;
+            }
+
+            var ExtensionSettings = new
+            {
+                ExtensionEnabled = extensionEnabled,
+                ExecutionCount = upgradeExecutionCount,
+                NeverWebCall = neverWebCall,
+                SessionAnalysisOnFiddlerLoad = "True",
+                SessionAnalysisOnLoadSaz = "True",
+                SessionAnalysisOnLiveTrace = "True",
+                WarningSessionTimeThreshold = "2500",
+                SlowRunningSessionThreshold = "5000",
+                LastLoadedSazFile = "",
+                UseBetaRuleSet = "False",
+                UseHardCodedRuleset = "False",
+                LocalMasterRulesetLastUpdated = "",
+                LocalBetaRulesetLastUpdated = ""
+            };
+
+            // Transform the object to a Json object.
+            string jsonData = JsonConvert.SerializeObject(ExtensionSettings);
+
+            // Save the new Json to the Fiddler setting.
+            Preferences.ExtensionSettings = jsonData;
+
+            //FiddlerApplication.Prefs.RemovePref("Enabled");
+            //FiddlerApplication.Prefs.RemovePref("ExecutionCount");
+            //FiddlerApplication.Prefs.RemovePref("ManualCheckForUpdate");
+            //FiddlerApplication.Prefs.RemovePref("NeverWebCall");
+            //FiddlerApplication.Prefs.RemovePref("UpdateMessage");
+        }
+
+        public void UpgradeFiddlerSettingsToJson()
+        {
+            if (Properties.Settings.Default.ExecutionCount > 0)
+            {
                 var ExtensionSettings = new
                 {
-                    ExtensionEnabled = "True",
-                    ExecutionCount = "0",
-                    NeverWebCall = "False",
-                    SessionAnalysisOnFiddlerLoad = "True",
-                    SessionAnalysisOnLoadSaz = "True",
-                    SessionAnalysisOnLiveTrace = "True",
-                    UpdateMessage = "",
-                    WarningSessionTimeThreshold = "2500",
-                    SlowRunningSessionThreshold = "5000",
-                    ExtensionDLL = Assembly.GetExecutingAssembly().GetName().CodeBase.Substring(8),
-                    LastLoadedSazFile = "",
-                    VersionMajor = applicationVersion.Major,
-                    VersionMinor = applicationVersion.Minor,
-                    VersionBuild = applicationVersion.Build,
-                    NextUpdateCheck = "",
-                    UseBetaRuleSet = "False",
-                    UseInternalRuleset = "False",
-                    LocalMasterRulesetLastUpdated = "",
-                    LocalBetaRulesetLastUpdated = "",
-                    SettingsJsonLastUpdated = ""
+                    ExecutionCount = Properties.Settings.Default.ExecutionCount
                 };
 
                 // Transform the object to a Json object.
@@ -59,6 +114,9 @@ namespace Office365FiddlerExtension.Services
 
                 // Save the new Json to the Fiddler setting.
                 Preferences.ExtensionSettings = jsonData;
+
+                FiddlerApplication.Prefs.RemovePref("ExecutionCount");
+
             }
         }
 
@@ -70,10 +128,11 @@ namespace Office365FiddlerExtension.Services
                 return;
             }
 
-            // REVIEW THIS. UpdateURL needs to move to master once it's a valid URL.
+            // REVIEW THIS. URLs needs to move to master once it's a valid URL.
 
-            var URLSettings = new
+            var URLs = new
             {
+                ExtensionVerisonJson = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionVersion.json",
                 UpdateJson = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/settings.json",
                 MasterRuleSet = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Master/RulesetVersion",
                 BetaRuleSet = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/RulesetVersion",
@@ -83,14 +142,104 @@ namespace Office365FiddlerExtension.Services
             };
 
             // Transform the object to a Json object.
-            string jsonData = JsonConvert.SerializeObject(URLSettings);
+            string jsonData = JsonConvert.SerializeObject(URLs);
 
             // Save the new Json to the Fiddler setting.
             Preferences.ExtensionURLs = jsonData;
         }
 
-        public void CreateExtensionVersionJsonFiddlerSetting()
+        private bool _extensionEnabled;
+        public bool ExtensionEnabled
         {
+            //get => _extensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.enabled", true);
+            get
+            {
+                var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+                return extensionSettings.ExtensionEnabled;
+            }
+            set
+            {
+                _extensionEnabled = value;
+
+                var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+                extensionSettings.ExtensionEnabled = value;
+
+                var extensionSettingsJson = JsonConvert.SerializeObject(extensionSettings);
+                Preferences.ExtensionSettings = extensionSettingsJson;
+
+                MenuUI.Instance.ExtensionMenu.Text = ExtensionEnabled ? "Office 365 (Enabled)" : "Office 365 (Disabled)";
+            }
+        }
+
+        private bool _sessionAnalysisOnFiddlerLoad;
+
+        public bool
+
+        public void UpdateWarningSessionTimeThreshold(int warningSessionTimeThreshold)
+        {
+            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            extensionSettings.WarningSessionTimeThreshold = warningSessionTimeThreshold;
+
+            var extensionSettingsJson = JsonConvert.SerializeObject(extensionSettings);
+            Preferences.ExtensionSettings = extensionSettingsJson;
+        }
+
+        public void UpdateSlowRunningSessionThreshold(int slowRunningSessionThreshold)
+        {
+            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            extensionSettings.SlowRunningSessionThreshold = slowRunningSessionThreshold;
+
+            var extensionSettingsJson = JsonConvert.SerializeObject(extensionSettings);
+            Preferences.ExtensionSettings = extensionSettingsJson;
+        }
+
+        public void IncrementExecutionCount()
+        {
+            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            extensionSettings.ExecutionCount++;
+
+            var extensionSettingsJson = JsonConvert.SerializeObject(extensionSettings);
+            // Save the new Json to the extension setting.
+            Preferences.ExtensionSettings = extensionSettingsJson;
+        }
+
+        public ExtensionVersionFlags GetDeserializedExtentionVersion()
+        {
+            var JsonSettings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
+            return JsonConvert.DeserializeObject<ExtensionVersionFlags>(Preferences.ExtensionVersion, JsonSettings);
+        }
+
+        public ExtensionURLs GetDeserializedExtensionURLs()
+        {
+            var JsonSettings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
+            return JsonConvert.DeserializeObject<ExtensionURLs>(Preferences.ExtensionURLs, JsonSettings);
+        }
+
+        public ExtensionSettingsFlags GetDeserializedExtensionSettings()
+        {
+            var JsonSettings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
+            return JsonConvert.DeserializeObject<ExtensionSettingsFlags>(Preferences.ExtensionSettings, JsonSettings);
+        }
+
+        public void UpdateExtensionVersionFiddlerSetting()
+        {
+            Version applicationVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+
             // If the Extension Version Json already exists, none of this needs to run.
             if (Preferences.ExtensionVersion != null || Preferences.ExtensionVersion == "")
             {
@@ -99,10 +248,12 @@ namespace Office365FiddlerExtension.Services
 
             var VersionItems = new
             {
-                UpdateMessage = "",
-                VersionMajor = "",
-                VersionMinor = "",
-                VersionBuild = ""
+                UpdateMessage = "test", // REVIEW THIS. Needs to be pulled from ExtensionVersion.json in Github.
+                ExtensionDLL = Assembly.GetExecutingAssembly().GetName().CodeBase.Substring(8),
+                VersionMajor = applicationVersion.Major,
+                VersionMinor = applicationVersion.Minor,
+                VersionBuild = applicationVersion.Build,
+                RulesetLastUpdated = ""
             };
 
             // Transform the object to a Json object.
@@ -118,13 +269,15 @@ namespace Office365FiddlerExtension.Services
             // Fiddler setting for recall as needed.
         }
 
-
+        /* SETTINGS AREN"T BEING UPDATED FROM GITHUB. NONE OF THIS SHOULD BE NEEDED.
         public async void GetSettingsFromGithub()
         {
+            var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettingsFlags();
+
             // If disable web calls is set, don't look for any URL updates.
-            if (Preferences.DisableWebCalls)
+            if (ExtensionSettings.NeverWebCall)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: DisableWebCalls is enabled, not checking for updates for settings.json.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: NeverWebCall is enabled, not checking for updates for settings.json.");
                 return;
             }
 
@@ -187,33 +340,86 @@ namespace Office365FiddlerExtension.Services
             public String SettingsURL { get; set; }
 
             public DateTime SettingsLastUpdated { get; set; }
-        }
+        }*/
 
     }
 
     public class ExtensionURLs
+<<<<<<< Updated upstream
     {
         public string Settings { get; set; }
 
         public string Wiki { get; set; }
 
         public string ReportIssues { get; set; }
+=======
+    {
+        public string ExtensionVersionJson { get; set; }
 
-        public string BetaRuleSetURL { get; set; }
+        public string UpdateJson { get; set; }
 
+        public string MasterRuleSet { get; set; }
+
+        public string BetaRuleSet { get; set; }
+
+        public string Installer { get; set; }
+
+        public string Wiki { get; set; }
+
+        public string ReportIssues { get; set; }
+    }
+
+    public class ExtensionVersionFlags
+    {
+        public string UpdateMessage { get; set; }
+
+        public int VersionMajor { get; set; }
+
+        public int VersionMinor { get; set; }
+
+        public int VersionBuild { get; set; }
+
+        public DateTime ExtensonVersionLastUpdated { get; set; }
+    }
+
+    public class ExtensionSettingsFlags
+    {
+        public string ExtensionVersionURL { get; set; }
+
+        public bool ExtensionEnabled { get; set; }
+
+        public int ExecutionCount { get; set; }
+>>>>>>> Stashed changes
+
+        public bool NeverWebCall { get; set; }
+
+<<<<<<< Updated upstream
         public string MasterRuleSetURL { get; set; }
     }
 
     public class ExtensionSettingsFlags
     {
         public string UpdateMessage { get; set; }
+=======
+        public bool SessionAnalysisOnFiddlerLoad { get; set; }
+
+        public bool SessionAnalysisOnLoadSaz { get; set; }
+
+        public bool SessionAnalysisOnLiveTrace { get; set; }
+>>>>>>> Stashed changes
 
         public int WarningSessionTimeThreshold { get; set; }
 
         public int SlowRunningSessionThreshold { get; set; }
 
-        public string ExtensionVersion { get; set; }
+        public string ExtensionDLL { get; set; }
 
-        public DateTime SettingsJsonLastUpdated { get; set; }
+        public string LastLoadedSazFile { get; set; }
+
+        public bool UseBetaRuleSet { get; set; }
+
+        public DateTime LocalMasterRulesetLastUpdated { get; set; }
+
+        public DateTime LocalBetaRulesetLastUpdated { get; set; }
     }
 }

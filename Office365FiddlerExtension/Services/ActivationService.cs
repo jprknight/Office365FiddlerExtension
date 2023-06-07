@@ -27,7 +27,9 @@ namespace Office365FiddlerExtension.Services
 
         public async void OnBeforeUnload()
         {
-            if (!Preferences.DisableWebCalls)
+            var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+
+            if (!ExtensionSettings.NeverWebCall)
             {
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Closing telemetry service client connection.");
                 await TelemetryService.FlushClientAsync();
@@ -52,7 +54,7 @@ namespace Office365FiddlerExtension.Services
         /// <param name="_session"></param>
         public void AutoTamperResponseAfter(Session session)
         {
-            if (!Preferences.ExtensionEnabled)
+            if (!SettingsHandler.Instance.ExtensionEnabled)
             {
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Extension not enabled, returning.");
                 return;
@@ -85,6 +87,11 @@ namespace Office365FiddlerExtension.Services
         /// <param name="_session"></param>
         public void OnBeforeReturningError(Session _session) { }
 
+        public void ExtensionEnabledPrefWatcer()
+        {
+
+        }
+
     }
 
     public class UserInterface : ActivationService
@@ -97,22 +104,24 @@ namespace Office365FiddlerExtension.Services
 
         public async void Initialize()
         {
-            // Stop if extension is not enabled.
-            if (!Preferences.ExtensionEnabled)
-            {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Extension not enabled, exiting.");
-                return;
-            }
-
             if (!IsInitialized)
             {
+                SettingsHandler.Instance.CreateExtensionSettings();
+                SettingsHandler.Instance.CreateExtensionURLJsonFiddlerSetting();
+                SettingsHandler.Instance.UpdateExtensionVersionFiddlerSetting();
+
+                var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+
+                // Stop if extension is not enabled.
+                if (!ExtensionSettings.ExtensionEnabled)
+                {
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Extension not enabled, exiting.");
+                    return;
+                }
+
                 // Add Saz file event handlers.
                 FiddlerApplication.OnLoadSAZ += SazFileHandler.Instance.LoadSaz;
                 FiddlerApplication.OnSaveSAZ += SazFileHandler.Instance.SaveSaz;
-
-                SettingsHandler.Instance.CreateExtensionSettingsJsonFiddlerSetting();
-                SettingsHandler.Instance.CreateExtensionURLJsonFiddlerSetting();
-                SettingsHandler.Instance.CreateExtensionVersionJsonFiddlerSetting();
 
                 await Preferences.SetDefaultPreferences();
 
@@ -138,9 +147,9 @@ namespace Office365FiddlerExtension.Services
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Finished adding columns to UI.");
 
                 // If disable web calls is true dion't check for updates and don't call telemetry service.
-                if (Preferences.DisableWebCalls)
+                if (ExtensionSettings.NeverWebCall)
                 {
-                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Telemetry Service DisableWebCalls is true.");
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Telemetry Service NeverWebCall is true.");
                     FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Not checking for updates or sending telemetry data.");
                 }
                 // Otherwise, check for updates and call telemetry service.

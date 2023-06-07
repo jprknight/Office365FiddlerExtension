@@ -2,6 +2,8 @@
 using Fiddler;
 using System;
 using System.Windows.Forms;
+using Microsoft.Extensions.FileSystemGlobbing;
+using Office365FiddlerExtension.UI;
 
 namespace Office365FiddlerExtension
 {
@@ -38,6 +40,8 @@ namespace Office365FiddlerExtension
 
         public MenuItem MiAbout { get; set; }
 
+        public MenuItem MiAbout2 { get; set; }
+
         public string MenuEnabled = "Office 365 (Enabled)";
 
         public string MenuDisabled = "Office 365 (Disabled)";
@@ -54,10 +58,10 @@ namespace Office365FiddlerExtension
             if (!IsInitialized)
             {
 
-                this.ExtensionMenu = new MenuItem(Preferences.ExtensionEnabled ? MenuEnabled : MenuDisabled);
+                this.ExtensionMenu = new MenuItem(SettingsHandler.Instance.ExtensionEnabled ? MenuEnabled : MenuDisabled);
 
                 this.MiEnabled = new MenuItem("Enable", new EventHandler(this.MiEnabled_Click));
-                this.MiEnabled.Checked = Preferences.ExtensionEnabled;
+                this.MiEnabled.Checked = SettingsHandler.Instance.ExtensionEnabled;
 
                 this.MiSessionAnalysis = new MenuItem("Session Analysis");
 
@@ -79,6 +83,8 @@ namespace Office365FiddlerExtension
 
                 this.MiAbout = new MenuItem("&About", new System.EventHandler(this.MiAbout_Click));
 
+                this.MiAbout2 = new MenuItem("&About2", new System.EventHandler(this.MiAbout2_Click));
+
                 // Add menu items to top level menu.
                 this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { this.MiEnabled,
                 this.MiSessionAnalysis,
@@ -90,13 +96,20 @@ namespace Office365FiddlerExtension
                 this.MiWiki,
                 this.MiReportIssues,
                 new MenuItem("-"),
-                this.MiAbout
+                this.MiAbout,
+                this.MiAbout2
             });
 
                 FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExtensionMenu);
                 UpdateMenuItems();
                 IsInitialized = true;
             }
+        }
+
+        private void MiAbout2_Click(object sender, EventArgs e)
+        {
+            AboutNew about = new AboutNew();
+            about.Show();
         }
 
         private void MiSessionAnalysisOnLiveTrace_Click(object sender, EventArgs e)
@@ -121,7 +134,7 @@ namespace Office365FiddlerExtension
 
         private void MiProcessAllSessions_Click(object sender, EventArgs e)
         {
-            if (Preferences.ExtensionEnabled)
+            if (SettingsHandler.Instance.ExtensionEnabled)
             {
                 SessionFlagHandler.Instance.ProcessAllSessions();
             }
@@ -141,7 +154,7 @@ namespace Office365FiddlerExtension
                 
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
-                    Preferences.ExtensionEnabled = true;
+                    SettingsHandler.Instance.ExtensionEnabled = true;
                     this.MiEnabled.Checked = true;
                     //this.ExtensionMenu.Text = MenuEnabled;
                     SessionFlagHandler.Instance.ProcessAllSessions();
@@ -153,13 +166,18 @@ namespace Office365FiddlerExtension
         public void MiEnabled_Click(object sender, EventArgs e)
         {
             MiEnabled.Checked = !MiEnabled.Checked;
-            Preferences.ExtensionEnabled = MiEnabled.Checked;
+            SettingsHandler.Instance.ExtensionEnabled = MiEnabled.Checked;
             UpdateMenuItems();
+        }
+
+        public void UpdateEnabledChecked()
+        {
+
         }
 
         public void UpdateMenuItems()
         {
-            if (Preferences.ExtensionEnabled)
+            if (SettingsHandler.Instance.ExtensionEnabled)
             {
                 //this.ExtensionMenu.Text = MenuEnabled;
                 this.MiProcessAllSessions.Enabled = true;
@@ -173,20 +191,24 @@ namespace Office365FiddlerExtension
 
         public void MiWiki_Click(object sender, EventArgs e)
         {
+            var URLs = SettingsHandler.Instance.GetDeserializedExtensionURLs();
+
             // Fire up a web browser to the project Wiki URL.
-            System.Diagnostics.Process.Start(Properties.Settings.Default.WikiURL);
+            System.Diagnostics.Process.Start(URLs.Wiki);
         }
 
         public void MiReleasesDownloadWebpage_click(object sender, EventArgs e)
         {
+            var URLs = SettingsHandler.Instance.GetDeserializedExtensionURLs();
             // Fire up a web browser to the project Wiki URL.
-            System.Diagnostics.Process.Start(Properties.Settings.Default.InstallerURL);
+            System.Diagnostics.Process.Start(URLs.Installer);
         }
 
         public void MiReportIssues_Click(object sender, EventArgs e)
         {
+            var URLs = SettingsHandler.Instance.GetDeserializedExtensionURLs();
             // Fire up a web browser to the project issues URL.
-            System.Diagnostics.Process.Start(Properties.Settings.Default.ReportIssuesURL);
+            System.Diagnostics.Process.Start(URLs.ReportIssues);
         }
 
         public void MiAbout_Click(object sender, EventArgs e)
@@ -194,10 +216,14 @@ namespace Office365FiddlerExtension
             // Since the user has manually clicked this menu item, check for updates,
             // set this boolean variable to true so we can give user feedback if no update available.
 
+            var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+
+            // REVIEW THIS. No need for an update check to be directly linked to a menu click.
+
             // Check for app update.
-            if (!Preferences.DisableWebCalls)
+            if (!ExtensionSettings.NeverWebCall)
             {
-                Preferences.ManualCheckForUpdate = true;
+                //Preferences.ManualCheckForUpdate = true;
                 About.Instance.CheckForUpdate();
             }
         }

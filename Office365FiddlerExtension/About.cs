@@ -3,6 +3,8 @@ using System.Windows.Forms;
 using Fiddler;
 using System.Xml;
 using Office365FiddlerExtension.Services;
+using Newtonsoft.Json;
+using static Office365FiddlerExtension.Services.SessionFlagHandler;
 
 namespace Office365FiddlerExtension
 {
@@ -13,19 +15,24 @@ namespace Office365FiddlerExtension
 
         public void CheckForUpdate()
         {
-            if (Preferences.DisableWebCalls)
+            var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            var URLs = SettingsHandler.Instance.GetDeserializedExtensionURLs();
+
+            if (ExtensionSettings.NeverWebCall)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: CheckForUpdate: DisableWebCalls is true; Extension won't check for any updates.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: CheckForUpdate: NeverWebCall is true; Extension won't check for any updates.");
                 return;
             }
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: CheckForUpdate begin.");
 
+            // REVIEW THIS. STRIP OUT XML AND REPLACE WITH JSON.
+
             #region ReadVersionFromXML
 
             string downloadUrl;
             Version newVersion = null;
-            string xmlUrl = Properties.Settings.Default.UpdateURL;
+            string xmlUrl = URLs.UpdateJson; // Properties.Settings.Default.UpdateURL;
 
             XmlTextReader reader = null;
 
@@ -77,6 +84,7 @@ namespace Office365FiddlerExtension
             // Update available.
             if (applicationVersion.CompareTo(newVersion) < 0)
             {
+                /*
                 #region UpdateAvailable
 
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {DateTime.Now}: About.cs : Update Available.");
@@ -84,9 +92,11 @@ namespace Office365FiddlerExtension
                 FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.UpdateMessage", $"Update Available{Environment.NewLine}----------------" +
                     $"{Environment.NewLine}Currently using version: v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}" +
                     $"{Environment.NewLine}New version available: v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}{Environment.NewLine} {Environment.NewLine}" +
-                    $"Download the latest version: {Environment.NewLine}{Properties.Settings.Default.InstallerURL}{Environment.NewLine}{Environment.NewLine}");
+                    //$"Download the latest version: {Environment.NewLine}{Properties.Settings.Default.InstallerURL}{Environment.NewLine}{Environment.NewLine}");
+                    $"Download the latest version: {Environment.NewLine}{URLs.Installer}{Environment.NewLine}{Environment.NewLine}");
 
                 // Give user feedback on click 'About' menu item if no update is available.
+                // REVIEW THIS. ManualCheckForUpdate is redundant. There's no reason to check for an update on a button click. Do it in the background in NeverWebCall is disabled.
                 if (Preferences.ManualCheckForUpdate)
                 {
 
@@ -105,7 +115,8 @@ namespace Office365FiddlerExtension
                     if (result == DialogResult.Yes)
                     {
                         // Execute the installer MSI URL, which will open in the user's default browser.
-                        System.Diagnostics.Process.Start(Properties.Settings.Default.InstallerURL);
+                        //System.Diagnostics.Process.Start(Properties.Settings.Default.InstallerURL);
+                        System.Diagnostics.Process.Start(URLs.Installer);
                         FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Version installed. v{applicationVersion.Major}.{applicationVersion.Minor}.{applicationVersion.Build}");
                         FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: New Version Available. v{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}");
                     }
@@ -113,12 +124,13 @@ namespace Office365FiddlerExtension
                     Preferences.ManualCheckForUpdate = false;
                 }
                 #endregion
+                */
             }
             // No update available.
             else
             {
                 #region NoUpdateAvailable
-
+                /*
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: CheckForUpdate: No update available.");
 
                 if (Preferences.ManualCheckForUpdate)
@@ -138,6 +150,7 @@ namespace Office365FiddlerExtension
                     // return this perference back to false, so we don't give this feedback unintentionally.
                     Preferences.ManualCheckForUpdate = false;
                 }
+                */
                 #endregion
             }
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: CheckForUpdate done.");

@@ -38,13 +38,15 @@ namespace Office365FiddlerExtension
 
         public void OnLoad()
         {
+            var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+
             // Load the UI.
             FiddlerApplication.UI.tabsViews.TabPages.Add(oPage);
 
             // Clear ResultsString.
             Clear();
                 
-            if (Preferences.DisableWebCalls)
+            if (ExtensionSettings.NeverWebCall)
             {
                 TabPageResultsString.AppendLine(StrTitle());
 

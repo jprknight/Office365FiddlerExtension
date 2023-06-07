@@ -1,4 +1,5 @@
 ﻿using Fiddler;
+using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -37,9 +38,9 @@ namespace Office365FiddlerExtension.Services
 
         public static Task<bool> SetDefaultPreferences()
         {
-            ExtensionEnabled = true;
+            //ExtensionEnabled = true;
 
-            ExecutionCount++;
+            SettingsHandler.Instance.IncrementExecutionCount();
 
             return Task.FromResult(true);
         }
@@ -55,17 +56,12 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
-        private static bool _extensionEnabled;
-        public static bool ExtensionEnabled
-        {
-            get => _extensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.enabled", true);
-            set
-            {
-                _extensionEnabled = value;
-                FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.enabled", value);
+        private static bool _neverWebCall;
 
-                MenuUI.Instance.ExtensionMenu.Text = ExtensionEnabled ? "Office 365 (Enabled)" : "Office 365 (Disabled)";
-            }
+        public static bool NeverWebCall
+        {
+            get => _neverWebCall = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.NeverWebCall", false);
+            set { _neverWebCall = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.NeverWebCall", value); }
         }
 
         private static Int32 _executionCount;

@@ -137,7 +137,7 @@ namespace Office365FiddlerExtension.Inspectors
             this.session = session;
 
             // Extension disabled.
-            if (!Preferences.ExtensionEnabled)
+            if (!SettingsHandler.Instance.ExtensionEnabled)
             {
                 // Clear ResultsString.
                 Clear();
@@ -163,13 +163,13 @@ namespace Office365FiddlerExtension.Inspectors
 
                 this.session = session;
 
-                SessionFlagHandler sessionFlagProcessor = new SessionFlagHandler();
+                //SessionFlagHandler sessionFlagProcessor = new SessionFlagHandler();
 
-                var JsonSettings = new JsonSerializerSettings
+                /*var JsonSettings = new JsonSerializerSettings
                 {
                     NullValueHandling = NullValueHandling.Ignore,
                     MissingMemberHandling = MissingMemberHandling.Ignore
-                };
+                };*/
 
                 var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
 

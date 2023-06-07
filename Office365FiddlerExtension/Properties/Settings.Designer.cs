@@ -22,5 +22,29 @@ namespace Office365FiddlerExtension.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ExecutionCount {
+            get {
+                return ((int)(this["ExecutionCount"]));
+            }
+            set {
+                this["ExecutionCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ExtensionSettings {
+            get {
+                return ((string)(this["ExtensionSettings"]));
+            }
+            set {
+                this["ExtensionSettings"] = value;
+            }
+        }
     }
 }
