@@ -57,7 +57,6 @@ namespace Office365FiddlerExtension
             /// 
             if (!IsInitialized)
             {
-
                 this.ExtensionMenu = new MenuItem(SettingsHandler.Instance.ExtensionEnabled ? MenuEnabled : MenuDisabled);
 
                 this.MiEnabled = new MenuItem("Enable", new EventHandler(this.MiEnabled_Click));

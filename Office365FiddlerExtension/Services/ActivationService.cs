@@ -20,8 +20,12 @@ namespace Office365FiddlerExtension.Services
         /// </summary>
         public async void OnLoad()
         {
-            MenuUI.Instance.Initialize();
+            // REVIEW THIS. Needs IsInitialized.
+            SettingsHandler.Instance.CreateExtensionSettings();
+            SettingsHandler.Instance.CreateExtensionURLJsonFiddlerSetting();
+            SettingsHandler.Instance.UpdateExtensionVersionFiddlerSetting();
 
+            MenuUI.Instance.Initialize();
             UserInterface.Instance.Initialize();
         }
 
@@ -106,10 +110,6 @@ namespace Office365FiddlerExtension.Services
         {
             if (!IsInitialized)
             {
-                SettingsHandler.Instance.CreateExtensionSettings();
-                SettingsHandler.Instance.CreateExtensionURLJsonFiddlerSetting();
-                SettingsHandler.Instance.UpdateExtensionVersionFiddlerSetting();
-
                 var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
 
                 // Stop if extension is not enabled.

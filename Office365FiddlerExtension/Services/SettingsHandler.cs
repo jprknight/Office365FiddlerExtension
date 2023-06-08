@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -29,19 +30,13 @@ namespace Office365FiddlerExtension.Services
         {
             if (Preferences.ExtensionSettings != null)
             {
-                //MessageBox.Show("Execution settings not empty.");
-                return;
-            }
-
-            if (Preferences.ExtensionSettings != "")
-            {
-                //MessageBox.Show("Execution settings not empty.");
+                //MessageBox.Show("Extension settings not null.");
                 return;
             }
 
             int upgradeExecutionCount;
-            bool neverWebCall;
-            bool extensionEnabled;
+            bool upgradeNeverWebCall;
+            bool upgradeExtensionEnabled;
 
             if (Preferences.ExecutionCount > 0)
             {
@@ -54,27 +49,27 @@ namespace Office365FiddlerExtension.Services
 
             if (Preferences.NeverWebCall)
             {
-                neverWebCall = true;
+                upgradeNeverWebCall = true;
             }
             else
             {
-                neverWebCall = false;
+                upgradeNeverWebCall = false;
             }
 
-            if (SettingsHandler.Instance.ExtensionEnabled)
+            if (Preferences.ExtensionEnabled)
             {
-                extensionEnabled = true;
+                upgradeExtensionEnabled = true;
             }
             else
             {
-                extensionEnabled= false;
+                upgradeExtensionEnabled = false;
             }
 
             var ExtensionSettings = new
             {
-                ExtensionEnabled = extensionEnabled,
+                ExtensionEnabled = upgradeExtensionEnabled,
                 ExecutionCount = upgradeExecutionCount,
-                NeverWebCall = neverWebCall,
+                NeverWebCall = upgradeNeverWebCall,
                 SessionAnalysisOnFiddlerLoad = "True",
                 SessionAnalysisOnLoadSaz = "True",
                 SessionAnalysisOnLiveTrace = "True",
@@ -159,14 +154,16 @@ namespace Office365FiddlerExtension.Services
             }
             set
             {
-                _extensionEnabled = value;
-
+                // Pull & Deserialize Json from ExtensionSettings.
                 var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
-                extensionSettings.ExtensionEnabled = value;
-
+                // Set the attribute.
+                extensionSettings.ExtensionEnabled = _extensionEnabled;
+                // Serialize the object back into Json.
                 var extensionSettingsJson = JsonConvert.SerializeObject(extensionSettings);
+                // Write the Json into the ExtensionSettings Fiddler setting.
                 Preferences.ExtensionSettings = extensionSettingsJson;
 
+                // Set the Menu item to reflect change.
                 MenuUI.Instance.ExtensionMenu.Text = ExtensionEnabled ? "Office 365 (Enabled)" : "Office 365 (Disabled)";
             }
         }
@@ -182,7 +179,66 @@ namespace Office365FiddlerExtension.Services
             }
             set
             {
+                // Pull & Deserialize Json from ExtensionSettings.
+                var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+                // Set the attribute.
+                extensionSettings.SessionAnalysisOnFiddlerLoad = _sessionAnalysisOnFiddlerLoad;
+                // Serialize the object back into Json.
+                var extensionSettingsJson = JsonConvert.SerializeObject(extensionSettings);
+                // Write the Json into the ExtensionSettings Fiddler setting.
+                Preferences.ExtensionSettings = extensionSettingsJson;
 
+                // Set the Menu item to reflect change.
+                MenuUI.Instance.MiOnFiddlerLoad.Checked = _sessionAnalysisOnFiddlerLoad;
+            }
+        }
+
+        private bool _sessionAnalysisOnLoadSaz;
+
+        public bool SessionAnalysisOnLoadSaz
+        {
+            get
+            {
+                var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+                return extensionSettings.SessionAnalysisOnLoadSaz;
+            }
+            set
+            {
+                // Pull & Deserialize Json from ExtensionSettings.
+                var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+                // Set the attribute.
+                extensionSettings.SessionAnalysisOnLoadSaz = _sessionAnalysisOnLoadSaz;
+                // Serialize the object back into Json.
+                var extensionSettingsJson = JsonConvert.SerializeObject(extensionSettings);
+                // Write the Json into the ExtensionSettings Fiddler setting.
+                Preferences.ExtensionSettings = extensionSettingsJson;
+
+                // Set the Menu item to reflect change.
+                MenuUI.Instance.MiOnLoadSaz.Checked = _sessionAnalysisOnLoadSaz;
+            }
+        }
+
+        private bool _sessionAnalysisOnLiveTrace;
+        public bool SessionAnalysisOnLiveTrace
+        {
+            get
+            {
+                var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+                return extensionSettings.SessionAnalysisOnLiveTrace;
+            }
+            set
+            {
+                // Pull & Deserialize Json from ExtensionSettings.
+                var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+                // Set the attribute.
+                extensionSettings.SessionAnalysisOnLiveTrace = _sessionAnalysisOnLiveTrace;
+                // Serialize the object back into Json.
+                var extensionSettingsJson = JsonConvert.SerializeObject(extensionSettings);
+                // Write the Json into the ExtensionSettings Fiddler setting.
+                Preferences.ExtensionSettings = extensionSettingsJson;
+
+                // Set the Menu item to reflect change.
+                MenuUI.Instance.MiOnLiveTrace.Checked = _sessionAnalysisOnLiveTrace;
             }
         }
 
@@ -394,9 +450,8 @@ namespace Office365FiddlerExtension.Services
 
         public bool NeverWebCall { get; set; }
 
-        public string MasterRuleSetURL { get; set; }
-
         public string UpdateMessage { get; set; }
+
         public bool SessionAnalysisOnFiddlerLoad { get; set; }
 
         public bool SessionAnalysisOnLoadSaz { get; set; }

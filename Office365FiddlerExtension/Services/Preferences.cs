@@ -45,6 +45,22 @@ namespace Office365FiddlerExtension.Services
             return Task.FromResult(true);
         }
 
+        private static bool _extensionEnabled;
+        public static bool ExtensionEnabled
+        {
+            get => _extensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.enabled", true);
+            /*set
+            {
+                _extensionEnabled = value;
+                FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.enabled", value);
+                // It's confusing to see the name of this menu item change only after a click of the menu item.
+                // Whether the extension is enabled or disabled on loading Fiddler, it will show Enable.
+                // Stopping this to simplify the UI.
+                //MenuUI.Instance.MiEnabled.Text = ExtensionEnabled ? "Disable" : "Enable";
+                MenuUI.Instance.ExchangeOnlineTopMenu.Text = ExtensionEnabled ? "Office 365" : "Office 365 (Disabled)";
+            }*/
+        }
+
         public static string AppVersion
         {
             get

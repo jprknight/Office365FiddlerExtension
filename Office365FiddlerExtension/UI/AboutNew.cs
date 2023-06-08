@@ -46,17 +46,31 @@ namespace Office365FiddlerExtension.UI
                 AllSessionAnalysisRadioButton.Checked = false;
                 SomeSessionAnalysisRadioButton.Checked = true;
 
-                if (extensionSettings.SessionAnalysisOnFiddlerLoad)
+                if (SettingsHandler.Instance.SessionAnalysisOnFiddlerLoad)
                 {
                     SessionAnalysisOnFiddlerLoadCheckbox.Checked = true;
                 }
-                if (extensionSettings.SessionAnalysisOnLoadSaz)
+                else
+                {
+                    SessionAnalysisOnFiddlerLoadCheckbox.Checked = false;
+                }
+
+                if (SettingsHandler.Instance.SessionAnalysisOnLoadSaz)
                 {
                     SessionAnalysisOnLoadSazCheckbox.Checked = true;
                 }
-                if (extensionSettings.SessionAnalysisOnLiveTrace)
+                else
+                {
+                    SessionAnalysisOnLoadSazCheckbox.Checked = false;
+                }
+
+                if (SettingsHandler.Instance.SessionAnalysisOnLiveTrace)
                 {
                     SessionAnalysisOnLiveTraceCheckbox.Checked = true;
+                }
+                else
+                {
+                    SessionAnalysisOnLiveTraceCheckbox.Checked = false;
                 }
             }
 
@@ -118,9 +132,14 @@ namespace Office365FiddlerExtension.UI
             if (SomeSessionAnalysisRadioButton.Checked)
             {
                 SessionAnalysisOnFiddlerLoadCheckbox.Enabled = true;
-                SessionAnalysisOnLoadSazCheckbox.Enabled= true;
+                SessionAnalysisOnLoadSazCheckbox.Enabled = true;
                 SessionAnalysisOnLiveTraceCheckbox.Enabled= true;
             }
+        }
+
+        private void SessionAnalysisOnFiddlerLoadCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
