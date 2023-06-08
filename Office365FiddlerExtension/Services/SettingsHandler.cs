@@ -173,7 +173,18 @@ namespace Office365FiddlerExtension.Services
 
         private bool _sessionAnalysisOnFiddlerLoad;
 
-        public bool
+        public bool SessionAnalysisOnFiddlerLoad
+        {
+            get
+            {
+                var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+                return extensionSettings.SessionAnalysisOnFiddlerLoad;
+            }
+            set
+            {
+
+            }
+        }
 
         public void UpdateWarningSessionTimeThreshold(int warningSessionTimeThreshold)
         {
@@ -344,16 +355,7 @@ namespace Office365FiddlerExtension.Services
 
     }
 
-    public class ExtensionURLs
-<<<<<<< Updated upstream
-    {
-        public string Settings { get; set; }
-
-        public string Wiki { get; set; }
-
-        public string ReportIssues { get; set; }
-=======
-    {
+    public class ExtensionURLs {
         public string ExtensionVersionJson { get; set; }
 
         public string UpdateJson { get; set; }
@@ -389,24 +391,17 @@ namespace Office365FiddlerExtension.Services
         public bool ExtensionEnabled { get; set; }
 
         public int ExecutionCount { get; set; }
->>>>>>> Stashed changes
 
         public bool NeverWebCall { get; set; }
 
-<<<<<<< Updated upstream
         public string MasterRuleSetURL { get; set; }
-    }
 
-    public class ExtensionSettingsFlags
-    {
         public string UpdateMessage { get; set; }
-=======
         public bool SessionAnalysisOnFiddlerLoad { get; set; }
 
         public bool SessionAnalysisOnLoadSaz { get; set; }
 
         public bool SessionAnalysisOnLiveTrace { get; set; }
->>>>>>> Stashed changes
 
         public int WarningSessionTimeThreshold { get; set; }
 
