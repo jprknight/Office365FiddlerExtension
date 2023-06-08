@@ -21,9 +21,15 @@ namespace Office365FiddlerExtension.UI
         private void About_Load(object sender, EventArgs e)
         {
             var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            var extensionVersion = SettingsHandler.Instance.GetDeserializedExtentionVersion();
 
             ExtensionEnabledCheckbox.Checked = extensionSettings.ExtensionEnabled;
             ExtensionDLLTextbox.Text = extensionSettings.ExtensionDLL;
+
+            WarningSessionTimeThresholdTextbox.Text = extensionSettings.WarningSessionTimeThreshold.ToString();
+            SlowRunningSessionThresholdTextbox.Text = extensionSettings.SlowRunningSessionThreshold.ToString();
+
+            AboutNew.ActiveForm.Text = $"{Preferences.LogPrepend()} v{extensionVersion.VersionMajor}.{extensionVersion.VersionMinor}.{extensionVersion.VersionBuild}";
 
             if (extensionSettings.SessionAnalysisOnFiddlerLoad == true &&
                 extensionSettings.SessionAnalysisOnLoadSaz == true &&
@@ -78,7 +84,7 @@ namespace Office365FiddlerExtension.UI
             {
                 SessionAnalysisOnFiddlerLoadCheckbox.Enabled = false;
                 SessionAnalysisOnLiveTraceCheckbox.Enabled = false;
-                SessionAnalysisOnLoadSazCheckbox.Enabled = false;
+                SessionAnalysisOnLoadSazCheckbox.Enabled = false; 
             }
 
             if (SomeSessionAnalysisRadioButton.Checked)
@@ -92,7 +98,7 @@ namespace Office365FiddlerExtension.UI
 
         private void ExtensionEnabledCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsHandler.Instance.ExtensionEnabled = ExtensionEnabledCheckbox.Checked;
+            SettingsHandler.Instance.SetExtensionEnabled(ExtensionEnabledCheckbox.Checked);
 
             if (ExtensionEnabledCheckbox.Checked)
             {
@@ -139,7 +145,27 @@ namespace Office365FiddlerExtension.UI
 
         private void SessionAnalysisOnFiddlerLoadCheckbox_CheckedChanged(object sender, EventArgs e)
         {
+            SettingsHandler.Instance.SetSessionAnalysisOnFiddlerLoad(SessionAnalysisOnFiddlerLoadCheckbox.Checked);
+        }
 
+        private void SessionAnalysisOnLoadSazCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsHandler.Instance.SetSessionAnalysisOnLoadSaz(SessionAnalysisOnLoadSazCheckbox.Checked);
+        }
+
+        private void SessionAnalysisOnLiveTraceCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsHandler.Instance.SetSessionAnalysisOnLiveTrace(SessionAnalysisOnLiveTraceCheckbox.Checked);
+        }
+
+        private void WarningSessionTimeThresholdUpdateButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CloseButton_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

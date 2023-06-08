@@ -55,48 +55,50 @@ namespace Office365FiddlerExtension.Services
         {
             this.session = session;
 
-            if (this.session["Microsoft365FiddlerExtensionJson"] == null)
+            if (this.session["Microsoft365FiddlerExtensionJson"] != null)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Json extension session flag not found. Creating.");
+                return;
+            }
 
-                var SessionFlagsData = new
-                {
-                    SectionTitle = "",
-                    UIBackColour = "",
-                    UITextColour = "",
-                    SessionType = "",
-                    ResponseCodeDescription = "",
-                    ResponseServer = "",
-                    ResponseAlert = "",
-                    ResponseComments = "",
-                    DataAge = "",
-                    CalculatedSessionAge = "",
-                    DateDataCollected = "",
-                    SessionTimersDescription = "",
-                    ServerThinkTime = "",
-                    TransitTime = "",
-                    ElapsedTime = "",
-                    InspectorElapsedTime = "",
-                    Authentication = "",
-                    AuthenticationType = "",
-                    AuthenticationDescription = "",
-                    SamlTokenIssuer = "",
-                    SamlTokenSigningCertificate = "",
-                    SamlTokenAttributeNameUPN = "",
-                    SamlTokenNameIdentifierFormat = "",
-                    SamlTokenAttributeNameImmutibleID = "",
-                    ProcessName = "",
-                    SessionAuthenticationConfidenceLevel = "0",
-                    SessionTypeConfidenceLevel = "0",
-                    SessionResponseServerConfidenceLevel = "0"
-                };
+            //FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Json extension session flag not found. Creating.");
 
-                // Transform the object to a Json object.
-                string jsonData = JsonConvert.SerializeObject(SessionFlagsData, Formatting.Indented);
+            var SessionFlagsData = new
+            {
+                SectionTitle = "",
+                UIBackColour = "",
+                UITextColour = "",
+                SessionType = "",
+                ResponseCodeDescription = "",
+                ResponseServer = "",
+                ResponseAlert = "",
+                ResponseComments = "",
+                DataAge = "",
+                CalculatedSessionAge = "",
+                DateDataCollected = "",
+                SessionTimersDescription = "",
+                ServerThinkTime = "",
+                TransitTime = "",
+                ElapsedTime = "",
+                InspectorElapsedTime = "",
+                Authentication = "",
+                AuthenticationType = "",
+                AuthenticationDescription = "",
+                SamlTokenIssuer = "",
+                SamlTokenSigningCertificate = "",
+                SamlTokenAttributeNameUPN = "",
+                SamlTokenNameIdentifierFormat = "",
+                SamlTokenAttributeNameImmutibleID = "",
+                ProcessName = "",
+                SessionAuthenticationConfidenceLevel = "0",
+                SessionTypeConfidenceLevel = "0",
+                SessionResponseServerConfidenceLevel = "0"
+            };
 
-                // Save the new Json to the session flag.
-                this.session["Microsoft365FiddlerExtensionJson"] = jsonData;
-            }           
+            // Transform the object to a Json object.
+            string jsonData = JsonConvert.SerializeObject(SessionFlagsData, Formatting.Indented);
+
+            // Save the new Json to the session flag.
+            this.session["Microsoft365FiddlerExtensionJson"] = jsonData;
         }
 
         // Process All Sesssions ; Menu item is clicked.
@@ -117,7 +119,7 @@ namespace Office365FiddlerExtension.Services
         // Clear All Session Processing ; Menu item is clicked.
         public void ClearAllSessionProcessing()
         {
-            FiddlerApplication.Log.LogString("Office365FiddlerExtension: Clearing all current session procesing.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Clearing all current session procesing.");
 
             var oSessions = FiddlerApplication.UI.GetAllSessions();
             foreach (var session in oSessions)

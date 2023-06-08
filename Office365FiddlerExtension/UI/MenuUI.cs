@@ -113,17 +113,23 @@ namespace Office365FiddlerExtension
 
         private void MiSessionAnalysisOnLiveTrace_Click(object sender, EventArgs e)
         {
+            MiOnLiveTrace.Checked = !MiOnLiveTrace.Checked;
             //Preferences.SessionAnalysisOnLiveTrace = MiOnLiveTrace.Checked;
+            SettingsHandler.Instance.SetSessionAnalysisOnLiveTrace(MiOnLoadSaz.Checked);
         }
 
         private void MiSessionAnalysisOnLoadSaz_Click(object sender, EventArgs e)
         {
+            MiOnLoadSaz.Checked = !MiOnLoadSaz.Checked;
             //Preferences.SessionAnalysisOnLoadSaz = MiOnLoadSaz.Checked;
+            SettingsHandler.Instance.SetSessionAnalysisOnLoadSaz(MiOnLoadSaz.Checked);
         }
 
         private void MiSessionAnalysisOnFiddlerLoad_Click(object sender, EventArgs e)
         {
+            MiOnFiddlerLoad.Checked = !MiOnFiddlerLoad.Checked;
             //Preferences.SessionAnalysisOnFiddlerLoad = MiOnFiddlerLoad.Checked;
+            SettingsHandler.Instance.SetSessionAnalysisOnFiddlerLoad(MiOnFiddlerLoad.Checked);
         }
 
         private void MiClearAllSessionProcessing_Click(object sender, EventArgs e)
@@ -153,7 +159,7 @@ namespace Office365FiddlerExtension
                 
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
-                    SettingsHandler.Instance.ExtensionEnabled = true;
+                    SettingsHandler.Instance.SetExtensionEnabled(true);
                     this.MiEnabled.Checked = true;
                     //this.ExtensionMenu.Text = MenuEnabled;
                     SessionFlagHandler.Instance.ProcessAllSessions();
@@ -164,14 +170,11 @@ namespace Office365FiddlerExtension
         // Menu item event handlers.
         public void MiEnabled_Click(object sender, EventArgs e)
         {
+            // Invert menu item checked.
             MiEnabled.Checked = !MiEnabled.Checked;
-            SettingsHandler.Instance.ExtensionEnabled = MiEnabled.Checked;
+            // Set ExtensionEnabled according to menu item checked.
+            SettingsHandler.Instance.SetExtensionEnabled(MiEnabled.Checked);
             UpdateMenuItems();
-        }
-
-        public void UpdateEnabledChecked()
-        {
-
         }
 
         public void UpdateMenuItems()

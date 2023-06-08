@@ -65,6 +65,12 @@ namespace Office365FiddlerExtension.Services
         // Function to handle loading a SAZ file.
         public void LoadSaz(object sender, FiddlerApplication.ReadSAZEventArgs e)
         {
+            if (!SettingsHandler.Instance.ExtensionEnabled)
+            {
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz {e.sFilename}. Extension not enabled, returning.");
+                return;
+            }
+
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz with Extension Enabled: {SettingsHandler.Instance.ExtensionEnabled}, {Assembly.GetExecutingAssembly().GetName().CodeBase.Substring(8)}.");
@@ -76,11 +82,7 @@ namespace Office365FiddlerExtension.Services
             foreach (var session in e.arrSessions)
             {
                 this.session = session;
-
-                if (SettingsHandler.Instance.ExtensionEnabled)
-                {
-                    SessionHandler.Instance.OnPeekAtResponseHeaders(this.session);
-                }
+                SessionHandler.Instance.OnPeekAtResponseHeaders(this.session);
             }
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz processed: {e.sFilename}");

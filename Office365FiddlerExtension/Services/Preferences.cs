@@ -36,15 +36,15 @@ namespace Office365FiddlerExtension.Services
             return 2500;
         }
 
+        // REVIEW THIS. Keep this as a sample of might be an async function.
         public static Task<bool> SetDefaultPreferences()
         {
             //ExtensionEnabled = true;
 
-            SettingsHandler.Instance.IncrementExecutionCount();
-
             return Task.FromResult(true);
         }
 
+        // Keep this around to migrate legacy settings to Json settings.
         private static bool _extensionEnabled;
         public static bool ExtensionEnabled
         {
@@ -72,6 +72,7 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
+        // Keep this around to migrate legacy settings to Json settings.
         private static bool _neverWebCall;
 
         public static bool NeverWebCall
@@ -80,13 +81,15 @@ namespace Office365FiddlerExtension.Services
             set { _neverWebCall = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.NeverWebCall", value); }
         }
 
+        // Keep this around to migrate legacy settings to Json settings.
         private static Int32 _executionCount;
         public static Int32 ExecutionCount
         {
             get => _executionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.Office365FiddlerExtension.ExecutionCount", 0);
-            set { _executionCount = value; FiddlerApplication.Prefs.SetInt32Pref("extensions.Office365FiddlerExtension.ExecutionCount", value); }
+            //set { _executionCount = value; FiddlerApplication.Prefs.SetInt32Pref("extensions.Office365FiddlerExtension.ExecutionCount", value); }
         }
 
+        // Setting to store Json version information to run update checks against. Updated from remote.
         private static string _extensionVersion;
 
         public static string ExtensionVersion
@@ -95,6 +98,7 @@ namespace Office365FiddlerExtension.Services
             set { _extensionVersion = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionVersion", value); }
         }
 
+        // Setting to store Json extension settings in. Updated within the extension only, no remote updates.
         private static string _extensionSettings;
 
         public static string ExtensionSettings
@@ -103,6 +107,7 @@ namespace Office365FiddlerExtension.Services
             set { _extensionSettings = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionSettings", value); }
         }
 
+        // Setting to store Json extension URLs. Update from remote.
         public static string _extensionURLs;
 
         public static string ExtensionURLs

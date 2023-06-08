@@ -45,7 +45,7 @@ namespace Office365FiddlerExtension.Ruleset
                 int iTransitTimeSeconds = (int)Math.Round(dTransitTimeMilliseconds / 1000);
 
                 // If 1/10th of the session elapsed time is more than the server think time, network roundtrip loses.
-                if (ElapsedMilliseconds / 10 > ServerMilliseconds && ElapsedMilliseconds > Preferences.GetSlowRunningSessionThreshold())
+                if (ElapsedMilliseconds / 10 > ServerMilliseconds && ElapsedMilliseconds > SettingsHandler.Instance.SlowRunningSessionThreshold)
                 {
                     var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                     {

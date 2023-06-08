@@ -239,8 +239,8 @@ namespace Office365FiddlerExtension
         public void ResponseCodeLogic(Session session)
         {
             this.session = session;
-
-            FiddlerApplication.Log.LogString("Office365FiddlerExtention: " + this.session.id + " Running ResponseCodeLogic.");
+            
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running ResponseCodeLogic.");
 
             var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
 

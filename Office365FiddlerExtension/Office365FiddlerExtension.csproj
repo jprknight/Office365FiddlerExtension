@@ -306,6 +306,7 @@
     <Compile Include="UI\AboutNew.Designer.cs">
       <DependentUpon>AboutNew.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\EnhanceUX.cs" />
     <Compile Include="UI\Tabs\Office365TabPage.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="About.cs" />
