@@ -24,7 +24,7 @@ namespace Office365FiddlerExtension.Ruleset
             double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
 
             // If the session is less than the warning threshold (quick) and more than the slow running threshold (slow), return.
-            if (ClientMilliseconds < Preferences.GetWarningSessionTimeThreshold() && ClientMilliseconds > Preferences.GetSlowRunningSessionThreshold())
+            if (ClientMilliseconds < SettingsHandler.Instance.WarningSessionTimeThreshold && ClientMilliseconds > SettingsHandler.Instance.SlowRunningSessionThreshold)
             {
                 return;
             }
@@ -55,7 +55,7 @@ namespace Office365FiddlerExtension.Ruleset
             double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
 
             // If the session round trip time is less than the slow session threshold, return.
-            if (ClientMilliseconds < Preferences.GetSlowRunningSessionThreshold())
+            if (ClientMilliseconds < SettingsHandler.Instance.SlowRunningSessionThreshold)
             {
                 return;
             }
@@ -91,7 +91,7 @@ namespace Office365FiddlerExtension.Ruleset
             double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
 
             // If the Office 365 server think time runs longer than 5,000ms or 5 seconds.
-            if (ServerMilliseconds < Preferences.GetSlowRunningSessionThreshold())
+            if (ServerMilliseconds < SettingsHandler.Instance.SlowRunningSessionThreshold)
             {
                 return;
             }

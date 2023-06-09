@@ -74,7 +74,7 @@ namespace Office365FiddlerExtension.Ruleset
                     SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                 }
                 // If the roundtrip is over warning and under slow running thresholds; orange.
-                else if (ClientMilliseconds > Preferences.GetWarningSessionTimeThreshold() && ClientMilliseconds < Preferences.GetSlowRunningSessionThreshold())
+                else if (ClientMilliseconds > SettingsHandler.Instance.WarningSessionTimeThreshold && ClientMilliseconds < SettingsHandler.Instance.SlowRunningSessionThreshold)
                 {
                     var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                     {
@@ -86,7 +86,7 @@ namespace Office365FiddlerExtension.Ruleset
                     SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                 }
                 // If roundtrip is over slow running threshold; red.
-                else if (ClientMilliseconds > Preferences.GetSlowRunningSessionThreshold())
+                else if (ClientMilliseconds > SettingsHandler.Instance.SlowRunningSessionThreshold)
                 {
                     var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                     {

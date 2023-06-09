@@ -5,14 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Fiddler;
-using Newtonsoft.Json;
 
 namespace Office365FiddlerExtension.UI
 {
-    internal class UpdateSessionUX : ActivationService
+    internal class EnhanceSessionUX : ActivationService
     {
-        private static UpdateSessionUX _instance;
-        public static UpdateSessionUX Instance => _instance ?? (_instance = new UpdateSessionUX());
+        private static EnhanceSessionUX _instance;
+        public static EnhanceSessionUX Instance => _instance ?? (_instance = new EnhanceSessionUX());
 
         public void NormaliseSession(Session session)
         {
@@ -68,60 +67,6 @@ namespace Office365FiddlerExtension.UI
             }
 
             this.session.RefreshUI();
-        }
-
-        // Called by ActivationService to populate column data.
-        public string ElapsedTime (Session session)
-        {
-            this.session = session;
-
-            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
-
-            return ExtensionSessionFlags.ElapsedTime;
-        }
-
-        // Called by ActivationService to populate column data.
-        public string SessionType(Session session)
-        {
-            this.session = session;
-
-            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
-
-            return ExtensionSessionFlags.SessionType;
-        }
-
-        // Called by ActivationService to populate column data.
-        public string Authentication (Session session)
-        {
-            this.session = session;
-
-            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
-
-            return ExtensionSessionFlags.Authentication;
-        }
-
-        // Called by ActivationService to populate column data.
-        public string ResponseServer (Session session)
-        {
-            this.session = session;
-
-            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
-
-            return ExtensionSessionFlags.ResponseServer;
-        }
-
-        public string HostIP (Session session)
-        {
-            this.session = session;
-
-            if (this.session["X-HostIP"] != null && this.session["X-HostIP"] != "")
-            {
-                return this.session["X-HostIP"];
-            }
-            else
-            {
-                return "Unknown";
-            }
         }
     }
 }

@@ -231,7 +231,7 @@ namespace Office365FiddlerExtension
             }
             #endregion
 
-            UpdateSessionUX.Instance.EnhanceSession(this.session);
+            EnhanceSessionUX.Instance.EnhanceSession(this.session);
         }
 
         // Function containing switch statement for response code logic.

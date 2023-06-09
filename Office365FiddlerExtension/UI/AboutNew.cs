@@ -24,6 +24,7 @@ namespace Office365FiddlerExtension.UI
             var extensionVersion = SettingsHandler.Instance.GetDeserializedExtentionVersion();
 
             ExtensionEnabledCheckbox.Checked = extensionSettings.ExtensionEnabled;
+            ExtensionPathTextbox.Text = extensionSettings.ExtensionPath;
             ExtensionDLLTextbox.Text = extensionSettings.ExtensionDLL;
 
             WarningSessionTimeThresholdTextbox.Text = extensionSettings.WarningSessionTimeThreshold.ToString();
@@ -160,12 +161,17 @@ namespace Office365FiddlerExtension.UI
 
         private void WarningSessionTimeThresholdUpdateButton_Click(object sender, EventArgs e)
         {
-
+            SettingsHandler.Instance.UpdateWarningSessionTimeThreshold(WarningSessionTimeThresholdTextbox.Text);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void SlowRunningSessionThresholdUpdateButton_Click(object sender, EventArgs e)
+        {
+            SettingsHandler.Instance.UpdateSlowRunningSessionThreshold(SlowRunningSessionThresholdTextbox.Text);
         }
     }
 }

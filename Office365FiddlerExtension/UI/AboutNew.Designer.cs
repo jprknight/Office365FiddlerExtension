@@ -31,10 +31,13 @@
             this.InfoGroupbox = new System.Windows.Forms.GroupBox();
             this.ExtensionDLLLabel = new System.Windows.Forms.Label();
             this.ExtensionDLLTextbox = new System.Windows.Forms.TextBox();
-            this.FiddlerPathLabel = new System.Windows.Forms.Label();
-            this.FiddlerPathTextbox = new System.Windows.Forms.TextBox();
+            this.ExtensionPathLabel = new System.Windows.Forms.Label();
+            this.ExtensionPathTextbox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.SessionTimeThresholdLink = new System.Windows.Forms.LinkLabel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.SlowRunningSessionThresholdUpdateButton = new System.Windows.Forms.Button();
             this.WarningSessionTimeThresholdUpdateButton = new System.Windows.Forms.Button();
             this.SlowRunningSessionThresholdTextbox = new System.Windows.Forms.TextBox();
@@ -48,9 +51,8 @@
             this.SomeSessionAnalysisRadioButton = new System.Windows.Forms.RadioButton();
             this.SessionAnalysisOnFiddlerLoadCheckbox = new System.Windows.Forms.CheckBox();
             this.CloseButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.SessionTimeThresholdLink = new System.Windows.Forms.LinkLabel();
+            this.LocalDLLVersionTextbox = new System.Windows.Forms.TextBox();
+            this.LocalDLLVersionLabel = new System.Windows.Forms.Label();
             this.InfoGroupbox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -58,13 +60,15 @@
             // 
             // InfoGroupbox
             // 
+            this.InfoGroupbox.Controls.Add(this.LocalDLLVersionLabel);
+            this.InfoGroupbox.Controls.Add(this.LocalDLLVersionTextbox);
             this.InfoGroupbox.Controls.Add(this.ExtensionDLLLabel);
             this.InfoGroupbox.Controls.Add(this.ExtensionDLLTextbox);
-            this.InfoGroupbox.Controls.Add(this.FiddlerPathLabel);
-            this.InfoGroupbox.Controls.Add(this.FiddlerPathTextbox);
+            this.InfoGroupbox.Controls.Add(this.ExtensionPathLabel);
+            this.InfoGroupbox.Controls.Add(this.ExtensionPathTextbox);
             this.InfoGroupbox.Location = new System.Drawing.Point(12, 12);
             this.InfoGroupbox.Name = "InfoGroupbox";
-            this.InfoGroupbox.Size = new System.Drawing.Size(362, 87);
+            this.InfoGroupbox.Size = new System.Drawing.Size(362, 261);
             this.InfoGroupbox.TabIndex = 0;
             this.InfoGroupbox.TabStop = false;
             this.InfoGroupbox.Text = "Extension Information";
@@ -85,28 +89,28 @@
             this.ExtensionDLLTextbox.Size = new System.Drawing.Size(237, 20);
             this.ExtensionDLLTextbox.TabIndex = 2;
             // 
-            // FiddlerPathLabel
+            // ExtensionPathLabel
             // 
-            this.FiddlerPathLabel.AutoSize = true;
-            this.FiddlerPathLabel.Location = new System.Drawing.Point(6, 22);
-            this.FiddlerPathLabel.Name = "FiddlerPathLabel";
-            this.FiddlerPathLabel.Size = new System.Drawing.Size(63, 13);
-            this.FiddlerPathLabel.TabIndex = 1;
-            this.FiddlerPathLabel.Text = "Fiddler Path";
+            this.ExtensionPathLabel.AutoSize = true;
+            this.ExtensionPathLabel.Location = new System.Drawing.Point(6, 22);
+            this.ExtensionPathLabel.Name = "ExtensionPathLabel";
+            this.ExtensionPathLabel.Size = new System.Drawing.Size(78, 13);
+            this.ExtensionPathLabel.TabIndex = 1;
+            this.ExtensionPathLabel.Text = "Extension Path";
             // 
-            // FiddlerPathTextbox
+            // ExtensionPathTextbox
             // 
-            this.FiddlerPathTextbox.Location = new System.Drawing.Point(119, 19);
-            this.FiddlerPathTextbox.Name = "FiddlerPathTextbox";
-            this.FiddlerPathTextbox.Size = new System.Drawing.Size(237, 20);
-            this.FiddlerPathTextbox.TabIndex = 0;
+            this.ExtensionPathTextbox.Location = new System.Drawing.Point(119, 19);
+            this.ExtensionPathTextbox.Name = "ExtensionPathTextbox";
+            this.ExtensionPathTextbox.Size = new System.Drawing.Size(237, 20);
+            this.ExtensionPathTextbox.TabIndex = 0;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.panel1);
             this.groupBox1.Location = new System.Drawing.Point(380, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(434, 249);
+            this.groupBox1.Size = new System.Drawing.Size(444, 261);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Extension Options";
@@ -130,8 +134,36 @@
             this.panel1.Controls.Add(this.SessionAnalysisOnFiddlerLoadCheckbox);
             this.panel1.Location = new System.Drawing.Point(6, 19);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(417, 226);
+            this.panel1.Size = new System.Drawing.Size(417, 231);
             this.panel1.TabIndex = 5;
+            // 
+            // SessionTimeThresholdLink
+            // 
+            this.SessionTimeThresholdLink.AutoSize = true;
+            this.SessionTimeThresholdLink.Location = new System.Drawing.Point(3, 212);
+            this.SessionTimeThresholdLink.Name = "SessionTimeThresholdLink";
+            this.SessionTimeThresholdLink.Size = new System.Drawing.Size(414, 13);
+            this.SessionTimeThresholdLink.TabIndex = 15;
+            this.SessionTimeThresholdLink.TabStop = true;
+            this.SessionTimeThresholdLink.Text = "https://github.com/jprknight/Office365FiddlerExtension/wiki/Session-Time-Threshol" +
+    "ds";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 196);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(243, 13);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "For information on these two threshold values see:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(0, 13);
+            this.label1.TabIndex = 13;
             // 
             // SlowRunningSessionThresholdUpdateButton
             // 
@@ -141,6 +173,7 @@
             this.SlowRunningSessionThresholdUpdateButton.TabIndex = 12;
             this.SlowRunningSessionThresholdUpdateButton.Text = "Update";
             this.SlowRunningSessionThresholdUpdateButton.UseVisualStyleBackColor = true;
+            this.SlowRunningSessionThresholdUpdateButton.Click += new System.EventHandler(this.SlowRunningSessionThresholdUpdateButton_Click);
             // 
             // WarningSessionTimeThresholdUpdateButton
             // 
@@ -254,7 +287,7 @@
             // 
             // CloseButton
             // 
-            this.CloseButton.Location = new System.Drawing.Point(739, 267);
+            this.CloseButton.Location = new System.Drawing.Point(749, 279);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(75, 23);
             this.CloseButton.TabIndex = 10;
@@ -262,39 +295,27 @@
             this.CloseButton.UseVisualStyleBackColor = true;
             this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
             // 
-            // label1
+            // LocalDLLVersionTextbox
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(0, 13);
-            this.label1.TabIndex = 13;
+            this.LocalDLLVersionTextbox.Location = new System.Drawing.Point(119, 72);
+            this.LocalDLLVersionTextbox.Name = "LocalDLLVersionTextbox";
+            this.LocalDLLVersionTextbox.Size = new System.Drawing.Size(237, 20);
+            this.LocalDLLVersionTextbox.TabIndex = 4;
             // 
-            // label2
+            // LocalDLLVersionLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 196);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(243, 13);
-            this.label2.TabIndex = 14;
-            this.label2.Text = "For information on these two threshold values see:";
-            // 
-            // SessionTimeThresholdLink
-            // 
-            this.SessionTimeThresholdLink.AutoSize = true;
-            this.SessionTimeThresholdLink.Location = new System.Drawing.Point(4, 209);
-            this.SessionTimeThresholdLink.Name = "SessionTimeThresholdLink";
-            this.SessionTimeThresholdLink.Size = new System.Drawing.Size(414, 13);
-            this.SessionTimeThresholdLink.TabIndex = 15;
-            this.SessionTimeThresholdLink.TabStop = true;
-            this.SessionTimeThresholdLink.Text = "https://github.com/jprknight/Office365FiddlerExtension/wiki/Session-Time-Threshol" +
-    "ds";
+            this.LocalDLLVersionLabel.AutoSize = true;
+            this.LocalDLLVersionLabel.Location = new System.Drawing.Point(6, 75);
+            this.LocalDLLVersionLabel.Name = "LocalDLLVersionLabel";
+            this.LocalDLLVersionLabel.Size = new System.Drawing.Size(94, 13);
+            this.LocalDLLVersionLabel.TabIndex = 5;
+            this.LocalDLLVersionLabel.Text = "Local DLL Verison";
             // 
             // AboutNew
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(837, 315);
+            this.ClientSize = new System.Drawing.Size(829, 309);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.InfoGroupbox);
             this.Controls.Add(this.CloseButton);
@@ -314,8 +335,8 @@
 
         private System.Windows.Forms.GroupBox InfoGroupbox;
         private System.Windows.Forms.TextBox ExtensionDLLTextbox;
-        private System.Windows.Forms.Label FiddlerPathLabel;
-        private System.Windows.Forms.TextBox FiddlerPathTextbox;
+        private System.Windows.Forms.Label ExtensionPathLabel;
+        private System.Windows.Forms.TextBox ExtensionPathTextbox;
         private System.Windows.Forms.Label ExtensionDLLLabel;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Panel panel1;
@@ -335,5 +356,7 @@
         private System.Windows.Forms.LinkLabel SessionTimeThresholdLink;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label LocalDLLVersionLabel;
+        private System.Windows.Forms.TextBox LocalDLLVersionTextbox;
     }
 }

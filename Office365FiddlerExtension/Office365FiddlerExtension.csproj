@@ -339,7 +339,7 @@
     <Compile Include="UI\Office365TabPage.Designer.cs">
       <DependentUpon>Office365TabPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\UpdateSessionUX.cs" />
+    <Compile Include="UI\EnhanceSessionUX.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -202,6 +202,58 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
+        public static string AssemblyDirectory
+        {
+            get
+            {
+                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uri = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
+        }
+
+        public static string AssemblyName
+        {
+            get
+            {
+                return Assembly.GetExecutingAssembly().GetName().Name + ".dll";
+            }
+        }
+
+        public void SetExtensionPath()
+        {
+            // Pull & Deserialize Json from ExtensionSettings.
+            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            // Set the attribute.
+            extensionSettings.ExtensionPath = AssemblyDirectory;
+            // Serialize the object back into Json.
+            var extensionSettingsJson = JsonConvert.SerializeObject(extensionSettings);
+            // Write the Json into the ExtensionSettings Fiddler setting.
+            Preferences.ExtensionSettings = extensionSettingsJson;
+        }
+
+        public string ExtensionDLL
+        {
+            get
+            {
+                var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+                return extensionSettings.ExtensionDLL;
+            }
+        }
+
+        public void SetExtensionDLL()
+        {
+            // Pull & Deserialize Json from ExtensionSettings.
+            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            // Set the attribute.
+            extensionSettings.ExtensionDLL = AssemblyName;
+            // Serialize the object back into Json.
+            var extensionSettingsJson = JsonConvert.SerializeObject(extensionSettings);
+            // Write the Json into the ExtensionSettings Fiddler setting.
+            Preferences.ExtensionSettings = extensionSettingsJson;
+        }
+
         public void SetSessionAnalysisOnLoadSaz(Boolean sessionAnalysisOnLoadSaz)
         {
             // Pull & Deserialize Json from ExtensionSettings.
@@ -250,13 +302,21 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
-        public void UpdateWarningSessionTimeThreshold(int warningSessionTimeThreshold)
+        public void UpdateWarningSessionTimeThreshold(string warningSessionTimeThreshold)
         {
-            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
-            extensionSettings.WarningSessionTimeThreshold = warningSessionTimeThreshold;
+            // Validate input is int and only act if it is.
+            int iWarningSessionTimeThreshold;
 
-            var extensionSettingsJson = JsonConvert.SerializeObject(extensionSettings);
-            Preferences.ExtensionSettings = extensionSettingsJson;
+            var isNumberic = int.TryParse(warningSessionTimeThreshold, out iWarningSessionTimeThreshold);
+
+            if (isNumberic)
+            {
+                var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+                extensionSettings.WarningSessionTimeThreshold = iWarningSessionTimeThreshold;
+
+                var extensionSettingsJson = JsonConvert.SerializeObject(extensionSettings);
+                Preferences.ExtensionSettings = extensionSettingsJson;
+            }
         }
 
         public int SlowRunningSessionThreshold
@@ -268,13 +328,21 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
-        public void UpdateSlowRunningSessionThreshold(int slowRunningSessionThreshold)
+        public void UpdateSlowRunningSessionThreshold(string slowRunningSessionThreshold)
         {
-            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
-            extensionSettings.SlowRunningSessionThreshold = slowRunningSessionThreshold;
+            // Validate input is int and only act if it is.
+            int iSlowRunningSessionThreshold;
 
-            var extensionSettingsJson = JsonConvert.SerializeObject(extensionSettings);
-            Preferences.ExtensionSettings = extensionSettingsJson;
+            var isNumberic = int.TryParse(slowRunningSessionThreshold, out iSlowRunningSessionThreshold);
+
+            if (isNumberic)
+            {
+                var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+                extensionSettings.SlowRunningSessionThreshold = iSlowRunningSessionThreshold;
+
+                var extensionSettingsJson = JsonConvert.SerializeObject(extensionSettings);
+                Preferences.ExtensionSettings = extensionSettingsJson;
+            }
         }
 
         public void IncrementExecutionCount()
@@ -451,6 +519,8 @@ namespace Office365FiddlerExtension.Services
         public int WarningSessionTimeThreshold { get; set; }
 
         public int SlowRunningSessionThreshold { get; set; }
+
+        public string ExtensionPath { get; set; }
 
         public string ExtensionDLL { get; set; }
 

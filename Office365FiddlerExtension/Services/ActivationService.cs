@@ -30,8 +30,10 @@ namespace Office365FiddlerExtension.Services
                 SettingsHandler.Instance.CreateExtensionURLFiddlerSetting();
                 SettingsHandler.Instance.UpdateExtensionVersionFiddlerSetting();
                 
-                // Increment execution count.
+                // Update / set settings as needed.
                 SettingsHandler.Instance.IncrementExecutionCount();
+                SettingsHandler.Instance.SetExtensionDLL();
+                SettingsHandler.Instance.SetExtensionPath();
 
                 Initializetelemetry();
 

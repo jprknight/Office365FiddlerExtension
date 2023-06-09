@@ -126,7 +126,7 @@ namespace Office365FiddlerExtension.Services
             {
                 this.session = session;
 
-                UpdateSessionUX.Instance.NormaliseSession(this.session);
+                EnhanceSessionUX.Instance.NormaliseSession(this.session);
 
                 this.session.RefreshUI();
             }

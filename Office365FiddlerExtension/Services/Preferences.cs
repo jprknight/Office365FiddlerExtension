@@ -25,16 +25,16 @@ namespace Office365FiddlerExtension.Services
         /// So it's generally one of the last things to look at. If we're into slow network connectivity, Wireshark or
         /// something like that is the better tool.
         /// </summary>
-        public static int GetSlowRunningSessionThreshold()
+        /*public static int GetSlowRunningSessionThreshold()
         {
             return 5000;
-        }
+        }*/
 
         // 2.5 seconds for warning on the time a session took.
-        public static int GetWarningSessionTimeThreshold()
+        /*public static int GetWarningSessionTimeThreshold()
         {
             return 2500;
-        }
+        }*/
 
         // REVIEW THIS. Keep this as a sample of might be an async function.
         public static Task<bool> SetDefaultPreferences()
@@ -78,7 +78,7 @@ namespace Office365FiddlerExtension.Services
         public static bool NeverWebCall
         {
             get => _neverWebCall = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.NeverWebCall", false);
-            set { _neverWebCall = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.NeverWebCall", value); }
+            //set { _neverWebCall = value; FiddlerApplication.Prefs.SetBoolPref("extensions.Office365FiddlerExtension.NeverWebCall", value); }
         }
 
         // Keep this around to migrate legacy settings to Json settings.
