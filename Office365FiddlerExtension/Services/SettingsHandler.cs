@@ -107,6 +107,7 @@ namespace Office365FiddlerExtension.Services
 
             var URLs = new
             {
+                TelemetryInstrumentationKey = "87fb55ab-0052-4970-9318-7c740220e3c0",
                 ExtensionVerisonJson = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionVersion.json",
                 UpdateJson = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/settings.json",
                 MasterRuleSet = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Master/RulesetVersion",
@@ -394,6 +395,15 @@ namespace Office365FiddlerExtension.Services
             // Fiddler setting for recall as needed.
         }
 
+        internal String TelemetryInstrumentationKey
+        {
+            get
+            {
+                var extensionURLs = SettingsHandler.Instance.GetDeserializedExtensionURLs();
+                return extensionURLs.TelemetryInstrumentationKey;
+            }
+        }
+
         /* SETTINGS AREN"T BEING UPDATED FROM GITHUB. NONE OF THIS SHOULD BE NEEDED.
         public async void GetSettingsFromGithub()
         {
@@ -469,7 +479,10 @@ namespace Office365FiddlerExtension.Services
 
     }
 
-    public class ExtensionURLs {
+    public class ExtensionURLs
+    {
+
+        public string TelemetryInstrumentationKey { get; set; }
         public string ExtensionVersionJson { get; set; }
 
         public string UpdateJson { get; set; }

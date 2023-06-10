@@ -1,4 +1,5 @@
 {
+  "TelemetryInstrumentationKey": "87fb55ab-0052-4970-9318-7c740220e3c0",
   "ExtensionURLs": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionURLs.json",
   "ExtensionVersion": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionVersion.json",
   "Installer": "https://github.com/jprknight/EXOFiddlerExtension/releases/latest",

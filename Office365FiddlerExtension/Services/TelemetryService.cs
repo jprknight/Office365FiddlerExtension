@@ -16,7 +16,9 @@ namespace Office365FiddlerExtension.Services
         /// <summary>
         /// Instrumentation Key used to communicate with Azure Application Insights.
         /// </summary>
-        private static readonly string iKey = "87fb55ab-0052-4970-9318-7c740220e3c0";
+        
+        // Pull telemetry instrumentation key from Json.
+        private static readonly string iKey = SettingsHandler.Instance.TelemetryInstrumentationKey;
         
         /// <summary>
         /// Azure Application Insights Telemetry client.
