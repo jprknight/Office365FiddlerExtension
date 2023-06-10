@@ -3,3 +3,5 @@
 This file links off to section of the ruleset such as AlwaysRun.json.
 
 The section Json files link off to the actual if then else statements of code which are base64 encoded for ease of containerising in Json.
+
+REVIEW THIS : Make sure all URLs point to master and not a branch before this new version is deployed.

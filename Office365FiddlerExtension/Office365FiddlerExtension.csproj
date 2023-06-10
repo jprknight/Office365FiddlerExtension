@@ -296,10 +296,10 @@
     <Compile Include="Ruleset\SelectivelyRun\LongRunningSessions.cs" />
     <Compile Include="Ruleset\SelectivelyRun\ResponseServer.cs" />
     <Compile Include="Ruleset\SelectivelyRun\SessionType.cs" />
-    <Compile Include="Services\RuleSetHandler.cs" />
-    <Compile Include="Services\SessionFlagHandler.cs" />
-    <Compile Include="Services\SettingsHandler.cs" />
-    <Compile Include="Services\UpdateHandler.cs" />
+    <Compile Include="Handlers\RuleSetHandler.cs" />
+    <Compile Include="Handlers\SessionFlagHandler.cs" />
+    <Compile Include="Handlers\SettingsHandler.cs" />
+    <Compile Include="Handlers\UpdateHandler.cs" />
     <Compile Include="UI\AboutNew.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -310,8 +310,8 @@
     <Compile Include="UI\Tabs\Office365TabPage.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="About.cs" />
-    <Compile Include="Services\SazFileHandler.cs" />
-    <Compile Include="Services\SessionHandler.cs" />
+    <Compile Include="Handlers\SazFileHandler.cs" />
+    <Compile Include="Handlers\SessionHandler.cs" />
     <Compile Include="Inspectors\Office365Inspector.cs" />
     <Compile Include="UI\MenuUI.cs" />
     <Compile Include="Services\Preferences.cs" />
