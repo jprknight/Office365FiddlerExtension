@@ -12,7 +12,6 @@ namespace Office365FiddlerExtension.Services
     /// </summary>
     public abstract class ActivationService : IAutoTamper
     {
-
         internal Session session { get; set; }
         
         private bool IsInitialized { get; set; }
@@ -81,7 +80,7 @@ namespace Office365FiddlerExtension.Services
             // REVIEW THIS - Is this needed? Live trace?
             if (this.session.isFlagSet(SessionFlags.LoadedFromSAZ))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Session loaded from Saz file, return.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Session loaded from Saz file, return.");
                 return;
             }
 
@@ -116,17 +115,17 @@ namespace Office365FiddlerExtension.Services
             // If disable web calls is true dion't check for updates and don't call telemetry service.
             if (ExtensionSettings.NeverWebCall)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Telemetry Service NeverWebCall is true.");
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Not checking for updates or sending telemetry data.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Telemetry Service NeverWebCall is true.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Not checking for updates or sending telemetry data.");
             }
             // Otherwise, check for updates and call telemetry service.
             else
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Checking for updates.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Checking for updates.");
                 // REVIEW THIS. Call to update needs a complete rewrite.
                 // Don't call this function anymore.
                 // About.Instance.CheckForUpdate();
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Initializing telemetry service.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Initializing telemetry service.");
                 await TelemetryService.InitializeAsync();
             }
         }
