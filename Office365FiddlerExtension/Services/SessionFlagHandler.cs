@@ -18,6 +18,8 @@ namespace Office365FiddlerExtension.Services
         public ExtensionSessionFlags GetDeserializedSessionFlags(Session session)
         {
             this.session = session;
+            // Call create here to avoid null exception if live tracing traffic.
+            CreateExtensionSessionFlag(this.session);
             return JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
         }
 
