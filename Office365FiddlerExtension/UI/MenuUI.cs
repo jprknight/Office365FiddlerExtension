@@ -140,16 +140,8 @@ namespace Office365FiddlerExtension
 
         public void UpdateMenuItems()
         {
-            if (SettingsHandler.Instance.ExtensionEnabled)
-            {
-                //this.ExtensionMenu.Text = MenuEnabled;
-                this.MiProcessAllSessions.Enabled = true;
-            }
-            else
-            {
-                //this.ExtensionMenu.Text = MenuDisabled;
-                this.MiProcessAllSessions.Enabled = false;
-            }
+            // Set ProcessAllSessions enable/disable to match whether the extension is enabled or not.
+            this.MiProcessAllSessions.Enabled = SettingsHandler.Instance.ExtensionEnabled;
         }
 
         public void MiWiki_Click(object sender, EventArgs e)
@@ -173,22 +165,5 @@ namespace Office365FiddlerExtension
             // Fire up a web browser to the project issues URL.
             System.Diagnostics.Process.Start(URLs.ReportIssues);
         }
-
-        /*public void MiAbout_Click(object sender, EventArgs e)
-        {
-            // Since the user has manually clicked this menu item, check for updates,
-            // set this boolean variable to true so we can give user feedback if no update available.
-
-            var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
-
-            // REVIEW THIS. No need for an update check to be directly linked to a menu click.
-
-            // Check for app update.
-            if (!ExtensionSettings.NeverWebCall)
-            {
-                //Preferences.ManualCheckForUpdate = true;
-                AboutOld.Instance.CheckForUpdate();
-            }
-        }*/
     }
 }

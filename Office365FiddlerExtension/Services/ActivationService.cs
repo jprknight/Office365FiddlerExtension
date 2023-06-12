@@ -101,7 +101,7 @@ namespace Office365FiddlerExtension.Services
             var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
 
             // Stop if extension is not enabled.
-            if (!ExtensionSettings.ExtensionEnabled)
+            if (!ExtensionSettings.ExtensionSessionProcessingEnabled)
             {
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Extension not enabled, exiting.");
                 return;

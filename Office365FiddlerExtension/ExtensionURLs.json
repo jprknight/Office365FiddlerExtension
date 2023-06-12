@@ -6,6 +6,6 @@
   "Wiki": "https://github.com/jprknight/Office365FiddlerExtension/wiki",
   "WikiSessionTimeThresholds": "https://github.com/jprknight/Office365FiddlerExtension/wiki/Session-Time-Thresholds",
   "ReportIssues": "https://github.com/jprknight/Office365FiddlerExtension/issues",
-  "MasterRuleSet": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Master/Office365FiddlerExtension/RulesetJson/Ruleset.json",
-  "BetaRuleSet": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/RulesetJson/Ruleset.json"
+  "MasterRuleset": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Master/Office365FiddlerExtension/RulesetJson/Ruleset.json",
+  "BetaRuleset": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/RulesetJson/Ruleset.json"
 }

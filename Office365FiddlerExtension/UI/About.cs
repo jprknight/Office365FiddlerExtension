@@ -25,7 +25,7 @@ namespace Office365FiddlerExtension.UI
             var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
             var extensionVersion = VersionHandler.Instance.GetDeserializedExtensionVersion();
 
-            ExtensionEnabledCheckbox.Checked = extensionSettings.ExtensionEnabled;
+            ExtensionEnabledCheckbox.Checked = extensionSettings.ExtensionSessionProcessingEnabled;
             ExtensionPathTextbox.Text = extensionSettings.ExtensionPath;
             
             ExtensionDLLTextbox.Text = extensionSettings.ExtensionDLL;

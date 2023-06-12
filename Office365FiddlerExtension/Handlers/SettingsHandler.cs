@@ -100,7 +100,7 @@ namespace Office365FiddlerExtension.Services
             get
             {
                 var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
-                return extensionSettings.ExtensionEnabled;
+                return extensionSettings.ExtensionSessionProcessingEnabled;
             }
         }
 
@@ -109,7 +109,7 @@ namespace Office365FiddlerExtension.Services
             // Pull & Deserialize Json from ExtensionSettings.
             var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
             // Set the attribute.
-            extensionSettings.ExtensionEnabled = extensionEnabled;
+            extensionSettings.ExtensionSessionProcessingEnabled = extensionEnabled;
             // Serialize the object back into Json.
             var extensionSettingsJson = JsonConvert.SerializeObject(extensionSettings);
             // Write the Json into the ExtensionSettings Fiddler setting.
@@ -400,7 +400,7 @@ namespace Office365FiddlerExtension.Services
     {
         public string ExtensionVersionURL { get; set; }
 
-        public bool ExtensionEnabled { get; set; }
+        public bool ExtensionSessionProcessingEnabled { get; set; }
 
         public int ExecutionCount { get; set; }
 
