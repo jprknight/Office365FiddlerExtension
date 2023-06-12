@@ -4,6 +4,7 @@ using System.Text;
 using System;
 using System.Reflection;
 using Office365FiddlerExtension.UI;
+using Office365FiddlerExtension.Handlers;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -26,8 +27,8 @@ namespace Office365FiddlerExtension.Services
             {
                 // Ensure Fiddler settings (settings, URLs, & verison) for the extension have been created.
                 SettingsHandler.Instance.CreateExtensionSettingsFiddlerSetting();
-                SettingsHandler.Instance.CreateExtensionURLFiddlerSetting();
-                SettingsHandler.Instance.UpdateExtensionVersionFiddlerSetting();
+                URLsHandler.Instance.CreateExtensionURLFiddlerSetting();
+                VersionHandler.Instance.UpdateExtensionVersionFiddlerSetting();
                 
                 // Update / set settings as needed.
                 SettingsHandler.Instance.IncrementExecutionCount();
@@ -74,19 +75,13 @@ namespace Office365FiddlerExtension.Services
                 return;
             }
 
-            this.session = session;
-
-            // Call the main fuction which runs through all session logic checks.
-            // REVIEW THIS - Is this needed? Live trace?
-            if (this.session.isFlagSet(SessionFlags.LoadedFromSAZ))
+            // If session analysis on live trace is enabled, run.
+            if (SettingsHandler.Instance.SessionAnalysisOnLiveTrace)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Session loaded from Saz file, return.");
-                return;
+                this.session = session;
+                SessionHandler.Instance.OnPeekAtResponseHeaders(this.session);
+                this.session.RefreshUI();
             }
-
-            SessionHandler.Instance.OnPeekAtResponseHeaders(this.session);
-
-            this.session.RefreshUI();
         }
 
         /// <summary>

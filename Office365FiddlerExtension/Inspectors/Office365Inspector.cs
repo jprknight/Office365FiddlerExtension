@@ -173,6 +173,18 @@ namespace Office365FiddlerExtension.Inspectors
 
                 var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
 
+                // Check if the SectionTitle is blank, if it is session analysis hasn't been performed on this session, write this alternative output.
+                if (ExtensionSessionFlags.SectionTitle == "")
+                {
+                    // Clear ResultsString.
+                    Clear();
+                    ResultsString.AppendLine("<br /><h2>Office 365 Fiddler Extension</h2>");
+                    ResultsString.AppendLine("<p>No session analysis. Enable all session analysis options in the About screen from the extension menu, "
+                        + "or use the \"Process All Sessions\" option from the Office365 extension menu to get session analysis.</p>");
+                    Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
+                    return;
+                }
+
                 // HTML Header.
                 ResultsString.AppendLine("<html>");
                 ResultsString.AppendLine("<title></title>");

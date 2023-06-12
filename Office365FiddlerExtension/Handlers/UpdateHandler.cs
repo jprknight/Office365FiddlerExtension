@@ -1,5 +1,6 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
+using Office365FiddlerExtension.Handlers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,8 +17,8 @@ namespace Office365FiddlerExtension.Services
         public async void CheckForExtensionUpdate()
         {
             var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
-            var ExtensionURLs = SettingsHandler.Instance.GetDeserializedExtensionURLs();
-            var ExtensionVersion = SettingsHandler.Instance.GetDeserializedExtentionVersion();
+            var ExtensionURLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
+            var ExtensionVersion = VersionHandler.Instance.GetDeserializedExtensionVersion();
 
             if (ExtensionSettings.NeverWebCall)
             {

@@ -1,19 +1,21 @@
-﻿using Office365FiddlerExtension.Services;
+﻿using Office365FiddlerExtension.Handlers;
+using Office365FiddlerExtension.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Office365FiddlerExtension.UI
 {
-    public partial class AboutNew : Form
+    public partial class About : Form
     {
-        public AboutNew()
+        public About()
         {
             InitializeComponent();
         }
@@ -21,16 +23,32 @@ namespace Office365FiddlerExtension.UI
         private void About_Load(object sender, EventArgs e)
         {
             var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
-            var extensionVersion = SettingsHandler.Instance.GetDeserializedExtentionVersion();
+            var extensionVersion = VersionHandler.Instance.GetDeserializedExtensionVersion();
 
             ExtensionEnabledCheckbox.Checked = extensionSettings.ExtensionEnabled;
             ExtensionPathTextbox.Text = extensionSettings.ExtensionPath;
+            
             ExtensionDLLTextbox.Text = extensionSettings.ExtensionDLL;
+            LocalDLLVersionTextbox.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+            GithubDLLVersionTextbox.Text = extensionVersion.VersionMajor + "." + extensionVersion.VersionMinor + "." + extensionVersion.VersionBuild;
+
+            if (extensionSettings.UseBetaRuleSet)
+            {
+                LocalRulesetVersionTextbox.Text = extensionSettings.LocalBetaRulesetLastUpdated.ToString();
+                GithubRulesetVersionTextbox.Text = extensionVersion.BetaRulesetVersion.ToString();
+            }
+            else
+            {
+                LocalRulesetVersionTextbox.Text = extensionSettings.LocalMasterRulesetLastUpdated.ToString();
+                GithubRulesetVersionTextbox.Text = extensionVersion.MasterRulesetVersion.ToString();
+            }
+            
 
             WarningSessionTimeThresholdTextbox.Text = extensionSettings.WarningSessionTimeThreshold.ToString();
             SlowRunningSessionThresholdTextbox.Text = extensionSettings.SlowRunningSessionThreshold.ToString();
 
-            AboutNew.ActiveForm.Text = $"{Preferences.LogPrepend()} v{extensionVersion.VersionMajor}.{extensionVersion.VersionMinor}.{extensionVersion.VersionBuild}";
+            About.ActiveForm.Text = $"{Preferences.LogPrepend()} v{extensionVersion.VersionMajor}.{extensionVersion.VersionMinor}.{extensionVersion.VersionBuild}";
 
             if (extensionSettings.SessionAnalysisOnFiddlerLoad == true &&
                 extensionSettings.SessionAnalysisOnLoadSaz == true &&
@@ -38,9 +56,6 @@ namespace Office365FiddlerExtension.UI
             {
                 AllSessionAnalysisRadioButton.Checked = true;
                 SomeSessionAnalysisRadioButton.Checked = false;
-
-                SessionAnalysisOnFiddlerLoadCheckbox.Checked = true;
-                SessionAnalysisOnFiddlerLoadCheckbox.Enabled = false;
 
                 SessionAnalysisOnLoadSazCheckbox.Checked = true;
                 SessionAnalysisOnLoadSazCheckbox.Enabled = false;
@@ -52,15 +67,6 @@ namespace Office365FiddlerExtension.UI
             {
                 AllSessionAnalysisRadioButton.Checked = false;
                 SomeSessionAnalysisRadioButton.Checked = true;
-
-                if (SettingsHandler.Instance.SessionAnalysisOnFiddlerLoad)
-                {
-                    SessionAnalysisOnFiddlerLoadCheckbox.Checked = true;
-                }
-                else
-                {
-                    SessionAnalysisOnFiddlerLoadCheckbox.Checked = false;
-                }
 
                 if (SettingsHandler.Instance.SessionAnalysisOnLoadSaz)
                 {
@@ -83,14 +89,12 @@ namespace Office365FiddlerExtension.UI
 
             if (AllSessionAnalysisRadioButton.Checked)
             {
-                SessionAnalysisOnFiddlerLoadCheckbox.Enabled = false;
                 SessionAnalysisOnLiveTraceCheckbox.Enabled = false;
                 SessionAnalysisOnLoadSazCheckbox.Enabled = false; 
             }
 
             if (SomeSessionAnalysisRadioButton.Checked)
             {
-                SessionAnalysisOnFiddlerLoadCheckbox.Enabled = true;
                 SessionAnalysisOnLiveTraceCheckbox.Enabled = true;
                 SessionAnalysisOnLoadSazCheckbox.Enabled = true;
             }
@@ -105,7 +109,6 @@ namespace Office365FiddlerExtension.UI
             {
                 AllSessionAnalysisRadioButton.Enabled = true;
                 SomeSessionAnalysisRadioButton.Enabled = true;
-                SessionAnalysisOnFiddlerLoadCheckbox.Enabled = true;
                 SessionAnalysisOnLoadSazCheckbox.Enabled = true;
                 SessionAnalysisOnLiveTraceCheckbox.Enabled = true;
             }
@@ -113,7 +116,6 @@ namespace Office365FiddlerExtension.UI
             {
                 AllSessionAnalysisRadioButton.Enabled = false;
                 SomeSessionAnalysisRadioButton.Enabled = false;
-                SessionAnalysisOnFiddlerLoadCheckbox.Enabled = false;
                 SessionAnalysisOnLoadSazCheckbox.Enabled = false;
                 SessionAnalysisOnLiveTraceCheckbox.Enabled = false;
             }
@@ -123,9 +125,6 @@ namespace Office365FiddlerExtension.UI
         {
             if (AllSessionAnalysisRadioButton.Checked)
             {
-                SessionAnalysisOnFiddlerLoadCheckbox.Enabled = false;
-                SessionAnalysisOnFiddlerLoadCheckbox.Checked = true;
-
                 SessionAnalysisOnLoadSazCheckbox.Enabled = false;
                 SessionAnalysisOnLoadSazCheckbox.Checked = true;
 
@@ -138,15 +137,9 @@ namespace Office365FiddlerExtension.UI
         {
             if (SomeSessionAnalysisRadioButton.Checked)
             {
-                SessionAnalysisOnFiddlerLoadCheckbox.Enabled = true;
                 SessionAnalysisOnLoadSazCheckbox.Enabled = true;
                 SessionAnalysisOnLiveTraceCheckbox.Enabled= true;
             }
-        }
-
-        private void SessionAnalysisOnFiddlerLoadCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            SettingsHandler.Instance.SetSessionAnalysisOnFiddlerLoad(SessionAnalysisOnFiddlerLoadCheckbox.Checked);
         }
 
         private void SessionAnalysisOnLoadSazCheckbox_CheckedChanged(object sender, EventArgs e)
@@ -172,6 +165,12 @@ namespace Office365FiddlerExtension.UI
         private void SlowRunningSessionThresholdUpdateButton_Click(object sender, EventArgs e)
         {
             SettingsHandler.Instance.UpdateSlowRunningSessionThreshold(SlowRunningSessionThresholdTextbox.Text);
+        }
+
+        private void SessionTimeThresholdLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            var URLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
+            System.Diagnostics.Process.Start(URLs.WikiSessionTimeThresholds);
         }
     }
 }

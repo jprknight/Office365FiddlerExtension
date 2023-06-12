@@ -197,6 +197,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Handlers\URLsHandler.cs" />
+    <Compile Include="Handlers\VersionHandler.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks.cs" />
     <Compile Include="Ruleset\AlwaysRun\CalculateSessionAge.cs" />
     <Compile Include="Ruleset\AlwaysRun\ProcessName.cs" />
@@ -300,16 +302,16 @@
     <Compile Include="Handlers\SessionFlagHandler.cs" />
     <Compile Include="Handlers\SettingsHandler.cs" />
     <Compile Include="Handlers\UpdateHandler.cs" />
-    <Compile Include="UI\AboutNew.cs">
+    <Compile Include="UI\About.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\AboutNew.Designer.cs">
-      <DependentUpon>AboutNew.cs</DependentUpon>
+    <Compile Include="UI\About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\EnhanceUX.cs" />
     <Compile Include="UI\Tabs\Office365TabPage.cs" />
     <Compile Include="Services\ActivationService.cs" />
-    <Compile Include="About.cs" />
+    <Compile Include="AboutOld.cs" />
     <Compile Include="Handlers\SazFileHandler.cs" />
     <Compile Include="Handlers\SessionHandler.cs" />
     <Compile Include="Inspectors\Office365Inspector.cs" />
@@ -346,8 +348,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\AboutNew.resx">
-      <DependentUpon>AboutNew.cs</DependentUpon>
+    <EmbeddedResource Include="UI\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Office365ResponseControl.resx">
       <DependentUpon>Office365ResponseControl.cs</DependentUpon>

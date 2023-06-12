@@ -2,6 +2,7 @@
 using FiddlerCore.Utilities.SmartAssembly.Attributes;
 using Microsoft.CSharp;
 using Microsoft.Win32;
+using Office365FiddlerExtension.Handlers;
 using Office365FiddlerExtension.Properties;
 using System;
 using System.CodeDom.Compiler;
@@ -24,7 +25,7 @@ namespace Office365FiddlerExtension.Services
         public async void RulesetVersionCheck()
         {
             var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
-            var URLs = SettingsHandler.Instance.GetDeserializedExtensionURLs();
+            var URLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
 
             if (ExtensionSettings.NeverWebCall)
             {

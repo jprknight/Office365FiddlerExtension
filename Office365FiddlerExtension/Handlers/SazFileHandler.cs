@@ -71,6 +71,11 @@ namespace Office365FiddlerExtension.Services
                 return;
             }
 
+            if (!SettingsHandler.Instance.SessionAnalysisOnLoadSaz) {
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz {e.sFilename}. SessionAnalysisOnLoadSaz not enabled, returning.");
+                return;
+            }
+
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz with Extension Enabled: {SettingsHandler.Instance.ExtensionEnabled}, {Assembly.GetExecutingAssembly().GetName().CodeBase.Substring(8)}.");

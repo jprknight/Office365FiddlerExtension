@@ -5,18 +5,19 @@ using System.Xml;
 using Office365FiddlerExtension.Services;
 using Newtonsoft.Json;
 using static Office365FiddlerExtension.Services.SessionFlagHandler;
+using Office365FiddlerExtension.Handlers;
 
 namespace Office365FiddlerExtension
 {
-    class About
+    class AboutOld
     {
-        private static About _instance;
-        public static About Instance => _instance ?? (_instance = new About());
+        private static AboutOld _instance;
+        public static AboutOld Instance => _instance ?? (_instance = new AboutOld());
 
         public void CheckForUpdate()
         {
             var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
-            var URLs = SettingsHandler.Instance.GetDeserializedExtensionURLs();
+            var URLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
 
             if (ExtensionSettings.NeverWebCall)
             {

@@ -1,6 +1,6 @@
 ﻿namespace Office365FiddlerExtension.UI
 {
-    partial class AboutNew
+    partial class About
     {
         /// <summary>
         /// Required designer variable.
@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             this.InfoGroupbox = new System.Windows.Forms.GroupBox();
+            this.LocalRulesetVersionLabel = new System.Windows.Forms.Label();
+            this.LocalRulesetVersionTextbox = new System.Windows.Forms.TextBox();
+            this.LocalDLLVersionLabel = new System.Windows.Forms.Label();
+            this.LocalDLLVersionTextbox = new System.Windows.Forms.TextBox();
             this.ExtensionDLLLabel = new System.Windows.Forms.Label();
             this.ExtensionDLLTextbox = new System.Windows.Forms.TextBox();
             this.ExtensionPathLabel = new System.Windows.Forms.Label();
@@ -49,17 +53,24 @@
             this.AllSessionAnalysisRadioButton = new System.Windows.Forms.RadioButton();
             this.SessionAnalysisOnLoadSazCheckbox = new System.Windows.Forms.CheckBox();
             this.SomeSessionAnalysisRadioButton = new System.Windows.Forms.RadioButton();
-            this.SessionAnalysisOnFiddlerLoadCheckbox = new System.Windows.Forms.CheckBox();
             this.CloseButton = new System.Windows.Forms.Button();
-            this.LocalDLLVersionTextbox = new System.Windows.Forms.TextBox();
-            this.LocalDLLVersionLabel = new System.Windows.Forms.Label();
+            this.GithubInfoGroupbox = new System.Windows.Forms.GroupBox();
+            this.NextUpdateCheckTimestampLabel = new System.Windows.Forms.Label();
+            this.NextUpdateCheckTimestampTextbox = new System.Windows.Forms.TextBox();
+            this.GithubRulesetVersionLabel = new System.Windows.Forms.Label();
+            this.GithubRulesetVersionTextbox = new System.Windows.Forms.TextBox();
+            this.GithubDLLVersionLabel = new System.Windows.Forms.Label();
+            this.GithubDLLVersionTextbox = new System.Windows.Forms.TextBox();
             this.InfoGroupbox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.GithubInfoGroupbox.SuspendLayout();
             this.SuspendLayout();
             // 
             // InfoGroupbox
             // 
+            this.InfoGroupbox.Controls.Add(this.LocalRulesetVersionLabel);
+            this.InfoGroupbox.Controls.Add(this.LocalRulesetVersionTextbox);
             this.InfoGroupbox.Controls.Add(this.LocalDLLVersionLabel);
             this.InfoGroupbox.Controls.Add(this.LocalDLLVersionTextbox);
             this.InfoGroupbox.Controls.Add(this.ExtensionDLLLabel);
@@ -68,10 +79,46 @@
             this.InfoGroupbox.Controls.Add(this.ExtensionPathTextbox);
             this.InfoGroupbox.Location = new System.Drawing.Point(12, 12);
             this.InfoGroupbox.Name = "InfoGroupbox";
-            this.InfoGroupbox.Size = new System.Drawing.Size(362, 261);
+            this.InfoGroupbox.Size = new System.Drawing.Size(362, 132);
             this.InfoGroupbox.TabIndex = 0;
             this.InfoGroupbox.TabStop = false;
             this.InfoGroupbox.Text = "Extension Information";
+            // 
+            // LocalRulesetVersionLabel
+            // 
+            this.LocalRulesetVersionLabel.AutoSize = true;
+            this.LocalRulesetVersionLabel.Location = new System.Drawing.Point(6, 101);
+            this.LocalRulesetVersionLabel.Name = "LocalRulesetVersionLabel";
+            this.LocalRulesetVersionLabel.Size = new System.Drawing.Size(110, 13);
+            this.LocalRulesetVersionLabel.TabIndex = 7;
+            this.LocalRulesetVersionLabel.Text = "Local Ruleset Verison";
+            // 
+            // LocalRulesetVersionTextbox
+            // 
+            this.LocalRulesetVersionTextbox.BackColor = System.Drawing.Color.White;
+            this.LocalRulesetVersionTextbox.Location = new System.Drawing.Point(140, 98);
+            this.LocalRulesetVersionTextbox.Name = "LocalRulesetVersionTextbox";
+            this.LocalRulesetVersionTextbox.ReadOnly = true;
+            this.LocalRulesetVersionTextbox.Size = new System.Drawing.Size(216, 20);
+            this.LocalRulesetVersionTextbox.TabIndex = 6;
+            // 
+            // LocalDLLVersionLabel
+            // 
+            this.LocalDLLVersionLabel.AutoSize = true;
+            this.LocalDLLVersionLabel.Location = new System.Drawing.Point(6, 75);
+            this.LocalDLLVersionLabel.Name = "LocalDLLVersionLabel";
+            this.LocalDLLVersionLabel.Size = new System.Drawing.Size(94, 13);
+            this.LocalDLLVersionLabel.TabIndex = 5;
+            this.LocalDLLVersionLabel.Text = "Local DLL Verison";
+            // 
+            // LocalDLLVersionTextbox
+            // 
+            this.LocalDLLVersionTextbox.BackColor = System.Drawing.Color.White;
+            this.LocalDLLVersionTextbox.Location = new System.Drawing.Point(140, 72);
+            this.LocalDLLVersionTextbox.Name = "LocalDLLVersionTextbox";
+            this.LocalDLLVersionTextbox.ReadOnly = true;
+            this.LocalDLLVersionTextbox.Size = new System.Drawing.Size(216, 20);
+            this.LocalDLLVersionTextbox.TabIndex = 4;
             // 
             // ExtensionDLLLabel
             // 
@@ -84,9 +131,11 @@
             // 
             // ExtensionDLLTextbox
             // 
-            this.ExtensionDLLTextbox.Location = new System.Drawing.Point(119, 46);
+            this.ExtensionDLLTextbox.BackColor = System.Drawing.Color.White;
+            this.ExtensionDLLTextbox.Location = new System.Drawing.Point(140, 46);
             this.ExtensionDLLTextbox.Name = "ExtensionDLLTextbox";
-            this.ExtensionDLLTextbox.Size = new System.Drawing.Size(237, 20);
+            this.ExtensionDLLTextbox.ReadOnly = true;
+            this.ExtensionDLLTextbox.Size = new System.Drawing.Size(216, 20);
             this.ExtensionDLLTextbox.TabIndex = 2;
             // 
             // ExtensionPathLabel
@@ -100,9 +149,11 @@
             // 
             // ExtensionPathTextbox
             // 
-            this.ExtensionPathTextbox.Location = new System.Drawing.Point(119, 19);
+            this.ExtensionPathTextbox.BackColor = System.Drawing.Color.White;
+            this.ExtensionPathTextbox.Location = new System.Drawing.Point(140, 19);
             this.ExtensionPathTextbox.Name = "ExtensionPathTextbox";
-            this.ExtensionPathTextbox.Size = new System.Drawing.Size(237, 20);
+            this.ExtensionPathTextbox.ReadOnly = true;
+            this.ExtensionPathTextbox.Size = new System.Drawing.Size(216, 20);
             this.ExtensionPathTextbox.TabIndex = 0;
             // 
             // groupBox1
@@ -110,7 +161,7 @@
             this.groupBox1.Controls.Add(this.panel1);
             this.groupBox1.Location = new System.Drawing.Point(380, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(444, 261);
+            this.groupBox1.Size = new System.Drawing.Size(438, 236);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Extension Options";
@@ -131,27 +182,27 @@
             this.panel1.Controls.Add(this.AllSessionAnalysisRadioButton);
             this.panel1.Controls.Add(this.SessionAnalysisOnLoadSazCheckbox);
             this.panel1.Controls.Add(this.SomeSessionAnalysisRadioButton);
-            this.panel1.Controls.Add(this.SessionAnalysisOnFiddlerLoadCheckbox);
             this.panel1.Location = new System.Drawing.Point(6, 19);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(417, 231);
+            this.panel1.Size = new System.Drawing.Size(426, 211);
             this.panel1.TabIndex = 5;
             // 
             // SessionTimeThresholdLink
             // 
             this.SessionTimeThresholdLink.AutoSize = true;
-            this.SessionTimeThresholdLink.Location = new System.Drawing.Point(3, 212);
+            this.SessionTimeThresholdLink.Location = new System.Drawing.Point(4, 191);
             this.SessionTimeThresholdLink.Name = "SessionTimeThresholdLink";
             this.SessionTimeThresholdLink.Size = new System.Drawing.Size(414, 13);
             this.SessionTimeThresholdLink.TabIndex = 15;
             this.SessionTimeThresholdLink.TabStop = true;
             this.SessionTimeThresholdLink.Text = "https://github.com/jprknight/Office365FiddlerExtension/wiki/Session-Time-Threshol" +
     "ds";
+            this.SessionTimeThresholdLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.SessionTimeThresholdLink_LinkClicked);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 196);
+            this.label2.Location = new System.Drawing.Point(4, 173);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(243, 13);
             this.label2.TabIndex = 14;
@@ -167,7 +218,7 @@
             // 
             // SlowRunningSessionThresholdUpdateButton
             // 
-            this.SlowRunningSessionThresholdUpdateButton.Location = new System.Drawing.Point(233, 170);
+            this.SlowRunningSessionThresholdUpdateButton.Location = new System.Drawing.Point(234, 145);
             this.SlowRunningSessionThresholdUpdateButton.Name = "SlowRunningSessionThresholdUpdateButton";
             this.SlowRunningSessionThresholdUpdateButton.Size = new System.Drawing.Size(56, 23);
             this.SlowRunningSessionThresholdUpdateButton.TabIndex = 12;
@@ -177,7 +228,7 @@
             // 
             // WarningSessionTimeThresholdUpdateButton
             // 
-            this.WarningSessionTimeThresholdUpdateButton.Location = new System.Drawing.Point(233, 144);
+            this.WarningSessionTimeThresholdUpdateButton.Location = new System.Drawing.Point(234, 119);
             this.WarningSessionTimeThresholdUpdateButton.Name = "WarningSessionTimeThresholdUpdateButton";
             this.WarningSessionTimeThresholdUpdateButton.Size = new System.Drawing.Size(56, 23);
             this.WarningSessionTimeThresholdUpdateButton.TabIndex = 11;
@@ -187,7 +238,7 @@
             // 
             // SlowRunningSessionThresholdTextbox
             // 
-            this.SlowRunningSessionThresholdTextbox.Location = new System.Drawing.Point(172, 172);
+            this.SlowRunningSessionThresholdTextbox.Location = new System.Drawing.Point(173, 147);
             this.SlowRunningSessionThresholdTextbox.Name = "SlowRunningSessionThresholdTextbox";
             this.SlowRunningSessionThresholdTextbox.Size = new System.Drawing.Size(55, 20);
             this.SlowRunningSessionThresholdTextbox.TabIndex = 9;
@@ -195,7 +246,7 @@
             // SlowRunningSessionThresholdLabel
             // 
             this.SlowRunningSessionThresholdLabel.AutoSize = true;
-            this.SlowRunningSessionThresholdLabel.Location = new System.Drawing.Point(3, 175);
+            this.SlowRunningSessionThresholdLabel.Location = new System.Drawing.Point(4, 150);
             this.SlowRunningSessionThresholdLabel.Name = "SlowRunningSessionThresholdLabel";
             this.SlowRunningSessionThresholdLabel.Size = new System.Drawing.Size(163, 13);
             this.SlowRunningSessionThresholdLabel.TabIndex = 8;
@@ -204,7 +255,7 @@
             // WarningSessionTimeThresholdLabel
             // 
             this.WarningSessionTimeThresholdLabel.AutoSize = true;
-            this.WarningSessionTimeThresholdLabel.Location = new System.Drawing.Point(3, 149);
+            this.WarningSessionTimeThresholdLabel.Location = new System.Drawing.Point(4, 124);
             this.WarningSessionTimeThresholdLabel.Name = "WarningSessionTimeThresholdLabel";
             this.WarningSessionTimeThresholdLabel.Size = new System.Drawing.Size(163, 13);
             this.WarningSessionTimeThresholdLabel.TabIndex = 7;
@@ -212,7 +263,7 @@
             // 
             // WarningSessionTimeThresholdTextbox
             // 
-            this.WarningSessionTimeThresholdTextbox.Location = new System.Drawing.Point(172, 146);
+            this.WarningSessionTimeThresholdTextbox.Location = new System.Drawing.Point(173, 121);
             this.WarningSessionTimeThresholdTextbox.Name = "WarningSessionTimeThresholdTextbox";
             this.WarningSessionTimeThresholdTextbox.Size = new System.Drawing.Size(55, 20);
             this.WarningSessionTimeThresholdTextbox.TabIndex = 6;
@@ -231,7 +282,7 @@
             // SessionAnalysisOnLiveTraceCheckbox
             // 
             this.SessionAnalysisOnLiveTraceCheckbox.AutoSize = true;
-            this.SessionAnalysisOnLiveTraceCheckbox.Location = new System.Drawing.Point(20, 123);
+            this.SessionAnalysisOnLiveTraceCheckbox.Location = new System.Drawing.Point(21, 98);
             this.SessionAnalysisOnLiveTraceCheckbox.Name = "SessionAnalysisOnLiveTraceCheckbox";
             this.SessionAnalysisOnLiveTraceCheckbox.Size = new System.Drawing.Size(94, 17);
             this.SessionAnalysisOnLiveTraceCheckbox.TabIndex = 4;
@@ -254,7 +305,7 @@
             // SessionAnalysisOnLoadSazCheckbox
             // 
             this.SessionAnalysisOnLoadSazCheckbox.AutoSize = true;
-            this.SessionAnalysisOnLoadSazCheckbox.Location = new System.Drawing.Point(20, 99);
+            this.SessionAnalysisOnLoadSazCheckbox.Location = new System.Drawing.Point(21, 74);
             this.SessionAnalysisOnLoadSazCheckbox.Name = "SessionAnalysisOnLoadSazCheckbox";
             this.SessionAnalysisOnLoadSazCheckbox.Size = new System.Drawing.Size(88, 17);
             this.SessionAnalysisOnLoadSazCheckbox.TabIndex = 3;
@@ -274,20 +325,9 @@
             this.SomeSessionAnalysisRadioButton.UseVisualStyleBackColor = true;
             this.SomeSessionAnalysisRadioButton.CheckedChanged += new System.EventHandler(this.SomeSessionAnalysisRadioButton_CheckedChanged);
             // 
-            // SessionAnalysisOnFiddlerLoadCheckbox
-            // 
-            this.SessionAnalysisOnFiddlerLoadCheckbox.AutoSize = true;
-            this.SessionAnalysisOnFiddlerLoadCheckbox.Location = new System.Drawing.Point(20, 75);
-            this.SessionAnalysisOnFiddlerLoadCheckbox.Name = "SessionAnalysisOnFiddlerLoadCheckbox";
-            this.SessionAnalysisOnFiddlerLoadCheckbox.Size = new System.Drawing.Size(101, 17);
-            this.SessionAnalysisOnFiddlerLoadCheckbox.TabIndex = 2;
-            this.SessionAnalysisOnFiddlerLoadCheckbox.Text = "On Fiddler Load";
-            this.SessionAnalysisOnFiddlerLoadCheckbox.UseVisualStyleBackColor = true;
-            this.SessionAnalysisOnFiddlerLoadCheckbox.CheckedChanged += new System.EventHandler(this.SessionAnalysisOnFiddlerLoadCheckbox_CheckedChanged);
-            // 
             // CloseButton
             // 
-            this.CloseButton.Location = new System.Drawing.Point(749, 279);
+            this.CloseButton.Location = new System.Drawing.Point(743, 254);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(75, 23);
             this.CloseButton.TabIndex = 10;
@@ -295,27 +335,81 @@
             this.CloseButton.UseVisualStyleBackColor = true;
             this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
             // 
-            // LocalDLLVersionTextbox
+            // GithubInfoGroupbox
             // 
-            this.LocalDLLVersionTextbox.Location = new System.Drawing.Point(119, 72);
-            this.LocalDLLVersionTextbox.Name = "LocalDLLVersionTextbox";
-            this.LocalDLLVersionTextbox.Size = new System.Drawing.Size(237, 20);
-            this.LocalDLLVersionTextbox.TabIndex = 4;
+            this.GithubInfoGroupbox.Controls.Add(this.NextUpdateCheckTimestampLabel);
+            this.GithubInfoGroupbox.Controls.Add(this.NextUpdateCheckTimestampTextbox);
+            this.GithubInfoGroupbox.Controls.Add(this.GithubRulesetVersionLabel);
+            this.GithubInfoGroupbox.Controls.Add(this.GithubRulesetVersionTextbox);
+            this.GithubInfoGroupbox.Controls.Add(this.GithubDLLVersionLabel);
+            this.GithubInfoGroupbox.Controls.Add(this.GithubDLLVersionTextbox);
+            this.GithubInfoGroupbox.Location = new System.Drawing.Point(12, 150);
+            this.GithubInfoGroupbox.Name = "GithubInfoGroupbox";
+            this.GithubInfoGroupbox.Size = new System.Drawing.Size(362, 98);
+            this.GithubInfoGroupbox.TabIndex = 11;
+            this.GithubInfoGroupbox.TabStop = false;
+            this.GithubInfoGroupbox.Text = "Github Information";
             // 
-            // LocalDLLVersionLabel
+            // NextUpdateCheckTimestampLabel
             // 
-            this.LocalDLLVersionLabel.AutoSize = true;
-            this.LocalDLLVersionLabel.Location = new System.Drawing.Point(6, 75);
-            this.LocalDLLVersionLabel.Name = "LocalDLLVersionLabel";
-            this.LocalDLLVersionLabel.Size = new System.Drawing.Size(94, 13);
-            this.LocalDLLVersionLabel.TabIndex = 5;
-            this.LocalDLLVersionLabel.Text = "Local DLL Verison";
+            this.NextUpdateCheckTimestampLabel.AutoSize = true;
+            this.NextUpdateCheckTimestampLabel.Location = new System.Drawing.Point(6, 74);
+            this.NextUpdateCheckTimestampLabel.Name = "NextUpdateCheckTimestampLabel";
+            this.NextUpdateCheckTimestampLabel.Size = new System.Drawing.Size(101, 13);
+            this.NextUpdateCheckTimestampLabel.TabIndex = 12;
+            this.NextUpdateCheckTimestampLabel.Text = "Next Update Check";
+            // 
+            // NextUpdateCheckTimestampTextbox
+            // 
+            this.NextUpdateCheckTimestampTextbox.BackColor = System.Drawing.Color.White;
+            this.NextUpdateCheckTimestampTextbox.Location = new System.Drawing.Point(140, 71);
+            this.NextUpdateCheckTimestampTextbox.Name = "NextUpdateCheckTimestampTextbox";
+            this.NextUpdateCheckTimestampTextbox.ReadOnly = true;
+            this.NextUpdateCheckTimestampTextbox.Size = new System.Drawing.Size(216, 20);
+            this.NextUpdateCheckTimestampTextbox.TabIndex = 11;
+            // 
+            // GithubRulesetVersionLabel
+            // 
+            this.GithubRulesetVersionLabel.AutoSize = true;
+            this.GithubRulesetVersionLabel.Location = new System.Drawing.Point(6, 48);
+            this.GithubRulesetVersionLabel.Name = "GithubRulesetVersionLabel";
+            this.GithubRulesetVersionLabel.Size = new System.Drawing.Size(115, 13);
+            this.GithubRulesetVersionLabel.TabIndex = 10;
+            this.GithubRulesetVersionLabel.Text = "Github Ruleset Version";
+            // 
+            // GithubRulesetVersionTextbox
+            // 
+            this.GithubRulesetVersionTextbox.BackColor = System.Drawing.Color.White;
+            this.GithubRulesetVersionTextbox.Location = new System.Drawing.Point(140, 45);
+            this.GithubRulesetVersionTextbox.Name = "GithubRulesetVersionTextbox";
+            this.GithubRulesetVersionTextbox.ReadOnly = true;
+            this.GithubRulesetVersionTextbox.Size = new System.Drawing.Size(216, 20);
+            this.GithubRulesetVersionTextbox.TabIndex = 9;
+            // 
+            // GithubDLLVersionLabel
+            // 
+            this.GithubDLLVersionLabel.AutoSize = true;
+            this.GithubDLLVersionLabel.Location = new System.Drawing.Point(6, 22);
+            this.GithubDLLVersionLabel.Name = "GithubDLLVersionLabel";
+            this.GithubDLLVersionLabel.Size = new System.Drawing.Size(99, 13);
+            this.GithubDLLVersionLabel.TabIndex = 8;
+            this.GithubDLLVersionLabel.Text = "Github DLL Version";
+            // 
+            // GithubDLLVersionTextbox
+            // 
+            this.GithubDLLVersionTextbox.BackColor = System.Drawing.Color.White;
+            this.GithubDLLVersionTextbox.Location = new System.Drawing.Point(140, 19);
+            this.GithubDLLVersionTextbox.Name = "GithubDLLVersionTextbox";
+            this.GithubDLLVersionTextbox.ReadOnly = true;
+            this.GithubDLLVersionTextbox.Size = new System.Drawing.Size(216, 20);
+            this.GithubDLLVersionTextbox.TabIndex = 8;
             // 
             // AboutNew
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(829, 309);
+            this.ClientSize = new System.Drawing.Size(826, 286);
+            this.Controls.Add(this.GithubInfoGroupbox);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.InfoGroupbox);
             this.Controls.Add(this.CloseButton);
@@ -327,6 +421,8 @@
             this.groupBox1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.GithubInfoGroupbox.ResumeLayout(false);
+            this.GithubInfoGroupbox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -344,7 +440,6 @@
         private System.Windows.Forms.RadioButton AllSessionAnalysisRadioButton;
         private System.Windows.Forms.CheckBox SessionAnalysisOnLoadSazCheckbox;
         private System.Windows.Forms.RadioButton SomeSessionAnalysisRadioButton;
-        private System.Windows.Forms.CheckBox SessionAnalysisOnFiddlerLoadCheckbox;
         private System.Windows.Forms.CheckBox ExtensionEnabledCheckbox;
         private System.Windows.Forms.Label WarningSessionTimeThresholdLabel;
         private System.Windows.Forms.Label SlowRunningSessionThresholdLabel;
@@ -358,5 +453,14 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label LocalDLLVersionLabel;
         private System.Windows.Forms.TextBox LocalDLLVersionTextbox;
+        private System.Windows.Forms.Label LocalRulesetVersionLabel;
+        private System.Windows.Forms.TextBox LocalRulesetVersionTextbox;
+        private System.Windows.Forms.GroupBox GithubInfoGroupbox;
+        private System.Windows.Forms.Label NextUpdateCheckTimestampLabel;
+        private System.Windows.Forms.TextBox NextUpdateCheckTimestampTextbox;
+        private System.Windows.Forms.Label GithubRulesetVersionLabel;
+        private System.Windows.Forms.TextBox GithubRulesetVersionTextbox;
+        private System.Windows.Forms.Label GithubDLLVersionLabel;
+        private System.Windows.Forms.TextBox GithubDLLVersionTextbox;
     }
 }
