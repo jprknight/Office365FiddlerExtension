@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Office365FiddlerInspector.UI
+namespace Office365FiddlerExtension.UI
 {
     public partial class Office365TabPage : UserControl
     { 

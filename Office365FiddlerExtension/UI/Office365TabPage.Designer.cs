@@ -1,5 +1,5 @@
 ﻿
-namespace Office365FiddlerInspector.UI
+namespace Office365FiddlerExtension.UI
 {
     partial class Office365TabPage
     {

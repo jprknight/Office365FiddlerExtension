@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Fiddler;
 using Office365FiddlerExtension.Services;
-using Office365FiddlerInspector.UI;
+using Office365FiddlerExtension.UI;
 
 namespace Office365FiddlerExtension
 { 
