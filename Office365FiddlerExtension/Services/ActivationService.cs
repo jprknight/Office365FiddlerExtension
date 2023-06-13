@@ -26,16 +26,22 @@ namespace Office365FiddlerExtension.Services
             if (!IsInitialized)
             {
                 // Ensure Fiddler settings (settings, URLs, & verison) for the extension have been created.
+                // Avoid null exceptions.
                 SettingsHandler.Instance.CreateExtensionSettingsFiddlerSetting();
                 URLsHandler.Instance.CreateExtensionURLFiddlerSetting();
-                VersionHandler.Instance.UpdateExtensionVersionFiddlerSetting();
+                VersionHandler.Instance.CreateExtensionVersionFiddlerSetting();
                 
-                // Update / set settings as needed.
+                // Set Fiddler settings as needed.
                 SettingsHandler.Instance.IncrementExecutionCount();
                 SettingsHandler.Instance.SetExtensionDLL();
                 SettingsHandler.Instance.SetExtensionPath();
 
                 Initializetelemetry();
+
+                // Update extension as needed.
+                // TBC: Update check on extension application.
+                // TBC: Update check on extensionURLs.
+                VersionHandler.Instance.UpdateVersionJsonFromGithub();
 
                 // Add extension menu.
                 MenuUI.Instance.Initialize();

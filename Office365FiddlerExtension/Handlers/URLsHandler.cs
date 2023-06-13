@@ -13,7 +13,7 @@ namespace Office365FiddlerExtension.Handlers
         private static URLsHandler _instance;
         public static URLsHandler Instance => _instance ?? (_instance = new URLsHandler());
 
-        public ExtensionURLs GetDeserializedExtensionURLs()
+        public ExtensionURLsJson GetDeserializedExtensionURLs()
         {
             var JsonSettings = new JsonSerializerSettings
             {
@@ -21,7 +21,7 @@ namespace Office365FiddlerExtension.Handlers
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
 
-            return JsonConvert.DeserializeObject<ExtensionURLs>(Preferences.ExtensionURLs, JsonSettings);
+            return JsonConvert.DeserializeObject<ExtensionURLsJson>(Preferences.ExtensionURLs, JsonSettings);
         }
 
         public void CreateExtensionURLFiddlerSetting()
@@ -33,16 +33,18 @@ namespace Office365FiddlerExtension.Handlers
             }
 
             // REVIEW THIS. URLs needs to move to master once it's a valid URL.
+            // Requires pull request of this branch into master.
 
             var URLs = new
             {
                 TelemetryInstrumentationKey = "87fb55ab-0052-4970-9318-7c740220e3c0",
-                ExtensionVerisonJson = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionVersion.json",
+                ExtensionVerison = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionVersion.json",
                 UpdateJson = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/settings.json",
                 MasterRuleSet = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Master/RulesetVersion",
                 BetaRuleSet = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/RulesetVersion",
                 Installer = "https://github.com/jprknight/EXOFiddlerExtension/releases/latest",
                 Wiki = "https://github.com/jprknight/Office365FiddlerExtension/wiki",
+                WikiSessionTimeThresholds = "https://github.com/jprknight/Office365FiddlerExtension/wiki/Session-Time-Thresholds",
                 ReportIssues = "https://github.com/jprknight/Office365FiddlerExtension/issues"
             };
 
@@ -53,25 +55,43 @@ namespace Office365FiddlerExtension.Handlers
             Preferences.ExtensionURLs = jsonData;
         }
 
-        public class ExtensionURLs
+        public String TelemetryInstrumentationKey
         {
-            public string TelemetryInstrumentationKey { get; set; }
+            get
+            {
+                return GetDeserializedExtensionURLs().TelemetryInstrumentationKey;
+            }
+        }
 
-            public string ExtensionVersionJson { get; set; }
+        public string ExtensionVersion
+        {
+            get
+            {
+                return URLsHandler.Instance.GetDeserializedExtensionURLs().ExtensionVersion;
+            }
+        }
 
-            public string UpdateJson { get; set; }
+        // Function has getters only. Individual elements are read-only.
+        public class ExtensionURLsJson
+        {
+            public string TelemetryInstrumentationKey { get; }
 
-            public string MasterRuleSet { get; set; }
+            // Used for the URL to the ExtensionVersion Json resource.
+            public string ExtensionVersion { get; }
 
-            public string BetaRuleSet { get; set; }
+            public string UpdateJson { get; }
 
-            public string Installer { get; set; }
+            public string MasterRuleSet { get; }
 
-            public string Wiki { get; set; }
+            public string BetaRuleSet { get; }
 
-            public string WikiSessionTimeThresholds { get; set; }
+            public string Installer { get; }
 
-            public string ReportIssues { get; set; }
+            public string Wiki { get; }
+
+            public string WikiSessionTimeThresholds { get; }
+
+            public string ReportIssues { get; }
         }
     }
 }

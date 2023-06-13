@@ -4,6 +4,7 @@ using Microsoft.ApplicationInsights;
 using System.Management;
 using System.Text;
 using Fiddler;
+using Office365FiddlerExtension.Handlers;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -42,6 +43,8 @@ namespace Office365FiddlerExtension.Services
         /// <returns>Bool</returns>
         public static async Task InitializeAsync()
         {
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Telemetry using instrumentation key: {SettingsHandler.Instance.TelemetryInstrumentationKey}");
+
             if (!IsInitialized)
             {
                 try

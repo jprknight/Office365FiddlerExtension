@@ -1,15 +1,19 @@
-﻿using Newtonsoft.Json;
+﻿using Fiddler;
+using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static Office365FiddlerExtension.Handlers.URLsHandler;
 
 namespace Office365FiddlerExtension.Handlers
 {
-    public class VersionHandler
+    public class VersionHandler : ActivationService
     {
         private static VersionHandler _instance;
         public static VersionHandler Instance => _instance ?? (_instance = new VersionHandler());
@@ -25,18 +29,16 @@ namespace Office365FiddlerExtension.Handlers
             return JsonConvert.DeserializeObject<ExtensionVersionFlags>(Preferences.ExtensionVersion, JsonSettings);
         }
 
-        public void UpdateExtensionVersionFiddlerSetting()
+        public void CreateExtensionVersionFiddlerSetting()
         {
             Version applicationVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 
             var VersionItems = new
             {
-                UpdateMessage = "test", // REVIEW THIS. Needs to be pulled from ExtensionVersion.json in Github.
-                ExtensionDLL = Assembly.GetExecutingAssembly().GetName().CodeBase.Substring(8),
-                VersionMajor = applicationVersion.Major,
-                VersionMinor = applicationVersion.Minor,
-                VersionBuild = applicationVersion.Build,
-                RulesetLastUpdated = ""
+                UpdateMessage = "",
+                VersionMajor = "",
+                VersionMinor = "",
+                VersionBuild = ""
             };
 
             // Transform the object to a Json object.
@@ -59,8 +61,63 @@ namespace Office365FiddlerExtension.Handlers
             public DateTime MasterRulesetVersion { get; set; }
 
             public DateTime BetaRulesetVersion { get; set; }
+        }
 
-            public DateTime NextUpdateCheck { get; set; }
+        public async void UpdateVersionJsonFromGithub()
+        {
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExchangeVersion Fiddler setting update check started.");
+
+            var extensionURLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
+            //var extensionVerison = VersionHandler.Instance.GetDeserializedExtensionVersion();
+            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+
+            // If the current timestamp is less than the next update check timestamp, return.
+            if (DateTime.Now < extensionSettings.NextUpdateCheck)
+            {
+                //FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Next update check timestamp no met, returning.");
+                //return;
+            }
+
+            using (var getSettings = new HttpClient())
+            {
+                try
+                {
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: NextUpdateCheck {extensionSettings.NextUpdateCheck}");
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExchangeVersion {extensionURLs.ExtensionVersion}");
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Telemetry {extensionURLs.TelemetryInstrumentationKey}");
+
+                    var response = await getSettings.GetAsync(extensionURLs.ExtensionVersion);
+
+                    response.EnsureSuccessStatusCode();
+
+                    var jsonString = string.Empty;
+
+                    using (var stream = await response.Content.ReadAsStreamAsync())
+                    {
+                        stream.Position = 0;
+                        using (var reader = new StreamReader(stream))
+                        {
+                            jsonString = await reader.ReadToEndAsync();
+                        }
+                    }
+
+                    // Save this new data into the ExtensionVerison Fiddler setting.
+                    if (Preferences.ExtensionVersion != jsonString)
+                    {
+                        FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExchangeVersion Fiddler setting updated.");
+                        Preferences.ExtensionVersion = jsonString;
+                        
+                        // Update the next update check timestamp.
+                        SettingsHandler.Instance.SetNextUpdateTimestamp();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Error retrieving settings from Github {ex}");
+                }
+            }
+
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExchangeVersion Fiddler setting update check finished.");
         }
     }
 }

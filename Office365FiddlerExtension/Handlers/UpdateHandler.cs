@@ -49,7 +49,7 @@ namespace Office365FiddlerExtension.Services
             {
                 try
                 {
-                    var response = await getSettings.GetAsync(ExtensionURLs.ExtensionVersionJson);
+                    var response = await getSettings.GetAsync(ExtensionURLs.ExtensionVersion);
 
                     response.EnsureSuccessStatusCode();
 

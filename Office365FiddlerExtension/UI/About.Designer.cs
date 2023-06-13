@@ -61,6 +61,9 @@
             this.GithubRulesetVersionTextbox = new System.Windows.Forms.TextBox();
             this.GithubDLLVersionLabel = new System.Windows.Forms.Label();
             this.GithubDLLVersionTextbox = new System.Windows.Forms.TextBox();
+            this.NextUpdateCheckTextbox = new System.Windows.Forms.TextBox();
+            this.NextUpdateCheckLabel = new System.Windows.Forms.Label();
+            this.HoursLabel = new System.Windows.Forms.Label();
             this.InfoGroupbox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -168,6 +171,9 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.HoursLabel);
+            this.panel1.Controls.Add(this.NextUpdateCheckLabel);
+            this.panel1.Controls.Add(this.NextUpdateCheckTextbox);
             this.panel1.Controls.Add(this.SessionTimeThresholdLink);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
@@ -184,7 +190,7 @@
             this.panel1.Controls.Add(this.SomeSessionAnalysisRadioButton);
             this.panel1.Location = new System.Drawing.Point(6, 19);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(426, 211);
+            this.panel1.Size = new System.Drawing.Size(426, 210);
             this.panel1.TabIndex = 5;
             // 
             // SessionTimeThresholdLink
@@ -404,16 +410,41 @@
             this.GithubDLLVersionTextbox.Size = new System.Drawing.Size(216, 20);
             this.GithubDLLVersionTextbox.TabIndex = 8;
             // 
-            // AboutNew
+            // NextUpdateCheckTextbox
+            // 
+            this.NextUpdateCheckTextbox.Location = new System.Drawing.Point(348, 26);
+            this.NextUpdateCheckTextbox.Name = "NextUpdateCheckTextbox";
+            this.NextUpdateCheckTextbox.Size = new System.Drawing.Size(28, 20);
+            this.NextUpdateCheckTextbox.TabIndex = 16;
+            // 
+            // NextUpdateCheckLabel
+            // 
+            this.NextUpdateCheckLabel.AutoSize = true;
+            this.NextUpdateCheckLabel.Location = new System.Drawing.Point(219, 29);
+            this.NextUpdateCheckLabel.Name = "NextUpdateCheckLabel";
+            this.NextUpdateCheckLabel.Size = new System.Drawing.Size(123, 13);
+            this.NextUpdateCheckLabel.TabIndex = 17;
+            this.NextUpdateCheckLabel.Text = "Check for updates every";
+            // 
+            // HoursLabel
+            // 
+            this.HoursLabel.AutoSize = true;
+            this.HoursLabel.Location = new System.Drawing.Point(382, 29);
+            this.HoursLabel.Name = "HoursLabel";
+            this.HoursLabel.Size = new System.Drawing.Size(36, 13);
+            this.HoursLabel.TabIndex = 18;
+            this.HoursLabel.Text = "hours.";
+            // 
+            // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(826, 286);
+            this.ClientSize = new System.Drawing.Size(828, 286);
             this.Controls.Add(this.GithubInfoGroupbox);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.InfoGroupbox);
             this.Controls.Add(this.CloseButton);
-            this.Name = "AboutNew";
+            this.Name = "About";
             this.Text = "About";
             this.Load += new System.EventHandler(this.About_Load);
             this.InfoGroupbox.ResumeLayout(false);
@@ -462,5 +493,8 @@
         private System.Windows.Forms.TextBox GithubRulesetVersionTextbox;
         private System.Windows.Forms.Label GithubDLLVersionLabel;
         private System.Windows.Forms.TextBox GithubDLLVersionTextbox;
+        private System.Windows.Forms.Label HoursLabel;
+        private System.Windows.Forms.Label NextUpdateCheckLabel;
+        private System.Windows.Forms.TextBox NextUpdateCheckTextbox;
     }
 }

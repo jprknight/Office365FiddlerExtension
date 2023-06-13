@@ -33,6 +33,8 @@ namespace Office365FiddlerExtension.UI
 
             GithubDLLVersionTextbox.Text = extensionVersion.VersionMajor + "." + extensionVersion.VersionMinor + "." + extensionVersion.VersionBuild;
 
+            NextUpdateCheckTextbox.Text = extensionSettings.UpdateCheckFrequencyHours.ToString();
+
             if (extensionSettings.UseBetaRuleSet)
             {
                 LocalRulesetVersionTextbox.Text = extensionSettings.LocalBetaRulesetLastUpdated.ToString();
