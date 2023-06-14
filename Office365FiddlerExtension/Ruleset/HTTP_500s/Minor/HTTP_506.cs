@@ -17,9 +17,9 @@ namespace Office365FiddlerExtension.Ruleset
 
         public void HTTP_506_Variant_Also_Negociates(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 506 Variant Also Negotiates (RFC 2295).");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 506 Variant Also Negotiates (RFC 2295).");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -38,7 +38,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
     }
 }

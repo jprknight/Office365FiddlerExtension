@@ -8,8 +8,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Office365FiddlerExtension.Services;
 
-namespace Office365FiddlerExtension.Services
+namespace Office365FiddlerExtension.Handler
 {
     public class SazFileHandler : ActivationService
     {
@@ -86,8 +87,8 @@ namespace Office365FiddlerExtension.Services
 
             foreach (var session in e.arrSessions)
             {
-                this.session = session;
-                SessionHandler.Instance.OnPeekAtResponseHeaders(this.session);
+                this.Session = session;
+                SessionHandler.Instance.OnPeekAtResponseHeaders(this.Session);
             }
 
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz processed: {e.sFilename}");

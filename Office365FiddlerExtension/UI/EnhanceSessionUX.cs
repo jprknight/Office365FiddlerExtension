@@ -15,43 +15,43 @@ namespace Office365FiddlerExtension.UI
 
         public void NormaliseSession(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
             // Extension Json Data.
-            this.session["Microsoft365FiddlerExtensionJson"] = null;
+            this.Session["Microsoft365FiddlerExtensionJson"] = null;
 
             // Session colours.
-            this.session["UI-BACKCOLOR"] = "#FFFFFF";
-            this.session["UI-COLOR"] = "#000000";
+            this.Session["UI-BACKCOLOR"] = "#FFFFFF";
+            this.Session["UI-COLOR"] = "#000000";
         }
 
         public void EnhanceSession(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
+            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.Session);
 
             // Set session background colour. Default to gray if undefined.
             switch (ExtensionSessionFlags.UIBackColour.ToLower())
             {
                 case "blue":
-                    this.session["ui-backcolor"] = "#81BEF7";
+                    this.Session["ui-backcolor"] = "#81BEF7";
                     break;
                 case "green":
-                    this.session["ui-backcolor"] = "#81F7BA";
+                    this.Session["ui-backcolor"] = "#81F7BA";
                     break;
                 case "red":
-                    this.session["ui-backcolor"] = "#F06141";
+                    this.Session["ui-backcolor"] = "#F06141";
                     break;
                 case "orange":
-                    this.session["ui-backcolor"] = "#F59758";
+                    this.Session["ui-backcolor"] = "#F59758";
                     break;
                 case "black":
-                    this.session["ui-backcolor"] = "#000000";
+                    this.Session["ui-backcolor"] = "#000000";
                     break;
                 default:
                     // Default to gray, so we know if something isn't caught.
-                    this.session["ui-backcolor"] = "#BDBDBD";
+                    this.Session["ui-backcolor"] = "#BDBDBD";
                     break;
             }
 
@@ -59,14 +59,14 @@ namespace Office365FiddlerExtension.UI
             switch (ExtensionSessionFlags.UITextColour.ToLower())
             {
                 case "red":
-                    this.session["ui-color"] = "#F06141";
+                    this.Session["ui-color"] = "#F06141";
                     break;
                 default:
-                    this.session["ui-color"] = "#000000";
+                    this.Session["ui-color"] = "#000000";
                     break;
             }
 
-            this.session.RefreshUI();
+            this.Session.RefreshUI();
         }
     }
 }

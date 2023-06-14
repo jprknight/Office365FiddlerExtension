@@ -19,24 +19,24 @@ namespace Office365FiddlerExtension.Ruleset
         {
             // HTTP 504 Bad Gateway 'internet has been blocked'
 
-            this.session = session;
+            this.Session = session;
 
-            if (!(this.session.utilFindInResponse("internet", false) > 1))
+            if (!(this.Session.utilFindInResponse("internet", false) > 1))
             {
                 return;
             }
 
-            if (!(this.session.utilFindInResponse("access", false) > 1))
+            if (!(this.Session.utilFindInResponse("access", false) > 1))
             {
                 return;
             }
 
-            if(!(this.session.utilFindInResponse("blocked", false) > 1))
+            if(!(this.Session.utilFindInResponse("blocked", false) > 1))
             {
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 504 Gateway Timeout -- Internet Access Blocked.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 504 Gateway Timeout -- Internet Access Blocked.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -57,16 +57,16 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);            
         }
 
         public void HTTP_504_Gateway_Timeout_Anything_Else(Session session)
         {
             // Pick up any other 504 Gateway Timeout and write data into the comments box.
 
-            this.session = session;
+            this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 504 Gateway Timeout.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 504 Gateway Timeout.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -86,7 +86,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
     }
 }

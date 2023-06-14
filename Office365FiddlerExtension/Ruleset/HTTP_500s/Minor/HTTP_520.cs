@@ -17,9 +17,9 @@ namespace Office365FiddlerExtension.Ruleset
 
         public void HTTP_520_Web_Server_Returned_an_Unknown_Error(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 520 Cloudflare Web Server Returned an Unknown Error.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 520 Cloudflare Web Server Returned an Unknown Error.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -38,7 +38,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
     }
 }

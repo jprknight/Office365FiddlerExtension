@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Office365FiddlerExtension.Handler;
 
 namespace Office365FiddlerExtension.UI
 {
@@ -79,9 +80,9 @@ namespace Office365FiddlerExtension.UI
         // Called by EnhanceUX to populate column data.
         public string ElapsedTime(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
+            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.Session);
 
             return ExtensionSessionFlags.ElapsedTime;
         }
@@ -89,9 +90,9 @@ namespace Office365FiddlerExtension.UI
         // Called by ActivationService to populate column data.
         public string SessionType(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
+            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.Session);
 
             return ExtensionSessionFlags.SessionType;
         }
@@ -99,9 +100,9 @@ namespace Office365FiddlerExtension.UI
         // Called by ActivationService to populate column data.
         public string Authentication(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
+            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.Session);
 
             return ExtensionSessionFlags.Authentication;
         }
@@ -109,20 +110,20 @@ namespace Office365FiddlerExtension.UI
         // Called by ActivationService to populate column data.
         public string ResponseServer(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.session);
+            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.Session);
 
             return ExtensionSessionFlags.ResponseServer;
         }
 
         public string HostIP(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            if (this.session["X-HostIP"] != null && this.session["X-HostIP"] != "")
+            if (this.Session["X-HostIP"] != null && this.Session["X-HostIP"] != "")
             {
-                return this.session["X-HostIP"];
+                return this.Session["X-HostIP"];
             }
             else
             {

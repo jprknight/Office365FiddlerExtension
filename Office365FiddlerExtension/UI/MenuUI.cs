@@ -4,7 +4,7 @@ using System;
 using System.Windows.Forms;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Office365FiddlerExtension.UI;
-using Office365FiddlerExtension.Handlers;
+using Office365FiddlerExtension.Handler;
 
 namespace Office365FiddlerExtension
 {
@@ -52,8 +52,10 @@ namespace Office365FiddlerExtension
 
                 this.ExtensionMenu = new MenuItem(SettingsHandler.Instance.ExtensionEnabled ? MenuEnabled : MenuDisabled);
 
-                this.MiEnabled = new MenuItem("Enable", new EventHandler(this.MiEnabled_Click));
-                this.MiEnabled.Checked = SettingsHandler.Instance.ExtensionEnabled;
+                this.MiEnabled = new MenuItem("Enable", new EventHandler(this.MiEnabled_Click))
+                {
+                    Checked = SettingsHandler.Instance.ExtensionEnabled
+                };
 
                 this.MiProcessAllSessions = new MenuItem("Process All Sessions", new EventHandler(this.MiProcessAllSessions_Click));
 

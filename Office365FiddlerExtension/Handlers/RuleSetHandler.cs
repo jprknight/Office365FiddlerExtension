@@ -2,7 +2,6 @@
 using FiddlerCore.Utilities.SmartAssembly.Attributes;
 using Microsoft.CSharp;
 using Microsoft.Win32;
-using Office365FiddlerExtension.Handlers;
 using Office365FiddlerExtension.Properties;
 using System;
 using System.CodeDom.Compiler;
@@ -15,8 +14,9 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Office365FiddlerExtension.Services;
 
-namespace Office365FiddlerExtension.Services
+namespace Office365FiddlerExtension.Handler
 {
     class RuleSetHandler : ActivationService
     {   
@@ -108,11 +108,6 @@ namespace Office365FiddlerExtension.Services
                 }
             }
             #endregion
-        }
-
-        public async void UpdateAlwaysRunRules()
-        {
-
         }
 
         public async void UpdateRulesetFromGithub()

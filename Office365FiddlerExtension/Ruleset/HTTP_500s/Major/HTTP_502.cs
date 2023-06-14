@@ -19,19 +19,19 @@ namespace Office365FiddlerExtension.Ruleset
         {
             // Telemetry false positive.
 
-            this.session = session;
+            this.Session = session;
 
-            if (!(this.session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443"))
+            if (!(this.Session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443"))
             {
                 return;
             }
 
-            if (!(this.session.utilFindInResponse("target machine actively refused it", false) > 1))
+            if (!(this.Session.utilFindInResponse("target machine actively refused it", false) > 1))
             {
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 502 Bad Gateway. Telemetry False Positive.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 502 Bad Gateway. Telemetry False Positive.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -50,31 +50,31 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);            
         }
 
         public void HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive(Session session)
         {
             // Exchange Online DNS lookup on contoso.onmicrosoft.com, False Positive.
 
-            this.session = session;
+            this.Session = session;
 
-            if (!(this.session.utilFindInResponse("DNS Lookup for ", false) > 1))
+            if (!(this.Session.utilFindInResponse("DNS Lookup for ", false) > 1))
             {
                 return;
             }
 
-            if (!(this.session.utilFindInResponse(".onmicrosoft.com", false) > 1))
+            if (!(this.Session.utilFindInResponse(".onmicrosoft.com", false) > 1))
             {
                 return;
             }
 
-            if (!(this.session.utilFindInResponse(" failed.", false) > 1))
+            if (!(this.Session.utilFindInResponse(" failed.", false) > 1))
             {
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 502 Bad Gateway. EXO DNS False Positive.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 502 Bad Gateway. EXO DNS False Positive.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -97,37 +97,37 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);            
         }
 
         public void HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive(Session session)
         {
             // Exchange Online connection to autodiscover.contoso.mail.onmicrosoft.com, False Positive.
 
-            this.session = session;
+            this.Session = session;
 
-            if (!(this.session.utilFindInResponse(".onmicrosoft.com", false) > 1))
+            if (!(this.Session.utilFindInResponse(".onmicrosoft.com", false) > 1))
             {
                 return;
             }
 
-            if (!(this.session.utilFindInResponse("autodiscover", false) > 1))
+            if (!(this.Session.utilFindInResponse("autodiscover", false) > 1))
             {
                 return;
             }
 
-            if (!(this.session.utilFindInResponse("target machine actively refused it", false) > 1))
+            if (!(this.Session.utilFindInResponse("target machine actively refused it", false) > 1))
             {
                 return;
             }
 
             
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 502 Bad Gateway. O365 AutoD onmicrosoft.com False Positive.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 502 Bad Gateway. O365 AutoD onmicrosoft.com False Positive.");
 
             string AutoDFalsePositiveDomain;
-            string AutoDFalsePositiveResponseBody = this.session.GetResponseBodyAsString();
-            int start = this.session.GetResponseBodyAsString().IndexOf("'");
-            int end = this.session.GetResponseBodyAsString().LastIndexOf("'");
+            string AutoDFalsePositiveResponseBody = this.Session.GetResponseBodyAsString();
+            int start = this.Session.GetResponseBodyAsString().IndexOf("'");
+            int end = this.Session.GetResponseBodyAsString().LastIndexOf("'");
             int charcount = end - start;
             if (charcount > 0)
             {
@@ -164,26 +164,26 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
         public void HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover(Session session)
         {
             // Anything else Exchange Autodiscover.
 
-            this.session = session;
+            this.Session = session;
 
-            if (!(this.session.utilFindInResponse("target machine actively refused it", false) > 1))
+            if (!(this.Session.utilFindInResponse("target machine actively refused it", false) > 1))
             {
                 return;
             }
 
-            if (!(this.session.utilFindInResponse("autodiscover", false) > 1))
+            if (!(this.Session.utilFindInResponse("autodiscover", false) > 1))
             {
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 502 Bad Gateway. Exchange Autodiscover.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 502 Bad Gateway. Exchange Autodiscover.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -202,16 +202,16 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);            
         }
 
         public void HTTP_502_Bad_Gateway_Anything_Else(Session session)
         {
             // Everything else.
 
-            this.session = session;
+            this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 502 Bad Gateway.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 502 Bad Gateway.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -232,7 +232,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
     }
 }

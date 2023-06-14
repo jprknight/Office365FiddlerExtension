@@ -17,9 +17,9 @@ namespace Office365FiddlerExtension.Ruleset
 
         public void HTTP_418_Im_A_Teapot(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 418 I'm a teapot (RFC 2324, RFC 7168).");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 418 I'm a teapot (RFC 2324, RFC 7168).");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -38,7 +38,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
     }
 }

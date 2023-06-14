@@ -17,7 +17,7 @@ namespace Office365FiddlerExtension.Ruleset
 
         public void SetProcessName(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
             string ProcessName = "";
             // Set process name, split and exclude port used.
@@ -38,7 +38,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
     }
 }

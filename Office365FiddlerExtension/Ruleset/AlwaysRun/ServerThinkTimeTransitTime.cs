@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
+using Office365FiddlerExtension.Handler;
 using Fiddler;
 using Newtonsoft.Json;
 
@@ -18,23 +19,23 @@ namespace Office365FiddlerExtension.Ruleset
         // Set Server Think Time and Transit Time for Inspector.
         public void SetServerThinkTimeTransitTime(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetServerThinkTimeTransitTime.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running SetServerThinkTimeTransitTime.");
 
             // ServerGotRequest, ServerBeginResponse or ServerDoneResponse can be blank. If so do not try to calculate and output 'Server Think Time' or
             // 'Transmit Time', we end up with a hideously large number.
-            if (this.session.Timers.ServerGotRequest.ToString("H:mm:ss.fff") != "0:00:00.000" &&
-                this.session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff") != "0:00:00.000" &&
-                this.session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
+            if (this.Session.Timers.ServerGotRequest.ToString("H:mm:ss.fff") != "0:00:00.000" &&
+                this.Session.Timers.ServerBeginResponse.ToString("H:mm:ss.fff") != "0:00:00.000" &&
+                this.Session.Timers.ServerDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
             {
 
-                double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
-                double ServerSeconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalSeconds);
+                double ServerMilliseconds = Math.Round((this.Session.Timers.ServerBeginResponse - this.Session.Timers.ServerGotRequest).TotalMilliseconds);
+                double ServerSeconds = Math.Round((this.Session.Timers.ServerBeginResponse - this.Session.Timers.ServerGotRequest).TotalSeconds);
 
                 // transit time = elapsed time - server think time.
 
-                double ElapsedMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
+                double ElapsedMilliseconds = Math.Round((this.Session.Timers.ClientDoneResponse - this.Session.Timers.ClientBeginRequest).TotalMilliseconds);
 
                 double dTransitTimeMilliseconds = ElapsedMilliseconds - ServerMilliseconds;
                 if (dTransitTimeMilliseconds < 0)
@@ -55,7 +56,7 @@ namespace Office365FiddlerExtension.Ruleset
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                    SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
 
                     // Highlight server think time in green.
                     if (ServerMilliseconds < 1000)
@@ -66,7 +67,7 @@ namespace Office365FiddlerExtension.Ruleset
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
                     }
                     else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
                     {
@@ -76,7 +77,7 @@ namespace Office365FiddlerExtension.Ruleset
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
                     }
                     else
                     {
@@ -86,7 +87,7 @@ namespace Office365FiddlerExtension.Ruleset
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
                     }
 
                     // Highlight transit time in red.
@@ -98,7 +99,7 @@ namespace Office365FiddlerExtension.Ruleset
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
                     }
                     else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
                     {
@@ -108,7 +109,7 @@ namespace Office365FiddlerExtension.Ruleset
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
                     }
                     else
                     {
@@ -118,7 +119,7 @@ namespace Office365FiddlerExtension.Ruleset
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
                     }
                 }
                 else
@@ -131,7 +132,7 @@ namespace Office365FiddlerExtension.Ruleset
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
                     }
                     else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
                     {
@@ -141,7 +142,7 @@ namespace Office365FiddlerExtension.Ruleset
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
                     }
                     else
                     {
@@ -151,7 +152,7 @@ namespace Office365FiddlerExtension.Ruleset
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
                     }
 
                     if (dTransitTimeMilliseconds < 1000)
@@ -162,7 +163,7 @@ namespace Office365FiddlerExtension.Ruleset
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
                     }
                     else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
                     {
@@ -172,7 +173,7 @@ namespace Office365FiddlerExtension.Ruleset
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
                     }
                     else
                     {
@@ -182,7 +183,7 @@ namespace Office365FiddlerExtension.Ruleset
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
                     }
                 }
             }
@@ -195,7 +196,7 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
             }
         }
     }

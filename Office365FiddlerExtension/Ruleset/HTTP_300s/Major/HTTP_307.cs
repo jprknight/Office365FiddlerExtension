@@ -17,15 +17,15 @@ namespace Office365FiddlerExtension.Ruleset
 
         public void HTTP_307_AutoDiscover_Temporary_Redirect(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
             // Specific scenario where a HTTP 307 Temporary Redirect incorrectly send an EXO Autodiscover request to an On-Premise resource, breaking Outlook connectivity.
-            if (this.session.hostname.Contains("autodiscover") &&
-                (this.session.hostname.Contains("mail.onmicrosoft.com") &&
-                (this.session.fullUrl.Contains("autodiscover") &&
-                (this.session.ResponseHeaders["Location"] != "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml"))))
+            if (this.Session.hostname.Contains("autodiscover") &&
+                (this.Session.hostname.Contains("mail.onmicrosoft.com") &&
+                (this.Session.fullUrl.Contains("autodiscover") &&
+                (this.Session.ResponseHeaders["Location"] != "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml"))))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 307 On-Prem Temp Redirect - Unexpected location!");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 307 On-Prem Temp Redirect - Unexpected location!");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -50,18 +50,18 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
             }
         }
 
         public void HTTP_307_Other_AutoDiscover_Redirects(Session session)
         {
 
-            this.session = session;
+            this.Session = session;
 
             // The above scenario is not seem, however Temporary Redirects are not normally expected to be seen.
             // Highlight as a warning.
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 307 Temp Redirect.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 307 Temp Redirect.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -86,11 +86,11 @@ namespace Office365FiddlerExtension.Ruleset
         public void HTTP_307_All_Other_Redirects(Session session)
         {
 
-            this.session = session;
+            this.Session = session;
 
             // The above scenario is not seem, however Temporary Redirects are not normally expected to be seen.
             // Highlight as a warning.
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 307 Temp Redirect.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 307 Temp Redirect.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {

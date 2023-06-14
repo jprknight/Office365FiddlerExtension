@@ -17,13 +17,13 @@ namespace Office365FiddlerExtension.Ruleset
 
         public void HTTP_403_Forbidden_Proxy_Block(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
             // Looking for the term "Access Denied" or "Access Blocked" in session response.
             // Specific scenario where a web proxy is blocking traffic from reaching the internet.
-            if (this.session.utilFindInResponse("Access Denied", false) > 1 || session.utilFindInResponse("Access Blocked", false) > 1)
+            if (this.Session.utilFindInResponse("Access Denied", false) > 1 || session.utilFindInResponse("Access Blocked", false) > 1)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -49,7 +49,7 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
             }
         }
 
@@ -57,11 +57,11 @@ namespace Office365FiddlerExtension.Ruleset
         {
             // 3rd-party EWS application could not connect to Exchange Online mailbox until culture/language was set for the first time in OWA.
 
-            this.session = session;
+            this.Session = session;
 
-            if (this.session.fullUrl.Contains("outlook.office365.com/EWS") || this.session.fullUrl.Contains("outlook.office365.com/ews"))
+            if (this.Session.fullUrl.Contains("outlook.office365.com/EWS") || this.Session.fullUrl.Contains("outlook.office365.com/ews"))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 403 Forbidden. EWS Language not set on mailbox.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 403 Forbidden. EWS Language not set on mailbox.");
                 
                 var sessionFlags_HTTP403_EWS = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -83,7 +83,7 @@ namespace Office365FiddlerExtension.Ruleset
                     SessionResponseServerConfidenceLevel = 5
                 };
                 var sessionFlagsJson_HTTP403_EWS = JsonConvert.SerializeObject(sessionFlags_HTTP403_EWS);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson_HTTP403_EWS);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson_HTTP403_EWS);
             }
         }
 
@@ -91,9 +91,9 @@ namespace Office365FiddlerExtension.Ruleset
         {
             // All other HTTP 403's.
 
-            this.session = session;
+            this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 403 Forbidden.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 403 Forbidden.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -116,7 +116,7 @@ namespace Office365FiddlerExtension.Ruleset
                 SessionResponseServerConfidenceLevel = 5
             };
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);          
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);          
         }
     }
 }

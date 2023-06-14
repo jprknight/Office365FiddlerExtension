@@ -3,9 +3,7 @@ using System.Windows.Forms;
 using Fiddler;
 using System.Xml;
 using Office365FiddlerExtension.Services;
-using Newtonsoft.Json;
-using static Office365FiddlerExtension.Services.SessionFlagHandler;
-using Office365FiddlerExtension.Handlers;
+using Office365FiddlerExtension.Handler;
 
 namespace Office365FiddlerExtension
 {
@@ -33,13 +31,13 @@ namespace Office365FiddlerExtension
 
             string downloadUrl;
             Version newVersion = null;
-            string xmlUrl = URLs.UpdateJson; // Properties.Settings.Default.UpdateURL;
+            //string xmlUrl = URLs.UpdateJson; // Properties.Settings.Default.UpdateURL;
 
             XmlTextReader reader = null;
 
             try
             {
-                reader = new XmlTextReader(xmlUrl);
+                //reader = new XmlTextReader(xmlUrl);
                 reader.MoveToContent();
                 string elementName = "";
                 if ((reader.NodeType == XmlNodeType.Element) && reader.Name == "EXOFiddlerInspector")

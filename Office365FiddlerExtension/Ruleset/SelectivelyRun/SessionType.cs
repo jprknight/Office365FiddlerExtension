@@ -18,17 +18,17 @@ namespace Office365FiddlerExtension.Ruleset
 
         public void SetSessionType_FreeBusy(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
             // If the session doesn't contain any of these features, return.
-            if (!this.session.fullUrl.Contains("WSSecurity")
-                || (!this.session.fullUrl.Contains("GetUserAvailability")
-                || !(this.session.utilFindInResponse("GetUserAvailability", false) > 1)))
+            if (!this.Session.fullUrl.Contains("WSSecurity")
+                || (!this.Session.fullUrl.Contains("GetUserAvailability")
+                || !(this.Session.utilFindInResponse("GetUserAvailability", false) > 1)))
             {
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_FreeBusy");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running SetSessionType_FreeBusy");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -38,19 +38,19 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
         public void SetSessionType_Microsoft365_EWS(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            if (!this.session.fullUrl.Contains("outlook.office365.com/EWS"))
+            if (!this.Session.fullUrl.Contains("outlook.office365.com/EWS"))
             {
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_Microsoft365_EWS");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running SetSessionType_Microsoft365_EWS");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -60,19 +60,19 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
         public void SetSessionType_EWS(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            if (!this.session.fullUrl.Contains("/EWS"))
+            if (!this.Session.fullUrl.Contains("/EWS"))
             {
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_EWS");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running SetSessionType_EWS");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -82,17 +82,17 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
         public void SetSessionType_Microsoft365_Authentication(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
             // This check needs to be inclusive, so we don't exclude sessions.
-            if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com"))
+            if (this.Session.url.Contains("login.microsoftonline.com") || this.Session.HostnameIs("login.microsoftonline.com"))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_Microsoft365_Authentication");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running SetSessionType_Microsoft365_Authentication");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -102,20 +102,20 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
             }
         }
 
         public void SetSessionType_ADFS_Authentication(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            if (!this.session.fullUrl.Contains("adfs/services/trust/mex"))
+            if (!this.Session.fullUrl.Contains("adfs/services/trust/mex"))
             {
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_ADFS_Authentication");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running SetSessionType_ADFS_Authentication");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -125,24 +125,24 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
         public void SetSessionType_General_Microsoft365(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            if (!this.session.fullUrl.Contains("outlook.office365.com"))
+            if (!this.Session.fullUrl.Contains("outlook.office365.com"))
             {
                 return;
             }
 
-            if (!this.session.fullUrl.Contains("outlook.office.com"))
+            if (!this.Session.fullUrl.Contains("outlook.office.com"))
             {
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_General_Microsoft365");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running SetSessionType_General_Microsoft365");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -152,62 +152,62 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
         public void SetSessionType_Office_Applications(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            if (this.session.LocalProcess.Contains("outlook")
-                || this.session.LocalProcess.Contains("searchprotocolhost")
-                || this.session.LocalProcess.Contains("winword")
-                || this.session.LocalProcess.Contains("excel")
-                || this.session.LocalProcess.Contains("onenote")
-                || this.session.LocalProcess.Contains("msaccess")
-                || this.session.LocalProcess.Contains("powerpnt")
-                || this.session.LocalProcess.Contains("mspub")
-                || this.session.LocalProcess.Contains("onedrive")
-                || this.session.LocalProcess.Contains("lync")
-                || this.session.LocalProcess.Contains("w3wp"))
+            if (this.Session.LocalProcess.Contains("outlook")
+                || this.Session.LocalProcess.Contains("searchprotocolhost")
+                || this.Session.LocalProcess.Contains("winword")
+                || this.Session.LocalProcess.Contains("excel")
+                || this.Session.LocalProcess.Contains("onenote")
+                || this.Session.LocalProcess.Contains("msaccess")
+                || this.Session.LocalProcess.Contains("powerpnt")
+                || this.Session.LocalProcess.Contains("mspub")
+                || this.Session.LocalProcess.Contains("onedrive")
+                || this.Session.LocalProcess.Contains("lync")
+                || this.Session.LocalProcess.Contains("w3wp"))
                 {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_Office_Applications");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running SetSessionType_Office_Applications");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     SectionTitle = "SessionType_Office_Applications",
-                    SessionType = this.session.LocalProcess.Split(':')[0],
+                    SessionType = this.Session.LocalProcess.Split(':')[0],
                     SessionTypeConfidenceLevel = 10
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
 
             }
         }
 
         public void SetSessionType_Internet_Browsers(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            if (this.session.LocalProcess.Contains("iexplore")
-                || this.session.LocalProcess.Contains("chrome")
-                || this.session.LocalProcess.Contains("firefox")
-                || this.session.LocalProcess.Contains("edge")
-                || this.session.LocalProcess.Contains("safari")
-                || this.session.LocalProcess.Contains("brave"))
+            if (this.Session.LocalProcess.Contains("iexplore")
+                || this.Session.LocalProcess.Contains("chrome")
+                || this.Session.LocalProcess.Contains("firefox")
+                || this.Session.LocalProcess.Contains("edge")
+                || this.Session.LocalProcess.Contains("safari")
+                || this.Session.LocalProcess.Contains("brave"))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_Internet_Browsers");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running SetSessionType_Internet_Browsers");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     SectionTitle = "SessionType_Internet_Browsers",
-                    SessionType = this.session.LocalProcess.Split(':')[0],
+                    SessionType = this.Session.LocalProcess.Split(':')[0],
                     SessionTypeConfidenceLevel = 10
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
 
             }
         }
@@ -215,14 +215,14 @@ namespace Office365FiddlerExtension.Ruleset
         public void SetSessionType_Unknown(Session session)
         {
             
-            this.session = session;
+            this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetSessionType_Unclassified");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running SetSessionType_Unclassified");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
                 SectionTitle = "SetSessionType",
-                SessionType = this.session["X-ProcessName"],
+                SessionType = this.Session["X-ProcessName"],
                 ResponseAlert = "Unclassified",
                 ResponseComments = "The Office 365 Fiddler Extension does not yet have a way to classify this session."
                 + "<p>If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: "
@@ -232,7 +232,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
     }
 }

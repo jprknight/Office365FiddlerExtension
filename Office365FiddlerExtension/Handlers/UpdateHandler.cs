@@ -1,6 +1,6 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
-using Office365FiddlerExtension.Handlers;
+using Office365FiddlerExtension.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,9 +8,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using static Office365FiddlerExtension.Services.SessionFlagHandler;
 
-namespace Office365FiddlerExtension.Services
+namespace Office365FiddlerExtension.Handler
 {
     public class UpdateHandler
     {
@@ -18,7 +17,7 @@ namespace Office365FiddlerExtension.Services
         {
             var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
             var ExtensionURLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
-            var ExtensionVersion = VersionHandler.Instance.GetDeserializedExtensionVersion();
+            //var ExtensionVersion = VersionHandler.Instance.GetDeserializedExtensionVersion();
 
             if (ExtensionSettings.NeverWebCall)
             {

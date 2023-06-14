@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
+using Office365FiddlerExtension.Handler;
 using Fiddler;
 using Newtonsoft.Json;
-using static Office365FiddlerExtension.Services.SessionFlagHandler;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -19,9 +19,9 @@ namespace Office365FiddlerExtension.Ruleset
         // Function to highlight long running sessions.
         public void LongRunningSessionsWarning(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
+            double ClientMilliseconds = Math.Round((this.Session.Timers.ClientDoneResponse - this.Session.Timers.ClientBeginRequest).TotalMilliseconds);
 
             // If the session is less than the warning threshold (quick) and more than the slow running threshold (slow), return.
             if (ClientMilliseconds < SettingsHandler.Instance.WarningSessionTimeThreshold && ClientMilliseconds > SettingsHandler.Instance.SlowRunningSessionThreshold)
@@ -29,7 +29,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running LongRunningSessionsWarning.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running LongRunningSessionsWarning.");
 
             // Warn on a 2.5 second roundtrip time. Using ClientMilliseconds here since that represents the complete round trip.
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
@@ -45,14 +45,14 @@ namespace Office365FiddlerExtension.Ruleset
                 + "A small number of sessions completing roundtrip in this timeframe is not necessary sign of an issue."
             };
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
         public void LongRunningSessionsClientSlow(Session session) {
 
-            this.session = session;
+            this.Session = session;
 
-            double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
+            double ClientMilliseconds = Math.Round((this.Session.Timers.ClientDoneResponse - this.Session.Timers.ClientBeginRequest).TotalMilliseconds);
 
             // If the session round trip time is less than the slow session threshold, return.
             if (ClientMilliseconds < SettingsHandler.Instance.SlowRunningSessionThreshold)
@@ -60,7 +60,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Long running client session.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Long running client session.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -81,14 +81,14 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
         public void LongRunningSessionsServerSlow(Session session) {
 
-            this.session = session;
+            this.Session = session;
 
-            double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
+            double ServerMilliseconds = Math.Round((this.Session.Timers.ServerBeginResponse - this.Session.Timers.ServerGotRequest).TotalMilliseconds);
 
             // If the Office 365 server think time runs longer than 5,000ms or 5 seconds.
             if (ServerMilliseconds < SettingsHandler.Instance.SlowRunningSessionThreshold)
@@ -96,7 +96,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Long running Office 365 session.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Long running Office 365 session.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -117,7 +117,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);           
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);           
         }
     }
 }

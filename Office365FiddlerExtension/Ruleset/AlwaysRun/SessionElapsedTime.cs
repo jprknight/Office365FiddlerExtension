@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
+using Office365FiddlerExtension.Handler;
 using Fiddler;
 using Newtonsoft.Json;
 
@@ -18,13 +19,13 @@ namespace Office365FiddlerExtension.Ruleset
         // Function where Elapsed Time column data is populated.
         public void SetElapsedTime(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetElapsedTime.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running SetElapsedTime.");
 
-            if (this.session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") != "0:00:00.000" && this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
+            if (this.Session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") != "0:00:00.000" && this.Session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
             {
-                double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
+                double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - this.Session.Timers.ClientBeginRequest).TotalMilliseconds);
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -33,7 +34,7 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
             }
             else
             {
@@ -44,22 +45,22 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
             }
         }
 
         // Function to set the Elapsed Time for the inspector. HTML mark up.
         public void SetInspectorElapsedTime(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Running SetInspectorElapsedTime.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running SetInspectorElapsedTime.");
 
             // ClientDoneResponse can be blank. If so do not try to calculate and output Elapsed Time, we end up with a hideously large number.
-            if (this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
+            if (this.Session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
             {
-                double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
-                double ClientSeconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalSeconds);
+                double ClientMilliseconds = Math.Round((this.Session.Timers.ClientDoneResponse - this.Session.Timers.ClientBeginRequest).TotalMilliseconds);
+                double ClientSeconds = Math.Round((this.Session.Timers.ClientDoneResponse - this.Session.Timers.ClientBeginRequest).TotalSeconds);
 
                 // If the roundtrip time is less than 1 second show the result in milliseconds.
                 if (ClientMilliseconds < 1000)
@@ -71,7 +72,7 @@ namespace Office365FiddlerExtension.Ruleset
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                    SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
                 }
                 // If the roundtrip is over warning and under slow running thresholds; orange.
                 else if (ClientMilliseconds > SettingsHandler.Instance.WarningSessionTimeThreshold && ClientMilliseconds < SettingsHandler.Instance.SlowRunningSessionThreshold)
@@ -83,7 +84,7 @@ namespace Office365FiddlerExtension.Ruleset
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                    SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
                 }
                 // If roundtrip is over slow running threshold; red.
                 else if (ClientMilliseconds > SettingsHandler.Instance.SlowRunningSessionThreshold)
@@ -95,7 +96,7 @@ namespace Office365FiddlerExtension.Ruleset
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                    SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
                 }
                 // If the roundtrip time is more than 1 second show the result in seconds.
                 else
@@ -109,7 +110,7 @@ namespace Office365FiddlerExtension.Ruleset
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
                     }
                     else
                     {
@@ -120,7 +121,7 @@ namespace Office365FiddlerExtension.Ruleset
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
                     }
                 }
             }
@@ -133,7 +134,7 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
             }
         }
     }

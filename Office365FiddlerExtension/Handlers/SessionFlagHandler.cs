@@ -15,22 +15,22 @@ namespace Office365FiddlerExtension.Services
         private static SessionFlagHandler _instance;
         public static SessionFlagHandler Instance => _instance ?? (_instance = new SessionFlagHandler());
 
-        public ExtensionSessionFlags GetDeserializedSessionFlags(Session session)
+        public ExtensionSessionFlags GetDeserializedSessionFlags(Session Session)
         {
-            this.session = session;
+            this.Session = Session;
             // Call create here to avoid null exception if live tracing traffic.
-            CreateExtensionSessionFlag(this.session);
-            return JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.session));
+            CreateExtensionSessionFlag(this.Session);
+            return JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.Session));
         }
 
-        public string GetSessionJsonData(Session session)
+        public string GetSessionJsonData(Session Session)
         {
-            this.session = session;
+            this.Session = Session;
 
             // Make sure the extension session flag is created if it doesn't exist.
-            CreateExtensionSessionFlag(this.session);
+            CreateExtensionSessionFlag(this.Session);
 
-            return this.session["Microsoft365FiddlerExtensionJson"];
+            return this.Session["Microsoft365FiddlerExtensionJson"];
         }
 
         public string ResponseCommentsNoKnownIssue()
@@ -40,9 +40,9 @@ namespace Office365FiddlerExtension.Services
                 + "<a href='https://aka.ms/Office365FiddlerExtension' target='_blank'>https://aka.ms/Office365FiddlerExtension</a>.</p>";
         }
 
-        public Boolean GetAnySessionConfidenceLevelTen(Session session)
+        public Boolean GetAnySessionConfidenceLevelTen(Session Session)
         {
-            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(GetSessionJsonData(this.session));
+            var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(GetSessionJsonData(this.Session));
 
             if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel == 10 ||
                 ExtensionSessionFlags.SessionTypeConfidenceLevel == 10 ||
@@ -53,16 +53,16 @@ namespace Office365FiddlerExtension.Services
             return false;
         }
 
-        public void CreateExtensionSessionFlag(Session session)
+        public void CreateExtensionSessionFlag(Session Session)
         {
-            this.session = session;
+            this.Session = Session;
 
-            if (this.session["Microsoft365FiddlerExtensionJson"] != null)
+            if (this.Session["Microsoft365FiddlerExtensionJson"] != null)
             {
                 return;
             }
 
-            //FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} Json extension session flag not found. Creating.");
+            //FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Json extension session flag not found. Creating.");
 
             var SessionFlagsData = new
             {
@@ -100,22 +100,22 @@ namespace Office365FiddlerExtension.Services
             string jsonData = JsonConvert.SerializeObject(SessionFlagsData, Formatting.Indented);
 
             // Save the new Json to the session flag.
-            this.session["Microsoft365FiddlerExtensionJson"] = jsonData;
+            this.Session["Microsoft365FiddlerExtensionJson"] = jsonData;
         }
 
         // Process All Sesssions ; Menu item is clicked.
         public void ProcessAllSessions()
         {
-            var oSessions = FiddlerApplication.UI.GetAllSessions();
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Processing all {oSessions.Count()} current sessions.");
+            var Sessions = FiddlerApplication.UI.GetAllSessions();
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Processing all {Sessions.Count()} current sessions.");
 
-            foreach (var session in oSessions)
+            foreach (var Session in Sessions)
             {
-                this.session = session;
-                SessionHandler.Instance.OnPeekAtResponseHeaders(this.session);
+                this.Session = Session;
+                SessionHandler.Instance.OnPeekAtResponseHeaders(this.Session);
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Processed {oSessions.Count()} sessions.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Processed {Sessions.Count()} sessions.");
         }
 
         // Clear All Session Processing ; Menu item is clicked.
@@ -123,21 +123,21 @@ namespace Office365FiddlerExtension.Services
         {
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Clearing all current session procesing.");
 
-            var oSessions = FiddlerApplication.UI.GetAllSessions();
-            foreach (var session in oSessions)
+            var Sessions = FiddlerApplication.UI.GetAllSessions();
+            foreach (var Session in Sessions)
             {
-                this.session = session;
+                this.Session = Session;
 
-                EnhanceSessionUX.Instance.NormaliseSession(this.session);
+                EnhanceSessionUX.Instance.NormaliseSession(this.Session);
 
-                this.session.RefreshUI();
+                this.Session.RefreshUI();
             }
         }
 
         // Take any updates to session flags and save them into the session Json.
-        public void UpdateSessionFlagJson(Session session, String JsonData)
+        public void UpdateSessionFlagJson(Session Session, String JsonData)
         {
-            this.session = session;
+            this.Session = Session;
 
             var JsonSettings = new JsonSerializerSettings
             {
@@ -145,9 +145,9 @@ namespace Office365FiddlerExtension.Services
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
 
-            CreateExtensionSessionFlag(this.session);
+            CreateExtensionSessionFlag(this.Session);
 
-            var existingSessionFlags = this.session["Microsoft365FiddlerExtensionJson"];
+            var existingSessionFlags = this.Session["Microsoft365FiddlerExtensionJson"];
             var existingSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(existingSessionFlags, JsonSettings);
 
 
@@ -335,7 +335,7 @@ namespace Office365FiddlerExtension.Services
             var newJsonData = JsonConvert.SerializeObject(updatedSessionFlagsJson, Formatting.Indented);
 
             // Save the new Json to the session flag.
-            this.session["Microsoft365FiddlerExtensionJson"] = newJsonData;           
+            this.Session["Microsoft365FiddlerExtensionJson"] = newJsonData;           
         }
 
         public class ExtensionSessionFlags

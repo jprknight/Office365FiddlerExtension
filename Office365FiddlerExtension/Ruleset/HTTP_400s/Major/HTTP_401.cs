@@ -19,16 +19,16 @@ namespace Office365FiddlerExtension.Ruleset
         {
             // 401.1. Exchange Online Autodiscover
 
-            this.session = session;
+            this.Session = session;
 
             // Make sure this session is an Exchange Online Autodiscover request.
             // Non-ClickToRun clients redirect to https://autodiscover-s.outlook.com/Autodiscover/AutoDiscover.xml
             // ClickToRun clients use to https://outlook.office365.com/Autodiscover/AutoDiscover.xml.
-            if ((this.session.hostname == "autodiscover-s.outlook.com")
-                || (this.session.hostname == "outlook.office365.com")
-                && (this.session.uriContains("autodiscover.xml")))
+            if ((this.Session.hostname == "autodiscover-s.outlook.com")
+                || (this.Session.hostname == "outlook.office365.com")
+                && (this.Session.uriContains("autodiscover.xml")))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 401 Auth Challenge.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 401 Auth Challenge.");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -52,7 +52,7 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
             }
         }
 
@@ -60,11 +60,11 @@ namespace Office365FiddlerExtension.Ruleset
         {
             // Exchange OnPremise AutoDiscover
 
-            this.session = session;
+            this.Session = session;
 
-            if (this.session.uriContains("/Autodiscover/Autodiscover.xml"))
+            if (this.Session.uriContains("/Autodiscover/Autodiscover.xml"))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 401 Auth Challenge.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 401 Auth Challenge.");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -87,20 +87,20 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
             }
         }
 
         public void HTTP_401_EWS(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
             /////////////////////////////
             //
             // 401.3 Any Exchange Web Services
             if (session.uriContains("/EWS/Exchange.asmx"))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 401 EWS call.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 401 EWS call.");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -120,15 +120,15 @@ namespace Office365FiddlerExtension.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
             }
         }
 
         public void HTTP_401_Everything_Else(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 401 Auth Challenge.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 401 Auth Challenge.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -150,7 +150,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
     }
 }

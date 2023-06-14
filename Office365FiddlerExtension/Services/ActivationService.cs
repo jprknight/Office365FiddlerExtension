@@ -4,7 +4,7 @@ using System.Text;
 using System;
 using System.Reflection;
 using Office365FiddlerExtension.UI;
-using Office365FiddlerExtension.Handlers;
+using Office365FiddlerExtension.Handler;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -13,7 +13,7 @@ namespace Office365FiddlerExtension.Services
     /// </summary>
     public abstract class ActivationService : IAutoTamper
     {
-        internal Session session { get; set; }
+        internal Session Session { get; set; }
         
         private bool IsInitialized { get; set; }
         
@@ -73,7 +73,7 @@ namespace Office365FiddlerExtension.Services
         /// Called for each HTTP/HTTPS response after it's complete.
         /// </summary>
         /// <param name="_session"></param>
-        public void AutoTamperResponseAfter(Session session)
+        public void AutoTamperResponseAfter(Session Session)
         {
             if (!SettingsHandler.Instance.ExtensionEnabled)
             {
@@ -84,9 +84,9 @@ namespace Office365FiddlerExtension.Services
             // If session analysis on live trace is enabled, run.
             if (SettingsHandler.Instance.SessionAnalysisOnLiveTrace)
             {
-                this.session = session;
-                SessionHandler.Instance.OnPeekAtResponseHeaders(this.session);
-                this.session.RefreshUI();
+                this.Session = Session;
+                SessionHandler.Instance.OnPeekAtResponseHeaders(this.Session);
+                this.Session.RefreshUI();
             }
         }
 

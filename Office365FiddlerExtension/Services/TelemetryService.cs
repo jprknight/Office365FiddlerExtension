@@ -4,7 +4,7 @@ using Microsoft.ApplicationInsights;
 using System.Management;
 using System.Text;
 using Fiddler;
-using Office365FiddlerExtension.Handlers;
+using Office365FiddlerExtension.Handler;
 
 namespace Office365FiddlerExtension.Services
 {

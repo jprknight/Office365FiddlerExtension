@@ -17,14 +17,14 @@ namespace Office365FiddlerExtension.Ruleset
 
         public void HTTP_456_Multi_Factor_Required(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            if (!(this.session.utilFindInResponse("you must use multi-factor authentication", false) > 1))
+            if (!(this.Session.utilFindInResponse("you must use multi-factor authentication", false) > 1))
             {
                 return;
             }
              
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 456 Multi-Factor Required!");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 456 Multi-Factor Required!");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -48,19 +48,19 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
         public void HTTP_456_OAuth_Not_Available(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
             if (!(session.utilFindInResponse("oauth_not_available", false) > 1))
             {
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 456 Multi-Factor Required!");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 456 Multi-Factor Required!");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -84,14 +84,14 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
         public void HTTP_456_Anything_Else(Session session)
         {
-            this.session = session;
+            this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 456 Multi-Factor Required.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 456 Multi-Factor Required.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -115,7 +115,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
 
         }
     }

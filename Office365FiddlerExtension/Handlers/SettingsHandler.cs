@@ -1,6 +1,6 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
-using Office365FiddlerExtension.Handlers;
+using Office365FiddlerExtension.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +12,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Office365FiddlerExtension.Services
+namespace Office365FiddlerExtension.Handler
 {
     /// <summary>
     /// Handler for extension settings and URLs set in Fiddlers preferences.
@@ -67,7 +67,7 @@ namespace Office365FiddlerExtension.Services
 
             var ExtensionSettings = new
             {
-                ExtensionEnabled = upgradeExtensionEnabled,
+                ExtensionSessionProcessingEnabled = upgradeExtensionEnabled,
                 ExecutionCount = upgradeExecutionCount,
                 NeverWebCall = upgradeNeverWebCall,
                 SessionAnalysisOnFiddlerLoad = "True",
@@ -90,7 +90,7 @@ namespace Office365FiddlerExtension.Services
             Preferences.ExtensionSettings = jsonData;
             
             // Remove legacy Fiddler settings only if Json can be read from.
-            if (ExtensionSettings.ExtensionEnabled)
+            if (SettingsHandler.Instance.GetDeserializedExtensionSettings().ExtensionSessionProcessingEnabled)
             {
                 FiddlerApplication.Prefs.RemovePref("Enabled");
                 FiddlerApplication.Prefs.RemovePref("ManualCheckForUpdate");
@@ -372,8 +372,6 @@ namespace Office365FiddlerExtension.Services
 
     public class ExtensionSettingsJson
     {
-        public string ExtensionVersion { get; set; }
-
         public bool ExtensionSessionProcessingEnabled { get; set; }
 
         public int ExecutionCount { get; set; }

@@ -9,11 +9,10 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using static Office365FiddlerExtension.Handlers.URLsHandler;
 
-namespace Office365FiddlerExtension.Handlers
+namespace Office365FiddlerExtension.Handler
 {
-    public class VersionHandler : ActivationService
+    public class VersionHandler
     {
         private static VersionHandler _instance;
         public static VersionHandler Instance => _instance ?? (_instance = new VersionHandler());
@@ -26,13 +25,11 @@ namespace Office365FiddlerExtension.Handlers
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
 
-            return JsonConvert.DeserializeObject<ExtensionVersionFlags>(Preferences.ExtensionVersion, JsonSettings);
+            return JsonConvert.DeserializeObject<ExtensionVersionFlags>(Preferences.ExtensionVersion);
         }
 
         public void CreateExtensionVersionFiddlerSetting()
         {
-            Version applicationVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-
             var VersionItems = new
             {
                 UpdateMessage = "",
@@ -83,7 +80,7 @@ namespace Office365FiddlerExtension.Handlers
                 try
                 {
                     FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: NextUpdateCheck {extensionSettings.NextUpdateCheck}");
-                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExchangeVersion {extensionURLs.ExtensionVersion}");
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExtensionVersion {extensionURLs.ExtensionVersion}");
                     FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Telemetry {extensionURLs.TelemetryInstrumentationKey}");
 
                     var response = await getSettings.GetAsync(extensionURLs.ExtensionVersion);

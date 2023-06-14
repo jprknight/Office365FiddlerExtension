@@ -1,5 +1,4 @@
-﻿using Office365FiddlerExtension.Handlers;
-using Office365FiddlerExtension.Services;
+﻿using Office365FiddlerExtension.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Office365FiddlerExtension.Handler;
 
 namespace Office365FiddlerExtension.UI
 {

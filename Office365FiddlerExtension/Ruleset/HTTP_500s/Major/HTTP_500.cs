@@ -19,19 +19,19 @@ namespace Office365FiddlerExtension.Ruleset
         {
             // Repeating Redirects Detected.
 
-            this.session = session;
+            this.Session = session;
 
-            if (!(this.session.utilFindInResponse("Repeating redirects detected", false) > 1))
+            if (!(this.Session.utilFindInResponse("Repeating redirects detected", false) > 1))
             {
                 return;
             }
 
-            if (!this.session.HostnameIs("outlook.office365.com"))
+            if (!this.Session.HostnameIs("outlook.office365.com"))
             {
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 500 Internal Server Error.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 500 Internal Server Error.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -54,31 +54,31 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson); 
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson); 
         }
 
         public void HTTP_500_Internal_Server_Error_Impersonate_User_Denied(Session session)
         {
             // EWS ErrorImpersonateUserDenied.
 
-            this.session = session;
+            this.Session = session;
 
-            if (!this.session.HostnameIs("outlook.office365.com"))
+            if (!this.Session.HostnameIs("outlook.office365.com"))
             {
                 return;
             }
 
-            if (!this.session.uriContains("/EWS/Exchange.asmx"))
+            if (!this.Session.uriContains("/EWS/Exchange.asmx"))
             {
                 return;
             }
 
-            if (!(this.session.utilFindInResponse("ErrorImpersonateUserDenied", false) > 1))
+            if (!(this.Session.utilFindInResponse("ErrorImpersonateUserDenied", false) > 1))
             {
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 500 EWS Impersonate User Denied.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 500 EWS Impersonate User Denied.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -99,26 +99,26 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
         public void HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong(Session session)
         {
             // Microsoft365 OWA - Something went wrong.
 
-            this.session = session;
+            this.Session = session;
 
-            if (!this.session.HostnameIs("outlook.office365.com"))
+            if (!this.Session.HostnameIs("outlook.office365.com"))
             {
                 return;
             }
 
-            if (!(this.session.utilFindInResponse("Something went wrong", false) > 1))
+            if (!(this.Session.utilFindInResponse("Something went wrong", false) > 1))
             {
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 500 Internal Server Error - OWA Something went wrong.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 500 Internal Server Error - OWA Something went wrong.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -141,16 +141,16 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
         public void HTTP_500_Internal_Server_Error_All_Others(Session session)
         {
             // Everything else.
 
-            this.session = session;
+            this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.session.id} HTTP 500 Internal Server Error.");
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 500 Internal Server Error.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -170,7 +170,7 @@ namespace Office365FiddlerExtension.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
     }
 }
