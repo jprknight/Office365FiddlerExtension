@@ -110,29 +110,6 @@ namespace Office365FiddlerExtension.Handler
             #endregion
         }
 
-        public async void UpdateRulesetFromGithub()
-        {
-            var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
-
-            // Do all the things.
-            // If ruleset update to local is succesful, set the date/time in the properties.
-            // Do this for a logic check to make sure we only check for ruleset updates once every 24 hours.
-            Boolean done = false;
-            if (done == true)
-            {
-                if (ExtensionSettings.UseBetaRuleSet)
-                {
-                    ExtensionSettings.LocalBetaRulesetLastUpdated = DateTime.Now.AddHours(24);
-                }
-                else
-                {
-                    ExtensionSettings.LocalMasterRulesetLastUpdated = DateTime.Now.AddHours(24);
-                }
-                    
-            }
-        }
-
-
         //private static readonly Lazy<RulesetSingleton> _instance = new Lazy<RulesetSingleton>(() => new RulesetSingleton());
         //public static RulesetSingleton Ruleset => _instance.Value;
         
