@@ -239,9 +239,7 @@ namespace Office365FiddlerExtension.Handler
         public void UpdateWarningSessionTimeThreshold(string warningSessionTimeThreshold)
         {
             // Validate input is int and only act if it is.
-            int iWarningSessionTimeThreshold;
-
-            var isNumberic = int.TryParse(warningSessionTimeThreshold, out iWarningSessionTimeThreshold);
+            var isNumberic = int.TryParse(warningSessionTimeThreshold, out int iWarningSessionTimeThreshold);
 
             if (isNumberic)
             {
@@ -263,9 +261,7 @@ namespace Office365FiddlerExtension.Handler
         public void UpdateSlowRunningSessionThreshold(string slowRunningSessionThreshold)
         {
             // Validate input is int and only act if it is.
-            int iSlowRunningSessionThreshold;
-
-            var isNumberic = int.TryParse(slowRunningSessionThreshold, out iSlowRunningSessionThreshold);
+            var isNumberic = int.TryParse(slowRunningSessionThreshold, out int iSlowRunningSessionThreshold);
 
             if (isNumberic)
             {

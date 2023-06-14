@@ -25,7 +25,7 @@ namespace Office365FiddlerExtension.Handler
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
 
-            return JsonConvert.DeserializeObject<ExtensionVersionFlags>(Preferences.ExtensionVersion);
+            return JsonConvert.DeserializeObject<ExtensionVersionFlags>(Preferences.ExtensionVersion, JsonSettings);
         }
 
         public void CreateExtensionVersionFiddlerSetting()
@@ -81,6 +81,7 @@ namespace Office365FiddlerExtension.Handler
                 {
                     FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: NextUpdateCheck {extensionSettings.NextUpdateCheck}");
                     FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExtensionVersion {extensionURLs.ExtensionVersion}");
+                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExtensionVersion {URLsHandler.Instance.GetDeserializedExtensionURLs().ExtensionVersion}");
                     FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Telemetry {extensionURLs.TelemetryInstrumentationKey}");
 
                     var response = await getSettings.GetAsync(extensionURLs.ExtensionVersion);
