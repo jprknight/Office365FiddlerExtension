@@ -6,6 +6,9 @@ using Office365FiddlerExtension.UI;
 
 namespace Office365FiddlerExtension
 {
+    /// <summary>
+    /// Function that calls all logic together to run against each session loaded in Fiddler.
+    /// </summary>
     public class SessionHandler : ActivationService
     {
         private static SessionHandler _instance;

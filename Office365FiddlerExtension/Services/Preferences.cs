@@ -108,7 +108,7 @@ namespace Office365FiddlerExtension.Services
         }
 
         // Setting to store Json extension URLs. Update from remote.
-        public static string _extensionURLs;
+        private static string _extensionURLs;
 
         public static string ExtensionURLs
         {

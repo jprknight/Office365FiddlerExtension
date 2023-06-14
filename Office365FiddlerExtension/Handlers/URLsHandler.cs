@@ -4,11 +4,15 @@ using Office365FiddlerExtension.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Office365FiddlerExtension.Handler
 {
+    /// <summary>
+    /// Functions to ensure ExtensionURLs Json is created and populated with data.
+    /// </summary>
     public class URLsHandler
     {
         private static URLsHandler _instance;
@@ -22,16 +26,10 @@ namespace Office365FiddlerExtension.Handler
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
 
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: GetDeserializedExtensionURLs: " +
+                $"{JsonConvert.DeserializeObject<ExtensionURLsJson>(Preferences.ExtensionURLs, JsonSettings).Wiki}");
             return JsonConvert.DeserializeObject<ExtensionURLsJson>(Preferences.ExtensionURLs, JsonSettings);
-        }
 
-        // Setting to store Json extension URLs. Update from remote.
-        public static string _extensionURLs;
-
-        public static string ExtensionURLs
-        {
-            get => _extensionURLs = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.ExtensionURLs", null);
-            set { _extensionURLs = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionURLs", value); }
         }
 
         public void CreateExtensionURLFiddlerSetting()
@@ -54,14 +52,24 @@ namespace Office365FiddlerExtension.Handler
                 Installer = "https://github.com/jprknight/EXOFiddlerExtension/releases/latest",
                 Wiki = "https://github.com/jprknight/Office365FiddlerExtension/wiki",
                 WikiSessionTimeThresholds = "https://github.com/jprknight/Office365FiddlerExtension/wiki/Session-Time-Thresholds",
+                WikiScoreForSession = "https://github.com/jprknight/Office365FiddlerExtension/wiki/What-is-ScoreForSession%3F",
                 ReportIssues = "https://github.com/jprknight/Office365FiddlerExtension/issues"
             };
 
             // Transform the object to a Json object.
             string jsonData = JsonConvert.SerializeObject(URLs);
 
-            // Save the new Json to the Fiddler setting.
-            Preferences.ExtensionURLs = jsonData;
+            try
+            {
+                // Save the new Json to the Fiddler setting.
+                Preferences.ExtensionURLs = jsonData;
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: CreateExtensionURLFiddlerSetting written to ExtensionURLs Fiddler setting.");
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: CreateExtensionURLFiddlerSetting unable to write to ExtensionURLs Fiddler setting.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {ex}");
+            }
         }
 
         public String TelemetryInstrumentationKey
@@ -98,6 +106,8 @@ namespace Office365FiddlerExtension.Handler
         public string Wiki { get; }
 
         public string WikiSessionTimeThresholds { get; }
+
+        public string WikiScoreForSession { get; }
 
         public string ReportIssues { get; }
     }

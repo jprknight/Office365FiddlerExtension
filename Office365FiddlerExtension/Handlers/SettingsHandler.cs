@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Office365FiddlerExtension.Handler
 {
     /// <summary>
-    /// Handler for extension settings and URLs set in Fiddlers preferences.
+    /// Functions to ensure ExtensionSettings Json is created and populated.
     /// </summary>
 
     public class SettingsHandler
@@ -80,7 +80,8 @@ namespace Office365FiddlerExtension.Handler
                 UseHardCodedRuleset = "False",
                 LocalMasterRulesetLastUpdated = "",
                 LocalBetaRulesetLastUpdated = "",
-                UpdateCheckFrequencyHours = 72
+                UpdateCheckFrequencyHours = 72,
+                InspectorScoreForSession = 100
             };
 
             // Transform the object to a Json object.
@@ -127,18 +128,20 @@ namespace Office365FiddlerExtension.Handler
             }
         }
 
-    public void SetExtensionEnabled(Boolean extensionEnabled)
+        public void SetExtensionSessionProcessingEnabled(Boolean extensionSessionProcessingEnabled)
         {
             // Pull & Deserialize Json from ExtensionSettings.
             var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
             // Set the attribute.
-            extensionSettings.ExtensionSessionProcessingEnabled = extensionEnabled;
+            extensionSettings.ExtensionSessionProcessingEnabled = extensionSessionProcessingEnabled;
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
 
             // Set the Menu item to reflect change.
             MenuUI.Instance.ExtensionMenu.Text = ExtensionEnabled ? "Office 365 (Enabled)" : "Office 365 (Disabled)";
+
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExtensionSessionProcessingEnabled set to {extensionSessionProcessingEnabled}.");
         }
 
         public bool SessionAnalysisOnLoadSaz
@@ -177,6 +180,8 @@ namespace Office365FiddlerExtension.Handler
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
+
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExtensionPath set to {AssemblyDirectory}.");
         }
 
         public string ExtensionDLL
@@ -196,6 +201,8 @@ namespace Office365FiddlerExtension.Handler
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
+
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExtensionDLL set to {AssemblyName}.");
         }
 
         public void SetSessionAnalysisOnLoadSaz(Boolean sessionAnalysisOnLoadSaz)
@@ -207,6 +214,8 @@ namespace Office365FiddlerExtension.Handler
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
+
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: SessionAnalysisOnLoadSaz set to {sessionAnalysisOnLoadSaz}.");
         }
 
         public bool SessionAnalysisOnLiveTrace
@@ -226,6 +235,8 @@ namespace Office365FiddlerExtension.Handler
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
+
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: SessionAnalysisOnLiveTrace set to {sessionAnalysisOnLiveTrace}.");
         }
 
         public int WarningSessionTimeThreshold
@@ -247,6 +258,12 @@ namespace Office365FiddlerExtension.Handler
                 extensionSettings.WarningSessionTimeThreshold = iWarningSessionTimeThreshold;
 
                 Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
+
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: WarningSessionTimeThreshold set to {iWarningSessionTimeThreshold}.");
+            }
+            else
+            {
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: WarningSessionTimeThreshold only accepts a numerical value.");
             }
         }
 
@@ -269,6 +286,12 @@ namespace Office365FiddlerExtension.Handler
                 extensionSettings.SlowRunningSessionThreshold = iSlowRunningSessionThreshold;
 
                 Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
+
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: SlowRunningSessionThreshold set to {iSlowRunningSessionThreshold}.");
+            }
+            else
+            {
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: SlowRunningSessionThreshold only accepts a numerical value.");
             }
         }
 
@@ -279,6 +302,8 @@ namespace Office365FiddlerExtension.Handler
 
             // Save the new Json to the extension setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
+
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Incremented ExecutionCount to {extensionSettings.ExecutionCount}.");
         }
 
         public ExtensionSettingsJson GetDeserializedExtensionSettings()
@@ -289,6 +314,7 @@ namespace Office365FiddlerExtension.Handler
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
 
+            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: GetDeserializedExtensionURLs: {JsonConvert.DeserializeObject<ExtensionSettingsJson>(Preferences.ExtensionSettings, JsonSettings)}");
             return JsonConvert.DeserializeObject<ExtensionSettingsJson>(Preferences.ExtensionSettings, JsonSettings);
         }
 
@@ -389,6 +415,8 @@ namespace Office365FiddlerExtension.Handler
         public int WarningSessionTimeThreshold { get; set; }
 
         public int SlowRunningSessionThreshold { get; set; }
+
+        public int InspectorScoreForSession { get; set; }
 
         public string ExtensionPath { get; set; }
 

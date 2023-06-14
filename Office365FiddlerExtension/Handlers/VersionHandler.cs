@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace Office365FiddlerExtension.Handler
 {
+    /// <summary>
+    /// Functions to ensure ExtensionVersion Json is always created and populated with data.
+    /// </summary>
     public class VersionHandler
     {
         private static VersionHandler _instance;

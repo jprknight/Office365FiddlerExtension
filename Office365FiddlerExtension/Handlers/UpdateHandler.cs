@@ -25,11 +25,11 @@ namespace Office365FiddlerExtension.Handler
                 return;
             }
 
-            var JsonSettings = new JsonSerializerSettings
+            /*var JsonSettings = new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
                 MissingMemberHandling = MissingMemberHandling.Ignore
-            };
+            };*/
 
             //var SettingsJson = JsonConvert.DeserializeObject<ExtensionSettingsFlags>(Properties.Settings.Default.UpdateURL, JsonSettings); 
             

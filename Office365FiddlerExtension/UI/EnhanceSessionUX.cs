@@ -8,7 +8,11 @@ using Fiddler;
 
 namespace Office365FiddlerExtension.UI
 {
-    internal class EnhanceSessionUX : ActivationService
+    /// <summary>
+    /// Set colours on session foreground and background. Called from SessionHandler once
+    /// session flags have been set by extension ruleset.
+    /// </summary>
+    public  class EnhanceSessionUX : ActivationService
     {
         private static EnhanceSessionUX _instance;
         public static EnhanceSessionUX Instance => _instance ?? (_instance = new EnhanceSessionUX());

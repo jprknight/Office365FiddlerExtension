@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Office365FiddlerExtension.Handler;
+using Fiddler;
 
 namespace Office365FiddlerExtension.UI
 {
@@ -34,6 +35,8 @@ namespace Office365FiddlerExtension.UI
             GithubDLLVersionTextbox.Text = extensionVersion.VersionMajor + "." + extensionVersion.VersionMinor + "." + extensionVersion.VersionBuild;
 
             NextUpdateCheckTextbox.Text = extensionSettings.UpdateCheckFrequencyHours.ToString();
+
+            ScoreForSessionTextbox.Text = extensionSettings.InspectorScoreForSession.ToString();
 
             if (extensionSettings.UseBetaRuleSet)
             {
@@ -105,7 +108,7 @@ namespace Office365FiddlerExtension.UI
 
         private void ExtensionEnabledCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsHandler.Instance.SetExtensionEnabled(ExtensionEnabledCheckbox.Checked);
+            SettingsHandler.Instance.SetExtensionSessionProcessingEnabled(ExtensionEnabledCheckbox.Checked);
 
             if (ExtensionEnabledCheckbox.Checked)
             {
@@ -171,8 +174,28 @@ namespace Office365FiddlerExtension.UI
 
         private void SessionTimeThresholdLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            var URLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
-            System.Diagnostics.Process.Start(URLs.WikiSessionTimeThresholds);
+            try
+            {
+                System.Diagnostics.Process.Start(URLsHandler.Instance.GetDeserializedExtensionURLs().WikiSessionTimeThresholds);
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: About unable to open SesssionTimeThreshold link: {URLsHandler.Instance.GetDeserializedExtensionURLs().WikiSessionTimeThresholds}");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {ex}");
+            }
+        }
+
+        private void WhatIsScoreForSessionLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(URLsHandler.Instance.GetDeserializedExtensionURLs().WikiScoreForSession);
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: About unable to open ScoreForSession link: {URLsHandler.Instance.GetDeserializedExtensionURLs().WikiScoreForSession}");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {ex}");
+            }
         }
     }
 }

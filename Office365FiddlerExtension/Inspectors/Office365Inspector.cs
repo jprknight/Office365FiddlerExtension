@@ -12,7 +12,7 @@ using Microsoft.Diagnostics.Instrumentation.Extensions.Intercept;
 namespace Office365FiddlerExtension.Inspectors
 {
     /// <summary>
-    /// Base class, generic inspector
+    /// Fiddler inspector for extension.
     /// </summary>
     public class Office365Inspector : Inspector2, IResponseInspector2
     {
@@ -99,7 +99,7 @@ namespace Office365FiddlerExtension.Inspectors
         /// <returns>An integer indicating where we should order ourselves</returns>
         public override int GetOrder()
         {
-            return 0;
+            return -8443;
         }
 
         /// <summary>
@@ -111,6 +111,22 @@ namespace Office365FiddlerExtension.Inspectors
         /// Gets or sets a value indicating whether or not the frame is read-only.
         /// </summary>
         public bool bReadOnly { get; set; }
+
+        /// <summary>
+        /// Called by Fiddler to determine how confident this inspector is that it can
+        /// decode the data.  This is only called when the user hits enter or double-
+        /// clicks a session.  
+        /// If we score the highest out of the other inspectors, Fiddler will open this
+        /// inspector's tab and then call AssignSession.
+        /// </summary>
+        /// <param name="oS">the session object passed by Fiddler</param>
+        /// <returns>Int between 0-100 with 100 being the most confident</returns>
+        public override int ScoreForSession(Session Session)
+        {
+            this.Session = Session;
+
+            return 100;
+        }
 
         /// <summary>
         /// Called by Fiddler to add the Office 365 inspector tab
@@ -133,6 +149,7 @@ namespace Office365FiddlerExtension.Inspectors
         /// <returns></returns>
         // public async Task ParseHTTPResponse(Session Session)
         // REVIEW THIS - AWAIT. Can this be done or would it break things.
+        // Tested with await task.run and it broke the inspector.
         public async Task ParseHTTPResponse(Session Session)
         {
             this.Session = Session;

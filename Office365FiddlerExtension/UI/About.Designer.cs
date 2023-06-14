@@ -39,8 +39,10 @@
             this.ExtensionPathTextbox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.SessionTimeThresholdLink = new System.Windows.Forms.LinkLabel();
-            this.label2 = new System.Windows.Forms.Label();
+            this.HoursLabel = new System.Windows.Forms.Label();
+            this.NextUpdateCheckLabel = new System.Windows.Forms.Label();
+            this.NextUpdateCheckTextbox = new System.Windows.Forms.TextBox();
+            this.SessionTimeThresholdLinkLabel = new System.Windows.Forms.LinkLabel();
             this.label1 = new System.Windows.Forms.Label();
             this.SlowRunningSessionThresholdUpdateButton = new System.Windows.Forms.Button();
             this.WarningSessionTimeThresholdUpdateButton = new System.Windows.Forms.Button();
@@ -61,13 +63,18 @@
             this.GithubRulesetVersionTextbox = new System.Windows.Forms.TextBox();
             this.GithubDLLVersionLabel = new System.Windows.Forms.Label();
             this.GithubDLLVersionTextbox = new System.Windows.Forms.TextBox();
-            this.NextUpdateCheckTextbox = new System.Windows.Forms.TextBox();
-            this.NextUpdateCheckLabel = new System.Windows.Forms.Label();
-            this.HoursLabel = new System.Windows.Forms.Label();
+            this.ObscureSettingsGroupbox = new System.Windows.Forms.GroupBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.ScoreForSessionLabel = new System.Windows.Forms.Label();
+            this.ScoreForSessionTextbox = new System.Windows.Forms.TextBox();
+            this.WhatIsScoreForSessionLinkLabel = new System.Windows.Forms.LinkLabel();
+            this.button1 = new System.Windows.Forms.Button();
             this.InfoGroupbox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.GithubInfoGroupbox.SuspendLayout();
+            this.ObscureSettingsGroupbox.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // InfoGroupbox
@@ -164,7 +171,7 @@
             this.groupBox1.Controls.Add(this.panel1);
             this.groupBox1.Location = new System.Drawing.Point(380, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(438, 236);
+            this.groupBox1.Size = new System.Drawing.Size(438, 145);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Extension Options";
@@ -174,15 +181,7 @@
             this.panel1.Controls.Add(this.HoursLabel);
             this.panel1.Controls.Add(this.NextUpdateCheckLabel);
             this.panel1.Controls.Add(this.NextUpdateCheckTextbox);
-            this.panel1.Controls.Add(this.SessionTimeThresholdLink);
-            this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.SlowRunningSessionThresholdUpdateButton);
-            this.panel1.Controls.Add(this.WarningSessionTimeThresholdUpdateButton);
-            this.panel1.Controls.Add(this.SlowRunningSessionThresholdTextbox);
-            this.panel1.Controls.Add(this.SlowRunningSessionThresholdLabel);
-            this.panel1.Controls.Add(this.WarningSessionTimeThresholdLabel);
-            this.panel1.Controls.Add(this.WarningSessionTimeThresholdTextbox);
             this.panel1.Controls.Add(this.ExtensionEnabledCheckbox);
             this.panel1.Controls.Add(this.SessionAnalysisOnLiveTraceCheckbox);
             this.panel1.Controls.Add(this.AllSessionAnalysisRadioButton);
@@ -190,29 +189,44 @@
             this.panel1.Controls.Add(this.SomeSessionAnalysisRadioButton);
             this.panel1.Location = new System.Drawing.Point(6, 19);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(426, 210);
+            this.panel1.Size = new System.Drawing.Size(426, 120);
             this.panel1.TabIndex = 5;
             // 
-            // SessionTimeThresholdLink
+            // HoursLabel
             // 
-            this.SessionTimeThresholdLink.AutoSize = true;
-            this.SessionTimeThresholdLink.Location = new System.Drawing.Point(4, 191);
-            this.SessionTimeThresholdLink.Name = "SessionTimeThresholdLink";
-            this.SessionTimeThresholdLink.Size = new System.Drawing.Size(414, 13);
-            this.SessionTimeThresholdLink.TabIndex = 15;
-            this.SessionTimeThresholdLink.TabStop = true;
-            this.SessionTimeThresholdLink.Text = "https://github.com/jprknight/Office365FiddlerExtension/wiki/Session-Time-Threshol" +
-    "ds";
-            this.SessionTimeThresholdLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.SessionTimeThresholdLink_LinkClicked);
+            this.HoursLabel.AutoSize = true;
+            this.HoursLabel.Location = new System.Drawing.Point(382, 29);
+            this.HoursLabel.Name = "HoursLabel";
+            this.HoursLabel.Size = new System.Drawing.Size(36, 13);
+            this.HoursLabel.TabIndex = 18;
+            this.HoursLabel.Text = "hours.";
             // 
-            // label2
+            // NextUpdateCheckLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 173);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(243, 13);
-            this.label2.TabIndex = 14;
-            this.label2.Text = "For information on these two threshold values see:";
+            this.NextUpdateCheckLabel.AutoSize = true;
+            this.NextUpdateCheckLabel.Location = new System.Drawing.Point(219, 29);
+            this.NextUpdateCheckLabel.Name = "NextUpdateCheckLabel";
+            this.NextUpdateCheckLabel.Size = new System.Drawing.Size(123, 13);
+            this.NextUpdateCheckLabel.TabIndex = 17;
+            this.NextUpdateCheckLabel.Text = "Check for updates every";
+            // 
+            // NextUpdateCheckTextbox
+            // 
+            this.NextUpdateCheckTextbox.Location = new System.Drawing.Point(348, 26);
+            this.NextUpdateCheckTextbox.Name = "NextUpdateCheckTextbox";
+            this.NextUpdateCheckTextbox.Size = new System.Drawing.Size(28, 20);
+            this.NextUpdateCheckTextbox.TabIndex = 16;
+            // 
+            // SessionTimeThresholdLinkLabel
+            // 
+            this.SessionTimeThresholdLinkLabel.AutoSize = true;
+            this.SessionTimeThresholdLinkLabel.Location = new System.Drawing.Point(5, 99);
+            this.SessionTimeThresholdLinkLabel.Name = "SessionTimeThresholdLinkLabel";
+            this.SessionTimeThresholdLinkLabel.Size = new System.Drawing.Size(157, 13);
+            this.SessionTimeThresholdLinkLabel.TabIndex = 15;
+            this.SessionTimeThresholdLinkLabel.TabStop = true;
+            this.SessionTimeThresholdLinkLabel.Text = "What are these two thresholds?";
+            this.SessionTimeThresholdLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.SessionTimeThresholdLink_LinkClicked);
             // 
             // label1
             // 
@@ -224,7 +238,7 @@
             // 
             // SlowRunningSessionThresholdUpdateButton
             // 
-            this.SlowRunningSessionThresholdUpdateButton.Location = new System.Drawing.Point(234, 145);
+            this.SlowRunningSessionThresholdUpdateButton.Location = new System.Drawing.Point(235, 69);
             this.SlowRunningSessionThresholdUpdateButton.Name = "SlowRunningSessionThresholdUpdateButton";
             this.SlowRunningSessionThresholdUpdateButton.Size = new System.Drawing.Size(56, 23);
             this.SlowRunningSessionThresholdUpdateButton.TabIndex = 12;
@@ -234,7 +248,7 @@
             // 
             // WarningSessionTimeThresholdUpdateButton
             // 
-            this.WarningSessionTimeThresholdUpdateButton.Location = new System.Drawing.Point(234, 119);
+            this.WarningSessionTimeThresholdUpdateButton.Location = new System.Drawing.Point(235, 43);
             this.WarningSessionTimeThresholdUpdateButton.Name = "WarningSessionTimeThresholdUpdateButton";
             this.WarningSessionTimeThresholdUpdateButton.Size = new System.Drawing.Size(56, 23);
             this.WarningSessionTimeThresholdUpdateButton.TabIndex = 11;
@@ -244,7 +258,7 @@
             // 
             // SlowRunningSessionThresholdTextbox
             // 
-            this.SlowRunningSessionThresholdTextbox.Location = new System.Drawing.Point(173, 147);
+            this.SlowRunningSessionThresholdTextbox.Location = new System.Drawing.Point(174, 71);
             this.SlowRunningSessionThresholdTextbox.Name = "SlowRunningSessionThresholdTextbox";
             this.SlowRunningSessionThresholdTextbox.Size = new System.Drawing.Size(55, 20);
             this.SlowRunningSessionThresholdTextbox.TabIndex = 9;
@@ -252,7 +266,7 @@
             // SlowRunningSessionThresholdLabel
             // 
             this.SlowRunningSessionThresholdLabel.AutoSize = true;
-            this.SlowRunningSessionThresholdLabel.Location = new System.Drawing.Point(4, 150);
+            this.SlowRunningSessionThresholdLabel.Location = new System.Drawing.Point(5, 74);
             this.SlowRunningSessionThresholdLabel.Name = "SlowRunningSessionThresholdLabel";
             this.SlowRunningSessionThresholdLabel.Size = new System.Drawing.Size(163, 13);
             this.SlowRunningSessionThresholdLabel.TabIndex = 8;
@@ -261,7 +275,7 @@
             // WarningSessionTimeThresholdLabel
             // 
             this.WarningSessionTimeThresholdLabel.AutoSize = true;
-            this.WarningSessionTimeThresholdLabel.Location = new System.Drawing.Point(4, 124);
+            this.WarningSessionTimeThresholdLabel.Location = new System.Drawing.Point(5, 48);
             this.WarningSessionTimeThresholdLabel.Name = "WarningSessionTimeThresholdLabel";
             this.WarningSessionTimeThresholdLabel.Size = new System.Drawing.Size(163, 13);
             this.WarningSessionTimeThresholdLabel.TabIndex = 7;
@@ -269,7 +283,7 @@
             // 
             // WarningSessionTimeThresholdTextbox
             // 
-            this.WarningSessionTimeThresholdTextbox.Location = new System.Drawing.Point(173, 121);
+            this.WarningSessionTimeThresholdTextbox.Location = new System.Drawing.Point(174, 45);
             this.WarningSessionTimeThresholdTextbox.Name = "WarningSessionTimeThresholdTextbox";
             this.WarningSessionTimeThresholdTextbox.Size = new System.Drawing.Size(55, 20);
             this.WarningSessionTimeThresholdTextbox.TabIndex = 6;
@@ -333,7 +347,7 @@
             // 
             // CloseButton
             // 
-            this.CloseButton.Location = new System.Drawing.Point(743, 254);
+            this.CloseButton.Location = new System.Drawing.Point(743, 315);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(75, 23);
             this.CloseButton.TabIndex = 10;
@@ -410,36 +424,76 @@
             this.GithubDLLVersionTextbox.Size = new System.Drawing.Size(216, 20);
             this.GithubDLLVersionTextbox.TabIndex = 8;
             // 
-            // NextUpdateCheckTextbox
+            // ObscureSettingsGroupbox
             // 
-            this.NextUpdateCheckTextbox.Location = new System.Drawing.Point(348, 26);
-            this.NextUpdateCheckTextbox.Name = "NextUpdateCheckTextbox";
-            this.NextUpdateCheckTextbox.Size = new System.Drawing.Size(28, 20);
-            this.NextUpdateCheckTextbox.TabIndex = 16;
+            this.ObscureSettingsGroupbox.Controls.Add(this.panel2);
+            this.ObscureSettingsGroupbox.Location = new System.Drawing.Point(380, 163);
+            this.ObscureSettingsGroupbox.Name = "ObscureSettingsGroupbox";
+            this.ObscureSettingsGroupbox.Size = new System.Drawing.Size(438, 146);
+            this.ObscureSettingsGroupbox.TabIndex = 12;
+            this.ObscureSettingsGroupbox.TabStop = false;
+            this.ObscureSettingsGroupbox.Text = "Obscure Settings";
             // 
-            // NextUpdateCheckLabel
+            // panel2
             // 
-            this.NextUpdateCheckLabel.AutoSize = true;
-            this.NextUpdateCheckLabel.Location = new System.Drawing.Point(219, 29);
-            this.NextUpdateCheckLabel.Name = "NextUpdateCheckLabel";
-            this.NextUpdateCheckLabel.Size = new System.Drawing.Size(123, 13);
-            this.NextUpdateCheckLabel.TabIndex = 17;
-            this.NextUpdateCheckLabel.Text = "Check for updates every";
+            this.panel2.Controls.Add(this.button1);
+            this.panel2.Controls.Add(this.WhatIsScoreForSessionLinkLabel);
+            this.panel2.Controls.Add(this.ScoreForSessionTextbox);
+            this.panel2.Controls.Add(this.ScoreForSessionLabel);
+            this.panel2.Controls.Add(this.WarningSessionTimeThresholdLabel);
+            this.panel2.Controls.Add(this.WarningSessionTimeThresholdTextbox);
+            this.panel2.Controls.Add(this.SlowRunningSessionThresholdLabel);
+            this.panel2.Controls.Add(this.SessionTimeThresholdLinkLabel);
+            this.panel2.Controls.Add(this.SlowRunningSessionThresholdTextbox);
+            this.panel2.Controls.Add(this.WarningSessionTimeThresholdUpdateButton);
+            this.panel2.Controls.Add(this.SlowRunningSessionThresholdUpdateButton);
+            this.panel2.Location = new System.Drawing.Point(6, 19);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(425, 120);
+            this.panel2.TabIndex = 0;
             // 
-            // HoursLabel
+            // ScoreForSessionLabel
             // 
-            this.HoursLabel.AutoSize = true;
-            this.HoursLabel.Location = new System.Drawing.Point(382, 29);
-            this.HoursLabel.Name = "HoursLabel";
-            this.HoursLabel.Size = new System.Drawing.Size(36, 13);
-            this.HoursLabel.TabIndex = 18;
-            this.HoursLabel.Text = "hours.";
+            this.ScoreForSessionLabel.AutoSize = true;
+            this.ScoreForSessionLabel.Location = new System.Drawing.Point(3, 6);
+            this.ScoreForSessionLabel.Name = "ScoreForSessionLabel";
+            this.ScoreForSessionLabel.Size = new System.Drawing.Size(87, 13);
+            this.ScoreForSessionLabel.TabIndex = 16;
+            this.ScoreForSessionLabel.Text = "ScoreForSession";
+            // 
+            // ScoreForSessionTextbox
+            // 
+            this.ScoreForSessionTextbox.Location = new System.Drawing.Point(172, 3);
+            this.ScoreForSessionTextbox.Name = "ScoreForSessionTextbox";
+            this.ScoreForSessionTextbox.Size = new System.Drawing.Size(55, 20);
+            this.ScoreForSessionTextbox.TabIndex = 17;
+            // 
+            // WhatIsScoreForSessionLinkLabel
+            // 
+            this.WhatIsScoreForSessionLinkLabel.AutoSize = true;
+            this.WhatIsScoreForSessionLinkLabel.Location = new System.Drawing.Point(5, 26);
+            this.WhatIsScoreForSessionLinkLabel.Name = "WhatIsScoreForSessionLinkLabel";
+            this.WhatIsScoreForSessionLinkLabel.Size = new System.Drawing.Size(132, 13);
+            this.WhatIsScoreForSessionLinkLabel.TabIndex = 13;
+            this.WhatIsScoreForSessionLinkLabel.TabStop = true;
+            this.WhatIsScoreForSessionLinkLabel.Text = "What is ScoreForSession?";
+            this.WhatIsScoreForSessionLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.WhatIsScoreForSessionLinkLabel_LinkClicked);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(235, 1);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(56, 23);
+            this.button1.TabIndex = 18;
+            this.button1.Text = "Update";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(828, 286);
+            this.ClientSize = new System.Drawing.Size(826, 347);
+            this.Controls.Add(this.ObscureSettingsGroupbox);
             this.Controls.Add(this.GithubInfoGroupbox);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.InfoGroupbox);
@@ -454,6 +508,9 @@
             this.panel1.PerformLayout();
             this.GithubInfoGroupbox.ResumeLayout(false);
             this.GithubInfoGroupbox.PerformLayout();
+            this.ObscureSettingsGroupbox.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -479,8 +536,7 @@
         private System.Windows.Forms.Button SlowRunningSessionThresholdUpdateButton;
         private System.Windows.Forms.Button WarningSessionTimeThresholdUpdateButton;
         public System.Windows.Forms.TextBox WarningSessionTimeThresholdTextbox;
-        private System.Windows.Forms.LinkLabel SessionTimeThresholdLink;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.LinkLabel SessionTimeThresholdLinkLabel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label LocalDLLVersionLabel;
         private System.Windows.Forms.TextBox LocalDLLVersionTextbox;
@@ -496,5 +552,11 @@
         private System.Windows.Forms.Label HoursLabel;
         private System.Windows.Forms.Label NextUpdateCheckLabel;
         private System.Windows.Forms.TextBox NextUpdateCheckTextbox;
+        private System.Windows.Forms.GroupBox ObscureSettingsGroupbox;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.TextBox ScoreForSessionTextbox;
+        private System.Windows.Forms.Label ScoreForSessionLabel;
+        private System.Windows.Forms.LinkLabel WhatIsScoreForSessionLinkLabel;
+        private System.Windows.Forms.Button button1;
     }
 }

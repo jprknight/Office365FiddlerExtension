@@ -30,7 +30,7 @@ namespace Office365FiddlerExtension.Ruleset
                 SessionType = "",
                 ResponseCodeDescription = "405 Method Not Allowed",
                 ResponseAlert = "<b><span style='color:red'>HTTP 405: Method Not Allowed</span></b>",
-                ResponseComments = "Method Not Allowed", // REVIEW THIS -- Add some more comments.
+                ResponseComments = "Was there a GET when only a POST is allowed or vice-versa, or was HTTP tried when HTTPS is required?",
 
                 SessionAuthenticationConfidenceLevel = 0,
                 SessionTypeConfidenceLevel = 0,

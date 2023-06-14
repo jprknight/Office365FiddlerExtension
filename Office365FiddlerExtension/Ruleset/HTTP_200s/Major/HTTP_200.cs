@@ -217,9 +217,6 @@ namespace Office365FiddlerExtension.Ruleset
             }
 
             // Outlook RPC traffic.
-
-            // Guessing at this time Outlook's RPC over HTTP looks like this when connected to an Exchange On-Premise mailbox.
-            // REVIEW THIS *Need to validate*
             
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()} : {this.Session.id} HTTP 200 Outlook RPC traffic break.");
 

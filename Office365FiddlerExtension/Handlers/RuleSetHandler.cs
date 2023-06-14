@@ -113,8 +113,8 @@ namespace Office365FiddlerExtension.Handler
         //private static readonly Lazy<RulesetSingleton> _instance = new Lazy<RulesetSingleton>(() => new RulesetSingleton());
         //public static RulesetSingleton Ruleset => _instance.Value;
         
-        static async Task Main(string[] args)
-        {
+        //static async Task Main(string[] args)
+        //{
             /*
             Settings file will have this already:
             eyJLQjIzMjkzODMiOnsiUnVsZVR5cGUiOjMsIlJ1bGVSZWdleCI6IiQqLlswLTldezR9Ki5eIiwiUnVsZVJlc3VsdCI6IlRoaXMgaXMgYSBidWcgeW8iLCJSdWxlQWN0aW9uIjozfSwiTmV3IEZlYXR1cmUgTVMzNDkzODQiOnsiUnVsZVR5cGUiOjAsIlJ1bGVSZWdleCI6IiQqLlthLXpBLVpdezh9Ki5eIiwiUnVsZVJlc3VsdCI6IlRoaXMgaXMgYSBuZXcgZmVhdHVyZSB5byIsIlJ1bGVBY3Rpb24iOjJ9fQ==
@@ -148,7 +148,7 @@ namespace Office365FiddlerExtension.Handler
             await Ruleset.UpdateRulesAsync();
             Console.WriteLine($"Updated ruleset contains {Ruleset.Rules.Count} rules.");
             */
-        }
+        //}
     /*
         static string CreateSampleRules()
         {

@@ -12,6 +12,9 @@ using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtension.Handler
 {
+    /// <summary>
+    /// Function to handle loading and saving Saz files.
+    /// </summary>
     public class SazFileHandler : ActivationService
     {
         private static SazFileHandler _instance;

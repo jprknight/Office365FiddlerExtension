@@ -9,6 +9,9 @@ using Office365FiddlerExtension.Handler;
 
 namespace Office365FiddlerExtension.UI
 {
+    /// <summary>
+    /// Add Fiddler application event handlers, additional columns to UI, and populate data in them. 
+    /// </summary>
     public class EnhanceUX : ActivationService
     {
         private static EnhanceUX _instance;
@@ -54,10 +57,12 @@ namespace Office365FiddlerExtension.UI
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: AddExtensionColumns: {0} Exception caught." + e);
             }
 
+            /*
             // REVIEW THIS. Despite adding / ordering columns here nothing happens.
             // Commenting out these seem to do nothing.
-            // Wondering if the user preferences / reordering comes into play and conflicts with this.
-            /*FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 15, -1);
+            // It's possible Fiddler's user preferences / reordering comes into play and conflicts with these.
+            
+            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 15, -1);
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", 14, -1);
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Content-Type", 13, -1);
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Caching", 12, -1);

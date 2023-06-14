@@ -5,9 +5,13 @@ using System.Management;
 using System.Text;
 using Fiddler;
 using Office365FiddlerExtension.Handler;
+using System.Linq;
 
 namespace Office365FiddlerExtension.Services
 {
+    /// <summary>
+    /// Telemetry service to initialize and run telemetry.
+    /// </summary>
     public partial class TelemetryService
     {
 
@@ -51,9 +55,12 @@ namespace Office365FiddlerExtension.Services
                 {
                     ExceptionCounter = 0;
 
-                    Client = new TelemetryClient();
-
-                    Client.InstrumentationKey = iKey;
+                    // REVIEW THIS - Make sure it doesn't break telemetry.
+                    //Client = new TelemetryClient();
+                    Client = new TelemetryClient
+                    {
+                        InstrumentationKey = iKey
+                    };
 
                     UUID = await GetComputerUUID();
 
@@ -143,7 +150,9 @@ namespace Office365FiddlerExtension.Services
 
                 ManagementObjectCollection _managementObjects = query.Get();
 
-                foreach (ManagementObject mgmtObject in _managementObjects)
+                // REVIEW THIS -- Make sure this change does break telemetry.
+                // foreach (ManagementObject mgmtObject in _managementObjects)
+                foreach (ManagementObject mgmtObject in _managementObjects.Cast<ManagementObject>())
                 {
                     userName = CreateMD5((string)mgmtObject["SerialNumber"]);
                 }

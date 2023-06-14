@@ -1,10 +1,7 @@
 ﻿using Fiddler;
-using System.Windows.Forms;
-using System.Text;
-using System;
-using System.Reflection;
-using Office365FiddlerExtension.UI;
 using Office365FiddlerExtension.Handler;
+using Office365FiddlerExtension.UI;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -14,9 +11,9 @@ namespace Office365FiddlerExtension.Services
     public abstract class ActivationService : IAutoTamper
     {
         internal Session Session { get; set; }
-        
+
         private bool IsInitialized { get; set; }
-        
+
         /// <summary>
         /// This should be considered the main constructor for the extension. 
         /// It's called after the UI has loaded.
@@ -25,12 +22,17 @@ namespace Office365FiddlerExtension.Services
         {
             if (!IsInitialized)
             {
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Starting v" +
+                    $"{Assembly.GetExecutingAssembly().GetName().Version.Major}." +
+                    $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
+                    $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
+
                 // Ensure Fiddler settings (settings, URLs, & verison) for the extension have been created.
                 // Avoid null exceptions.
                 SettingsHandler.Instance.CreateExtensionSettingsFiddlerSetting();
                 URLsHandler.Instance.CreateExtensionURLFiddlerSetting();
                 VersionHandler.Instance.CreateExtensionVersionFiddlerSetting();
-                
+
                 // Set Fiddler settings as needed.
                 SettingsHandler.Instance.IncrementExecutionCount();
                 SettingsHandler.Instance.SetExtensionDLL();
@@ -45,6 +47,8 @@ namespace Office365FiddlerExtension.Services
 
                 // Add extension menu.
                 MenuUI.Instance.Initialize();
+                // Add context menu items.
+                ContextMenuUI.Instance.initialize();
                 // Add columns into session list in UI.
                 EnhanceUX.Instance.Initialize();
 
@@ -52,6 +56,9 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
+        /// <summary>
+        /// Called as Fiddler shuts down.
+        /// </summary>
         public void OnBeforeUnload()
         {
             ShutdownTelemetry();
@@ -102,35 +109,34 @@ namespace Office365FiddlerExtension.Services
         /// <param name="_session"></param>
         public void OnBeforeReturningError(Session _session) { }
 
+        /// <summary>
+        /// Initialize telemetry if NeverWebCall is false.
+        /// </summary>
         private async void Initializetelemetry()
         {
             var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
 
-            // Stop if extension is not enabled.
             if (!ExtensionSettings.ExtensionSessionProcessingEnabled)
             {
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Extension not enabled, exiting.");
                 return;
             }
 
-            // If disable web calls is true dion't check for updates and don't call telemetry service.
             if (ExtensionSettings.NeverWebCall)
             {
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Telemetry Service NeverWebCall is true.");
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Not checking for updates or sending telemetry data.");
             }
-            // Otherwise, check for updates and call telemetry service.
             else
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Checking for updates.");
-                // REVIEW THIS. Call to update needs a complete rewrite.
-                // Don't call this function anymore.
-                // About.Instance.CheckForUpdate();
                 FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Initializing telemetry service.");
                 await TelemetryService.InitializeAsync();
             }
         }
 
+        /// <summary>
+        /// Shutdown telemetry.
+        /// </summary>
         private async void ShutdownTelemetry()
         {
             var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
@@ -141,6 +147,5 @@ namespace Office365FiddlerExtension.Services
                 await TelemetryService.FlushClientAsync();
             }
         }
-
     }
 }

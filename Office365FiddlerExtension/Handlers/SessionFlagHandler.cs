@@ -10,6 +10,9 @@ using Office365FiddlerExtension.UI;
 
 namespace Office365FiddlerExtension.Services
 {
+    /// <summary>
+    /// Function to stamp all session flags the extension uses.
+    /// </summary>
     class SessionFlagHandler : ActivationService
     {
         private static SessionFlagHandler _instance;
@@ -42,6 +45,8 @@ namespace Office365FiddlerExtension.Services
 
         public Boolean GetAnySessionConfidenceLevelTen(Session Session)
         {
+            this.Session = Session;
+
             var ExtensionSessionFlags = JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(GetSessionJsonData(this.Session));
 
             if (ExtensionSessionFlags.SessionAuthenticationConfidenceLevel == 10 ||
@@ -101,6 +106,17 @@ namespace Office365FiddlerExtension.Services
 
             // Save the new Json to the session flag.
             this.Session["Microsoft365FiddlerExtensionJson"] = jsonData;
+        }
+
+        public void ProcessSelectedSessions()
+        {
+            var Sessions = FiddlerApplication.UI.GetSelectedSessions();
+
+            foreach (var Session in Sessions)
+            {
+                this.Session = Session;
+                SessionHandler.Instance.OnPeekAtResponseHeaders(this.Session);
+            }
         }
 
         // Process All Sesssions ; Menu item is clicked.
