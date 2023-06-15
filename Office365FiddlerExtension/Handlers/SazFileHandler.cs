@@ -21,7 +21,11 @@ namespace Office365FiddlerExtension.Handler
 
         public static SazFileHandler Instance => _instance ?? (_instance = new SazFileHandler());
 
-        // Function to handle saving a SAZ file.
+        /// <summary>
+        /// Function to handle saving a SAZ file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void SaveSaz(object sender, FiddlerApplication.WriteSAZEventArgs e)
         {
             // Remove the session flags the extension adds to save space in the file and
@@ -66,7 +70,11 @@ namespace Office365FiddlerExtension.Handler
             FiddlerApplication.UI.lvSessions.EndUpdate();
         }
 
-        // Function to handle loading a SAZ file.
+        /// <summary>
+        /// Function to handle loading a SAZ file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void LoadSaz(object sender, FiddlerApplication.ReadSAZEventArgs e)
         {
             if (!SettingsHandler.Instance.ExtensionEnabled)

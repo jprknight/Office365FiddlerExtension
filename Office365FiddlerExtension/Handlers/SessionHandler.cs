@@ -365,7 +365,7 @@ namespace Office365FiddlerExtension
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_OnPremise_Any_Other_Exchange_EWS(this.Session);
+                    HTTP_200.Instance.HTTP_200_OnPremise_Any_Other_EWS(this.Session);
                     if (SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.Session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -373,7 +373,7 @@ namespace Office365FiddlerExtension
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_Microsoft365_Any_Other_Exchange_EWS(this.Session);
+                    HTTP_200.Instance.HTTP_200_Microsoft365_Any_Other_EWS(this.Session);
                     if (SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.Session).SessionTypeConfidenceLevel == 10)
                     {
                         break;

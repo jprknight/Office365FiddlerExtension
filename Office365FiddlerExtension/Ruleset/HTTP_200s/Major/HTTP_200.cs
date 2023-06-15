@@ -15,10 +15,12 @@ namespace Office365FiddlerExtension.Ruleset
 
         public static HTTP_200 Instance => _instance ?? (_instance = new HTTP_200());
 
+        /// <summary>
+        /// Connection blocked by Client Access Rules.
+        /// </summary>
+        /// <param name="session"></param>
         public void HTTP_200_ClientAccessRule(Session session)
         {
-            // Connection blocked by Client Access Rules.
-
             this.Session = session;
 
             // If the session content doesn't match the intended rule, return.
@@ -60,10 +62,12 @@ namespace Office365FiddlerExtension.Ruleset
             
         }
 
+        /// <summary>
+        /// Microsoft365 Outlook MAPI traffic, protocol disabled.
+        /// </summary>
+        /// <param name="session"></param>
         public void HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled(Session session)
         {
-            // Microsoft365 Outlook MAPI traffic, protocol disabled.
-
             this.Session = session;
 
             // If this isn't Office 365 MAPI traffic, return.
@@ -101,11 +105,13 @@ namespace Office365FiddlerExtension.Ruleset
             SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
+        /// <summary>
+        /// Microsoft 365 normal working MAPI traffic.
+        /// </summary>
+        /// <param name="session"></param>
         public void HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi(Session session)
         {
             this.Session = session;
-
-            // Microsoft 365 normal working MAPI traffic.
 
             // If the session hostname isn't outlook.office365.com and isn't MAPI traffic, return.
             if (!this.Session.HostnameIs("outlook.office365.com"))
@@ -140,9 +146,12 @@ namespace Office365FiddlerExtension.Ruleset
             SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
+        /// <summary>
+        /// Exchange On-Premise Mailbox MAPI
+        /// </summary>
+        /// <param name="session"></param>
         public void HTTP_200_Outlook_Exchange_OnPremise_Mapi(Session session)
         {
-            // Exchange On-Premise mailbox.
             this.Session = session;
 
             // If the session isn't MAPI traffic, return.
@@ -173,9 +182,12 @@ namespace Office365FiddlerExtension.Ruleset
             SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
+        /// <summary>
+        /// Outlook Web App.
+        /// </summary>
+        /// <param name="session"></param>
         public void HTTP_200_Outlook_Web_App(Session session)
         {
-            // Exchange On-Premise mailbox.
             this.Session = session;
 
             // If the session isn't MAPI traffic, return.
@@ -206,6 +218,10 @@ namespace Office365FiddlerExtension.Ruleset
             SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
+        /// <summary>
+        /// Outlook RPC.
+        /// </summary>
+        /// <param name="session"></param>
         public void HTTP_200_Outlook_RPC(Session session)
         {
             this.Session = session;
@@ -240,11 +256,13 @@ namespace Office365FiddlerExtension.Ruleset
             SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);          
         }
 
+        /// <summary>
+        /// Outlook Name Service Provider Interface (NSPI) traffic.
+        /// </summary>
+        /// <param name="session"></param>
         public void HTTP_200_Outlook_NSPI(Session session)
         {
             this.Session = session;
-
-            // Outlook Name Service Provider Interface (NSPI) traffic.
 
             // If this isn't NSPI traffic, return.
             if (!this.Session.uriContains("/mapi/nspi/"))
@@ -274,6 +292,10 @@ namespace Office365FiddlerExtension.Ruleset
             SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
+        /// <summary>
+        /// Exchange OnPremise AutoDiscover Redirect Address Found.
+        /// </summary>
+        /// <param name="session"></param>
         public void HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found(Session session)
         {
             this.Session = session;
@@ -380,10 +402,12 @@ namespace Office365FiddlerExtension.Ruleset
             }
         }
 
+        /// <summary>
+        /// Exchange OnPremise AutoDiscover Redirect Address Not Found.
+        /// </summary>
+        /// <param name="session"></param>
         public void HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound(Session session)
         {
-            // Exchange On-Premise Autodiscover redirect - address can't be found
-
             this.Session = session;
 
             // If this autodiscover redirect is from Microsoft 365, return.
@@ -435,6 +459,10 @@ namespace Office365FiddlerExtension.Ruleset
             }
         }
 
+        /// <summary>
+        /// Exchange Online / Microsoft 365 AutoDiscover MSI Non-ClickToRun.
+        /// </summary>
+        /// <param name="session"></param>
         public void HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun(Session session)
         {
             this.Session = session;
@@ -505,6 +533,10 @@ namespace Office365FiddlerExtension.Ruleset
             }
         }
 
+        /// <summary>
+        /// Exchange Online / Microsoft 365 AutoDiscover ClickToRun.
+        /// </summary>
+        /// <param name="session"></param>
         public void HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun(Session session)
         {
             this.Session = session;
@@ -572,6 +604,10 @@ namespace Office365FiddlerExtension.Ruleset
             }
         }
 
+        /// <summary>
+        /// Exchange Online / Microsoft 365 Unified Groups Settings.
+        /// </summary>
+        /// <param name="session"></param>
         public void HTTP_200_Unified_Groups_Settings(Session session)
         {
             this.Session = session;
@@ -666,10 +702,12 @@ namespace Office365FiddlerExtension.Ruleset
             }
         }
 
+        /// <summary>
+        /// 3S Suggestions call.
+        /// </summary>
+        /// <param name="session"></param>
         public void HTTP_200_3S_Suggestions(Session session)
         {
-            // 200.9. 3S Suggestions call.
-
             this.Session = session;
 
             // If this isn't a 3G Suggestions call, return.
@@ -706,6 +744,10 @@ namespace Office365FiddlerExtension.Ruleset
             SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
+        /// <summary>
+        /// REST People Request.
+        /// </summary>
+        /// <param name="session"></param>
         public void HTTP_200_REST_People_Request(Session session)
         {
             this.Session = session;
@@ -757,7 +799,11 @@ namespace Office365FiddlerExtension.Ruleset
             SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
-        public void HTTP_200_Microsoft365_Any_Other_Exchange_EWS(Session session)
+        /// <summary>
+        /// Exchange Online / Microsoft 365 Any Other Exchange Web Services.
+        /// </summary>
+        /// <param name="session"></param>
+        public void HTTP_200_Microsoft365_Any_Other_EWS(Session session)
         {
             // Any other (Microsoft365 / EXO) EWS call.
 
@@ -797,10 +843,14 @@ namespace Office365FiddlerExtension.Ruleset
             
         }
 
-        public void HTTP_200_OnPremise_Any_Other_Exchange_EWS(Session session)
+        /// <summary>
+        /// Exchange OnPremise Any Other Exchange Web Services.
+        /// </summary>
+        /// <param name="session"></param>
+        public void HTTP_200_OnPremise_Any_Other_EWS(Session session)
         {
             // Any other EWS call.
-            // Note: There are some companies who have vanity domains for Office 365. They are the outliers for this scenario.
+            // Note: There are some organizations who have vanity domains for Office 365. They are the outliers for this scenario.
 
             this.Session = session;
 
@@ -837,6 +887,11 @@ namespace Office365FiddlerExtension.Ruleset
             SessionFlagHandler.Instance.UpdateSessionFlagJson(this.Session, sessionFlagsJson);
         }
 
+        /// <summary>
+        /// Function to look for lurking errors, failures, and exceptions in HTTP 200s.
+        /// Exclude any session which contains a content-type of javascript.
+        /// </summary>
+        /// <param name="session"></param>
         public void HTTP_200_Lurking_Errors(Session session)
         {
             this.Session = session;
@@ -871,7 +926,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             /////////////////////////////
             //
-            // 200.99. All other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
+            // All other specific scenarios, fall back to looking for errors lurking in HTTP 200 OK responses.
 
             int wordCountError = 0;
             int wordCountFailed = 0;
@@ -979,7 +1034,7 @@ namespace Office365FiddlerExtension.Ruleset
                     + "if lots of Javascript or other web code</b> is being loaded.</p>",
 
                     SessionAuthenticationConfidenceLevel = 5,
-                    SessionTypeConfidenceLevel = 5,
+                    SessionTypeConfidenceLevel = 10,
                     SessionResponseServerConfidenceLevel = 5
                 };
 
@@ -988,21 +1043,21 @@ namespace Office365FiddlerExtension.Ruleset
             }
             else
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 OK Lurking Errors");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 OK");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_200s_Lurking_Errors",
+                    SectionTitle = "HTTP_200s_No_Lurking_Errors",
                     UIBackColour = "Green",
                     UITextColour = "Black",
 
-                    SessionType = "200 OK Lurking Errors",
-                    ResponseCodeDescription = "200 OK Lurking Errors",
+                    SessionType = "200 OK",
+                    ResponseCodeDescription = "200 OK",
                     ResponseAlert = "HTTP 200 OK, with no errors, failed, or exceptions found.",
                     ResponseComments = "HTTP 200 OK, with no errors, failed, or exceptions found.",
 
                     SessionAuthenticationConfidenceLevel = 5,
-                    SessionTypeConfidenceLevel = 5,
+                    SessionTypeConfidenceLevel = 10,
                     SessionResponseServerConfidenceLevel = 5
                 };
 

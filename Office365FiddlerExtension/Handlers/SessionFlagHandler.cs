@@ -18,6 +18,11 @@ namespace Office365FiddlerExtension.Services
         private static SessionFlagHandler _instance;
         public static SessionFlagHandler Instance => _instance ?? (_instance = new SessionFlagHandler());
 
+        /// <summary>
+        /// Return deserialised Json session flags stored in each session in the Fiddler UI.
+        /// </summary>
+        /// <param name="Session"></param>
+        /// <returns></returns>
         public ExtensionSessionFlags GetDeserializedSessionFlags(Session Session)
         {
             this.Session = Session;
@@ -26,6 +31,11 @@ namespace Office365FiddlerExtension.Services
             return JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.Session));
         }
 
+        /// <summary>
+        /// Return the raw Json data from the session flag.
+        /// </summary>
+        /// <param name="Session"></param>
+        /// <returns></returns>
         public string GetSessionJsonData(Session Session)
         {
             this.Session = Session;
@@ -36,6 +46,11 @@ namespace Office365FiddlerExtension.Services
             return this.Session["Microsoft365FiddlerExtensionJson"];
         }
 
+        /// <summary>
+        /// Return string for sessions where no known issue is needed.
+        /// Used across response code logic.
+        /// </summary>
+        /// <returns></returns>
         public string ResponseCommentsNoKnownIssue()
         {
             return "<p>No known issue with Microsoft365 and this type of session. If you have a suggestion for an improvement, "
@@ -43,6 +58,11 @@ namespace Office365FiddlerExtension.Services
                 + "<a href='https://aka.ms/Office365FiddlerExtension' target='_blank'>https://aka.ms/Office365FiddlerExtension</a>.</p>";
         }
 
+        /// <summary>
+        /// Returns true if any session confidence level is 10.
+        /// </summary>
+        /// <param name="Session"></param>
+        /// <returns></returns>
         public Boolean GetAnySessionConfidenceLevelTen(Session Session)
         {
             this.Session = Session;
@@ -58,6 +78,10 @@ namespace Office365FiddlerExtension.Services
             return false;
         }
 
+        /// <summary>
+        /// Creates the session flags on each session. Avoid null exceptions.
+        /// </summary>
+        /// <param name="Session"></param>
         public void CreateExtensionSessionFlag(Session Session)
         {
             this.Session = Session;
@@ -108,6 +132,9 @@ namespace Office365FiddlerExtension.Services
             this.Session["Microsoft365FiddlerExtensionJson"] = jsonData;
         }
 
+        /// <summary>
+        /// Processes the selected sessions in Fiddler. Called from the MenuUI and ContextMenuUI.
+        /// </summary>
         public void ProcessSelectedSessions()
         {
             var Sessions = FiddlerApplication.UI.GetSelectedSessions();
@@ -119,7 +146,9 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
-        // Process All Sesssions ; Menu item is clicked.
+        /// <summary>
+        /// Processes all sessions loaded in Fiddler. Called from the MenuUI and ContextMenuUI.
+        /// </summary>
         public void ProcessAllSessions()
         {
             var Sessions = FiddlerApplication.UI.GetAllSessions();
@@ -134,7 +163,9 @@ namespace Office365FiddlerExtension.Services
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Processed {Sessions.Count()} sessions.");
         }
 
-        // Clear All Session Processing ; Menu item is clicked.
+        /// <summary>
+        /// Clears processing from all sessions loaded in Fiddler. Called from the MenuUI and ContextMenuUI.
+        /// </summary>
         public void ClearAllSessionProcessing()
         {
             FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Clearing all current session procesing.");
@@ -150,7 +181,11 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
-        // Take any updates to session flags and save them into the session Json.
+        /// <summary>
+        /// Take any updates to session flags and save them into the session Json.
+        /// </summary>
+        /// <param name="Session"></param>
+        /// <param name="JsonData"></param>
         public void UpdateSessionFlagJson(Session Session, String JsonData)
         {
             this.Session = Session;
