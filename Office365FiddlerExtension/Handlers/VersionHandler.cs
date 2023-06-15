@@ -28,7 +28,16 @@ namespace Office365FiddlerExtension.Handler
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
 
-            return JsonConvert.DeserializeObject<ExtensionVersionFlags>(Preferences.ExtensionVersion, JsonSettings);
+            try
+            {
+                return JsonConvert.DeserializeObject<ExtensionVersionFlags>(Preferences.ExtensionVersion, JsonSettings);
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Error deserializing extension version.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {ex}");
+            }
+            return null;
         }
 
         public void CreateExtensionVersionFiddlerSetting()

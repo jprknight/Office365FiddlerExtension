@@ -28,7 +28,17 @@ namespace Office365FiddlerExtension.Services
             this.Session = Session;
             // Call create here to avoid null exception if live tracing traffic.
             CreateExtensionSessionFlag(this.Session);
-            return JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.Session));
+
+            try
+            {
+                return JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.Session));
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Error deserializing session flags on session.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {ex}");
+            }
+            return null;
         }
 
         /// <summary>

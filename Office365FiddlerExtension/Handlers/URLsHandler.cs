@@ -26,10 +26,16 @@ namespace Office365FiddlerExtension.Handler
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: GetDeserializedExtensionURLs: " +
-                $"{JsonConvert.DeserializeObject<ExtensionURLsJson>(Preferences.ExtensionURLs, JsonSettings).Wiki}");
-            return JsonConvert.DeserializeObject<ExtensionURLsJson>(Preferences.ExtensionURLs, JsonSettings);
-
+            try
+            {
+                return JsonConvert.DeserializeObject<ExtensionURLsJson>(Preferences.ExtensionURLs, JsonSettings);
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Error deserializing extension URLs.");
+                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {ex}");
+            }
+            return null;
         }
 
         public void CreateExtensionURLFiddlerSetting()
