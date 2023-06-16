@@ -42,19 +42,17 @@
             this.HoursLabel = new System.Windows.Forms.Label();
             this.NextUpdateCheckLabel = new System.Windows.Forms.Label();
             this.NextUpdateCheckTextbox = new System.Windows.Forms.TextBox();
-            this.SessionTimeThresholdLinkLabel = new System.Windows.Forms.LinkLabel();
             this.label1 = new System.Windows.Forms.Label();
-            this.SlowRunningSessionThresholdUpdateButton = new System.Windows.Forms.Button();
-            this.WarningSessionTimeThresholdUpdateButton = new System.Windows.Forms.Button();
-            this.SlowRunningSessionThresholdTextbox = new System.Windows.Forms.TextBox();
-            this.SlowRunningSessionThresholdLabel = new System.Windows.Forms.Label();
-            this.WarningSessionTimeThresholdLabel = new System.Windows.Forms.Label();
-            this.WarningSessionTimeThresholdTextbox = new System.Windows.Forms.TextBox();
             this.ExtensionEnabledCheckbox = new System.Windows.Forms.CheckBox();
             this.SessionAnalysisOnLiveTraceCheckbox = new System.Windows.Forms.CheckBox();
             this.AllSessionAnalysisRadioButton = new System.Windows.Forms.RadioButton();
             this.SessionAnalysisOnLoadSazCheckbox = new System.Windows.Forms.CheckBox();
             this.SomeSessionAnalysisRadioButton = new System.Windows.Forms.RadioButton();
+            this.SessionTimeThresholdLinkLabel = new System.Windows.Forms.LinkLabel();
+            this.SlowRunningSessionThresholdTextbox = new System.Windows.Forms.TextBox();
+            this.SlowRunningSessionThresholdLabel = new System.Windows.Forms.Label();
+            this.WarningSessionTimeThresholdLabel = new System.Windows.Forms.Label();
+            this.WarningSessionTimeThresholdTextbox = new System.Windows.Forms.TextBox();
             this.CloseButton = new System.Windows.Forms.Button();
             this.GithubInfoGroupbox = new System.Windows.Forms.GroupBox();
             this.NextUpdateCheckTimestampLabel = new System.Windows.Forms.Label();
@@ -65,10 +63,10 @@
             this.GithubDLLVersionTextbox = new System.Windows.Forms.TextBox();
             this.ObscureSettingsGroupbox = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.ScoreForSessionLabel = new System.Windows.Forms.Label();
-            this.ScoreForSessionTextbox = new System.Windows.Forms.TextBox();
             this.WhatIsScoreForSessionLinkLabel = new System.Windows.Forms.LinkLabel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.ScoreForSessionTextbox = new System.Windows.Forms.TextBox();
+            this.ScoreForSessionLabel = new System.Windows.Forms.Label();
+            this.SaveButton = new System.Windows.Forms.Button();
             this.InfoGroupbox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -217,17 +215,6 @@
             this.NextUpdateCheckTextbox.Size = new System.Drawing.Size(28, 20);
             this.NextUpdateCheckTextbox.TabIndex = 16;
             // 
-            // SessionTimeThresholdLinkLabel
-            // 
-            this.SessionTimeThresholdLinkLabel.AutoSize = true;
-            this.SessionTimeThresholdLinkLabel.Location = new System.Drawing.Point(5, 99);
-            this.SessionTimeThresholdLinkLabel.Name = "SessionTimeThresholdLinkLabel";
-            this.SessionTimeThresholdLinkLabel.Size = new System.Drawing.Size(157, 13);
-            this.SessionTimeThresholdLinkLabel.TabIndex = 15;
-            this.SessionTimeThresholdLinkLabel.TabStop = true;
-            this.SessionTimeThresholdLinkLabel.Text = "What are these two thresholds?";
-            this.SessionTimeThresholdLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.SessionTimeThresholdLink_LinkClicked);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -235,58 +222,6 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(0, 13);
             this.label1.TabIndex = 13;
-            // 
-            // SlowRunningSessionThresholdUpdateButton
-            // 
-            this.SlowRunningSessionThresholdUpdateButton.Location = new System.Drawing.Point(235, 69);
-            this.SlowRunningSessionThresholdUpdateButton.Name = "SlowRunningSessionThresholdUpdateButton";
-            this.SlowRunningSessionThresholdUpdateButton.Size = new System.Drawing.Size(56, 23);
-            this.SlowRunningSessionThresholdUpdateButton.TabIndex = 12;
-            this.SlowRunningSessionThresholdUpdateButton.Text = "Update";
-            this.SlowRunningSessionThresholdUpdateButton.UseVisualStyleBackColor = true;
-            this.SlowRunningSessionThresholdUpdateButton.Click += new System.EventHandler(this.SlowRunningSessionThresholdUpdateButton_Click);
-            // 
-            // WarningSessionTimeThresholdUpdateButton
-            // 
-            this.WarningSessionTimeThresholdUpdateButton.Location = new System.Drawing.Point(235, 43);
-            this.WarningSessionTimeThresholdUpdateButton.Name = "WarningSessionTimeThresholdUpdateButton";
-            this.WarningSessionTimeThresholdUpdateButton.Size = new System.Drawing.Size(56, 23);
-            this.WarningSessionTimeThresholdUpdateButton.TabIndex = 11;
-            this.WarningSessionTimeThresholdUpdateButton.Text = "Update";
-            this.WarningSessionTimeThresholdUpdateButton.UseVisualStyleBackColor = true;
-            this.WarningSessionTimeThresholdUpdateButton.Click += new System.EventHandler(this.WarningSessionTimeThresholdUpdateButton_Click);
-            // 
-            // SlowRunningSessionThresholdTextbox
-            // 
-            this.SlowRunningSessionThresholdTextbox.Location = new System.Drawing.Point(174, 71);
-            this.SlowRunningSessionThresholdTextbox.Name = "SlowRunningSessionThresholdTextbox";
-            this.SlowRunningSessionThresholdTextbox.Size = new System.Drawing.Size(55, 20);
-            this.SlowRunningSessionThresholdTextbox.TabIndex = 9;
-            // 
-            // SlowRunningSessionThresholdLabel
-            // 
-            this.SlowRunningSessionThresholdLabel.AutoSize = true;
-            this.SlowRunningSessionThresholdLabel.Location = new System.Drawing.Point(5, 74);
-            this.SlowRunningSessionThresholdLabel.Name = "SlowRunningSessionThresholdLabel";
-            this.SlowRunningSessionThresholdLabel.Size = new System.Drawing.Size(163, 13);
-            this.SlowRunningSessionThresholdLabel.TabIndex = 8;
-            this.SlowRunningSessionThresholdLabel.Text = "Slow Running Session Threshold";
-            // 
-            // WarningSessionTimeThresholdLabel
-            // 
-            this.WarningSessionTimeThresholdLabel.AutoSize = true;
-            this.WarningSessionTimeThresholdLabel.Location = new System.Drawing.Point(5, 48);
-            this.WarningSessionTimeThresholdLabel.Name = "WarningSessionTimeThresholdLabel";
-            this.WarningSessionTimeThresholdLabel.Size = new System.Drawing.Size(163, 13);
-            this.WarningSessionTimeThresholdLabel.TabIndex = 7;
-            this.WarningSessionTimeThresholdLabel.Text = "Warning Session Time Threshold";
-            // 
-            // WarningSessionTimeThresholdTextbox
-            // 
-            this.WarningSessionTimeThresholdTextbox.Location = new System.Drawing.Point(174, 45);
-            this.WarningSessionTimeThresholdTextbox.Name = "WarningSessionTimeThresholdTextbox";
-            this.WarningSessionTimeThresholdTextbox.Size = new System.Drawing.Size(55, 20);
-            this.WarningSessionTimeThresholdTextbox.TabIndex = 6;
             // 
             // ExtensionEnabledCheckbox
             // 
@@ -344,6 +279,49 @@
             this.SomeSessionAnalysisRadioButton.Text = "Some Session Analysis";
             this.SomeSessionAnalysisRadioButton.UseVisualStyleBackColor = true;
             this.SomeSessionAnalysisRadioButton.CheckedChanged += new System.EventHandler(this.SomeSessionAnalysisRadioButton_CheckedChanged);
+            // 
+            // SessionTimeThresholdLinkLabel
+            // 
+            this.SessionTimeThresholdLinkLabel.AutoSize = true;
+            this.SessionTimeThresholdLinkLabel.Location = new System.Drawing.Point(5, 99);
+            this.SessionTimeThresholdLinkLabel.Name = "SessionTimeThresholdLinkLabel";
+            this.SessionTimeThresholdLinkLabel.Size = new System.Drawing.Size(157, 13);
+            this.SessionTimeThresholdLinkLabel.TabIndex = 15;
+            this.SessionTimeThresholdLinkLabel.TabStop = true;
+            this.SessionTimeThresholdLinkLabel.Text = "What are these two thresholds?";
+            this.SessionTimeThresholdLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.SessionTimeThresholdLink_LinkClicked);
+            // 
+            // SlowRunningSessionThresholdTextbox
+            // 
+            this.SlowRunningSessionThresholdTextbox.Location = new System.Drawing.Point(174, 71);
+            this.SlowRunningSessionThresholdTextbox.Name = "SlowRunningSessionThresholdTextbox";
+            this.SlowRunningSessionThresholdTextbox.Size = new System.Drawing.Size(55, 20);
+            this.SlowRunningSessionThresholdTextbox.TabIndex = 9;
+            // 
+            // SlowRunningSessionThresholdLabel
+            // 
+            this.SlowRunningSessionThresholdLabel.AutoSize = true;
+            this.SlowRunningSessionThresholdLabel.Location = new System.Drawing.Point(5, 74);
+            this.SlowRunningSessionThresholdLabel.Name = "SlowRunningSessionThresholdLabel";
+            this.SlowRunningSessionThresholdLabel.Size = new System.Drawing.Size(163, 13);
+            this.SlowRunningSessionThresholdLabel.TabIndex = 8;
+            this.SlowRunningSessionThresholdLabel.Text = "Slow Running Session Threshold";
+            // 
+            // WarningSessionTimeThresholdLabel
+            // 
+            this.WarningSessionTimeThresholdLabel.AutoSize = true;
+            this.WarningSessionTimeThresholdLabel.Location = new System.Drawing.Point(5, 48);
+            this.WarningSessionTimeThresholdLabel.Name = "WarningSessionTimeThresholdLabel";
+            this.WarningSessionTimeThresholdLabel.Size = new System.Drawing.Size(163, 13);
+            this.WarningSessionTimeThresholdLabel.TabIndex = 7;
+            this.WarningSessionTimeThresholdLabel.Text = "Warning Session Time Threshold";
+            // 
+            // WarningSessionTimeThresholdTextbox
+            // 
+            this.WarningSessionTimeThresholdTextbox.Location = new System.Drawing.Point(174, 45);
+            this.WarningSessionTimeThresholdTextbox.Name = "WarningSessionTimeThresholdTextbox";
+            this.WarningSessionTimeThresholdTextbox.Size = new System.Drawing.Size(55, 20);
+            this.WarningSessionTimeThresholdTextbox.TabIndex = 6;
             // 
             // CloseButton
             // 
@@ -436,7 +414,6 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.WhatIsScoreForSessionLinkLabel);
             this.panel2.Controls.Add(this.ScoreForSessionTextbox);
             this.panel2.Controls.Add(this.ScoreForSessionLabel);
@@ -445,28 +422,10 @@
             this.panel2.Controls.Add(this.SlowRunningSessionThresholdLabel);
             this.panel2.Controls.Add(this.SessionTimeThresholdLinkLabel);
             this.panel2.Controls.Add(this.SlowRunningSessionThresholdTextbox);
-            this.panel2.Controls.Add(this.WarningSessionTimeThresholdUpdateButton);
-            this.panel2.Controls.Add(this.SlowRunningSessionThresholdUpdateButton);
             this.panel2.Location = new System.Drawing.Point(6, 19);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(425, 120);
             this.panel2.TabIndex = 0;
-            // 
-            // ScoreForSessionLabel
-            // 
-            this.ScoreForSessionLabel.AutoSize = true;
-            this.ScoreForSessionLabel.Location = new System.Drawing.Point(3, 6);
-            this.ScoreForSessionLabel.Name = "ScoreForSessionLabel";
-            this.ScoreForSessionLabel.Size = new System.Drawing.Size(87, 13);
-            this.ScoreForSessionLabel.TabIndex = 16;
-            this.ScoreForSessionLabel.Text = "ScoreForSession";
-            // 
-            // ScoreForSessionTextbox
-            // 
-            this.ScoreForSessionTextbox.Location = new System.Drawing.Point(172, 3);
-            this.ScoreForSessionTextbox.Name = "ScoreForSessionTextbox";
-            this.ScoreForSessionTextbox.Size = new System.Drawing.Size(55, 20);
-            this.ScoreForSessionTextbox.TabIndex = 17;
             // 
             // WhatIsScoreForSessionLinkLabel
             // 
@@ -479,20 +438,38 @@
             this.WhatIsScoreForSessionLinkLabel.Text = "What is ScoreForSession?";
             this.WhatIsScoreForSessionLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.WhatIsScoreForSessionLinkLabel_LinkClicked);
             // 
-            // button1
+            // ScoreForSessionTextbox
             // 
-            this.button1.Location = new System.Drawing.Point(235, 1);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(56, 23);
-            this.button1.TabIndex = 18;
-            this.button1.Text = "Update";
-            this.button1.UseVisualStyleBackColor = true;
+            this.ScoreForSessionTextbox.Location = new System.Drawing.Point(172, 3);
+            this.ScoreForSessionTextbox.Name = "ScoreForSessionTextbox";
+            this.ScoreForSessionTextbox.Size = new System.Drawing.Size(55, 20);
+            this.ScoreForSessionTextbox.TabIndex = 17;
+            // 
+            // ScoreForSessionLabel
+            // 
+            this.ScoreForSessionLabel.AutoSize = true;
+            this.ScoreForSessionLabel.Location = new System.Drawing.Point(3, 6);
+            this.ScoreForSessionLabel.Name = "ScoreForSessionLabel";
+            this.ScoreForSessionLabel.Size = new System.Drawing.Size(87, 13);
+            this.ScoreForSessionLabel.TabIndex = 16;
+            this.ScoreForSessionLabel.Text = "ScoreForSession";
+            // 
+            // SaveButton
+            // 
+            this.SaveButton.Location = new System.Drawing.Point(662, 315);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(75, 23);
+            this.SaveButton.TabIndex = 13;
+            this.SaveButton.Text = "Save";
+            this.SaveButton.UseVisualStyleBackColor = true;
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(826, 347);
+            this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.ObscureSettingsGroupbox);
             this.Controls.Add(this.GithubInfoGroupbox);
             this.Controls.Add(this.groupBox1);
@@ -533,8 +510,6 @@
         private System.Windows.Forms.Label SlowRunningSessionThresholdLabel;
         private System.Windows.Forms.TextBox SlowRunningSessionThresholdTextbox;
         private System.Windows.Forms.Button CloseButton;
-        private System.Windows.Forms.Button SlowRunningSessionThresholdUpdateButton;
-        private System.Windows.Forms.Button WarningSessionTimeThresholdUpdateButton;
         public System.Windows.Forms.TextBox WarningSessionTimeThresholdTextbox;
         private System.Windows.Forms.LinkLabel SessionTimeThresholdLinkLabel;
         private System.Windows.Forms.Label label1;
@@ -557,6 +532,6 @@
         private System.Windows.Forms.TextBox ScoreForSessionTextbox;
         private System.Windows.Forms.Label ScoreForSessionLabel;
         private System.Windows.Forms.LinkLabel WhatIsScoreForSessionLinkLabel;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button SaveButton;
     }
 }

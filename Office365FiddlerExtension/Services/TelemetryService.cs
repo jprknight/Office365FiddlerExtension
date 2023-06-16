@@ -24,7 +24,7 @@ namespace Office365FiddlerExtension.Services
         /// </summary>
         
         // Pull telemetry instrumentation key from Json.
-        private static readonly string iKey = SettingsHandler.Instance.TelemetryInstrumentationKey;
+        private static readonly string iKey = URLsHandler.Instance.GetDeserializedExtensionURLs().TelemetryInstrumentationKey;
         
         /// <summary>
         /// Azure Application Insights Telemetry client.
@@ -50,7 +50,7 @@ namespace Office365FiddlerExtension.Services
         {
             if (!IsInitialized)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (TelemetryService): Telemetry using instrumentation key: {SettingsHandler.Instance.TelemetryInstrumentationKey}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (TelemetryService): Telemetry using instrumentation key: {URLsHandler.Instance.GetDeserializedExtensionURLs().TelemetryInstrumentationKey}");
 
                 try
                 {

@@ -129,6 +129,26 @@ namespace Office365FiddlerExtension.Handler
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
         }
 
+        public void SetUpdateCheckFrequencyHours(string hours)
+        {
+            // Validate input is int and only act if it is.
+            var isNumberic = int.TryParse(hours, out int ihours);
+
+            if (isNumberic)
+            {
+                var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+                extensionSettings.UpdateCheckFrequencyHours = ihours;
+
+                Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
+
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): UpdateCheckFreqencyHours set to {ihours}.");
+            }
+            else
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): UpdateCheckFreqencyHours only accepts a numerical value.");
+            }
+        }
+
         public String TelemetryInstrumentationKey
         {
             get

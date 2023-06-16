@@ -38,6 +38,8 @@ namespace Office365FiddlerExtension.UI
 
             ScoreForSessionTextbox.Text = extensionSettings.InspectorScoreForSession.ToString();
 
+            NextUpdateCheckTimestampTextbox.Text = extensionSettings.NextUpdateCheck.ToString();
+
             if (extensionSettings.UseBetaRuleSet)
             {
                 LocalRulesetVersionTextbox.Text = extensionSettings.LocalBetaRulesetLastUpdated.ToString();
@@ -157,19 +159,9 @@ namespace Office365FiddlerExtension.UI
             SettingsHandler.Instance.SetSessionAnalysisOnLiveTrace(SessionAnalysisOnLiveTraceCheckbox.Checked);
         }
 
-        private void WarningSessionTimeThresholdUpdateButton_Click(object sender, EventArgs e)
-        {
-            SettingsHandler.Instance.UpdateWarningSessionTimeThreshold(WarningSessionTimeThresholdTextbox.Text);
-        }
-
         private void CloseButton_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void SlowRunningSessionThresholdUpdateButton_Click(object sender, EventArgs e)
-        {
-            SettingsHandler.Instance.UpdateSlowRunningSessionThreshold(SlowRunningSessionThresholdTextbox.Text);
         }
 
         private void SessionTimeThresholdLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -196,6 +188,15 @@ namespace Office365FiddlerExtension.UI
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): About unable to open ScoreForSession link: {URLsHandler.Instance.GetDeserializedExtensionURLs().WikiScoreForSession}");
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
+        }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            SettingsHandler.Instance.UpdateSlowRunningSessionThreshold(SlowRunningSessionThresholdTextbox.Text);
+
+            SettingsHandler.Instance.UpdateWarningSessionTimeThreshold(WarningSessionTimeThresholdTextbox.Text);
+
+            SettingsHandler.Instance.SetUpdateCheckFrequencyHours(NextUpdateCheckTextbox.Text);
         }
     }
 }
