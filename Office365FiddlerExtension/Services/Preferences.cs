@@ -13,11 +13,6 @@ namespace Office365FiddlerExtension.Services
         {
         }*/
 
-        public static string LogPrepend()
-        {
-            return "Office365FiddlerExtension";
-        }
-
         /// <summary>
         /// This is the low water mark for what is considered a slow running session, considering a number of factors.
         /// Exchange response times are typically going to be much quicker than this. In the < 300ms range.
@@ -90,13 +85,13 @@ namespace Office365FiddlerExtension.Services
         }
 
         // Setting to store Json version information to run update checks against. Updated from remote.
-        private static string _extensionVersion;
+        /*private static string _extensionVersion;
 
         public static string ExtensionVersion
         {
             get => _extensionVersion = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.ExtensionVersion", null);
             set { _extensionVersion = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionVersion", value); }
-        }
+        }*/
 
         // Setting to store Json extension settings in. Updated within the extension only, no remote updates.
         private static string _extensionSettings;
@@ -108,12 +103,12 @@ namespace Office365FiddlerExtension.Services
         }
 
         // Setting to store Json extension URLs. Update from remote.
-        private static string _extensionURLs;
+        /*private static string _extensionURLs;
 
         public static string ExtensionURLs
         {
             get => _extensionURLs = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.ExtensionURLs", null);
             set { _extensionURLs = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionURLs", value); }
-        }
+        }*/
     }
 }

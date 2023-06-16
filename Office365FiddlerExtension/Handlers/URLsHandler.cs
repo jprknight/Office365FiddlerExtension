@@ -29,7 +29,7 @@ namespace Office365FiddlerExtension.Handler
 
             try
             {
-                return JsonConvert.DeserializeObject<ExtensionURLsJson>(Preferences.ExtensionURLs, JsonSettings);
+                return JsonConvert.DeserializeObject<ExtensionURLsJson>(ExtensionURLs, JsonSettings);
             }
             catch (Exception ex)
             {
@@ -39,10 +39,19 @@ namespace Office365FiddlerExtension.Handler
             return null;
         }
 
+        // Setting to store Json extension URLs. Update from remote.
+        private static string _extensionURLs;
+
+        public static string ExtensionURLs
+        {
+            get => _extensionURLs = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.ExtensionURLs", null);
+            set { _extensionURLs = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionURLs", value); }
+        }
+
         public void CreateExtensionURLFiddlerSetting()
         {
             // If the Extension URLs Json already exists, none of this needs to run.
-            if (Preferences.ExtensionURLs != null || Preferences.ExtensionURLs == "")
+            if (ExtensionURLs != null || ExtensionURLs == "")
             {
                 return;
             }
@@ -69,7 +78,7 @@ namespace Office365FiddlerExtension.Handler
             try
             {
                 // Save the new Json to the Fiddler setting.
-                Preferences.ExtensionURLs = jsonData;
+                ExtensionURLs = jsonData;
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): CreateExtensionURLFiddlerSetting written to ExtensionURLs Fiddler setting.");
             }
             catch (Exception ex)

@@ -53,7 +53,7 @@ namespace Office365FiddlerExtension.UI
             WarningSessionTimeThresholdTextbox.Text = extensionSettings.WarningSessionTimeThreshold.ToString();
             SlowRunningSessionThresholdTextbox.Text = extensionSettings.SlowRunningSessionThreshold.ToString();
 
-            About.ActiveForm.Text = $"{Preferences.LogPrepend()} v{extensionVersion.VersionMajor}.{extensionVersion.VersionMinor}.{extensionVersion.VersionBuild}";
+            this.Text = $"About: {Assembly.GetExecutingAssembly().GetName().Name} v{extensionVersion.VersionMajor}.{extensionVersion.VersionMinor}.{extensionVersion.VersionBuild}";
 
             if (extensionSettings.SessionAnalysisOnFiddlerLoad == true &&
                 extensionSettings.SessionAnalysisOnLoadSaz == true &&

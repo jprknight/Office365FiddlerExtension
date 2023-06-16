@@ -234,8 +234,8 @@ namespace Office365FiddlerExtension.Ruleset
             }
 
             // Outlook RPC traffic.
-            
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()} : {this.Session.id} HTTP 200 Outlook RPC traffic break.");
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 Outlook RPC traffic break.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {

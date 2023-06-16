@@ -30,7 +30,7 @@ namespace Office365FiddlerExtension.Handler
 
             try
             {
-                return JsonConvert.DeserializeObject<ExtensionVersionFlags>(Preferences.ExtensionVersion, JsonSettings);
+                return JsonConvert.DeserializeObject<ExtensionVersionFlags>(ExtensionVersion, JsonSettings);
             }
             catch (Exception ex)
             {
@@ -38,6 +38,15 @@ namespace Office365FiddlerExtension.Handler
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
             return null;
+        }
+
+        // Setting to store Json version information to run update checks against. Updated from remote.
+        private static string _extensionVersion;
+
+        public static string ExtensionVersion
+        {
+            get => _extensionVersion = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.ExtensionVersion", null);
+            set { _extensionVersion = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionVersion", value); }
         }
 
         public void CreateExtensionVersionFiddlerSetting()
@@ -54,7 +63,7 @@ namespace Office365FiddlerExtension.Handler
             string jsonData = JsonConvert.SerializeObject(VersionItems);
 
             // Save the new Json to the Fiddler setting.
-            Preferences.ExtensionVersion = jsonData;
+            ExtensionVersion = jsonData;
         }
 
         public class ExtensionVersionFlags
@@ -107,10 +116,10 @@ namespace Office365FiddlerExtension.Handler
                     }
 
                     // Save this new data into the ExtensionVerison Fiddler setting.
-                    if (Preferences.ExtensionVersion != jsonString)
+                    if (ExtensionVersion != jsonString)
                     {
                         FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeVersion Fiddler setting updated.");
-                        Preferences.ExtensionVersion = jsonString;
+                        ExtensionVersion = jsonString;
                         
                         // Update the next update check timestamp.
                         SettingsHandler.Instance.SetNextUpdateTimestamp();
