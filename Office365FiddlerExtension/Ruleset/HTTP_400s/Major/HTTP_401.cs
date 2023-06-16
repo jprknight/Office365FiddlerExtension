@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -28,7 +29,7 @@ namespace Office365FiddlerExtension.Ruleset
                 || (this.Session.hostname == "outlook.office365.com")
                 && (this.Session.uriContains("autodiscover.xml")))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 401 Auth Challenge.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 401 Auth Challenge.");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -64,7 +65,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             if (this.Session.uriContains("/Autodiscover/Autodiscover.xml"))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 401 Auth Challenge.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 401 Auth Challenge.");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -100,7 +101,7 @@ namespace Office365FiddlerExtension.Ruleset
             // 401.3 Any Exchange Web Services
             if (session.uriContains("/EWS/Exchange.asmx"))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 401 EWS call.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 401 EWS call.");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -128,7 +129,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 401 Auth Challenge.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 401 Auth Challenge.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {

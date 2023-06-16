@@ -12,8 +12,10 @@ namespace Office365FiddlerExtension.UI
     /// Set colours on session foreground and background. Called from SessionHandler once
     /// session flags have been set by extension ruleset.
     /// </summary>
-    public  class EnhanceSessionUX : ActivationService
+    public  class EnhanceSessionUX
     {
+        internal Session Session { get; set; }
+
         private static EnhanceSessionUX _instance;
         public static EnhanceSessionUX Instance => _instance ?? (_instance = new EnhanceSessionUX());
 

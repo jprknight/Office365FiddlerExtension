@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -19,7 +20,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 420 Method Failure (Spring Framework) or Enhance Your Calm (Twitter).");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 420 Method Failure (Spring Framework) or Enhance Your Calm (Twitter).");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace Office365FiddlerExtension
 {
@@ -31,7 +32,7 @@ namespace Office365FiddlerExtension
         {
             if (IsInitialized) return;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Attempting to add context menu items to UI.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add context menu items to UI.");
 
             CmiProcessSelectedSessions.Click += new EventHandler(CmiProcessSelectedSessions_Click);
 
@@ -44,7 +45,7 @@ namespace Office365FiddlerExtension
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(2, CmiClearAllSessionProcessing);
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(3, Separator);
 
-            IsInitialized = true;
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Finished adding context menu items to UI."); IsInitialized = true;
         }
 
         private void CmiClearAllSessionProcessing_Click(object sender, EventArgs e)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -27,7 +28,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running SetAuthentication_NoAuthHeaders.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} Running SetAuthentication_NoAuthHeaders.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -53,7 +54,7 @@ namespace Office365FiddlerExtension.Ruleset
                 this.Session.utilFindInResponse("NameIdentifier Format=", false) > 1 &&
                 this.Session.utilFindInResponse("Attribute AttributeName=", false) > 1)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} ADFS SAML Request/Response.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} ADFS SAML Request/Response.");
 
                 // wrap all of this in a check to see if the SAML token came back from an ADFS endpoint.
                 // If it didn't we don't have the labs setup to validate how 3rd-party IDPs format things
@@ -97,7 +98,7 @@ namespace Office365FiddlerExtension.Ruleset
                 }
                 else
                 {
-                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Third-party SAML response found. SAML response parser not running.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} Third-party SAML response found. SAML response parser not running.");
 
                     var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                     {
@@ -143,7 +144,7 @@ namespace Office365FiddlerExtension.Ruleset
             if (KeywordFourMillion == 0 && KeywordFlighting == 0 && Keywordenabled == 0 &&
                 Keyworddomain == 0 && Keywordoauth_not_available == 0)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Modern Auth Disabled.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} Modern Auth Disabled.");
 
                 DateTime today = DateTime.Today;
 
@@ -180,7 +181,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Client Modern Auth.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} Client Modern Auth.");
 
             var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.Session);
 
@@ -207,7 +208,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Client Basic Auth.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} Client Basic Auth.");
 
             var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.Session);
 
@@ -238,7 +239,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Client Modern Auth Token.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} Client Modern Auth Token.");
 
             var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.Session);
 
@@ -265,7 +266,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Client Basic Auth Token.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} Client Basic Auth Token.");
             
             var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.Session);
 
@@ -302,7 +303,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} SAML token issuer.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} SAML token issuer.");
 
             string Issuer;
             try
@@ -326,7 +327,7 @@ namespace Office365FiddlerExtension.Ruleset
             }
             catch (Exception e)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} SAML token issuer could not be determined. {e}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} SAML token issuer could not be determined. {e}");
                 Issuer = "Issuer in SAML token could not be determined.";
             }
 
@@ -358,7 +359,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} SAML signing certificate.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} SAML signing certificate.");
 
             string x509SigningCertificate;
             try
@@ -379,7 +380,7 @@ namespace Office365FiddlerExtension.Ruleset
             }
             catch (Exception e)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} SAML signing certificate could not be determined. {e}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} SAML signing certificate could not be determined. {e}");
                 x509SigningCertificate = "SAML signing certificate could not be determined.";
             }
 
@@ -413,7 +414,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} SAML AttributeNameUPN.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} SAML AttributeNameUPN.");
 
             string AttributeNameUPN;
             try
@@ -453,7 +454,7 @@ namespace Office365FiddlerExtension.Ruleset
             }
             catch (Exception e)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} SAML AttributeNameUPN could not be determined. {e}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} SAML AttributeNameUPN could not be determined. {e}");
                 AttributeNameUPN = "SAML AttributeNameUPN could not be determined.";
             }
 
@@ -487,7 +488,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} SAML NameIdentifierFormat.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} SAML NameIdentifierFormat.");
 
             string NameIdentifierFormat;
             try
@@ -509,7 +510,7 @@ namespace Office365FiddlerExtension.Ruleset
             }
             catch (Exception e)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} SAML NameIdentifierFormat could not be determined. {e}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} SAML NameIdentifierFormat could not be determined. {e}");
                 NameIdentifierFormat = "SAML NameIdentifierFormat could not be determined.";
             }
 
@@ -544,7 +545,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} SAML AttributeNameImmutableID.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} SAML AttributeNameImmutableID.");
 
             string AttributeNameImmutibleID;
             try
@@ -588,7 +589,7 @@ namespace Office365FiddlerExtension.Ruleset
             }
             catch (Exception e)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} SAML AttributeNameImmutibleID could not be determined. {e}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} SAML AttributeNameImmutibleID could not be determined. {e}");
                 AttributeNameImmutibleID = "SAML AttributeNameImmutibleID could not be determined.";
             }
 

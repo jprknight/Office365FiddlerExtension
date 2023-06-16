@@ -6,6 +6,7 @@ using System.Text;
 using Fiddler;
 using Office365FiddlerExtension.Handler;
 using System.Linq;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -47,10 +48,10 @@ namespace Office365FiddlerExtension.Services
         /// <returns>Bool</returns>
         public static async Task InitializeAsync()
         {
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Telemetry using instrumentation key: {SettingsHandler.Instance.TelemetryInstrumentationKey}");
-
             if (!IsInitialized)
             {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (TelemetryService): Telemetry using instrumentation key: {SettingsHandler.Instance.TelemetryInstrumentationKey}");
+
                 try
                 {
                     ExceptionCounter = 0;

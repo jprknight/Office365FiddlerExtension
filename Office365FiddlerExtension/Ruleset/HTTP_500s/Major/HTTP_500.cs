@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -31,7 +32,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 500 Internal Server Error.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 500 Internal Server Error.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -78,7 +79,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 500 EWS Impersonate User Denied.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 500 EWS Impersonate User Denied.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -118,7 +119,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 500 Internal Server Error - OWA Something went wrong.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 500 Internal Server Error - OWA Something went wrong.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -150,7 +151,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 500 Internal Server Error.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 500 Internal Server Error.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {

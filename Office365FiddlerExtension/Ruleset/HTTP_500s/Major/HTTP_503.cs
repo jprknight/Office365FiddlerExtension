@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -26,7 +27,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 503 Service Unavailable. FederatedStsUnreachable in response body!");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 503 Service Unavailable. FederatedStsUnreachable in response body!");
 
             string RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=" + this.Session.oRequest["X-User-Identity"] + "&xml=1";
 
@@ -69,7 +70,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 503 Service Unavailable.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 503 Service Unavailable.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {

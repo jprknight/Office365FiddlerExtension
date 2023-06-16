@@ -101,11 +101,20 @@ namespace Office365FiddlerExtension.Handler
             }
         }
 
-        public bool ExtensionEnabled
+        public bool ExtensionSessionProcessingEnabled
         {
             get
             {
-                return SettingsHandler.Instance.GetDeserializedExtensionSettings().ExtensionSessionProcessingEnabled;
+                try
+                {
+                    return SettingsHandler.Instance.GetDeserializedExtensionSettings().ExtensionSessionProcessingEnabled;
+                } 
+                catch (Exception ex)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExtensionSessionProcessingEnabled cannot be determined");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+                }
+                return false;
             }
         }
 
@@ -139,9 +148,9 @@ namespace Office365FiddlerExtension.Handler
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
 
             // Set the Menu item to reflect change.
-            MenuUI.Instance.ExtensionMenu.Text = ExtensionEnabled ? "Office 365 (Enabled)" : "Office 365 (Disabled)";
+            MenuUI.Instance.ExtensionMenu.Text = ExtensionSessionProcessingEnabled ? "Office 365 (Enabled)" : "Office 365 (Disabled)";
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExtensionSessionProcessingEnabled set to {extensionSessionProcessingEnabled}.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExtensionSessionProcessingEnabled set to {extensionSessionProcessingEnabled}.");
         }
 
         public bool SessionAnalysisOnLoadSaz
@@ -180,8 +189,6 @@ namespace Office365FiddlerExtension.Handler
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
-
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExtensionPath set to {AssemblyDirectory}.");
         }
 
         public string ExtensionDLL
@@ -201,8 +208,6 @@ namespace Office365FiddlerExtension.Handler
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
-
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExtensionDLL set to {AssemblyName}.");
         }
 
         public void SetSessionAnalysisOnLoadSaz(Boolean sessionAnalysisOnLoadSaz)
@@ -215,7 +220,7 @@ namespace Office365FiddlerExtension.Handler
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: SessionAnalysisOnLoadSaz set to {sessionAnalysisOnLoadSaz}.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): SessionAnalysisOnLoadSaz set to {sessionAnalysisOnLoadSaz}.");
         }
 
         public bool SessionAnalysisOnLiveTrace
@@ -236,7 +241,7 @@ namespace Office365FiddlerExtension.Handler
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: SessionAnalysisOnLiveTrace set to {sessionAnalysisOnLiveTrace}.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): SessionAnalysisOnLiveTrace set to {sessionAnalysisOnLiveTrace}.");
         }
 
         public int WarningSessionTimeThreshold
@@ -259,11 +264,11 @@ namespace Office365FiddlerExtension.Handler
 
                 Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
 
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: WarningSessionTimeThreshold set to {iWarningSessionTimeThreshold}.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): WarningSessionTimeThreshold set to {iWarningSessionTimeThreshold}.");
             }
             else
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: WarningSessionTimeThreshold only accepts a numerical value.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): WarningSessionTimeThreshold only accepts a numerical value.");
             }
         }
 
@@ -287,11 +292,11 @@ namespace Office365FiddlerExtension.Handler
 
                 Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
 
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: SlowRunningSessionThreshold set to {iSlowRunningSessionThreshold}.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): SlowRunningSessionThreshold set to {iSlowRunningSessionThreshold}.");
             }
             else
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: SlowRunningSessionThreshold only accepts a numerical value.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): SlowRunningSessionThreshold only accepts a numerical value.");
             }
         }
 
@@ -303,7 +308,7 @@ namespace Office365FiddlerExtension.Handler
             // Save the new Json to the extension setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Incremented ExecutionCount to {extensionSettings.ExecutionCount}.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Incremented ExecutionCount to {extensionSettings.ExecutionCount}.");
         }
 
         public ExtensionSettingsJson GetDeserializedExtensionSettings()
@@ -314,8 +319,17 @@ namespace Office365FiddlerExtension.Handler
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: GetDeserializedExtensionURLs: {JsonConvert.DeserializeObject<ExtensionSettingsJson>(Preferences.ExtensionSettings, JsonSettings)}");
-            return JsonConvert.DeserializeObject<ExtensionSettingsJson>(Preferences.ExtensionSettings, JsonSettings);
+            try
+            {
+                return JsonConvert.DeserializeObject<ExtensionSettingsJson>(Preferences.ExtensionSettings, JsonSettings);
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error running GetDeserializedExtensionSettings.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+
+            }
+            return null;
         }
 
         /* SETTINGS AREN"T BEING UPDATED FROM GITHUB. NONE OF THIS SHOULD BE NEEDED.
@@ -326,13 +340,13 @@ namespace Office365FiddlerExtension.Handler
             // If disable web calls is set, don't look for any URL updates.
             if (ExtensionSettings.NeverWebCall)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: NeverWebCall is enabled, not checking for updates for settings.json.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): NeverWebCall is enabled, not checking for updates for settings.json.");
                 return;
             }
 
             if (Properties.Settings.Default._SettingsJsonLastUpdated <  DateTime.Now.AddHours(24)) 
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Updates for settings.json checked within 24 hours, no update check performed.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Updates for settings.json checked within 24 hours, no update check performed.");
                 return;
             }
 
@@ -371,14 +385,14 @@ namespace Office365FiddlerExtension.Handler
                 catch (Exception ex)
                 {
                     exception = true;
-                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Error retrieving settings from Github {ex}");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving settings from Github {ex}");
                 }
 
                 // If there is no exception here, update the settings last checked.
                 if (!exception)
                 {
                     var localSettingsJson = JsonConvert.DeserializeObject<SettingsJson>(Properties.Settings.Default._SettingsJson);
-                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Local setting _SettingsJson updated from Github.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Local setting _SettingsJson updated from Github.");
                     localSettingsJson.SettingsLastUpdated = DateTime.Now;
                 }
             }

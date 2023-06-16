@@ -7,6 +7,7 @@ using Fiddler;
 using Office365FiddlerExtension.Services;
 using Newtonsoft.Json;
 using System.Web.Caching;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -22,7 +23,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             if (this.Session.hostname == "www.fiddler2.com" && this.Session.uriContains("UpdateCheck.aspx"))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Fiddler Updates.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} Fiddler Updates.");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -62,7 +63,7 @@ namespace Office365FiddlerExtension.Ruleset
             {
                 string TLS;
                 
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Broad Logic Checks (connect tunnel).");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} Broad Logic Checks (connect tunnel).");
 
                 // TLS 1.0 in request/response pair.
 
@@ -193,7 +194,7 @@ namespace Office365FiddlerExtension.Ruleset
             //
             if ((this.Session.url.Contains("autodiscover") && (this.Session.oResponse["server"].Contains("Apache"))))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Apache is answering Autodiscover requests! Investigate this first!.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} Apache is answering Autodiscover requests! Investigate this first!.");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -231,7 +232,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Loopback Tunnel.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} Loopback Tunnel.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {

@@ -7,6 +7,7 @@ using Office365FiddlerExtension.Services;
 using Office365FiddlerExtension.Handler;
 using Fiddler;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -21,7 +22,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running SetElapsedTime.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} Running SetElapsedTime.");
 
             if (this.Session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") != "0:00:00.000" && this.Session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
             {
@@ -54,7 +55,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running SetInspectorElapsedTime.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} Running SetInspectorElapsedTime.");
 
             // ClientDoneResponse can be blank. If so do not try to calculate and output Elapsed Time, we end up with a hideously large number.
             if (this.Session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")

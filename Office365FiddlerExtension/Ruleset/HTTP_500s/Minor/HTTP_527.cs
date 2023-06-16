@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -15,12 +16,11 @@ namespace Office365FiddlerExtension.Ruleset
 
         public static HTTP_527 Instance => _instance ?? (_instance = new HTTP_527());
 
-
         public void HTTP_527_Railgun_Error(Session session)
         {
             this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 527 Cloudflare Railgun Error.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 527 Cloudflare Railgun Error.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {

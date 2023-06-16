@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.Handler
 {
@@ -21,7 +22,7 @@ namespace Office365FiddlerExtension.Handler
 
             if (ExtensionSettings.NeverWebCall)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: CheckForUpdate: NeverWebCall is true; Extension won't check for any updates.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): CheckForUpdate: NeverWebCall is true; Extension won't check for any updates.");
                 return;
             }
 
@@ -39,7 +40,7 @@ namespace Office365FiddlerExtension.Handler
             /*
             if (LastUpdated > DateTime.Now.AddHours(-24))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Updates for settings.json checked within 24 hours, no update check performed.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Updates for settings.json checked within 24 hours, no update check performed.");
                 return;
             }*/
 
@@ -67,7 +68,7 @@ namespace Office365FiddlerExtension.Handler
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Error retrieving settings from Github {ex}");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving settings from Github {ex}");
                 }
             }
         }

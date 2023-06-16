@@ -180,8 +180,8 @@ namespace Office365FiddlerExtension.UI
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: About unable to open SesssionTimeThreshold link: {URLsHandler.Instance.GetDeserializedExtensionURLs().WikiSessionTimeThresholds}");
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {ex}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): About unable to open SesssionTimeThreshold link: {URLsHandler.Instance.GetDeserializedExtensionURLs().WikiSessionTimeThresholds}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
         }
 
@@ -193,8 +193,8 @@ namespace Office365FiddlerExtension.UI
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: About unable to open ScoreForSession link: {URLsHandler.Instance.GetDeserializedExtensionURLs().WikiScoreForSession}");
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {ex}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): About unable to open ScoreForSession link: {URLsHandler.Instance.GetDeserializedExtensionURLs().WikiScoreForSession}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
         }
     }

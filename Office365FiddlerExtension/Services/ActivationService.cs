@@ -22,7 +22,8 @@ namespace Office365FiddlerExtension.Services
         {
             if (!IsInitialized)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Starting v" +
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}):" +
+                    $" Starting v" +
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Major}." +
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
@@ -52,7 +53,8 @@ namespace Office365FiddlerExtension.Services
                 // Add columns into session list in UI.
                 EnhanceUX.Instance.Initialize();
 
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Load / initialize finished");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}):" +
+                    $" Load / initialize finished");
                 IsInitialized = true;
             }
         }
@@ -83,9 +85,9 @@ namespace Office365FiddlerExtension.Services
         /// <param name="_session"></param>
         public void AutoTamperResponseAfter(Session Session)
         {
-            if (!SettingsHandler.Instance.ExtensionEnabled)
+            if (!SettingsHandler.Instance.ExtensionSessionProcessingEnabled)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Extension not enabled, returning.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Extension not enabled, returning.");
                 return;
             }
 
@@ -119,18 +121,17 @@ namespace Office365FiddlerExtension.Services
 
             if (!ExtensionSettings.ExtensionSessionProcessingEnabled)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Extension not enabled, exiting.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Extension not enabled, exiting.");
                 return;
             }
 
             if (ExtensionSettings.NeverWebCall)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Telemetry Service NeverWebCall is true.");
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Not checking for updates or sending telemetry data.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Telemetry Service NeverWebCall is true.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Not checking for updates or sending telemetry data.");
             }
             else
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Initializing telemetry service.");
                 await TelemetryService.InitializeAsync();
             }
         }
@@ -144,7 +145,7 @@ namespace Office365FiddlerExtension.Services
 
             if (!ExtensionSettings.NeverWebCall)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ActivationService: Closing telemetry service client connection.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ActivationService: Closing telemetry service client connection.");
                 await TelemetryService.FlushClientAsync();
             }
         }

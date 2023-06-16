@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -34,7 +35,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 Connection blocked by Client Access Rules.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 Connection blocked by Client Access Rules.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -82,7 +83,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 Store Error Protocol Disabled.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 Store Error Protocol Disabled.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -124,7 +125,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 Outlook Exchange Online / Microsoft365 MAPI traffic.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 Outlook Exchange Online / Microsoft365 MAPI traffic.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -160,7 +161,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 Outlook Exchange OnPremise MAPI traffic.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 Outlook Exchange OnPremise MAPI traffic.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -196,7 +197,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 Outlook Web App.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 Outlook Web App.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -270,7 +271,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
             
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: " + this.Session.id + " HTTP 200 Outlook NSPI traffic.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " + this.Session.id + " HTTP 200 Outlook NSPI traffic.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -347,7 +348,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             if (RedirectAddress.Contains(".onmicrosoft.com"))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: " + this.Session.id + " Exchange OnPremise Autodiscover redirect to Exchange Online / Microsoft365.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " + this.Session.id + " Exchange OnPremise Autodiscover redirect to Exchange Online / Microsoft365.");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -376,7 +377,7 @@ namespace Office365FiddlerExtension.Ruleset
             {
                 // Highlight if we got this far and we don't have a redirect address which points to
                 // Exchange Online / Microsoft365 such as: contoso.mail.onmicrosoft.com.
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: " + this.Session.id + " HTTP 200 Exchange On-Premise AUTOD REDIRECT ADDR! : " + RedirectAddress);
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " + this.Session.id + " HTTP 200 Exchange On-Premise AUTOD REDIRECT ADDR! : " + RedirectAddress);
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -431,7 +432,7 @@ namespace Office365FiddlerExtension.Ruleset
                     </Response>
                 </Autodiscover>
                 */
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -484,7 +485,7 @@ namespace Office365FiddlerExtension.Ruleset
                     (this.Session.utilFindInResponse("<MailStore>", false) > 1) &&
                     (this.Session.utilFindInResponse("<ExternalUrl>", false) > 1))
                 {
-                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML found.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML found.");
 
                     var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                     {
@@ -508,7 +509,7 @@ namespace Office365FiddlerExtension.Ruleset
                 }
                 else
                 {
-                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML NOT found!");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML NOT found!");
 
                     var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                     {
@@ -555,7 +556,7 @@ namespace Office365FiddlerExtension.Ruleset
                     (this.Session.utilFindInResponse("<MailStore>", false) > 1) &&
                     (this.Session.utilFindInResponse("<ExternalUrl>", false) > 1))
                 {
-                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML found.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML found.");
 
                     var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                     {
@@ -579,7 +580,7 @@ namespace Office365FiddlerExtension.Ruleset
                 }
                 else
                 {
-                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML NOT found!");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML NOT found!");
 
                     var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                     {
@@ -628,7 +629,7 @@ namespace Office365FiddlerExtension.Ruleset
             // User can create Office 365 gropus.
             if (this.Session.utilFindInResponse("<GroupCreationEnabled>true</GroupCreationEnabled>", false) > 1)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 GetUnifiedGroupsSettings EWS call. User can create O365 Groups in Outlook.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 GetUnifiedGroupsSettings EWS call. User can create O365 Groups in Outlook.");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -653,7 +654,7 @@ namespace Office365FiddlerExtension.Ruleset
             // User cannot create Office 365 groups. Not an error condition in and of itself.
             else if (this.Session.utilFindInResponse("<GroupCreationEnabled>false</GroupCreationEnabled>", false) > 1)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 GetUnifiedGroupsSettings EWS call. User cannot create O365 Groups in Outlook.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 GetUnifiedGroupsSettings EWS call. User cannot create O365 Groups in Outlook.");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -678,7 +679,7 @@ namespace Office365FiddlerExtension.Ruleset
             // Did not see the expected keyword in the response body. This is the error condition.
             else
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 GetUnifiedGroupsSettings!");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 GetUnifiedGroupsSettings!");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -716,7 +717,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
             
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} 200 3S Suggestions call.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} 200 3S Suggestions call.");
 
             Uri uri = new Uri(this.Session.fullUrl);
             var queryStrings = System.Web.HttpUtility.ParseQueryString(uri.Query);
@@ -758,7 +759,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} 200 REST - People Request.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} 200 REST - People Request.");
 
             Uri uri = new Uri(this.Session.fullUrl);
             var queryStrings = System.Web.HttpUtility.ParseQueryString(uri.Query);
@@ -820,7 +821,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 EXO / M365 EWS call.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 EXO / M365 EWS call.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -865,7 +866,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: " + this.Session.id + " HTTP 200 OnPremise EWS call.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " + this.Session.id + " HTTP 200 OnPremise EWS call.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -898,7 +899,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             if (this.Session.ResponseHeaders["Content-Type"].Contains("javascript"))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 Javascript");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 Javascript");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -1013,7 +1014,7 @@ namespace Office365FiddlerExtension.Ruleset
                 // Red text on black background.
                 // The only issue here is when sessions contain javascript and other web source code, this tends to produce false positives.
 
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 FAILURE LURKING!?");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 FAILURE LURKING!?");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -1043,7 +1044,7 @@ namespace Office365FiddlerExtension.Ruleset
             }
             else
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 200 OK");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 200 OK");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Fiddler;
 using Newtonsoft.Json;
 using Office365FiddlerExtension.UI;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -26,8 +27,6 @@ namespace Office365FiddlerExtension.Services
         public ExtensionSessionFlags GetDeserializedSessionFlags(Session Session)
         {
             this.Session = Session;
-            // Call create here to avoid null exception if live tracing traffic.
-            CreateExtensionSessionFlag(this.Session);
 
             try
             {
@@ -35,8 +34,8 @@ namespace Office365FiddlerExtension.Services
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Error deserializing session flags on session.");
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {ex}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error deserializing session flags.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
             return null;
         }
@@ -101,7 +100,7 @@ namespace Office365FiddlerExtension.Services
                 return;
             }
 
-            //FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Json extension session flag not found. Creating.");
+            //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} Json extension session flag not found. Creating.");
 
             var SessionFlagsData = new
             {
@@ -162,7 +161,7 @@ namespace Office365FiddlerExtension.Services
         public void ProcessAllSessions()
         {
             var Sessions = FiddlerApplication.UI.GetAllSessions();
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Processing all {Sessions.Count()} current sessions.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Processing all {Sessions.Count()} current sessions.");
 
             foreach (var Session in Sessions)
             {
@@ -170,7 +169,7 @@ namespace Office365FiddlerExtension.Services
                 SessionHandler.Instance.OnPeekAtResponseHeaders(this.Session);
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Processed {Sessions.Count()} sessions.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Processed {Sessions.Count()} sessions.");
         }
 
         /// <summary>
@@ -178,7 +177,7 @@ namespace Office365FiddlerExtension.Services
         /// </summary>
         public void ClearAllSessionProcessing()
         {
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Clearing all current session procesing.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Clearing all current session procesing.");
 
             var Sessions = FiddlerApplication.UI.GetAllSessions();
             foreach (var Session in Sessions)

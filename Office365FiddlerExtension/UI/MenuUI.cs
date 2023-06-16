@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Office365FiddlerExtension.UI;
 using Office365FiddlerExtension.Handler;
+using System.Reflection;
 
 namespace Office365FiddlerExtension
 {
@@ -49,13 +50,13 @@ namespace Office365FiddlerExtension
             /// 
             if (!IsInitialized)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Attempting to add menu to UI.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add menu to UI.");
 
-                this.ExtensionMenu = new MenuItem(SettingsHandler.Instance.ExtensionEnabled ? MenuEnabled : MenuDisabled);
+                this.ExtensionMenu = new MenuItem(SettingsHandler.Instance.ExtensionSessionProcessingEnabled ? MenuEnabled : MenuDisabled);
 
                 this.MiEnabled = new MenuItem("Enable", new EventHandler(this.MiEnabled_Click))
                 {
-                    Checked = SettingsHandler.Instance.ExtensionEnabled
+                    Checked = SettingsHandler.Instance.ExtensionSessionProcessingEnabled
                 };
 
                 this.MiProcessSelectedSessions = new MenuItem("Process Selected Session(s)", new EventHandler(this.MiProcessSelectedSessions_Click));
@@ -88,7 +89,7 @@ namespace Office365FiddlerExtension
 
                 FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExtensionMenu);
                 UpdateMenuItems();
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Finished adding menu to UI.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Finished adding menu to UI.");
                 IsInitialized = true;
             }
         }
@@ -111,7 +112,7 @@ namespace Office365FiddlerExtension
 
         private void MiProcessAllSessions_Click(object sender, EventArgs e)
         {
-            if (SettingsHandler.Instance.ExtensionEnabled)
+            if (SettingsHandler.Instance.ExtensionSessionProcessingEnabled)
             {
                 SessionFlagHandler.Instance.ProcessAllSessions();
             }
@@ -152,7 +153,7 @@ namespace Office365FiddlerExtension
         public void UpdateMenuItems()
         {
             // Set ProcessAllSessions enable/disable to match whether the extension is enabled or not.
-            this.MiProcessAllSessions.Enabled = SettingsHandler.Instance.ExtensionEnabled;
+            this.MiProcessAllSessions.Enabled = SettingsHandler.Instance.ExtensionSessionProcessingEnabled;
         }
 
         public void MiWiki_Click(object sender, EventArgs e)

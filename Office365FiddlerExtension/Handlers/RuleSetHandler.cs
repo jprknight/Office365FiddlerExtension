@@ -29,13 +29,13 @@ namespace Office365FiddlerExtension.Handler
 
             if (ExtensionSettings.NeverWebCall)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: DisableWebCalls is enabled, no ruleset update check performed.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): DisableWebCalls is enabled, no ruleset update check performed.");
                 return;
             }
 
             if (DateTime.Now < ExtensionSettings.LocalMasterRulesetLastUpdated) 
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Rules have been checked within the last 24 hours, no ruleset update check performed.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Rules have been checked within the last 24 hours, no ruleset update check performed.");
                 return;
             }
 
@@ -76,7 +76,7 @@ namespace Office365FiddlerExtension.Handler
                         // jsonString came back as empty.
                         if (jsonString == null)
                         {
-                            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Error retrieving ruleset from Github: jsonString null.");
+                            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving ruleset from Github: jsonString null.");
                         }
                         // jsonString has something in it. See if the version value on Github is newer than what we have stored locally.
                         else
@@ -104,7 +104,7 @@ namespace Office365FiddlerExtension.Handler
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Error retrieving ruleset from Github {ex}.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving ruleset from Github {ex}.");
                 }
             }
             #endregion

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -31,7 +32,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 502 Bad Gateway. Telemetry False Positive.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 502 Bad Gateway. Telemetry False Positive.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -74,7 +75,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 502 Bad Gateway. EXO DNS False Positive.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 502 Bad Gateway. EXO DNS False Positive.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -122,7 +123,7 @@ namespace Office365FiddlerExtension.Ruleset
             }
 
             
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 502 Bad Gateway. O365 AutoD onmicrosoft.com False Positive.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 502 Bad Gateway. O365 AutoD onmicrosoft.com False Positive.");
 
             string AutoDFalsePositiveDomain;
             string AutoDFalsePositiveResponseBody = this.Session.GetResponseBodyAsString();
@@ -183,7 +184,7 @@ namespace Office365FiddlerExtension.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 502 Bad Gateway. Exchange Autodiscover.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 502 Bad Gateway. Exchange Autodiscover.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -211,7 +212,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 502 Bad Gateway.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 502 Bad Gateway.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {

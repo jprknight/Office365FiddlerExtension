@@ -34,8 +34,8 @@ namespace Office365FiddlerExtension.Handler
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Error deserializing extension version.");
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {ex}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error deserializing extension version.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
             return null;
         }
@@ -74,7 +74,7 @@ namespace Office365FiddlerExtension.Handler
 
         public async void UpdateVersionJsonFromGithub()
         {
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExchangeVersion Fiddler setting update check started.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeVersion Fiddler setting update check started.");
 
             var extensionURLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
             //var extensionVerison = VersionHandler.Instance.GetDeserializedExtensionVersion();
@@ -83,7 +83,7 @@ namespace Office365FiddlerExtension.Handler
             // If the current timestamp is less than the next update check timestamp, return.
             if (DateTime.Now < extensionSettings.NextUpdateCheck)
             {
-                //FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Next update check timestamp no met, returning.");
+                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Next update check timestamp no met, returning.");
                 //return;
             }
 
@@ -91,11 +91,6 @@ namespace Office365FiddlerExtension.Handler
             {
                 try
                 {
-                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: NextUpdateCheck {extensionSettings.NextUpdateCheck}");
-                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExtensionVersion {extensionURLs.ExtensionVersion}");
-                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExtensionVersion {URLsHandler.Instance.GetDeserializedExtensionURLs().ExtensionVersion}");
-                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Telemetry {extensionURLs.TelemetryInstrumentationKey}");
-
                     var response = await getSettings.GetAsync(extensionURLs.ExtensionVersion);
 
                     response.EnsureSuccessStatusCode();
@@ -114,7 +109,7 @@ namespace Office365FiddlerExtension.Handler
                     // Save this new data into the ExtensionVerison Fiddler setting.
                     if (Preferences.ExtensionVersion != jsonString)
                     {
-                        FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExchangeVersion Fiddler setting updated.");
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeVersion Fiddler setting updated.");
                         Preferences.ExtensionVersion = jsonString;
                         
                         // Update the next update check timestamp.
@@ -123,11 +118,11 @@ namespace Office365FiddlerExtension.Handler
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Error retrieving settings from Github {ex}");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving settings from Github {ex}");
                 }
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: ExchangeVersion Fiddler setting update check finished.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeVersion Fiddler setting update check finished.");
         }
     }
 }

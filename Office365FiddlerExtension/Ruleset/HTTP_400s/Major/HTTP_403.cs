@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -23,7 +24,7 @@ namespace Office365FiddlerExtension.Ruleset
             // Specific scenario where a web proxy is blocking traffic from reaching the internet.
             if (this.Session.utilFindInResponse("Access Denied", false) > 1 || session.utilFindInResponse("Access Blocked", false) > 1)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -61,7 +62,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             if (this.Session.fullUrl.Contains("outlook.office365.com/EWS") || this.Session.fullUrl.Contains("outlook.office365.com/ews"))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 403 Forbidden. EWS Language not set on mailbox.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 403 Forbidden. EWS Language not set on mailbox.");
                 
                 var sessionFlags_HTTP403_EWS = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -93,7 +94,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 403 Forbidden.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 403 Forbidden.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {

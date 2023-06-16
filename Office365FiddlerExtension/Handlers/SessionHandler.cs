@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Office365FiddlerExtension.Ruleset;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtension.UI;
+using System.Reflection;
 
 namespace Office365FiddlerExtension
 {
@@ -242,7 +243,7 @@ namespace Office365FiddlerExtension
         {
             this.Session = Session;
             
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running ResponseCodeLogic.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} Running ResponseCodeLogic.");
 
             switch (this.Session.responseCode)
             {

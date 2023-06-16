@@ -15,8 +15,10 @@ namespace Office365FiddlerExtension.Handler
     /// <summary>
     /// Function to handle loading and saving Saz files.
     /// </summary>
-    public class SazFileHandler : ActivationService
+    public class SazFileHandler
     {
+        internal Session Session { get; set; }
+
         private static SazFileHandler _instance;
 
         public static SazFileHandler Instance => _instance ?? (_instance = new SazFileHandler());
@@ -77,21 +79,21 @@ namespace Office365FiddlerExtension.Handler
         /// <param name="e"></param>
         public void LoadSaz(object sender, FiddlerApplication.ReadSAZEventArgs e)
         {
-            if (!SettingsHandler.Instance.ExtensionEnabled)
+            if (!SettingsHandler.Instance.ExtensionSessionProcessingEnabled)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz {e.sFilename}. Extension not enabled, returning.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz {e.sFilename}. Extension not enabled, returning.");
                 return;
             }
 
             if (!SettingsHandler.Instance.SessionAnalysisOnLoadSaz) {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz {e.sFilename}. SessionAnalysisOnLoadSaz not enabled, returning.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz {e.sFilename}. SessionAnalysisOnLoadSaz not enabled, returning.");
                 return;
             }
 
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz with Extension Enabled: {SettingsHandler.Instance.ExtensionEnabled}, {Assembly.GetExecutingAssembly().GetName().CodeBase.Substring(8)}.");
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz processing: {e.sFilename}");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz with Extension Enabled: {SettingsHandler.Instance.ExtensionSessionProcessingEnabled}, {Assembly.GetExecutingAssembly().GetName().CodeBase.Substring(8)}.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz processing: {e.sFilename}");
 
             // Testing to make sure LoadSaz function is called only once when the Fiddler application is opened by loading a SAZ file.
             //MessageBox.Show($"LoadSaz event fired on {e.sFilename} from {Assembly.GetExecutingAssembly().GetName().CodeBase}");
@@ -102,7 +104,7 @@ namespace Office365FiddlerExtension.Handler
                 SessionHandler.Instance.OnPeekAtResponseHeaders(this.Session);
             }
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: LoadSaz processed: {e.sFilename}");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz processed: {e.sFilename}");
 
             FiddlerApplication.UI.lvSessions.EndUpdate();
         }

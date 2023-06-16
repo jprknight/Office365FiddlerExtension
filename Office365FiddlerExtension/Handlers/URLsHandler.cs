@@ -4,6 +4,7 @@ using Office365FiddlerExtension.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,8 +33,8 @@ namespace Office365FiddlerExtension.Handler
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: Error deserializing extension URLs.");
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {ex}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error deserializing extension URLs.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
             return null;
         }
@@ -69,12 +70,12 @@ namespace Office365FiddlerExtension.Handler
             {
                 // Save the new Json to the Fiddler setting.
                 Preferences.ExtensionURLs = jsonData;
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: CreateExtensionURLFiddlerSetting written to ExtensionURLs Fiddler setting.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): CreateExtensionURLFiddlerSetting written to ExtensionURLs Fiddler setting.");
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: CreateExtensionURLFiddlerSetting unable to write to ExtensionURLs Fiddler setting.");
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {ex}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): CreateExtensionURLFiddlerSetting unable to write to ExtensionURLs Fiddler setting.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
         }
 
@@ -98,23 +99,23 @@ namespace Office365FiddlerExtension.Handler
     // Function has getters only. Individual elements are read-only.
     public class ExtensionURLsJson
     {
-        public string TelemetryInstrumentationKey { get; }
+        public string TelemetryInstrumentationKey { get; set; }
 
         // Used for the URL to the ExtensionVersion Json resource.
-        public string ExtensionVersion { get; }
+        public string ExtensionVersion { get; set; }
 
-        public string MasterRuleSet { get; }
+        public string MasterRuleSet { get; set; }
 
-        public string BetaRuleSet { get; }
+        public string BetaRuleSet { get; set; }
 
-        public string Installer { get; }
+        public string Installer { get; set; }
 
-        public string Wiki { get; }
+        public string Wiki { get; set; }
 
-        public string WikiSessionTimeThresholds { get; }
+        public string WikiSessionTimeThresholds { get; set; }
 
-        public string WikiScoreForSession { get; }
+        public string WikiScoreForSession { get; set; }
 
-        public string ReportIssues { get; }
+        public string ReportIssues { get; set; }
     }
 }

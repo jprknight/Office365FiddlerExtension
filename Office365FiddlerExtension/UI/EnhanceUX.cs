@@ -6,14 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Handler;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.UI
 {
     /// <summary>
     /// Add Fiddler application event handlers, additional columns to UI, and populate data in them. 
     /// </summary>
-    public class EnhanceUX : ActivationService
+    public class EnhanceUX
     {
+        internal Session Session { get; set; }
+
         private static EnhanceUX _instance;
         public static EnhanceUX Instance => _instance ?? (_instance = new EnhanceUX());
 
@@ -41,7 +44,7 @@ namespace Office365FiddlerExtension.UI
             try
             {
                 // Add columns to the UI and hock up to functions which populate data.
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: AddExtensionColumns: Attempting to add columns to UI.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add columns to UI.");
 
                 // FiddlerApplication.UI.lvSessions.AddBoundColumn("Column Title", int position, int width, Session Flag or function for data);
                 // FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 2, 110, UpdateSessionUX.Instance.ElapsedTime);
@@ -52,9 +55,9 @@ namespace Office365FiddlerExtension.UI
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 130, ResponseServer);
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 110, HostIP);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: AddExtensionColumns: {0} Exception caught." + e);
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
 
             /*
@@ -79,7 +82,7 @@ namespace Office365FiddlerExtension.UI
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Result", 1, -1);
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("#", 0, -1);*/
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: AddExtensionColumns: Finished adding columns to UI.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Finished adding columns to UI.");
         }
 
         // Called by EnhanceUX to populate column data.

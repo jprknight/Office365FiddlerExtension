@@ -7,6 +7,7 @@ using Office365FiddlerExtension.Services;
 using Office365FiddlerExtension.Handler;
 using Fiddler;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -21,7 +22,7 @@ namespace Office365FiddlerExtension.Ruleset
         {
             this.Session = session;
 
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} Running SetServerThinkTimeTransitTime.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} Running SetServerThinkTimeTransitTime.");
 
             // ServerGotRequest, ServerBeginResponse or ServerDoneResponse can be blank. If so do not try to calculate and output 'Server Think Time' or
             // 'Transmit Time', we end up with a hideously large number.

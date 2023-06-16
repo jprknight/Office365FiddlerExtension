@@ -155,7 +155,7 @@ namespace Office365FiddlerExtension.Inspectors
             this.Session = Session;
 
             // Extension disabled.
-            if (!SettingsHandler.Instance.ExtensionEnabled)
+            if (!SettingsHandler.Instance.ExtensionSessionProcessingEnabled)
             {
                 // Clear ResultsString.
                 Clear();

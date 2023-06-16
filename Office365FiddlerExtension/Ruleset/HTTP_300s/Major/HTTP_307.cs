@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.Ruleset
 {
@@ -25,7 +26,7 @@ namespace Office365FiddlerExtension.Ruleset
                 (this.Session.fullUrl.Contains("autodiscover") &&
                 (this.Session.ResponseHeaders["Location"] != "https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml"))))
             {
-                FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 307 On-Prem Temp Redirect - Unexpected location!");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 307 On-Prem Temp Redirect - Unexpected location!");
 
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
@@ -61,7 +62,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             // The above scenario is not seem, however Temporary Redirects are not normally expected to be seen.
             // Highlight as a warning.
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 307 Temp Redirect.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 307 Temp Redirect.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
@@ -90,7 +91,7 @@ namespace Office365FiddlerExtension.Ruleset
 
             // The above scenario is not seem, however Temporary Redirects are not normally expected to be seen.
             // Highlight as a warning.
-            FiddlerApplication.Log.LogString($"{Preferences.LogPrepend()}: {this.Session.id} HTTP 307 Temp Redirect.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.Session.id} HTTP 307 Temp Redirect.");
 
             var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
             {
