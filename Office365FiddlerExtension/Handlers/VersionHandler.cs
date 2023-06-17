@@ -80,58 +80,5 @@ namespace Office365FiddlerExtension.Handler
 
             public DateTime BetaRulesetVersion { get; set; }
         }
-
-        public async void UpdateVersionJsonFromGithub()
-        {
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeVersion Fiddler setting update check started.");
-
-            var extensionURLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
-            //var extensionVerison = VersionHandler.Instance.GetDeserializedExtensionVersion();
-            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
-
-            // If the current timestamp is less than the next update check timestamp, return.
-            if (DateTime.Now < extensionSettings.NextUpdateCheck)
-            {
-                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Next update check timestamp no met, returning.");
-                //return;
-            }
-
-            using (var getSettings = new HttpClient())
-            {
-                try
-                {
-                    var response = await getSettings.GetAsync(extensionURLs.ExtensionVersion);
-
-                    response.EnsureSuccessStatusCode();
-
-                    var jsonString = string.Empty;
-
-                    using (var stream = await response.Content.ReadAsStreamAsync())
-                    {
-                        stream.Position = 0;
-                        using (var reader = new StreamReader(stream))
-                        {
-                            jsonString = await reader.ReadToEndAsync();
-                        }
-                    }
-
-                    // Save this new data into the ExtensionVerison Fiddler setting.
-                    if (ExtensionVersion != jsonString)
-                    {
-                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeVersion Fiddler setting updated.");
-                        ExtensionVersion = jsonString;
-                        
-                        // Update the next update check timestamp.
-                        SettingsHandler.Instance.SetNextUpdateTimestamp();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving settings from Github {ex}");
-                }
-            }
-
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeVersion Fiddler setting update check finished.");
-        }
     }
 }

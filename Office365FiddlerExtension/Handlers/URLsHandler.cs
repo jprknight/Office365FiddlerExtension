@@ -62,6 +62,7 @@ namespace Office365FiddlerExtension.Handler
             var URLs = new
             {
                 TelemetryInstrumentationKey = "87fb55ab-0052-4970-9318-7c740220e3c0",
+                ExtensionURLs = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionURLs.json",
                 ExtensionVersion = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionVersion.json",
                 MasterRuleSet = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Master/RulesetVersion",
                 BetaRuleSet = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/RulesetVersion",
@@ -110,7 +111,8 @@ namespace Office365FiddlerExtension.Handler
     {
         public string TelemetryInstrumentationKey { get; set; }
 
-        // Used for the URL to the ExtensionVersion Json resource.
+        public string ExtensionURL { get; set; }
+
         public string ExtensionVersion { get; set; }
 
         public string MasterRuleSet { get; set; }

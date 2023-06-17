@@ -302,6 +302,7 @@
     <Compile Include="Handlers\SessionFlagHandler.cs" />
     <Compile Include="Handlers\SettingsHandler.cs" />
     <Compile Include="Handlers\UpdateHandler.cs" />
+    <Compile Include="Services\UpdateService.cs" />
     <Compile Include="UI\About.cs">
       <SubType>Form</SubType>
     </Compile>

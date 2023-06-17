@@ -39,12 +39,15 @@ namespace Office365FiddlerExtension.Services
                 SettingsHandler.Instance.SetExtensionDLL();
                 SettingsHandler.Instance.SetExtensionPath();
 
-                Initializetelemetry();
+                // Telemetry and update from Github if NeverWebCall is disabled (default).
+                if (!SettingsHandler.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+                {
+                    Initializetelemetry();
 
-                // Update extension as needed.
-                // TBC: Update check on extension application.
-                // TBC: Update check on extensionURLs.
-                VersionHandler.Instance.UpdateVersionJsonFromGithub();
+                    // TBC: Update check on extension application.
+                    UpdateService.Instance.UpdateURLsJsonFromGithub();
+                    UpdateService.Instance.UpdateVersionJsonFromGithub();
+                }                
 
                 // Add extension menu.
                 MenuUI.Instance.Initialize();
@@ -124,10 +127,9 @@ namespace Office365FiddlerExtension.Services
                 return;
             }
 
-            if (ExtensionSettings.NeverWebCall)
+            if (SettingsHandler.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Telemetry Service NeverWebCall is true.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Not checking for updates or sending telemetry data.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): NeverWebCall set to true, not checking for updates or sending telemetry data.");
             }
             else
             {
