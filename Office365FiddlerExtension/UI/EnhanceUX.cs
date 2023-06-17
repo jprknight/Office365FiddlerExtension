@@ -44,7 +44,7 @@ namespace Office365FiddlerExtension.UI
             try
             {
                 // Add columns to the UI and hock up to functions which populate data.
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add columns to UI.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Adding columns to UI.");
 
                 // FiddlerApplication.UI.lvSessions.AddBoundColumn("Column Title", int position, int width, Session Flag or function for data);
                 // FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 2, 110, UpdateSessionUX.Instance.ElapsedTime);
@@ -81,8 +81,6 @@ namespace Office365FiddlerExtension.UI
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Result", 1, -1);
             FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("#", 0, -1);*/
-
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Finished adding columns to UI.");
         }
 
         // Called by EnhanceUX to populate column data.

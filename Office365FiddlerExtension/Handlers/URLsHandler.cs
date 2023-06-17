@@ -62,7 +62,7 @@ namespace Office365FiddlerExtension.Handler
             var URLs = new
             {
                 TelemetryInstrumentationKey = "87fb55ab-0052-4970-9318-7c740220e3c0",
-                ExtensionURLs = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionURLs.json",
+                ExtensionURL = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionURLs.json",
                 ExtensionVersion = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionVersion.json",
                 MasterRuleSet = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Master/RulesetVersion",
                 BetaRuleSet = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/RulesetVersion",
@@ -86,22 +86,6 @@ namespace Office365FiddlerExtension.Handler
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): CreateExtensionURLFiddlerSetting unable to write to ExtensionURLs Fiddler setting.");
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
-            }
-        }
-
-        public String TelemetryInstrumentationKey
-        {
-            get
-            {
-                return GetDeserializedExtensionURLs().TelemetryInstrumentationKey;
-            }
-        }
-
-        public string ExtensionVersion
-        {
-            get
-            {
-                return URLsHandler.Instance.GetDeserializedExtensionURLs().ExtensionVersion;
             }
         }
     }

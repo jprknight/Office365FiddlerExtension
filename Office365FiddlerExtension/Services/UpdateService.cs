@@ -16,19 +16,28 @@ namespace Office365FiddlerExtension.Services
         private static UpdateService _instance;
         public static UpdateService Instance => _instance ?? (_instance = new UpdateService());
 
-        public async void UpdateVersionJsonFromGithub()
+        public void initialize()
         {
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeVersion Fiddler setting update check started.");
+            if (SettingsHandler.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): NeverWebCall enabled, returning.");
+                return;                    
+            }
 
-            var extensionURLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
             var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
-
-            // If the current timestamp is less than the next update check timestamp, return.
             if (DateTime.Now < extensionSettings.NextUpdateCheck)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Next update check timestamp not met ({extensionSettings.NextUpdateCheck}), returning.");
                 return;
             }
+
+            UpdateURLsJsonFromGithub();
+            UpdateVersionJsonFromGithub();
+        }
+
+        private async void UpdateVersionJsonFromGithub()
+        {
+            var extensionURLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
 
             using (var getSettings = new HttpClient())
             {
@@ -58,29 +67,21 @@ namespace Office365FiddlerExtension.Services
                         // Update the next update check timestamp.
                         SettingsHandler.Instance.SetNextUpdateTimestamp();
                     }
+                    else
+                    {
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeVersion Fiddler setting not update needed.");
+                    }
                 }
                 catch (Exception ex)
                 {
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving settings from Github {ex}");
                 }
             }
-
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeVersion Fiddler setting update check finished.");
         }
 
-        public async void UpdateURLsJsonFromGithub()
+        private async void UpdateURLsJsonFromGithub()
         {
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeURLs Fiddler setting update check started.");
-
             var extensionURLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
-            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
-
-            // If the current timestamp is less than the next update check timestamp, return.
-            if (DateTime.Now < extensionSettings.NextUpdateCheck)
-            {
-                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Next update check timestamp not met ({extensionSettings.NextUpdateCheck}), returning.");
-                //return;
-            }
 
             using (var getSettings = new HttpClient())
             {
@@ -110,14 +111,17 @@ namespace Office365FiddlerExtension.Services
                         // Update the next update check timestamp.
                         SettingsHandler.Instance.SetNextUpdateTimestamp();
                     }
+                    else
+                    {
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeURLs Fiddler setting no update needed.");
+                    }
                 }
                 catch (Exception ex)
                 {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving ExtensionURLs from Github {URLsHandler.ExtensionURLs}");
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving ExtensionURLs from Github {ex}");
                 }
             }
-
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeURLs Fiddler setting update check finished.");
         }
     }
 }

@@ -50,7 +50,7 @@ namespace Office365FiddlerExtension
             /// 
             if (!IsInitialized)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add menu to UI.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Adding menu to UI.");
 
                 this.ExtensionMenu = new MenuItem(SettingsHandler.Instance.ExtensionSessionProcessingEnabled ? MenuEnabled : MenuDisabled);
 
@@ -89,7 +89,6 @@ namespace Office365FiddlerExtension
 
                 FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExtensionMenu);
                 UpdateMenuItems();
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Finished adding menu to UI.");
                 IsInitialized = true;
             }
         }

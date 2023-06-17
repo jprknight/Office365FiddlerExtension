@@ -13,6 +13,9 @@ namespace Office365FiddlerExtension.Services
     /// <summary>
     /// Telemetry service to initialize and run telemetry.
     /// </summary>
+    
+
+
     public partial class TelemetryService
     {
 
@@ -48,9 +51,23 @@ namespace Office365FiddlerExtension.Services
         /// <returns>Bool</returns>
         public static async Task InitializeAsync()
         {
+            if (SettingsHandler.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (TelemetryService): NeverWebCall enabled, returning.");
+                return;
+            }
+
+            var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+
+            if (!ExtensionSettings.ExtensionSessionProcessingEnabled)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (TelemetryService): Extension not enabled, exiting.");
+                return;
+            }
+
             if (!IsInitialized)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (TelemetryService): Telemetry using instrumentation key: {URLsHandler.Instance.GetDeserializedExtensionURLs().TelemetryInstrumentationKey}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (TelemetryService): Using instrumentation key: {URLsHandler.Instance.GetDeserializedExtensionURLs().TelemetryInstrumentationKey}");
 
                 try
                 {
@@ -109,6 +126,13 @@ namespace Office365FiddlerExtension.Services
 
         public async static Task FlushClientAsync()
         {
+            var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+
+            if (ExtensionSettings.NeverWebCall)
+            {
+                return;
+            }
+
             try
             {
                 Client.Flush();
