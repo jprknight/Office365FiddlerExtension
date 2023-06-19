@@ -33,6 +33,8 @@ namespace Office365FiddlerExtension.Handler
             MethodInfo method = myType.GetMethod("FUS");
             object myInstance = Activator.CreateInstance(myType);
             method.Invoke(myInstance, null);
+
+            GetSessionRuleCompiledAssembly getSessionRuleCompiledAssembly = new GetSessionRuleCompiledAssembly.GetCompiledAssembly();
         }
 
         private Assembly GetSessionRuleCompiledAssembly()
