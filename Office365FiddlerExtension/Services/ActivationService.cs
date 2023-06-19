@@ -53,6 +53,8 @@ namespace Office365FiddlerExtension.Services
                 // Add columns into session list in UI.
                 EnhanceUX.Instance.Initialize();
 
+                RuleSetHandler.Instance.RunAssembly();
+
                 IsInitialized = true;
             }
         }

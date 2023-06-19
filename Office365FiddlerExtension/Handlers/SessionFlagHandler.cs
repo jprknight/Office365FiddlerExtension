@@ -13,8 +13,9 @@ namespace Office365FiddlerExtension.Services
 {
     /// <summary>
     /// Function to stamp all session flags the extension uses.
+    /// Needs to be public so the CodeDom Compiler can access ExtensionSessionFlags.
     /// </summary>
-    class SessionFlagHandler : ActivationService
+    public class SessionFlagHandler : ActivationService
     {
         private static SessionFlagHandler _instance;
         public static SessionFlagHandler Instance => _instance ?? (_instance = new SessionFlagHandler());

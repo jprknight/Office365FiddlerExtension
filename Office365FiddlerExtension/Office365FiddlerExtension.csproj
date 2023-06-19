@@ -200,6 +200,7 @@
     <Compile Include="Handlers\URLsHandler.cs" />
     <Compile Include="Handlers\VersionHandler.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks.cs" />
+    <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\FiddlerUpdateSessions.cs" />
     <Compile Include="Ruleset\AlwaysRun\CalculateSessionAge.cs" />
     <Compile Include="Ruleset\AlwaysRun\ProcessName.cs" />
     <Compile Include="Ruleset\HTTP_0\HTTP_0.cs" />

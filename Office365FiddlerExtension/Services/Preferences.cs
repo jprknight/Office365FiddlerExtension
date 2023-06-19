@@ -13,6 +13,11 @@ namespace Office365FiddlerExtension.Services
         {
         }*/
 
+        public static string LogPrepend()
+        {
+            return "Office365FiddlerExtension";
+        }
+
         /// <summary>
         /// This is the low water mark for what is considered a slow running session, considering a number of factors.
         /// Exchange response times are typically going to be much quicker than this. In the < 300ms range.
