@@ -1,5 +1,6 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
+using Office365FiddlerExtension.Handler;
 using Office365FiddlerExtension.Ruleset;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtension.UI;
@@ -32,6 +33,7 @@ namespace Office365FiddlerExtension
 
             // Broad logic checks on sessions regardless of response code.
             //BroadLogicChecks.Instance.FiddlerUpdateSessions(this.Session);
+            RuleSetHandler.Instance.RunAssembly(this.Session);
             BroadLogicChecks.Instance.ConnectTunnelSessions(this.Session);
             BroadLogicChecks.Instance.ApacheAutodiscover(this.Session);
             BroadLogicChecks.Instance.LoopBackTunnel(this.Session);
