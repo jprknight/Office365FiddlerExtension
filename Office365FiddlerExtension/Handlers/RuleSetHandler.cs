@@ -43,7 +43,7 @@ namespace Office365FiddlerExtension.Handler
 
                 Assembly rulesetDDL = Assembly.LoadFile(file.FullName);
 
-                // 
+                // type is Namespace.Class
                 var type = rulesetDDL.GetType("Ruleset.FiddlerUpdateSessions");
                 
                 var obj = Activator.CreateInstance(type);
@@ -60,87 +60,16 @@ namespace Office365FiddlerExtension.Handler
 
         }
 
-        public void RunAssembly(Session Session)
-        {
-            this.Session = Session;
-
-            Microsoft.CSharp.CSharpCodeProvider foo = new Microsoft.CSharp.CSharpCodeProvider();
-
-            var res = foo.CompileAssemblyFromSource(
-                new System.CodeDom.Compiler.CompilerParameters()
-                {
-                    GenerateInMemory = true
-                },
-                GetSessionRule()
-            );
-
-            var type = res.CompiledAssembly.GetType("FiddlerUpdateSessions");
-
-            dynamic dyn = Activator.CreateInstance(type);
-            dyn.Execute(this.Session);
-
-            //var assembly = GetSessionRuleCompiledAssembly();
-
-            // https://stackoverflow.com/questions/10613728/run-dynamically-compiled-c-sharp-code-at-native-speed-how
-
-            // https://stackoverflow.com/questions/234217/is-it-possible-to-compile-and-execute-new-code-at-runtime-in-net
-            /*string sourceCode = @"
-                public class SomeClass {
-                    public int Add42 (int parameter) {
-                        return parameter += 42;
-                    }
-                }";
-            var compParms = new CompilerParameters
-            {
-                GenerateExecutable = false,
-                GenerateInMemory = true
-            };
-            var csProvider = new CSharpCodeProvider();
-            CompilerResults compilerResults =
-                csProvider.CompileAssemblyFromSource(compParms, GetSessionRule());
-            object typeInstance =
-                compilerResults.CompiledAssembly.CreateInstance("FiddlerUpdateSessions");
-            MethodInfo mi = typeInstance.GetType().GetMethod("FUS");
-
-            mi.Invoke(null, new object[] { this.Session });
-            */
-            //int methodOutput =
-            //    (int)mi.Invoke(typeInstance, new object[] { 1 });
-            //Console.WriteLine(methodOutput);
-            //Console.ReadLine();
-
-            //Type myType = assembly.GetTypes()[0];
-            //MethodInfo method = myType.GetMethod("FUS");
-            //object myInstance = Activator.CreateInstance(myType);
-            //method.Invoke(myInstance, null);
-
-            //GetSessionRuleCompiledAssembly getSessionRuleCompiledAssembly = new GetSessionRuleCompiledAssembly.GetCompiledAssembly();
-
-            //var assembly = result.CompiledAssembly;
-
-
-
-            //dynamic inst = assembly.CreateInstance("FiddlerUpdateSessions");
-            //string methResult = inst.HelloWorld("FUS") as string;
-
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): POC");
-        }
-
-        private string GetSessionRule()
-        {
-            var Base64Source = "dXNpbmcgRmlkZGxlcjsKdXNpbmcgT2ZmaWNlMzY1RmlkZGxlckV4dGVuc2lvbi5TZXJ2aWNlczsKdXNpbmcgTmV3dG9uc29mdC5Kc29uOwoKbmFtZXNwYWNlIE9mZmljZTM2NUZpZGRsZXJFeHRlbnNpb24uUnVsZXNldAp7CiAgICBjbGFzcyBGaWRkbGVyVXBkYXRlU2Vzc2lvbnMKICAgIHsKICAgICAgICBpbnRlcm5hbCBTZXNzaW9uIFNlc3Npb24geyBnZXQ7IHNldDsgfQoKICAgICAgICBwdWJsaWMgdm9pZCBGVVMoU2Vzc2lvbiBzZXNzaW9uKQogICAgICAgIHsKICAgICAgICAgICAgdGhpcy5TZXNzaW9uID0gc2Vzc2lvbjsKCiAgICAgICAgICAgIGlmICh0aGlzLlNlc3Npb24uaG9zdG5hbWUgPT0gInd3dy5maWRkbGVyMi5jb20iICYmIHRoaXMuU2Vzc2lvbi51cmlDb250YWlucygiVXBkYXRlQ2hlY2suYXNweCIpKQogICAgICAgICAgICB7CiAgICAgICAgICAgICAgICB2YXIgc2Vzc2lvbkZsYWdzID0gbmV3IFNlc3Npb25GbGFnSGFuZGxlci5FeHRlbnNpb25TZXNzaW9uRmxhZ3MoKQogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIFNlY3Rpb25UaXRsZSA9ICJCcm9hZCBMb2dpYyBDaGVja3MiLAogICAgICAgICAgICAgICAgICAgIFVJQmFja0NvbG91ciA9ICJHcmF5IiwKICAgICAgICAgICAgICAgICAgICBVSVRleHRDb2xvdXIgPSAiQmxhY2siLAoKICAgICAgICAgICAgICAgICAgICBTZXNzaW9uVHlwZSA9ICJGaWRkbGVyIFVwZGF0ZSBDaGVjayIsCiAgICAgICAgICAgICAgICAgICAgUmVzcG9uc2VTZXJ2ZXIgPSAiRmlkZGxlciBVcGRhdGUgQ2hlY2siLAogICAgICAgICAgICAgICAgICAgIFJlc3BvbnNlQWxlcnQgPSAiRmlkZGxlciBVcGRhdGUgQ2hlY2siLAogICAgICAgICAgICAgICAgICAgIFJlc3BvbnNlQ29kZURlc2NyaXB0aW9uID0gIkZpZGRsZXIgVXBkYXRlIENoZWNrIiwKICAgICAgICAgICAgICAgICAgICBSZXNwb25zZUNvbW1lbnRzID0gIlRoaXMgaXMgRmlkZGxlciBpdHNlbGYgY2hlY2tpbmcgZm9yIHVwZGF0ZXMuIEl0IGhhcyBub3RoaW5nIHRvIGRvIHdpdGggdGhlIE9mZmljZSAzNjUgRmlkZGxlciBFeHRlbnNpb24uIiwKICAgICAgICAgICAgICAgICAgICBBdXRoZW50aWNhdGlvbiA9ICJGaWRkbGVyIFVwZGF0ZSBDaGVjayIsCgogICAgICAgICAgICAgICAgICAgIFNlc3Npb25BdXRoZW50aWNhdGlvbkNvbmZpZGVuY2VMZXZlbCA9IDEwLAogICAgICAgICAgICAgICAgICAgIFNlc3Npb25UeXBlQ29uZmlkZW5jZUxldmVsID0gMTAsCiAgICAgICAgICAgICAgICAgICAgU2Vzc2lvblJlc3BvbnNlU2VydmVyQ29uZmlkZW5jZUxldmVsID0gMTAKICAgICAgICAgICAgICAgIH07CgogICAgICAgICAgICAgICAgdmFyIHNlc3Npb25GbGFnc0pzb24gPSBKc29uQ29udmVydC5TZXJpYWxpemVPYmplY3Qoc2Vzc2lvbkZsYWdzKTsKICAgICAgICAgICAgICAgIFNlc3Npb25GbGFnSGFuZGxlci5JbnN0YW5jZS5VcGRhdGVTZXNzaW9uRmxhZ0pzb24odGhpcy5TZXNzaW9uLCBzZXNzaW9uRmxhZ3NKc29uKTsKICAgICAgICAgICAgfQogICAgICAgIH0KICAgIH0KfQ==";
-
-            return Base64Decode(Base64Source);
-        }
-
         public Assembly CompileRuleset()
         {
 
             // https://stackoverflow.com/questions/63215725/how-to-call-a-method-from-an-external-assembly
 
             var Base64Source = "dXNpbmcgRmlkZGxlcjsKdXNpbmcgT2ZmaWNlMzY1RmlkZGxlckV4dGVuc2lvbi5TZXJ2aWNlczsKdXNpbmcgTmV3dG9uc29mdC5Kc29uOwp1c2luZyBTeXN0ZW0uUmVmbGVjdGlvbjsKCm5hbWVzcGFjZSBSdWxlc2V0CnsKICAgIGNsYXNzIEZpZGRsZXJVcGRhdGVTZXNzaW9ucwogICAgewogICAgICAgIGludGVybmFsIFNlc3Npb24gU2Vzc2lvbiB7IGdldDsgc2V0OyB9CgogICAgICAgIHB1YmxpYyB2b2lkIEZVUyhTZXNzaW9uIHNlc3Npb24pCiAgICAgICAgewogICAgICAgICAgICB0aGlzLlNlc3Npb24gPSBzZXNzaW9uOwoKICAgICAgICAgICAgaWYgKHRoaXMuU2Vzc2lvbi5ob3N0bmFtZSA9PSAid3d3LmZpZGRsZXIyLmNvbSIgJiYgdGhpcy5TZXNzaW9uLnVyaUNvbnRhaW5zKCJVcGRhdGVDaGVjay5hc3B4IikpCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIEZpZGRsZXJBcHBsaWNhdGlvbi5Mb2cuTG9nU3RyaW5nKEFzc2VtYmx5LkdldEV4ZWN1dGluZ0Fzc2VtYmx5KCkuR2V0TmFtZSgpLk5hbWUgCiAgICAgICAgICAgICAgICAgICAgKyB0aGlzLkdldFR5cGUoKS5OYW1lICsgdGhpcy5TZXNzaW9uLmlkICsgIiBGaWRkbGVyIFVwZGF0ZXMuIik7CgogICAgICAgICAgICAgICAgdmFyIHNlc3Npb25GbGFncyA9IG5ldyBTZXNzaW9uRmxhZ0hhbmRsZXIuRXh0ZW5zaW9uU2Vzc2lvbkZsYWdzKCkKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBTZWN0aW9uVGl0bGUgPSAiQnJvYWQgTG9naWMgQ2hlY2tzIiwKICAgICAgICAgICAgICAgICAgICBVSUJhY2tDb2xvdXIgPSAiR3JheSIsCiAgICAgICAgICAgICAgICAgICAgVUlUZXh0Q29sb3VyID0gIkJsYWNrIiwKCiAgICAgICAgICAgICAgICAgICAgU2Vzc2lvblR5cGUgPSAiRmlkZGxlciBVcGRhdGUgQ2hlY2siLAogICAgICAgICAgICAgICAgICAgIFJlc3BvbnNlU2VydmVyID0gIkZpZGRsZXIgVXBkYXRlIENoZWNrIiwKICAgICAgICAgICAgICAgICAgICBSZXNwb25zZUFsZXJ0ID0gIkZpZGRsZXIgVXBkYXRlIENoZWNrIiwKICAgICAgICAgICAgICAgICAgICBSZXNwb25zZUNvZGVEZXNjcmlwdGlvbiA9ICJGaWRkbGVyIFVwZGF0ZSBDaGVjayIsCiAgICAgICAgICAgICAgICAgICAgUmVzcG9uc2VDb21tZW50cyA9ICJUaGlzIGlzIEZpZGRsZXIgaXRzZWxmIGNoZWNraW5nIGZvciB1cGRhdGVzLiBJdCBoYXMgbm90aGluZyB0byBkbyB3aXRoIHRoZSBPZmZpY2UgMzY1IEZpZGRsZXIgRXh0ZW5zaW9uLiIsCiAgICAgICAgICAgICAgICAgICAgQXV0aGVudGljYXRpb24gPSAiRmlkZGxlciBVcGRhdGUgQ2hlY2siLAoKICAgICAgICAgICAgICAgICAgICBTZXNzaW9uQXV0aGVudGljYXRpb25Db25maWRlbmNlTGV2ZWwgPSAxMCwKICAgICAgICAgICAgICAgICAgICBTZXNzaW9uVHlwZUNvbmZpZGVuY2VMZXZlbCA9IDEwLAogICAgICAgICAgICAgICAgICAgIFNlc3Npb25SZXNwb25zZVNlcnZlckNvbmZpZGVuY2VMZXZlbCA9IDEwCiAgICAgICAgICAgICAgICB9OwoKICAgICAgICAgICAgICAgIHZhciBzZXNzaW9uRmxhZ3NKc29uID0gSnNvbkNvbnZlcnQuU2VyaWFsaXplT2JqZWN0KHNlc3Npb25GbGFncyk7CiAgICAgICAgICAgICAgICBTZXNzaW9uRmxhZ0hhbmRsZXIuSW5zdGFuY2UuVXBkYXRlU2Vzc2lvbkZsYWdKc29uKHRoaXMuU2Vzc2lvbiwgc2Vzc2lvbkZsYWdzSnNvbik7CiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICB9Cn0=";
+            //var Base64Source2 = "dXNpbmcgRmlkZGxlcjsKdXNpbmcgT2ZmaWNlMzY1RmlkZGxlckV4dGVuc2lvbi5TZXJ2aWNlczsKdXNpbmcgTmV3dG9uc29mdC5Kc29uOwp1c2luZyBTeXN0ZW0uUmVmbGVjdGlvbjsKCm5hbWVzcGFjZSBSdWxlc2V0CnsKICAgIGNsYXNzIEZpZGRsZXJVcGRhdGVTZXNzaW9ucwogICAgewogICAgICAgIGludGVybmFsIFNlc3Npb24gU2Vzc2lvbiB7IGdldDsgc2V0OyB9CgogICAgICAgIHB1YmxpYyB2b2lkIEZVUyhTZXNzaW9uIHNlc3Npb24pCiAgICAgICAgewogICAgICAgICAgICB0aGlzLlNlc3Npb24gPSBzZXNzaW9uOwoKICAgICAgICAgICAgaWYgKHRoaXMuU2Vzc2lvbi5ob3N0bmFtZSA9PSAid3d3LmZpZGRsZXIyLmNvbSIgJiYgdGhpcy5TZXNzaW9uLnVyaUNvbnRhaW5zKCJVcGRhdGVDaGVjay5hc3B4IikpCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIEZpZGRsZXJBcHBsaWNhdGlvbi5Mb2cuTG9nU3RyaW5nKEFzc2VtYmx5LkdldEV4ZWN1dGluZ0Fzc2VtYmx5KCkuR2V0TmFtZSgpLk5hbWUgCiAgICAgICAgICAgICAgICAgICAgKyB0aGlzLkdldFR5cGUoKS5OYW1lICsgdGhpcy5TZXNzaW9uLmlkICsgIiBGaWRkbGVyIFVwZGF0ZXMuIik7CgogICAgICAgICAgICAgICAgdmFyIHNlc3Npb25GbGFncyA9IG5ldyBTZXNzaW9uRmxhZ0hhbmRsZXIuRXh0ZW5zaW9uU2Vzc2lvbkZsYWdzKCkKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBTZWN0aW9uVGl0bGUgPSAiQnJvYWQgTG9naWMgQ2hlY2tzIiwKICAgICAgICAgICAgICAgICAgICBVSUJhY2tDb2xvdXIgPSAiR3JheSIsCiAgICAgICAgICAgICAgICAgICAgVUlUZXh0Q29sb3VyID0gIkJsYWNrIiwKCiAgICAgICAgICAgICAgICAgICAgU2Vzc2lvblR5cGUgPSAiRmlkZGxlciBVcGRhdGUgQ2hlY2siLAogICAgICAgICAgICAgICAgICAgIFJlc3BvbnNlU2VydmVyID0gIkZpZGRsZXIgVXBkYXRlIENoZWNrIiwKICAgICAgICAgICAgICAgICAgICBSZXNwb25zZUFsZXJ0ID0gIkZpZGRsZXIgVXBkYXRlIENoZWNrIiwKICAgICAgICAgICAgICAgICAgICBSZXNwb25zZUNvZGVEZXNjcmlwdGlvbiA9ICJGaWRkbGVyIFVwZGF0ZSBDaGVjayIsCiAgICAgICAgICAgICAgICAgICAgUmVzcG9uc2VDb21tZW50cyA9ICJUaGlzIGlzIEZpZGRsZXIgaXRzZWxmIGNoZWNraW5nIGZvciB1cGRhdGVzLiBJdCBoYXMgbm90aGluZyB0byBkbyB3aXRoIHRoZSBPZmZpY2UgMzY1IEZpZGRsZXIgRXh0ZW5zaW9uLiIsCiAgICAgICAgICAgICAgICAgICAgQXV0aGVudGljYXRpb24gPSAiRmlkZGxlciBVcGRhdGUgQ2hlY2siLAoKICAgICAgICAgICAgICAgICAgICBTZXNzaW9uQXV0aGVudGljYXRpb25Db25maWRlbmNlTGV2ZWwgPSAxMCwKICAgICAgICAgICAgICAgICAgICBTZXNzaW9uVHlwZUNvbmZpZGVuY2VMZXZlbCA9IDEwLAogICAgICAgICAgICAgICAgICAgIFNlc3Npb25SZXNwb25zZVNlcnZlckNvbmZpZGVuY2VMZXZlbCA9IDEwCiAgICAgICAgICAgICAgICB9OwoKICAgICAgICAgICAgICAgIHZhciBzZXNzaW9uRmxhZ3NKc29uID0gSnNvbkNvbnZlcnQuU2VyaWFsaXplT2JqZWN0KHNlc3Npb25GbGFncyk7CiAgICAgICAgICAgICAgICBTZXNzaW9uRmxhZ0hhbmRsZXIuSW5zdGFuY2UuVXBkYXRlU2Vzc2lvbkZsYWdKc29uKHRoaXMuU2Vzc2lvbiwgc2Vzc2lvbkZsYWdzSnNvbik7CiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICB9Cn0=";
 
             string SourceString = Base64Decode(Base64Source);
+            //string SourceString += Base64Decode(Base64Source2);
 
             System.CodeDom.Compiler.CompilerParameters parameters = new CompilerParameters();
 
@@ -150,6 +79,7 @@ namespace Office365FiddlerExtension.Handler
             parameters.ReferencedAssemblies.Add($"{SettingsHandler.AssemblyDirectory}\\Office365FiddlerExtension.dll");
             parameters.ReferencedAssemblies.Add($"{SettingsHandler.AssemblyDirectory}\\Newtonsoft.Json.dll");
             parameters.GenerateExecutable = false;
+            parameters.CompilerOptions = "/optimize";
             //parameters.GenerateInMemory = true;
             parameters.OutputAssembly = $"{SettingsHandler.AssemblyDirectory}\\" +
                 $"Office365FiddlerExtensionRuleset_{DateTime.Now.ToString("yyyy-MM-dd_HH.mm.ss")}.dll";
