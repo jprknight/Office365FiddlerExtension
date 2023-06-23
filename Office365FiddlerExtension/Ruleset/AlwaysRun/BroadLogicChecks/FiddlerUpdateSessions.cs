@@ -1,8 +1,9 @@
 ﻿using Fiddler;
 using Office365FiddlerExtension.Services;
 using Newtonsoft.Json;
+using System.Reflection;
 
-namespace Office365FiddlerExtension.Ruleset
+namespace Ruleset
 {
     class FiddlerUpdateSessions
     {
@@ -14,6 +15,9 @@ namespace Office365FiddlerExtension.Ruleset
 
             if (this.Session.hostname == "www.fiddler2.com" && this.Session.uriContains("UpdateCheck.aspx"))
             {
+                FiddlerApplication.Log.LogString(Assembly.GetExecutingAssembly().GetName().Name 
+                    + this.GetType().Name + this.Session.id + " Fiddler Updates.");
+
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     SectionTitle = "Broad Logic Checks",

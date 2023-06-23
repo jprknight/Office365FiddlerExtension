@@ -33,7 +33,7 @@ namespace Office365FiddlerExtension
 
             // Broad logic checks on sessions regardless of response code.
             //BroadLogicChecks.Instance.FiddlerUpdateSessions(this.Session);
-            RuleSetHandler.Instance.RunAssembly(this.Session);
+            RuleSetHandler.RunRuleSet(this.Session);
             BroadLogicChecks.Instance.ConnectTunnelSessions(this.Session);
             BroadLogicChecks.Instance.ApacheAutodiscover(this.Session);
             BroadLogicChecks.Instance.LoopBackTunnel(this.Session);
