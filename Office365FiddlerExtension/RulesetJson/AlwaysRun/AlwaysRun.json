@@ -1,6 +1,0 @@
-{
-  "BroadLogicChecks": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/RulesetJson/AlwaysRun/BroadLogicChecks.json",
-  "CalculateSessionAge": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/RulesetJson/AlwaysRun/CalculateSessionAge.json",
-  "ServerThinkTimeTransitTime": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/RulesetJson/AlwaysRun/ServerThinkTimeTransitTime.json",
-  "SessionElapsedTIme": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/RulesetJson/AlwaysRun/SessionElapsedTime.json"
-}

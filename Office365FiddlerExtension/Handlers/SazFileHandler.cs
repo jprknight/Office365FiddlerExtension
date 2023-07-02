@@ -1,5 +1,4 @@
 ﻿using Fiddler;
-using Office365FiddlerExtension.Ruleset;
 using System;
 using System.Collections.Generic;
 using System.Linq;

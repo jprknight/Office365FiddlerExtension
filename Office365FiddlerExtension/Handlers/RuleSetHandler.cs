@@ -31,24 +31,24 @@ namespace Office365FiddlerExtension.Handler
 
         public static void RunRuleSet(Session Session)
         {
-            string pattern = "Office365FiddlerExtensionRuleset_*.dll";
+            string pattern = "Office365FiddlerExtensionRuleset.dll";
             var dirInfo = new DirectoryInfo(SettingsHandler.AssemblyDirectory);
-            FiddlerApplication.Log.LogString($"Assembly Location: {SettingsHandler.AssemblyDirectory}");
-            FiddlerApplication.Log.LogString($"Session id: {Session.id}, Session ResponseCode: {Session.responseCode}");
+            //FiddlerApplication.Log.LogString($"Assembly Location: {SettingsHandler.AssemblyDirectory}");
+            //FiddlerApplication.Log.LogString($"Session id: {Session.id}, Session ResponseCode: {Session.responseCode}");
 
             try
             {
                 FileInfo file = (from f in dirInfo.GetFiles(pattern) orderby f.LastWriteTime descending select f).First();
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} {file}");
+                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} {file}");
 
                 Assembly rulesetDDL = Assembly.LoadFile(file.FullName);
 
                 // type is Namespace.Class
-                var type = rulesetDDL.GetType("Ruleset.FiddlerUpdateSessions");
+                var type = rulesetDDL.GetType("Office365FiddlerExtensionRuleset.RunRuleSet");
                 
                 var obj = Activator.CreateInstance(type);
 
-                var method = type.GetMethod("FUS");
+                var method = type.GetMethod("Initialize");
 
                 method.Invoke(obj, new object[] { Session });
             }
@@ -56,57 +56,6 @@ namespace Office365FiddlerExtension.Handler
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} {ex}");
             }
-
-
-        }
-
-        public Assembly CompileRuleset()
-        {
-
-            // https://stackoverflow.com/questions/63215725/how-to-call-a-method-from-an-external-assembly
-
-            var Base64Source = "dXNpbmcgRmlkZGxlcjsKdXNpbmcgT2ZmaWNlMzY1RmlkZGxlckV4dGVuc2lvbi5TZXJ2aWNlczsKdXNpbmcgTmV3dG9uc29mdC5Kc29uOwp1c2luZyBTeXN0ZW0uUmVmbGVjdGlvbjsKCm5hbWVzcGFjZSBSdWxlc2V0CnsKICAgIGNsYXNzIEZpZGRsZXJVcGRhdGVTZXNzaW9ucwogICAgewogICAgICAgIGludGVybmFsIFNlc3Npb24gU2Vzc2lvbiB7IGdldDsgc2V0OyB9CgogICAgICAgIHB1YmxpYyB2b2lkIEZVUyhTZXNzaW9uIHNlc3Npb24pCiAgICAgICAgewogICAgICAgICAgICB0aGlzLlNlc3Npb24gPSBzZXNzaW9uOwoKICAgICAgICAgICAgaWYgKHRoaXMuU2Vzc2lvbi5ob3N0bmFtZSA9PSAid3d3LmZpZGRsZXIyLmNvbSIgJiYgdGhpcy5TZXNzaW9uLnVyaUNvbnRhaW5zKCJVcGRhdGVDaGVjay5hc3B4IikpCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIEZpZGRsZXJBcHBsaWNhdGlvbi5Mb2cuTG9nU3RyaW5nKEFzc2VtYmx5LkdldEV4ZWN1dGluZ0Fzc2VtYmx5KCkuR2V0TmFtZSgpLk5hbWUgCiAgICAgICAgICAgICAgICAgICAgKyB0aGlzLkdldFR5cGUoKS5OYW1lICsgdGhpcy5TZXNzaW9uLmlkICsgIiBGaWRkbGVyIFVwZGF0ZXMuIik7CgogICAgICAgICAgICAgICAgdmFyIHNlc3Npb25GbGFncyA9IG5ldyBTZXNzaW9uRmxhZ0hhbmRsZXIuRXh0ZW5zaW9uU2Vzc2lvbkZsYWdzKCkKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBTZWN0aW9uVGl0bGUgPSAiQnJvYWQgTG9naWMgQ2hlY2tzIiwKICAgICAgICAgICAgICAgICAgICBVSUJhY2tDb2xvdXIgPSAiR3JheSIsCiAgICAgICAgICAgICAgICAgICAgVUlUZXh0Q29sb3VyID0gIkJsYWNrIiwKCiAgICAgICAgICAgICAgICAgICAgU2Vzc2lvblR5cGUgPSAiRmlkZGxlciBVcGRhdGUgQ2hlY2siLAogICAgICAgICAgICAgICAgICAgIFJlc3BvbnNlU2VydmVyID0gIkZpZGRsZXIgVXBkYXRlIENoZWNrIiwKICAgICAgICAgICAgICAgICAgICBSZXNwb25zZUFsZXJ0ID0gIkZpZGRsZXIgVXBkYXRlIENoZWNrIiwKICAgICAgICAgICAgICAgICAgICBSZXNwb25zZUNvZGVEZXNjcmlwdGlvbiA9ICJGaWRkbGVyIFVwZGF0ZSBDaGVjayIsCiAgICAgICAgICAgICAgICAgICAgUmVzcG9uc2VDb21tZW50cyA9ICJUaGlzIGlzIEZpZGRsZXIgaXRzZWxmIGNoZWNraW5nIGZvciB1cGRhdGVzLiBJdCBoYXMgbm90aGluZyB0byBkbyB3aXRoIHRoZSBPZmZpY2UgMzY1IEZpZGRsZXIgRXh0ZW5zaW9uLiIsCiAgICAgICAgICAgICAgICAgICAgQXV0aGVudGljYXRpb24gPSAiRmlkZGxlciBVcGRhdGUgQ2hlY2siLAoKICAgICAgICAgICAgICAgICAgICBTZXNzaW9uQXV0aGVudGljYXRpb25Db25maWRlbmNlTGV2ZWwgPSAxMCwKICAgICAgICAgICAgICAgICAgICBTZXNzaW9uVHlwZUNvbmZpZGVuY2VMZXZlbCA9IDEwLAogICAgICAgICAgICAgICAgICAgIFNlc3Npb25SZXNwb25zZVNlcnZlckNvbmZpZGVuY2VMZXZlbCA9IDEwCiAgICAgICAgICAgICAgICB9OwoKICAgICAgICAgICAgICAgIHZhciBzZXNzaW9uRmxhZ3NKc29uID0gSnNvbkNvbnZlcnQuU2VyaWFsaXplT2JqZWN0KHNlc3Npb25GbGFncyk7CiAgICAgICAgICAgICAgICBTZXNzaW9uRmxhZ0hhbmRsZXIuSW5zdGFuY2UuVXBkYXRlU2Vzc2lvbkZsYWdKc29uKHRoaXMuU2Vzc2lvbiwgc2Vzc2lvbkZsYWdzSnNvbik7CiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICB9Cn0=";
-            //var Base64Source2 = "dXNpbmcgRmlkZGxlcjsKdXNpbmcgT2ZmaWNlMzY1RmlkZGxlckV4dGVuc2lvbi5TZXJ2aWNlczsKdXNpbmcgTmV3dG9uc29mdC5Kc29uOwp1c2luZyBTeXN0ZW0uUmVmbGVjdGlvbjsKCm5hbWVzcGFjZSBSdWxlc2V0CnsKICAgIGNsYXNzIEZpZGRsZXJVcGRhdGVTZXNzaW9ucwogICAgewogICAgICAgIGludGVybmFsIFNlc3Npb24gU2Vzc2lvbiB7IGdldDsgc2V0OyB9CgogICAgICAgIHB1YmxpYyB2b2lkIEZVUyhTZXNzaW9uIHNlc3Npb24pCiAgICAgICAgewogICAgICAgICAgICB0aGlzLlNlc3Npb24gPSBzZXNzaW9uOwoKICAgICAgICAgICAgaWYgKHRoaXMuU2Vzc2lvbi5ob3N0bmFtZSA9PSAid3d3LmZpZGRsZXIyLmNvbSIgJiYgdGhpcy5TZXNzaW9uLnVyaUNvbnRhaW5zKCJVcGRhdGVDaGVjay5hc3B4IikpCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIEZpZGRsZXJBcHBsaWNhdGlvbi5Mb2cuTG9nU3RyaW5nKEFzc2VtYmx5LkdldEV4ZWN1dGluZ0Fzc2VtYmx5KCkuR2V0TmFtZSgpLk5hbWUgCiAgICAgICAgICAgICAgICAgICAgKyB0aGlzLkdldFR5cGUoKS5OYW1lICsgdGhpcy5TZXNzaW9uLmlkICsgIiBGaWRkbGVyIFVwZGF0ZXMuIik7CgogICAgICAgICAgICAgICAgdmFyIHNlc3Npb25GbGFncyA9IG5ldyBTZXNzaW9uRmxhZ0hhbmRsZXIuRXh0ZW5zaW9uU2Vzc2lvbkZsYWdzKCkKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBTZWN0aW9uVGl0bGUgPSAiQnJvYWQgTG9naWMgQ2hlY2tzIiwKICAgICAgICAgICAgICAgICAgICBVSUJhY2tDb2xvdXIgPSAiR3JheSIsCiAgICAgICAgICAgICAgICAgICAgVUlUZXh0Q29sb3VyID0gIkJsYWNrIiwKCiAgICAgICAgICAgICAgICAgICAgU2Vzc2lvblR5cGUgPSAiRmlkZGxlciBVcGRhdGUgQ2hlY2siLAogICAgICAgICAgICAgICAgICAgIFJlc3BvbnNlU2VydmVyID0gIkZpZGRsZXIgVXBkYXRlIENoZWNrIiwKICAgICAgICAgICAgICAgICAgICBSZXNwb25zZUFsZXJ0ID0gIkZpZGRsZXIgVXBkYXRlIENoZWNrIiwKICAgICAgICAgICAgICAgICAgICBSZXNwb25zZUNvZGVEZXNjcmlwdGlvbiA9ICJGaWRkbGVyIFVwZGF0ZSBDaGVjayIsCiAgICAgICAgICAgICAgICAgICAgUmVzcG9uc2VDb21tZW50cyA9ICJUaGlzIGlzIEZpZGRsZXIgaXRzZWxmIGNoZWNraW5nIGZvciB1cGRhdGVzLiBJdCBoYXMgbm90aGluZyB0byBkbyB3aXRoIHRoZSBPZmZpY2UgMzY1IEZpZGRsZXIgRXh0ZW5zaW9uLiIsCiAgICAgICAgICAgICAgICAgICAgQXV0aGVudGljYXRpb24gPSAiRmlkZGxlciBVcGRhdGUgQ2hlY2siLAoKICAgICAgICAgICAgICAgICAgICBTZXNzaW9uQXV0aGVudGljYXRpb25Db25maWRlbmNlTGV2ZWwgPSAxMCwKICAgICAgICAgICAgICAgICAgICBTZXNzaW9uVHlwZUNvbmZpZGVuY2VMZXZlbCA9IDEwLAogICAgICAgICAgICAgICAgICAgIFNlc3Npb25SZXNwb25zZVNlcnZlckNvbmZpZGVuY2VMZXZlbCA9IDEwCiAgICAgICAgICAgICAgICB9OwoKICAgICAgICAgICAgICAgIHZhciBzZXNzaW9uRmxhZ3NKc29uID0gSnNvbkNvbnZlcnQuU2VyaWFsaXplT2JqZWN0KHNlc3Npb25GbGFncyk7CiAgICAgICAgICAgICAgICBTZXNzaW9uRmxhZ0hhbmRsZXIuSW5zdGFuY2UuVXBkYXRlU2Vzc2lvbkZsYWdKc29uKHRoaXMuU2Vzc2lvbiwgc2Vzc2lvbkZsYWdzSnNvbik7CiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICB9Cn0=";
-
-            string SourceString = Base64Decode(Base64Source);
-            //string SourceString += Base64Decode(Base64Source2);
-
-            System.CodeDom.Compiler.CompilerParameters parameters = new CompilerParameters();
-
-            // https://learn.microsoft.com/en-us/dotnet/api/system.codedom.compiler.compilerparameters.referencedassemblies?view=windowsdesktop-7.0
-
-            parameters.ReferencedAssemblies.Add($"{SettingsHandler.AssemblyDirectory}\\Fiddler.exe");
-            parameters.ReferencedAssemblies.Add($"{SettingsHandler.AssemblyDirectory}\\Office365FiddlerExtension.dll");
-            parameters.ReferencedAssemblies.Add($"{SettingsHandler.AssemblyDirectory}\\Newtonsoft.Json.dll");
-            parameters.GenerateExecutable = false;
-            parameters.CompilerOptions = "/optimize";
-            //parameters.GenerateInMemory = true;
-            parameters.OutputAssembly = $"{SettingsHandler.AssemblyDirectory}\\" +
-                $"Office365FiddlerExtensionRuleset_{DateTime.Now.ToString("yyyy-MM-dd_HH.mm.ss")}.dll";
-
-            CompilerResults results = CodeDomProvider.CreateProvider("CSharp").CompileAssemblyFromSource(parameters, SourceString);
-
-            if (results.Errors.Count > 0)
-            {
-                foreach (CompilerError CompErr in results.Errors)
-                {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}):" +
-                        $"Line number {CompErr.Line}, Error Number: {CompErr.ErrorNumber}, ' {CompErr.ErrorText};");
-                }
-                return null;
-            }
-            else
-            {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Success!");
-
-                return results.CompiledAssembly;
-            }
-        }
-
-        public static string Base64Decode(string base64EncodedData)
-        {
-            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
-            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
 
         // Check the ruleset version stored in local settings is older than the version in the Github repo.
