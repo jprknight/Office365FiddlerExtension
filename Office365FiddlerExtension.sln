@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office365FiddlerExtension",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office365FiddlerExtensionRuleset", "Office365FiddlerExtensionRuleset\Office365FiddlerExtensionRuleset.csproj", "{B024808A-9ACB-4FDB-B3CA-7A5D78973B7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office365FiddlerInspector", "Office365FiddlerInspector\Office365FiddlerInspector.csproj", "{28FDC41F-FD59-4D37-BB91-9B0DC5DB0A2A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{B024808A-9ACB-4FDB-B3CA-7A5D78973B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B024808A-9ACB-4FDB-B3CA-7A5D78973B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B024808A-9ACB-4FDB-B3CA-7A5D78973B7D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{28FDC41F-FD59-4D37-BB91-9B0DC5DB0A2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28FDC41F-FD59-4D37-BB91-9B0DC5DB0A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{28FDC41F-FD59-4D37-BB91-9B0DC5DB0A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{28FDC41F-FD59-4D37-BB91-9B0DC5DB0A2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
