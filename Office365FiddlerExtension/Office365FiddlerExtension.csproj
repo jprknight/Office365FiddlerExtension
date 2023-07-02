@@ -212,7 +212,6 @@
     </Compile>
     <Compile Include="UI\ContextMenuUI.cs" />
     <Compile Include="UI\EnhanceUX.cs" />
-    <Compile Include="UI\Tabs\Office365TabPage.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="AboutOld.cs" />
     <Compile Include="Handlers\SazFileHandler.cs" />
@@ -238,12 +237,6 @@
       <DependentUpon>Office365ResponseControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\TelemetryService.cs" />
-    <Compile Include="UI\Office365TabPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Office365TabPage.Designer.cs">
-      <DependentUpon>Office365TabPage.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\EnhanceSessionUX.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -256,9 +249,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Office365ResponseControl.resx">
       <DependentUpon>Office365ResponseControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Office365TabPage.resx">
-      <DependentUpon>Office365TabPage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
