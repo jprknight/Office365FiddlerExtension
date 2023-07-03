@@ -22,7 +22,7 @@ namespace Office365FiddlerExtension
 
         private readonly MenuItem CmiProcessSelectedSessions = new MenuItem("Process Selected Session(s)");
 
-        private readonly MenuItem CmiProcessAllSessions = new MenuItem("Process All Session");
+        private readonly MenuItem CmiProcessAllSessions = new MenuItem("Process All Sessions");
 
         private readonly MenuItem CmiClearAllSessionProcessing = new MenuItem("Clear All Session Processing");
 

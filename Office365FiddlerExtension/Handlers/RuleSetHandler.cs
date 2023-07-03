@@ -18,6 +18,8 @@ using Office365FiddlerExtension.Services;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Forms;
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
 
 namespace Office365FiddlerExtension.Handler
 {
@@ -28,6 +30,56 @@ namespace Office365FiddlerExtension.Handler
         private static RuleSetHandler _instance;
 
         public static RuleSetHandler Instance => _instance ?? (_instance = new RuleSetHandler());
+
+        public void CleanRulesetFiles()
+        {
+            string[] rulesetFilesPattern = new string[3]
+            {
+                "Office365FiddlerExtensionRuleset*.dll",
+                "Office365FiddlerExtensionRuleset*.pdb",
+                "Office365FiddlerExtensionRuleset*.dll.config"
+            };
+
+            //string pattern = "Office365FiddlerExtensionRuleset*.dll";
+            var dirInfo = new DirectoryInfo(SettingsHandler.AssemblyDirectory);
+            
+            string[] filesArray = Directory.GetFiles(SettingsHandler.AssemblyDirectory);
+
+            foreach (string rulesetFilePattern in rulesetFilesPattern)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} file test {SettingsHandler.AssemblyDirectory}\\{rulesetFilePattern}");
+
+                //FileInfo file = new FileInfo($"{SettingsHandler.AssemblyDirectory}\\{rulesetFile}");
+
+                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} Working on ruleset file {file.FullName}");
+                
+                try
+                {
+                    // Match all files to the file pattern.
+                    string[] fileArray = Directory.GetFiles(SettingsHandler.AssemblyDirectory, rulesetFilePattern);
+
+                    // Get the newest file from the file pattern.
+                    FileInfo latestRulesetFile = (from f in dirInfo.GetFiles(rulesetFilePattern) orderby f.LastWriteTime descending select f).First();
+
+                    foreach (string file in fileArray)
+                    {
+                        FileInfo extensionfile = new FileInfo(file);
+
+                        if (latestRulesetFile.FullName != extensionfile.FullName)
+                        {
+                            // Delete all files from the file pattern that are not the one newest file.
+                            extensionfile.Delete();
+                            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} Deleted {extensionfile.FullName}");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} {ex}");
+                }
+                
+            }
+        }
 
         public static void RunRuleSet(Session Session)
         {

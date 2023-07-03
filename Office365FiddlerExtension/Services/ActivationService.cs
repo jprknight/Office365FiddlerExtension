@@ -28,6 +28,8 @@ namespace Office365FiddlerExtension.Services
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
 
+                RuleSetHandler.Instance.CleanRulesetFiles();
+
                 // Ensure Fiddler settings (settings, URLs, & verison) for the extension have been created.
                 // Avoid null exceptions.
                 SettingsHandler.Instance.CreateExtensionSettingsFiddlerSetting();
@@ -62,6 +64,7 @@ namespace Office365FiddlerExtension.Services
         /// </summary>
         public void OnBeforeUnload()
         {
+            RuleSetHandler.Instance.CleanRulesetFiles();
             ShutdownTelemetry();
         }
 
