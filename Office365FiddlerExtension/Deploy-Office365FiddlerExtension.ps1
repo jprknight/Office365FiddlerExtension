@@ -18,14 +18,16 @@
 #
 #   Office 365 Fiddler Extension Deployment Script
 #
-#   v1.0    Jeremy Knight   11/9/20222  Initial version.
-#   v1.1    Jeremy Knight   11/10/2022  Re-write.
-#   v1.2    Jeremy Knight   11/11/2022  Added upgrade option.
-#                                       Consolidated reused code.
-#   v1.3    Jeremy Knight   11/14/2022  Manually set deployment folder.
-#                                       Complete message.
-#   v1.4    Jeremy Knight   5/11/2023   Amendment for output files update.
+#   v1.0    Jeremy Knight   Nov,  9th 2022  Initial version.
+#   v1.1    Jeremy Knight   Nov, 10th 2022  Re-write.
+#   v1.2    Jeremy Knight   Nov, 11th 2022  Added upgrade option.
+#                                           Consolidated reused code.
+#   v1.3    Jeremy Knight   Nov, 14th 2022  Manually set deployment folder.
+#                                           Complete message.
+#   v1.4    Jeremy Knight   May, 11th 2023  Amendment for output files update.
+#   v1.5    Jeremy Knight   Jul,  5th 2023  Additions for ruleset updates.
 # 
+
 Function Download { 
     # Only download a new zip file if it doesn't already exist.
     if (!(Test-Path "$($env:UserProfile)\Downloads\$Script:ZipFileName" -ErrorAction SilentlyContinue)) {
@@ -127,83 +129,164 @@ Function Uninstall {
     
 }
 
+Function CloseFiddler {
+    # get Fiddler process
+    $fiddler = Get-Process fiddler -ErrorAction SilentlyContinue
+    if ($fiddler) {
+        Write-Host "Attemping to gracefully shutdown Fiddler."
+        # try gracefully first
+        $fiddler.CloseMainWindow()
+        # kill after five seconds
+        Start-Sleep 5
+        Write-Host "Waiting for 5 seconds."
+        Start-Sleep 5
+        if (!$fiddler.HasExited) {
+            Write-Host "Attempting to force shutdown Fiddler."
+            $fiddler | Stop-Process -Force
+            Write-Host "Waiting for 5 seconds."
+            Start-Sleep 5
+        }
+    }
+}
+
 $Menu = {
     Write-Host ""
-    Write-Host "**********************************************************" -ForegroundColor Cyan
+    Write-Host "**************************************************************************" -ForegroundColor Cyan
     Write-Host "Office 365 Fiddler Extension Deployment Script" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "https://github.com/jprknight/Office365FiddlerExtension" -ForegroundColor Cyan
     Write-Host ""
     
-    if ($Script:bExtInstalled) {
-        Write-Host " Local Installed version: $Script:Version" -ForegroundColor Green    
+    if (Get-Process Fiddler -ErrorAction SilentlyContinue) {
+        Write-Host " Fiddler Running:           True" -ForegroundColor Red
     }
     else {
-        Write-Host " Local Installed version: $Script:Version" -ForegroundColor Red
-    }
-    
-    if ($Script:LatestWebVersion -eq "Unknown") {
-        Write-Host " Latest Web Version:      $LatestWebVersion" -ForegroundColor Red
-    }
-    else {
-        Write-Host " Latest Web Version:      $LatestWebVersion" -ForegroundColor Green
+        Write-Host " Fiddler Running:           False" -ForegroundColor Green
     }
 
     if ($Script:FiddlerPath -eq "Path not found!") {
-        Write-Host " Fiddler Path:            $Script:FiddlerPath" -ForegroundColor Red
+        Write-Host " Fiddler Path:              $Script:FiddlerPath" -ForegroundColor Red
     }
     elseif ($Script:FiddlerPath -eq "More than one path found! Reboot?") {
-        Write-Host " Fiddler Path:            $Script:FiddlerPath" -ForegroundColor Red
+        Write-Host " Fiddler Path:              $Script:FiddlerPath" -ForegroundColor Red
     }
     else {
-        Write-Host " Fiddler Path:            $Script:FiddlerPath" -ForegroundColor Green
-    }   
+        Write-Host " Fiddler Path:              $Script:FiddlerPath" -ForegroundColor Green
+    }  
 
-    if (Get-Process Fiddler -ErrorAction SilentlyContinue) {
-        Write-Host " Fiddler Running:         True" -ForegroundColor Red
+    Write-Host ""
+
+    if ($Script:bExtInstalled) {
+        Write-Host " Extension Local Version:   $Script:ExtensionVersion" -ForegroundColor Green    
     }
     else {
-        Write-Host " Fiddler Running:         False" -ForegroundColor Green
+        Write-Host " Extension Local Version:   $Script:ExtensionVersion" -ForegroundColor Red
+    }
+    
+    if ($Script:LatestWebVersion -eq "Unknown") {
+        Write-Host " Extension Web Version:     $LatestWebVersion" -ForegroundColor Red
+    }
+    else {
+        Write-Host " Extension Web Version:     $LatestWebVersion" -ForegroundColor Green
     }
 
     Write-Host ""
-    Write-Host "**********************************************************" -ForegroundColor Cyan
+
+    if ($Script:RulesetLocalVersion -eq "Unknown" -OR $Script:RulesetFileCount -gt 3 -OR $null -eq $Script:LatestFile) {
+        Write-Host " Ruleset Local Version:     $Script:RulesetLocalVersion" -ForegroundColor Red
+    }
+    else {
+        Write-Host " Ruleset Local Version:     $Script:RulesetLocalVersion" -ForegroundColor Green
+    }
+    
+    Write-Host " Ruleset Web Version:       test"
+
+    Write-Host ""
+    Write-Host "**************************************************************************" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "1) Install" -ForegroundColor Cyan
     Write-Host "2) Upgrade" -ForegroundColor Cyan
     Write-Host "3) Uninstall" -ForegroundColor Cyan
     Write-Host "4) Set Fiddler Path" -ForegroundColor Cyan
-    Write-Host "5) Exit" -ForegroundColor Cyan
+    Write-Host "5) Close Fiddler" -ForegroundColor Cyan
+    Write-Host "6) Exit" -ForegroundColor Cyan
     Write-Host ""
 }
 
-Function LocalVersionCheck {
-    $ExtScriptsFile = "$Script:FiddlerScriptsPath\Office365FiddlerInspector.dll"
-    $ExtInspectorsFile = "$Script:FiddlerInspectorsPath\Office365FiddlerInspector.dll"
+Function ExtensionLocalVersionCheck {
+    $ExtScriptsFile = "$Script:FiddlerScriptsPath\Office365FiddlerExtension.dll"
+    $ExtInspectorsFile = "$Script:FiddlerInspectorsPath\Office365FiddlerExtension.dll"
+
+    $InsScriptsFile = "$Script:FiddlerScriptsPath\Office365FiddlerInspector.dll"
+    $InsInspectorsFile = "$Script:FiddlerInspectorsPath\Office365FiddlerInspector.dll"
 
     # Check for the main dll file in both scripts and inspectors folders to get version number.
     if ((Test-Path $ExtScriptsFile -ErrorAction SilentlyContinue) -AND (Test-Path $ExtInspectorsFile -ErrorAction SilentlyContinue)) {
-        $dll = Get-Item "$Script:FiddlerScriptsPath\Office365FiddlerInspector.dll"
-        $Script:Version = $("$($dll.VersionInfo.FileMajorPart).$($dll.VersionInfo.FileMinorPart).$($dll.VersionInfo.FileBuildPart)")
+        $dll = Get-Item $ExtInspectorsFile
+        $Script:ExtensionVersion = $("$($dll.VersionInfo.FileMajorPart).$($dll.VersionInfo.FileMinorPart).$($dll.VersionInfo.FileBuildPart)")
+        [bool]$Script:bExtInstalled = 1
+    }
+    elseif ((Test-Path $InsScriptsFile -ErrorAction SilentlyContinue) -AND (Test-Path $InsInspectorsFile -ErrorAction SilentlyContinue)) {
+        $dll = Get-Item $InsInspectorsFile
+        $Script:ExtensionVersion = $("$($dll.VersionInfo.FileMajorPart).$($dll.VersionInfo.FileMinorPart).$($dll.VersionInfo.FileBuildPart)")
         [bool]$Script:bExtInstalled = 1
     }
     else {
-        $Script:Version = "Not Installed"
+        $Script:ExtensionVersion = "Not Installed"
         [bool]$Script:bExtInstalled = 0
     }
 }
 
-Function WebVersionCheck {
+Function ExtensionWebVersionCheck {
     try {
-        $xml = New-Object System.Xml.XmlDocument
-        $xml.Load("https://aka.ms/Office365FiddlerExtensionUpdateCheckUrl")
-        # Legacy XML name used EXOFiddlerInspector in XML file in the repo, as to not create errors for old extension versions.
-        $Script:LatestWebVersion = $($xml.EXOFiddlerInspector.version)
+        $Json = (Invoke-WebRequest https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionVersion.json).Content
+        $VersionInfo = $Json | ConvertFrom-Json
+
+        $Script:LatestExtensionWebVersion = "$($VersionInfo.VersionMajor).$($VersionInfo.VersionMinor).$($VersionInfo.VersionBuild)"
     }
     catch {
-        $Script:LatestWebVersion = "Unknown"
-    }
+        $Script:LatestExtensionWebVersion = "Unknown"
+    }   
+}
+
+Function RulesetLocalVersionCheck {
+    $Script:LatestFile = ""
+    $Script:RulesetFileCount = 0
     
+    try {
+        $Script:LatestFile = Get-ChildItem $Script:FiddlerInspectorsPath -Filter $Script:RulesetDLLFilePattern | Sort-Object LastWriteTime | Select-Object -first 1
+
+        if ($null -eq $Script:LatestFile) {
+            $Script:RulesetLocalVersion = "No ruleset files found. Run ruleset download."
+            return
+        }
+
+        foreach ($RulesetFilePattern in $Script:RulesetFilePatterns) {
+            $Script:RulesetFileCount += (Get-ChildItem $Script:FiddlerInspectorsPath -Filter $RulesetFilePattern).count
+        }
+
+        if ($Script:RulesetFileCount -gt 3) {
+            $Script:RulesetLocalVersion = "Too many ruleset files found. Run ruleset file download to clean up old ruleset files."
+        }
+        else {
+            $Script:RulesetLocalVersion = $("$($Script:LatestFile.VersionInfo.FileMajorPart).$($Script:LatestFile.VersionInfo.FileMinorPart).$($Script:LatestFile.VersionInfo.FileBuildPart)")
+        }       
+    }
+    catch {
+        $Script:RulesetLocalVersion = "Unknown"
+    }
+}
+
+Function RulesetWebVersionCheck {
+    try {
+        $Json = (Invoke-WebRequest https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionVersion.json).Content
+        $RulesetVersionInfo = $Json | ConvertFrom-Json
+
+        $Script:LatestRulesetWebVersion = "$($RulesetVersionInfo.RulesetMajor).$($RulesetVersionInfo.RulesetMinor).$($RulesetVersionInfo.RulesetBuild)"
+    }
+    catch {
+        $Script:LatestRulesetWebVersion = "Unknown"
+    }   
 }
 
 Function SetGlobals {
@@ -223,12 +306,20 @@ Function SetGlobals {
     'Office365FiddlerExtension.dll.config',
     'Office365FiddlerExtension.pdb')
 
+    $Script:RulesetDLLFilePattern = "Office365FiddlerExtensionRuleset*.dll"
+
+    $Script:RulesetFilePatterns = @("Office365FiddlerExtensionRuleset*.dll",
+    "Office365FiddlerExtensionRuleset*.pdb",
+    "Office365FiddlerExtensionRuleset*.dll.config")
+
     $Script:DownloadPath = "$($env:UserProfile)\Downloads\"
     $Script:ZipFileName = "Office365FiddlerExtension.zip"
     [bool]$Script:bZipDownload = Test-Path "$Script:DownloadPath\$Script:ZipFileName" -ErrorAction SilentlyContinue
 }
 
+# Fiddler path needs to be set to where Fiddler.exe resides.
 Function SetFiddlerPaths {
+    $PathCount = 0
     $Paths = $env:path -split ";"
     foreach ($path in $Paths) {
         if ($Path -like "*Fiddler*") {
@@ -279,8 +370,9 @@ Function CleanDownloadFile {
 Do {
     SetGlobals
     SetFiddlerPaths
-    LocalVersionCheck
-    WebVersionCheck
+    ExtensionLocalVersionCheck
+    ExtensionWebVersionCheck
+    RulesetLocalVersionCheck
 
     Invoke-Command -ScriptBlock $Menu
     $Selection = Read-Host "Selection"
@@ -304,5 +396,8 @@ Do {
         4 {
             ManuallySetFiddlerPath
         }
+        5 {
+            CloseFiddler
+        }
     }
-} While ($Selection -ne 5)
+} While ($Selection -ne 6)

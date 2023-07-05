@@ -54,9 +54,9 @@ namespace Office365FiddlerExtension.Handler
             var VersionItems = new
             {
                 UpdateMessage = "",
-                VersionMajor = "",
-                VersionMinor = "",
-                VersionBuild = ""
+                ExtensionMajor = "",
+                ExtensionMinor = "",
+                ExtensionBuild = ""
             };
 
             // Transform the object to a Json object.
@@ -70,11 +70,11 @@ namespace Office365FiddlerExtension.Handler
         {
             public string UpdateMessage { get; set; }
 
-            public int VersionMajor { get; set; }
+            public int ExtensionMajor { get; set; }
 
-            public int VersionMinor { get; set; }
+            public int ExtensionMinor { get; set; }
 
-            public int VersionBuild { get; set; }
+            public int ExtensionBuild { get; set; }
 
             public DateTime MasterRulesetVersion { get; set; }
 

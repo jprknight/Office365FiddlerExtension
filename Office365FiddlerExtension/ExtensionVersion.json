@@ -1,6 +1,9 @@
 {
   "UpdateMessage": "A new version of the Office 365 Fiddler Extension is available.",
-  "VersionMajor": 2,
-  "VersionMinor": 0,
-  "VersionBuild": 1
+  "ExtensionMajor": 2,
+  "ExtensionMinor": 0,
+  "ExtensionBuild": 1,
+  "RulesetMajor": 2023,
+  "RulesetMinor": 7,
+  "RulesetBuild": 5
 }

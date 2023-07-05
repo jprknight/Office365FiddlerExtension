@@ -32,7 +32,7 @@ namespace Office365FiddlerExtension.UI
             ExtensionDLLTextbox.Text = extensionSettings.ExtensionDLL;
             LocalDLLVersionTextbox.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-            GithubDLLVersionTextbox.Text = extensionVersion.VersionMajor + "." + extensionVersion.VersionMinor + "." + extensionVersion.VersionBuild;
+            GithubDLLVersionTextbox.Text = extensionVersion.ExtensionMajor + "." + extensionVersion.ExtensionMinor + "." + extensionVersion.ExtensionBuild;
 
             NextUpdateCheckTextbox.Text = extensionSettings.UpdateCheckFrequencyHours.ToString();
 
@@ -55,7 +55,7 @@ namespace Office365FiddlerExtension.UI
             WarningSessionTimeThresholdTextbox.Text = extensionSettings.WarningSessionTimeThreshold.ToString();
             SlowRunningSessionThresholdTextbox.Text = extensionSettings.SlowRunningSessionThreshold.ToString();
 
-            this.Text = $"About: {Assembly.GetExecutingAssembly().GetName().Name} v{extensionVersion.VersionMajor}.{extensionVersion.VersionMinor}.{extensionVersion.VersionBuild}";
+            this.Text = $"About: {Assembly.GetExecutingAssembly().GetName().Name} v{extensionVersion.ExtensionMajor}.{extensionVersion.ExtensionMinor}.{extensionVersion.ExtensionBuild}";
 
             if (extensionSettings.SessionAnalysisOnFiddlerLoad == true &&
                 extensionSettings.SessionAnalysisOnLoadSaz == true &&
