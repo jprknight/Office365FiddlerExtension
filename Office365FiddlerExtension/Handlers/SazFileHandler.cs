@@ -22,6 +22,12 @@ namespace Office365FiddlerExtension.Handler
 
         public static SazFileHandler Instance => _instance ?? (_instance = new SazFileHandler());
 
+        public void AddSazFileEventHandlers()
+        {
+            FiddlerApplication.OnLoadSAZ += SazFileHandler.Instance.LoadSaz;
+            FiddlerApplication.OnSaveSAZ += SazFileHandler.Instance.SaveSaz;
+        }
+
         /// <summary>
         /// Function to handle saving a SAZ file.
         /// </summary>

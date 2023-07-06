@@ -28,6 +28,8 @@ namespace Office365FiddlerExtension.Services
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
 
+                SazFileHandler.Instance.AddSazFileEventHandlers();
+
                 RuleSetHandler.Instance.CleanRulesetFiles();
 
                 // Ensure Fiddler settings (settings, URLs, & verison) for the extension have been created.
@@ -53,7 +55,7 @@ namespace Office365FiddlerExtension.Services
                 ContextMenuUI.Instance.initialize();
 
                 // Add columns into session list in UI.
-                EnhanceUX.Instance.Initialize();
+                ColumnUI.Instance.Initialize();
 
                 IsInitialized = true;
             }

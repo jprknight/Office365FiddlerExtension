@@ -114,6 +114,9 @@ namespace Office365FiddlerExtension.Handler
         // If it's newer call the <to be named> function to pull down updates.
         public async void RulesetVersionCheck()
         {
+
+            // REVIEW THIS - NEEDS A COMPLETE REWRITE DUE TO CHANGE IN DIRECTION.
+
             var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
             var URLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
 
@@ -140,12 +143,12 @@ namespace Office365FiddlerExtension.Handler
                     // This will likely be a rolling URL based on the branch name used at any time.
                     if (ExtensionSettings.UseBetaRuleSet)
                     {
-                        response = await versionCheck.GetAsync(URLs.BetaRuleSet);
+                        //response = await versionCheck.GetAsync(URLs.BetaRuleSet);
                     }
                     // Here we're not using the beta ruleset, so pull it from the master branch.
                     else
                     {
-                        response = await versionCheck.GetAsync(URLs.MasterRuleSet);
+                        //response = await versionCheck.GetAsync(URLs.MasterRuleSet);
                     }
 
                     //var response = await versionCheck.GetAsync("https://raw.githubusercontent.com/username/repo/master/file.json");

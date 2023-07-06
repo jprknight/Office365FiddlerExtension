@@ -32,7 +32,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
                 {
                     SectionTitle = "SessionElapsedTime",
-                    ElapsedTime = Milliseconds + "ms"
+                    ElapsedTime = Milliseconds.ToString()
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

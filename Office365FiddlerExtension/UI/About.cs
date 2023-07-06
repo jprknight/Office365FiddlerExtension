@@ -43,12 +43,12 @@ namespace Office365FiddlerExtension.UI
             if (extensionSettings.UseBetaRuleSet)
             {
                 LocalRulesetVersionTextbox.Text = extensionSettings.LocalBetaRulesetLastUpdated.ToString();
-                GithubRulesetVersionTextbox.Text = extensionVersion.BetaRulesetVersion.ToString();
+                //GithubRulesetVersionTextbox.Text = extensionVersion.BetaRulesetVersion.ToString();
             }
             else
             {
                 LocalRulesetVersionTextbox.Text = extensionSettings.LocalMasterRulesetLastUpdated.ToString();
-                GithubRulesetVersionTextbox.Text = extensionVersion.MasterRulesetVersion.ToString();
+                //GithubRulesetVersionTextbox.Text = extensionVersion.MasterRulesetVersion.ToString();
             }
             
 

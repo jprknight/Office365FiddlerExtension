@@ -167,7 +167,7 @@ namespace Office365FiddlerExtension
         {
             var URLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
             // Fire up a web browser to the project Wiki URL.
-            System.Diagnostics.Process.Start(URLs.Installer);
+            System.Diagnostics.Process.Start(URLs.ExtensionInstaller);
         }
 
         public void MiReportIssues_Click(object sender, EventArgs e)

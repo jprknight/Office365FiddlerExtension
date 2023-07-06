@@ -13,12 +13,12 @@ namespace Office365FiddlerExtension.UI
     /// <summary>
     /// Add Fiddler application event handlers, additional columns to UI, and populate data in them. 
     /// </summary>
-    public class EnhanceUX
+    public class ColumnUI
     {
         internal Session Session { get; set; }
 
-        private static EnhanceUX _instance;
-        public static EnhanceUX Instance => _instance ?? (_instance = new EnhanceUX());
+        private static ColumnUI _instance;
+        public static ColumnUI Instance => _instance ?? (_instance = new ColumnUI());
 
         private bool IsInitialized { get; set; }
 
@@ -26,17 +26,10 @@ namespace Office365FiddlerExtension.UI
         {
             if (!IsInitialized)
             {
-                AddSazFileEventHandlers();
                 AddExtensionColumns();
 
                 IsInitialized = true;
             }
-        }
-
-        private void AddSazFileEventHandlers()
-        {
-            FiddlerApplication.OnLoadSAZ += SazFileHandler.Instance.LoadSaz;
-            FiddlerApplication.OnSaveSAZ += SazFileHandler.Instance.SaveSaz;
         }
 
         private void AddExtensionColumns()
@@ -49,7 +42,7 @@ namespace Office365FiddlerExtension.UI
                 // FiddlerApplication.UI.lvSessions.AddBoundColumn("Column Title", int position, int width, Session Flag or function for data);
                 // FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 2, 110, UpdateSessionUX.Instance.ElapsedTime);
 
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 110, ElapsedTime);
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time (ms)", 2, 110, true, ElapsedTime);
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Session Type", 150, SessionType);
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 140, Authentication);
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 130, ResponseServer);

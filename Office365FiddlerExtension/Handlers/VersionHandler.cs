@@ -75,10 +75,6 @@ namespace Office365FiddlerExtension.Handler
             public int ExtensionMinor { get; set; }
 
             public int ExtensionBuild { get; set; }
-
-            public DateTime MasterRulesetVersion { get; set; }
-
-            public DateTime BetaRulesetVersion { get; set; }
         }
     }
 }
