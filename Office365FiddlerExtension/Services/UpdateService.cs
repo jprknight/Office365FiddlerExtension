@@ -1,5 +1,4 @@
 ﻿using Fiddler;
-using Office365FiddlerExtension.Handler;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,13 +17,13 @@ namespace Office365FiddlerExtension.Services
 
         public void initialize()
         {
-            if (SettingsHandler.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): NeverWebCall enabled, returning.");
                 return;                    
             }
 
-            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             if (DateTime.Now < extensionSettings.NextUpdateCheck)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Next update check timestamp not met ({extensionSettings.NextUpdateCheck}), returning.");
@@ -37,7 +36,7 @@ namespace Office365FiddlerExtension.Services
 
         private async void UpdateVersionJsonFromGithub()
         {
-            var extensionURLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
+            var extensionURLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
 
             using (var getSettings = new HttpClient())
             {
@@ -59,13 +58,13 @@ namespace Office365FiddlerExtension.Services
                     }
 
                     // Save this new data into the ExtensionVerison Fiddler setting.
-                    if (VersionHandler.ExtensionVersion != jsonString)
+                    if (VersionJsonService.ExtensionVersion != jsonString)
                     {
                         FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeVersion Fiddler setting updated.");
-                        VersionHandler.ExtensionVersion = jsonString;
+                        VersionJsonService.ExtensionVersion = jsonString;
 
                         // Update the next update check timestamp.
-                        SettingsHandler.Instance.SetNextUpdateTimestamp();
+                        SettingsJsonService.Instance.SetNextUpdateTimestamp();
                     }
                     else
                     {
@@ -81,7 +80,7 @@ namespace Office365FiddlerExtension.Services
 
         private async void UpdateURLsJsonFromGithub()
         {
-            var extensionURLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
+            var extensionURLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
 
             using (var getSettings = new HttpClient())
             {
@@ -103,13 +102,13 @@ namespace Office365FiddlerExtension.Services
                     }
 
                     // Save this new data into the ExtensionURLs Fiddler setting.
-                    if (URLsHandler.ExtensionURLs != jsonString)
+                    if (URLsJsonService.ExtensionURLs != jsonString)
                     {
                         FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeURLs Fiddler setting updated.");
-                        URLsHandler.ExtensionURLs = jsonString;
+                        URLsJsonService.ExtensionURLs = jsonString;
 
                         // Update the next update check timestamp.
-                        SettingsHandler.Instance.SetNextUpdateTimestamp();
+                        SettingsJsonService.Instance.SetNextUpdateTimestamp();
                     }
                     else
                     {
@@ -118,7 +117,7 @@ namespace Office365FiddlerExtension.Services
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving ExtensionURLs from Github {URLsHandler.ExtensionURLs}");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving ExtensionURLs from Github {URLsJsonService.ExtensionURLs}");
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving ExtensionURLs from Github {ex}");
                 }
             }

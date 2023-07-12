@@ -3,7 +3,6 @@ using Fiddler;
 using System;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
-using Office365FiddlerExtension.Handler;
 using System.Text;
 using Office365FiddlerExtension.UI;
 using Newtonsoft.Json;
@@ -155,7 +154,7 @@ namespace Office365FiddlerExtension.Inspectors
             this.Session = Session;
 
             // Extension disabled.
-            if (!SettingsHandler.Instance.ExtensionSessionProcessingEnabled)
+            if (!SettingsJsonService.Instance.ExtensionSessionProcessingEnabled)
             {
                 // Clear ResultsString.
                 Clear();
@@ -189,7 +188,7 @@ namespace Office365FiddlerExtension.Inspectors
                     MissingMemberHandling = MissingMemberHandling.Ignore
                 };*/
 
-                var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.Session);
+                var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.Session);
 
                 // Check if the SectionTitle is blank, if it is session analysis hasn't been performed on this session, write this alternative output.
                 if (ExtensionSessionFlags.SectionTitle == "")

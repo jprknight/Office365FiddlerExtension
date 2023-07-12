@@ -9,15 +9,15 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Office365FiddlerExtension.Handler
+namespace Office365FiddlerExtension.Services
 {
     /// <summary>
     /// Functions to ensure ExtensionURLs Json is created and populated with data.
     /// </summary>
-    public class URLsHandler
+    public class URLsJsonService
     {
-        private static URLsHandler _instance;
-        public static URLsHandler Instance => _instance ?? (_instance = new URLsHandler());
+        private static URLsJsonService _instance;
+        public static URLsJsonService Instance => _instance ?? (_instance = new URLsJsonService());
 
         public ExtensionURLsJson GetDeserializedExtensionURLs()
         {

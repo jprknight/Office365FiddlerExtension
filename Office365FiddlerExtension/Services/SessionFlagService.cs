@@ -15,12 +15,12 @@ namespace Office365FiddlerExtension.Services
     /// Function to stamp all session flags the extension uses.
     /// Needs to be public so the CodeDom Compiler can access ExtensionSessionFlags.
     /// </summary>
-    public class SessionFlagHandler
+    public class SessionFlagService
     {
         internal Session Session { get; set; }
 
-        private static SessionFlagHandler _instance;
-        public static SessionFlagHandler Instance => _instance ?? (_instance = new SessionFlagHandler());
+        private static SessionFlagService _instance;
+        public static SessionFlagService Instance => _instance ?? (_instance = new SessionFlagService());
 
         /// <summary>
         /// Return deserialised Json session flags stored in each session in the Fiddler UI.
@@ -33,7 +33,7 @@ namespace Office365FiddlerExtension.Services
 
             try
             {
-                return JsonConvert.DeserializeObject<SessionFlagHandler.ExtensionSessionFlags>(SessionFlagHandler.Instance.GetSessionJsonData(this.Session));
+                return JsonConvert.DeserializeObject<SessionFlagService.ExtensionSessionFlags>(SessionFlagService.Instance.GetSessionJsonData(this.Session));
             }
             catch (Exception ex)
             {
@@ -122,7 +122,7 @@ namespace Office365FiddlerExtension.Services
             foreach (var Session in Sessions)
             {
                 this.Session = Session;
-                SessionHandler.Instance.OnPeekAtResponseHeaders(this.Session);
+                SessionService.Instance.OnPeekAtResponseHeaders(this.Session);
             }
         }
 
@@ -137,7 +137,7 @@ namespace Office365FiddlerExtension.Services
             foreach (var Session in Sessions)
             {
                 this.Session = Session;
-                SessionHandler.Instance.OnPeekAtResponseHeaders(this.Session);
+                SessionService.Instance.OnPeekAtResponseHeaders(this.Session);
             }
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Processed {Sessions.Count()} sessions.");

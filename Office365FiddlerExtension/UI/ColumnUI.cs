@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Office365FiddlerExtension.Handler;
 using System.Reflection;
 
 namespace Office365FiddlerExtension.UI
@@ -81,7 +80,7 @@ namespace Office365FiddlerExtension.UI
         {
             this.Session = session;
 
-            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.Session);
+            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.Session);
 
             return ExtensionSessionFlags.ElapsedTime;
         }
@@ -91,7 +90,7 @@ namespace Office365FiddlerExtension.UI
         {
             this.Session = session;
 
-            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.Session);
+            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.Session);
 
             return ExtensionSessionFlags.SessionType;
         }
@@ -101,7 +100,7 @@ namespace Office365FiddlerExtension.UI
         {
             this.Session = session;
 
-            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.Session);
+            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.Session);
 
             return ExtensionSessionFlags.Authentication;
         }
@@ -111,7 +110,7 @@ namespace Office365FiddlerExtension.UI
         {
             this.Session = session;
 
-            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.Session);
+            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.Session);
 
             return ExtensionSessionFlags.ResponseServer;
         }

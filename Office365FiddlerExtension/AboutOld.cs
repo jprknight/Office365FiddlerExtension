@@ -3,7 +3,6 @@ using System.Windows.Forms;
 using Fiddler;
 using System.Xml;
 using Office365FiddlerExtension.Services;
-using Office365FiddlerExtension.Handler;
 using System.Reflection;
 
 namespace Office365FiddlerExtension
@@ -15,8 +14,8 @@ namespace Office365FiddlerExtension
 
         public void CheckForUpdate()
         {
-            var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
-            var URLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
+            var ExtensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+            var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
 
             if (ExtensionSettings.NeverWebCall)
             {

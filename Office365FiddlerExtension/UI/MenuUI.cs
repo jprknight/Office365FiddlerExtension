@@ -4,7 +4,6 @@ using System;
 using System.Windows.Forms;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Office365FiddlerExtension.UI;
-using Office365FiddlerExtension.Handler;
 using System.Reflection;
 
 namespace Office365FiddlerExtension
@@ -52,11 +51,11 @@ namespace Office365FiddlerExtension
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Adding menu to UI.");
 
-                this.ExtensionMenu = new MenuItem(SettingsHandler.Instance.ExtensionSessionProcessingEnabled ? MenuEnabled : MenuDisabled);
+                this.ExtensionMenu = new MenuItem(SettingsJsonService.Instance.ExtensionSessionProcessingEnabled ? MenuEnabled : MenuDisabled);
 
                 this.MiEnabled = new MenuItem("Enable", new EventHandler(this.MiEnabled_Click))
                 {
-                    Checked = SettingsHandler.Instance.ExtensionSessionProcessingEnabled
+                    Checked = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
                 };
 
                 this.MiProcessSelectedSessions = new MenuItem("Process Selected Session(s)", new EventHandler(this.MiProcessSelectedSessions_Click));
@@ -101,19 +100,19 @@ namespace Office365FiddlerExtension
 
         private  void MiProcessSelectedSessions_Click(object sender, EventArgs e)
         {
-            SessionFlagHandler.Instance.ProcessSelectedSessions();
+            SessionFlagService.Instance.ProcessSelectedSessions();
         }
 
         private void MiClearAllSessionProcessing_Click(object sender, EventArgs e)
         {
-            SessionFlagHandler.Instance.ClearAllSessionProcessing();
+            SessionFlagService.Instance.ClearAllSessionProcessing();
         }
 
         private void MiProcessAllSessions_Click(object sender, EventArgs e)
         {
-            if (SettingsHandler.Instance.ExtensionSessionProcessingEnabled)
+            if (SettingsJsonService.Instance.ExtensionSessionProcessingEnabled)
             {
-                SessionFlagHandler.Instance.ProcessAllSessions();
+                SessionFlagService.Instance.ProcessAllSessions();
             }
             else
             {
@@ -131,10 +130,10 @@ namespace Office365FiddlerExtension
                 
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
-                    SettingsHandler.Instance.SetExtensionSessionProcessingEnabled(true);
+                    SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(true);
                     this.MiEnabled.Checked = true;
                     //this.ExtensionMenu.Text = MenuEnabled;
-                    SessionFlagHandler.Instance.ProcessAllSessions();
+                    SessionFlagService.Instance.ProcessAllSessions();
                 }
             }
         }
@@ -145,19 +144,19 @@ namespace Office365FiddlerExtension
             // Invert menu item checked.
             MiEnabled.Checked = !MiEnabled.Checked;
             // Set ExtensionEnabled according to menu item checked.
-            SettingsHandler.Instance.SetExtensionSessionProcessingEnabled(MiEnabled.Checked);
+            SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(MiEnabled.Checked);
             UpdateMenuItems();
         }
 
         public void UpdateMenuItems()
         {
             // Set ProcessAllSessions enable/disable to match whether the extension is enabled or not.
-            this.MiProcessAllSessions.Enabled = SettingsHandler.Instance.ExtensionSessionProcessingEnabled;
+            this.MiProcessAllSessions.Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled;
         }
 
         public void MiWiki_Click(object sender, EventArgs e)
         {
-            var URLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
+            var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
 
             // Fire up a web browser to the project Wiki URL.
             System.Diagnostics.Process.Start(URLs.Wiki);
@@ -165,14 +164,14 @@ namespace Office365FiddlerExtension
 
         public void MiReleasesDownloadWebpage_click(object sender, EventArgs e)
         {
-            var URLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
+            var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
             // Fire up a web browser to the project Wiki URL.
             System.Diagnostics.Process.Start(URLs.ExtensionInstaller);
         }
 
         public void MiReportIssues_Click(object sender, EventArgs e)
         {
-            var URLs = URLsHandler.Instance.GetDeserializedExtensionURLs();
+            var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
             // Fire up a web browser to the project issues URL.
             System.Diagnostics.Process.Start(URLs.ReportIssues);
         }

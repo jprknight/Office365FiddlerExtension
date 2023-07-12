@@ -1,5 +1,4 @@
 ﻿using Fiddler;
-using Office365FiddlerExtension.Handler;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtension.UI;
 
@@ -8,11 +7,11 @@ namespace Office365FiddlerExtension
     /// <summary>
     /// Function that calls ruleset to run on loaded sessions.
     /// </summary>
-    public class SessionHandler : ActivationService
+    public class SessionService : ActivationService
     {
-        private static SessionHandler _instance;
+        private static SessionService _instance;
 
-        public static SessionHandler Instance => _instance ?? (_instance = new SessionHandler());
+        public static SessionService Instance => _instance ?? (_instance = new SessionService());
 
         public void OnPeekAtResponseHeaders(Session Session)
         {
@@ -21,7 +20,7 @@ namespace Office365FiddlerExtension
             this.Session.utilDecodeRequest(true);
             this.Session.utilDecodeResponse(true);
 
-            RuleSetHandler.RunRuleSet(this.Session);
+            RulesetService.RunRuleSet(this.Session);
 
             EnhanceSessionUX.Instance.EnhanceSession(this.Session);
         }

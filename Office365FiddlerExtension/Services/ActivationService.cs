@@ -1,5 +1,4 @@
 ﻿using Fiddler;
-using Office365FiddlerExtension.Handler;
 using Office365FiddlerExtension.UI;
 using System.Reflection;
 
@@ -28,20 +27,18 @@ namespace Office365FiddlerExtension.Services
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
 
-                SazFileHandler.Instance.AddSazFileEventHandlers();
-
-                RuleSetHandler.Instance.CleanRulesetFiles();
+                SazFileService.Instance.AddSazFileEventHandlers();
 
                 // Ensure Fiddler settings (settings, URLs, & verison) for the extension have been created.
                 // Avoid null exceptions.
-                SettingsHandler.Instance.CreateExtensionSettingsFiddlerSetting();
-                URLsHandler.Instance.CreateExtensionURLFiddlerSetting();
-                VersionHandler.Instance.CreateExtensionVersionFiddlerSetting();
+                SettingsJsonService.Instance.CreateExtensionSettingsFiddlerSetting();
+                URLsJsonService.Instance.CreateExtensionURLFiddlerSetting();
+                VersionJsonService.Instance.CreateExtensionVersionFiddlerSetting();
 
                 // Set Fiddler settings as needed.
-                SettingsHandler.Instance.IncrementExecutionCount();
-                SettingsHandler.Instance.SetExtensionDLL();
-                SettingsHandler.Instance.SetExtensionPath();
+                SettingsJsonService.Instance.IncrementExecutionCount();
+                SettingsJsonService.Instance.SetExtensionDLL();
+                SettingsJsonService.Instance.SetExtensionPath();
 
                 InitializeTelemetry();
 
@@ -66,7 +63,6 @@ namespace Office365FiddlerExtension.Services
         /// </summary>
         public void OnBeforeUnload()
         {
-            RuleSetHandler.Instance.CleanRulesetFiles();
             ShutdownTelemetry();
         }
 
@@ -88,17 +84,17 @@ namespace Office365FiddlerExtension.Services
         /// <param name="_session"></param>
         public void AutoTamperResponseAfter(Session Session)
         {
-            if (!SettingsHandler.Instance.ExtensionSessionProcessingEnabled)
+            if (!SettingsJsonService.Instance.ExtensionSessionProcessingEnabled)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Extension not enabled, returning.");
                 return;
             }
 
             // If session analysis on live trace is enabled, run.
-            if (SettingsHandler.Instance.SessionAnalysisOnLiveTrace)
+            if (SettingsJsonService.Instance.SessionAnalysisOnLiveTrace)
             {
                 this.Session = Session;
-                SessionHandler.Instance.OnPeekAtResponseHeaders(this.Session);
+                SessionService.Instance.OnPeekAtResponseHeaders(this.Session);
                 this.Session.RefreshUI();
             }
         }

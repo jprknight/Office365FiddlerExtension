@@ -12,16 +12,16 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Office365FiddlerExtension.Handler
+namespace Office365FiddlerExtension.Services
 {
     /// <summary>
     /// Functions to ensure ExtensionSettings Json is created and populated.
     /// </summary>
 
-    public class SettingsHandler
+    public class SettingsJsonService
     {
-        private static SettingsHandler _instance;
-        public static SettingsHandler Instance => _instance ?? (_instance = new SettingsHandler());
+        private static SettingsJsonService _instance;
+        public static SettingsJsonService Instance => _instance ?? (_instance = new SettingsJsonService());
 
         /// <summary>
         /// Create settings if they don't exist. 
@@ -91,7 +91,7 @@ namespace Office365FiddlerExtension.Handler
             Preferences.ExtensionSettings = jsonData;
             
             // Remove legacy Fiddler settings only if Json can be read from.
-            if (SettingsHandler.Instance.GetDeserializedExtensionSettings().ExtensionSessionProcessingEnabled)
+            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().ExtensionSessionProcessingEnabled)
             {
                 FiddlerApplication.Prefs.RemovePref("Enabled");
                 FiddlerApplication.Prefs.RemovePref("ManualCheckForUpdate");
@@ -107,7 +107,7 @@ namespace Office365FiddlerExtension.Handler
             {
                 try
                 {
-                    return SettingsHandler.Instance.GetDeserializedExtensionSettings().ExtensionSessionProcessingEnabled;
+                    return SettingsJsonService.Instance.GetDeserializedExtensionSettings().ExtensionSessionProcessingEnabled;
                 } 
                 catch (Exception ex)
                 {
@@ -121,7 +121,7 @@ namespace Office365FiddlerExtension.Handler
         public void SetNextUpdateTimestamp()
         {
             // Pull & Deserialize Json from ExtensionSettings.
-            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             // Set the next update check timestamp to x hours in the future.
             extensionSettings.NextUpdateCheck = DateTime.Now.AddHours(extensionSettings.UpdateCheckFrequencyHours);
             // Serialize the object back into Json.
@@ -136,7 +136,7 @@ namespace Office365FiddlerExtension.Handler
 
             if (isNumberic)
             {
-                var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+                var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
                 extensionSettings.UpdateCheckFrequencyHours = ihours;
 
                 Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
@@ -153,14 +153,14 @@ namespace Office365FiddlerExtension.Handler
         {
             get
             {
-                return URLsHandler.Instance.GetDeserializedExtensionURLs().TelemetryInstrumentationKey;
+                return URLsJsonService.Instance.GetDeserializedExtensionURLs().TelemetryInstrumentationKey;
             }
         }
 
         public void SetExtensionSessionProcessingEnabled(Boolean extensionSessionProcessingEnabled)
         {
             // Pull & Deserialize Json from ExtensionSettings.
-            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             // Set the attribute.
             extensionSettings.ExtensionSessionProcessingEnabled = extensionSessionProcessingEnabled;
             // Serialize the object back into Json.
@@ -177,7 +177,7 @@ namespace Office365FiddlerExtension.Handler
         {
             get
             {
-                return SettingsHandler.Instance.GetDeserializedExtensionSettings().SessionAnalysisOnLoadSaz;
+                return SettingsJsonService.Instance.GetDeserializedExtensionSettings().SessionAnalysisOnLoadSaz;
             }
         }
 
@@ -203,7 +203,7 @@ namespace Office365FiddlerExtension.Handler
         public void SetExtensionPath()
         {
             // Pull & Deserialize Json from ExtensionSettings.
-            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             // Set the attribute.
             extensionSettings.ExtensionPath = AssemblyDirectory;
             // Serialize the object back into Json.
@@ -215,14 +215,14 @@ namespace Office365FiddlerExtension.Handler
         {
             get
             {
-                return SettingsHandler.Instance.GetDeserializedExtensionSettings().ExtensionDLL;
+                return SettingsJsonService.Instance.GetDeserializedExtensionSettings().ExtensionDLL;
             }
         }
 
         public void SetExtensionDLL()
         {
             // Pull & Deserialize Json from ExtensionSettings.
-            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             // Set the attribute.
             extensionSettings.ExtensionDLL = AssemblyName;
             // Serialize the object back into Json.
@@ -233,7 +233,7 @@ namespace Office365FiddlerExtension.Handler
         public void SetSessionAnalysisOnLoadSaz(Boolean sessionAnalysisOnLoadSaz)
         {
             // Pull & Deserialize Json from ExtensionSettings.
-            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             // Set the attribute.
             extensionSettings.SessionAnalysisOnLoadSaz = sessionAnalysisOnLoadSaz;
             // Serialize the object back into Json.
@@ -247,14 +247,14 @@ namespace Office365FiddlerExtension.Handler
         {
             get
             {
-                return SettingsHandler.Instance.GetDeserializedExtensionSettings().SessionAnalysisOnLiveTrace;
+                return SettingsJsonService.Instance.GetDeserializedExtensionSettings().SessionAnalysisOnLiveTrace;
             }
         }
 
         public void SetSessionAnalysisOnLiveTrace(Boolean sessionAnalysisOnLiveTrace)
         {
             // Pull & Deserialize Json from ExtensionSettings.
-            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             // Set the attribute.
             extensionSettings.SessionAnalysisOnLiveTrace = sessionAnalysisOnLiveTrace;
             // Serialize the object back into Json.
@@ -268,7 +268,7 @@ namespace Office365FiddlerExtension.Handler
         {
             get
             {
-                return SettingsHandler.Instance.GetDeserializedExtensionSettings().WarningSessionTimeThreshold;
+                return SettingsJsonService.Instance.GetDeserializedExtensionSettings().WarningSessionTimeThreshold;
             }
         }
 
@@ -279,7 +279,7 @@ namespace Office365FiddlerExtension.Handler
 
             if (isNumberic)
             {
-                var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+                var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
                 extensionSettings.WarningSessionTimeThreshold = iWarningSessionTimeThreshold;
 
                 Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
@@ -296,7 +296,7 @@ namespace Office365FiddlerExtension.Handler
         {
             get
             {
-                return SettingsHandler.Instance.GetDeserializedExtensionSettings().SlowRunningSessionThreshold;
+                return SettingsJsonService.Instance.GetDeserializedExtensionSettings().SlowRunningSessionThreshold;
             }
         }
 
@@ -307,7 +307,7 @@ namespace Office365FiddlerExtension.Handler
 
             if (isNumberic)
             {
-                var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+                var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
                 extensionSettings.SlowRunningSessionThreshold = iSlowRunningSessionThreshold;
 
                 Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
@@ -322,7 +322,7 @@ namespace Office365FiddlerExtension.Handler
 
         public void IncrementExecutionCount()
         {
-            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             extensionSettings.ExecutionCount++;
 
             // Save the new Json to the extension setting.

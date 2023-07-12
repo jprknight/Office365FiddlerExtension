@@ -48,17 +48,17 @@ namespace Office365FiddlerExtension
 
         private void CmiClearAllSessionProcessing_Click(object sender, EventArgs e)
         {
-            SessionFlagHandler.Instance.ClearAllSessionProcessing();
+            SessionFlagService.Instance.ClearAllSessionProcessing();
         }
 
         private void CmiProcessAllSessions_Click(object sender, EventArgs e)
         {
-            SessionFlagHandler.Instance.ProcessAllSessions();
+            SessionFlagService.Instance.ProcessAllSessions();
         }
 
         private void CmiProcessSelectedSessions_Click(object sender, EventArgs e)
         {
-            SessionFlagHandler.Instance.ProcessSelectedSessions();
+            SessionFlagService.Instance.ProcessSelectedSessions();
         }
     }
 }

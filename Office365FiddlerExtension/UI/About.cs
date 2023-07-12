@@ -9,7 +9,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Office365FiddlerExtension.Handler;
 using Fiddler;
 
 namespace Office365FiddlerExtension.UI
@@ -23,8 +22,8 @@ namespace Office365FiddlerExtension.UI
 
         private void About_Load(object sender, EventArgs e)
         {
-            var extensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
-            var extensionVersion = VersionHandler.Instance.GetDeserializedExtensionVersion();
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+            var extensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
             ExtensionEnabledCheckbox.Checked = extensionSettings.ExtensionSessionProcessingEnabled;
             ExtensionPathTextbox.Text = extensionSettings.ExtensionPath;
@@ -75,7 +74,7 @@ namespace Office365FiddlerExtension.UI
                 AllSessionAnalysisRadioButton.Checked = false;
                 SomeSessionAnalysisRadioButton.Checked = true;
 
-                if (SettingsHandler.Instance.SessionAnalysisOnLoadSaz)
+                if (SettingsJsonService.Instance.SessionAnalysisOnLoadSaz)
                 {
                     SessionAnalysisOnLoadSazCheckbox.Checked = true;
                 }
@@ -84,7 +83,7 @@ namespace Office365FiddlerExtension.UI
                     SessionAnalysisOnLoadSazCheckbox.Checked = false;
                 }
 
-                if (SettingsHandler.Instance.SessionAnalysisOnLiveTrace)
+                if (SettingsJsonService.Instance.SessionAnalysisOnLiveTrace)
                 {
                     SessionAnalysisOnLiveTraceCheckbox.Checked = true;
                 }
@@ -110,7 +109,7 @@ namespace Office365FiddlerExtension.UI
 
         private void ExtensionEnabledCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsHandler.Instance.SetExtensionSessionProcessingEnabled(ExtensionEnabledCheckbox.Checked);
+            SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(ExtensionEnabledCheckbox.Checked);
 
             if (ExtensionEnabledCheckbox.Checked)
             {
@@ -151,12 +150,12 @@ namespace Office365FiddlerExtension.UI
 
         private void SessionAnalysisOnLoadSazCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsHandler.Instance.SetSessionAnalysisOnLoadSaz(SessionAnalysisOnLoadSazCheckbox.Checked);
+            SettingsJsonService.Instance.SetSessionAnalysisOnLoadSaz(SessionAnalysisOnLoadSazCheckbox.Checked);
         }
 
         private void SessionAnalysisOnLiveTraceCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsHandler.Instance.SetSessionAnalysisOnLiveTrace(SessionAnalysisOnLiveTraceCheckbox.Checked);
+            SettingsJsonService.Instance.SetSessionAnalysisOnLiveTrace(SessionAnalysisOnLiveTraceCheckbox.Checked);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
@@ -168,11 +167,11 @@ namespace Office365FiddlerExtension.UI
         {
             try
             {
-                System.Diagnostics.Process.Start(URLsHandler.Instance.GetDeserializedExtensionURLs().WikiSessionTimeThresholds);
+                System.Diagnostics.Process.Start(URLsJsonService.Instance.GetDeserializedExtensionURLs().WikiSessionTimeThresholds);
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): About unable to open SesssionTimeThreshold link: {URLsHandler.Instance.GetDeserializedExtensionURLs().WikiSessionTimeThresholds}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): About unable to open SesssionTimeThreshold link: {URLsJsonService.Instance.GetDeserializedExtensionURLs().WikiSessionTimeThresholds}");
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
         }
@@ -181,22 +180,22 @@ namespace Office365FiddlerExtension.UI
         {
             try
             {
-                System.Diagnostics.Process.Start(URLsHandler.Instance.GetDeserializedExtensionURLs().WikiScoreForSession);
+                System.Diagnostics.Process.Start(URLsJsonService.Instance.GetDeserializedExtensionURLs().WikiScoreForSession);
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): About unable to open ScoreForSession link: {URLsHandler.Instance.GetDeserializedExtensionURLs().WikiScoreForSession}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): About unable to open ScoreForSession link: {URLsJsonService.Instance.GetDeserializedExtensionURLs().WikiScoreForSession}");
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            SettingsHandler.Instance.UpdateSlowRunningSessionThreshold(SlowRunningSessionThresholdTextbox.Text);
+            SettingsJsonService.Instance.UpdateSlowRunningSessionThreshold(SlowRunningSessionThresholdTextbox.Text);
 
-            SettingsHandler.Instance.UpdateWarningSessionTimeThreshold(WarningSessionTimeThresholdTextbox.Text);
+            SettingsJsonService.Instance.UpdateWarningSessionTimeThreshold(WarningSessionTimeThresholdTextbox.Text);
 
-            SettingsHandler.Instance.SetUpdateCheckFrequencyHours(NextUpdateCheckTextbox.Text);
+            SettingsJsonService.Instance.SetUpdateCheckFrequencyHours(NextUpdateCheckTextbox.Text);
         }
     }
 }

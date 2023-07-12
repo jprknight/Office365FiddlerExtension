@@ -4,7 +4,6 @@ using Microsoft.ApplicationInsights;
 using System.Management;
 using System.Text;
 using Fiddler;
-using Office365FiddlerExtension.Handler;
 using System.Linq;
 using System.Reflection;
 
@@ -27,7 +26,7 @@ namespace Office365FiddlerExtension.Services
         /// </summary>
         
         // Pull telemetry instrumentation key from Json.
-        private static readonly string iKey = URLsHandler.Instance.GetDeserializedExtensionURLs().TelemetryInstrumentationKey;
+        private static readonly string iKey = URLsJsonService.Instance.GetDeserializedExtensionURLs().TelemetryInstrumentationKey;
         
         /// <summary>
         /// Azure Application Insights Telemetry client.
@@ -51,13 +50,13 @@ namespace Office365FiddlerExtension.Services
         /// <returns>Bool</returns>
         public static async Task InitializeAsync()
         {
-            if (SettingsHandler.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (TelemetryService): NeverWebCall enabled, returning.");
                 return;
             }
 
-            var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            var ExtensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
             if (!ExtensionSettings.ExtensionSessionProcessingEnabled)
             {
@@ -67,7 +66,7 @@ namespace Office365FiddlerExtension.Services
 
             if (!IsInitialized)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (TelemetryService): Using instrumentation key: {URLsHandler.Instance.GetDeserializedExtensionURLs().TelemetryInstrumentationKey}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (TelemetryService): Using instrumentation key: {URLsJsonService.Instance.GetDeserializedExtensionURLs().TelemetryInstrumentationKey}");
 
                 try
                 {
@@ -126,7 +125,7 @@ namespace Office365FiddlerExtension.Services
 
         public async static Task FlushClientAsync()
         {
-            var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettings();
+            var ExtensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
             if (ExtensionSettings.NeverWebCall)
             {

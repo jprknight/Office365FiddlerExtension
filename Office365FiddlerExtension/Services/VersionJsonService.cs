@@ -10,15 +10,15 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Office365FiddlerExtension.Handler
+namespace Office365FiddlerExtension.Services
 {
     /// <summary>
     /// Functions to ensure ExtensionVersion Json is always created and populated with data.
     /// </summary>
-    public class VersionHandler
+    public class VersionJsonService
     {
-        private static VersionHandler _instance;
-        public static VersionHandler Instance => _instance ?? (_instance = new VersionHandler());
+        private static VersionJsonService _instance;
+        public static VersionJsonService Instance => _instance ?? (_instance = new VersionJsonService());
 
         public ExtensionVersionFlags GetDeserializedExtensionVersion()
         {

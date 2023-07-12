@@ -33,14 +33,6 @@ namespace Office365FiddlerExtensionRuleset.Services
             }
         }
 
-        public static string AssemblyName
-        {
-            get
-            {
-                return Assembly.GetExecutingAssembly().GetName().Name + ".dll";
-            }
-        }
-
         public int WarningSessionTimeThreshold
         {
             get

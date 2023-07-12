@@ -35,7 +35,7 @@ namespace Office365FiddlerExtension.UI
         {
             this.Session = session;
 
-            var ExtensionSessionFlags = SessionFlagHandler.Instance.GetDeserializedSessionFlags(this.Session);
+            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.Session);
 
             // Set session background colour. Default to gray if undefined.
             switch (ExtensionSessionFlags.UIBackColour.ToLower())
