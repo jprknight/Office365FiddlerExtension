@@ -45,7 +45,9 @@ namespace Office365FiddlerExtension.Services
         }
 
         // Keep this around to migrate legacy settings to Json settings.
+#pragma warning disable IDE0052
         private static bool _extensionEnabled;
+        
         public static bool ExtensionEnabled
         {
             get => _extensionEnabled = FiddlerApplication.Prefs.GetBoolPref("extensions.Office365FiddlerExtension.enabled", true);
@@ -83,6 +85,7 @@ namespace Office365FiddlerExtension.Services
 
         // Keep this around to migrate legacy settings to Json settings.
         private static Int32 _executionCount;
+
         public static Int32 ExecutionCount
         {
             get => _executionCount = FiddlerApplication.Prefs.GetInt32Pref("extensions.Office365FiddlerExtension.ExecutionCount", 0);

@@ -15,7 +15,7 @@ namespace Office365FiddlerExtension
         public void CheckForUpdate()
         {
             var ExtensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
-            var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
+            //var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
 
             if (ExtensionSettings.NeverWebCall)
             {
@@ -70,10 +70,8 @@ namespace Office365FiddlerExtension
             }
             finally
             {
-                if (reader != null)
-                {
-                    reader.Close();
-                }
+                // If reader is not null close.
+                reader?.Close();
             }
 
             #endregion

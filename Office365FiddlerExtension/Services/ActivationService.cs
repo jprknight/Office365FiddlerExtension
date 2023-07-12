@@ -43,7 +43,7 @@ namespace Office365FiddlerExtension.Services
                 InitializeTelemetry();
 
                 // Update as needed.
-                UpdateService.Instance.initialize();
+                UpdateService.Instance.Initialize();
 
                 // Add extension menu.
                 MenuUI.Instance.Initialize();
@@ -55,6 +55,9 @@ namespace Office365FiddlerExtension.Services
                 ColumnUI.Instance.Initialize();
 
                 IsInitialized = true;
+
+                //UpdateAvailable updateAvailable = new UpdateAvailable();
+                //updateAvailable.Show();
             }
         }
 

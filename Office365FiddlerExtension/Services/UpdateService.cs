@@ -15,7 +15,7 @@ namespace Office365FiddlerExtension.Services
         private static UpdateService _instance;
         public static UpdateService Instance => _instance ?? (_instance = new UpdateService());
 
-        public void initialize()
+        public void Initialize()
         {
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
@@ -31,6 +31,11 @@ namespace Office365FiddlerExtension.Services
             }
 
             UpdateURLsJsonFromGithub();
+            UpdateVersionJsonFromGithub();
+        }
+
+        public void CreateVersionJsonFromGithub()
+        {
             UpdateVersionJsonFromGithub();
         }
 

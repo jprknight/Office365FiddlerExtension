@@ -5,5 +5,8 @@
   "ExtensionBuild": 1,
   "RulesetMajor": 2023,
   "RulesetMinor": 7,
-  "RulesetBuild": 5
+  "RulesetBuild": 5,
+  "ExtensionZip": "Office365FiddlerExtension.zip",
+  "RulesetZip": "Office365FiddlerExtensionRuleset-2023-07-05.zip",
+  "RulesetDLLPattern": "Office365FiddlerExtensionRuleset*.dll"
 }

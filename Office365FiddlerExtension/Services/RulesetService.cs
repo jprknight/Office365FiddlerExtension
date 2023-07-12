@@ -27,7 +27,9 @@ namespace Office365FiddlerExtension.Services
     {
         public static void RunRuleSet(Session session)
         {
-            string pattern = "Office365FiddlerExtensionRuleset.dll";
+            var ExtensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
+
+            string pattern = ExtensionVersion.RulesetDLLPattern;
             var dirInfo = new DirectoryInfo(SettingsJsonService.AssemblyDirectory);
 
             try

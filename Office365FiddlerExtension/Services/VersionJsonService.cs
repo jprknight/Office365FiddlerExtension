@@ -41,6 +41,7 @@ namespace Office365FiddlerExtension.Services
         }
 
         // Setting to store Json version information to run update checks against. Updated from remote.
+#pragma warning disable IDE0052
         private static string _extensionVersion;
 
         public static string ExtensionVersion
@@ -51,19 +52,33 @@ namespace Office365FiddlerExtension.Services
 
         public void CreateExtensionVersionFiddlerSetting()
         {
-            var VersionItems = new
+            if (Preferences.NeverWebCall)
             {
-                UpdateMessage = "",
-                ExtensionMajor = "",
-                ExtensionMinor = "",
-                ExtensionBuild = ""
-            };
+                var VersionItems = new
+                {
+                    UpdateMessage = "",
+                    ExtensionMajor = "",
+                    ExtensionMinor = "",
+                    ExtensionBuild = "",
+                    RulesetMajor = "",
+                    RulesetMinor = "",
+                    RulesetBuild = "",
+                    ExtensionZip = "",
+                    RulesetZip = "",
+                    RulesetDLLPattern = ""
+                };
 
-            // Transform the object to a Json object.
-            string jsonData = JsonConvert.SerializeObject(VersionItems);
+                // Transform the object to a Json object.
+                string jsonData = JsonConvert.SerializeObject(VersionItems);
 
-            // Save the new Json to the Fiddler setting.
-            ExtensionVersion = jsonData;
+                // Save the new Json to the Fiddler setting.
+                ExtensionVersion = jsonData;
+            }
+            else
+            {
+                UpdateService.Instance.CreateVersionJsonFromGithub();
+            }
+
         }
 
         public class ExtensionVersionFlags
@@ -75,6 +90,18 @@ namespace Office365FiddlerExtension.Services
             public int ExtensionMinor { get; set; }
 
             public int ExtensionBuild { get; set; }
+
+            public int RulesetMajor { get; set; }
+
+            public int RulesetMinor { get; set;}
+
+            public int RulesetBuild { get; set;}
+
+            public string ExtensionZip { get; set;}
+
+            public string RulesetZip { get; set;}
+
+            public string RulesetDLLPattern { get; set; }
         }
     }
 }
