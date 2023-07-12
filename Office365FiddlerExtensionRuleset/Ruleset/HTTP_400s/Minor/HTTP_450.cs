@@ -35,9 +35,9 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseAlert = "HTTP 450 Blocked by Windows Parental Controls (Microsoft).",
                 ResponseComments = SessionFlagHandler.Instance.ResponseCommentsNoKnownIssue(),
 
-                SessionAuthenticationConfidenceLevel = 0,
-                SessionTypeConfidenceLevel = 0,
-                SessionResponseServerConfidenceLevel = 0
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
+                SessionResponseServerConfidenceLevel = 5
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

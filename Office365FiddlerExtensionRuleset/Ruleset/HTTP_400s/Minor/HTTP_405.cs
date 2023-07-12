@@ -35,9 +35,9 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseAlert = "<b><span style='color:red'>HTTP 405: Method Not Allowed</span></b>",
                 ResponseComments = "Was there a GET when only a POST is allowed or vice-versa, or was HTTP tried when HTTPS is required?",
 
-                SessionAuthenticationConfidenceLevel = 0,
-                SessionTypeConfidenceLevel = 0,
-                SessionResponseServerConfidenceLevel = 0
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
+                SessionResponseServerConfidenceLevel = 5
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

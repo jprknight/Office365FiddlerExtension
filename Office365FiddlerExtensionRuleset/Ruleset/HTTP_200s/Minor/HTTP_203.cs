@@ -35,9 +35,9 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseAlert = "203 Non-Authoritative Information.",
                 ResponseComments = "203 Non-Authoritative Information.",
 
-                SessionAuthenticationConfidenceLevel = 0,
-                SessionTypeConfidenceLevel = 0,
-                SessionResponseServerConfidenceLevel = 0
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
+                SessionResponseServerConfidenceLevel = 5
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

@@ -35,9 +35,9 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseAlert = "HTTP 451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect.",
                 ResponseComments = SessionFlagHandler.Instance.ResponseCommentsNoKnownIssue(),
 
-                SessionAuthenticationConfidenceLevel = 0,
-                SessionTypeConfidenceLevel = 0,
-                SessionResponseServerConfidenceLevel = 0
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
+                SessionResponseServerConfidenceLevel = 5
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

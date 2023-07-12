@@ -35,9 +35,9 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseAlert = "HTTP 530 Site is frozen or Cloudflare Error returned with 1xxx error.",
                 ResponseComments = SessionFlagHandler.Instance.ResponseCommentsNoKnownIssue(),
 
-                SessionAuthenticationConfidenceLevel = 0,
-                SessionTypeConfidenceLevel = 0,
-                SessionResponseServerConfidenceLevel = 0
+                SessionAuthenticationConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
+                SessionResponseServerConfidenceLevel = 5
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

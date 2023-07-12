@@ -7,5 +7,6 @@
   "WikiSessionTimeThresholds": "https://github.com/jprknight/Office365FiddlerExtension/wiki/Session-Time-Thresholds",
   "WikiScoreForSession": "https://github.com/jprknight/Office365FiddlerExtension/wiki/What-is-ScoreForSession%3F",
   "ReportIssues": "https://github.com/jprknight/Office365FiddlerExtension/issues",
-  "Ruleset": "https://github.com/jprknight/Office365FiddlerExtension/releases/download/1.0.78/Office365FiddlerExtension.zip"
+  "Extension": "Office365FiddlerExtension.zip",
+  "Ruleset": "Office365FiddlerExtensionRuleset-2023-07-05.zip"
 }

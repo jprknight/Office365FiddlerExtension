@@ -36,9 +36,9 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseComments = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting "
                 + "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.",
 
-                SessionAuthenticationConfidenceLevel = 0,
+                SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 0
+                SessionResponseServerConfidenceLevel = 5
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

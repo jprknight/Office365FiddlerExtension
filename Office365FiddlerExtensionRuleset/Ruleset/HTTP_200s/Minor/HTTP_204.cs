@@ -37,7 +37,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 + "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.",
 
                 SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 5,
+                SessionTypeConfidenceLevel = 10,
                 SessionResponseServerConfidenceLevel = 5
             };
 
