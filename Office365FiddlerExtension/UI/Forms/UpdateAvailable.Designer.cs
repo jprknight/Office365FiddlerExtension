@@ -29,17 +29,17 @@
         private void InitializeComponent()
         {
             this.ExtensionUpdateLink = new System.Windows.Forms.Panel();
-            this.ExtensionUpdateMessageLabel = new System.Windows.Forms.Label();
-            this.ExtensionGroupbox = new System.Windows.Forms.GroupBox();
-            this.ExtensionVersionTextbox = new System.Windows.Forms.TextBox();
+            this.InstructionsLabel = new System.Windows.Forms.Label();
+            this.UpdateLinkLabel = new System.Windows.Forms.LinkLabel();
             this.RulesetGroupbox = new System.Windows.Forms.GroupBox();
             this.RulesetVersionTextbox = new System.Windows.Forms.TextBox();
             this.RulesetUpdateMessageLabel = new System.Windows.Forms.Label();
-            this.UpdateLinkLabel = new System.Windows.Forms.LinkLabel();
-            this.InstructionsLabel = new System.Windows.Forms.Label();
+            this.ExtensionGroupbox = new System.Windows.Forms.GroupBox();
+            this.ExtensionVersionTextbox = new System.Windows.Forms.TextBox();
+            this.ExtensionUpdateMessageLabel = new System.Windows.Forms.Label();
             this.ExtensionUpdateLink.SuspendLayout();
-            this.ExtensionGroupbox.SuspendLayout();
             this.RulesetGroupbox.SuspendLayout();
+            this.ExtensionGroupbox.SuspendLayout();
             this.SuspendLayout();
             // 
             // ExtensionUpdateLink
@@ -53,34 +53,24 @@
             this.ExtensionUpdateLink.Size = new System.Drawing.Size(493, 156);
             this.ExtensionUpdateLink.TabIndex = 0;
             // 
-            // ExtensionUpdateMessageLabel
+            // InstructionsLabel
             // 
-            this.ExtensionUpdateMessageLabel.AutoSize = true;
-            this.ExtensionUpdateMessageLabel.Location = new System.Drawing.Point(113, 23);
-            this.ExtensionUpdateMessageLabel.Name = "ExtensionUpdateMessageLabel";
-            this.ExtensionUpdateMessageLabel.Size = new System.Drawing.Size(157, 13);
-            this.ExtensionUpdateMessageLabel.TabIndex = 1;
-            this.ExtensionUpdateMessageLabel.Text = "ExtensionUpdateMessageLabel";
+            this.InstructionsLabel.AutoSize = true;
+            this.InstructionsLabel.Location = new System.Drawing.Point(7, 116);
+            this.InstructionsLabel.Name = "InstructionsLabel";
+            this.InstructionsLabel.Size = new System.Drawing.Size(208, 13);
+            this.InstructionsLabel.TabIndex = 5;
+            this.InstructionsLabel.Text = "Click the link below for update instructions.";
             // 
-            // ExtensionGroupbox
+            // UpdateLinkLabel
             // 
-            this.ExtensionGroupbox.Controls.Add(this.ExtensionVersionTextbox);
-            this.ExtensionGroupbox.Controls.Add(this.ExtensionUpdateMessageLabel);
-            this.ExtensionGroupbox.Location = new System.Drawing.Point(3, 3);
-            this.ExtensionGroupbox.Name = "ExtensionGroupbox";
-            this.ExtensionGroupbox.Size = new System.Drawing.Size(478, 51);
-            this.ExtensionGroupbox.TabIndex = 2;
-            this.ExtensionGroupbox.TabStop = false;
-            this.ExtensionGroupbox.Text = "Extension";
-            // 
-            // ExtensionVersionTextbox
-            // 
-            this.ExtensionVersionTextbox.BackColor = System.Drawing.Color.White;
-            this.ExtensionVersionTextbox.Location = new System.Drawing.Point(7, 20);
-            this.ExtensionVersionTextbox.Name = "ExtensionVersionTextbox";
-            this.ExtensionVersionTextbox.ReadOnly = true;
-            this.ExtensionVersionTextbox.Size = new System.Drawing.Size(100, 20);
-            this.ExtensionVersionTextbox.TabIndex = 0;
+            this.UpdateLinkLabel.AutoSize = true;
+            this.UpdateLinkLabel.Location = new System.Drawing.Point(7, 134);
+            this.UpdateLinkLabel.Name = "UpdateLinkLabel";
+            this.UpdateLinkLabel.Size = new System.Drawing.Size(88, 13);
+            this.UpdateLinkLabel.TabIndex = 4;
+            this.UpdateLinkLabel.TabStop = true;
+            this.UpdateLinkLabel.Text = "UpdateLinkLabel";
             // 
             // RulesetGroupbox
             // 
@@ -111,24 +101,34 @@
             this.RulesetUpdateMessageLabel.TabIndex = 1;
             this.RulesetUpdateMessageLabel.Text = "RulesetUpdateMessageLabel";
             // 
-            // UpdateLinkLabel
+            // ExtensionGroupbox
             // 
-            this.UpdateLinkLabel.AutoSize = true;
-            this.UpdateLinkLabel.Location = new System.Drawing.Point(7, 134);
-            this.UpdateLinkLabel.Name = "UpdateLinkLabel";
-            this.UpdateLinkLabel.Size = new System.Drawing.Size(88, 13);
-            this.UpdateLinkLabel.TabIndex = 4;
-            this.UpdateLinkLabel.TabStop = true;
-            this.UpdateLinkLabel.Text = "UpdateLinkLabel";
+            this.ExtensionGroupbox.Controls.Add(this.ExtensionVersionTextbox);
+            this.ExtensionGroupbox.Controls.Add(this.ExtensionUpdateMessageLabel);
+            this.ExtensionGroupbox.Location = new System.Drawing.Point(3, 3);
+            this.ExtensionGroupbox.Name = "ExtensionGroupbox";
+            this.ExtensionGroupbox.Size = new System.Drawing.Size(478, 51);
+            this.ExtensionGroupbox.TabIndex = 2;
+            this.ExtensionGroupbox.TabStop = false;
+            this.ExtensionGroupbox.Text = "Extension";
             // 
-            // InstructionsLabel
+            // ExtensionVersionTextbox
             // 
-            this.InstructionsLabel.AutoSize = true;
-            this.InstructionsLabel.Location = new System.Drawing.Point(7, 116);
-            this.InstructionsLabel.Name = "InstructionsLabel";
-            this.InstructionsLabel.Size = new System.Drawing.Size(208, 13);
-            this.InstructionsLabel.TabIndex = 5;
-            this.InstructionsLabel.Text = "Click the link below for update instructions.";
+            this.ExtensionVersionTextbox.BackColor = System.Drawing.Color.White;
+            this.ExtensionVersionTextbox.Location = new System.Drawing.Point(7, 20);
+            this.ExtensionVersionTextbox.Name = "ExtensionVersionTextbox";
+            this.ExtensionVersionTextbox.ReadOnly = true;
+            this.ExtensionVersionTextbox.Size = new System.Drawing.Size(100, 20);
+            this.ExtensionVersionTextbox.TabIndex = 0;
+            // 
+            // ExtensionUpdateMessageLabel
+            // 
+            this.ExtensionUpdateMessageLabel.AutoSize = true;
+            this.ExtensionUpdateMessageLabel.Location = new System.Drawing.Point(113, 23);
+            this.ExtensionUpdateMessageLabel.Name = "ExtensionUpdateMessageLabel";
+            this.ExtensionUpdateMessageLabel.Size = new System.Drawing.Size(157, 13);
+            this.ExtensionUpdateMessageLabel.TabIndex = 1;
+            this.ExtensionUpdateMessageLabel.Text = "ExtensionUpdateMessageLabel";
             // 
             // UpdateAvailable
             // 
@@ -137,14 +137,14 @@
             this.ClientSize = new System.Drawing.Size(512, 177);
             this.Controls.Add(this.ExtensionUpdateLink);
             this.Name = "UpdateAvailable";
-            this.Text = "UpdateAvailable";
+            this.Text = "Update Available";
             this.Load += new System.EventHandler(this.UpdateAvailable_Load);
             this.ExtensionUpdateLink.ResumeLayout(false);
             this.ExtensionUpdateLink.PerformLayout();
-            this.ExtensionGroupbox.ResumeLayout(false);
-            this.ExtensionGroupbox.PerformLayout();
             this.RulesetGroupbox.ResumeLayout(false);
             this.RulesetGroupbox.PerformLayout();
+            this.ExtensionGroupbox.ResumeLayout(false);
+            this.ExtensionGroupbox.PerformLayout();
             this.ResumeLayout(false);
 
         }

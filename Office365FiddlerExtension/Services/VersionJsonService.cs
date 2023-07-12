@@ -56,16 +56,16 @@ namespace Office365FiddlerExtension.Services
             {
                 var VersionItems = new
                 {
-                    UpdateMessage = "",
-                    ExtensionMajor = "",
-                    ExtensionMinor = "",
-                    ExtensionBuild = "",
-                    RulesetMajor = "",
-                    RulesetMinor = "",
-                    RulesetBuild = "",
-                    ExtensionZip = "",
-                    RulesetZip = "",
-                    RulesetDLLPattern = ""
+                    UpdateMessage = "A new version of the Office 365 Fiddler Extension is available.",
+                    ExtensionMajor = Assembly.GetExecutingAssembly().GetName().Version.Major,
+                    ExtensionMinor = Assembly.GetExecutingAssembly().GetName().Version.Minor,
+                    ExtensionBuild = Assembly.GetExecutingAssembly().GetName().Version.Build,
+                    RulesetMajor = "1776",
+                    RulesetMinor = "7",
+                    RulesetBuild = "4",
+                    ExtensionZip = "Office365FiddlerExtension.zip",
+                    RulesetZip = "Office365FiddlerExtensionRuleset.zip",
+                    RulesetDLLPattern = "Office365FiddlerExtensionRuleset*.dll"
                 };
 
                 // Transform the object to a Json object.
@@ -78,7 +78,6 @@ namespace Office365FiddlerExtension.Services
             {
                 UpdateService.Instance.CreateVersionJsonFromGithub();
             }
-
         }
 
         public class ExtensionVersionFlags

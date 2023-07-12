@@ -1,4 +1,5 @@
 ﻿using Fiddler;
+using Office365FiddlerExtension.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +18,10 @@ namespace Office365FiddlerExtension.Services
 
         public void Initialize()
         {
+
+            UpdateAvailable updateAvailable = new UpdateAvailable();
+            updateAvailable.Show();
+
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): NeverWebCall enabled, returning.");

@@ -55,9 +55,6 @@ namespace Office365FiddlerExtension.Services
                 ColumnUI.Instance.Initialize();
 
                 IsInitialized = true;
-
-                //UpdateAvailable updateAvailable = new UpdateAvailable();
-                //updateAvailable.Show();
             }
         }
 
