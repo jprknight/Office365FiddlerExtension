@@ -197,12 +197,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\URLsJsonService.cs" />
-    <Compile Include="Services\VersionJsonService.cs" />
-    <Compile Include="Services\RulesetService.cs" />
-    <Compile Include="Services\SessionFlagService.cs" />
-    <Compile Include="Services\SettingsJsonService.cs" />
-    <Compile Include="Services\UpdateService.cs" />
+    <Compile Include="Services\Json\URLsJsonService.cs" />
+    <Compile Include="Services\Json\VersionJsonService.cs" />
+    <Compile Include="Services\Fiddler\RulesetService.cs" />
+    <Compile Include="Services\Json\SessionFlagService.cs" />
+    <Compile Include="Services\Json\SettingsJsonService.cs" />
+    <Compile Include="Services\Update\UpdateService.cs" />
+    <Compile Include="Services\Update\VersionService.cs" />
     <Compile Include="UI\Forms\About.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -211,10 +212,10 @@
     </Compile>
     <Compile Include="UI\ContextMenuUI.cs" />
     <Compile Include="UI\ColumnUI.cs" />
-    <Compile Include="Services\ActivationService.cs" />
+    <Compile Include="Services\Fiddler\ActivationService.cs" />
     <Compile Include="AboutOld.cs" />
-    <Compile Include="Services\SazFileService.cs" />
-    <Compile Include="Services\SessionService.cs" />
+    <Compile Include="Services\Fiddler\SazFileService.cs" />
+    <Compile Include="Services\Fiddler\SessionService.cs" />
     <Compile Include="Inspectors\Office365Inspector.cs" />
     <Compile Include="UI\MenuUI.cs" />
     <Compile Include="Services\Preferences.cs" />
@@ -235,7 +236,7 @@
     <Compile Include="UI\Forms\Office365ResponseControl.Designer.cs">
       <DependentUpon>Office365ResponseControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Services\TelemetryService.cs" />
+    <Compile Include="Services\Telemetry\TelemetryService.cs" />
     <Compile Include="UI\EnhanceSessionUX.cs" />
     <Compile Include="UI\Forms\UpdateAvailable.cs">
       <SubType>Form</SubType>

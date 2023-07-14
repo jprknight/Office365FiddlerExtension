@@ -13,8 +13,6 @@ namespace Office365FiddlerExtension.Services
     /// Telemetry service to initialize and run telemetry.
     /// </summary>
     
-
-
     public partial class TelemetryService
     {
 
@@ -93,9 +91,9 @@ namespace Office365FiddlerExtension.Services
 
                     IsInitialized = true;
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // TODO add exception logic
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (TelemetryService): {ex}");
                 }
             }
         }

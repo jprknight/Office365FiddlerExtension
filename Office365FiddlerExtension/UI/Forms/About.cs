@@ -39,6 +39,7 @@ namespace Office365FiddlerExtension.UI
 
             NextUpdateCheckTimestampTextbox.Text = extensionSettings.NextUpdateCheck.ToString();
 
+            // REVIEW THIS - Needs updating / removing master - beta is a gone concept.
             if (extensionSettings.UseBetaRuleSet)
             {
                 LocalRulesetVersionTextbox.Text = extensionSettings.LocalBetaRulesetLastUpdated.ToString();
