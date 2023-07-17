@@ -29,7 +29,9 @@ namespace Office365FiddlerExtension.UI
             ExtensionPathTextbox.Text = extensionSettings.ExtensionPath;
             
             ExtensionDLLTextbox.Text = extensionSettings.ExtensionDLL;
-            LocalDLLVersionTextbox.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+            // REVIEW THIS -- Write functions in VersionService, then pull these from that class.
+            LocalDLLVersionTextbox.Text = VersionService.Instance.GetExtensionDLLVersion(); // Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
             GithubDLLVersionTextbox.Text = extensionVersion.ExtensionMajor + "." + extensionVersion.ExtensionMinor + "." + extensionVersion.ExtensionBuild;
 

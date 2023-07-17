@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Fiddler;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -9,6 +12,9 @@ namespace Office365FiddlerExtension.Services
 {
     public class VersionService
     {
+        private static VersionService _instance;
+        public static VersionService Instance => _instance ?? (_instance = new VersionService());
+
         public string GetExtensionDLLVersion()
         {
             return $"{Assembly.GetExecutingAssembly().GetName().Version.Major}." +
@@ -20,11 +26,31 @@ namespace Office365FiddlerExtension.Services
         {
             // Get Ruleset file from assembly path.
             // Pull & Deserialize Json from ExtensionSettings.
-            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
-            string RulesetPath = extensionSettings.ExtensionPath;
+            var ExtensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
+            var dirInfo = new DirectoryInfo(SettingsJsonService.AssemblyDirectory);
+            string pattern = ExtensionVersion.RulesetDLLPattern;
 
-            return "stuff";
+            try
+            {
+                FileInfo file = (from f in dirInfo.GetFiles(pattern) orderby f.LastWriteTime descending select f).First();
+                FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(file.FullName);
+
+                return $"{fileVersionInfo.FileMajorPart}.{fileVersionInfo.FileMinorPart}.{fileVersionInfo.FileBuildPart}"; 
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} {ex}");
+            } 
+
+            return null;
+        }
+
+        public string GetGithubDLLVersion()
+        {
+            var ExtensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
+
+            return $"{ExtensionVersion.ExtensionMajor}.{ExtensionVersion.ExtensionMinor}.{ExtensionVersion.ExtensionBuild}";
         }
     }
 }
