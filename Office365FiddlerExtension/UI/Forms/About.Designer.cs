@@ -100,7 +100,7 @@
             this.InfoGroupbox.Size = new System.Drawing.Size(483, 163);
             this.InfoGroupbox.TabIndex = 0;
             this.InfoGroupbox.TabStop = false;
-            this.InfoGroupbox.Text = "Extension Information";
+            this.InfoGroupbox.Text = "Locally Installed Information";
             // 
             // LocalRulesetVersionLabel
             // 

@@ -85,8 +85,8 @@ namespace Office365FiddlerExtension.UI
             }
             else
             {
-                GithubExtensionVersionUpdateMessageLabel.Text = "Up to date";
-                GithubExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Green;
+                GithubRulesetVersionUpdateMessageLabel.Text = "Up to date";
+                GithubRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Green;
             }
 
             NextUpdateCheckTimestampTextbox.Text = extensionSettings.NextUpdateCheck.ToString();
