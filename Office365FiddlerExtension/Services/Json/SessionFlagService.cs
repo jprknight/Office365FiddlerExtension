@@ -13,7 +13,6 @@ namespace Office365FiddlerExtension.Services
 {
     /// <summary>
     /// Function to stamp all session flags the extension uses.
-    /// Needs to be public so the CodeDom Compiler can access ExtensionSessionFlags.
     /// </summary>
     public class SessionFlagService
     {

@@ -10,6 +10,9 @@ using System.Reflection;
 
 namespace Office365FiddlerExtension
 {
+    /// <summary>
+    /// Add context menu into Fiddler application UI.
+    /// </summary>
     public class ContextMenuUI
     {
         private static ContextMenuUI _instance;

@@ -23,6 +23,9 @@ using Microsoft.Extensions.FileSystemGlobbing.Internal;
 
 namespace Office365FiddlerExtension.Services
 {
+    /// <summary>
+    /// Class to call the external rulset DLL file, passing in the session for processing.
+    /// </summary>
     class RulesetService
     {
         public static void RunRuleSet(Session session)

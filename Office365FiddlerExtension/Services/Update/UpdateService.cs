@@ -6,11 +6,16 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Office365FiddlerExtension.Services
 {
+    /// <summary>
+    /// Class to update Version and URL Json data from Github repo.
+    /// </summary>
     public class UpdateService
     {
         private static UpdateService _instance;
@@ -18,10 +23,6 @@ namespace Office365FiddlerExtension.Services
 
         public void Initialize()
         {
-
-            UpdateAvailable updateAvailable = new UpdateAvailable();
-            updateAvailable.Show();
-
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): NeverWebCall enabled, returning.");

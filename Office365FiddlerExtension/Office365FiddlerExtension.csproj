@@ -213,7 +213,6 @@
     <Compile Include="UI\ContextMenuUI.cs" />
     <Compile Include="UI\ColumnUI.cs" />
     <Compile Include="Services\Fiddler\ActivationService.cs" />
-    <Compile Include="AboutOld.cs" />
     <Compile Include="Services\Fiddler\SazFileService.cs" />
     <Compile Include="Services\Fiddler\SessionService.cs" />
     <Compile Include="Inspectors\Office365Inspector.cs" />
@@ -238,12 +237,6 @@
     </Compile>
     <Compile Include="Services\Telemetry\TelemetryService.cs" />
     <Compile Include="UI\EnhanceSessionUX.cs" />
-    <Compile Include="UI\Forms\UpdateAvailable.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Forms\UpdateAvailable.Designer.cs">
-      <DependentUpon>UpdateAvailable.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -255,9 +248,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\Office365ResponseControl.resx">
       <DependentUpon>Office365ResponseControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Forms\UpdateAvailable.resx">
-      <DependentUpon>UpdateAvailable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

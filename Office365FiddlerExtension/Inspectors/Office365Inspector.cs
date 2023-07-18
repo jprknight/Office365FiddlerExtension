@@ -93,7 +93,7 @@ namespace Office365FiddlerExtension.Inspectors
         private byte[] RawBody { get; set; }
 
         /// <summary>
-        /// Method that returns a sorting hint
+        /// Method that returns a sorting hint, make this the first inspector from the left.
         /// </summary>
         /// <returns>An integer indicating where we should order ourselves</returns>
         public override int GetOrder()

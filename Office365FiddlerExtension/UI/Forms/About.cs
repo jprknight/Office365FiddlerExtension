@@ -25,42 +25,82 @@ namespace Office365FiddlerExtension.UI
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             var extensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
-            ExtensionEnabledCheckbox.Checked = extensionSettings.ExtensionSessionProcessingEnabled;
+            this.Text = $"About: {Assembly.GetExecutingAssembly().GetName().Name} v{extensionVersion.ExtensionMajor}.{extensionVersion.ExtensionMinor}.{extensionVersion.ExtensionBuild}";
+
+            ///////////////////
+            /// Extension Information
+
             ExtensionPathTextbox.Text = extensionSettings.ExtensionPath;
-            
+
             ExtensionDLLTextbox.Text = extensionSettings.ExtensionDLL;
 
-            // REVIEW THIS -- Write functions in VersionService, then pull these from that class.
-            LocalDLLVersionTextbox.Text = VersionService.Instance.GetExtensionDLLVersion(); // Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            LocalDLLVersionTextbox.Text = VersionService.Instance.GetExtensionDLLVersion();
 
-            GithubDLLVersionTextbox.Text = extensionVersion.ExtensionMajor + "." + extensionVersion.ExtensionMinor + "." + extensionVersion.ExtensionBuild;
-
-            NextUpdateCheckTextbox.Text = extensionSettings.UpdateCheckFrequencyHours.ToString();
-
-            ScoreForSessionTextbox.Text = extensionSettings.InspectorScoreForSession.ToString();
-
-            NextUpdateCheckTimestampTextbox.Text = extensionSettings.NextUpdateCheck.ToString();
-
-            // REVIEW THIS - Needs updating / removing master - beta is a gone concept.
-            if (extensionSettings.UseBetaRuleSet)
+            if (VersionService.Instance.IsExtensionDLLUpdateAvailable())
             {
-                LocalRulesetVersionTextbox.Text = extensionSettings.LocalBetaRulesetLastUpdated.ToString();
-                //GithubRulesetVersionTextbox.Text = extensionVersion.BetaRulesetVersion.ToString();
+                LocalExtensionVersionUpdateMessageLabel.Text = "Update Available";
+                LocalExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Red;
             }
             else
             {
-                LocalRulesetVersionTextbox.Text = extensionSettings.LocalMasterRulesetLastUpdated.ToString();
-                //GithubRulesetVersionTextbox.Text = extensionVersion.MasterRulesetVersion.ToString();
+                LocalExtensionVersionUpdateMessageLabel.Text = "Up to date";
+                LocalExtensionVersionUpdateMessageLabel.ForeColor= System.Drawing.Color.Green;
             }
-            
 
-            WarningSessionTimeThresholdTextbox.Text = extensionSettings.WarningSessionTimeThreshold.ToString();
-            SlowRunningSessionThresholdTextbox.Text = extensionSettings.SlowRunningSessionThreshold.ToString();
+            if (VersionService.Instance.IsRulesetDLLUpdateAvailable())
+            {
+                LocalRulesetVersionUpdateMessageLabel.Text = "Update Available";
+                LocalRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Red;
+            }
+            else
+            {
+                LocalRulesetVersionUpdateMessageLabel.Text = "Up to date";
+                LocalRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Green;
+            }
 
-            this.Text = $"About: {Assembly.GetExecutingAssembly().GetName().Name} v{extensionVersion.ExtensionMajor}.{extensionVersion.ExtensionMinor}.{extensionVersion.ExtensionBuild}";
+            LocalRulesetVersionTextbox.Text = VersionService.Instance.GetExtensionRulesetDLLVersion();
 
-            if (extensionSettings.SessionAnalysisOnFiddlerLoad == true &&
-                extensionSettings.SessionAnalysisOnLoadSaz == true &&
+            ///////////////////
+            /// Github Information.
+
+            GithubDLLVersionTextbox.Text = $"{extensionVersion.ExtensionMajor}.{extensionVersion.ExtensionMinor}.{extensionVersion.ExtensionBuild}";
+
+            if (VersionService.Instance.IsExtensionDLLUpdateAvailable())
+            {
+                GithubExtensionVersionUpdateMessageLabel.Text = "Update Available";
+                GithubExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Red;
+            }
+            else
+            {
+                GithubExtensionVersionUpdateMessageLabel.Text = "Up to date";
+                GithubExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Green;
+            }
+
+            GithubRulesetVersionTextbox.Text = $"{extensionVersion.RulesetMajor}.{extensionVersion.RulesetMinor}.{extensionVersion.RulesetBuild}";
+
+            if (VersionService.Instance.IsRulesetDLLUpdateAvailable())
+            {
+                GithubRulesetVersionUpdateMessageLabel.Text = "Update Available";
+                GithubRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Red;
+            }
+            else
+            {
+                GithubExtensionVersionUpdateMessageLabel.Text = "Up to date";
+                GithubExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Green;
+            }
+
+            NextUpdateCheckTimestampTextbox.Text = extensionSettings.NextUpdateCheck.ToString();
+
+            UpdateLinkLabel.Text = URLsJsonService.Instance.GetDeserializedExtensionURLs().Installer;
+
+            ///////////////////
+            /// Extension Options
+
+            ExtensionEnabledCheckbox.Checked = extensionSettings.ExtensionSessionProcessingEnabled;
+
+            NextUpdateCheckTextbox.Text = extensionSettings.UpdateCheckFrequencyHours.ToString();
+
+            if (extensionSettings.SessionAnalysisOnLoadSaz == true &&
                 extensionSettings.SessionAnalysisOnLiveTrace == true)
             {
                 AllSessionAnalysisRadioButton.Checked = true;
@@ -99,7 +139,7 @@ namespace Office365FiddlerExtension.UI
             if (AllSessionAnalysisRadioButton.Checked)
             {
                 SessionAnalysisOnLiveTraceCheckbox.Enabled = false;
-                SessionAnalysisOnLoadSazCheckbox.Enabled = false; 
+                SessionAnalysisOnLoadSazCheckbox.Enabled = false;
             }
 
             if (SomeSessionAnalysisRadioButton.Checked)
@@ -107,6 +147,14 @@ namespace Office365FiddlerExtension.UI
                 SessionAnalysisOnLiveTraceCheckbox.Enabled = true;
                 SessionAnalysisOnLoadSazCheckbox.Enabled = true;
             }
+
+            ///////////////////
+            /// Obscure Settings
+
+            ScoreForSessionTextbox.Text = extensionSettings.InspectorScoreForSession.ToString();
+
+            WarningSessionTimeThresholdTextbox.Text = extensionSettings.WarningSessionTimeThreshold.ToString();
+            SlowRunningSessionThresholdTextbox.Text = extensionSettings.SlowRunningSessionThreshold.ToString();
 
         }
 
@@ -199,6 +247,19 @@ namespace Office365FiddlerExtension.UI
             SettingsJsonService.Instance.UpdateWarningSessionTimeThreshold(WarningSessionTimeThresholdTextbox.Text);
 
             SettingsJsonService.Instance.SetUpdateCheckFrequencyHours(NextUpdateCheckTextbox.Text);
+        }
+
+        private void UpdateLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(URLsJsonService.Instance.GetDeserializedExtensionURLs().Installer);
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): About unable to open Installer link: {URLsJsonService.Instance.GetDeserializedExtensionURLs().Installer}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+            }
         }
     }
 }

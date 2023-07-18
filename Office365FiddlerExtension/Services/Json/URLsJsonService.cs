@@ -65,7 +65,7 @@ namespace Office365FiddlerExtension.Services
                 TelemetryInstrumentationKey = "87fb55ab-0052-4970-9318-7c740220e3c0",
                 ExtensionURL = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionURLs.json",
                 ExtensionVersion = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionVersion.json",
-                ExtensionInstaller = "https://github.com/jprknight/EXOFiddlerExtension/releases/latest",
+                Installer = "https://github.com/jprknight/Office365FiddlerExtension/releases/latest",
                 Wiki = "https://github.com/jprknight/Office365FiddlerExtension/wiki",
                 WikiSessionTimeThresholds = "https://github.com/jprknight/Office365FiddlerExtension/wiki/Session-Time-Thresholds",
                 WikiScoreForSession = "https://github.com/jprknight/Office365FiddlerExtension/wiki/What-is-ScoreForSession%3F",
@@ -98,7 +98,7 @@ namespace Office365FiddlerExtension.Services
 
         public string ExtensionVersion { get; set; }
 
-        public string ExtensionInstaller { get; set; }
+        public string Installer { get; set; }
 
         public string Wiki { get; set; }
 

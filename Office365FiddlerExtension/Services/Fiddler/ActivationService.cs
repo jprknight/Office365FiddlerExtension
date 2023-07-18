@@ -27,6 +27,13 @@ namespace Office365FiddlerExtension.Services
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
 
+                // If the enable setting is true, throw messages to the user if updates are available.
+                if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().ExtensionSessionProcessingEnabled)
+                {
+                    VersionService.Instance.NotifyUserIfExtensionUpdateIsAvailable();
+                    VersionService.Instance.NotifyUserIfRulesetUpdateIsAvailable();
+                }
+
                 SazFileService.Instance.AddSazFileEventHandlers();
 
                 // Ensure Fiddler settings (settings, URLs, & verison) for the extension have been created.

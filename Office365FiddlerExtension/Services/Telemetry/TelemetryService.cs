@@ -10,7 +10,7 @@ using System.Reflection;
 namespace Office365FiddlerExtension.Services
 {
     /// <summary>
-    /// Telemetry service to initialize and run telemetry.
+    /// Class to initialize and run telemetry.
     /// </summary>
     
     public partial class TelemetryService

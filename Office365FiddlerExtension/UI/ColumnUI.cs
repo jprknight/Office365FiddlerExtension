@@ -10,7 +10,7 @@ using System.Reflection;
 namespace Office365FiddlerExtension.UI
 {
     /// <summary>
-    /// Add Fiddler application event handlers, additional columns to UI, and populate data in them. 
+    /// Add columns into Fiddler application UI and populate with data.
     /// </summary>
     public class ColumnUI
     {

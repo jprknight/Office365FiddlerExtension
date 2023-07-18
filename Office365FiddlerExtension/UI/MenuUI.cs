@@ -8,6 +8,9 @@ using System.Reflection;
 
 namespace Office365FiddlerExtension
 {
+    /// <summary>
+    /// Add menu into Fiddler application UI and populate with data.
+    /// </summary>
     public class MenuUI
     {
         private static MenuUI _instance;
@@ -34,7 +37,7 @@ namespace Office365FiddlerExtension
 
         public MenuItem MiAbout { get; set; }
 
-        public string MenuEnabled = "Office 365 (Enabled)";
+        public string MenuEnabled = $"Office 365 (Enabled)";
 
         public string MenuDisabled = "Office 365 (Disabled)";
 
@@ -166,7 +169,7 @@ namespace Office365FiddlerExtension
         {
             var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
             // Fire up a web browser to the project Wiki URL.
-            System.Diagnostics.Process.Start(URLs.ExtensionInstaller);
+            System.Diagnostics.Process.Start(URLs.Installer);
         }
 
         public void MiReportIssues_Click(object sender, EventArgs e)
