@@ -51,28 +51,6 @@ namespace Office365FiddlerExtension.UI
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
-
-            /*
-            // REVIEW THIS. Despite adding / ordering columns here nothing happens.
-            // Commenting out these seem to do nothing.
-            // It's possible Fiddler's user preferences / reordering comes into play and conflicts with these.
-            
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Custom", 15, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Comments", 14, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Content-Type", 13, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Caching", 12, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Body", 11, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("URL", 10, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host", 9, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Protocol", 8, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Process", 7, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Elapsed Time", 6, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Session Type", 5, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Authentication", 4, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Host IP", 3, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Response Server", 2, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("Result", 1, -1);
-            FiddlerApplication.UI.lvSessions.SetColumnOrderAndWidth("#", 0, -1);*/
         }
 
         // Called by EnhanceUX to populate column data.

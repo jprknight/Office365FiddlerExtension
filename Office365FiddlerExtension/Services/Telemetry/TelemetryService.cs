@@ -70,7 +70,6 @@ namespace Office365FiddlerExtension.Services
                 {
                     ExceptionCounter = 0;
 
-                    // REVIEW THIS - Make sure it doesn't break telemetry.
                     //Client = new TelemetryClient();
                     Client = new TelemetryClient
                     {
