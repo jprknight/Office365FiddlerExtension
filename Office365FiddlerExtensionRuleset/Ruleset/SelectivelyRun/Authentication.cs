@@ -608,6 +608,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         private void SAMLParserFieldsNoData(Session session)
         {
+            this.session = session;
+
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "Authentication (SAMLParserFieldsNoData)",

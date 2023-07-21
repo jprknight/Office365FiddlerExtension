@@ -40,7 +40,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 10
+                SessionResponseServerConfidenceLevel = 10,
+                SessionSeverity = 80
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

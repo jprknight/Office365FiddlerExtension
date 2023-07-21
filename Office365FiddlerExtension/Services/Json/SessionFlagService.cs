@@ -113,7 +113,8 @@ namespace Office365FiddlerExtension.Services
                 ProcessName = "",
                 SessionAuthenticationConfidenceLevel = "0",
                 SessionTypeConfidenceLevel = "0",
-                SessionResponseServerConfidenceLevel = "0"
+                SessionResponseServerConfidenceLevel = "0",
+                SessionSeverity = "0"
             };
 
             // Transform the object to a Json object.
@@ -374,6 +375,11 @@ namespace Office365FiddlerExtension.Services
                 updatedSessionFlagsJson.SessionResponseServerConfidenceLevel = existingSessionFlagsJson.SessionResponseServerConfidenceLevel;
             }
 
+            if (updatedSessionFlagsJson.SessionSeverity < existingSessionFlagsJson.SessionSeverity)
+            {
+                updatedSessionFlagsJson.SessionSeverity = existingSessionFlagsJson.SessionSeverity;
+            }
+
             var newJsonData = JsonConvert.SerializeObject(updatedSessionFlagsJson, Formatting.Indented);
 
             // Save the new Json to the session flag.
@@ -437,6 +443,8 @@ namespace Office365FiddlerExtension.Services
             public int SessionTypeConfidenceLevel { get; set; }
 
             public int SessionResponseServerConfidenceLevel { get; set; }
+
+            public int SessionSeverity { get; set; }
         }
     }
 }

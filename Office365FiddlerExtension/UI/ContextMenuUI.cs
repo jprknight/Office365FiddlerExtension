@@ -29,6 +29,20 @@ namespace Office365FiddlerExtension
 
         private readonly MenuItem CmiClearAllSessionProcessing = new MenuItem("Clear All Session Processing");
 
+        private readonly MenuItem CmiSetSessionSeverity = new MenuItem("Set Session Severity");
+
+        private readonly MenuItem CmiSessionSeverityZero = new MenuItem(" 0 - Gray (Uninteresting)");
+
+        private readonly MenuItem CmiSessionSeverityTen = new MenuItem("10 - Blue (False Positive)");
+
+        private readonly MenuItem CmiSessionSeverityTwenty = new MenuItem("20 - Green (Normal)");
+
+        private readonly MenuItem CmiSessionSeverityThirty = new MenuItem("30 - Orange (Warning)");
+
+        private readonly MenuItem CmiSessionSeverityFourty = new MenuItem("40 - Black (Concerning)");
+
+        private readonly MenuItem CmiSessionSeverityFifty = new MenuItem("50 - Red (Severe)");
+
         private bool IsInitialized { get; set; }
 
         public void initialize()
@@ -47,6 +61,59 @@ namespace Office365FiddlerExtension
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(1, CmiProcessAllSessions);
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(2, CmiClearAllSessionProcessing);
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(3, Separator);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(4, CmiSetSessionSeverity);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(5, Separator);
+
+            this.CmiSetSessionSeverity.MenuItems.AddRange(new MenuItem[] { 
+                this.CmiSessionSeverityZero, 
+                this.CmiSessionSeverityTen,
+                this.CmiSessionSeverityTwenty,
+                this.CmiSessionSeverityThirty,
+                this.CmiSessionSeverityFourty,
+                this.CmiSessionSeverityFifty
+            });
+
+            CmiSessionSeverityZero.Click += new EventHandler(CmiSessionSeverityZero_Click);
+
+            CmiSessionSeverityTen.Click += new EventHandler(CmiSessionSeverityTen_Click);
+
+            CmiSessionSeverityTwenty.Click += new EventHandler(CmiSessionSeverityTwenty_Click);
+
+            CmiSessionSeverityThirty.Click += new EventHandler(CmiSessionSeverityThirty_Click);
+
+            CmiSessionSeverityFourty.Click += new EventHandler(CmiSessionSeverityFourty_Click);
+
+            CmiSessionSeverityFifty.Click += new EventHandler(CmiSessionSeverityFifty_Click);
+        }
+
+        private void CmiSessionSeverityZero_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CmiSessionSeverityTen_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CmiSessionSeverityTwenty_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CmiSessionSeverityThirty_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CmiSessionSeverityFourty_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CmiSessionSeverityFifty_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void CmiClearAllSessionProcessing_Click(object sender, EventArgs e)

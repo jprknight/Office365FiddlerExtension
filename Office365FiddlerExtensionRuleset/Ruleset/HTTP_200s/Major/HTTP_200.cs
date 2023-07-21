@@ -58,7 +58,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5
+                SessionResponseServerConfidenceLevel = 5,
+                SessionSeverity = 100
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -102,7 +103,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5
+                SessionResponseServerConfidenceLevel = 5,
+                SessionSeverity = 100
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -143,7 +145,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5
+                SessionResponseServerConfidenceLevel = 5,
+                SessionSeverity = 0
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -179,7 +182,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5
+                SessionResponseServerConfidenceLevel = 5,
+                SessionSeverity = 0
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -215,7 +219,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5
+                SessionResponseServerConfidenceLevel = 5,
+                SessionSeverity = 0
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -253,7 +258,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 5,
-                SessionResponseServerConfidenceLevel = 5
+                SessionResponseServerConfidenceLevel = 5,
+                SessionSeverity = 0
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -289,7 +295,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5
+                SessionResponseServerConfidenceLevel = 5,
+                SessionSeverity = 0
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -370,7 +377,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     SessionAuthenticationConfidenceLevel = 5,
                     SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 5
+                    SessionResponseServerConfidenceLevel = 5,
+                    SessionSeverity = 0
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -398,7 +406,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     SessionAuthenticationConfidenceLevel = 5,
                     SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 5
+                    SessionResponseServerConfidenceLevel = 5,
+                    SessionSeverity = 50
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -455,7 +464,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     SessionAuthenticationConfidenceLevel = 5,
                     SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 5
+                    SessionResponseServerConfidenceLevel = 5,
+                    SessionSeverity = 50
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -504,7 +514,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                         SessionAuthenticationConfidenceLevel = 5,
                         SessionTypeConfidenceLevel = 10,
-                        SessionResponseServerConfidenceLevel = 5
+                        SessionResponseServerConfidenceLevel = 5,
+                        SessionSeverity = 0
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -528,7 +539,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                         SessionAuthenticationConfidenceLevel = 5,
                         SessionTypeConfidenceLevel = 10,
-                        SessionResponseServerConfidenceLevel = 5
+                        SessionResponseServerConfidenceLevel = 5,
+                        SessionSeverity = 50
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -575,7 +587,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                         SessionAuthenticationConfidenceLevel = 5,
                         SessionTypeConfidenceLevel = 5,
-                        SessionResponseServerConfidenceLevel = 5
+                        SessionResponseServerConfidenceLevel = 5,
+                        SessionSeverity = 0
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -599,7 +612,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                         SessionAuthenticationConfidenceLevel = 5,
                         SessionTypeConfidenceLevel = 10,
-                        SessionResponseServerConfidenceLevel = 5
+                        SessionResponseServerConfidenceLevel = 5,
+                        SessionSeverity = 50
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -648,7 +662,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     SessionAuthenticationConfidenceLevel = 5,
                     SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 5
+                    SessionResponseServerConfidenceLevel = 5,
+                    SessionSeverity = 0
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -662,7 +677,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_200s_Unified_Groups_Settings",
-                    UIBackColour = "Green",
+                    UIBackColour = "Red",
                     UITextColour = "Black",
 
                     SessionType = "EWS GetUnifiedGroupsSettings",
@@ -673,7 +688,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     SessionAuthenticationConfidenceLevel = 5,
                     SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 5
+                    SessionResponseServerConfidenceLevel = 5,
+                    SessionSeverity = 50
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -693,12 +709,13 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     SessionType = "!EWS GetUnifiedGroupsSettings!",
                     ResponseCodeDescription = "200 OK, GetUnifiedGroupsSettings not found.",
                     ResponseAlert = "GetUnifiedGroupsSettings EWS call",
-                    ResponseComments = "Though GetUnifiedGroupsSettings scenario was detected neither <GroupCreationEnabled>true</GroupCreationEnabled> or"
+                    ResponseComments = "Though GetUnifiedGroupsSettings scenario was detected neither <GroupCreationEnabled>true</GroupCreationEnabled> nor"
                     + "<GroupCreationEnabled>false</GroupCreationEnabled> was found in the response body. Check the Raw tab for more details.",
 
                     SessionAuthenticationConfidenceLevel = 5,
                     SessionTypeConfidenceLevel = 5,
-                    SessionResponseServerConfidenceLevel = 5
+                    SessionResponseServerConfidenceLevel = 5,
+                    SessionSeverity = 25
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -741,7 +758,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 5,
-                SessionResponseServerConfidenceLevel = 5
+                SessionResponseServerConfidenceLevel = 5,
+                SessionSeverity = 0
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -796,7 +814,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 5,
-                SessionResponseServerConfidenceLevel = 5
+                SessionResponseServerConfidenceLevel = 5,
+                SessionSeverity = 0
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -839,7 +858,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 5,
-                SessionResponseServerConfidenceLevel = 5
+                SessionResponseServerConfidenceLevel = 5,
+                SessionSeverity = 0
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -884,7 +904,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 5,
-                SessionResponseServerConfidenceLevel = 5
+                SessionResponseServerConfidenceLevel = 5,
+                SessionSeverity = 0
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -917,7 +938,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     SessionAuthenticationConfidenceLevel = 5,
                     SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 5
+                    SessionResponseServerConfidenceLevel = 5,
+                    SessionSeverity = 0
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -925,6 +947,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 return;
             }
+
+            // REVIEW THIS -- Call SessionWordSearch utility function and clean this up.
 
             string searchTerm = "empty";
 
@@ -1039,7 +1063,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     SessionAuthenticationConfidenceLevel = 5,
                     SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 5
+                    SessionResponseServerConfidenceLevel = 5,
+                    SessionSeverity = 70
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -1062,7 +1087,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     SessionAuthenticationConfidenceLevel = 5,
                     SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 5
+                    SessionResponseServerConfidenceLevel = 5,
+                    SessionSeverity = 0
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

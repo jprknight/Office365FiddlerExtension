@@ -6,7 +6,6 @@ using System.Management.Instrumentation;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtension.Services
@@ -93,9 +92,6 @@ namespace Office365FiddlerExtension.Services
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz with Extension Enabled: {SettingsJsonService.Instance.ExtensionSessionProcessingEnabled}, {Assembly.GetExecutingAssembly().GetName().CodeBase.Substring(8)}.");
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz processing: {e.sFilename}");
-
-            // Testing to make sure LoadSaz function is called only once when the Fiddler application is opened by loading a SAZ file.
-            //MessageBox.Show($"LoadSaz event fired on {e.sFilename} from {Assembly.GetExecutingAssembly().GetName().CodeBase}");
 
             foreach (Session session in e.arrSessions)
             {

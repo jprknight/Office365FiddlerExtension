@@ -42,6 +42,7 @@ namespace Office365FiddlerExtension.UI
                 // FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 2, 110, UpdateSessionUX.Instance.ElapsedTime);
 
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time (ms)", -1, 110, true, ElapsedTime);
+                FiddlerApplication.UI.lvSessions.AddBoundColumn("Severity", -1, 110, true, SessionSeverity);
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Session Type", 150, SessionType);
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 140, Authentication);
                 FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 130, ResponseServer);
@@ -51,6 +52,15 @@ namespace Office365FiddlerExtension.UI
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
+        }
+
+        private string SessionSeverity(Session session)
+        {
+            this.session = session;
+
+            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
+
+            return ExtensionSessionFlags.SessionSeverity.ToString();
         }
 
         // Called by EnhanceUX to populate column data.

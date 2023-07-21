@@ -7,7 +7,6 @@ using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
-using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -60,7 +59,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5
+                SessionResponseServerConfidenceLevel = 5,
+                SessionSeverity = 100
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

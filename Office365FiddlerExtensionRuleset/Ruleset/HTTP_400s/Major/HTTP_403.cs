@@ -48,7 +48,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     SessionAuthenticationConfidenceLevel = 5,
                     SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 5
+                    SessionResponseServerConfidenceLevel = 5,
+                    SessionSeverity = 100
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -83,7 +84,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     SessionAuthenticationConfidenceLevel = 5,
                     SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 5
+                    SessionResponseServerConfidenceLevel = 5,
+                    SessionSeverity = 100
                 };
                 var sessionFlagsJson_HTTP403_EWS = JsonConvert.SerializeObject(sessionFlags_HTTP403_EWS);
                 SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson_HTTP403_EWS);
@@ -116,7 +118,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5
+                SessionResponseServerConfidenceLevel = 5,
+                SessionSeverity = 60
             };
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);          

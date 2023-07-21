@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
-using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -22,7 +21,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
-            string ProcessName = "";
+            string ProcessName;
             // Set process name, split and exclude port used.
             if (session.LocalProcess != String.Empty)
             {

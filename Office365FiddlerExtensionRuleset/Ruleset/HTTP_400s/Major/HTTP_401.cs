@@ -51,7 +51,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     SessionAuthenticationConfidenceLevel = 10,
                     SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 5
+                    SessionResponseServerConfidenceLevel = 5,
+                    SessionSeverity = 20
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -86,7 +87,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     SessionAuthenticationConfidenceLevel = 10,
                     SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 5
+                    SessionResponseServerConfidenceLevel = 5,
+                    SessionSeverity = 20
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -119,7 +121,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     SessionAuthenticationConfidenceLevel = 10,
                     SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 5
+                    SessionResponseServerConfidenceLevel = 5,
+                    SessionSeverity = 20
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -149,7 +152,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5
+                SessionResponseServerConfidenceLevel = 5,
+                SessionSeverity = 20
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
