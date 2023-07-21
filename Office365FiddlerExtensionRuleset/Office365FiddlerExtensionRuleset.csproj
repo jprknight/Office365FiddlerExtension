@@ -142,9 +142,6 @@
     <Compile Include="Ruleset\SelectivelyRun\ResponseServer.cs" />
     <Compile Include="Ruleset\SelectivelyRun\SessionType.cs" />
     <Compile Include="Ruleset\SessionWordSearch.cs" />
-    <Compile Include="Services\Preferences.cs" />
-    <Compile Include="Services\SessionFlagHandler.cs" />
-    <Compile Include="Services\SettingsHandler.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks.cs" />
     <Compile Include="Ruleset\AlwaysRun\CalculateSessionAge.cs" />
     <Compile Include="Ruleset\AlwaysRun\ProcessName.cs" />

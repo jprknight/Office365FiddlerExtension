@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Office365FiddlerExtensionRuleset.Services;
+using Office365FiddlerExtension.Services;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -33,14 +34,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ProcessName = "Remote Capture";
             }
 
-            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "ProcessName",
                 ProcessName = ProcessName
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

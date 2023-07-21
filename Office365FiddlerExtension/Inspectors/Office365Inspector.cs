@@ -180,7 +180,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                 this.session = Session;
 
-                //SessionFlagHandler sessionFlagProcessor = new SessionFlagHandler();
+                //SessionFlagService sessionFlagProcessor = new SessionFlagService();
 
                 /*var JsonSettings = new JsonSerializerSettings
                 {

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -24,7 +24,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 527 Cloudflare Railgun Error.");
 
-            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_527s",
                 UIBackColour = "Gray",
@@ -33,7 +33,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 SessionType = "527 Cloudflare Railgun Error",
                 ResponseCodeDescription = "527 Cloudflare Railgun Error",
                 ResponseAlert = "HTTP 527 Cloudflare Railgun Error.",
-                ResponseComments = SessionFlagHandler.Instance.ResponseCommentsNoKnownIssue(),
+                ResponseComments = SessionFlagService.Instance.ResponseCommentsNoKnownIssue(),
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 10,
@@ -41,7 +41,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

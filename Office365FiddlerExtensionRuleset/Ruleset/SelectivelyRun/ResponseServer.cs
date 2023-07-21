@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Office365FiddlerExtensionRuleset.Services;
+using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -35,7 +35,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Running SetResponseServer_Server.");
 
-            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "ResponseServer_Server",
                 ResponseServer = this.session.oResponse["Server"],
@@ -44,7 +44,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void SetResponseServer_Host(Session session) 
@@ -63,7 +63,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "ResponseServer_Host",
                 ResponseServer = this.session.oResponse["Host"],
@@ -72,7 +72,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void SetResponseServer_PoweredBy(Session session) 
@@ -91,7 +91,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "ResponseServer_PoweredBy",
                 ResponseServer = this.session.oResponse["X-Powered-By"],
@@ -100,7 +100,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
         }
 
         public void SetResponseServer_ServedBy(Session session) 
@@ -118,7 +118,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "ResponseServer_ServedBy",
                 ResponseServer = this.session.oResponse["X-Served-By"],
@@ -127,7 +127,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);            
         }
 
         public void SetResponseServer_ServerName(Session session) 
@@ -145,7 +145,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "ResponseServer_ServerName",
                 ResponseServer = "X-Server-Name: " + this.session.oResponse["X-Server-Name"],
@@ -154,14 +154,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void SetResponseServer_Unknown(Session session)
         {
             this.session = session;
 
-            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "ResponseServer_Unknown",
                 ResponseServer = "Type Unknown",
@@ -170,7 +170,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

@@ -58,6 +58,18 @@ namespace Office365FiddlerExtension.Services
         }
 
         /// <summary>
+        /// Return string for sessions where no known issue is needed.
+        /// Used across response code logic.
+        /// </summary>
+        /// <returns></returns>
+        public string ResponseCommentsNoKnownIssue()
+        {
+            return "<p>No known issue with Microsoft365 and this type of session. If you have a suggestion for an improvement, "
+                + "create an issue or better yet a pull request in the project Github repository: "
+                + "<a href='https://aka.ms/Office365FiddlerExtension' target='_blank'>https://aka.ms/Office365FiddlerExtension</a>.</p>";
+        }
+
+        /// <summary>
         /// Creates the session flags on each session. Avoid null exceptions.
         /// </summary>
         /// <param name="Session"></param>
@@ -158,6 +170,214 @@ namespace Office365FiddlerExtension.Services
 
                 this.session.RefreshUI();
             }
+        }
+
+        /// <summary>
+        /// Take any updates to session flags and save them into the session Json.
+        /// </summary>
+        /// <param name="Session"></param>
+        /// <param name="JsonData"></param>
+        public void UpdateSessionFlagJson(Session Session, String JsonData)
+        {
+            this.session = Session;
+
+            var JsonSettings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
+            CreateExtensionSessionFlag(this.session);
+
+            var existingSessionFlags = this.session["Microsoft365FiddlerExtensionJson"];
+            var existingSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(existingSessionFlags, JsonSettings);
+
+
+            // Pull Json for new session flags passed into function.
+            var updatedSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(JsonData);
+
+            // Add the new SectionTitle to any existing value.
+            string SectionTitle;
+
+            if (existingSessionFlagsJson.SectionTitle == null || existingSessionFlagsJson.SectionTitle.Length == 0)
+            {
+                SectionTitle = updatedSessionFlagsJson.SectionTitle;
+            }
+            else
+            {
+                SectionTitle = updatedSessionFlagsJson.SectionTitle + ", " + existingSessionFlagsJson.SectionTitle;
+            }
+
+            updatedSessionFlagsJson.SectionTitle = SectionTitle;
+
+            // Replace all other values with new values as long as we don't pass in a null value.
+
+            // UIBackColour
+            if (updatedSessionFlagsJson.UIBackColour == null)
+            {
+                updatedSessionFlagsJson.UIBackColour = existingSessionFlagsJson.UIBackColour;
+            }
+
+            // UITextColour
+            if (updatedSessionFlagsJson.UITextColour == null)
+            {
+                updatedSessionFlagsJson.UITextColour = existingSessionFlagsJson.UITextColour;
+            }
+
+            // Session Type
+            if (updatedSessionFlagsJson.SessionType == null)
+            {
+                updatedSessionFlagsJson.SessionType = existingSessionFlagsJson.SessionType;
+            }
+
+            // Response Code Description
+            if (updatedSessionFlagsJson.ResponseCodeDescription == null)
+            {
+                updatedSessionFlagsJson.ResponseCodeDescription = existingSessionFlagsJson.ResponseCodeDescription;
+            }
+
+            // Response Server
+            if (updatedSessionFlagsJson.ResponseServer == null)
+            {
+                updatedSessionFlagsJson.ResponseServer = existingSessionFlagsJson.ResponseServer;
+            }
+
+            // Response Alert
+            if (updatedSessionFlagsJson.ResponseAlert == null)
+            {
+                updatedSessionFlagsJson.ResponseAlert = existingSessionFlagsJson.ResponseAlert;
+            }
+
+            // Response Comments
+            if (updatedSessionFlagsJson.ResponseComments == null)
+            {
+                updatedSessionFlagsJson.ResponseComments = existingSessionFlagsJson.ResponseComments;
+            }
+
+            // Data Age
+            if (updatedSessionFlagsJson.DataAge == null)
+            {
+                updatedSessionFlagsJson.DataAge = existingSessionFlagsJson.DataAge;
+            }
+
+            // Calculated Session Age
+            if (updatedSessionFlagsJson.CalculatedSessionAge == null)
+            {
+                updatedSessionFlagsJson.CalculatedSessionAge = existingSessionFlagsJson.CalculatedSessionAge;
+            }
+
+            // Date Data Collected
+            if (updatedSessionFlagsJson.DateDataCollected == null)
+            {
+                updatedSessionFlagsJson.DateDataCollected = existingSessionFlagsJson.DateDataCollected;
+            }
+
+            if (updatedSessionFlagsJson.SessionTimersDescription == null)
+            {
+                updatedSessionFlagsJson.SessionTimersDescription = existingSessionFlagsJson.SessionTimersDescription;
+            }
+
+            // Server Think Time
+            if (updatedSessionFlagsJson.ServerThinkTime == null)
+            {
+                updatedSessionFlagsJson.ServerThinkTime = existingSessionFlagsJson.ServerThinkTime;
+            }
+
+            // Transit Time
+            if (updatedSessionFlagsJson.TransitTime == null)
+            {
+                updatedSessionFlagsJson.TransitTime = existingSessionFlagsJson.TransitTime;
+            }
+
+            // Elapsed Time
+            if (updatedSessionFlagsJson.ElapsedTime == null)
+            {
+                updatedSessionFlagsJson.ElapsedTime = existingSessionFlagsJson.ElapsedTime;
+            }
+
+            // Inspector Elapsed Time
+            if (updatedSessionFlagsJson.InspectorElapsedTime == null)
+            {
+                updatedSessionFlagsJson.InspectorElapsedTime = existingSessionFlagsJson.InspectorElapsedTime;
+            }
+
+            // Authentication
+            if (updatedSessionFlagsJson.Authentication == null)
+            {
+                updatedSessionFlagsJson.Authentication = existingSessionFlagsJson.Authentication;
+            }
+
+            // Authentication Type
+            if (updatedSessionFlagsJson.AuthenticationType == null)
+            {
+                updatedSessionFlagsJson.AuthenticationType = existingSessionFlagsJson.AuthenticationType;
+            }
+
+            // Authentication Description
+            if (updatedSessionFlagsJson.AuthenticationDescription == null)
+            {
+                updatedSessionFlagsJson.AuthenticationDescription = existingSessionFlagsJson.AuthenticationDescription;
+            }
+
+            // SamlTokenIssuer
+            if (updatedSessionFlagsJson.SamlTokenIssuer == null)
+            {
+                updatedSessionFlagsJson.SamlTokenIssuer = existingSessionFlagsJson.SamlTokenIssuer;
+            }
+
+            // SamlTokenSigningCertificate
+            if (updatedSessionFlagsJson.SamlTokenSigningCertificate == null)
+            {
+                updatedSessionFlagsJson.SamlTokenSigningCertificate = existingSessionFlagsJson.SamlTokenSigningCertificate;
+            }
+
+            // SamlTokenAttributeNameUPN
+            if (updatedSessionFlagsJson.SamlTokenAttributeNameUPN == null)
+            {
+                updatedSessionFlagsJson.SamlTokenAttributeNameUPN = existingSessionFlagsJson.SamlTokenAttributeNameUPN;
+            }
+
+            // SamlTokenNameIdentifierFormat
+            if (updatedSessionFlagsJson.SamlTokenNameIdentifierFormat == null)
+            {
+                updatedSessionFlagsJson.SamlTokenNameIdentifierFormat = existingSessionFlagsJson.SamlTokenNameIdentifierFormat;
+            }
+
+            // SamlTokenAttributeNameImmutibleID
+            if (updatedSessionFlagsJson.SamlTokenAttributeNameImmutibleID == null)
+            {
+                updatedSessionFlagsJson.SamlTokenAttributeNameImmutibleID = existingSessionFlagsJson.SamlTokenAttributeNameImmutibleID;
+            }
+
+            // Process Name
+            if (updatedSessionFlagsJson.ProcessName == null)
+            {
+                updatedSessionFlagsJson.ProcessName = existingSessionFlagsJson.ProcessName;
+            }
+
+            // Session Confidence Levels
+
+            // If the updated Session Confidence Levels are lower than the existing Session Confidence Levels, use the 
+            // existing Session Confidence Levels instead.
+            if (updatedSessionFlagsJson.SessionAuthenticationConfidenceLevel < existingSessionFlagsJson.SessionAuthenticationConfidenceLevel)
+            {
+                updatedSessionFlagsJson.SessionAuthenticationConfidenceLevel = existingSessionFlagsJson.SessionAuthenticationConfidenceLevel;
+            }
+
+            if (updatedSessionFlagsJson.SessionTypeConfidenceLevel < existingSessionFlagsJson.SessionTypeConfidenceLevel)
+            {
+                updatedSessionFlagsJson.SessionTypeConfidenceLevel = existingSessionFlagsJson.SessionTypeConfidenceLevel;
+            }
+
+            if (updatedSessionFlagsJson.SessionResponseServerConfidenceLevel < existingSessionFlagsJson.SessionResponseServerConfidenceLevel)
+            {
+                updatedSessionFlagsJson.SessionResponseServerConfidenceLevel = existingSessionFlagsJson.SessionResponseServerConfidenceLevel;
+            }
+
+            var newJsonData = JsonConvert.SerializeObject(updatedSessionFlagsJson, Formatting.Indented);
+
+            // Save the new Json to the session flag.
+            this.session["Microsoft365FiddlerExtensionJson"] = newJsonData;
         }
 
         public class ExtensionSessionFlags

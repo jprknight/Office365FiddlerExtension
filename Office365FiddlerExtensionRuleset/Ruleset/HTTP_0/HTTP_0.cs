@@ -1,7 +1,7 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
-using Office365FiddlerExtensionRuleset.Services;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -21,7 +21,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 0 No response.");
 
-            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_0s",
                 UIBackColour = "Red",
@@ -44,7 +44,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }   
     }
 }

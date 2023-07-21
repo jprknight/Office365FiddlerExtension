@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Fiddler;
 using Newtonsoft.Json;
-using Office365FiddlerExtensionRuleset.Services;
+using Office365FiddlerExtension.Services;
 using System.Reflection;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
@@ -26,7 +26,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Fiddler Updates.");
 
-                var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "Broad Logic Checks",
                     UIBackColour = "Gray",
@@ -45,7 +45,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
                 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
 
@@ -109,7 +109,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 case 403:
                     // If this is a HTTP 403 we need analysis on this session.
                     // I have seen HTTP 403 connect tunnels actually show interesting data in authentication scenarios.
-                    var sessionFlags403 = new SessionFlagHandler.ExtensionSessionFlags()
+                    var sessionFlags403 = new SessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "Broad Logic Checks",
                         UIBackColour = "Orange",
@@ -129,10 +129,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     };
 
                     var sessionFlagsJson403 = JsonConvert.SerializeObject(sessionFlags403);
-                    SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson403);
+                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson403);
                     break;
                 case 200:
-                    var sessionFlags200 = new SessionFlagHandler.ExtensionSessionFlags()
+                    var sessionFlags200 = new SessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "Broad Logic Checks",
                         UIBackColour = "Orange",
@@ -154,10 +154,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     };
 
                     var sessionFlagsJson200 = JsonConvert.SerializeObject(sessionFlags200);
-                    SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson200);
+                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson200);
                     break;
                 default:
-                    var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "Broad Logic Checks",
                         UIBackColour = "Orange",
@@ -178,7 +178,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     break;
                 }
             }
@@ -197,7 +197,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Apache is answering Autodiscover requests! Investigate this first!.");
 
-                var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "Broad Logic Checks",
                     UIBackColour = "Red",
@@ -220,7 +220,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
 
@@ -235,7 +235,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Loopback Tunnel.");
 
-            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "Broad Logic Checks",
                 UIBackColour = "Gray",
@@ -257,7 +257,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Office365FiddlerExtensionRuleset.Services;
+using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -24,7 +24,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 417 Expectation Failed.");
 
-            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "",
                 UIBackColour = "Gray",
@@ -33,7 +33,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 SessionType = "417 Expectation Failed",
                 ResponseCodeDescription = "417 Expectation Failed",
                 ResponseAlert = "HTTP 417 Expectation Failed.",
-                ResponseComments = SessionFlagHandler.Instance.ResponseCommentsNoKnownIssue(),
+                ResponseComments = SessionFlagService.Instance.ResponseCommentsNoKnownIssue(),
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 10,
@@ -41,7 +41,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

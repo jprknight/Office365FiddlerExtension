@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Office365FiddlerExtensionRuleset.Services;
+using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -24,7 +24,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect.");
 
-            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "",
                 UIBackColour = "Gray",
@@ -33,7 +33,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 SessionType = "451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect",
                 ResponseCodeDescription = "451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect",
                 ResponseAlert = "HTTP 451 Unavailable For Legal Reasons (RFC 7725) or 451 IIS Redirect.",
-                ResponseComments = SessionFlagHandler.Instance.ResponseCommentsNoKnownIssue(),
+                ResponseComments = SessionFlagService.Instance.ResponseCommentsNoKnownIssue(),
 
                 SessionAuthenticationConfidenceLevel = 5,
                 SessionTypeConfidenceLevel = 10,
@@ -41,7 +41,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

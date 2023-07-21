@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Office365FiddlerExtensionRuleset.Services;
+using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -65,28 +65,28 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             String DataAge = TimeSpanDaysText + TimeSpanHoursText + TimeSpanMinutesText;
 
-            var sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 DateDataCollected = SessionDateTime.ToString("dddd, MMMM dd, yyyy h:mm tt")
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
 
             if (TimeSpanDays <= 7)
             {
-                sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+                sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     DataAge = $"<b><span style='color:green'>{DataAge}</span></b>",
                     CalculatedSessionAge = "<p>Session collected within 7 days, data freshness is good. Best case scenario for correlating this data to backend server logs.</p>"
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             else if (TimeSpanDays > 7 && TimeSpanDays < 14)
             {
-                sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+                sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     DataAge = $"<b><span style='color:orange'>{DataAge}</span></b>",
                     CalculatedSessionAge = "<p>Session collected within 14 days, data freshness is good, <b><span style='color:orange'>but not ideal</span></b>. "
@@ -94,11 +94,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             else if (TimeSpanDays >= 14 && TimeSpanDays < 30)
             {
-                sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+                sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     DataAge = $"<b><span style='color:orange'>{DataAge}</span></b>",
                     CalculatedSessionAge = "<p><b><span style='color:red'>Session collected between 14 and 30 days ago</span></b>. "
@@ -106,11 +106,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             else
             {
-                sessionFlags = new SessionFlagHandler.ExtensionSessionFlags()
+                sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     DataAge = $"<b><span style='color:red'>{DataAge}</span></b>",
                     CalculatedSessionAge = "<p><b><span style='color:red'>Session collected more than 30 days ago</span></b>. "
@@ -118,7 +118,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagHandler.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
     }
