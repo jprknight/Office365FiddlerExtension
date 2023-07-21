@@ -7,6 +7,7 @@ using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -24,7 +25,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             this.session = session;
 
-            if (!(this.session.utilFindInResponse("FederatedStsUnreachable", false) > 1))
+            if (SessionWordSearch.Instance.Search(this.session, "FederatedSTSUnreachable") == 0)
             {
                 return;
             }

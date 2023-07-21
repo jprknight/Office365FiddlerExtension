@@ -9,7 +9,7 @@ namespace Office365FiddlerExtension.Services
     /// </summary>
     public abstract class ActivationService : IAutoTamper
     {
-        internal Session Session { get; set; }
+        internal Session session { get; set; }
 
         private bool IsInitialized { get; set; }
 
@@ -33,8 +33,6 @@ namespace Office365FiddlerExtension.Services
                     VersionService.Instance.NotifyUserIfExtensionUpdateIsAvailable();
                     VersionService.Instance.NotifyUserIfRulesetUpdateIsAvailable();
                 }
-
-                SazFileService.Instance.AddSazFileEventHandlers();
 
                 // Ensure Fiddler settings (settings, URLs, & verison) for the extension have been created.
                 // Avoid null exceptions.
@@ -61,6 +59,9 @@ namespace Office365FiddlerExtension.Services
                 // Add columns into session list in UI.
                 ColumnUI.Instance.Initialize();
 
+                FiddlerApplication.OnLoadSAZ += SazFileService.Instance.LoadSaz;
+                FiddlerApplication.OnSaveSAZ += SazFileService.Instance.SaveSaz;
+
                 IsInitialized = true;
             }
         }
@@ -77,20 +78,22 @@ namespace Office365FiddlerExtension.Services
         /// Called for each HTTP/HTTPS request after it's complete.
         /// </summary>
         /// <param name="_session"></param>
-        public void AutoTamperRequestAfter(Session _session) { }
+        public void AutoTamperRequestAfter(Session session) { }
 
         /// <summary>
         /// Called for each HTTP/HTTPS request before it's complete.
         /// </summary>
         /// <param name="_session"></param>
-        public void AutoTamperRequestBefore(Session _session) { }
+        public void AutoTamperRequestBefore(Session session) { }
 
         /// <summary>
         /// Called for each HTTP/HTTPS response after it's complete.
         /// </summary>
         /// <param name="_session"></param>
-        public void AutoTamperResponseAfter(Session Session)
+        public void AutoTamperResponseAfter(Session session)
         {
+            this.session = session;
+
             if (!SettingsJsonService.Instance.ExtensionSessionProcessingEnabled)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Extension not enabled, returning.");
@@ -100,9 +103,8 @@ namespace Office365FiddlerExtension.Services
             // If session analysis on live trace is enabled, run.
             if (SettingsJsonService.Instance.SessionAnalysisOnLiveTrace)
             {
-                this.Session = Session;
-                SessionService.Instance.OnPeekAtResponseHeaders(this.Session);
-                this.Session.RefreshUI();
+                SessionService.Instance.OnPeekAtResponseHeaders(this.session);
+                this.session.RefreshUI();
             }
         }
 

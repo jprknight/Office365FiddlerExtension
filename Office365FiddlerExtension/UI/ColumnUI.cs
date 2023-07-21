@@ -14,7 +14,7 @@ namespace Office365FiddlerExtension.UI
     /// </summary>
     public class ColumnUI
     {
-        internal Session Session { get; set; }
+        internal Session session { get; set; }
 
         private static ColumnUI _instance;
         public static ColumnUI Instance => _instance ?? (_instance = new ColumnUI());
@@ -56,9 +56,9 @@ namespace Office365FiddlerExtension.UI
         // Called by EnhanceUX to populate column data.
         public string ElapsedTime(Session session)
         {
-            this.Session = session;
+            this.session = session;
 
-            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.Session);
+            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
 
             return ExtensionSessionFlags.ElapsedTime;
         }
@@ -66,9 +66,9 @@ namespace Office365FiddlerExtension.UI
         // Called by ActivationService to populate column data.
         public string SessionType(Session session)
         {
-            this.Session = session;
+            this.session = session;
 
-            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.Session);
+            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
 
             return ExtensionSessionFlags.SessionType;
         }
@@ -76,9 +76,9 @@ namespace Office365FiddlerExtension.UI
         // Called by ActivationService to populate column data.
         public string Authentication(Session session)
         {
-            this.Session = session;
+            this.session = session;
 
-            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.Session);
+            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
 
             return ExtensionSessionFlags.Authentication;
         }
@@ -86,20 +86,20 @@ namespace Office365FiddlerExtension.UI
         // Called by ActivationService to populate column data.
         public string ResponseServer(Session session)
         {
-            this.Session = session;
+            this.session = session;
 
-            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.Session);
+            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
 
             return ExtensionSessionFlags.ResponseServer;
         }
 
         public string HostIP(Session session)
         {
-            this.Session = session;
+            this.session = session;
 
-            if (this.Session["X-HostIP"] != null && this.Session["X-HostIP"] != "")
+            if (this.session["X-HostIP"] != null && this.session["X-HostIP"] != "")
             {
-                return this.Session["X-HostIP"];
+                return this.session["X-HostIP"];
             }
             else
             {

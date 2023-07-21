@@ -25,7 +25,7 @@ namespace Office365FiddlerExtension.Inspectors
         /// <summary>
         /// Gets or sets the Session object to pull frame data from Fiddler.
         /// </summary>
-        internal Session Session { get; set; }
+        internal Session session { get; set; }
 
         internal int CachedSessionId { get; set; }
 
@@ -60,10 +60,10 @@ namespace Office365FiddlerExtension.Inspectors
             set
             {
                 this.RawBody = value;
-                if (CachedSessionId != this.Session.id || CachedSessionId == 0 && this.Session != null)
+                if (CachedSessionId != this.session.id || CachedSessionId == 0 && this.session != null)
                 {
-                    this.CachedSessionId = this.Session.id;
-                    this.ParseSession(this.Session);
+                    this.CachedSessionId = this.session.id;
+                    this.ParseSession(this.session);
                 }
             }
         }
@@ -73,8 +73,8 @@ namespace Office365FiddlerExtension.Inspectors
         /// </summary>
         private async void ParseSession(Session Session)
         {
-            this.Session = Session;
-            await ParseHTTPResponse(this.Session);
+            this.session = Session;
+            await ParseHTTPResponse(this.session);
         }
         
         /// <summary>
@@ -83,8 +83,8 @@ namespace Office365FiddlerExtension.Inspectors
         /// <param name="oS">Session object passed by Fiddler</param>
         public override void AssignSession(Session Session)
         {
-            this.Session = Session;
-            base.AssignSession(this.Session);
+            this.session = Session;
+            base.AssignSession(this.session);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace Office365FiddlerExtension.Inspectors
         /// <returns>Int between 0-100 with 100 being the most confident</returns>
         public override int ScoreForSession(Session Session)
         {
-            this.Session = Session;
+            this.session = Session;
 
             return 100;
         }
@@ -151,7 +151,7 @@ namespace Office365FiddlerExtension.Inspectors
         // Tested with await task.run and it broke the inspector.
         public async Task ParseHTTPResponse(Session Session)
         {
-            this.Session = Session;
+            this.session = Session;
 
             // Extension disabled.
             if (!SettingsJsonService.Instance.ExtensionSessionProcessingEnabled)
@@ -163,7 +163,7 @@ namespace Office365FiddlerExtension.Inspectors
                 return;
             }
 
-            if (this.Session["Microsoft365FiddlerExtensionJson"] == null)
+            if (this.session["Microsoft365FiddlerExtensionJson"] == null)
             {
                 // Clear ResultsString.
                 Clear();
@@ -178,7 +178,7 @@ namespace Office365FiddlerExtension.Inspectors
                 // Clear ResultsString.
                 Clear();
 
-                this.Session = Session;
+                this.session = Session;
 
                 //SessionFlagHandler sessionFlagProcessor = new SessionFlagHandler();
 
@@ -188,7 +188,7 @@ namespace Office365FiddlerExtension.Inspectors
                     MissingMemberHandling = MissingMemberHandling.Ignore
                 };*/
 
-                var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.Session);
+                var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
 
                 // Check if the SectionTitle is blank, if it is session analysis hasn't been performed on this session, write this alternative output.
                 if (ExtensionSessionFlags.SectionTitle == "")
@@ -224,7 +224,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("Session Id");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.Session.id.ToString());
+                ResultsString.AppendLine(this.session.id.ToString());
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -273,13 +273,13 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
-                if ((this.Session["X-HostIP"] != null) && (this.Session["X-HostIP"] != "")) {
+                if ((this.session["X-HostIP"] != null) && (this.session["X-HostIP"] != "")) {
                     ResultsString.AppendLine("<tr>");
                     ResultsString.AppendLine("<td>");
                     ResultsString.AppendLine("Host IP");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(this.Session["X-HostIP"]);
+                    ResultsString.AppendLine(this.session["X-HostIP"]);
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
                 }
@@ -402,7 +402,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("Client Connected");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.Session.Timers.ClientConnected.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine(this.session.Timers.ClientConnected.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -411,7 +411,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("Client Begin Request");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.Session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine(this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -420,7 +420,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("Got Request Headers");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.Session.Timers.FiddlerGotRequestHeaders.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine(this.session.Timers.FiddlerGotRequestHeaders.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -429,7 +429,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("Client Done Response");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.Session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine(this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -455,7 +455,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("Fiddler Begin Request");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.Session.Timers.FiddlerBeginRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine(this.session.Timers.FiddlerBeginRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -464,7 +464,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("Server Got Request");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.Session.Timers.ServerGotRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine(this.session.Timers.ServerGotRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -473,7 +473,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("Server Begin Response");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.Session.Timers.ServerBeginResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine(this.session.Timers.ServerBeginResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -482,7 +482,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("Got Response Headers");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.Session.Timers.FiddlerGotResponseHeaders.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine(this.session.Timers.FiddlerGotResponseHeaders.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -491,7 +491,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("Server Done Response");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(this.Session.Timers.ServerDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
+                ResultsString.AppendLine(this.session.Timers.ServerDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 

@@ -141,6 +141,7 @@
     <Compile Include="Ruleset\SelectivelyRun\LongRunningSessions.cs" />
     <Compile Include="Ruleset\SelectivelyRun\ResponseServer.cs" />
     <Compile Include="Ruleset\SelectivelyRun\SessionType.cs" />
+    <Compile Include="Ruleset\SessionWordSearch.cs" />
     <Compile Include="Services\Preferences.cs" />
     <Compile Include="Services\SessionFlagHandler.cs" />
     <Compile Include="Services\SettingsHandler.cs" />
@@ -156,6 +157,12 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Office365FiddlerExtension\Office365FiddlerExtension.csproj">
+      <Project>{5d9f84f0-77f3-45f5-8da9-c89db69bd643}</Project>
+      <Name>Office365FiddlerExtension</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

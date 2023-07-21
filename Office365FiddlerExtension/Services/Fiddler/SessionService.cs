@@ -1,11 +1,13 @@
 ﻿using Fiddler;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtension.UI;
+using System.Reflection;
 
 namespace Office365FiddlerExtension
 {
     /// <summary>
     /// Function that calls ruleset to run on loaded sessions.
+    /// The call to ActivationService here runs the application.
     /// </summary>
     public class SessionService : ActivationService
     {
@@ -15,14 +17,14 @@ namespace Office365FiddlerExtension
 
         public void OnPeekAtResponseHeaders(Session Session)
         {
-            this.Session = Session;
+            this.session = Session;
 
-            this.Session.utilDecodeRequest(true);
-            this.Session.utilDecodeResponse(true);
+            this.session.utilDecodeRequest(true);
+            this.session.utilDecodeResponse(true);
 
-            RulesetService.RunRuleSet(this.Session);
+            RulesetService.Instance.RunRuleSet(this.session);
 
-            EnhanceSessionUX.Instance.EnhanceSession(this.Session);
+            EnhanceSessionUX.Instance.EnhanceSession(this.session);
         }
     }
 }

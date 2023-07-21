@@ -30,7 +30,6 @@ namespace Office365FiddlerExtension.Services
         {
             if (Preferences.ExtensionSettings != null)
             {
-                //MessageBox.Show("Extension settings not null.");
                 return;
             }
 
@@ -351,79 +350,6 @@ namespace Office365FiddlerExtension.Services
             }
             return null;
         }
-
-        /* SETTINGS AREN"T BEING UPDATED FROM GITHUB. NONE OF THIS SHOULD BE NEEDED.
-        public async void GetSettingsFromGithub()
-        {
-            var ExtensionSettings = SettingsHandler.Instance.GetDeserializedExtensionSettingsFlags();
-
-            // If disable web calls is set, don't look for any URL updates.
-            if (ExtensionSettings.NeverWebCall)
-            {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): NeverWebCall is enabled, not checking for updates for settings.json.");
-                return;
-            }
-
-            if (Properties.Settings.Default._SettingsJsonLastUpdated <  DateTime.Now.AddHours(24)) 
-            {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Updates for settings.json checked within 24 hours, no update check performed.");
-                return;
-            }
-
-            Boolean exception = false;
-            // Connect to the Github and see if the settings.json file needs updating.
-            using (var getSettings = new HttpClient())
-            {
-                // Pull the Json from _SettingsJsona.
-                var SettingsJson = JsonConvert.DeserializeObject<SettingsJson>(Properties.Settings.Default._SettingsJson);
-
-                // Connect to the SettingsJson URL and check for any differences. If there are download them and update into the local _SettingsJson setting.
-                try
-                {
-                    var response = await getSettings.GetAsync(SettingsJson.SettingsURL);
-
-                    response.EnsureSuccessStatusCode();
-
-                    var jsonString = string.Empty;
-
-                    using (var stream = await response.Content.ReadAsStreamAsync())
-                    {
-                        //Rules = await JsonSerializer.DeserializeAsync<Dictionary<string, Rule>>(stream);
-
-                        stream.Position = 0;
-                        using (var reader = new StreamReader(stream))
-                        {
-                            jsonString = await reader.ReadToEndAsync();
-                        }
-
-                        if (Properties.Settings.Default._SettingsJson != jsonString)
-                        {
-                            Properties.Settings.Default._SettingsJson = jsonString;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    exception = true;
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving settings from Github {ex}");
-                }
-
-                // If there is no exception here, update the settings last checked.
-                if (!exception)
-                {
-                    var localSettingsJson = JsonConvert.DeserializeObject<SettingsJson>(Properties.Settings.Default._SettingsJson);
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Local setting _SettingsJson updated from Github.");
-                    localSettingsJson.SettingsLastUpdated = DateTime.Now;
-                }
-            }
-        }
-
-        public class SettingsJson
-        {
-            public String SettingsURL { get; set; }
-
-            public DateTime SettingsLastUpdated { get; set; }
-        }*/
     }
 
     public class ExtensionSettingsJson
@@ -457,8 +383,6 @@ namespace Office365FiddlerExtension.Services
         public string ExtensionDLL { get; set; }
 
         public string LastLoadedSazFile { get; set; }
-
-        public bool UseBetaRuleSet { get; set; }
 
         public DateTime LocalMasterRulesetLastUpdated { get; set; }
 

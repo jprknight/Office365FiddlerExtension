@@ -28,8 +28,16 @@ namespace Office365FiddlerExtension.Services
     /// </summary>
     class RulesetService
     {
-        public static void RunRuleSet(Session session)
+        internal Session session { get; set; }
+
+        private static RulesetService _instance;
+
+        public static RulesetService Instance => _instance ?? (_instance = new RulesetService());
+
+        public void RunRuleSet(Session session)
         {
+            this.session = session;
+
             var ExtensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
             string pattern = ExtensionVersion.RulesetDLLPattern;
@@ -48,7 +56,7 @@ namespace Office365FiddlerExtension.Services
 
                 var method = type.GetMethod("Initialize");
 
-                method.Invoke(obj, new object[] { session });
+                method.Invoke(obj, new object[] { this.session });
             }
             catch (Exception ex)
             {

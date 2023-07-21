@@ -16,17 +16,11 @@ namespace Office365FiddlerExtension.Services
     /// </summary>
     public class SazFileService
     {
-        internal Session Session { get; set; }
+        internal Session session { get; set; }
 
         private static SazFileService _instance;
 
         public static SazFileService Instance => _instance ?? (_instance = new SazFileService());
-
-        public void AddSazFileEventHandlers()
-        {
-            FiddlerApplication.OnLoadSAZ += SazFileService.Instance.LoadSaz;
-            FiddlerApplication.OnSaveSAZ += SazFileService.Instance.SaveSaz;
-        }
 
         /// <summary>
         /// Function to handle saving a SAZ file.
@@ -103,10 +97,11 @@ namespace Office365FiddlerExtension.Services
             // Testing to make sure LoadSaz function is called only once when the Fiddler application is opened by loading a SAZ file.
             //MessageBox.Show($"LoadSaz event fired on {e.sFilename} from {Assembly.GetExecutingAssembly().GetName().CodeBase}");
 
-            foreach (var session in e.arrSessions)
+            foreach (Session session in e.arrSessions)
             {
-                this.Session = session;
-                SessionService.Instance.OnPeekAtResponseHeaders(this.Session);
+                this.session = session;
+                
+                SessionService.Instance.OnPeekAtResponseHeaders(this.session);
             }
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz processed: {e.sFilename}");
