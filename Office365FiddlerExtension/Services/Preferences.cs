@@ -110,6 +110,15 @@ namespace Office365FiddlerExtension.Services
             set { _extensionSettings = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionSettings", value); }
         }
 
+        private static string _sessionClassification;
+
+        public static string SessionClassification
+        {
+            get => _sessionClassification = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.SessionClassification", null);
+            set { _sessionClassification = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.SessionClassification", value); }
+
+        }
+
         // Setting to store Json extension URLs. Update from remote.
         /*private static string _extensionURLs;
 

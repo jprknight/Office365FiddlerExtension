@@ -39,6 +39,7 @@ namespace Office365FiddlerExtension.Services
                 SettingsJsonService.Instance.CreateExtensionSettingsFiddlerSetting();
                 URLsJsonService.Instance.CreateExtensionURLFiddlerSetting();
                 VersionJsonService.Instance.CreateExtensionVersionFiddlerSetting();
+                SessionClassificationService.Instance.CreateSessionClassificationFiddlerSetting();
 
                 // Set Fiddler settings as needed.
                 SettingsJsonService.Instance.IncrementExecutionCount();

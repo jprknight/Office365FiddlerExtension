@@ -22,6 +22,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var SessionClassificationJson = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
+
             if (this.session.hostname == "www.fiddler2.com" && this.session.uriContains("UpdateCheck.aspx"))
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Fiddler Updates.");
@@ -106,31 +108,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 switch (this.session.responseCode)
                 {
-                case 403:
-                    // If this is a HTTP 403 we need analysis on this session.
-                    // I have seen HTTP 403 connect tunnels actually show interesting data in authentication scenarios.
-                    var sessionFlags403 = new SessionFlagService.ExtensionSessionFlags()
-                    {
-                        SectionTitle = "Broad Logic Checks",
-                        UIBackColour = "Orange",
-                        UITextColour = "Black",
-
-                        SessionType = "Connect Tunnel: " + TLS,
-                        ResponseServer = "Connect Tunnel",
-                        ResponseAlert = "Connect Tunnel",
-                        ResponseComments = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
-                        + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
-                        + "<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>",
-
-                        SessionAuthenticationConfidenceLevel = 5,
-                        SessionTypeConfidenceLevel = 5,
-                        SessionResponseServerConfidenceLevel = 5
-
-                    };
-
-                    var sessionFlagsJson403 = JsonConvert.SerializeObject(sessionFlags403);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson403);
-                    break;
                 case 200:
                     var sessionFlags200 = new SessionFlagService.ExtensionSessionFlags()
                     {
@@ -238,14 +215,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "Broad Logic Checks",
-                UIBackColour = "Gray",
+                UIBackColour = "Orange",
                 UITextColour = "Black",
 
                 SessionType = "Loopback Tunnel",
                 ResponseServer = "Loopback Tunnel",
                 ResponseAlert = "Loopback Tunnel",
                 ResponseCodeDescription = "Loopback Tunnel",
-                ResponseComments = "Seeing many or few of these? Either way these aren't Microsoft365 traffic sessions. "
+                ResponseComments = "Seeing many or few of these? Either way these aren't typical Microsoft365 traffic sessions. "
                 + "They may be an indication of a proxy client forcing traffic down a certain network path?"
                 + "If there's no Microsoft365 client traffic in this Fiddler trace and it's suspected this could be a factor, "
                 + "change your network, try a different machine without any proxy client / proxy configuration in place.",

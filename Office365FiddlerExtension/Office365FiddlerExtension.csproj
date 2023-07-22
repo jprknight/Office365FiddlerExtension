@@ -197,6 +197,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\Json\SessionClassificationService.cs" />
     <Compile Include="Services\Json\URLsJsonService.cs" />
     <Compile Include="Services\Json\VersionJsonService.cs" />
     <Compile Include="Services\Fiddler\RulesetService.cs" />
@@ -256,13 +257,14 @@
     </None>
     <None Include="ApplicationInsights.config" />
     <None Include="Deploy-Office365FiddlerExtension.ps1" />
-    <None Include="ExtensionURLs.json" />
+    <None Include="Json\ExtensionURLs.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="ExtensionVersion.json" />
+    <None Include="Json\ExtensionVersion.json" />
+    <None Include="Json\SessionClassification.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="update.xml" />
