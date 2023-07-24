@@ -22,7 +22,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
-            var SessionClassificationJson = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
+            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|FiddlerUpdateSessions");
 
             if (this.session.hostname == "www.fiddler2.com" && this.session.uriContains("UpdateCheck.aspx"))
             {
@@ -31,19 +31,18 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "Broad Logic Checks",
-                    UIBackColour = "Gray",
-                    UITextColour = "Black",
 
                     SessionType = "Fiddler Update Check",
                     ResponseServer = "Fiddler Update Check",
                     ResponseAlert = "Fiddler Update Check",
                     ResponseCodeDescription = "Fiddler Update Check",
-                    ResponseComments = "This is Fiddler itself checking for updates. It has nothing to do with the Office 365 Fiddler Extension.",
+                    ResponseComments = "This is Fiddler itself checking for updates.",
                     Authentication = "Fiddler Update Check",
 
-                    SessionAuthenticationConfidenceLevel = 10,
-                    SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 10
+                    SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
+                    SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                    SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                    SessionSeverity = sessionClassificationJson.SessionSeverity
                 };
                 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -109,11 +108,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 switch (this.session.responseCode)
                 {
                 case 200:
+                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|ConnectTunnelSessions200");
+
                     var sessionFlags200 = new SessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "Broad Logic Checks",
-                        UIBackColour = "Orange",
-                        UITextColour = "Black",
 
                         SessionType = "Connect Tunnel: " + TLS,
                         ResponseCodeDescription = "200 OK",
@@ -125,20 +124,21 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                             
                         Authentication = "Connect Tunnel: " + TLS,
 
-                        SessionAuthenticationConfidenceLevel = 10,
-                        SessionTypeConfidenceLevel = 10,
-                        SessionResponseServerConfidenceLevel = 10
+                        SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
+                        SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                        SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                        SessionSeverity = sessionClassificationJson.SessionSeverity
                     };
 
                     var sessionFlagsJson200 = JsonConvert.SerializeObject(sessionFlags200);
                     SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson200);
                     break;
                 default:
+                    sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|ConnectTunnelSessionsDefault");
+
                     var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "Broad Logic Checks",
-                        UIBackColour = "Orange",
-                        UITextColour = "Black",
 
                         SessionType = "Connect Tunnel: " + TLS,
                         ResponseServer = "Connect Tunnel",
@@ -149,9 +149,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                         Authentication = "Connect Tunnel: " + TLS,
 
-                        SessionAuthenticationConfidenceLevel = 5,
-                        SessionTypeConfidenceLevel = 5,
-                        SessionResponseServerConfidenceLevel = 5
+                        SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
+                        SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                        SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                        SessionSeverity = sessionClassificationJson.SessionSeverity
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -172,13 +173,13 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             //
             if ((this.session.url.Contains("autodiscover") && (this.session.oResponse["server"].Contains("Apache"))))
             {
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|ApacheAutodiscover");
+
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Apache is answering Autodiscover requests! Investigate this first!.");
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "Broad Logic Checks",
-                    UIBackColour = "Red",
-                    UITextColour = "Black",
 
                     SessionType = "***APACHE AUTODISCOVER ***",
                     ResponseCodeDescription = "200 OK",
@@ -191,9 +192,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     + "https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under </a></p>"
                     + "<p>Beyond this the web administrator responsible for the server needs to stop the Apache web server from answering these requests.</p>",
 
-                    SessionAuthenticationConfidenceLevel = 10,
-                    SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 10
+                    SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
+                    SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                    SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                    SessionSeverity = sessionClassificationJson.SessionSeverity
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -210,13 +212,13 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
+            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|LoopBackTunnel");
+
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Loopback Tunnel.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "Broad Logic Checks",
-                UIBackColour = "Orange",
-                UITextColour = "Black",
 
                 SessionType = "Loopback Tunnel",
                 ResponseServer = "Loopback Tunnel",
@@ -228,9 +230,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 + "change your network, try a different machine without any proxy client / proxy configuration in place.",
                 Authentication = "Loopback Tunnel",
 
-                SessionAuthenticationConfidenceLevel = 10,
-                SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 10
+                SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionClassificationJson.SessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

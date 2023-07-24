@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
+using Office365FiddlerExtension.UI;
 
 namespace Office365FiddlerExtension
 {
@@ -60,9 +61,8 @@ namespace Office365FiddlerExtension
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(0, CmiProcessSelectedSessions);
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(1, CmiProcessAllSessions);
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(2, CmiClearAllSessionProcessing);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(3, Separator);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(4, CmiSetSessionSeverity);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(5, Separator);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(3, CmiSetSessionSeverity);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(4, Separator);
 
             this.CmiSetSessionSeverity.MenuItems.AddRange(new MenuItem[] { 
                 this.CmiSessionSeverityZero, 
@@ -88,32 +88,32 @@ namespace Office365FiddlerExtension
 
         private void CmiSessionSeverityZero_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            EnhanceSessionUX.Instance.SetSessionUninteresting();
         }
 
         private void CmiSessionSeverityTen_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            EnhanceSessionUX.Instance.SetSessionFalsePositive();
         }
 
         private void CmiSessionSeverityTwenty_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            EnhanceSessionUX.Instance.SetSessionNormal();
         }
 
         private void CmiSessionSeverityThirty_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            EnhanceSessionUX.Instance.SetSessionWarning();
         }
 
         private void CmiSessionSeverityFourty_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            EnhanceSessionUX.Instance.SetSessionConcerning();
         }
 
         private void CmiSessionSeverityFifty_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            EnhanceSessionUX.Instance.SetSessionSevere();
         }
 
         private void CmiClearAllSessionProcessing_Click(object sender, EventArgs e)

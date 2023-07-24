@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Fiddler;
+using Newtonsoft.Json;
 
 namespace Office365FiddlerExtension.UI
 {
@@ -23,9 +24,6 @@ namespace Office365FiddlerExtension.UI
         {
             this.session = session;
 
-            // Extension Json Data.
-            this.session["Microsoft365FiddlerExtensionJson"] = null;
-
             // Session colours.
             this.session["UI-BACKCOLOR"] = "#FFFFFF";
             this.session["UI-COLOR"] = "#000000";
@@ -38,41 +36,159 @@ namespace Office365FiddlerExtension.UI
             var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
 
             // Set session background colour. Default to gray if undefined.
-            switch (ExtensionSessionFlags.UIBackColour.ToLower())
+            switch (ExtensionSessionFlags.SessionSeverity)
             {
-                case "blue":
-                    this.session["ui-backcolor"] = "#81BEF7";
+                case 0: // GRAY - Uninteresting.
+                    this.session["UI-BACKCOLOR"] = "#BDBDBD";
+                    this.session["UI-COLOR"] = "#000000";
                     break;
-                case "green":
-                    this.session["ui-backcolor"] = "#81F7BA";
+                case 10: // BLUE - False Positive.
+                    this.session["UI-BACKCOLOR"] = "#81BEF7";
+                    this.session["UI-COLOR"] = "#000000";
                     break;
-                case "red":
-                    this.session["ui-backcolor"] = "#F06141";
+                case 20: // GREEN - Normal.
+                    this.session["uUI-BACKCOLOR"] = "#81F7BA";
+                    this.session["UI-COLOR"] = "#000000";
                     break;
-                case "orange":
-                    this.session["ui-backcolor"] = "#F59758";
+                case 30: // ORANGE - Warning.
+                    this.session["UI-BACKCOLOR"] = "#F59758";
+                    this.session["UI-COLOR"] = "#000000";
                     break;
-                case "black":
+                case 40: // BLACK - Concerning.
                     this.session["ui-backcolor"] = "#000000";
+                    this.session["UI-COLOR"] = "#F06141";
                     break;
+                case 50: // RED - Severe.
+                    this.session["UI-BACKCOLOR"] = "#F06141";
+                    this.session["UI-COLOR"] = "#000000";
+                    break;                    
                 default:
                     // Default to gray, so we know if something isn't caught.
-                    this.session["ui-backcolor"] = "#BDBDBD";
+                    this.session["UI-BACKCOLOR"] = "#BDBDBD";
+                    this.session["UI-COLOR"] = "#000000";
                     break;
             }
-
-            // Set session text colour. Default to black.
-            switch (ExtensionSessionFlags.UITextColour.ToLower())
-            {
-                case "red":
-                    this.session["ui-color"] = "#F06141";
-                    break;
-                default:
-                    this.session["ui-color"] = "#000000";
-                    break;
-            }
-
             this.session.RefreshUI();
+        }
+
+        public void SetSessionUninteresting()
+        {
+            var sessions = FiddlerApplication.UI.GetSelectedSessions();
+
+            foreach (var session in sessions)
+            {
+                this.session = session;
+                this.session["UI-BACKCOLOR"] = "#BDBDBD";
+                this.session["UI-COLOR"] = "#000000";
+                this.session.RefreshUI();
+
+                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                {
+                    SessionSeverity = 0
+                };
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            }
+        }
+
+        public void SetSessionFalsePositive()
+        {
+            var sessions = FiddlerApplication.UI.GetSelectedSessions();
+
+            foreach (var session in sessions)
+            {
+                this.session = session;
+                this.session["UI-BACKCOLOR"] = "#81BEF7";
+                this.session["UI-COLOR"] = "#000000";
+                this.session.RefreshUI();
+
+                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                {
+                    SessionSeverity = 10
+                };
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            }
+        }
+
+        public void SetSessionNormal()
+        {
+            var sessions = FiddlerApplication.UI.GetSelectedSessions();
+
+            foreach (var session in sessions)
+            {
+                this.session = session;
+                this.session["UI-BACKCOLOR"] = "#81F7BA";
+                this.session["UI-COLOR"] = "#000000";
+                this.session.RefreshUI();
+
+                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                {
+                    SessionSeverity = 20
+                };
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            }
+        }
+
+        public void SetSessionWarning()
+        {
+            var sessions = FiddlerApplication.UI.GetSelectedSessions();
+
+            foreach (var session in sessions)
+            {
+                this.session = session;
+                this.session["UI-BACKCOLOR"] = "#F59758";
+                this.session["UI-COLOR"] = "#000000";
+                this.session.RefreshUI();
+
+                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                {
+                    SessionSeverity = 30
+                };
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            }
+        }
+
+        public void SetSessionConcerning()
+        {
+            var sessions = FiddlerApplication.UI.GetSelectedSessions();
+
+            foreach (var session in sessions)
+            {
+                this.session = session;
+                this.session["UI-BACKCOLOR"] = "#000000";
+                this.session["UI-COLOR"] = "#F06141";
+                this.session.RefreshUI();
+
+                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                {
+                    SessionSeverity = 40
+                };
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            }
+        }
+
+        public void SetSessionSevere()
+        {
+            var sessions = FiddlerApplication.UI.GetSelectedSessions();
+
+            foreach (var session in sessions)
+            {
+                this.session = session;
+                this.session["UI-BACKCOLOR"] = "#F06141";
+                this.session["UI-COLOR"] = "#000000";
+                this.session.RefreshUI();
+
+                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                {
+                    SessionSeverity = 50
+                };
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            }
         }
     }
 }

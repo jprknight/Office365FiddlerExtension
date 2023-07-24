@@ -33,12 +33,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-
-            var parsedObject = JObject.Parse(Preferences.SessionClassification);
-
-            var popupJson = parsedObject["BroadLogicChecks"]["FiddlerUpdateSessions"].ToString();
-
-            var popupObj = JsonConvert.DeserializeObject<Popup>(popupJson);
+            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|FiddlerUpdateSessions");
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 503 Service Unavailable. FederatedStsUnreachable in response body!");
 
@@ -68,10 +63,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 + "<p>If however you get the expected responses, this <b>does not neccessarily mean the federation service / everything authentication is healthy</b>. "
                 + "Further investigation is advised. You could try hitting these endpoints a few times and see if you get an intermittent failure.</p>",
 
-                SessionAuthenticationConfidenceLevel = popupObj.SessionAuthenticationConfidenceLevel,
+                SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = 10,
                 SessionResponseServerConfidenceLevel = 5,
-                SessionSeverity = 100
+                SessionSeverity = 50
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

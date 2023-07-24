@@ -5,12 +5,13 @@
     "SessionTypeConfidenceLevel": "Runs from 0 - 10, 10 being absolutely certain the correct type has been determined for the session.",
     "SessionSeverity": "Runs on a scale of 0 - 50 and determines the colours of sessions used by the extension.",
     "SessionColours": "According to session severity",
+    "-=-=-=-=-=-": "-=-=-=-=-=-",
     "SessionSeverityZero": "0 Gray (Uninteresting) - For sessions which don't have any relation to the current trace being analysed for the issue being worked on.",
     "SessionSeverityTen": "10 - Blue (False Positive) - For sessions where an error could be falsely blamed for the issue being investigated.",
     "SessionSeverityTwenty": "20 - Green (Normal) - For sessions where no error condition is found.",
     "SessionSeverityThirty": "30 - Orange (Warning) - For sessions which could present an issue, but are stil expected to be seen in normal working scenarios. HTTP 401s authentication challenges are a good example of this.",
     "SessionSeverityFourty": "40 - Black (Concerning) - For sessions which could be interpretted as a false negative. HTTP 200s containing an error or failure are a good example of this.",
-    "SessionSeverityFifty":  "50 - Red (Severe) - For sessions where a known error condition has been detected."
+    "SessionSeverityFifty": "50 - Red (Severe) - For sessions where a known error condition has been detected."
   },
   "BroadLogicChecks": {
     "FiddlerUpdateSessions": {
@@ -42,6 +43,32 @@
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 10,
       "SessionSeverity": 30
+    }
+  },
+  "HTTP0s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 10,
+    "SessionSeverity": 50
+  },
+  "HTTP103s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 0
+  },
+  "HTTP200s": {
+    "HTTP_200_ClientAccessRule": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 50
+    },
+    "HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 50
     }
   }
 }

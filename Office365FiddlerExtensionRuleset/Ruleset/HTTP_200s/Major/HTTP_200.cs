@@ -38,13 +38,13 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
+            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_ClientAccessRule");
+
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Connection blocked by Client Access Rules.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_200s_Client_Access_Rule",
-                UIBackColour = "Red",
-                UITextColour = "Black",
 
                 SessionType = "!CLIENT ACCESS RULE!",
                 ResponseCodeDescription = "200 OK Client Access Rule",
@@ -56,10 +56,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 + "OutlookAnywhere includes MAPI over HTTP.<p>"
                 + "<p>Remove OutlookAnywhere from the client access rule, wait 1 hour, then test again.</p>",
 
-                SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5,
-                SessionSeverity = 100
+                SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionClassificationJson.SessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -87,13 +87,13 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
+            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled");
+
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Store Error Protocol Disabled.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_200s_Mapi_Protocol_Disabled",
-                UIBackColour = "Red",
-                UITextColour = "Black",
 
                 SessionType = "***PROTOCOL DISABLED***",
                 ResponseCodeDescription = "200 OK - <b><span style='color:red'>PROTOCOL DISABLED</span></b>",
@@ -101,10 +101,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseComments = "<b><span style='color:red'>Store Error Protocol disabled found in response body.</span></b>"
                 + "Expect user to <b>NOT be able to connect using connecting client application.</b>.",
 
-                SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5,
-                SessionSeverity = 100
+                SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionClassificationJson.SessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

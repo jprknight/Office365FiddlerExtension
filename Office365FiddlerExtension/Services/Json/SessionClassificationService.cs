@@ -11,7 +11,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Office365FiddlerExtension.Services.VersionJsonService;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -24,6 +23,46 @@ namespace Office365FiddlerExtension.Services
 
         private static SessionClassificationService _instance;
         public static SessionClassificationService Instance => _instance ?? (_instance = new SessionClassificationService());
+
+        /// <summary>
+        /// Expecting a "Section|Section" to be passed into function.
+        /// Function allows multiple depths to be passed in. Expecting 2 or 3 is the most likely use case.
+        /// </summary>
+        /// <param name="section"></param>
+        public SessionClassificationJsonSection GetSessionClassificationJsonSection(string section)
+        {
+            string[] sectionPieces = section.Split('|');
+
+            var parsedObject = JObject.Parse(Preferences.SessionClassification);
+
+            var jsonSection = "";
+
+            if (sectionPieces.Length == 0)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} sectionPieces is empty.");
+                return null;
+            }
+            else if (sectionPieces.Length == 1) 
+            {
+                var sectionPiece0 = sectionPieces[0];
+                jsonSection = parsedObject[sectionPiece0].ToString();
+            }
+            else if (sectionPieces.Length == 2)
+            {
+                var sectionPiece0 = sectionPieces[0];
+                var sectionPiece1 = sectionPieces[1];
+                jsonSection = parsedObject[sectionPiece0][sectionPiece1].ToString();
+            }
+            else if (sectionPieces.Length == 3)
+            {
+                var sectionPiece0 = sectionPieces[0];
+                var sectionPiece1 = sectionPieces[1];
+                var sectionPiece2 = sectionPieces[2];
+                jsonSection = parsedObject[sectionPiece0][sectionPiece1][sectionPiece2].ToString();
+            }
+            
+            return JsonConvert.DeserializeObject<SessionClassificationJsonSection>(jsonSection);
+        }
 
         public SessionClassificationFlags GetDeserializedSessionFlags(Session Session)
         {
@@ -92,5 +131,16 @@ namespace Office365FiddlerExtension.Services
 
             public string FiddlerUpdateSessions { get; set; }
         }
+    }
+
+    public class SessionClassificationJsonSection
+    {
+        public int SessionAuthenticationConfidenceLevel { get; set; }
+
+        public int SessionTypeConfidenceLevel { get; set; }
+
+        public int SessionResponseServerConfidenceLevel { get; set; }
+
+        public int SessionSeverity { get; set; }
     }
 }

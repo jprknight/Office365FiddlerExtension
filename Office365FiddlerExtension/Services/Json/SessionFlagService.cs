@@ -375,11 +375,6 @@ namespace Office365FiddlerExtension.Services
                 updatedSessionFlagsJson.SessionResponseServerConfidenceLevel = existingSessionFlagsJson.SessionResponseServerConfidenceLevel;
             }
 
-            if (updatedSessionFlagsJson.SessionSeverity < existingSessionFlagsJson.SessionSeverity)
-            {
-                updatedSessionFlagsJson.SessionSeverity = existingSessionFlagsJson.SessionSeverity;
-            }
-
             var newJsonData = JsonConvert.SerializeObject(updatedSessionFlagsJson, Formatting.Indented);
 
             // Save the new Json to the session flag.
