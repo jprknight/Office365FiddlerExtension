@@ -22,27 +22,27 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP203s");
+
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 203 Non-Authoritative Information.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_203s",
-                UIBackColour = "Gray",
-                UITextColour = "Black",
 
-                SessionType = "HTTP_203s",
+                SessionType = "Non-Authoritative Info",
                 ResponseCodeDescription = "203 Non-Authoritative Information",
                 ResponseAlert = "203 Non-Authoritative Information.",
                 ResponseComments = "203 Non-Authoritative Information.",
 
-                SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5,
-                SessionSeverity = 0
+                SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionClassificationJson.SessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

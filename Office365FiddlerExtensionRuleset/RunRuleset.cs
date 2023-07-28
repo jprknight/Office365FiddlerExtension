@@ -245,7 +245,7 @@ namespace Office365FiddlerExtensionRuleset
                     HTTP_103.Instance.HTTP_103_Checkpoint(this.session);
                     break;
                 case 200:
-                    HTTP_200.Instance.HTTP_200_ClientAccessRule(this.session);
+                    HTTP_200_ClientAccessRule.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -253,7 +253,7 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled(this.session);
+                    HTTP_200_Outlook_MAPI_Protocol_Disabled.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -261,7 +261,7 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi(this.session);
+                    HTTP_200_Outlook_MAPI_Exchange_Online.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -269,7 +269,7 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_Outlook_Exchange_OnPremise_Mapi(this.session);
+                    HTTP_200_Outlook_MAPI_Exchange_OnPremise.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -277,7 +277,7 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_Outlook_Web_App(this.session);
+                    HTTP_200_OWA.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -285,7 +285,7 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_Outlook_RPC(this.session);
+                    HTTP_200_Outlook_RPC.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -293,7 +293,7 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_Outlook_NSPI(this.session);
+                    HTTP_200_Outlook_NSPI.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -301,7 +301,7 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found(this.session);
+                    HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -309,7 +309,7 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound(this.session);
+                    HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_AddressNotFound.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -317,7 +317,7 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun(this.session);
+                    HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -325,7 +325,7 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun(this.session);
+                    HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -333,7 +333,7 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_Unified_Groups_Settings(this.session);
+                    HTTP_200_Unified_Groups_Settings.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -341,7 +341,7 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_3S_Suggestions(this.session);
+                    HTTP_200_3S_Suggestions.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -349,7 +349,7 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_REST_People_Request(this.session);
+                    HTTP_200_REST_People_Request.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -357,7 +357,7 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_OnPremise_Any_Other_EWS(this.session);
+                    HTTP_200_Exchange_OnPremise_Any_Other_EWS.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -365,7 +365,7 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_Microsoft365_Any_Other_EWS(this.session);
+                    HTTP_200_Exchange_Online_Any_Other_EWS.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -373,7 +373,23 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200.Instance.HTTP_200_Lurking_Errors(this.session);
+                    HTTP_200_Javascript.Instance.Run(this.session);
+                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+                    {
+                        break;
+                    }
+
+                    ///////////////////////////////
+
+                    HTTP_200_Lurking_Errors.Instance.Run(this.session);
+                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+                    {
+                        break;
+                    }
+
+                    ///////////////////////////////
+
+                    HTTP_200_Actually_OK.Instance.Run(this.session);
                     break;
                 case 201:
                     HTTP_201.Instance.HTTP_201_Created(this.session);
@@ -765,7 +781,7 @@ namespace Office365FiddlerExtensionRuleset
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     break;
             }
         }

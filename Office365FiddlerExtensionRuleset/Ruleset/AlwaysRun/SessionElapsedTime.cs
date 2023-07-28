@@ -36,7 +36,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
             else
             {
@@ -47,7 +47,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
 
@@ -74,7 +74,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                 }
                 // If the roundtrip is over warning and under slow running thresholds; orange.
                 else if (ClientMilliseconds > SettingsJsonService.Instance.WarningSessionTimeThreshold && ClientMilliseconds < SettingsJsonService.Instance.SlowRunningSessionThreshold)
@@ -86,7 +86,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                 }
                 // If roundtrip is over slow running threshold; red.
                 else if (ClientMilliseconds > SettingsJsonService.Instance.SlowRunningSessionThreshold)
@@ -98,7 +98,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                 }
                 // If the roundtrip time is more than 1 second show the result in seconds.
                 else
@@ -112,7 +112,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else
                     {
@@ -123,7 +123,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                 }
             }
@@ -136,7 +136,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
     }

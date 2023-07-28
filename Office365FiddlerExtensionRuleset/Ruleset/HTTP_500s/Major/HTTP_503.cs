@@ -20,8 +20,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_503 Instance => _instance ?? (_instance = new HTTP_503());
 
-
-
         public void HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable(Session session)
         {
             //  HTTP 503: SERVICE UNAVAILABLE.
@@ -33,7 +31,9 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|FiddlerUpdateSessions");
+            // REVIEW THIS -- Don't leave this like this, it is broken for release!!!
+
+            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups");
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 503 Service Unavailable. FederatedStsUnreachable in response body!");
 
@@ -64,13 +64,13 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 + "Further investigation is advised. You could try hitting these endpoints a few times and see if you get an intermittent failure.</p>",
 
                 SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
-                SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5,
-                SessionSeverity = 50
+                SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionClassificationJson.SessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);           
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);           
         }
 
         public void HTTP_503_Service_Unavailable_Everything_Else(Session session)
@@ -100,18 +100,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
-    }
-
-    public class Popup
-    {
-        public int SessionAuthenticationConfidenceLevel { get; set; }
-
-        public int SessionTypeConfidenceLevel { get; set; }
-
-        public int SessionResponseServerConfidenceLevel { get; set; }
-
-        public int SessionSeverity { get; set; }
     }
 }

@@ -46,7 +46,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
                 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
 
@@ -131,7 +131,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     };
 
                     var sessionFlagsJson200 = JsonConvert.SerializeObject(sessionFlags200);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson200);
+                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson200, false);
                     break;
                 default:
                     sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|ConnectTunnelSessionsDefault");
@@ -156,7 +156,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     break;
                 }
             }
@@ -199,7 +199,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
 
@@ -237,7 +237,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

@@ -1,74 +1,427 @@
 {
   "DataStructureHelper": {
     "About": "This helper isn't used in code, it's just here to describe the data.",
+    "WebUpdates":  "Session classification numbers are in this Json file to enable the extension to pull updates from this file and utilise them within the ruleset for session processing.",
     "SessionAuthenticationConfidenceLevel": "Runs from 0 - 10, 10 being absolutely certain the correct authentication has been determined for the session.",
     "SessionTypeConfidenceLevel": "Runs from 0 - 10, 10 being absolutely certain the correct type has been determined for the session.",
-    "SessionSeverity": "Runs on a scale of 0 - 50 and determines the colours of sessions used by the extension.",
+    "SessionSeverity": "Runs on a scale of 0 - 60 and determines the colours of sessions used by the extension.",
     "SessionColours": "According to session severity",
     "-=-=-=-=-=-": "-=-=-=-=-=-",
-    "SessionSeverityZero": "0 Gray (Uninteresting) - For sessions which don't have any relation to the current trace being analysed for the issue being worked on.",
-    "SessionSeverityTen": "10 - Blue (False Positive) - For sessions where an error could be falsely blamed for the issue being investigated.",
-    "SessionSeverityTwenty": "20 - Green (Normal) - For sessions where no error condition is found.",
-    "SessionSeverityThirty": "30 - Orange (Warning) - For sessions which could present an issue, but are stil expected to be seen in normal working scenarios. HTTP 401s authentication challenges are a good example of this.",
-    "SessionSeverityFourty": "40 - Black (Concerning) - For sessions which could be interpretted as a false negative. HTTP 200s containing an error or failure are a good example of this.",
-    "SessionSeverityFifty": "50 - Red (Severe) - For sessions where a known error condition has been detected."
+    "SessionSeverityTen": "10 Gray (Uninteresting) - For sessions which don't have any relation to the current trace being analysed for the issue being worked on.",
+    "SessionSeverityTwenty": "20 - Blue (False Positive) - For sessions where an error could be falsely blamed for the issue being investigated.",
+    "SessionSeverityThirty": "30 - Green (Normal) - For sessions where no error condition is found.",
+    "SessionSeverityFourty": "40 - Orange (Warning) - For sessions which could present an issue, but are stil expected to be seen in normal working scenarios. HTTP 401s authentication challenges are a good example of this.",
+    "SessionSeverityFifty": "50 - Black (Concerning) - For sessions which could be interpretted as a false negative. HTTP 200s containing an error or failure are a good example of this.",
+    "SessionSeveritySixty": "60 - Red (Severe) - For sessions where a known error condition has been detected. Usually calling out 'Start here first'."
   },
   "BroadLogicChecks": {
     "FiddlerUpdateSessions": {
       "SessionAuthenticationConfidenceLevel": 10,
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 10,
-      "SessionSeverity": 0
+      "SessionSeverity": 10
     },
     "ConnectTunnelSessions200": {
       "SessionAuthenticationConfidenceLevel": 10,
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 10,
-      "SessionSeverity": 30
+      "SessionSeverity": 40
     },
     "ConnectTunnelSessionsDefault": {
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 5,
       "SessionResponseServerConfidenceLevel": 5,
-      "SessionSeverity": 30
+      "SessionSeverity": 40
     },
     "ApacheAutodiscover": {
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 5,
       "SessionResponseServerConfidenceLevel": 5,
-      "SessionSeverity": 50
+      "SessionSeverity": 60
     },
     "LoopBackTunnel": {
       "SessionAuthenticationConfidenceLevel": 10,
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 10,
-      "SessionSeverity": 30
+      "SessionSeverity": 40
     }
   },
   "HTTP0s": {
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 10,
-    "SessionSeverity": 50
+    "SessionSeverity": 60
   },
   "HTTP103s": {
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
-    "SessionSeverity": 0
+    "SessionSeverity": 10
   },
   "HTTP200s": {
     "HTTP_200_ClientAccessRule": {
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 5,
-      "SessionSeverity": 50
+      "SessionSeverity": 60
     },
     "HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled": {
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_200_Outlook_Exchange_OnPremise_Mapi": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_200_Outlook_Web_App": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_200_Outlook_RPC": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 5,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_200_Outlook_NSPI": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun_Unexpected_XML_Response": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 5,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun_XML_Response_Not_Found": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_200_Unified_Groups_Settings": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_200_Unified_Groups_Settings_Settings_Not_Found": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 40
+    },
+    "HTTP_200_3S_Suggestions": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 5,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_200_REST_People_Request": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 5,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_200_Microsoft365_Any_Other_EWS": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 5,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_200_OnPremise_Any_Other_EWS": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 5,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_200_Javascript": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 40
+    },
+    "HTTP_200_Lurking_Errors": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
       "SessionSeverity": 50
+    },
+    "HTTP_200_Actually_OK": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    }
+  },
+  "HTTP201s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP202s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP203s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP204s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP205s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP206s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP207s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP208s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP218s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP226s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP300s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_301s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 30
+  },
+  "HTTP302s": {
+    "HTTP_302_Redirect_AutoDiscover": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_302_Redirect_AllOthers": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    }
+  },
+  "HTTP_303s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_304s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_305s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_306s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_307s": {
+    "HTTP_307_AutoDiscover_Temporary_Redirect": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_307_Other_AutoDiscover_Redirects": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 40
+    },
+    "HTTP_307_All_Other_Redirects": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 10
+    },
+    "HTTP_308s": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 10
+    },
+    "HTTP_400s": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 10
+    },
+    "HTTP_401s": {
+      "HTTP_401_Exchange_Online_AutoDiscover": {
+        "SessionAuthenticationConfidenceLevel": 5,
+        "SessionTypeConfidenceLevel": 10,
+        "SessionResponseServerConfidenceLevel": 5,
+        "SessionSeverity": 40
+      },
+      "HTTP_401_Exchange_OnPremise_AutoDiscover": {
+        "SessionAuthenticationConfidenceLevel": 5,
+        "SessionTypeConfidenceLevel": 10,
+        "SessionResponseServerConfidenceLevel": 5,
+        "SessionSeverity": 40
+      },
+      "HTTP_401_EWS": {
+        "SessionAuthenticationConfidenceLevel": 5,
+        "SessionTypeConfidenceLevel": 10,
+        "SessionResponseServerConfidenceLevel": 5,
+        "SessionSeverity": 40
+      },
+      "HTTP_401_Everything_Else": {
+        "SessionAuthenticationConfidenceLevel": 5,
+        "SessionTypeConfidenceLevel": 10,
+        "SessionResponseServerConfidenceLevel": 5,
+        "SessionSeverity": 40
+      }
+    },
+    "HTTP_403s": {
+      "HTTP_403_Forbidden_Proxy_Block": {
+        "SessionAuthenticationConfidenceLevel": 5,
+        "SessionTypeConfidenceLevel": 10,
+        "SessionResponseServerConfidenceLevel": 5,
+        "SessionSeverity": 60
+      },
+      "HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set": {
+        "SessionAuthenticationConfidenceLevel": 5,
+        "SessionTypeConfidenceLevel": 10,
+        "SessionResponseServerConfidenceLevel": 5,
+        "SessionSeverity": 60
+      },
+      "HTTP_403_Forbidden_Everything_Else": {
+        "SessionAuthenticationConfidenceLevel": 5,
+        "SessionTypeConfidenceLevel": 10,
+        "SessionResponseServerConfidenceLevel": 5,
+        "SessionSeverity": 60
+      }
+    },
+    "HTTP_404s": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 40
+    },
+    "HTTP407s": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP456s": {
+      "HTTP_456_Multi_Factor_Required": {
+        "SessionAuthenticationConfidenceLevel": 5,
+        "SessionTypeConfidenceLevel": 10,
+        "SessionResponseServerConfidenceLevel": 5,
+        "SessionSeverity": 60
+      },
+      "HTTP_456_OAuth_Not_Available": {
+        "SessionAuthenticationConfidenceLevel": 5,
+        "SessionTypeConfidenceLevel": 10,
+        "SessionResponseServerConfidenceLevel": 5,
+        "SessionSeverity": 60
+      },
+      "HTTP_456_Anything_Else": {
+        "SessionAuthenticationConfidenceLevel": 5,
+        "SessionTypeConfidenceLevel": 10,
+        "SessionResponseServerConfidenceLevel": 5,
+        "SessionSeverity": 60
+      }
     }
   }
 }

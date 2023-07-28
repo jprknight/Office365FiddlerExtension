@@ -22,13 +22,13 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP302s|HTTP_302_Redirect_AutoDiscover");
+
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 302 AutoDiscover Found / Redirect.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_302s",
-                UIBackColour = "Green",
-                UITextColour = "Black",
 
                 SessionType = "Autodiscover Redirect",
                 ResponseCodeDescription = "302 Redirect / Found",
@@ -36,27 +36,27 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseComments = "This type of traffic is typically an Autodiscover redirect response from "
                     + "Exchange On-Premise sending the Outlook client to connect to Exchange Online.",
 
-                SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 5,
-                SessionResponseServerConfidenceLevel = 5,
-                SessionSeverity = 0
+                SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionClassificationJson.SessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         public void HTTP_302_Redirect_AllOthers(Session session)
         {
             this.session = session;
 
+            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP302s|HTTP_302_Redirect_AllOthers");
+
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " + this.session.id + " HTTP 302 Found / Redirect.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_302s",
-                UIBackColour = "Green",
-                UITextColour = "Black",
 
                 SessionType = "Redirect",
                 ResponseCodeDescription = "302 Redirect / Found",
@@ -65,13 +65,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     + "The only potential downfall is too many of them. However if this happens you would normally see a too many "
                     + "redirects exception thrown as a server response.",
 
-                SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5
+                SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionClassificationJson.SessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

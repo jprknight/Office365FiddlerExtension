@@ -58,7 +58,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
 
                     // Highlight server think time in green.
                     if (ServerMilliseconds < 1000)
@@ -69,7 +69,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
                     {
@@ -79,7 +79,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else
                     {
@@ -89,7 +89,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
 
                     // Highlight transit time in red.
@@ -101,7 +101,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
                     {
@@ -111,7 +111,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else
                     {
@@ -121,7 +121,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                 }
                 else
@@ -134,7 +134,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
                     {
@@ -144,7 +144,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else
                     {
@@ -154,7 +154,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
 
                     if (dTransitTimeMilliseconds < 1000)
@@ -165,7 +165,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
                     {
@@ -175,7 +175,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else
                     {
@@ -185,7 +185,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                 }
             }
@@ -198,7 +198,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
     }

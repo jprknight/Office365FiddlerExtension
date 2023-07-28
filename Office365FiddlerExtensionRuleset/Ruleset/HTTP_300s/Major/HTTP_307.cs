@@ -22,6 +22,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP307s|HTTP_307_AutoDiscover_Temporary_Redirect");
+
             // Specific scenario where a HTTP 307 Temporary Redirect incorrectly send an EXO Autodiscover request to an On-Premise resource, breaking Outlook connectivity.
             if (this.session.hostname.Contains("autodiscover") &&
                 (this.session.hostname.Contains("mail.onmicrosoft.com") &&
@@ -33,8 +35,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_307s",
-                    UIBackColour = "Red",
-                    UITextColour = "Black",
 
                     SessionType = "***UNEXPECTED LOCATION***",
                     ResponseCodeDescription = "!307 Temporary Redirect!",
@@ -47,14 +47,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     + "<p>Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.</p>",
                     Authentication = "***UNEXPECTED LOCATION***",
 
-                    SessionAuthenticationConfidenceLevel = 5,
-                    SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 5,
-                    SessionSeverity = 80
+                    SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
+                    SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                    SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                    SessionSeverity = sessionClassificationJson.SessionSeverity
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
 
@@ -63,17 +63,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             this.session = session;
 
-            // The above scenario is not seem, however Temporary Redirects are not normally expected to be seen.
-            // Highlight as a warning.
+            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP307s|HTTP_307_Other_AutoDiscover_Redirects");
+
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 307 Temp Redirect.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_307s",
-                UIBackColour = "Orange",
-                UITextColour = "Black",
 
-                SessionType = "",
+                SessionType = "307 Temporary Redirect",
                 ResponseCodeDescription = "307 Temporary Redirect",
                 ResponseAlert = "HTTP 307 Temporary Redirect",
                 ResponseComments = "Temporary Redirects have been seen to redirect Exchange Online Autodiscover calls "
@@ -81,10 +79,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 + "<p>Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place. </p>"
                 + "<p>If this session is not for an Outlook process then the information above may not be relevant to the issue under investigation.</p>",
 
-                SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5,
-                SessionSeverity = 70
+                SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionClassificationJson.SessionSeverity
             };
         }
 
@@ -93,25 +91,23 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             this.session = session;
 
-            // The above scenario is not seem, however Temporary Redirects are not normally expected to be seen.
-            // Highlight as a warning.
+            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP307s|HTTP_307_All_Other_Redirects");
+
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 307 Temp Redirect.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_307s",
-                UIBackColour = "Orange",
-                UITextColour = "Black",
 
-                SessionType = "",
+                SessionType = "307 Temporary Redirect",
                 ResponseCodeDescription = "307 Temporary Redirect",
                 ResponseAlert = "HTTP 307 Temporary Redirect",
                 ResponseComments = "<p>Temporary Redirects might be an indication of an issue, but aren't in themselves a smoking gun.</p>",
 
-                SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5,
-                SessionSeverity = 0
+                SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionClassificationJson.SessionSeverity
             };
         }
     }

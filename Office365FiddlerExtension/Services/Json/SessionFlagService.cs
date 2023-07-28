@@ -87,8 +87,6 @@ namespace Office365FiddlerExtension.Services
             var SessionFlagsData = new
             {
                 SectionTitle = "",
-                UIBackColour = "",
-                UITextColour = "",
                 SessionType = "",
                 ResponseCodeDescription = "",
                 ResponseServer = "",
@@ -175,10 +173,13 @@ namespace Office365FiddlerExtension.Services
 
         /// <summary>
         /// Take any updates to session flags and save them into the session Json.
+        /// Conditional - Use the condition for Session Severity.
+        /// Unconditional - Always update Session Severity. Used when calling this function fron the context menu.
         /// </summary>
         /// <param name="Session"></param>
         /// <param name="JsonData"></param>
-        public void UpdateSessionFlagJson(Session Session, String JsonData)
+        /// <param name="unconditional"></param>        
+        public void UpdateSessionFlagJson(Session Session, String JsonData, bool unconditional)
         {
             this.session = Session;
 
@@ -374,6 +375,29 @@ namespace Office365FiddlerExtension.Services
             {
                 updatedSessionFlagsJson.SessionResponseServerConfidenceLevel = existingSessionFlagsJson.SessionResponseServerConfidenceLevel;
             }
+
+            // Session Severity.
+
+            // If the severity is being set and unconditional is false peform the logic check before allowing it to be updated.
+            if (!unconditional)
+            {
+                if (updatedSessionFlagsJson.SessionSeverity < existingSessionFlagsJson.SessionSeverity)
+                {
+                    updatedSessionFlagsJson.SessionSeverity = existingSessionFlagsJson.SessionSeverity;
+                }
+            }
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} " +
+                $"SessionTypeConfidenceLevel set to {updatedSessionFlagsJson.SessionTypeConfidenceLevel}");
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} " +
+                $"SessionAuthenticationConfidenceLevel set to {updatedSessionFlagsJson.SessionAuthenticationConfidenceLevel}");
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} " +
+                $"SessionResponseServerConfidenceLevel set to {updatedSessionFlagsJson.SessionResponseServerConfidenceLevel}");
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} " +
+                $"Session Severity set to {updatedSessionFlagsJson.SessionSeverity}");
 
             var newJsonData = JsonConvert.SerializeObject(updatedSessionFlagsJson, Formatting.Indented);
 

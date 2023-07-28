@@ -49,7 +49,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ruleset\HTTP_100s\HTTP_103.cs" />
-    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_3S_Suggestions.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_Actually_OK.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_ClientAccessRule.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_Exchange_Online_Any_Other_EWS.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_Exchange_OnPremise_Any_Other_EWS.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_AddressNotFound.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_Javascript.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_Lurking_Errors.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_Outlook_MAPI_Exchange_Online.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_Outlook_MAPI_Exchange_OnPremise.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_Outlook_MAPI_Protocol_Disabled.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_Outlook_NSPI.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_Outlook_RPC.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_OWA.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_REST_People_Request.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Major\HTTP_200_Unified_Groups_Settings.cs" />
     <Compile Include="Ruleset\HTTP_200s\Minor\HTTP_201.cs" />
     <Compile Include="Ruleset\HTTP_200s\Minor\HTTP_202.cs" />
     <Compile Include="Ruleset\HTTP_200s\Minor\HTTP_203.cs" />

@@ -38,33 +38,33 @@ namespace Office365FiddlerExtension.UI
             // Set session background colour. Default to gray if undefined.
             switch (ExtensionSessionFlags.SessionSeverity)
             {
-                case 0: // GRAY - Uninteresting.
+                case 10: // GRAY - Uninteresting.
                     this.session["UI-BACKCOLOR"] = "#BDBDBD";
                     this.session["UI-COLOR"] = "#000000";
                     break;
-                case 10: // BLUE - False Positive.
+                case 20: // BLUE - False Positive.
                     this.session["UI-BACKCOLOR"] = "#81BEF7";
                     this.session["UI-COLOR"] = "#000000";
                     break;
-                case 20: // GREEN - Normal.
-                    this.session["uUI-BACKCOLOR"] = "#81F7BA";
+                case 30: // GREEN - Normal.
+                    this.session["UI-BACKCOLOR"] = "#81F7BA";
                     this.session["UI-COLOR"] = "#000000";
                     break;
-                case 30: // ORANGE - Warning.
+                case 40: // ORANGE - Warning.
                     this.session["UI-BACKCOLOR"] = "#F59758";
                     this.session["UI-COLOR"] = "#000000";
                     break;
-                case 40: // BLACK - Concerning.
+                case 50: // BLACK - Concerning.
                     this.session["ui-backcolor"] = "#000000";
                     this.session["UI-COLOR"] = "#F06141";
                     break;
-                case 50: // RED - Severe.
+                case 60: // RED - Severe.
                     this.session["UI-BACKCOLOR"] = "#F06141";
                     this.session["UI-COLOR"] = "#000000";
                     break;                    
                 default:
-                    // Default to gray, so we know if something isn't caught.
-                    this.session["UI-BACKCOLOR"] = "#BDBDBD";
+                    // Default to light pink, so we know if something isn't caught.
+                    this.session["UI-BACKCOLOR"] = "#FFB6C1";
                     this.session["UI-COLOR"] = "#000000";
                     break;
             }
@@ -84,10 +84,10 @@ namespace Office365FiddlerExtension.UI
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SessionSeverity = 0
+                    SessionSeverity = 10
                 };
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
             }
         }
 
@@ -104,10 +104,10 @@ namespace Office365FiddlerExtension.UI
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SessionSeverity = 10
+                    SessionSeverity = 20
                 };
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
             }
         }
 
@@ -124,10 +124,10 @@ namespace Office365FiddlerExtension.UI
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SessionSeverity = 20
+                    SessionSeverity = 30
                 };
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
             }
         }
 
@@ -144,10 +144,10 @@ namespace Office365FiddlerExtension.UI
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SessionSeverity = 30
+                    SessionSeverity = 40
                 };
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
             }
         }
 
@@ -164,10 +164,10 @@ namespace Office365FiddlerExtension.UI
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SessionSeverity = 40
+                    SessionSeverity = 50
                 };
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
             }
         }
 
@@ -184,10 +184,10 @@ namespace Office365FiddlerExtension.UI
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SessionSeverity = 50
+                    SessionSeverity = 60
                 };
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
             }
         }
     }

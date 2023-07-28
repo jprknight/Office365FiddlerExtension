@@ -47,7 +47,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 + "A small number of sessions completing roundtrip in this timeframe is not necessary sign of an issue."
             };
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         public void LongRunningSessionsClientSlow(Session session) {
@@ -83,7 +83,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         public void LongRunningSessionsServerSlow(Session session) {
@@ -119,7 +119,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);           
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);           
         }
     }
 }

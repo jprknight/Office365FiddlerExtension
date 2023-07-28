@@ -22,6 +22,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP206s");
+
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 206 Partial Content.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
@@ -30,7 +32,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 UIBackColour = "Gray",
                 UITextColour = "Black",
 
-                SessionType = "206 Partial Content",
+                SessionType = "Partial Content",
                 ResponseCodeDescription = "206 Partial Content",
                 ResponseAlert = "HTTP 206 Partial Content.",
                 ResponseComments = SessionFlagService.Instance.ResponseCommentsNoKnownIssue(),
@@ -42,7 +44,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

@@ -20,8 +20,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public void HTTP_401_Exchange_Online_AutoDiscover(Session session)
         {
-            // 401.1. Exchange Online Autodiscover
-
             this.session = session;
 
             // Make sure this session is an Exchange Online Autodiscover request.
@@ -31,13 +29,13 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 || (this.session.hostname == "outlook.office365.com")
                 && (this.session.uriContains("autodiscover.xml")))
             {
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_401s|HTTP_401_Exchange_Online_AutoDiscover");
+
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 401 Auth Challenge.");
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_401s",
-                    UIBackColour = "Orange",
-                    UITextColour = "Black",
 
                     SessionType = "Microsoft365 AutoDiscover",
                     ResponseCodeDescription = "401 Unauthorized (RFC 7235)",
@@ -49,32 +47,30 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>",
                     Authentication = "Autodiscover Microsoft365 Auth Challenge",
 
-                    SessionAuthenticationConfidenceLevel = 10,
-                    SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 5,
-                    SessionSeverity = 20
+                    SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
+                    SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                    SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                    SessionSeverity = sessionClassificationJson.SessionSeverity
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
 
         public void HTTP_401_Exchange_OnPremise_AutoDiscover(Session session)
         {
-            // Exchange OnPremise AutoDiscover
-
             this.session = session;
 
             if (this.session.uriContains("/Autodiscover/Autodiscover.xml"))
             {
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_401s|HTTP_401_Exchange_OnPremise_AutoDiscover");
+
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 401 Auth Challenge.");
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_401s",
-                    UIBackColour = "Orange",
-                    UITextColour = "Black",
 
                     SessionType = "Exchange OnPremise AutoDiscover",
                     ResponseCodeDescription = "401 Unauthorized (RFC 7235)",
@@ -85,14 +81,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>",
                     Authentication = "Autodiscover OnPremise Auth Challenge",
 
-                    SessionAuthenticationConfidenceLevel = 10,
-                    SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 5,
-                    SessionSeverity = 20
+                    SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
+                    SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                    SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                    SessionSeverity = sessionClassificationJson.SessionSeverity
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
 
@@ -100,18 +96,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
-            /////////////////////////////
-            //
-            // 401.3 Any Exchange Web Services
+            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_401s|HTTP_401_EWS");
+
             if (session.uriContains("/EWS/Exchange.asmx"))
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 401 EWS call.");
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = "",
-                    UIBackColour = "Orange",
-                    UITextColour = "Black",
+                    SectionTitle = "HTTP_401s",
 
                     SessionType = "Exchange Web Services",
                     ResponseCodeDescription = "401 Exchange Web Services (EWS) call.",
@@ -119,14 +112,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     ResponseComments = "Exchange Web Services (EWS) call.",
                     Authentication = "Auth Challenge",
 
-                    SessionAuthenticationConfidenceLevel = 10,
-                    SessionTypeConfidenceLevel = 10,
-                    SessionResponseServerConfidenceLevel = 5,
-                    SessionSeverity = 20
+                    SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
+                    SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                    SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                    SessionSeverity = sessionClassificationJson.SessionSeverity
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
 
@@ -134,13 +127,13 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_401s|HTTP_401_Everything_Else");
+
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 401 Auth Challenge.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "",
-                UIBackColour = "Orange",
-                UITextColour = "Black",
+                SectionTitle = "HTTP_401s",
 
                 SessionType = "401 Unauthorized",
                 ResponseCodeDescription = "401 Unauthorized (RFC 7235)",
@@ -150,14 +143,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>",
                 Authentication = "Auth Challenge",
 
-                SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5,
-                SessionSeverity = 20
+                SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionClassificationJson.SessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }
