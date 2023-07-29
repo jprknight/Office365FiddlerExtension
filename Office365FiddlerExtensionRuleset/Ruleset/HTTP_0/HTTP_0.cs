@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Reflection;
 using Office365FiddlerExtension.Services;
+using System;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -15,11 +16,34 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public void HTTP_0_NoSessionResponse(Session session)
         {
-            //  HTTP 0: No Response.
-
             this.session = session;
 
-            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP0s");
+            int sessionAuthenticationConfidenceLevel;
+            int sessionTypeConfidenceLevel;
+            int sessionResponseServerConfidenceLevel;
+            int sessionSeverity;
+
+            // Attempt to pull data from the web updated Json data stored in the Fiddler setting.
+            try
+            {
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP0s");
+                sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                sessionSeverity = sessionClassificationJson.SessionSeverity;
+            } 
+            // If that doesn't work revert to hardcoded values.
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+                
+                sessionAuthenticationConfidenceLevel = 5;
+                sessionTypeConfidenceLevel = 10;
+                sessionResponseServerConfidenceLevel = 10;
+                sessionSeverity = 60;
+            }
+            
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 0 No response.");
 
@@ -38,10 +62,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 + "network issue such as congestion on routers, which could be causing issues. The Network Connection Status Indicator (NCSI) on the "
                 + "client computer might also be an area to investigate.</p>",
 
-                SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
-                SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
-                SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
-                SessionSeverity = sessionClassificationJson.SessionSeverity
+                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
