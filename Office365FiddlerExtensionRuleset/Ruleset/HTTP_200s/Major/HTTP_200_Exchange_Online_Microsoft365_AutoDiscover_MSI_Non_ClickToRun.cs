@@ -32,8 +32,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-            // 200 Exchange Online Autodiscover
-
             // Make sure this session is an Exchange Online Autodiscover request.
             // Non-ClickToRun clients redirect to https://autodiscover-s.outlook.com/Autodiscover/AutoDiscover.xml
             if ((this.session.hostname == "autodiscover-s.outlook.com") && (this.session.uriContains("autodiscover.xml")))
@@ -43,7 +41,29 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     (this.session.utilFindInResponse("<MailStore>", false) > 1) &&
                     (this.session.utilFindInResponse("<ExternalUrl>", false) > 1))
                 {
-                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun");
+                    int sessionAuthenticationConfidenceLevel;
+                    int sessionTypeConfidenceLevel;
+                    int sessionResponseServerConfidenceLevel;
+                    int sessionSeverity;
+
+                    try
+                    {
+                        var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun");
+                        sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                        sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                        sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                        sessionSeverity = sessionClassificationJson.SessionSeverity;
+                    }
+                    catch (Exception ex)
+                    {
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                        sessionAuthenticationConfidenceLevel = 5;
+                        sessionTypeConfidenceLevel = 10;
+                        sessionResponseServerConfidenceLevel = 5;
+                        sessionSeverity = 30;
+                    }
 
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML found.");
 
@@ -57,10 +77,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         ResponseComments = "For AutoDiscover calls which go to autodiscover-s.outlook.com this is likely an Outlook (MSI / perpetual license) client"
                         + " being redirected from Exchange On-Premise to Exchange Online.",
 
-                        SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
-                        SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
-                        SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
-                        SessionSeverity = sessionClassificationJson.SessionSeverity
+                        SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                        SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                        SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                        SessionSeverity = sessionSeverity
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -68,7 +88,29 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 }
                 else
                 {
-                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun_Unexpected_XML_Response");
+                    int sessionAuthenticationConfidenceLevel;
+                    int sessionTypeConfidenceLevel;
+                    int sessionResponseServerConfidenceLevel;
+                    int sessionSeverity;
+
+                    try
+                    {
+                        var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun_Unexpected_XML_Response");
+                        sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                        sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                        sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                        sessionSeverity = sessionClassificationJson.SessionSeverity;
+                    }
+                    catch (Exception ex)
+                    {
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                        sessionAuthenticationConfidenceLevel = 5;
+                        sessionTypeConfidenceLevel = 10;
+                        sessionResponseServerConfidenceLevel = 5;
+                        sessionSeverity = 60;
+                    }
 
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Exchange Online / Outlook MSI Autodiscover. Expected XML NOT found!");
 
@@ -82,10 +124,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         ResponseComments = "This session was detected as an AutoDiscover response from Exchange Online. However the response did not contain "
                         + "the expected XML data. Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response.",
 
-                        SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
-                        SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
-                        SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
-                        SessionSeverity = sessionClassificationJson.SessionSeverity
+                        SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                        SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                        SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                        SessionSeverity = sessionSeverity
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

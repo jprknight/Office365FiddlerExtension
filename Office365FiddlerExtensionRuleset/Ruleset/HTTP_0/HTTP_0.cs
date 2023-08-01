@@ -23,7 +23,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             int sessionResponseServerConfidenceLevel;
             int sessionSeverity;
 
-            // Attempt to pull data from the web updated Json data stored in the Fiddler setting.
             try
             {
                 var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP0s");
@@ -31,8 +30,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
                 sessionSeverity = sessionClassificationJson.SessionSeverity;
-            } 
-            // If that doesn't work revert to hardcoded values.
+            }
             catch (Exception ex)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
@@ -44,7 +42,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 60;
             }
             
-
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 0 No response.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()

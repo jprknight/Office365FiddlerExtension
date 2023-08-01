@@ -69,7 +69,29 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             if (RedirectAddress.Contains(".onmicrosoft.com"))
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found");
+                int sessionAuthenticationConfidenceLevel;
+                int sessionTypeConfidenceLevel;
+                int sessionResponseServerConfidenceLevel;
+                int sessionSeverity;
+
+                try
+                {
+                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found");
+                    sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                    sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                    sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                    sessionSeverity = sessionClassificationJson.SessionSeverity;
+                }
+                catch (Exception ex)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                    sessionAuthenticationConfidenceLevel = 5;
+                    sessionTypeConfidenceLevel = 10;
+                    sessionResponseServerConfidenceLevel = 5;
+                    sessionSeverity = 30;
+                }
 
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " + this.session.id + " Exchange OnPremise Autodiscover redirect to Exchange Online / Microsoft365.");
 
@@ -86,10 +108,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     + "</p><p>This is what we want to see, the mail.onmicrosoft.com redirect address (you may know this as the <b>target address</b> or "
                     + "<b>remote routing address</b>) from On-Premise sends Outlook (MSI / Perpetual license) to Office 365 / Exchange Online.</p>",
 
-                    SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
-                    SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
-                    SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
-                    SessionSeverity = sessionClassificationJson.SessionSeverity
+                    SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                    SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                    SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                    SessionSeverity = sessionSeverity
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -100,7 +122,29 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 // Highlight if we got this far and we don't have a redirect address which points to
                 // Exchange Online / Microsoft365 such as: contoso.mail.onmicrosoft.com.
 
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect");
+                int sessionAuthenticationConfidenceLevel;
+                int sessionTypeConfidenceLevel;
+                int sessionResponseServerConfidenceLevel;
+                int sessionSeverity;
+
+                try
+                {
+                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect");
+                    sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                    sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                    sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                    sessionSeverity = sessionClassificationJson.SessionSeverity;
+                }
+                catch (Exception ex)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                    sessionAuthenticationConfidenceLevel = 5;
+                    sessionTypeConfidenceLevel = 10;
+                    sessionResponseServerConfidenceLevel = 5;
+                    sessionSeverity = 60;
+                }
 
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD INCORRECT REDIRECT ADDR! : " + RedirectAddress);
 
@@ -116,10 +160,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     "<p>RedirectAddress: " + RedirectAddress +
                     "</p><p>If this is an Office 365 mailbox the <b>targetAddress from On-Premise is not sending Outlook to Office 365</b>!</p>",
 
-                    SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
-                    SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
-                    SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
-                    SessionSeverity = sessionClassificationJson.SessionSeverity
+                    SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                    SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                    SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                    SessionSeverity = sessionSeverity
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

@@ -40,7 +40,29 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     (this.session.utilFindInResponse("<MailStore>", false) > 1) &&
                     (this.session.utilFindInResponse("<ExternalUrl>", false) > 1))
                 {
-                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun");
+                    int sessionAuthenticationConfidenceLevel;
+                    int sessionTypeConfidenceLevel;
+                    int sessionResponseServerConfidenceLevel;
+                    int sessionSeverity;
+
+                    try
+                    {
+                        var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun");
+                        sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                        sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                        sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                        sessionSeverity = sessionClassificationJson.SessionSeverity;
+                    }
+                    catch (Exception ex)
+                    {
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                        sessionAuthenticationConfidenceLevel = 5;
+                        sessionTypeConfidenceLevel = 5;
+                        sessionResponseServerConfidenceLevel = 5;
+                        sessionSeverity = 30;
+                    }
 
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML found.");
 
@@ -54,10 +76,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         ResponseComments = "For AutoDiscover calls which go to outlook.office365.com this is likely an Outlook Click-To-Run (Downloaded or "
                         + "deployed from Office365) client being redirected from Exchange On-Premise to Exchange Online.",
 
-                        SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
-                        SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
-                        SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
-                        SessionSeverity = sessionClassificationJson.SessionSeverity
+                        SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                        SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                        SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                        SessionSeverity = sessionSeverity
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -65,7 +87,29 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 }
                 else
                 {
-                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun_XML_Response_Not_Found");
+                    int sessionAuthenticationConfidenceLevel;
+                    int sessionTypeConfidenceLevel;
+                    int sessionResponseServerConfidenceLevel;
+                    int sessionSeverity;
+
+                    try
+                    {
+                        var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun_XML_Response_Not_Found");
+                        sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                        sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                        sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                        sessionSeverity = sessionClassificationJson.SessionSeverity;
+                    }
+                    catch (Exception ex)
+                    {
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                        sessionAuthenticationConfidenceLevel = 5;
+                        sessionTypeConfidenceLevel = 10;
+                        sessionResponseServerConfidenceLevel = 5;
+                        sessionSeverity = 60;
+                    }
 
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML NOT found!");
 
@@ -79,10 +123,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         ResponseComments = "This session was detected as an Autodiscover response from Exchange Online. However the response did not contain "
                         + "the expected XML data. Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response.",
 
-                        SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
-                        SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
-                        SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
-                        SessionSeverity = sessionClassificationJson.SessionSeverity
+                        SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                        SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                        SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                        SessionSeverity = sessionSeverity
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
