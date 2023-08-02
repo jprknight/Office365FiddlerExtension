@@ -18,6 +18,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 0 No response.");
+
             int sessionAuthenticationConfidenceLevel;
             int sessionTypeConfidenceLevel;
             int sessionResponseServerConfidenceLevel;
@@ -41,8 +43,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionResponseServerConfidenceLevel = 10;
                 sessionSeverity = 60;
             }
-            
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 0 No response.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {

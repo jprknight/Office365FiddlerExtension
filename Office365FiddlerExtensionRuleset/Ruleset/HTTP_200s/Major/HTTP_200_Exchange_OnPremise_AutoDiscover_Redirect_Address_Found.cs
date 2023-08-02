@@ -69,6 +69,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             if (RedirectAddress.Contains(".onmicrosoft.com"))
             {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " + this.session.id + " Exchange OnPremise Autodiscover redirect to Exchange Online / Microsoft365.");
+
                 int sessionAuthenticationConfidenceLevel;
                 int sessionTypeConfidenceLevel;
                 int sessionResponseServerConfidenceLevel;
@@ -92,8 +94,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     sessionResponseServerConfidenceLevel = 5;
                     sessionSeverity = 30;
                 }
-
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " + this.session.id + " Exchange OnPremise Autodiscover redirect to Exchange Online / Microsoft365.");
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
@@ -122,6 +122,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 // Highlight if we got this far and we don't have a redirect address which points to
                 // Exchange Online / Microsoft365 such as: contoso.mail.onmicrosoft.com.
 
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD INCORRECT REDIRECT ADDR! : " + RedirectAddress);
+
                 int sessionAuthenticationConfidenceLevel;
                 int sessionTypeConfidenceLevel;
                 int sessionResponseServerConfidenceLevel;
@@ -145,8 +147,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     sessionResponseServerConfidenceLevel = 5;
                     sessionSeverity = 60;
                 }
-
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD INCORRECT REDIRECT ADDR! : " + RedirectAddress);
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {

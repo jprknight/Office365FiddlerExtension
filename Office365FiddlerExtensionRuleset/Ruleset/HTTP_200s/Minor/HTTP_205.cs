@@ -22,6 +22,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 205 Reset Content.");
+
             int sessionAuthenticationConfidenceLevel;
             int sessionTypeConfidenceLevel;
             int sessionResponseServerConfidenceLevel;
@@ -45,8 +47,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionResponseServerConfidenceLevel = 5;
                 sessionSeverity = 10;
             }
-
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 205 Reset Content.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {

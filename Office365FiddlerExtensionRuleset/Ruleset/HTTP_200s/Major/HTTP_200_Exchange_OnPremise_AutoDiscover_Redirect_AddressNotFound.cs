@@ -48,6 +48,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 </Autodiscover>
                 */
 
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
+
                 int sessionAuthenticationConfidenceLevel;
                 int sessionTypeConfidenceLevel;
                 int sessionResponseServerConfidenceLevel;
@@ -71,8 +73,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     sessionResponseServerConfidenceLevel = 5;
                     sessionSeverity = 60;
                 }
-
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Exchange On-Premise redirect address. Error code 500: The email address can't be found.");
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {

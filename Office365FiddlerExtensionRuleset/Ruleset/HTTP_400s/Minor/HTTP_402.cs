@@ -22,6 +22,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 402 Payment Required.");
+
             int sessionAuthenticationConfidenceLevel;
             int sessionTypeConfidenceLevel;
             int sessionResponseServerConfidenceLevel;
@@ -30,7 +32,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             // Attempt to pull data from the web updated Json data stored in the Fiddler setting.
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP402s");
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_402s");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -47,8 +49,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionResponseServerConfidenceLevel = 5;
                 sessionSeverity = 10;
             }
-
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 402 Payment Required.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {

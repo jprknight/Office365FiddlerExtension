@@ -27,6 +27,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} 200 3S Suggestions call.");
+
             // If this isn't a 3G Suggestions call, return.
             if (!this.session.uriContains("search/api/v1/suggestions"))
             {
@@ -56,8 +58,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionResponseServerConfidenceLevel = 5;
                 sessionSeverity = 30;
             }
-
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} 200 3S Suggestions call.");
 
             Uri uri = new Uri(this.session.fullUrl);
             var queryStrings = HttpUtility.ParseQueryString(uri.Query);

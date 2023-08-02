@@ -121,6 +121,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 // Special attention to HTTP 200's where the keyword 'error' or 'failed' is found.
 
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 FAILURE LURKING!?");
+
                 int sessionAuthenticationConfidenceLevel;
                 int sessionTypeConfidenceLevel;
                 int sessionResponseServerConfidenceLevel;
@@ -144,8 +146,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     sessionResponseServerConfidenceLevel = 5;
                     sessionSeverity = 50;
                 }
-
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 FAILURE LURKING!?");
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {

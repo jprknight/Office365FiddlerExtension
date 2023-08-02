@@ -24,21 +24,23 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         /// <param name="session"></param>
         public void Run(Session session)
         {
-            // Any other EWS call.
             // Note: There are some organizations who have vanity domains for Office 365. They are the outliers for this scenario.
 
             this.session = session;
-
+            
             // If this isn't an EWS call, return.
             if (!this.session.uriContains("ews/exchange.asmx"))
             {
                 return;
             }
 
+            // If the call goes to outlook.office.com, return.
             if (this.session.HostnameIs("outlook.office365.com"))
             {
                 return;
             }
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " + this.session.id + " HTTP 200 OnPremise EWS call.");
 
             int sessionAuthenticationConfidenceLevel;
             int sessionTypeConfidenceLevel;
@@ -63,8 +65,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionResponseServerConfidenceLevel = 5;
                 sessionSeverity = 30;
             }
-
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " + this.session.id + " HTTP 200 OnPremise EWS call.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {

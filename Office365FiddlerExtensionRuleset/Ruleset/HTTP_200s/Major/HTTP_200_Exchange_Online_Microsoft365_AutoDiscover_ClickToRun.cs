@@ -40,6 +40,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     (this.session.utilFindInResponse("<MailStore>", false) > 1) &&
                     (this.session.utilFindInResponse("<ExternalUrl>", false) > 1))
                 {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML found.");
+
                     int sessionAuthenticationConfidenceLevel;
                     int sessionTypeConfidenceLevel;
                     int sessionResponseServerConfidenceLevel;
@@ -64,8 +66,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         sessionSeverity = 30;
                     }
 
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML found.");
-
                     var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "HTTP_200s_CTR_AutoDiscover",
@@ -87,6 +87,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 }
                 else
                 {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML NOT found!");
+
                     int sessionAuthenticationConfidenceLevel;
                     int sessionTypeConfidenceLevel;
                     int sessionResponseServerConfidenceLevel;
@@ -110,8 +112,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         sessionResponseServerConfidenceLevel = 5;
                         sessionSeverity = 60;
                     }
-
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Exchange Online / Outlook CTR Autodiscover. Expected XML NOT found!");
 
                     var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                     {

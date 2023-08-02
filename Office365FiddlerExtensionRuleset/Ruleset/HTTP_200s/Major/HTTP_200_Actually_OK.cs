@@ -22,6 +22,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 OK");
+
             if (SessionWordSearch.Instance.Search(this.session, "Error") == 0 &&
                 SessionWordSearch.Instance.Search(this.session, "failed") == 0 &&
                 SessionWordSearch.Instance.Search(this.session, "exception") == 0)
@@ -50,16 +52,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     sessionSeverity = 30;
                 }
 
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 OK");
-
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_200s_No_Lurking_Errors",
+                    SectionTitle = "HTTP_200s_Actually_OK",
 
-                    SessionType = "200 OK",
-                    ResponseCodeDescription = "200 OK",
-                    ResponseAlert = "HTTP 200 OK, with no errors, failed, or exceptions found.",
-                    ResponseComments = "HTTP 200 OK, with no errors, failed, or exceptions found.",
+                    SessionType = "200 Actually OK",
+                    ResponseCodeDescription = "200 Actually OK",
+                    ResponseAlert = "HTTP 200 Actually OK. No errors, failed, or exceptions found.",
+                    ResponseComments = "HTTP 200 Actually OK. No errors, failed, or exceptions found.",
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

@@ -373,7 +373,7 @@
       "SessionSeverity": 40
     }
   },
-  "HTTP402s": {
+  "HTTP_402s": {
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
@@ -405,13 +405,31 @@
     "SessionResponseServerConfidenceLevel": 5,
     "SessionSeverity": 40
   },
-  "HTTP407s": {
+  "HTTP_405s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 40
+  },
+  "HTTP_406s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_407s": {
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
     "SessionSeverity": 60
   },
-  "HTTP456s": {
+  "HTTP_408s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_456s": {
     "HTTP_456_Multi_Factor_Required": {
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 10,
