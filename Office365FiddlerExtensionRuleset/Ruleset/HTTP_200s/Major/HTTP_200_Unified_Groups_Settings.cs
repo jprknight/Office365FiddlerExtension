@@ -37,7 +37,29 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             // User can create Office 365 gropus.
             if (this.session.utilFindInResponse("<GroupCreationEnabled>true</GroupCreationEnabled>", false) > 1)
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Unified_Groups_Settings");
+                int sessionAuthenticationConfidenceLevel;
+                int sessionTypeConfidenceLevel;
+                int sessionResponseServerConfidenceLevel;
+                int sessionSeverity;
+
+                try
+                {
+                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Unified_Groups_Settings");
+                    sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                    sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                    sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                    sessionSeverity = sessionClassificationJson.SessionSeverity;
+                }
+                catch (Exception ex)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                    sessionAuthenticationConfidenceLevel = 5;
+                    sessionTypeConfidenceLevel = 10;
+                    sessionResponseServerConfidenceLevel = 5;
+                    sessionSeverity = 30;
+                }
 
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 GetUnifiedGroupsSettings EWS call. User can create O365 Groups in Outlook.");
 
@@ -51,10 +73,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     ResponseComments = "<GroupCreationEnabled>true</GroupCreationEnabled> found in response body. "
                     + "Expect user to be able to create Office 365 groups in Outlook.",
 
-                    SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
-                    SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
-                    SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
-                    SessionSeverity = sessionClassificationJson.SessionSeverity
+                    SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                    SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                    SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                    SessionSeverity = sessionSeverity
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -63,7 +85,29 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             // User cannot create Office 365 groups. Not an error condition in and of itself.
             else if (this.session.utilFindInResponse("<GroupCreationEnabled>false</GroupCreationEnabled>", false) > 1)
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups");
+                int sessionAuthenticationConfidenceLevel;
+                int sessionTypeConfidenceLevel;
+                int sessionResponseServerConfidenceLevel;
+                int sessionSeverity;
+
+                try
+                {
+                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups");
+                    sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                    sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                    sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                    sessionSeverity = sessionClassificationJson.SessionSeverity;
+                }
+                catch (Exception ex)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                    sessionAuthenticationConfidenceLevel = 5;
+                    sessionTypeConfidenceLevel = 10;
+                    sessionResponseServerConfidenceLevel = 5;
+                    sessionSeverity = 60;
+                }
 
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 GetUnifiedGroupsSettings EWS call. User cannot create O365 Groups in Outlook.");
 
@@ -77,10 +121,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     ResponseComments = "<GroupCreationEnabled>false</GroupCreationEnabled> found in response body. "
                     + "Expect user to <b>NOT be able to create Office 365 groups</b> in Outlook.",
 
-                    SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
-                    SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
-                    SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
-                    SessionSeverity = sessionClassificationJson.SessionSeverity
+                    SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                    SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                    SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                    SessionSeverity = sessionSeverity
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -89,7 +133,29 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             // Did not see the expected keyword in the response body. This is the error condition.
             else
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Unified_Groups_Settings_Settings_Not_Found");
+                int sessionAuthenticationConfidenceLevel;
+                int sessionTypeConfidenceLevel;
+                int sessionResponseServerConfidenceLevel;
+                int sessionSeverity;
+
+                try
+                {
+                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Unified_Groups_Settings_Settings_Not_Found");
+                    sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                    sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                    sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                    sessionSeverity = sessionClassificationJson.SessionSeverity;
+                }
+                catch (Exception ex)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                    sessionAuthenticationConfidenceLevel = 5;
+                    sessionTypeConfidenceLevel = 10;
+                    sessionResponseServerConfidenceLevel = 5;
+                    sessionSeverity = 40;
+                }
 
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 GetUnifiedGroupsSettings!");
 
@@ -103,10 +169,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     ResponseComments = "Though GetUnifiedGroupsSettings scenario was detected neither <GroupCreationEnabled>true</GroupCreationEnabled> nor"
                     + "<GroupCreationEnabled>false</GroupCreationEnabled> was found in the response body. Check the Raw tab for more details.",
 
-                    SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
-                    SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
-                    SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
-                    SessionSeverity = sessionClassificationJson.SessionSeverity
+                    SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                    SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                    SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                    SessionSeverity = sessionSeverity
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

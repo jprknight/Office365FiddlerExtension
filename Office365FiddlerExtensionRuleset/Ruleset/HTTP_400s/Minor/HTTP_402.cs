@@ -22,23 +22,47 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            int sessionAuthenticationConfidenceLevel;
+            int sessionTypeConfidenceLevel;
+            int sessionResponseServerConfidenceLevel;
+            int sessionSeverity;
+
+            // Attempt to pull data from the web updated Json data stored in the Fiddler setting.
+            try
+            {
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP402s");
+                sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                sessionSeverity = sessionClassificationJson.SessionSeverity;
+            }
+            // If that doesn't work revert to hardcoded values.
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                sessionAuthenticationConfidenceLevel = 5;
+                sessionTypeConfidenceLevel = 10;
+                sessionResponseServerConfidenceLevel = 5;
+                sessionSeverity = 10;
+            }
+
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 402 Payment Required.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_402s",
-                UIBackColour = "Gray",
-                UITextColour = "Black",
 
                 SessionType = "402 Payment Required",
                 ResponseCodeDescription = "402 Payment Required",
                 ResponseAlert = "HTTP 402 Payment Required.",
                 ResponseComments = SessionFlagService.Instance.ResponseCommentsNoKnownIssue(),
 
-                SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5,
-                SessionSeverity = 0
+                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

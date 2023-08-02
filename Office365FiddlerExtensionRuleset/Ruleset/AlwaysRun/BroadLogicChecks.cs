@@ -22,11 +22,33 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
-            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|FiddlerUpdateSessions");
-
             if (this.session.hostname == "www.fiddler2.com" && this.session.uriContains("UpdateCheck.aspx"))
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Fiddler Updates.");
+
+                int sessionAuthenticationConfidenceLevel;
+                int sessionTypeConfidenceLevel;
+                int sessionResponseServerConfidenceLevel;
+                int sessionSeverity;
+
+                try
+                {
+                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|FiddlerUpdateSessions");
+                    sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                    sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                    sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                    sessionSeverity = sessionClassificationJson.SessionSeverity;
+                }
+                catch (Exception ex)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                    sessionAuthenticationConfidenceLevel = 10;
+                    sessionTypeConfidenceLevel = 10;
+                    sessionResponseServerConfidenceLevel = 10;
+                    sessionSeverity = 10;
+                }
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
@@ -39,10 +61,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     ResponseComments = "This is Fiddler itself checking for updates.",
                     Authentication = "Fiddler Update Check",
 
-                    SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
-                    SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
-                    SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
-                    SessionSeverity = sessionClassificationJson.SessionSeverity
+                    SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                    SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                    SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                    SessionSeverity = sessionSeverity
                 };
                 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

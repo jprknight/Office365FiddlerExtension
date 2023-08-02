@@ -1,7 +1,8 @@
 {
+  "LastUpdated": "31st July, 2023",
   "DataStructureHelper": {
     "About": "This helper isn't used in code, it's just here to describe the data.",
-    "WebUpdates":  "Session classification numbers are in this Json file to enable the extension to pull updates from this file and utilise them within the ruleset for session processing.",
+    "WebUpdates": "Session classification numbers are in this Json file to enable the extension to pull updates from this file and utilise them within the ruleset for session processing.",
     "SessionAuthenticationConfidenceLevel": "Runs from 0 - 10, 10 being absolutely certain the correct authentication has been determined for the session.",
     "SessionTypeConfidenceLevel": "Runs from 0 - 10, 10 being absolutely certain the correct type has been determined for the session.",
     "SessionSeverity": "Runs on a scale of 0 - 60 and determines the colours of sessions used by the extension.",
@@ -332,96 +333,102 @@
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 5,
       "SessionSeverity": 10
-    },
-    "HTTP_308s": {
-      "SessionAuthenticationConfidenceLevel": 5,
-      "SessionTypeConfidenceLevel": 10,
-      "SessionResponseServerConfidenceLevel": 5,
-      "SessionSeverity": 10
-    },
-    "HTTP_400s": {
-      "SessionAuthenticationConfidenceLevel": 5,
-      "SessionTypeConfidenceLevel": 10,
-      "SessionResponseServerConfidenceLevel": 5,
-      "SessionSeverity": 10
-    },
-    "HTTP_401s": {
-      "HTTP_401_Exchange_Online_AutoDiscover": {
-        "SessionAuthenticationConfidenceLevel": 5,
-        "SessionTypeConfidenceLevel": 10,
-        "SessionResponseServerConfidenceLevel": 5,
-        "SessionSeverity": 40
-      },
-      "HTTP_401_Exchange_OnPremise_AutoDiscover": {
-        "SessionAuthenticationConfidenceLevel": 5,
-        "SessionTypeConfidenceLevel": 10,
-        "SessionResponseServerConfidenceLevel": 5,
-        "SessionSeverity": 40
-      },
-      "HTTP_401_EWS": {
-        "SessionAuthenticationConfidenceLevel": 5,
-        "SessionTypeConfidenceLevel": 10,
-        "SessionResponseServerConfidenceLevel": 5,
-        "SessionSeverity": 40
-      },
-      "HTTP_401_Everything_Else": {
-        "SessionAuthenticationConfidenceLevel": 5,
-        "SessionTypeConfidenceLevel": 10,
-        "SessionResponseServerConfidenceLevel": 5,
-        "SessionSeverity": 40
-      }
-    },
-    "HTTP_403s": {
-      "HTTP_403_Forbidden_Proxy_Block": {
-        "SessionAuthenticationConfidenceLevel": 5,
-        "SessionTypeConfidenceLevel": 10,
-        "SessionResponseServerConfidenceLevel": 5,
-        "SessionSeverity": 60
-      },
-      "HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set": {
-        "SessionAuthenticationConfidenceLevel": 5,
-        "SessionTypeConfidenceLevel": 10,
-        "SessionResponseServerConfidenceLevel": 5,
-        "SessionSeverity": 60
-      },
-      "HTTP_403_Forbidden_Everything_Else": {
-        "SessionAuthenticationConfidenceLevel": 5,
-        "SessionTypeConfidenceLevel": 10,
-        "SessionResponseServerConfidenceLevel": 5,
-        "SessionSeverity": 60
-      }
-    },
-    "HTTP_404s": {
+    }
+  },
+  "HTTP_308s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_400s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_401s": {
+    "HTTP_401_Exchange_Online_AutoDiscover": {
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 5,
       "SessionSeverity": 40
     },
-    "HTTP407s": {
+    "HTTP_401_Exchange_OnPremise_AutoDiscover": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 40
+    },
+    "HTTP_401_EWS": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 40
+    },
+    "HTTP_401_Everything_Else": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 40
+    }
+  },
+  "HTTP402s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_403s": {
+    "HTTP_403_Forbidden_Proxy_Block": {
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 5,
       "SessionSeverity": 60
     },
-    "HTTP456s": {
-      "HTTP_456_Multi_Factor_Required": {
-        "SessionAuthenticationConfidenceLevel": 5,
-        "SessionTypeConfidenceLevel": 10,
-        "SessionResponseServerConfidenceLevel": 5,
-        "SessionSeverity": 60
-      },
-      "HTTP_456_OAuth_Not_Available": {
-        "SessionAuthenticationConfidenceLevel": 5,
-        "SessionTypeConfidenceLevel": 10,
-        "SessionResponseServerConfidenceLevel": 5,
-        "SessionSeverity": 60
-      },
-      "HTTP_456_Anything_Else": {
-        "SessionAuthenticationConfidenceLevel": 5,
-        "SessionTypeConfidenceLevel": 10,
-        "SessionResponseServerConfidenceLevel": 5,
-        "SessionSeverity": 60
-      }
+    "HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_403_Forbidden_Everything_Else": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    }
+  },
+  "HTTP_404s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 40
+  },
+  "HTTP407s": {
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 60
+  },
+  "HTTP456s": {
+    "HTTP_456_Multi_Factor_Required": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_456_OAuth_Not_Available": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_456_Anything_Else": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
     }
   }
 }

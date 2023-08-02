@@ -26,11 +26,19 @@ namespace Office365FiddlerExtension
 
         private readonly MenuItem Separator2 = new MenuItem("-");
 
+        private readonly MenuItem Separator3 = new MenuItem("-");
+
         private readonly MenuItem CmiProcessSelectedSessions = new MenuItem("Process Selected Sessions");
 
         private readonly MenuItem CmiProcessAllSessions = new MenuItem("Process All Sessions");
 
         private readonly MenuItem CmiClearAllSessionProcessing = new MenuItem("Clear Selected Sessions Processing");
+
+        private readonly MenuItem CmiBold = new MenuItem("Toggle Bold");
+
+        private readonly MenuItem CmiItalic = new MenuItem("Toggle Italic");
+
+        private readonly MenuItem CmiStrikethrough = new MenuItem("Toggle Strikethrough");
 
         private readonly MenuItem CmiSetSessionSeverity = new MenuItem("Set Session Severity");
 
@@ -64,8 +72,12 @@ namespace Office365FiddlerExtension
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(1, CmiProcessAllSessions);
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(2, CmiClearAllSessionProcessing);
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(3, Separator1);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(4, CmiSetSessionSeverity);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(5, Separator2);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(4, CmiBold);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(5, CmiItalic);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(6, CmiStrikethrough);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(7, Separator2);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(8, CmiSetSessionSeverity);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(9, Separator3);
 
             this.CmiSetSessionSeverity.MenuItems.AddRange(new MenuItem[] {
                 this.CmiSessionSeverityTen,
@@ -75,6 +87,8 @@ namespace Office365FiddlerExtension
                 this.CmiSessionSeverityFifty,
                 this.CmiSessionSeveritySixty
             });
+
+            CmiBold.Click += new EventHandler(CmiBold_Click);
 
             CmiSessionSeverityTen.Click += new EventHandler(CmiSessionSeverityTen_Click);
 
@@ -87,6 +101,11 @@ namespace Office365FiddlerExtension
             CmiSessionSeverityFifty.Click += new EventHandler(CmiSessionSeverityFifty_Click);
 
             CmiSessionSeveritySixty.Click += new EventHandler(CmiSessionSeveritySixty_Click);
+        }
+
+        private void CmiBold_Click(object sender, EventArgs e)
+        {
+            EnhanceSessionUX.Instance.ToggleSessionBold();
         }
 
         private void CmiSessionSeverityTen_Click(object sender, EventArgs e)

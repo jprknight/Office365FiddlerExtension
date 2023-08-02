@@ -37,7 +37,29 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi");
+            int sessionAuthenticationConfidenceLevel;
+            int sessionTypeConfidenceLevel;
+            int sessionResponseServerConfidenceLevel;
+            int sessionSeverity;
+
+            try
+            {
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi");
+                sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                sessionSeverity = sessionClassificationJson.SessionSeverity;
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                sessionAuthenticationConfidenceLevel = 5;
+                sessionTypeConfidenceLevel = 10;
+                sessionResponseServerConfidenceLevel = 5;
+                sessionSeverity = 30;
+            }
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Outlook Exchange Online / Microsoft365 MAPI traffic.");
 
@@ -50,10 +72,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseAlert = "Outlook for Windows M365 MAPI traffic",
                 ResponseComments = "This is normal Outlook MAPI over HTTP traffic to an Exchange Online / Microsoft365 mailbox.",
 
-                SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
-                SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
-                SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
-                SessionSeverity = sessionClassificationJson.SessionSeverity
+                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

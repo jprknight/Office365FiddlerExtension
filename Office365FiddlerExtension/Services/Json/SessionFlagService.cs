@@ -413,6 +413,8 @@ namespace Office365FiddlerExtension.Services
 
             public string UITextColour { get; set; }
 
+            public bool UITextBold { get; set; }
+
             public string SessionType { get; set; }
 
             public string ResponseCodeDescription { get; set; }

@@ -121,7 +121,29 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 // Special attention to HTTP 200's where the keyword 'error' or 'failed' is found.
 
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Lurking_Errors");
+                int sessionAuthenticationConfidenceLevel;
+                int sessionTypeConfidenceLevel;
+                int sessionResponseServerConfidenceLevel;
+                int sessionSeverity;
+
+                try
+                {
+                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Lurking_Errors");
+                    sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                    sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                    sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                    sessionSeverity = sessionClassificationJson.SessionSeverity;
+                }
+                catch (Exception ex)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                    sessionAuthenticationConfidenceLevel = 5;
+                    sessionTypeConfidenceLevel = 10;
+                    sessionResponseServerConfidenceLevel = 5;
+                    sessionSeverity = 50;
+                }
 
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 FAILURE LURKING!?");
 
@@ -141,10 +163,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     + "<p>Check the content body of the response for any failures you recognise. You may find <b>false positives, "
                     + "if lots of Javascript or other web code</b> is being loaded.</p>",
 
-                    SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
-                    SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
-                    SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
-                    SessionSeverity = sessionClassificationJson.SessionSeverity
+                    SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                    SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                    SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                    SessionSeverity = sessionSeverity
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

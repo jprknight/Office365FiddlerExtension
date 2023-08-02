@@ -22,25 +22,45 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
-            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP206s");
+            int sessionAuthenticationConfidenceLevel;
+            int sessionTypeConfidenceLevel;
+            int sessionResponseServerConfidenceLevel;
+            int sessionSeverity;
+
+            try
+            {
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP206s");
+                sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                sessionSeverity = sessionClassificationJson.SessionSeverity;
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                sessionAuthenticationConfidenceLevel = 5;
+                sessionTypeConfidenceLevel = 10;
+                sessionResponseServerConfidenceLevel = 5;
+                sessionSeverity = 10;
+            }
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 206 Partial Content.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_206s",
-                UIBackColour = "Gray",
-                UITextColour = "Black",
 
                 SessionType = "Partial Content",
                 ResponseCodeDescription = "206 Partial Content",
                 ResponseAlert = "HTTP 206 Partial Content.",
                 ResponseComments = SessionFlagService.Instance.ResponseCommentsNoKnownIssue(),
 
-                SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5,
-                SessionSeverity = 0
+                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

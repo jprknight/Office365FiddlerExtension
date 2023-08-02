@@ -22,7 +22,29 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
-            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP204s");
+            int sessionAuthenticationConfidenceLevel;
+            int sessionTypeConfidenceLevel;
+            int sessionResponseServerConfidenceLevel;
+            int sessionSeverity;
+
+            try
+            {
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP204s");
+                sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                sessionSeverity = sessionClassificationJson.SessionSeverity;
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                sessionAuthenticationConfidenceLevel = 5;
+                sessionTypeConfidenceLevel = 10;
+                sessionResponseServerConfidenceLevel = 5;
+                sessionSeverity = 10;
+            }
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " + this.session.id + " HTTP 204 No content.");
 
@@ -36,10 +58,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseComments = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting "
                 + "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.",
 
-                SessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel,
-                SessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel,
-                SessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel,
-                SessionSeverity = sessionClassificationJson.SessionSeverity
+                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
