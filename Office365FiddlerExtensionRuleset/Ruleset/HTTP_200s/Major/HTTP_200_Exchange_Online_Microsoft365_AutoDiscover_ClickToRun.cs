@@ -49,7 +49,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     try
                     {
-                        var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun");
+                        var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun");
                         sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                         sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                         sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -96,7 +96,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     try
                     {
-                        var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP200s|HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun_XML_Response_Not_Found");
+                        var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun_XML_Response_Not_Found");
                         sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                         sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                         sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;

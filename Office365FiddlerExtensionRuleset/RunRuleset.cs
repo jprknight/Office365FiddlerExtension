@@ -243,7 +243,7 @@ namespace Office365FiddlerExtensionRuleset
                     HTTP_0.Instance.HTTP_0_NoSessionResponse(this.session);
                     break;
                 case 103:
-                    HTTP_103.Instance.HTTP_103_Checkpoint(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_103s");
                     break;
                 case 200:
                     HTTP_200_ClientAccessRule.Instance.Run(this.session);
@@ -393,40 +393,40 @@ namespace Office365FiddlerExtensionRuleset
                     HTTP_200_Actually_OK.Instance.Run(this.session);
                     break;
                 case 201:
-                    HTTP_201.Instance.HTTP_201_Created(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_201s");
                     break;
                 case 202:
-                    HTTP_202.Instance.HTTP_202_Accepted(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_202s");
                     break;
                 case 203:
-                    HTTP_203.Instance.HTTP_203_NonAuthoritive_Answer(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_203s");
                     break;
                 case 204:
-                    HTTP_204.Instance.HTTP_204_No_Content(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_204s");
                     break;
                 case 205:
-                    HTTP_205.Instance.HTTP_205_Reset_Content(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_205s");
                     break;
                 case 206:
-                    HTTP_206.Instance.HTTP_206_Partial_Content(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_206s");
                     break;
                 case 207:
-                    HTTP_207.Instance.HTTP_207_Multi_Status(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_207s");
                     break;
                 case 208:
-                    HTTP_208.Instance.HTTP_208_Already_Reported(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_208s");
                     break;
                 case 218:
-                    HTTP_218.Instance.HTTP_218_This_Is_Fine_Apache_Web_Server(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_218s");
                     break;
                 case 226:
-                    HTTP_226.Instance.HTTP_226_IM_Used(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_226s");
                     break;
                 case 300:
-                    HTTP_300.Instance.HTTP_300_Multiple_Choices(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_300s");
                     break;
                 case 301:
-                    HTTP_301.Instance.HTTP_301_Permanently_Moved(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_301s");
                     break;
                 case 302:
                     HTTP_302.Instance.HTTP_302_Redirect_AutoDiscover(this.session);
@@ -437,16 +437,16 @@ namespace Office365FiddlerExtensionRuleset
                     HTTP_302.Instance.HTTP_302_Redirect_AllOthers(this.session);
                     break;
                 case 303:
-                    HTTP_303.Instance.HTTP_303_See_Other(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_303s");
                     break;
                 case 304:
-                    HTTP_304.Instance.HTTP_304_Not_Modified(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_304s");
                     break;
                 case 305:
-                    HTTP_305.Instance.HTTP_305_Use_Proxy(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_305s");
                     break;
                 case 306:
-                    HTTP_306.Instance.HTTP_306_Switch_Proxy(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_306s");
                     break;
                 case 307:
                     HTTP_307.Instance.HTTP_307_AutoDiscover_Temporary_Redirect(this.session);
@@ -462,7 +462,7 @@ namespace Office365FiddlerExtensionRuleset
                     HTTP_307.Instance.HTTP_307_All_Other_Redirects(this.session);
                     break;
                 case 308:
-                    HTTP_308.Instance.HTTP_308_Permenant_Redirect(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_308s");
                     break;
                 case 400:
                     HTTP_400.Instance.HTTP_400_Bad_Request(this.session);
@@ -489,7 +489,7 @@ namespace Office365FiddlerExtensionRuleset
                     HTTP_401.Instance.HTTP_401_Everything_Else(this.session);
                     break;
                 case 402:
-                    HTTP_402.Instance.HTTP_402_Payment_Required(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_402s");
                     break;
                 case 403:
                     HTTP_403.Instance.HTTP_403_Forbidden_Proxy_Block(this.session);
@@ -511,71 +511,70 @@ namespace Office365FiddlerExtensionRuleset
                     HTTP_405.Instance.HTTP_405_Method_Not_Allowed(this.session);
                     break;
                 case 406:
-                    HTTP_406.Instance.HTTP_406_Not_Acceptable(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_406s");
                     break;
                 case 407:
                     HTTP_407.Instance.HTTP_407_Proxy_Auth_Required(this.session);
                     break;
                 case 408:
-                    HTTP_408.Instance.HTTP_408_Request_Timeout(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_408s");
                     break;
                 case 409:
-                    HTTP_409.Instance.HTTP_409_Conflict(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_409s");
                     break;
                 case 410:
-                    HTTP_410.Instance.HTTP_410_Gone(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_410s");
                     break;
                 case 411:
-                    HTTP_411.Instance.HTTP_411_Length_Required(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_411s");
                     break;
                 case 412:
-                    HTTP_412.Instance.HTTP_412_Precondition_Failed(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_412s");
                     break;
                 case 413:
-                    HTTP_413.Instance.HTTP_413_Payload_Too_Large(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_413s");
                     break;
                 case 414:
-                    HTTP_414.Instance.HTTP_414_URI_Too_Long(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_414s");
                     break;
                 case 415:
-                    HTTP_415.Instance.HTTP_415_UnSupported_Media_Type(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_415s");
                     break;
                 case 416:
-                    HTTP_416.Instance.HTTP_416_Range_Not_Satisfiable(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_416s");
                     break;
                 case 417:
-                    HTTP_417.Instance.HTTP_417_Expectation_Failed(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_417s");
                     break;
                 case 418:
-                    HTTP_418.Instance.HTTP_418_Im_A_Teapot(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_418s");
                     break;
                 case 419:
-                    HTTP_419.Instance.HTTP_419_Page_Expired(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_419s");
                     break;
                 case 420:
-                    HTTP_420.Instance.HTTP_420_Method_Failure_or_Enchance_Your_Calm(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_420s");
                     break;
                 case 421:
-                    HTTP_421.Instance.HTTP_421_Misdirected_Request(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_421s");
                     break;
                 case 422:
-                    HTTP_422.Instance.HTTP_422_Unprocessable_Entry(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_422s");
                     break;
                 case 423:
-                    HTTP_423.Instance.HTTP_423_Locked(this.session);
-
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_423s");
                     break;
                 case 424:
-                    HTTP_424.Instance.HTTP_424_Failed_Dependency(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_424s");
                     break;
                 case 425:
-                    HTTP_425.Instance.HTTP_425_Too_Early(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_425s");
                     break;
                 case 426:
-                    HTTP_426.Instance.HTTP_426_Upgrade_Required(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_426s");
                     break;
                 case 428:
-                    HTTP_428.Instance.HTTP_428_Precondition_Required(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_428s");
                     break;
                 case 429:
                     HTTP_429.Instance.HTTP_429_Too_Many_Requests(this.session);
