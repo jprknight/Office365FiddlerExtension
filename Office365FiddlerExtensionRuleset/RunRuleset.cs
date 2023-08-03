@@ -8,6 +8,7 @@ using Fiddler;
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtensionRuleset.Ruleset;
+using Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks;
 
 namespace Office365FiddlerExtensionRuleset
 {
@@ -24,10 +25,10 @@ namespace Office365FiddlerExtensionRuleset
             // Always run these functions on every session.
 
             // Broad logic checks on sessions regardless of response code.
-            BroadLogicChecks.Instance.FiddlerUpdateSessions(this.session);
-            BroadLogicChecks.Instance.ConnectTunnelSessions(this.session);
-            BroadLogicChecks.Instance.ApacheAutodiscover(this.session);
-            BroadLogicChecks.Instance.LoopBackTunnel(this.session);
+            FiddlerUpdateSessions.Instance.Run(this.session);
+            ConnectTunnelSessions.Instance.Run(this.session);
+            ApacheAutodiscover.Instance.Run(this.session);
+            LoopBackTunnel.Instance.Run(this.session);
 
             // Calculate Session Age for inspector with HTML mark-up.
             CalculateSessionAge.Instance.SessionAge(this.session);

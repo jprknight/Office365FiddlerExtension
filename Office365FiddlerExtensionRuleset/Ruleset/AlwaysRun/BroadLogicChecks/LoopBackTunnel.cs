@@ -1,28 +1,33 @@
-﻿using System;
+﻿using Fiddler;
+using Newtonsoft.Json;
+using Office365FiddlerExtension.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Office365FiddlerExtension.Services;
-using Fiddler;
-using Newtonsoft.Json;
-using System.Reflection;
 
-namespace Office365FiddlerExtensionRuleset.Ruleset
+namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
 {
-    class HTTP_440
+    class LoopBackTunnel
     {
         internal Session session { get; set; }
 
-        private static HTTP_440 _instance;
+        private static LoopBackTunnel _instance;
 
-        public static HTTP_440 Instance => _instance ?? (_instance = new HTTP_440());
+        public static LoopBackTunnel Instance => _instance ?? (_instance = new LoopBackTunnel());
 
-        public void HTTP_440_IIS_Login_Timeout(Session session)
+        public void Run(Session session)
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 440 IIS Login Time-out.");
+            if (!this.session.uriContains("127.0.0.1"))
+            {
+                return;
+            }
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Loopback Tunnel.");
 
             int sessionAuthenticationConfidenceLevel;
             int sessionTypeConfidenceLevel;
@@ -31,7 +36,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_440s");
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|LoopBackTunnel");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -42,20 +47,25 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
 
-                sessionAuthenticationConfidenceLevel = 5;
+                sessionAuthenticationConfidenceLevel = 10;
                 sessionTypeConfidenceLevel = 10;
-                sessionResponseServerConfidenceLevel = 5;
-                sessionSeverity = 10;
+                sessionResponseServerConfidenceLevel = 10;
+                sessionSeverity = 40;
             }
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_440s",
+                SectionTitle = "Broad Logic Checks",
 
-                SessionType = "440 IIS Login Time-out",
-                ResponseCodeDescription = "440 IIS Login Time-out",
-                ResponseAlert = "HTTP 440 IIS Login Time-out.",
-                ResponseComments = SessionFlagService.Instance.ResponseCommentsNoKnownIssue(),
+                SessionType = "Loopback Tunnel",
+                ResponseServer = "Loopback Tunnel",
+                ResponseAlert = "Loopback Tunnel",
+                ResponseCodeDescription = "Loopback Tunnel",
+                ResponseComments = "Seeing many or few of these? Either way these aren't typical Microsoft365 traffic sessions. "
+                + "They may be an indication of a proxy client forcing traffic down a certain network path?"
+                + "If there's no Microsoft365 client traffic in this Fiddler trace and it's suspected this could be a factor, "
+                + "change your network, try a different machine without any proxy client / proxy configuration in place.",
+                Authentication = "Loopback Tunnel",
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
