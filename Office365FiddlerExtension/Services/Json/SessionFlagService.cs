@@ -177,7 +177,7 @@ namespace Office365FiddlerExtension.Services
         /// <summary>
         /// Take any updates to session flags and save them into the session Json.
         /// Conditional - Use the condition for Session Severity.
-        /// Unconditional - Always update Session Severity. Used when calling this function fron the context menu.
+        /// Unconditional - Update Session Severity. Used when calling this function fron the context menu and when a lower session severity needs to be set.
         /// </summary>
         /// <param name="Session"></param>
         /// <param name="JsonData"></param>
@@ -377,7 +377,7 @@ namespace Office365FiddlerExtension.Services
                     updatedSessionFlagsJson.SessionSeverity = existingSessionFlagsJson.SessionSeverity;
                 }
             }
-
+            /*
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} " +
                 $"SessionTypeConfidenceLevel set to {updatedSessionFlagsJson.SessionTypeConfidenceLevel}");
 
@@ -389,7 +389,7 @@ namespace Office365FiddlerExtension.Services
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} " +
                 $"Session Severity set to {updatedSessionFlagsJson.SessionSeverity}");
-
+            */
             var newJsonData = JsonConvert.SerializeObject(updatedSessionFlagsJson, Formatting.Indented);
 
             // Save the new Json to the session flag.

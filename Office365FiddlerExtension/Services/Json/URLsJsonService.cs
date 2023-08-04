@@ -108,6 +108,6 @@ namespace Office365FiddlerExtension.Services
 
         public string ReportIssues { get; set; }
 
-        public string Ruleset { get; set; }
+        public string SessionClassification { get; set; }
     }
 }

@@ -24,12 +24,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             this.session = session;
 
-            if (!(this.session.oRequest["Host"] == "sqm.telemetry.microsoft.com:443"))
+            if (this.session.oRequest["Host"] != "sqm.telemetry.microsoft.com:443")
             {
                 return;
             }
 
-            if (!(this.session.utilFindInResponse("target machine actively refused it", false) > 1))
+            if (this.session.utilFindInResponse("target machine actively refused it", false) <= 1)
             {
                 return;
             }
@@ -76,7 +76,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);            
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);            
         }
 
         public void HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive(Session session)
@@ -146,7 +146,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);            
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);            
         }
 
         public void HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive(Session session)
@@ -235,7 +235,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
         }
 
         public void HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover(Session session)

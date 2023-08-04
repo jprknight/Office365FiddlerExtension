@@ -32,7 +32,8 @@ namespace Office365FiddlerExtension.Services
         /// <param name="section"></param>
         public SessionClassificationJsonSection GetSessionClassificationJsonSection(string section)
         {
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): GetSessionClassificationJsonSection ENTRY");
+            // REVIEW THIS -- Remove commented lines of debugging logging.
+            //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): GetSessionClassificationJsonSection ENTRY");
 
             string sectionPiece0 = "";
             string sectionPiece1 = "";
@@ -42,24 +43,24 @@ namespace Office365FiddlerExtension.Services
 
             var parsedObject = JObject.Parse(Preferences.SessionClassification);
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): GetSessionClassificationJsonSection PARSEDOBJECT");
+            //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): GetSessionClassificationJsonSection PARSEDOBJECT");
 
             if (section.Contains('|')) {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): GetSessionClassificationJsonSection PIPE: {section}");
+                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): GetSessionClassificationJsonSection PIPE: {section}");
 
                 string[] sectionPieces = section.Split('|');
 
                 //if (sectionPieces.Length == 2)
                 //{
-                    foreach (string piece in sectionPieces)
-                    {
-                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {piece}");
-                    }
+                    //foreach (string piece in sectionPieces)
+                    //{
+                    //    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {piece}");
+                    //}
 
                     sectionPiece0 = sectionPieces[0];
                     sectionPiece1 = sectionPieces[1];
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {sectionPieces.Length} " +
-                        $"sectionPiece0: {sectionPiece0} sectionPiece1: {sectionPiece1} : {parsedObject[sectionPiece0][sectionPiece1].ToString()}");
+                    //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {sectionPieces.Length} " +
+                    //    $"sectionPiece0: {sectionPiece0} sectionPiece1: {sectionPiece1} : {parsedObject[sectionPiece0][sectionPiece1].ToString()}");
                     jsonSection = parsedObject[sectionPiece0][sectionPiece1].ToString();
                 //}
                 /*else if (sectionPieces.Length == 3)
@@ -79,10 +80,10 @@ namespace Office365FiddlerExtension.Services
             }
             else
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): GetSessionClassificationJsonSection NO PIPE");
+                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): GetSessionClassificationJsonSection NO PIPE");
 
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
-                    $"section: {section}: {parsedObject[section]}");
+                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                //    $"section: {section}: {parsedObject[section]}");
                 jsonSection = parsedObject[section].ToString();
             }
 
@@ -107,7 +108,6 @@ namespace Office365FiddlerExtension.Services
 
         public void CreateSessionClassificationFiddlerSetting()
         {
-            // REVIEW THIS
             if (Preferences.SessionClassification != null)
             {
                 return;
@@ -118,7 +118,6 @@ namespace Office365FiddlerExtension.Services
             var base64EncodedBytes = Convert.FromBase64String(AssemblyShippedJsonData);
  
             Preferences.SessionClassification = Encoding.UTF8.GetString(base64EncodedBytes); ;
-
         }
 
         /*public string GetSessionClassificationJsonData(Session Session)

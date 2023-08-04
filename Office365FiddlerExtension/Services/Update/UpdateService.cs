@@ -23,6 +23,8 @@ namespace Office365FiddlerExtension.Services
 
         public void Initialize()
         {
+            /*
+            REVIEW THIS -- UNCOMMENT THIS CODE BEFORE GOING PRODUCTION.
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): NeverWebCall enabled, returning.");
@@ -35,9 +37,54 @@ namespace Office365FiddlerExtension.Services
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Next update check timestamp not met ({extensionSettings.NextUpdateCheck}), returning.");
                 return;
             }
-
+            */
             UpdateURLsJsonFromGithub();
             UpdateVersionJsonFromGithub();
+            UpdateSessionClassificationJsonFromGithub();
+        }
+
+        private async void UpdateSessionClassificationJsonFromGithub()
+        {
+            var extensionURLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
+
+            using (var getSettings = new HttpClient())
+            {
+                try
+                {
+                    var response = await getSettings.GetAsync(extensionURLs.SessionClassification);
+
+                    response.EnsureSuccessStatusCode();
+
+                    var jsonString = string.Empty;
+
+                    using (var stream = await response.Content.ReadAsStreamAsync())
+                    {
+                        stream.Position = 0;
+                        using (var reader = new StreamReader(stream))
+                        {
+                            jsonString = await reader.ReadToEndAsync();
+                        }
+                    }
+
+                    // Save this new data into the SessionClassification Fiddler setting.
+                    if (Preferences.SessionClassification != jsonString)
+                    {
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): SessionClassification Fiddler setting updated.");
+                        Preferences.SessionClassification = jsonString;
+
+                        // Update the next update check timestamp.
+                        SettingsJsonService.Instance.SetNextUpdateTimestamp();
+                    }
+                    else
+                    {
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): SessionClassification Fiddler setting not update needed.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving SessionClassification from Github {ex}");
+                }
+            }
         }
 
         public void CreateVersionJsonFromGithub()
@@ -84,7 +131,7 @@ namespace Office365FiddlerExtension.Services
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving settings from Github {ex}");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving ExchangeVersion from Github {ex}");
                 }
             }
         }
