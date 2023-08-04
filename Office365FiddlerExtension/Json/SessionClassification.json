@@ -665,42 +665,63 @@
     "SessionSeverity": 10
   },
   "HTTP_429s": {
+    "SectionTitle": "HTTP_429s",
+    "SessionType": "429 Too Many Requests",
+    "ResponseAlert": "HTTP 429 Too Many Requests.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
     "SessionSeverity": 40
   },
   "HTTP_430s": {
+    "SectionTitle": "HTTP_430s",
+    "SessionType": "430 Request Header Fields Too Large",
+    "ResponseAlert": "HTTP 430 Request Header Fields Too Large.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
     "SessionSeverity": 10
   },
   "HTTP_431s": {
+    "SectionTitle": "HTTP_431s",
+    "SessionType": "431 Request Header Fields Too Large",
+    "ResponseAlert": "HTTP 431 Request Header Fields Too Large.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
     "SessionSeverity": 10
   },
   "HTTP_440s": {
+    "SectionTitle": "HTTP_440s",
+    "SessionType": "440 IIS Login Time-out",
+    "ResponseAlert": "HTTP 440 IIS Login Time-out.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
     "SessionSeverity": 10
   },
   "HTTP_449s": {
+    "SectionTitle": "HTTP_449s",
+    "SessionType": "449 IIS Retry With",
+    "ResponseAlert": "HTTP 449 IIS Retry With.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
     "SessionSeverity": 10
   },
   "HTTP_450s": {
+    "SectionTitle": "HTTP_450s",
+    "SessionType": "450 Blocked by Windows Parental Controls",
+    "ResponseAlert": "HTTP 450 Blocked by Windows Parental Controls.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
     "SessionSeverity": 10
   },
   "HTTP_451s": {
+    "SectionTitle": "HTTP_451s",
+    "SessionType": "451 IIS Redirect",
+    "ResponseAlert": "HTTP 451 Unavailable For Legal Reasons or 451 IIS Redirect.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
@@ -727,48 +748,338 @@
     }
   },
   "HTTP_460s": {
+    "SectionTitle": "HTTP_460s",
+    "SessionType": "460 AWS Load balancer Timeout",
+    "ResponseAlert": "HTTP 460 AWS Load balancer Timeout.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
     "SessionSeverity": 10
   },
   "HTTP_463": {
+    "SectionTitle": "HTTP_463",
+    "SessionType": "AWS X-Forwarded-For Header",
+    "ResponseAlert": "HTTP 463 AWS X-Forwarded-For Header > 30 IP addresses.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
     "SessionSeverity": 10
   },
   "HTTP_494s": {
+    "SectionTitle": "HTTP_494s",
+    "SessionType": "494 nginx Request header too large",
+    "ResponseAlert": "HTTP 494 nginx Request header too large.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
     "SessionSeverity": 10
   },
   "HTTP_495s": {
+    "SectionTitle": "HTTP_495s",
+    "SessionType": "495 nginx SSL Certificate Error",
+    "ResponseAlert": "HTTP 495 nginx SSL Certificate Error.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
     "SessionSeverity": 10
   },
   "HTTP_496s": {
+    "SectionTitle": "HTTP_496s",
+    "SessionType": "496 nginx SSL Certificate Required",
+    "ResponseAlert": "HTTP 496 nginx SSL Certificate Required.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
     "SessionSeverity": 10
   },
   "HTTP_497s": {
+    "SectionTitle": "HTTP_497s",
+    "SessionType": "497 nginx HTTP Request Sent to HTTPS Port",
+    "ResponseAlert": "HTTP 497 nginx HTTP Request Sent to HTTPS Port.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
     "SessionSeverity": 10
   },
   "HTTP_498s": {
+    "SectionTitle": "HTTP_498s",
+    "SessionType": "498 Invalid Token",
+    "ResponseAlert": "HTTP 498 Invalid Token.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
     "SessionSeverity": 10
   },
   "HTTP_499s": {
+    "SectionTitle": "HTTP_499s",
+    "SessionType": "499 Token Required or nginx Client Closed Request",
+    "ResponseAlert": "HTTP 499 Token Required (Esri) or nginx Client Closed Request.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_500s": {
+    "HTTP_500_Internal_Server_Error_Repeating_Redirects": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_500_Internal_Server_Error_Impersonate_User_Denied": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_500_Internal_Server_Error_All_Others": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    }
+  },
+  "HTTP_501s": {
+    "SectionTitle": "HTTP_501s",
+    "SessionType": "501 Not Implemented",
+    "ResponseAlert": "HTTP 501 Not Implemented.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_502s": {
+    "HTTP_502_Bad_Gateway_Telemetry_False_Positive": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 20
+    },
+    "HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 20
+    },
+    "HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 20
+    },
+    "HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_502_Bad_Gateway_Anything_Else": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    }
+  },
+  "HTTP_503s": {
+    "HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_503_Service_Unavailable_Everything_Else": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    }
+  },
+  "HTTP_504s": {
+    "HTTP_504_Gateway_Timeout_Internet_Access_Blocked": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_504_Gateway_Timeout_Anything_Else": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    }
+  },
+  "HTTP_505s": {
+    "SectionTitle": "HTTP_505s",
+    "SessionType": "505 HTTP Version Not Supported",
+    "ResponseAlert": "HTTP 505 HTTP Version Not Supported.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_506s": {
+    "SectionTitle": "HTTP_506s",
+    "SessionType": "506 Variant Also Negotiates",
+    "ResponseAlert": "HTTP 506 Variant Also Negotiates.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_507s": {
+    "SectionTitle": "HTTP_507s",
+    "SessionType": "507 Insufficient Storage",
+    "ResponseAlert": "HTTP 507 Insufficient Storage.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_508s": {
+    "SectionTitle": "HTTP_508s",
+    "SessionType": "508 Loop Detected",
+    "ResponseAlert": "HTTP 508 Loop Detected.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_509s": {
+    "SectionTitle": "HTTP_509s",
+    "SessionType": "509 Bandwidth Limit Exceeded",
+    "ResponseAlert": "HTTP 509 Bandwidth Limit Exceeded.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_510s": {
+    "SectionTitle": "HTTP_510s",
+    "SessionType": "510 Not Extended",
+    "ResponseAlert": "HTTP 510 Not Extended.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_511s": {
+    "SectionTitle": "HTTP_511s",
+    "SessionType": "511 Network Authentication Required",
+    "ResponseAlert": "HTTP 511 Network Authentication Required.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_520s": {
+    "SectionTitle": "HTTP_520s",
+    "SessionType": "520 Cloudflare Web Server Returned an Unknown Error",
+    "ResponseAlert": "HTTP 520 Cloudflare Web Server Returned an Unknown Error.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_521s": {
+    "SectionTitle": "HTTP_521s",
+    "SessionType": "521 Cloudflare Web Server Is Down",
+    "ResponseAlert": "HTTP 521 Cloudflare Web Server Is Down.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_522s": {
+    "SectionTitle": "HTTP_522s",
+    "SessionType": "522 Cloudflare Connection Timed Out",
+    "ResponseAlert": "HTTP 522 Cloudflare Connection Timed Out.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_523s": {
+    "SectionTitle": "HTTP_523s",
+    "SessionType": "523 Cloudflare Origin Is Unreachable",
+    "ResponseAlert": "HTTP 523 Cloudflare Origin Is Unreachable.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_524s": {
+    "SectionTitle": "HTTP_524s",
+    "SessionType": "524 Cloudflare A Timeout Occurred",
+    "ResponseAlert": "HTTP 524 Cloudflare A Timeout Occurred.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_525s": {
+    "SectionTitle": "HTTP_525s",
+    "SessionType": "525 Cloudflare SSL Handshake Failed",
+    "ResponseAlert": "HTTP 525 Cloudflare SSL Handshake Failed.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_526s": {
+    "SectionTitle": "HTTP_526s",
+    "SessionType": "526 Cloudflare Invalid SSL Certificate",
+    "ResponseAlert": "HTTP 526 Cloudflare Invalid SSL Certificate.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_527s": {
+    "SectionTitle": "HTTP_527s",
+    "SessionType": "527 Cloudflare Railgun Error",
+    "ResponseAlert": "HTTP 527 Cloudflare Railgun Error.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_529s": {
+    "SectionTitle": "HTTP_529s",
+    "SessionType": "529 Site is overloaded",
+    "ResponseAlert": "HTTP 529 Site is overloaded.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_530s": {
+    "SectionTitle": "HTTP_530s",
+    "SessionType": "530 Site is frozen",
+    "ResponseAlert": "HTTP 530 Site is frozen or Cloudflare Error returned with 1xxx error.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_561s": {
+    "SectionTitle": "HTTP_561s",
+    "SessionType": "561 AWS Unauthorized",
+    "ResponseAlert": "HTTP 561 AWS Unauthorized.",
+    "SessionAuthenticationConfidenceLevel": 5,
+    "SessionTypeConfidenceLevel": 10,
+    "SessionResponseServerConfidenceLevel": 5,
+    "SessionSeverity": 10
+  },
+  "HTTP_598s": {
+    "SectionTitle": "HTTP_561s",
+    "SessionType": "598 Network read timeout error",
+    "ResponseAlert": "HTTP 598 (Informal convention) Network read timeout error.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,

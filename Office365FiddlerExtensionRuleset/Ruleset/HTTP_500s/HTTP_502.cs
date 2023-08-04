@@ -36,20 +36,43 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 502 Bad Gateway. Telemetry False Positive.");
 
+            int sessionAuthenticationConfidenceLevel;
+            int sessionTypeConfidenceLevel;
+            int sessionResponseServerConfidenceLevel;
+            int sessionSeverity;
+
+            try
+            {
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_502s|HTTP_502_Bad_Gateway_Telemetry_False_Positive");
+                sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                sessionSeverity = sessionClassificationJson.SessionSeverity;
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                sessionAuthenticationConfidenceLevel = 5;
+                sessionTypeConfidenceLevel = 10;
+                sessionResponseServerConfidenceLevel = 5;
+                sessionSeverity = 20;
+            }
+
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_502s_Telemetry_False_Positive",
-                UIBackColour = "Blue",
-                UITextColour = "Black",
+                SectionTitle = "HTTP_502s",
 
                 SessionType = "False Positive",
                 ResponseCodeDescription = "502 Bad Gateway False Positive",
                 ResponseAlert = "<b><span style='color:green'>False Positive</span></b>",
                 ResponseComments = "Telemetry failing is unlikely the cause of significant Office 365 client issues.",
 
-                SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5
+                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -79,11 +102,33 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 502 Bad Gateway. EXO DNS False Positive.");
 
+            int sessionAuthenticationConfidenceLevel;
+            int sessionTypeConfidenceLevel;
+            int sessionResponseServerConfidenceLevel;
+            int sessionSeverity;
+
+            try
+            {
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_502s|HTTP_502s_EXO_DNS_Lookup_False_Positive");
+                sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                sessionSeverity = sessionClassificationJson.SessionSeverity;
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                sessionAuthenticationConfidenceLevel = 5;
+                sessionTypeConfidenceLevel = 10;
+                sessionResponseServerConfidenceLevel = 5;
+                sessionSeverity = 20;
+            }
+
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_502s_EXO_DNS_Lookup_False_Positive",
-                UIBackColour = "Blue",
-                UITextColour = "Black",
+                SectionTitle = "HTTP_502s",
 
                 SessionType = "False Positive",
                 ResponseCodeDescription = "502 Bad Gateway False Positive",
@@ -94,9 +139,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseServer = "False Positive",
                 Authentication = "False Positive",
 
-                SessionAuthenticationConfidenceLevel = 10,
-                SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 10
+                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -124,8 +170,31 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-            
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 502 Bad Gateway. O365 AutoD onmicrosoft.com False Positive.");
+
+            int sessionAuthenticationConfidenceLevel;
+            int sessionTypeConfidenceLevel;
+            int sessionResponseServerConfidenceLevel;
+            int sessionSeverity;
+
+            try
+            {
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_502s|HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive");
+                sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                sessionSeverity = sessionClassificationJson.SessionSeverity;
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                sessionAuthenticationConfidenceLevel = 5;
+                sessionTypeConfidenceLevel = 10;
+                sessionResponseServerConfidenceLevel = 5;
+                sessionSeverity = 20;
+            }
 
             string AutoDFalsePositiveDomain;
             string AutoDFalsePositiveResponseBody = this.session.GetResponseBodyAsString();
@@ -143,9 +212,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_502s_EXO_AutoDiscover_False_Positive",
-                UIBackColour = "Blue",
-                UITextColour = "Black",
+                SectionTitle = "HTTP_502s",
 
                 SessionType = "False Positive",
                 ResponseCodeDescription = "502 Bad Gateway False Positive",
@@ -161,9 +228,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseServer = "False Positive",
                 Authentication = "False Positive",
 
-                SessionAuthenticationConfidenceLevel = 10,
-                SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 10
+                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -188,20 +256,43 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 502 Bad Gateway. Exchange Autodiscover.");
 
+            int sessionAuthenticationConfidenceLevel;
+            int sessionTypeConfidenceLevel;
+            int sessionResponseServerConfidenceLevel;
+            int sessionSeverity;
+
+            try
+            {
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_502s|HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover");
+                sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                sessionSeverity = sessionClassificationJson.SessionSeverity;
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                sessionAuthenticationConfidenceLevel = 5;
+                sessionTypeConfidenceLevel = 10;
+                sessionResponseServerConfidenceLevel = 5;
+                sessionSeverity = 60;
+            }
+
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_502s_Bad_Gateway_AutoDiscover_Anything_Else",
-                UIBackColour = "Red",
-                UITextColour = "Black",
+                SectionTitle = "HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover",
 
                 SessionType = "!AUTODISCOVER!",
                 ResponseCodeDescription = "502 Bad Gateway",
                 ResponseAlert = "<b><span style='color:red'>AUTODISCOVER</span></b>",
                 ResponseComments = "This AutoDiscover request was refused by the server it was sent to. Check the raw tab for further details.",
 
-                SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 5,
-                SessionResponseServerConfidenceLevel = 5
+                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -216,11 +307,33 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 502 Bad Gateway.");
 
+            int sessionAuthenticationConfidenceLevel;
+            int sessionTypeConfidenceLevel;
+            int sessionResponseServerConfidenceLevel;
+            int sessionSeverity;
+
+            try
+            {
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_502s|HTTP_502_Bad_Gateway_Anything_Else");
+                sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                sessionSeverity = sessionClassificationJson.SessionSeverity;
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                sessionAuthenticationConfidenceLevel = 5;
+                sessionTypeConfidenceLevel = 10;
+                sessionResponseServerConfidenceLevel = 5;
+                sessionSeverity = 60;
+            }
+
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_502s_Bad_Gateway_Anything_Else",
-                UIBackColour = "Red",
-                UITextColour = "Black",
+                SectionTitle = "HTTP_502s",
 
                 SessionType = "!Bad Gateway!",
                 ResponseCodeDescription = "502 Bad Gateway",
@@ -229,9 +342,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 + "Do you see expected responses beyond this session in the trace? Is the Host IP for the device issuing this response with a subnet "
                 + "within your lan or something in a cloud provider's network?",
 
-                SessionAuthenticationConfidenceLevel = 5,
-                SessionTypeConfidenceLevel = 10,
-                SessionResponseServerConfidenceLevel = 5
+                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionSeverity
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

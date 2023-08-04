@@ -577,25 +577,25 @@ namespace Office365FiddlerExtensionRuleset
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_428s");
                     break;
                 case 429:
-                    HTTP_429.Instance.HTTP_429_Too_Many_Requests(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_429s");
                     break;
                 case 430:
-                    HTTP_430.Instance.HTTP_430_Request_Header_Feilds_Too_Large(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_430s");
                     break;
                 case 431:
-                    HTTP_431.Instance.HTTP_431_Request_Header_Fields_Too_Large(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_431s");
                     break;
                 case 440:
-                    HTTP_440.Instance.HTTP_440_IIS_Login_Timeout(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_440s");
                     break;
                 case 449:
-                    HTTP_449.Instance.HTTP_449_IIS_Retry_With(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_449s");
                     break;
                 case 450:
-                    HTTP_450.Instance.HTTP_450_Blocked_by_Windows_Parental_Controls(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_450s");
                     break;
                 case 451:
-                    HTTP_451.Instance.HTTP_451_Unavailable_For_Legal_Reasons_or_IIS_Redirect(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_451s");
                     break;
                 case 456:
                     HTTP_456.Instance.HTTP_456_Multi_Factor_Required(this.session);
@@ -611,28 +611,28 @@ namespace Office365FiddlerExtensionRuleset
                     HTTP_456.Instance.HTTP_456_Anything_Else(this.session);
                     break;
                 case 460:
-                    HTTP_460.Instance.HTTP_460_Load_Balancer_Timeout(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_460s");
                     break;
                 case 463:
-                    HTTP_463.Instance.HTTP_463_X_Forwarded_For_Header(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_463s");
                     break;
                 case 494:
-                    HTTP_494.Instance.HTTP_494_Request_Header_Too_Large(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_494s");
                     break;
                 case 495:
-                    HTTP_495.Instance.HTTP_495_SSL_Certificate_Error(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_495s");
                     break;
                 case 496:
-                    HTTP_496.Instance.HTTP_496_SSL_Certificate_Required(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_496s");
                     break;
                 case 497:
-                    HTTP_497.Instance.HTTP_497_Request_Sent_To_HTTPS_Port(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_497s");
                     break;
                 case 498:
-                    HTTP_498.Instance.HTTP_498_Invalid_Token(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_498s");
                     break;
                 case 499:
-                    HTTP_499.Instance.HTTP_499_Token_Required_or_Client_Closed_Request(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_499s");
                     break;
                 case 500:
                     HTTP_500.Instance.HTTP_500_Internal_Server_Error_Repeating_Redirects(this.session);
@@ -656,7 +656,7 @@ namespace Office365FiddlerExtensionRuleset
                     HTTP_500.Instance.HTTP_500_Internal_Server_Error_All_Others(this.session);
                     break;
                 case 501:
-                    HTTP_501.Instance.HTTP_501_Not_Implemented(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_501s");
                     break;
                 case 502:
                     HTTP_502.Instance.HTTP_502_Bad_Gateway_Telemetry_False_Positive(this.session);
@@ -704,62 +704,61 @@ namespace Office365FiddlerExtensionRuleset
                     HTTP_504.Instance.HTTP_504_Gateway_Timeout_Anything_Else(this.session);
                     break;
                 case 505:
-                    HTTP_505.Instance.HTTP_505_HTTP_Version_Not_Supported(this.session);
-
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_505s");
                     break;
                 case 506:
-                    HTTP_506.Instance.HTTP_506_Variant_Also_Negociates(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_506s");
                     break;
                 case 507:
-                    HTTP_507.Instance.HTTP_507_Insufficient_Storage(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_507s");
                     break;
                 case 508:
-                    HTTP_508.Instance.HTTP_508_Loop_Detected(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_508s");
                     break;
                 case 509:
-                    HTTP_509.Instance.HTTP_509_Bandwidth_Limit_Exceeeded(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_509s");
                     break;
                 case 510:
-                    HTTP_510.Instance.HTTP_510_Not_Extended(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_510s");
                     break;
                 case 511:
-                    HTTP_511.Instance.HTTP_511_Network_Authentication_Required(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_511s");
                     break;
                 case 520:
-                    HTTP_520.Instance.HTTP_520_Web_Server_Returned_an_Unknown_Error(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_520s");
                     break;
                 case 521:
-                    HTTP_521.Instance.HTTP_521_Web_Server_Is_Down(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_521s");
                     break;
                 case 522:
-                    HTTP_522.Instance.HTTP_522_Connection_Timed_Out(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_522s");
                     break;
                 case 523:
-                    HTTP_523.Instance.HTTP_523_Origin_Is_Unreachable(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_523s");
                     break;
                 case 524:
-                    HTTP_524.Instance.HTTP_524_A_Timeout_Occurred(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_524s");
                     break;
                 case 525:
-                    HTTP_525.Instance.HTTP_525_SSL_Handshake_Failed(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_525s");
                     break;
                 case 526:
-                    HTTP_526.Instance.HTTP_526_Invalid_SSL_Certificate(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_526s");
                     break;
                 case 527:
-                    HTTP_527.Instance.HTTP_527_Railgun_Error(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_527s");
                     break;
                 case 529:
-                    HTTP_529.Instance.HTTP_529_Site_Is_Overloaded(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_529s");
                     break;
                 case 530:
-                    HTTP_530.Instance.HTTP_530_Site_Is_Frozen(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_530s");
                     break;
                 case 561:
-                    HTTP_561.Instance.HTTP_561_Unauthorized(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_561s");
                     break;
                 case 598:
-                    HTTP_598.Instance.HTTP_598_Network_Read_Timeout_Error(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_598s");
                     break;
                 default:
                     // Not setting colours on sessions not recognised.
@@ -767,8 +766,6 @@ namespace Office365FiddlerExtensionRuleset
                     var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "Session undefined in extension.",
-                        UIBackColour = "Gray",
-                        UITextColour = "Black",
 
                         SessionType = "Undefined",
                         ResponseCodeDescription = "Defaulted. HTTP Response Code undefined.",
@@ -777,7 +774,8 @@ namespace Office365FiddlerExtensionRuleset
 
                         SessionAuthenticationConfidenceLevel = 0,
                         SessionTypeConfidenceLevel = 0,
-                        SessionResponseServerConfidenceLevel = 0
+                        SessionResponseServerConfidenceLevel = 0,
+                        SessionSeverity = 10
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
