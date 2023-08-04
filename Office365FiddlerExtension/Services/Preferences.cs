@@ -1,5 +1,6 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -12,6 +13,17 @@ namespace Office365FiddlerExtension.Services
         /*public static void Initialize()
         {
         }*/
+
+        /// <summary>
+        /// Return string for sessions where no known issue is needed.
+        /// Used across response code logic.
+        /// </summary>
+        /// <returns></returns>
+        public static string ResponseCommentsNoKnownIssue()
+        {
+            var parsedObject = JObject.Parse(Preferences.SessionClassification);
+            return parsedObject["ResponseCommentsNoKnownIssue"].ToString();
+        }
 
         public static string LogPrepend()
         {

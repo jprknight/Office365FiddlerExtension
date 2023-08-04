@@ -74,7 +74,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 ResponseCodeDescription = sessionType,
                 ResponseAlert = sessionResponseAlert,
-                ResponseComments = SessionFlagService.Instance.ResponseCommentsNoKnownIssue(),
+                ResponseComments = Preferences.ResponseCommentsNoKnownIssue(),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

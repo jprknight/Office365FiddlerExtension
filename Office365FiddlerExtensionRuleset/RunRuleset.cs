@@ -770,7 +770,7 @@ namespace Office365FiddlerExtensionRuleset
                         SessionType = "Undefined",
                         ResponseCodeDescription = "Defaulted. HTTP Response Code undefined.",
                         ResponseAlert = "Undefined",
-                        ResponseComments = SessionFlagService.Instance.ResponseCommentsNoKnownIssue(),
+                        ResponseComments = Preferences.ResponseCommentsNoKnownIssue(),
 
                         SessionAuthenticationConfidenceLevel = 0,
                         SessionTypeConfidenceLevel = 0,

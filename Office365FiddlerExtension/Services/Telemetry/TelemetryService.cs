@@ -171,7 +171,6 @@ namespace Office365FiddlerExtension.Services
 
                 ManagementObjectCollection _managementObjects = query.Get();
 
-                // REVIEW THIS -- Make sure this change does break telemetry.
                 // foreach (ManagementObject mgmtObject in _managementObjects)
                 foreach (ManagementObject mgmtObject in _managementObjects.Cast<ManagementObject>())
                 {

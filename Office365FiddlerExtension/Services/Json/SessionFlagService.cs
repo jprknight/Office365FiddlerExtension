@@ -8,6 +8,8 @@ using Fiddler;
 using Newtonsoft.Json;
 using Office365FiddlerExtension.UI;
 using System.Reflection;
+using Newtonsoft.Json.Linq;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -55,21 +57,6 @@ namespace Office365FiddlerExtension.Services
             CreateExtensionSessionFlag(this.session);
 
             return this.session["Microsoft365FiddlerExtensionJson"];
-        }
-
-        /// <summary>
-        /// Return string for sessions where no known issue is needed.
-        /// Used across response code logic.
-        /// </summary>
-        /// <returns></returns>
-        public string ResponseCommentsNoKnownIssue()
-        {
-            //REVIEW THIS -- Want to return this text from json file, rather than hard code it.
-            // Change URLs to Github.
-
-            return "<p>No known issue with Microsoft365 and this type of session. If you have a suggestion for an improvement, "
-                + "create an issue or better yet a pull request in the project Github repository: "
-                + "<a href='https://aka.ms/Office365FiddlerExtension' target='_blank'>https://aka.ms/Office365FiddlerExtension</a>.</p>";
         }
 
         /// <summary>

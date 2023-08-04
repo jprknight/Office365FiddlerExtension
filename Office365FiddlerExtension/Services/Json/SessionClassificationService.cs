@@ -32,79 +32,27 @@ namespace Office365FiddlerExtension.Services
         /// <param name="section"></param>
         public SessionClassificationJsonSection GetSessionClassificationJsonSection(string section)
         {
-            // REVIEW THIS -- Remove commented lines of debugging logging.
-            //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): GetSessionClassificationJsonSection ENTRY");
-
             string sectionPiece0 = "";
             string sectionPiece1 = "";
-            //string sectionPiece2 = "";
 
             var jsonSection = "";
 
             var parsedObject = JObject.Parse(Preferences.SessionClassification);
 
-            //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): GetSessionClassificationJsonSection PARSEDOBJECT");
-
             if (section.Contains('|')) {
-                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): GetSessionClassificationJsonSection PIPE: {section}");
-
                 string[] sectionPieces = section.Split('|');
 
-                //if (sectionPieces.Length == 2)
-                //{
-                    //foreach (string piece in sectionPieces)
-                    //{
-                    //    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {piece}");
-                    //}
-
-                    sectionPiece0 = sectionPieces[0];
-                    sectionPiece1 = sectionPieces[1];
-                    //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {sectionPieces.Length} " +
-                    //    $"sectionPiece0: {sectionPiece0} sectionPiece1: {sectionPiece1} : {parsedObject[sectionPiece0][sectionPiece1].ToString()}");
-                    jsonSection = parsedObject[sectionPiece0][sectionPiece1].ToString();
-                //}
-                /*else if (sectionPieces.Length == 3)
-                {
-                    foreach (string piece in sectionPieces)
-                    {
-                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {piece}");
-                    }
-
-                    sectionPiece0 = sectionPieces[0];
-                    sectionPiece1 = sectionPieces[1];
-                    sectionPiece2 = sectionPieces[2];
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {sectionPieces.Length} " +
-                        $"sectionPiece0: {sectionPiece0} sectionPiece1: {sectionPiece1} sectionPiece2: {sectionPiece2} : {parsedObject[sectionPiece0][sectionPiece1][sectionPiece2].ToString()}");
-                    jsonSection = parsedObject[sectionPiece0][sectionPiece1][sectionPiece2].ToString();
-                }*/
+                sectionPiece0 = sectionPieces[0];
+                sectionPiece1 = sectionPieces[1];
+                jsonSection = parsedObject[sectionPiece0][sectionPiece1].ToString();
             }
             else
             {
-                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): GetSessionClassificationJsonSection NO PIPE");
-
-                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
-                //    $"section: {section}: {parsedObject[section]}");
                 jsonSection = parsedObject[section].ToString();
             }
 
             return JsonConvert.DeserializeObject<SessionClassificationJsonSection>(jsonSection);
         }
-
-        /*public SessionClassificationFlags GetDeserializedSessionFlags(Session Session)
-        {
-            this.session = Session;
-
-            try
-            {
-                return JsonConvert.DeserializeObject<SessionClassificationFlags>(GetSessionClassificationJsonData(this.session));
-            }
-            catch (Exception ex)
-            {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error deserializing session flags.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
-            }
-            return null;
-        }*/
 
         public void CreateSessionClassificationFiddlerSetting()
         {
@@ -119,43 +67,6 @@ namespace Office365FiddlerExtension.Services
  
             Preferences.SessionClassification = Encoding.UTF8.GetString(base64EncodedBytes); ;
         }
-
-        /*public string GetSessionClassificationJsonData(Session Session)
-        {
-            this.session = Session;
-
-
-
-            return null;
-            
-        }
-
-        public SessionClassificationFlags GetDeserializedSessionClassification()
-        {
-            var JsonSettings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-
-            try
-            {
-                return JsonConvert.DeserializeObject<SessionClassificationFlags>(Preferences.SessionClassification, JsonSettings);
-            }
-            catch (Exception ex)
-            {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error deserializing extension version.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
-            }
-            return null;
-        }
-
-        public class SessionClassificationFlags
-        {
-            public string BroadLogicChecks { get; set; }
-
-            public string FiddlerUpdateSessions { get; set; }
-        }*/
     }
 
     public class SessionClassificationJsonSection

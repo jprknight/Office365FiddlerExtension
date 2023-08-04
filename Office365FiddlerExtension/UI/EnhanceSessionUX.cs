@@ -191,40 +191,5 @@ namespace Office365FiddlerExtension.UI
                 SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
             }
         }
-
-        public void ToggleSessionBold()
-        {
-            var sessions = FiddlerApplication.UI.GetSelectedSessions();
-
-            foreach (var session in sessions)
-            {
-                this.session = session;
-
-                if (this.session["UI-BOLD"] != "Set by Offifce365FiddlerExtension")
-                {
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
-                    {
-                        UITextBold = true
-                    };
-                    var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
-                    
-                    this.session["UI-BOLD"] = "Set by Offifce365FiddlerExtension";
-                    this.session.RefreshUI();
-                }
-                else
-                {
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
-                    {
-                        UITextBold = false
-                    };
-                    var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
-
-                    this.session["UI-BOLD"] = null;
-                    this.session.RefreshUI();
-                }
-            }
-        }
     }
 }
