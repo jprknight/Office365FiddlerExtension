@@ -37,14 +37,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "LongRunningSesions_Warning",
-                UIBackColour = "Orange",
-                UITextColour = "Black",
 
                 SessionType = "Roundtrip Time Warning",
                 ResponseCodeDescription = "",
                 ResponseAlert = "<b><span style='color:orange'>Roundtrip Time Warning</span></b>",
                 ResponseComments = "This session took more than 2.5 seconds to complete. "
-                + "A small number of sessions completing roundtrip in this timeframe is not necessary sign of an issue."
+                + "A small number of sessions completing roundtrip in this timeframe is not necessary sign of an issue.",
+
+                SessionSeverity = 40
             };
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
@@ -67,8 +67,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "LongRunningSessions_Client_Session",
-                UIBackColour = "Red",
-                UITextColour = "Black",
 
                 SessionType = "Long Running Client Session",
                 ResponseCodeDescription = "",
@@ -79,7 +77,9 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 + "have this warning. Investigate any proxy device or load balancer in your network, "
                 + "or any other device sitting between the client computer and access to the application server the data resides on.</p>"
                 + "<p>Try the divide and conquer approach. What can you remove or bypass from the equation to see if the application then performs "
-                + "normally?</p>"
+                + "normally?</p>",
+
+                SessionSeverity = 60
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -103,8 +103,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "LongRunningSessions_Server_Session",
-                UIBackColour = "Red",
-                UITextColour = "Black",
 
                 SessionType = "Long Running Server Session",
                 ResponseCodeDescription = "",
@@ -115,7 +113,9 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 + "have this warning alongany proxy device in your network, "
                 + "or any other device sitting between the client computer and access to the internet."
                 + "Try the divide and conquer approach. What can you remove or bypass from the equation to see if the application then performs "
-                + "normally?</p>"
+                + "normally?</p>",
+
+                SessionSeverity = 60
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

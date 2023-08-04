@@ -65,6 +65,7 @@ namespace Office365FiddlerExtension.Services
         public string ResponseCommentsNoKnownIssue()
         {
             //REVIEW THIS -- Want to return this text from json file, rather than hard code it.
+            // Change URLs to Github.
 
             return "<p>No known issue with Microsoft365 and this type of session. If you have a suggestion for an improvement, "
                 + "create an issue or better yet a pull request in the project Github repository: "
@@ -215,18 +216,6 @@ namespace Office365FiddlerExtension.Services
             updatedSessionFlagsJson.SectionTitle = SectionTitle;
 
             // Replace all other values with new values as long as we don't pass in a null value.
-
-            // UIBackColour
-            if (updatedSessionFlagsJson.UIBackColour == null)
-            {
-                updatedSessionFlagsJson.UIBackColour = existingSessionFlagsJson.UIBackColour;
-            }
-
-            // UITextColour
-            if (updatedSessionFlagsJson.UITextColour == null)
-            {
-                updatedSessionFlagsJson.UITextColour = existingSessionFlagsJson.UITextColour;
-            }
 
             // Session Type
             if (updatedSessionFlagsJson.SessionType == null)
@@ -410,10 +399,6 @@ namespace Office365FiddlerExtension.Services
         public class ExtensionSessionFlags
         {
             public string SectionTitle { get; set; }
-
-            public string UIBackColour { get; set; }
-
-            public string UITextColour { get; set; }
 
             public bool UITextBold { get; set; }
 

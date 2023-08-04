@@ -153,7 +153,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "Authentication_Modern_Auth_Disabled",
-                    ResponseComments = SessionFlagService.Instance.ResponseCommentsNoKnownIssue(),
 
                     Authentication = "Modern Auth Disabled",
                     AuthenticationDescription = "Microsoft365 workload has Modern Authentication disabled. "

@@ -27,13 +27,13 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} 200 3S Suggestions call.");
-
             // If this isn't a 3G Suggestions call, return.
             if (!this.session.uriContains("search/api/v1/suggestions"))
             {
                 return;
             }
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} 200 3S Suggestions call.");
 
             int sessionAuthenticationConfidenceLevel;
             int sessionTypeConfidenceLevel;

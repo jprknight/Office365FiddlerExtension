@@ -257,14 +257,14 @@
     </None>
     <None Include="ApplicationInsights.config" />
     <None Include="Deploy-Office365FiddlerExtension.ps1" />
-    <None Include="Json\ExtensionURLs.json" />
+    <None Include="ExtensionURLs.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Json\ExtensionVersion.json" />
-    <None Include="Json\SessionClassification.json" />
+    <None Include="ExtensionVersion.json" />
+    <None Include="SessionClassification.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="update.xml" />

@@ -58,8 +58,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     SessionType = "200 Actually OK",
                     ResponseCodeDescription = "200 Actually OK",
-                    ResponseAlert = "HTTP 200 Actually OK. No errors, failed, or exceptions found.",
-                    ResponseComments = "HTTP 200 Actually OK. No errors, failed, or exceptions found.",
+                    ResponseAlert = "HTTP 200 Actually OK. No errors, failed, or exceptions found in response body.",
+                    ResponseComments = "HTTP 200 Actually OK. No errors, failed, or exceptions found in response body.",
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

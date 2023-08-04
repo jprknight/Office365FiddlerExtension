@@ -26,8 +26,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Connection blocked by Client Access Rules.");
-
             // If the session content doesn't match the intended rule, return.
             if (!this.session.fullUrl.Contains("outlook.office365.com/mapi"))
             {
@@ -38,6 +36,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 return;
             }
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Connection blocked by Client Access Rules.");
 
             int sessionAuthenticationConfidenceLevel;
             int sessionTypeConfidenceLevel;
