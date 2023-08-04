@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B024808A-9ACB-4FDB-B3CA-7A5D78973B7D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Office365FiddlerExtensionRuleset</RootNamespace>
+    <AssemblyName>Office365FiddlerExtensionRuleset</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Fiddler">
+      <HintPath>..\..\..\..\..\..\Tools\Fiddler\Fiddler.exe</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\ApacheAutodiscover.cs" />
+    <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\ConnectTunnelSessions.cs" />
+    <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\FiddlerUpdateSessions.cs" />
+    <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\LoopBackTunnel.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_3S_Suggestions.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Actually_OK.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_ClientAccessRule.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_Online_Any_Other_EWS.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_OnPremise_Any_Other_EWS.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_AddressNotFound.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Javascript.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Lurking_Errors.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Outlook_MAPI_Exchange_Online.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Outlook_MAPI_Exchange_OnPremise.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Outlook_MAPI_Protocol_Disabled.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Outlook_NSPI.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Outlook_RPC.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_OWA.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_REST_People_Request.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Unified_Groups_Settings.cs" />
+    <Compile Include="Ruleset\HTTP_300s\HTTP_302.cs" />
+    <Compile Include="Ruleset\HTTP_300s\HTTP_307.cs" />
+    <Compile Include="Ruleset\HTTP_400s\HTTP_400.cs" />
+    <Compile Include="Ruleset\HTTP_400s\HTTP_401.cs" />
+    <Compile Include="Ruleset\HTTP_400s\HTTP_403.cs" />
+    <Compile Include="Ruleset\HTTP_400s\HTTP_404.cs" />
+    <Compile Include="Ruleset\HTTP_400s\HTTP_407.cs" />
+    <Compile Include="Ruleset\HTTP_400s\HTTP_456.cs" />
+    <Compile Include="Ruleset\HTTP_400s\HTTP_405.cs" />
+    <Compile Include="Ruleset\HTTP_500s\HTTP_500.cs" />
+    <Compile Include="Ruleset\HTTP_500s\HTTP_502.cs" />
+    <Compile Include="Ruleset\HTTP_500s\HTTP_503.cs" />
+    <Compile Include="Ruleset\HTTP_500s\HTTP_504.cs" />
+    <Compile Include="Ruleset\SelectivelyRun\Authentication.cs" />
+    <Compile Include="Ruleset\SelectivelyRun\LongRunningSessions.cs" />
+    <Compile Include="Ruleset\SelectivelyRun\ResponseServer.cs" />
+    <Compile Include="Ruleset\SelectivelyRun\SessionType.cs" />
+    <Compile Include="Ruleset\SessionWordSearch.cs" />
+    <Compile Include="Ruleset\AlwaysRun\CalculateSessionAge.cs" />
+    <Compile Include="Ruleset\AlwaysRun\ProcessName.cs" />
+    <Compile Include="Ruleset\AlwaysRun\ServerThinkTimeTransitTime.cs" />
+    <Compile Include="Ruleset\AlwaysRun\SessionElapsedTime.cs" />
+    <Compile Include="Ruleset\HTTP_0\HTTP_0.cs" />
+    <Compile Include="Ruleset\SimpleSessionAnalysis.cs" />
+    <Compile Include="RunRuleset.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Office365FiddlerExtension\Office365FiddlerExtension.csproj">
+      <Project>{5d9f84f0-77f3-45f5-8da9-c89db69bd643}</Project>
+      <Name>Office365FiddlerExtension</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y /s "$(TargetDir)*.*" "C:\Tools\Fiddler\Inspectors"</PostBuildEvent>
+  </PropertyGroup>
+</Project>
