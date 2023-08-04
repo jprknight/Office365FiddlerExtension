@@ -63,8 +63,9 @@ namespace Office365FiddlerExtension.Services
             var URLs = new
             {
                 TelemetryInstrumentationKey = "87fb55ab-0052-4970-9318-7c740220e3c0",
-                ExtensionURL = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionURLs.json",
-                ExtensionVersion = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/Code-Hygiene/Office365FiddlerExtension/ExtensionVersion.json",
+                ExtensionURL = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/ExtensionURLs.json",
+                ExtensionVersion = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/ExtensionVersion.json",
+                SessionClassification = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/SessionClassification.json",
                 Installer = "https://github.com/jprknight/Office365FiddlerExtension/releases/latest",
                 Wiki = "https://github.com/jprknight/Office365FiddlerExtension/wiki",
                 WikiSessionTimeThresholds = "https://github.com/jprknight/Office365FiddlerExtension/wiki/Session-Time-Thresholds",
