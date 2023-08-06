@@ -15,7 +15,7 @@ The best way to get the Office 365 Fiddler Extension is via the deployment scrip
 
 Don't want to use the aka.ms short link, or not working? Use this instead:
 
-`Invoke-Expression (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerInspector/Deploy-Office365FiddlerExtension.ps1')`
+`Invoke-Expression (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/Deploy-Office365FiddlerExtension.ps1')`
 
 ![Office 365 Fiddler Extension Deployment Script](https://github.com/jprknight/Office365FiddlerExtension/blob/master/docs/Office365FiddlerExtensionDeploymentScript.png)
 
