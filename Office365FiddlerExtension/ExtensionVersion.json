@@ -1,12 +1,11 @@
 {
-  "UpdateMessage": "A new version of the Office 365 Fiddler Extension is available.",
   "ExtensionMajor": 2,
   "ExtensionMinor": 0,
-  "ExtensionBuild": 1,
+  "ExtensionBuild": 0,
   "RulesetMajor": 2023,
-  "RulesetMinor": 7,
-  "RulesetBuild": 5,
-  "ExtensionZip": "Office365FiddlerExtension.zip",
+  "RulesetMinor": 8,
+  "RulesetBuild": 7,
+  "ExtensionPattern": "Office365FiddlerExtension*.dll",
   "RulesetZip": "Office365FiddlerExtensionRuleset.zip",
   "RulesetDLLPattern": "Office365FiddlerExtensionRuleset*.dll"
 }

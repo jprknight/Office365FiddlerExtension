@@ -528,7 +528,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("</table>");
                 #endregion
 
-                ResultsString.AppendLine("<p>For an explantion of session timers refer to: <a href='https://aka.ms/Timers-Definitions' target='_blank'>https://aka.ms/Timers-Definitions</a>.</p>");
+                ResultsString.AppendLine("<p>For an explantion of session timers refer to: <a href='https://github.com/jprknight/Office365FiddlerExtension/wiki/Timers-Definitions' target='_blank'>https://github.com/jprknight/Office365FiddlerExtension/wiki/Timers-Definitions</a>.</p>");
 
                 // HTML Footer.
                 ResultsString.AppendLine("</font>");

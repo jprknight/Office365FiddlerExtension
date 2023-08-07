@@ -15,7 +15,7 @@
     "SessionSeverityFifty": "50 - Black (Concerning) - For sessions which could be interpretted as a false negative. HTTP 200s containing an error or failure are a good example of this.",
     "SessionSeveritySixty": "60 - Red (Severe) - For sessions where a known error condition has been detected. Usually calling out 'Start here first'."
   },
-  "ResponseCommentsNoKnownIssue": "<p>No known issue with Microsoft365 and this type of session. If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: <a href='https://aka.ms/Office365FiddlerExtension' target='_blank'>https://aka.ms/Office365FiddlerExtension</a>.</p>",
+  "ResponseCommentsNoKnownIssue": "<p>No known issue with Microsoft365 and this type of session. If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: <a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'>https://github.com/jprknight/Office365FiddlerExtension</a>.</p>",
   "BroadLogicChecks": {
     "FiddlerUpdateSessions": {
       "SessionAuthenticationConfidenceLevel": 10,
