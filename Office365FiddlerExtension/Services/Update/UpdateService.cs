@@ -41,7 +41,8 @@ namespace Office365FiddlerExtension.Services
 
             UpdateURLsJsonFromGithub();
             UpdateVersionJsonFromGithub();
-            UpdateSessionClassificationJsonFromGithub();
+            // REVIEW THIS -- Uncomment this before going production.
+            //UpdateSessionClassificationJsonFromGithub();
         }
 
         private async void UpdateSessionClassificationJsonFromGithub()

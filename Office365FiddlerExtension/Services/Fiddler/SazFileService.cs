@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
+using Office365FiddlerExtension.UI;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -64,7 +65,8 @@ namespace Office365FiddlerExtension.Services
                 session.oFlags.Remove("X-SACL");
                 session.oFlags.Remove("X-STCL");
                 session.oFlags.Remove("X-SRSCL");
-                session.oFlags.Remove("MICROSOFT365FIDDLEREXTENSIONJSON");
+                // REVIEW THIS -- Commenting out this last line, so analysis can be retained in a saved SAZ file.
+                //session.oFlags.Remove("MICROSOFT365FIDDLEREXTENSIONJSON");
             }
 
             FiddlerApplication.UI.lvSessions.EndUpdate();
@@ -96,8 +98,22 @@ namespace Office365FiddlerExtension.Services
             foreach (Session session in e.arrSessions)
             {
                 this.session = session;
-                
-                SessionService.Instance.OnPeekAtResponseHeaders(this.session);
+
+                // If the session already has the Microsoft365FiddlerExtensionJson flag set with high confidence session classifications set,
+                // enhance the session based on prior / stored analysis.
+                if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10
+                    && SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionResponseServerConfidenceLevel == 10
+                    && SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        $"Enhancing {this.session.id} based on existing session flags ({SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionType}).");
+
+                    EnhanceSessionUX.Instance.EnhanceSession(this.session);
+                }
+                else
+                {
+                    SessionService.Instance.OnPeekAtResponseHeaders(this.session);
+                }
             }
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz processed: {e.sFilename}");

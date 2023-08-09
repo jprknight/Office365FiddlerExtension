@@ -26,11 +26,17 @@ namespace Office365FiddlerExtension
 
         private readonly MenuItem Separator2 = new MenuItem("-");
 
+        private readonly MenuItem Separator3 = new MenuItem("-");
+
         private readonly MenuItem CmiProcessSelectedSessions = new MenuItem("Process Selected Sessions");
 
         private readonly MenuItem CmiProcessAllSessions = new MenuItem("Process All Sessions");
 
-        private readonly MenuItem CmiClearAllSessionProcessing = new MenuItem("Clear Selected Sessions Processing");
+        private readonly MenuItem CmiClearAnalysisSelectedSessions = new MenuItem("Clear Analysis - Selected Sessions");
+
+        private readonly MenuItem CmiRecalculateAnalysisSelectedSessions = new MenuItem("Recalculate Analysis - Selected Sessions");
+
+        private readonly MenuItem CmiPurgeAnalysisSelectedSessions = new MenuItem("Purge Analysis - Selected Sessions");
 
         private readonly MenuItem CmiSetSessionSeverity = new MenuItem("Set Session Severity");
 
@@ -58,14 +64,21 @@ namespace Office365FiddlerExtension
 
             CmiProcessAllSessions.Click += new EventHandler(CmiProcessAllSessions_Click);
 
-            CmiClearAllSessionProcessing.Click += new EventHandler(CmiClearAllSessionProcessing_Click);
+            CmiClearAnalysisSelectedSessions.Click += new EventHandler(CmiClearAnalysisSelectedSessions_Click);
+
+            CmiRecalculateAnalysisSelectedSessions.Click += new EventHandler(CmiRecalculateAnalysisSelectedSessions_Click);
+
+            CmiPurgeAnalysisSelectedSessions.Click += new EventHandler(CmiPurgeAnalysisSelectedSessions_Click);
 
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(0, CmiProcessSelectedSessions);
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(1, CmiProcessAllSessions);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(2, CmiClearAllSessionProcessing);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(3, Separator1);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(4, CmiSetSessionSeverity);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(5, Separator2);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(2, Separator1);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(3, CmiClearAnalysisSelectedSessions);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(4, CmiRecalculateAnalysisSelectedSessions);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(5, CmiPurgeAnalysisSelectedSessions);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(6, Separator2);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(7, CmiSetSessionSeverity);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(8, Separator3);
 
             this.CmiSetSessionSeverity.MenuItems.AddRange(new MenuItem[] {
                 this.CmiSessionSeverityTen,
@@ -119,9 +132,19 @@ namespace Office365FiddlerExtension
             EnhanceSessionUX.Instance.SetSessionSevere();
         }
         
-        private void CmiClearAllSessionProcessing_Click(object sender, EventArgs e)
+        private void CmiClearAnalysisSelectedSessions_Click(object sender, EventArgs e)
         {
-            SessionFlagService.Instance.ClearAllSessionProcessing();
+            SessionFlagService.Instance.ClearAnalysisSelectedSessions();
+        }
+
+        private void CmiRecalculateAnalysisSelectedSessions_Click(object sender, EventArgs e)
+        {
+            SessionFlagService.Instance.CmiRecalculateAnalysisSelectedSessions();
+        }
+
+        private void CmiPurgeAnalysisSelectedSessions_Click(Object sender, EventArgs e)
+        {
+            SessionFlagService.Instance.CmiPurgeAnalysisSelectedSessions();
         }
 
         private void CmiProcessAllSessions_Click(object sender, EventArgs e)

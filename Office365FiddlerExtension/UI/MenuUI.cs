@@ -108,7 +108,7 @@ namespace Office365FiddlerExtension
 
         private void MiClearAllSessionProcessing_Click(object sender, EventArgs e)
         {
-            SessionFlagService.Instance.ClearAllSessionProcessing();
+            SessionFlagService.Instance.ClearAnalysisSelectedSessions();
         }
 
         private void MiProcessAllSessions_Click(object sender, EventArgs e)

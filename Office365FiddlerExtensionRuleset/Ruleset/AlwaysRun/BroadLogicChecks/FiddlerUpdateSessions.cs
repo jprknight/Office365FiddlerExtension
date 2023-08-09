@@ -26,6 +26,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Fiddler Updates.");
 
+                string sessionSectionTitle;
+                string sessionType;
+                string sessionResponseCodeDescription;
+                string sessionResonseServer;
+                string sessionResponseAlert;
+                string sessionResponseComments;
+                string sessionAuthentication;
+
                 int sessionAuthenticationConfidenceLevel;
                 int sessionTypeConfidenceLevel;
                 int sessionResponseServerConfidenceLevel;
@@ -34,6 +42,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
                 try
                 {
                     var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|FiddlerUpdateSessions");
+                    
+                    sessionSectionTitle = sessionClassificationJson.SectionTitle;
+                    sessionType = sessionClassificationJson.SessionType;
+                    sessionResponseCodeDescription = sessionClassificationJson.SessionResponseCodeDescription;
+                    sessionResonseServer = sessionClassificationJson.SessionResponseServer;
+                    sessionResponseAlert = sessionClassificationJson.SessionResponseAlert;
+                    sessionResponseComments = sessionClassificationJson.SessionResponseComments;
+                    sessionAuthentication = sessionClassificationJson.SessionAuthentication;
+
                     sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                     sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                     sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -44,6 +61,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
 
+                    sessionSectionTitle = "Broad Logic Checks";
+                    sessionType = "Fiddler Update Check";
+                    sessionResponseCodeDescription = "Fiddler Update Check";
+                    sessionResonseServer = "Fiddler Update Check";
+                    sessionResponseAlert = "Fiddler Update Check";
+                    sessionResponseComments = "This is Fiddler itself checking for updates.";
+                    sessionAuthentication = "Fiddler Update Check";
+
                     sessionAuthenticationConfidenceLevel = 10;
                     sessionTypeConfidenceLevel = 10;
                     sessionResponseServerConfidenceLevel = 10;
@@ -52,14 +77,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = "Broad Logic Checks",
+                    SectionTitle = sessionSectionTitle,
 
-                    SessionType = "Fiddler Update Check",
-                    ResponseServer = "Fiddler Update Check",
-                    ResponseAlert = "Fiddler Update Check",
-                    ResponseCodeDescription = "Fiddler Update Check",
-                    ResponseComments = "This is Fiddler itself checking for updates.",
-                    Authentication = "Fiddler Update Check",
+                    SessionType = sessionType,
+                    ResponseCodeDescription = sessionResponseCodeDescription,
+                    ResponseServer = sessionResonseServer,
+                    ResponseAlert = sessionResponseAlert,                    
+                    ResponseComments = sessionResponseComments,
+                    Authentication = sessionAuthentication,
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

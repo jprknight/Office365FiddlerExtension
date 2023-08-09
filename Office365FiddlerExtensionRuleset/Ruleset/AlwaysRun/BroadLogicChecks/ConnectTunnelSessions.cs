@@ -73,100 +73,77 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
                 // Ideally looking to do: if (this.Session.utilFindInResponse("CONNECT tunnel, through which encrypted HTTPS traffic flows", false) > 1)
                 // Only works reliably when loading a SAZ file and request/response data is immediately available to do logic checks against.
 
-                switch (this.session.responseCode)
+                string sessionSectionTitle;
+                string sessionType;
+                string sessionResponseCodeDescription;
+                string sessionResonseServer;
+                string sessionResponseAlert;
+                string sessionResponseComments;
+                string sessionAuthentication;
+
+                int sessionAuthenticationConfidenceLevel;
+                int sessionTypeConfidenceLevel;
+                int sessionResponseServerConfidenceLevel;
+                int sessionSeverity;
+
+                try
                 {
-                    case 200:
-                        int sessionAuthenticationConfidenceLevel;
-                        int sessionTypeConfidenceLevel;
-                        int sessionResponseServerConfidenceLevel;
-                        int sessionSeverity;
+                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|ConnectTunnelSessions");
 
-                        try
-                        {
-                            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|ConnectTunnelSessions200");
-                            sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
-                            sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
-                            sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
-                            sessionSeverity = sessionClassificationJson.SessionSeverity;
-                        }
-                        catch (Exception ex)
-                        {
-                            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+                    sessionSectionTitle = sessionClassificationJson.SectionTitle;
+                    sessionType = sessionClassificationJson.SessionType;
+                    sessionResponseCodeDescription = sessionClassificationJson.SessionResponseCodeDescription;
+                    sessionResonseServer = sessionClassificationJson.SessionResponseServer;
+                    sessionResponseAlert = sessionClassificationJson.SessionResponseAlert;
+                    sessionResponseComments = sessionClassificationJson.SessionResponseComments;
+                    sessionAuthentication = sessionClassificationJson.SessionAuthentication;
 
-                            sessionAuthenticationConfidenceLevel = 10;
-                            sessionTypeConfidenceLevel = 10;
-                            sessionResponseServerConfidenceLevel = 10;
-                            sessionSeverity = 40;
-                        }
-
-                        var sessionFlags200 = new SessionFlagService.ExtensionSessionFlags()
-                        {
-                            SectionTitle = "Broad Logic Checks",
-
-                            SessionType = "Connect Tunnel: " + TLS,
-                            ResponseCodeDescription = "200 OK",
-                            ResponseServer = "Connect Tunnel",
-                            ResponseAlert = "Connect Tunnel",
-                            ResponseComments = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
-                            + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
-                            + "<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>",
-
-                            Authentication = "Connect Tunnel: " + TLS,
-
-                            SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                            SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                            SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                            SessionSeverity = sessionSeverity
-                        };
-
-                        var sessionFlagsJson200 = JsonConvert.SerializeObject(sessionFlags200);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson200, false);
-                        break;
-                    default:
-
-                        try
-                        {
-                            var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|ConnectTunnelSessionsDefault");
-                            sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
-                            sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
-                            sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
-                            sessionSeverity = sessionClassificationJson.SessionSeverity;
-                        }
-                        catch (Exception ex)
-                        {
-                            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
-
-                            sessionAuthenticationConfidenceLevel = 5;
-                            sessionTypeConfidenceLevel = 5;
-                            sessionResponseServerConfidenceLevel = 5;
-                            sessionSeverity = 40;
-                        }
-
-                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
-                        {
-                            SectionTitle = "Broad Logic Checks",
-
-                            SessionType = "Connect Tunnel: " + TLS,
-                            ResponseServer = "Connect Tunnel",
-                            ResponseAlert = "Connect Tunnel",
-                            ResponseComments = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
-                            + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
-                            + "<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>",
-
-                            Authentication = "Connect Tunnel: " + TLS,
-
-                            SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                            SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                            SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                            SessionSeverity = sessionSeverity
-                        };
-
-                        var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
-                        break;
+                    sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                    sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                    sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                    sessionSeverity = sessionClassificationJson.SessionSeverity;
                 }
+                catch (Exception ex)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                    sessionSectionTitle = "Broad Logic Checks";
+                    sessionType = "Connect Tunnel: " + TLS;
+                    sessionResponseCodeDescription = "Connect Tunnel";
+                    sessionResonseServer = "Connect Tunnel";
+                    sessionResponseAlert = "Connect Tunnel";
+                    sessionResponseComments = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
+                    + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
+                    + "<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>";
+                    sessionAuthentication = "Connect Tunnel: " + TLS;
+
+                    sessionAuthenticationConfidenceLevel = 10;
+                    sessionTypeConfidenceLevel = 10;
+                    sessionResponseServerConfidenceLevel = 10;
+                    sessionSeverity = 40;
+                }
+
+                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                {
+                    SectionTitle = sessionSectionTitle,
+
+                    SessionType = sessionType + TLS,
+                    ResponseCodeDescription = sessionResponseCodeDescription,
+                    ResponseServer = sessionResonseServer,
+                    ResponseAlert = sessionResponseAlert,
+                    ResponseComments = sessionResponseComments,
+
+                    Authentication = sessionAuthentication,
+
+                    SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                    SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                    SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                    SessionSeverity = sessionSeverity
+                };
+
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
     }

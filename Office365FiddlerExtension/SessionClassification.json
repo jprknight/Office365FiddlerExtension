@@ -1,5 +1,6 @@
 {
-  "LastUpdated": "31st July, 2023",
+  "LastUpdated": "2023-08-09",
+  "LastUpdatedDateFormat": "YYYY-MM-DD",
   "DataStructureHelper": {
     "About": "This helper isn't used in code, it's just here to describe the data.",
     "WebUpdates": "Session classification numbers are in this Json file to enable the extension to pull updates from this file and utilise them within the ruleset for session processing.",
@@ -18,30 +19,52 @@
   "ResponseCommentsNoKnownIssue": "<p>No known issue with Microsoft365 and this type of session. If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: <a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'>https://github.com/jprknight/Office365FiddlerExtension</a>.</p>",
   "BroadLogicChecks": {
     "FiddlerUpdateSessions": {
+      "SectionTitle": "Broad Logic Checks",
+      "SessionType": "Fiddler Update Check",
+      "SessionResponseServer": "Fiddler Update Check",
+      "SessionResponseCodeDescription": "Fiddler Update Check",
+      "SessionResponseAlert": "Fiddler Update Check",
+      "SessionResponseComments": "This is Fiddler itself checking for updates.",
+      "SessionAuthentication": "Fiddler Update Check",
       "SessionAuthenticationConfidenceLevel": 10,
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 10,
       "SessionSeverity": 10
     },
-    "ConnectTunnelSessions200": {
+    "ConnectTunnelSessions": {
+      "SectionTitle": "Broad Logic Checks",
+      "SessionType": "Connect Tunnel: ",
+      "SessionResponseServer": "Connect Tunnel",
+      "SessionResponseCodeDescription": "Connect Tunnel",
+      "SessionResponseAlert": "Connect Tunnel",
+      "SessionResponseComments": "This is an encrypted tunnel. If all or most of the sessions are connect tunnels the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab.<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>",
+      "SessionAuthentication": "Connect Tunnel: ",
       "SessionAuthenticationConfidenceLevel": 10,
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 10,
       "SessionSeverity": 40
     },
-    "ConnectTunnelSessionsDefault": {
-      "SessionAuthenticationConfidenceLevel": 5,
-      "SessionTypeConfidenceLevel": 5,
-      "SessionResponseServerConfidenceLevel": 5,
-      "SessionSeverity": 40
-    },
     "ApacheAutodiscover": {
+      "SectionTitle": "Broad Logic Checks",
+      "SessionType": "***APACHE AUTODISCOVER ***",
+      "SessionResponseServer": "!APACHE!",
+      "SessionResponseCodeDescription": "!APACHE!",
+      "SessionResponseAlert": "Apache is answering Autodiscover requests!",
+      "SessionResponseComments": "<b><span style='color:red'>An Apache Web Server (Unix/Linux) is answering Autodiscover requests!</span></b><p>This should not be happening. Consider disabling Root Domain Autodiscover lookups.</p><p>See ExcludeHttpsRootDomain on </p><p><a href='https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under' target='_blank'>https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under </a></p><p>Beyond this the web administrator responsible for the server needs to stop the Apache web server from answering these requests.</p>",
+      "SessionAuthentication": "!APACHE!",
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 5,
       "SessionResponseServerConfidenceLevel": 5,
       "SessionSeverity": 60
     },
     "LoopBackTunnel": {
+      "SectionTitle": "Broad Logic Checks",
+      "SessionType": "Loopback Tunnel",
+      "SessionResponseServer": "Loopback Tunnel",
+      "SessionResponseCodeDescription": "Loopback Tunnel",
+      "SessionResponseAlert": "Loopback Tunnel",
+      "SessionResponseComments": "Seeing many or few of these? Either way these aren't typical Microsoft365 traffic sessions. They may be an indication of a proxy client forcing traffic down a certain network path? If there's no Microsoft365 client traffic in this Fiddler trace and it's suspected this could be a factor, change your network, try a different machine without any proxy client / proxy configuration in place.",
+      "SessionAuthentication": "Loopback Tunnel",
       "SessionAuthenticationConfidenceLevel": 10,
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 10,
@@ -49,6 +72,13 @@
     }
   },
   "HTTP0s": {
+    "SectionTitle": "HTTP_0s",
+    "SessionType": "!NO RESPONSE!",
+    "SessionResponseServer": "!NO RESPONSE!",
+    "SessionResponseCodeDescription": "0 No Response",
+    "SessionResponseAlert": "<b><span style='color:red'>HTTP 0 - No Response</span></b>",
+    "SessionResponseComments": "The quantity of these types of server errors need to be considered in context with what you are troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.<p>If you are not seeing expected client traffic, consider if network traces should be collected. Review if there is an underlying network issue such as congestion on routers, which could be causing issues. The Network Connection Status Indicator (NCSI) on the client computer might also be an area to investigate.</p>",
+    "SessionAuthentication": "!NO RESPONSE!",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 10,

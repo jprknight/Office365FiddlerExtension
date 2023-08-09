@@ -166,7 +166,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 SectionTitle = "ResponseServer_Unknown",
                 ResponseServer = "Type Unknown",
 
-                SessionResponseServerConfidenceLevel = 1
+                SessionResponseServerConfidenceLevel = 10
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
