@@ -84,43 +84,9 @@ namespace Office365FiddlerExtension
             about.Show();
         }
 
-        private  void MiProcessSelectedSessions_Click(object sender, EventArgs e)
-        {
-            SessionFlagService.Instance.ProcessSelectedSessions();
-        }
-
         private void MiClearAllSessionProcessing_Click(object sender, EventArgs e)
         {
             SessionFlagService.Instance.ClearAnalysisSelectedSessions();
-        }
-
-        private void MiProcessAllSessions_Click(object sender, EventArgs e)
-        {
-            if (SettingsJsonService.Instance.ExtensionSessionProcessingEnabled)
-            {
-                SessionFlagService.Instance.ProcessAllSessions();
-            }
-            else
-            {
-                string message = "The extension is currently disabled. Do you want to enable it to be able to process the currently loaded sessions?";
-
-                string caption = "Process all sessions: Enable the extension?";
-
-                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-
-                MessageBoxIcon icon = MessageBoxIcon.Question;
-
-                DialogResult result;
-
-                result = MessageBox.Show(message, caption, buttons, icon);
-                
-                if (result == System.Windows.Forms.DialogResult.Yes)
-                {
-                    SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(true);
-                    this.MiEnabled.Checked = true;
-                    SessionFlagService.Instance.ProcessAllSessions();
-                }
-            }
         }
 
         // Menu item event handlers.

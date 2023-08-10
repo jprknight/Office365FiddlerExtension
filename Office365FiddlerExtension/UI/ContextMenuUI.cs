@@ -28,13 +28,13 @@ namespace Office365FiddlerExtension
 
         private readonly MenuItem Separator3 = new MenuItem("-");
 
-        private readonly MenuItem CmiProcessSelectedSessions = new MenuItem("Process Selected Sessions");
+        private readonly MenuItem CmiAnalyzeSelectedSessions = new MenuItem("Analyze Selected Sessions");
 
-        private readonly MenuItem CmiProcessAllSessions = new MenuItem("Process All Sessions");
+        private readonly MenuItem CmiAnalyzeAllSessions = new MenuItem("Analyze All Sessions");
 
-        private readonly MenuItem CmiClearAnalysisSelectedSessions = new MenuItem("Clear Analysis - Selected Sessions");
+        private readonly MenuItem CmiClearAnalysisSelectedSessions = new MenuItem("Clear Session Analysis");
 
-        private readonly MenuItem CmiRecalculateAnalysisSelectedSessions = new MenuItem("Recalculate Analysis - Selected Sessions");
+        private readonly MenuItem CmiRecalculateAnalysisSelectedSessions = new MenuItem("Recalculate Session Analysis");
 
         private readonly MenuItem CmiPurgeAnalysisSelectedSessions = new MenuItem("Purge Analysis - Selected Sessions");
 
@@ -60,16 +60,16 @@ namespace Office365FiddlerExtension
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Adding context menu to UI.");
 
-            CmiProcessSelectedSessions.Click += new EventHandler(CmiProcessSelectedSessions_Click);
+            CmiAnalyzeSelectedSessions.Click += new EventHandler(CmiAnalyzeSelectedSessions_Click);
 
-            CmiProcessAllSessions.Click += new EventHandler(CmiProcessAllSessions_Click);
+            CmiAnalyzeAllSessions.Click += new EventHandler(CmiAnalyzeAllSessions_Click);
 
             CmiClearAnalysisSelectedSessions.Click += new EventHandler(CmiClearAnalysisSelectedSessions_Click);
 
             CmiRecalculateAnalysisSelectedSessions.Click += new EventHandler(CmiRecalculateAnalysisSelectedSessions_Click);
 
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(0, CmiProcessSelectedSessions);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(1, CmiProcessAllSessions);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(0, CmiAnalyzeSelectedSessions);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(1, CmiAnalyzeAllSessions);
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(2, Separator1);
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(3, CmiClearAnalysisSelectedSessions);
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(4, CmiRecalculateAnalysisSelectedSessions);
@@ -139,14 +139,14 @@ namespace Office365FiddlerExtension
             SessionFlagService.Instance.CmiRecalculateAnalysisSelectedSessions();
         }
 
-        private void CmiProcessAllSessions_Click(object sender, EventArgs e)
+        private void CmiAnalyzeAllSessions_Click(object sender, EventArgs e)
         {
-            SessionFlagService.Instance.ProcessAllSessions();
+            SessionFlagService.Instance.AnalyzeAllSessions();
         }
 
-        private void CmiProcessSelectedSessions_Click(object sender, EventArgs e)
+        private void CmiAnalyzeSelectedSessions_Click(object sender, EventArgs e)
         {
-            SessionFlagService.Instance.ProcessSelectedSessions();
+            SessionFlagService.Instance.AnalyzeSelectedSessions();
         }
     }
 }

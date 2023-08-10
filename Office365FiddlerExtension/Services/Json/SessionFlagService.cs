@@ -106,9 +106,9 @@ namespace Office365FiddlerExtension.Services
         }
 
         /// <summary>
-        /// Processes the selected sessions in Fiddler. Called from the MenuUI and ContextMenuUI.
+        /// Analyze the selected sessions in Fiddler. Called from the MenuUI and ContextMenuUI.
         /// </summary>
-        public void ProcessSelectedSessions()
+        public void AnalyzeSelectedSessions()
         {
             var Sessions = FiddlerApplication.UI.GetSelectedSessions();
 
@@ -135,9 +135,9 @@ namespace Office365FiddlerExtension.Services
         }
 
         /// <summary>
-        /// Processes all sessions loaded in Fiddler. Called from the MenuUI and ContextMenuUI.
+        /// Analyze all sessions loaded in Fiddler. Called from the MenuUI and ContextMenuUI.
         /// </summary>
-        public void ProcessAllSessions()
+        public void AnalyzeAllSessions()
         {
             var Sessions = FiddlerApplication.UI.GetAllSessions();
 
