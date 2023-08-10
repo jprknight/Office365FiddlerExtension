@@ -92,7 +92,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|ConnectTunnelSessions");
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_ConnectTunnelSessions");
 
                 sessionSectionTitle = sessionClassificationJson.SectionTitle;
                 sessionType = sessionClassificationJson.SessionType;
@@ -112,7 +112,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
 
-                sessionSectionTitle = "Broad Logic Checks";
+                sessionSectionTitle = "HTTP_200s";
                 sessionType = "Connect Tunnel: " + TLS;
                 sessionResponseCodeDescription = "Connect Tunnel";
                 sessionResonseServer = "Connect Tunnel";
@@ -132,12 +132,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             {
                 SectionTitle = sessionSectionTitle,
 
-                SessionType = sessionType + TLS,
+                SessionType = sessionType,
                 ResponseCodeDescription = sessionResponseCodeDescription,
                 ResponseServer = sessionResonseServer,
                 ResponseAlert = sessionResponseAlert,
                 ResponseComments = sessionResponseComments,
-
                 Authentication = sessionAuthentication,
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,

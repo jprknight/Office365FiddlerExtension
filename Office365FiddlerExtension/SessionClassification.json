@@ -31,19 +31,6 @@
       "SessionResponseServerConfidenceLevel": 10,
       "SessionSeverity": 10
     },
-    "ConnectTunnelSessions": {
-      "SectionTitle": "Broad Logic Checks",
-      "SessionType": "Connect Tunnel: ",
-      "SessionResponseServer": "Connect Tunnel",
-      "SessionResponseCodeDescription": "Connect Tunnel",
-      "SessionResponseAlert": "Connect Tunnel",
-      "SessionResponseComments": "This is an encrypted tunnel. If all or most of the sessions are connect tunnels the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab.<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>",
-      "SessionAuthentication": "Connect Tunnel: ",
-      "SessionAuthenticationConfidenceLevel": 10,
-      "SessionTypeConfidenceLevel": 10,
-      "SessionResponseServerConfidenceLevel": 10,
-      "SessionSeverity": 40
-    },
     "ApacheAutodiscover": {
       "SectionTitle": "Broad Logic Checks",
       "SessionType": "***APACHE AUTODISCOVER ***",
@@ -94,6 +81,19 @@
     "SessionSeverity": 10
   },
   "HTTP_200s": {
+    "HTTP_200_ConnectTunnelSessions": {
+      "SectionTitle": "Broad Logic Checks",
+      "SessionType": "Connect Tunnel: ",
+      "SessionResponseServer": "Connect Tunnel",
+      "SessionResponseCodeDescription": "Connect Tunnel",
+      "SessionResponseAlert": "Connect Tunnel",
+      "SessionResponseComments": "This is an encrypted tunnel. If all or most of the sessions are connect tunnels the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab.<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>",
+      "SessionAuthentication": "Connect Tunnel: ",
+      "SessionAuthenticationConfidenceLevel": 10,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 10,
+      "SessionSeverity": 40
+    },
     "HTTP_200_ClientAccessRule": {
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 10,
