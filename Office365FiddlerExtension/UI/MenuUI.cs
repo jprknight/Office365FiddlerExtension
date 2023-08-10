@@ -23,12 +23,6 @@ namespace Office365FiddlerExtension
 
         public MenuItem MiEnabled { get; set; }
 
-        public MenuItem MiProcessSelectedSessions { get; set; }
-
-        public MenuItem MiProcessAllSessions { get; set; }
-
-        public MenuItem MiClearAllSessionProcessing { get; set; }
-
         public MenuItem MiReleasesDownloadWebpage { get; set; }
 
         public MenuItem MiWiki { get; set; }
@@ -61,12 +55,6 @@ namespace Office365FiddlerExtension
                     Checked = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
                 };
 
-                this.MiProcessSelectedSessions = new MenuItem("Process Selected Session(s)", new EventHandler(this.MiProcessSelectedSessions_Click));
-
-                this.MiProcessAllSessions = new MenuItem("Process All Sessions", new EventHandler(this.MiProcessAllSessions_Click));
-
-                this.MiClearAllSessionProcessing = new MenuItem("Clear All Session Processing", new EventHandler(this.MiClearAllSessionProcessing_Click));
-
                 this.MiReleasesDownloadWebpage = new MenuItem("&Releases Download Page", new System.EventHandler(this.MiReleasesDownloadWebpage_click));
 
                 this.MiWiki = new MenuItem("Extension &Wiki", new System.EventHandler(this.MiWiki_Click));
@@ -78,10 +66,6 @@ namespace Office365FiddlerExtension
                 // Add menu items to top level menu.
                 this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { this.MiEnabled,
                 new MenuItem("-"),
-                this.MiProcessSelectedSessions,
-                this.MiProcessAllSessions,
-                this.MiClearAllSessionProcessing,
-                new MenuItem("-"),
                 this.MiReleasesDownloadWebpage,
                 this.MiWiki,
                 this.MiReportIssues,
@@ -90,7 +74,6 @@ namespace Office365FiddlerExtension
             });
 
                 FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExtensionMenu);
-                UpdateMenuItems();
                 IsInitialized = true;
             }
         }
@@ -135,7 +118,6 @@ namespace Office365FiddlerExtension
                 {
                     SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(true);
                     this.MiEnabled.Checked = true;
-                    //this.ExtensionMenu.Text = MenuEnabled;
                     SessionFlagService.Instance.ProcessAllSessions();
                 }
             }
@@ -148,13 +130,6 @@ namespace Office365FiddlerExtension
             MiEnabled.Checked = !MiEnabled.Checked;
             // Set ExtensionEnabled according to menu item checked.
             SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(MiEnabled.Checked);
-            UpdateMenuItems();
-        }
-
-        public void UpdateMenuItems()
-        {
-            // Set ProcessAllSessions enable/disable to match whether the extension is enabled or not.
-            this.MiProcessAllSessions.Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled;
         }
 
         public void MiWiki_Click(object sender, EventArgs e)

@@ -202,22 +202,6 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
-        public void CmiPurgeAnalysisSelectedSessions()
-        {
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Purgning session analysis on selected sessions.");
-
-            var Sessions = FiddlerApplication.UI.GetSelectedSessions();
-            foreach (var Session in Sessions)
-            {
-                this.session = Session;
-
-                EnhanceSessionUX.Instance.NormaliseSession(this.session);
-                this.session.RefreshUI();
-
-                this.session["Microsoft365FiddlerExtensionJson"] = "";
-            }
-        }
-
         /// <summary>
         /// Take any updates to session flags and save them into the session Json.
         /// Conditional - Use the condition for Session Severity.

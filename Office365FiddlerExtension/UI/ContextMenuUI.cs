@@ -68,17 +68,14 @@ namespace Office365FiddlerExtension
 
             CmiRecalculateAnalysisSelectedSessions.Click += new EventHandler(CmiRecalculateAnalysisSelectedSessions_Click);
 
-            CmiPurgeAnalysisSelectedSessions.Click += new EventHandler(CmiPurgeAnalysisSelectedSessions_Click);
-
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(0, CmiProcessSelectedSessions);
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(1, CmiProcessAllSessions);
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(2, Separator1);
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(3, CmiClearAnalysisSelectedSessions);
             FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(4, CmiRecalculateAnalysisSelectedSessions);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(5, CmiPurgeAnalysisSelectedSessions);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(6, Separator2);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(7, CmiSetSessionSeverity);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(8, Separator3);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(5, Separator2);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(6, CmiSetSessionSeverity);
+            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(7, Separator3);
 
             this.CmiSetSessionSeverity.MenuItems.AddRange(new MenuItem[] {
                 this.CmiSessionSeverityTen,
@@ -140,11 +137,6 @@ namespace Office365FiddlerExtension
         private void CmiRecalculateAnalysisSelectedSessions_Click(object sender, EventArgs e)
         {
             SessionFlagService.Instance.CmiRecalculateAnalysisSelectedSessions();
-        }
-
-        private void CmiPurgeAnalysisSelectedSessions_Click(Object sender, EventArgs e)
-        {
-            SessionFlagService.Instance.CmiPurgeAnalysisSelectedSessions();
         }
 
         private void CmiProcessAllSessions_Click(object sender, EventArgs e)
