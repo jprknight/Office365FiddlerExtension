@@ -49,12 +49,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\ApacheAutodiscover.cs" />
-    <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\ConnectTunnelSessions.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\FiddlerUpdateSessions.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\LoopBackTunnel.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_3S_Suggestions.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Actually_OK.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_ClientAccessRule.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_ConnectTunnelSessions.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_Online_Any_Other_EWS.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun.cs" />
