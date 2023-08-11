@@ -40,7 +40,6 @@ namespace Office365FiddlerExtension.Services
         }
 
         // Setting to store Json extension URLs. Update from remote.
-#pragma warning disable IDE0052
         private static string _extensionURLs;
 
         public static string ExtensionURLs

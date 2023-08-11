@@ -74,11 +74,7 @@ namespace Office365FiddlerExtension.Services
                 SessionAnalysisOnLiveTrace = "True",
                 WarningSessionTimeThreshold = "2500",
                 SlowRunningSessionThreshold = "5000",
-                LastLoadedSazFile = "",
-                UseBetaRuleSet = "False",
-                UseHardCodedRuleset = "False",
-                LocalMasterRulesetLastUpdated = "",
-                LocalBetaRulesetLastUpdated = "",
+                SessionClassificationJsonFileName = "SessionClassification.json",
                 UpdateCheckFrequencyHours = 72,
                 InspectorScoreForSession = 100
             };
@@ -382,10 +378,6 @@ namespace Office365FiddlerExtension.Services
 
         public string ExtensionDLL { get; set; }
 
-        public string LastLoadedSazFile { get; set; }
-
-        public DateTime LocalMasterRulesetLastUpdated { get; set; }
-
-        public DateTime LocalBetaRulesetLastUpdated { get; set; }
+        public string SessionClassificationJsonFileName { get; set; }
     }
 }

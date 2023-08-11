@@ -82,7 +82,7 @@
   },
   "HTTP_200s": {
     "HTTP_200_ConnectTunnelSessions": {
-      "SectionTitle": "Broad Logic Checks",
+      "SectionTitle": "HTTP_200s",
       "SessionType": "Connect Tunnel: ",
       "SessionResponseServer": "Connect Tunnel",
       "SessionResponseCodeDescription": "Connect Tunnel",
@@ -95,6 +95,11 @@
       "SessionSeverity": 40
     },
     "HTTP_200_ClientAccessRule": {
+      "SectionTitle": "HTTP_200s",
+      "SessionType": "!CLIENT ACCESS RULE!",
+      "SessionResponseCodeDescription": "200 OK Client Access Rule",
+      "SessionResponseAlert": "<b><span style='color:red'>CLIENT ACCESS RULE</span></b>",
+      "SessionResponseComments": "<b><span style='color:red'>A client access rule has blocked MAPI connectivity to the mailbox</span></b>.<p>Check if the <b><span style='color:red'>client access rule includes OutlookAnywhere</span></b>.</p><p>Per <a href='https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules' target='_blank'>https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules</a>, <br />OutlookAnywhere includes MAPI over HTTP.<p><p>Remove OutlookAnywhere from the client access rule, wait 1 hour, then test again.</p>",
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 5,
