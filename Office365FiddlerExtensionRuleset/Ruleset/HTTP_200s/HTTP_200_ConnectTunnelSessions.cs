@@ -63,6 +63,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             {
                 TLS = "TLS 1.2";
             }
+            else if (this.session.utilFindInRequest("Secure Protocol: Tls13", false) > 1 || this.session.utilFindInRequest("(TLS/1.3)", false) > 1)
+            {
+                TLS = "TLS 1.3";
+            }
             else
             {
                 // If we cannot determine the TLS version do nothing.
