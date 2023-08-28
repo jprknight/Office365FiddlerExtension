@@ -197,12 +197,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Language\strings.en-US.Designer.cs">
+      <DependentUpon>strings.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Language\strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>strings.resx</DependentUpon>
+    </Compile>
     <Compile Include="Services\Json\SessionClassificationService.cs" />
     <Compile Include="Services\Json\URLsJsonService.cs" />
     <Compile Include="Services\Json\VersionJsonService.cs" />
     <Compile Include="Services\Fiddler\RulesetService.cs" />
     <Compile Include="Services\Json\SessionFlagService.cs" />
     <Compile Include="Services\Json\SettingsJsonService.cs" />
+    <Compile Include="Services\LanguageService.cs" />
     <Compile Include="Services\Update\UpdateService.cs" />
     <Compile Include="Services\Update\VersionService.cs" />
     <Compile Include="UI\Forms\About.cs">
@@ -240,6 +251,14 @@
     <Compile Include="UI\EnhanceSessionUX.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Language\strings.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>strings.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Language\strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

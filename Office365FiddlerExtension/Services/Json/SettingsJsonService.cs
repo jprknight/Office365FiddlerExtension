@@ -76,7 +76,8 @@ namespace Office365FiddlerExtension.Services
                 SlowRunningSessionThreshold = "5000",
                 SessionClassificationJsonFileName = "SessionClassification.json",
                 UpdateCheckFrequencyHours = 72,
-                InspectorScoreForSession = 100
+                InspectorScoreForSession = 100,
+                PreferredLanguage = "en-US"
             };
 
             // Transform the object to a Json object.
@@ -111,6 +112,24 @@ namespace Office365FiddlerExtension.Services
                 }
                 return false;
             }
+        }
+
+        public bool GetPreferredLanguageBool(string language )
+        {
+            try
+            {
+                if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().PreferredLanguage == language)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): PreferredLanguage cannot be determined");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+            }
+            return false;
         }
 
         public void SetNextUpdateTimestamp()
@@ -379,5 +398,7 @@ namespace Office365FiddlerExtension.Services
         public string ExtensionDLL { get; set; }
 
         public string SessionClassificationJsonFileName { get; set; }
+
+        public string PreferredLanguage { get; set; }
     }
 }

@@ -1,0 +1,379 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="AllSessionAnalysis" xml:space="preserve">
+    <value>All Session Analysis</value>
+  </data>
+  <data name="AttributeNameImmutableID" xml:space="preserve">
+    <value>Attribute Name Immutable Id</value>
+  </data>
+  <data name="AttributeNameUPN" xml:space="preserve">
+    <value>Attribute Name UPN</value>
+  </data>
+  <data name="Authentication" xml:space="preserve">
+    <value>Authentication</value>
+  </data>
+  <data name="CaptureWas" xml:space="preserve">
+    <value>Capture was</value>
+  </data>
+  <data name="CheckForUpdatesEvery" xml:space="preserve">
+    <value>Check for updates every</value>
+  </data>
+  <data name="ClickTheLinkBelowForUpdateInstructions" xml:space="preserve">
+    <value>Click the link below for update instructions</value>
+  </data>
+  <data name="ClientBeginRequest" xml:space="preserve">
+    <value>Client Begin Request</value>
+  </data>
+  <data name="ClientConnected" xml:space="preserve">
+    <value>Client Connected</value>
+  </data>
+  <data name="ClientDoneResponse" xml:space="preserve">
+    <value>Client Done Response</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="CopySaveSigningCertificate" xml:space="preserve">
+    <value>Copy and save the below text into a .cer file to view the signing certificate.</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>Days</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="Dutch" xml:space="preserve">
+    <value>Dutch</value>
+  </data>
+  <data name="ElapsedTime" xml:space="preserve">
+    <value>Elapsed Time</value>
+  </data>
+  <data name="Enable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="Enabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="ExtensionDLL" xml:space="preserve">
+    <value>ExtensionDLL</value>
+  </data>
+  <data name="ExtensionEnabled" xml:space="preserve">
+    <value>Extension Enabled</value>
+  </data>
+  <data name="ExtensionOptions" xml:space="preserve">
+    <value>Extension Options</value>
+  </data>
+  <data name="ExtensionPath" xml:space="preserve">
+    <value>Extension Path</value>
+  </data>
+  <data name="FiddlerBeginRequest" xml:space="preserve">
+    <value>Fiddler Begin Request</value>
+  </data>
+  <data name="FiddlerUpdateCheck" xml:space="preserve">
+    <value>Fiddler Update Check</value>
+  </data>
+  <data name="ForAnExplanationOfSessionTimersReferTo" xml:space="preserve">
+    <value>For an explantion of session timers refer to:</value>
+  </data>
+  <data name="French" xml:space="preserve">
+    <value>French</value>
+  </data>
+  <data name="GeneralSessionData" xml:space="preserve">
+    <value>General Session Data</value>
+  </data>
+  <data name="German" xml:space="preserve">
+    <value>German</value>
+  </data>
+  <data name="GithubExtensionVersion" xml:space="preserve">
+    <value>GithubExtensionVersion</value>
+  </data>
+  <data name="GithubInformation" xml:space="preserve">
+    <value>GithubInformation</value>
+  </data>
+  <data name="GithubRulesetVersion" xml:space="preserve">
+    <value>GithubRulesetVersion</value>
+  </data>
+  <data name="GotRequestHeaders" xml:space="preserve">
+    <value>Got Request Headers</value>
+  </data>
+  <data name="GotResponseHeaders" xml:space="preserve">
+    <value>Got Response Headers</value>
+  </data>
+  <data name="HostIP" xml:space="preserve">
+    <value>Host IP</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>hours</value>
+  </data>
+  <data name="Inspector" xml:space="preserve">
+    <value>Inspector</value>
+  </data>
+  <data name="Issuer" xml:space="preserve">
+    <value>Issuer</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="LocalExtensionVersion" xml:space="preserve">
+    <value>Local Extension Version</value>
+  </data>
+  <data name="LocallyInstalledInformation" xml:space="preserve">
+    <value>Locally Installed Information</value>
+  </data>
+  <data name="LocalRulesetVersion" xml:space="preserve">
+    <value>Local Ruleset Version</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Minutes</value>
+  </data>
+  <data name="NameIdentifierFormat" xml:space="preserve">
+    <value>Name Identifier Format</value>
+  </data>
+  <data name="NextUpdateCheck" xml:space="preserve">
+    <value>Next Update Check</value>
+  </data>
+  <data name="NoSessionAnalysis" xml:space="preserve">
+    <value>No session analysis. Use the 'Process All Sessions' option from the Office365 extension menu to get session analysis.</value>
+  </data>
+  <data name="ObscureSettings" xml:space="preserve">
+    <value>Obscure Settings</value>
+  </data>
+  <data name="Office365" xml:space="preserve">
+    <value>Office 365</value>
+  </data>
+  <data name="Office365FiddlerExtension" xml:space="preserve">
+    <value>Office 365 Fiddler Extension</value>
+  </data>
+  <data name="OnDemand" xml:space="preserve">
+    <value>On Demand</value>
+  </data>
+  <data name="OnLiveTrace" xml:space="preserve">
+    <value>On Live Trace</value>
+  </data>
+  <data name="OnLoadSaz" xml:space="preserve">
+    <value>On Load Saz</value>
+  </data>
+  <data name="OverallSessionTimers" xml:space="preserve">
+    <value>Overall Session Timers</value>
+  </data>
+  <data name="Portuguese" xml:space="preserve">
+    <value>Portuguese</value>
+  </data>
+  <data name="Process" xml:space="preserve">
+    <value>Process</value>
+  </data>
+  <data name="Releases" xml:space="preserve">
+    <value>Releases</value>
+  </data>
+  <data name="RemoteCapture" xml:space="preserve">
+    <value>Remote Capture</value>
+  </data>
+  <data name="ReportIssues" xml:space="preserve">
+    <value>Report Issues</value>
+  </data>
+  <data name="ResponseCode" xml:space="preserve">
+    <value>Response Code</value>
+  </data>
+  <data name="ResponseServer" xml:space="preserve">
+    <value>Response Server</value>
+  </data>
+  <data name="SAMLResponseParser" xml:space="preserve">
+    <value>SAML Response Parser</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ScoreForSession" xml:space="preserve">
+    <value>ScoreForSession</value>
+    <comment>Don't translate, this is an internal Fiddler term.</comment>
+  </data>
+  <data name="ServerBeginResponse" xml:space="preserve">
+    <value>Server Begin Response</value>
+  </data>
+  <data name="ServerDoneResponse" xml:space="preserve">
+    <value>Server Done Response</value>
+  </data>
+  <data name="ServerGotRequest" xml:space="preserve">
+    <value>Server Got Request</value>
+  </data>
+  <data name="ServerThinkTime" xml:space="preserve">
+    <value>Server Think Time</value>
+  </data>
+  <data name="ServerTimers" xml:space="preserve">
+    <value>Server Timers</value>
+  </data>
+  <data name="Session Type" xml:space="preserve">
+    <value>Session Type</value>
+  </data>
+  <data name="SessionAge" xml:space="preserve">
+    <value>Session Age</value>
+  </data>
+  <data name="SessionAnalysis" xml:space="preserve">
+    <value>SessionAnalysis</value>
+  </data>
+  <data name="SessionCaptured" xml:space="preserve">
+    <value>Session Captured</value>
+  </data>
+  <data name="SessionID" xml:space="preserve">
+    <value>Session ID</value>
+  </data>
+  <data name="Severity" xml:space="preserve">
+    <value>Severity</value>
+  </data>
+  <data name="SlowRUnningSessionThreshold" xml:space="preserve">
+    <value>SlowRunningSessionThreshold</value>
+  </data>
+  <data name="Some Session Analysis" xml:space="preserve">
+    <value>Some Session Analysis</value>
+  </data>
+  <data name="Spanish" xml:space="preserve">
+    <value>Spanish</value>
+  </data>
+  <data name="TransitTime" xml:space="preserve">
+    <value>Transit Time</value>
+  </data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>Update Available</value>
+  </data>
+  <data name="UpToDate" xml:space="preserve">
+    <value>Up To Date</value>
+  </data>
+  <data name="WarningSessionTimeThreshold" xml:space="preserve">
+    <value>Warning Session Time Threshold</value>
+  </data>
+  <data name="WhatAreTheseTwoThresholds" xml:space="preserve">
+    <value>What are these two thresholds?</value>
+  </data>
+  <data name="WhatIsScoreForSession" xml:space="preserve">
+    <value>What is ScoreForSession?</value>
+  </data>
+  <data name="Wiki" xml:space="preserve">
+    <value>Wiki</value>
+  </data>
+</root>

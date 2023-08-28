@@ -23,6 +23,12 @@ namespace Office365FiddlerExtension
 
         public MenuItem MiEnabled { get; set; }
 
+        public MenuItem MiLanguage { get; set; }
+
+        public MenuItem MiLanguageEnglishENGB { get; set; }
+
+        public MenuItem MiLanguageEnglishENUS { get; set; }
+
         public MenuItem MiReleasesDownloadWebpage { get; set; }
 
         public MenuItem MiWiki { get; set; }
@@ -31,9 +37,9 @@ namespace Office365FiddlerExtension
 
         public MenuItem MiAbout { get; set; }
 
-        public string MenuEnabled = $"Office 365 (Enabled)";
+        public string MenuEnabled = $"{LangHelper.GetString("Office365")} ({LangHelper.GetString("Enabled")})";
 
-        public string MenuDisabled = "Office 365 (Disabled)";
+        public string MenuDisabled = $"{LangHelper.GetString("Office365")} ({LangHelper.GetString("Disabled")})";
 
         private bool IsInitialized { get; set; }
 
@@ -50,32 +56,68 @@ namespace Office365FiddlerExtension
 
                 this.ExtensionMenu = new MenuItem(SettingsJsonService.Instance.ExtensionSessionProcessingEnabled ? MenuEnabled : MenuDisabled);
 
-                this.MiEnabled = new MenuItem("Enable", new EventHandler(this.MiEnabled_Click))
+                this.MiEnabled = new MenuItem(LangHelper.GetString("Enable"), new EventHandler(this.MiEnabled_Click))
                 {
                     Checked = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
                 };
 
-                this.MiReleasesDownloadWebpage = new MenuItem("&Releases Download Page", new System.EventHandler(this.MiReleasesDownloadWebpage_click));
+                this.MiLanguage = new MenuItem(LangHelper.GetString("Language"));
 
-                this.MiWiki = new MenuItem("Extension &Wiki", new System.EventHandler(this.MiWiki_Click));
+                this.MiLanguageEnglishENGB = new MenuItem($"{LangHelper.GetString("English")} (en-GB)", new EventHandler(this.MiLanguageEnglishENGB_Click))
+                {
+                    Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-GB")
+                };
+            
 
-                this.MiReportIssues = new MenuItem("&Report Issues", new System.EventHandler(this.MiReportIssues_Click));
+                this.MiLanguageEnglishENUS = new MenuItem($"{LangHelper.GetString("English")} (en-US)", new EventHandler(this.MiLanguageEnglishENUS_Click))
+                {
+                    Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-US")
+                };
 
-                this.MiAbout = new MenuItem("&About", new System.EventHandler(this.MiAbout_Click));
+                this.MiReleasesDownloadWebpage = new MenuItem($"{LangHelper.GetString("Releases")}", new System.EventHandler(this.MiReleasesDownloadWebpage_click));
+
+                this.MiWiki = new MenuItem($"{LangHelper.GetString("Wiki")}", new System.EventHandler(this.MiWiki_Click));
+
+                this.MiReportIssues = new MenuItem($"{LangHelper.GetString("ReportIssues")}", new System.EventHandler(this.MiReportIssues_Click));
+
+                this.MiAbout = new MenuItem($"{LangHelper.GetString("About")}", new System.EventHandler(this.MiAbout_Click));
 
                 // Add menu items to top level menu.
                 this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { this.MiEnabled,
-                new MenuItem("-"),
-                this.MiReleasesDownloadWebpage,
-                this.MiWiki,
-                this.MiReportIssues,
-                new MenuItem("-"),
-                this.MiAbout
-            });
+                    this.MiLanguage,
+                    new MenuItem("-"),
+                    this.MiReleasesDownloadWebpage,
+                    this.MiWiki,
+                    this.MiReportIssues,
+                    new MenuItem("-"),
+                    this.MiAbout
+                });
+
+                this.MiLanguage.MenuItems.AddRange(new MenuItem[] {
+                    this.MiLanguageEnglishENGB,
+                    this.MiLanguageEnglishENUS
+                });
+                
 
                 FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExtensionMenu);
                 IsInitialized = true;
             }
+        }
+
+        private void MiLanguageEnglishENUS_Click(object sender, EventArgs e)
+        {
+            LangHelper.ChangeLanguage("en-US");
+
+            MiLanguageEnglishENUS.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-US");
+            MiLanguageEnglishENGB.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-GB");
+        }
+
+        private void MiLanguageEnglishENGB_Click(object sender, EventArgs e)
+        {
+            LangHelper.ChangeLanguage("en-GB");
+
+            MiLanguageEnglishENUS.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-US");
+            MiLanguageEnglishENGB.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-GB");
         }
 
         private void MiAbout_Click(object sender, EventArgs e)
