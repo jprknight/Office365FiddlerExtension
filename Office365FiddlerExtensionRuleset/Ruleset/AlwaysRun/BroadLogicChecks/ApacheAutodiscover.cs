@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
+namespace Office365FiddlerExtensionRuleset.Ruleset
 {
     class ApacheAutodiscover
     {
@@ -31,13 +31,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Apache is answering Autodiscover requests! Investigate this first!.");
 
-                string sessionSectionTitle;
-                string sessionType;
-                string sessionResponseCodeDescription;
-                string sessionResonseServer;
-                string sessionResponseAlert;
-                string sessionResponseComments;
-
                 int sessionAuthenticationConfidenceLevel;
                 int sessionTypeConfidenceLevel;
                 int sessionResponseServerConfidenceLevel;
@@ -46,13 +39,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
                 try
                 {
                     var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|ApacheAutodiscover");
-
-                    sessionSectionTitle = sessionClassificationJson.SectionTitle;
-                    sessionType = sessionClassificationJson.SessionType;
-                    sessionResponseCodeDescription = sessionClassificationJson.SessionResponseCodeDescription;
-                    sessionResonseServer = sessionClassificationJson.SessionResponseServer;
-                    sessionResponseAlert = sessionClassificationJson.SessionResponseAlert;
-                    sessionResponseComments = sessionClassificationJson.SessionResponseComments;
 
                     sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                     sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
@@ -64,18 +50,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
 
-                    sessionSectionTitle = "Broad Logic Checks";
-                    sessionType = "***APACHE AUTODISCOVER ***";
-                    sessionResponseCodeDescription = "200 OK";
-                    sessionResonseServer = "!APACHE!";
-                    sessionResponseAlert = "Apache is answering Autodiscover requests!";
-                    sessionResponseComments = "<b><span style='color:red'>An Apache Web Server (Unix/Linux) is answering Autodiscover requests!</span></b>"
-                    + "<p>This should not be happening. Consider disabling Root Domain Autodiscover lookups.</p>"
-                    + "<p>See ExcludeHttpsRootDomain on </p>"
-                    + "<p><a href='https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under' target='_blank'>"
-                    + "https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under </a></p>"
-                    + "<p>Beyond this the web administrator responsible for the server needs to stop the Apache web server from answering these requests.</p>";
-
                     sessionAuthenticationConfidenceLevel = 5;
                     sessionTypeConfidenceLevel = 10;
                     sessionResponseServerConfidenceLevel = 5;
@@ -84,13 +58,13 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = sessionSectionTitle,
+                    SectionTitle = LangHelper.GetString("Broad Logic Checks"),
 
-                    SessionType = sessionType,
-                    ResponseCodeDescription = sessionResponseCodeDescription,
-                    ResponseServer = sessionResonseServer,
-                    ResponseAlert = sessionResponseAlert,
-                    ResponseComments = sessionResponseComments,                   
+                    SessionType = LangHelper.GetString("APACHE AUTODISCOVER"),
+                    ResponseCodeDescription = LangHelper.GetString("200 OK - APACHE AUTODISCOVER"),
+                    ResponseServer = LangHelper.GetString("APACHE"),
+                    ResponseAlert = LangHelper.GetString("Apache is answering Autodiscover requests!"),
+                    ResponseComments = LangHelper.GetString("Apache AutoDiscover Response Comments"),                   
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

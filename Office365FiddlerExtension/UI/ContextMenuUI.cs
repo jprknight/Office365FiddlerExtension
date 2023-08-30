@@ -28,27 +28,27 @@ namespace Office365FiddlerExtension
 
         private readonly MenuItem SubMenuSeparator = new MenuItem("-");
 
-        private readonly MenuItem CmiAnalyzeAllSessions = new MenuItem("Analyze All Sessions");
+        private readonly MenuItem CmiAnalyzeAllSessions = new MenuItem(LangHelper.GetString("Analyze All Sessions"));
 
-        private readonly MenuItem CmiAnalyzeSelectedSessions = new MenuItem("Analyze Selected Sessions");
+        private readonly MenuItem CmiAnalyzeSelectedSessions = new MenuItem(LangHelper.GetString("Analyze Selected Sessions"));
 
-        private readonly MenuItem CmiClearAnalysisSelectedSessions = new MenuItem("Clear Selected Sessions");
+        private readonly MenuItem CmiClearAnalysisSelectedSessions = new MenuItem(LangHelper.GetString("Clear Selected Sessions"));
 
-        private readonly MenuItem CmiSetSessionSeverity = new MenuItem("Set Session Severity");
+        private readonly MenuItem CmiSetSessionSeverity = new MenuItem(LangHelper.GetString("Set Session Severity"));
 
-        private readonly MenuItem CmiRecalculateAnalysisSelectedSessions = new MenuItem("Recalculate Selected Sessions");
+        private readonly MenuItem CmiRecalculateAnalysisSelectedSessions = new MenuItem(LangHelper.GetString("Recalculate Selected Sessions"));
 
-        private readonly MenuItem CmiSessionSeverityTen = new MenuItem("10 - Gray (Uninteresting)");
+        private readonly MenuItem CmiSessionSeverityTen = new MenuItem($"10 - {LangHelper.GetString("Grey")} ({LangHelper.GetString("Uninteresting")})");
 
-        private readonly MenuItem CmiSessionSeverityTwenty = new MenuItem("20 - Blue (False Positive)");
+        private readonly MenuItem CmiSessionSeverityTwenty = new MenuItem($"20 - {LangHelper.GetString("Blue")} ({LangHelper.GetString("False Positive")})");
 
-        private readonly MenuItem CmiSessionSeverityThirty = new MenuItem("30 - Green (Normal)");
+        private readonly MenuItem CmiSessionSeverityThirty = new MenuItem($"30 - {LangHelper.GetString("Green")} ({LangHelper.GetString("Normal")})");
 
-        private readonly MenuItem CmiSessionSeverityFourty = new MenuItem("40 - Orange (Warning)");
+        private readonly MenuItem CmiSessionSeverityFourty = new MenuItem($"40 - {LangHelper.GetString("Orange")} ({LangHelper.GetString("Warning")})");
 
-        private readonly MenuItem CmiSessionSeverityFifty = new MenuItem("50 - Black (Concerning)");
+        private readonly MenuItem CmiSessionSeverityFifty = new MenuItem($"50 - {LangHelper.GetString("Black")} ({LangHelper.GetString("Concerning")})");
 
-        private readonly MenuItem CmiSessionSeveritySixty = new MenuItem("60 - Red (Severe)");
+        private readonly MenuItem CmiSessionSeveritySixty = new MenuItem($"60 - {LangHelper.GetString("Red")} ({LangHelper.GetString("Severe")})");
 
         private bool IsInitialized { get; set; }
 

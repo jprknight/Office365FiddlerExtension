@@ -25,9 +25,17 @@ namespace Office365FiddlerExtension
 
         public MenuItem MiLanguage { get; set; }
 
-        public MenuItem MiLanguageEnglishENGB { get; set; }
+        public MenuItem MiLanguage_English_ENGB { get; set; }
 
-        public MenuItem MiLanguageEnglishENUS { get; set; }
+        public MenuItem MiLanguage_English_ENUS { get; set; }
+
+        public MenuItem MiLanguage_FR { get; set; }
+
+        public MenuItem MiLanguage_DE { get; set; }
+
+        public MenuItem MiLanguage_PT { get; set; }
+
+        public MenuItem MiLanguage_ES { get; set; }
 
         public MenuItem MiReleasesDownloadWebpage { get; set; }
 
@@ -63,27 +71,48 @@ namespace Office365FiddlerExtension
 
                 this.MiLanguage = new MenuItem(LangHelper.GetString("Language"));
 
-                this.MiLanguageEnglishENGB = new MenuItem($"{LangHelper.GetString("English")} (en-GB)", new EventHandler(this.MiLanguageEnglishENGB_Click))
+                this.MiLanguage_English_ENGB = new MenuItem($"{LangHelper.GetString("English")} (en-GB)", new EventHandler(this.MiLanguageEnglishENGB_Click))
                 {
                     Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-GB")
                 };
             
 
-                this.MiLanguageEnglishENUS = new MenuItem($"{LangHelper.GetString("English")} (en-US)", new EventHandler(this.MiLanguageEnglishENUS_Click))
+                this.MiLanguage_English_ENUS = new MenuItem($"{LangHelper.GetString("English")} (en-US)", new EventHandler(this.MiLanguageEnglishENUS_Click))
                 {
                     Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-US")
+                };
+
+                this.MiLanguage_FR = new MenuItem($"{LangHelper.GetString("French")}", new EventHandler(this.MiLanguage_FR_Click))
+                {
+                    Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("FR")
+                };
+
+                this.MiLanguage_DE = new MenuItem($"{LangHelper.GetString("German")}", new EventHandler(this.MiLanguage_DE_Click))
+                {
+                    Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("DE")
+                };
+
+                this.MiLanguage_PT = new MenuItem($"{LangHelper.GetString("Portuguese")}", new EventHandler(this.MiLanguage_PT_Click))
+                {
+                    Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("PT")
+                };
+
+                this.MiLanguage_ES = new MenuItem($"{LangHelper.GetString("Spanish")}", new EventHandler(this.MiLanguage_ES_Click))
+                {
+                    Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("ES")
                 };
 
                 this.MiReleasesDownloadWebpage = new MenuItem($"{LangHelper.GetString("Releases")}", new System.EventHandler(this.MiReleasesDownloadWebpage_click));
 
                 this.MiWiki = new MenuItem($"{LangHelper.GetString("Wiki")}", new System.EventHandler(this.MiWiki_Click));
 
-                this.MiReportIssues = new MenuItem($"{LangHelper.GetString("ReportIssues")}", new System.EventHandler(this.MiReportIssues_Click));
+                this.MiReportIssues = new MenuItem($"{LangHelper.GetString("Report Issues")}", new System.EventHandler(this.MiReportIssues_Click));
 
                 this.MiAbout = new MenuItem($"{LangHelper.GetString("About")}", new System.EventHandler(this.MiAbout_Click));
 
                 // Add menu items to top level menu.
                 this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { this.MiEnabled,
+                    new MenuItem("-"),
                     this.MiLanguage,
                     new MenuItem("-"),
                     this.MiReleasesDownloadWebpage,
@@ -94,8 +123,12 @@ namespace Office365FiddlerExtension
                 });
 
                 this.MiLanguage.MenuItems.AddRange(new MenuItem[] {
-                    this.MiLanguageEnglishENGB,
-                    this.MiLanguageEnglishENUS
+                    this.MiLanguage_English_ENGB,
+                    this.MiLanguage_English_ENUS,
+                    this.MiLanguage_FR,
+                    this.MiLanguage_DE,
+                    this.MiLanguage_PT,
+                    this.MiLanguage_ES
                 });
                 
 
@@ -104,20 +137,57 @@ namespace Office365FiddlerExtension
             }
         }
 
+        private void CheckLanguageSelection()
+        {
+            MiLanguage_English_ENUS.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-US");
+            MiLanguage_English_ENGB.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-GB");
+            MiLanguage_FR.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("FR");
+            MiLanguage_DE.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("DE");
+            MiLanguage_PT.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("PT");
+            MiLanguage_ES.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("ES");
+        }
+
         private void MiLanguageEnglishENUS_Click(object sender, EventArgs e)
         {
             LangHelper.ChangeLanguage("en-US");
 
-            MiLanguageEnglishENUS.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-US");
-            MiLanguageEnglishENGB.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-GB");
+            CheckLanguageSelection();
         }
 
         private void MiLanguageEnglishENGB_Click(object sender, EventArgs e)
         {
             LangHelper.ChangeLanguage("en-GB");
 
-            MiLanguageEnglishENUS.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-US");
-            MiLanguageEnglishENGB.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-GB");
+            CheckLanguageSelection();
+        }
+
+
+        private void MiLanguage_FR_Click(object sender, EventArgs e)
+        {
+            LangHelper.ChangeLanguage("FR");
+
+            CheckLanguageSelection();
+        }
+
+        private void MiLanguage_DE_Click(object sender, EventArgs e)
+        {
+            LangHelper.ChangeLanguage("DE");
+
+            CheckLanguageSelection();
+        }
+
+        private void MiLanguage_PT_Click(object sender, EventArgs e)
+        {
+            LangHelper.ChangeLanguage("PT");
+
+            CheckLanguageSelection();
+        }
+
+        private void MiLanguage_ES_Click(object sender, EventArgs e)
+        {
+            LangHelper.ChangeLanguage("ES");
+
+            CheckLanguageSelection();
         }
 
         private void MiAbout_Click(object sender, EventArgs e)

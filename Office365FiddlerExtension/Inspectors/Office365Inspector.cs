@@ -134,8 +134,8 @@ namespace Office365FiddlerExtension.Inspectors
         public override void AddToTab(TabPage o)
         {
             Office365ResponseControl webBrowser = new Office365ResponseControl();
-            o.Text = LangHelper.GetString("Office365");
-            o.ToolTipText = $"{LangHelper.GetString("Office365")} {LangHelper.GetString("Inspector")}";
+            o.Text = LangHelper.GetString("Office 365");
+            o.ToolTipText = $"{LangHelper.GetString("Office 365")} {LangHelper.GetString("Inspector")}";
             webBrowser.Size = o.Size;
             o.Controls.Add(webBrowser);
             o.Controls[0].Dock = DockStyle.Fill;
@@ -158,7 +158,7 @@ namespace Office365FiddlerExtension.Inspectors
             {
                 // Clear ResultsString.
                 Clear();
-                ResultsString.AppendLine($"<br /><h2>{LangHelper.GetString("Office365FiddlerExtension")} {LangHelper.GetString("Disabled")}</h2>");
+                ResultsString.AppendLine($"<br /><h2>{LangHelper.GetString("Office 365 Fiddler Extension")} {LangHelper.GetString("Disabled")}</h2>");
                 Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
                 return;
             }
@@ -167,8 +167,8 @@ namespace Office365FiddlerExtension.Inspectors
             {
                 // Clear ResultsString.
                 Clear();
-                ResultsString.AppendLine($"<br /><h2>{LangHelper.GetString("Office365FiddlerExtension")}</h2>");
-                ResultsString.AppendLine($"<p>{LangHelper.GetString("Office365FiddlerExtension")}</p>");
+                ResultsString.AppendLine($"<br /><h2>{LangHelper.GetString("Office 365 Fiddler Extension")}</h2>");
+                ResultsString.AppendLine($"<p>{LangHelper.GetString("Office 365 Fiddler Extension")}</p>");
                 Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
                 return;
             }
@@ -187,8 +187,8 @@ namespace Office365FiddlerExtension.Inspectors
                 {
                     // Clear ResultsString.
                     Clear();
-                    ResultsString.AppendLine($"<br /><h2>{LangHelper.GetString("Office365FiddlerExtension")}</h2>");
-                    ResultsString.AppendLine($"<p>{LangHelper.GetString("Office365FiddlerExtension")}</p>");
+                    ResultsString.AppendLine($"<br /><h2>{LangHelper.GetString("Office 365 Fiddler Extension")}</h2>");
+                    ResultsString.AppendLine($"<p>{LangHelper.GetString("Office 365 Fiddler Extension")}</p>");
                     Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
                     return;
                 }
@@ -207,12 +207,12 @@ namespace Office365FiddlerExtension.Inspectors
 
                 ResultsString.AppendLine("<br />");
 
-                ResultsString.AppendLine($"<h2>{LangHelper.GetString("GeneralSessionData")}</h2>");
+                ResultsString.AppendLine($"<h2>{LangHelper.GetString("General Session Data")}</h2>");
 
                 ResultsString.AppendLine("<table border='0'>");
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td width='150px'>");
-                ResultsString.AppendLine($"{LangHelper.GetString("SessionID")}");
+                ResultsString.AppendLine($"{LangHelper.GetString("Session ID")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine(this.session.id.ToString());
@@ -221,16 +221,17 @@ namespace Office365FiddlerExtension.Inspectors
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine($"{LangHelper.GetString("ResponseCode")}");
+                ResultsString.AppendLine($"{LangHelper.GetString("Response Code")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
+                //REVIEW THIS. Add this into a resource file or Extension URLs.
                 ResultsString.AppendLine($"<a href='https://en.wikipedia.org/wiki/List_of_HTTP_status_codes' target='_blank'>{ExtensionSessionFlags.ResponseCodeDescription}</a>");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine($"{LangHelper.GetString("SessionCaptured")}");
+                ResultsString.AppendLine($"{LangHelper.GetString("Session Captured")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine(ExtensionSessionFlags.DateDataCollected);
@@ -239,7 +240,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine($"{LangHelper.GetString("SessionAnalysis")}");
+                ResultsString.AppendLine($"{LangHelper.GetString("Session Analysis")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine(DateTime.Now.ToString("dddd, dd MMMM yyyy"));
@@ -248,7 +249,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine($"{LangHelper.GetString("CaptureWas")}");
+                ResultsString.AppendLine($"{LangHelper.GetString("Capture was")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine(ExtensionSessionFlags.DataAge);
@@ -267,7 +268,7 @@ namespace Office365FiddlerExtension.Inspectors
                 if ((this.session["X-HostIP"] != null) && (this.session["X-HostIP"] != "")) {
                     ResultsString.AppendLine("<tr>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine($"{LangHelper.GetString("HostIP")}");
+                    ResultsString.AppendLine($"{LangHelper.GetString("Host IP")}");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
                     ResultsString.AppendLine(this.session["X-HostIP"]);
@@ -279,7 +280,7 @@ namespace Office365FiddlerExtension.Inspectors
                 {
                     ResultsString.AppendLine("<tr>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine($"{LangHelper.GetString("ResponseServer")}");
+                    ResultsString.AppendLine($"{LangHelper.GetString("Response Server")}");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
                     ResultsString.AppendLine(ExtensionSessionFlags.ResponseServer);
@@ -287,11 +288,12 @@ namespace Office365FiddlerExtension.Inspectors
                     ResultsString.AppendLine("</tr>");
                 }
 
+                // REVIEW THIS. Make un-calculable inspector Elapsed time 0 or something. Or make this logic check if integer. Multi-language could break this.
                 if (ExtensionSessionFlags.InspectorElapsedTime != "Insufficient data")
                 {
                     ResultsString.AppendLine("<tr>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine($"{LangHelper.GetString("ElapsedTime")}");
+                    ResultsString.AppendLine($"{LangHelper.GetString("Elapsed Time")}");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
                     ResultsString.AppendLine(ExtensionSessionFlags.InspectorElapsedTime);
@@ -303,12 +305,12 @@ namespace Office365FiddlerExtension.Inspectors
                 #endregion
 
                 // Session Analysis.
-                ResultsString.AppendLine($"<h2>{LangHelper.GetString("SessionAnalysis")}</h2>");
+                ResultsString.AppendLine($"<h2>{LangHelper.GetString("Session Analysis")}</h2>");
 
                 ResultsString.AppendLine($"<p>{ExtensionSessionFlags.ResponseComments}</p>");
 
                 // Session Age.
-                ResultsString.AppendLine($"<h2>{LangHelper.GetString("SessionAge")}</h2>");
+                ResultsString.AppendLine($"<h2>{LangHelper.GetString("Session Age")}</h2>");
 
                 ResultsString.AppendLine($"<p>{ExtensionSessionFlags.CalculatedSessionAge}</p>");
 
@@ -327,7 +329,7 @@ namespace Office365FiddlerExtension.Inspectors
                 if (ExtensionSessionFlags.AuthenticationType == "SAMLResponseParser")
                 {
 
-                    ResultsString.AppendLine($"<h2>{LangHelper.GetString("SAMLResponseParser")}</h2>");
+                    ResultsString.AppendLine($"<h2>{LangHelper.GetString("SAML Response Parser")}</h2>");
 
                     ResultsString.AppendLine("<table border='0'>");
                     ResultsString.AppendLine("<tr>");
@@ -341,7 +343,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                     ResultsString.AppendLine("<tr>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine($"{LangHelper.GetString("AttributeNameImmutableID")}");
+                    ResultsString.AppendLine($"{LangHelper.GetString("Attribute Name Immutable ID")}");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
                     ResultsString.AppendLine(ExtensionSessionFlags.SamlTokenAttributeNameImmutibleID);
@@ -350,7 +352,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                     ResultsString.AppendLine("<tr>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine($"{LangHelper.GetString("AttributeNameUPN")}");
+                    ResultsString.AppendLine($"{LangHelper.GetString("Attribute Name UPN")}");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
                     ResultsString.AppendLine(ExtensionSessionFlags.SamlTokenAttributeNameUPN);
@@ -359,7 +361,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                     ResultsString.AppendLine("<tr>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine($"{LangHelper.GetString("NameIdentifierFormat")}");
+                    ResultsString.AppendLine($"{LangHelper.GetString("Name Identifier Format")}");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
                     ResultsString.AppendLine(ExtensionSessionFlags.SamlTokenNameIdentifierFormat);
@@ -367,7 +369,7 @@ namespace Office365FiddlerExtension.Inspectors
                     ResultsString.AppendLine("</tr>");
                     ResultsString.AppendLine("</table>");
 
-                    ResultsString.AppendLine($"<p>{LangHelper.GetString("CopySaveSigningCertificate")}</p>");
+                    ResultsString.AppendLine($"<p>{LangHelper.GetString("Copy Save Signing Certificate")}</p>");
                     ResultsString.AppendLine("-----BEGIN CERTIFICATE-----<br />");
 
                     string str = ExtensionSessionFlags.SamlTokenSigningCertificate;
@@ -386,12 +388,12 @@ namespace Office365FiddlerExtension.Inspectors
 
                 // Session Timers.
                 #region SessionTimers
-                ResultsString.AppendLine($"<h2>{LangHelper.GetString("OverallSessionTimers")}</h2>");
+                ResultsString.AppendLine($"<h2>{LangHelper.GetString("Overall Session Timers")}</h2>");
 
                 ResultsString.AppendLine("<table border='0'>");
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td width='150px'>");
-                ResultsString.AppendLine($"{LangHelper.GetString("ClientConnected")}");
+                ResultsString.AppendLine($"{LangHelper.GetString("Client Connected")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine(this.session.Timers.ClientConnected.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
@@ -400,7 +402,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine($"{LangHelper.GetString("ClientBeginRequest")}");
+                ResultsString.AppendLine($"{LangHelper.GetString("Client Begin Request")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine(this.session.Timers.ClientBeginRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
@@ -409,7 +411,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine($"{LangHelper.GetString("GotRequestHeaders")}");
+                ResultsString.AppendLine($"{LangHelper.GetString("Got Request Headers")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine(this.session.Timers.FiddlerGotRequestHeaders.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
@@ -418,7 +420,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine($"{LangHelper.GetString("ClientDoneResponse")}");
+                ResultsString.AppendLine($"{LangHelper.GetString("Client Done Response")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine(this.session.Timers.ClientDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
@@ -427,7 +429,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine($"{LangHelper.GetString("ElapsedTime")}");
+                ResultsString.AppendLine($"{LangHelper.GetString("Elapsed Time")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine(ExtensionSessionFlags.InspectorElapsedTime);
@@ -439,12 +441,12 @@ namespace Office365FiddlerExtension.Inspectors
 
                 // Server Timers.
                 #region ServerTimers
-                ResultsString.AppendLine($"<h2>{LangHelper.GetString("ServerTimers")}</h2>");
+                ResultsString.AppendLine($"<h2>{LangHelper.GetString("Server Timers")}</h2>");
 
                 ResultsString.AppendLine("<table border='0'>");
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td width='150px'>");
-                ResultsString.AppendLine($"{LangHelper.GetString("FiddlerBeginRequest")}");
+                ResultsString.AppendLine($"{LangHelper.GetString("Fiddler Begin Request")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine(this.session.Timers.FiddlerBeginRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
@@ -453,7 +455,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine($"{LangHelper.GetString("ServerGotRequest")}");
+                ResultsString.AppendLine($"{LangHelper.GetString("Server Got Request")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine(this.session.Timers.ServerGotRequest.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
@@ -462,7 +464,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine($"{LangHelper.GetString("ServerBeginResponse")}");
+                ResultsString.AppendLine($"{LangHelper.GetString("Server Begin Response")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine(this.session.Timers.ServerBeginResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
@@ -471,7 +473,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine($"{LangHelper.GetString("GotResponseHeaders")}");
+                ResultsString.AppendLine($"{LangHelper.GetString("Got Response Headers")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine(this.session.Timers.FiddlerGotResponseHeaders.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
@@ -480,7 +482,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine($"{LangHelper.GetString("ServerDoneResponse")}");
+                ResultsString.AppendLine($"{LangHelper.GetString("Server Done Response")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine(this.session.Timers.ServerDoneResponse.ToString("yyyy/MM/dd H:mm:ss.fff tt"));
@@ -489,7 +491,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine($"{LangHelper.GetString("ServerThinkTime")}");
+                ResultsString.AppendLine($"{LangHelper.GetString("Server Think Time")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine(ExtensionSessionFlags.ServerThinkTime);
@@ -498,7 +500,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine($"{LangHelper.GetString("TransitTime")}");
+                ResultsString.AppendLine($"{LangHelper.GetString("Transit Time")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine(ExtensionSessionFlags.TransitTime);
@@ -520,7 +522,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("</table>");
                 #endregion
 
-                ResultsString.AppendLine($"<p>{LangHelper.GetString("ForAnExplanationOfSessionTimersReferTo")} <a href='https://github.com/jprknight/Office365FiddlerExtension/wiki/Timers-Definitions' target='_blank'>https://github.com/jprknight/Office365FiddlerExtension/wiki/Timers-Definitions</a>.</p>");
+                ResultsString.AppendLine($"<p>{LangHelper.GetString("For an explantion of session timers refer to")} <a href='https://github.com/jprknight/Office365FiddlerExtension/wiki/Timers-Definitions' target='_blank'>https://github.com/jprknight/Office365FiddlerExtension/wiki/Timers-Definitions</a>.</p>");
 
                 // HTML Footer.
                 ResultsString.AppendLine("</font>");

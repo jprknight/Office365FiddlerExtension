@@ -41,12 +41,12 @@ namespace Office365FiddlerExtension.UI
                 // FiddlerApplication.UI.lvSessions.AddBoundColumn("Column Title", int position, int width, Session Flag or function for data);
                 // FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 2, 110, UpdateSessionUX.Instance.ElapsedTime);
 
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time (ms)", -1, 110, true, ElapsedTime);
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Severity", -1, 60, true, SessionSeverity);
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Session Type", 150, SessionType);
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Authentication", 140, Authentication);
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Response Server", 130, ResponseServer);
-                FiddlerApplication.UI.lvSessions.AddBoundColumn("Host IP", 110, HostIP);
+                FiddlerApplication.UI.lvSessions.AddBoundColumn($"{LangHelper.GetString("Elapsed Time")} (ms)", -1, 110, true, ElapsedTime);
+                FiddlerApplication.UI.lvSessions.AddBoundColumn(LangHelper.GetString("Severity"), -1, 60, true, SessionSeverity);
+                FiddlerApplication.UI.lvSessions.AddBoundColumn(LangHelper.GetString("Session Type"), 150, SessionType);
+                FiddlerApplication.UI.lvSessions.AddBoundColumn(LangHelper.GetString("Authentication"), 140, Authentication);
+                FiddlerApplication.UI.lvSessions.AddBoundColumn(LangHelper.GetString("Response Server"), 130, ResponseServer);
+                FiddlerApplication.UI.lvSessions.AddBoundColumn(LangHelper.GetString("Host IP"), 110, HostIP);
             }
             catch (Exception ex)
             {
@@ -113,7 +113,7 @@ namespace Office365FiddlerExtension.UI
             }
             else
             {
-                return "Unknown";
+                return LangHelper.GetString("Unknown");
             }
         }
     }

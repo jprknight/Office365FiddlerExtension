@@ -117,47 +117,89 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="200 OK - APACHE AUTODISCOVER" xml:space="preserve">
+    <value>200 OK - APACHE AUTODISCOVER</value>
+    <comment>Probably don't need translating.</comment>
+  </data>
   <data name="About" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="AllSessionAnalysis" xml:space="preserve">
+  <data name="All Session Analysis" xml:space="preserve">
     <value>All Session Analysis</value>
   </data>
-  <data name="AttributeNameImmutableID" xml:space="preserve">
-    <value>Attribute Name Immutable Id</value>
+  <data name="Analyze All Sessions" xml:space="preserve">
+    <value>Analyze All Sessions</value>
   </data>
-  <data name="AttributeNameUPN" xml:space="preserve">
+  <data name="Analyze Selected Sessions" xml:space="preserve">
+    <value>Analyze Selected Sessions</value>
+  </data>
+  <data name="APACHE" xml:space="preserve">
+    <value>APACHE</value>
+    <comment>Probably don't need translating.</comment>
+  </data>
+  <data name="APACHE AUTODISCOVER" xml:space="preserve">
+    <value>APACHE AUTODISCOVER</value>
+    <comment>This is part of a warning statement, keep all caps. Probably don't need translating.</comment>
+  </data>
+  <data name="Apache AutoDiscover Response Comments" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;An Apache Web Server (Unix/Linux) is answering Autodiscover requests!&lt;/span&gt;&lt;/b&gt;&lt;p&gt;This should not be happening. Consider disabling Root Domain Autodiscover lookups.&lt;/p&gt;&lt;p&gt;See ExcludeHttpsRootDomain on &lt;/p&gt;&lt;p&gt;&lt;a href='https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under' target='_blank'&gt;https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under &lt;/a&gt;&lt;/p&gt;&lt;p&gt;Beyond this the web administrator responsible for the server needs to stop the Apache web server from answering these requests.&lt;/p&gt;</value>
+  </data>
+  <data name="Apache is answering Autodiscover requests!" xml:space="preserve">
+    <value>Apache is answering Autodiscover requests!</value>
+  </data>
+  <data name="Attribute Name Immutable ID" xml:space="preserve">
+    <value>Attribute Name Immutable ID</value>
+  </data>
+  <data name="Attribute Name UPN" xml:space="preserve">
     <value>Attribute Name UPN</value>
   </data>
   <data name="Authentication" xml:space="preserve">
     <value>Authentication</value>
   </data>
-  <data name="CaptureWas" xml:space="preserve">
+  <data name="Black" xml:space="preserve">
+    <value>Black</value>
+  </data>
+  <data name="Blue" xml:space="preserve">
+    <value>Blue</value>
+  </data>
+  <data name="Broad Logic Checks" xml:space="preserve">
+    <value>Broad Logic Checks</value>
+  </data>
+  <data name="Capture was" xml:space="preserve">
     <value>Capture was</value>
   </data>
-  <data name="CheckForUpdatesEvery" xml:space="preserve">
+  <data name="Check for updates every" xml:space="preserve">
     <value>Check for updates every</value>
   </data>
-  <data name="ClickTheLinkBelowForUpdateInstructions" xml:space="preserve">
+  <data name="Clear Selected Sessions" xml:space="preserve">
+    <value>Clear Selected Sessions</value>
+  </data>
+  <data name="Click the link below for update instructions" xml:space="preserve">
     <value>Click the link below for update instructions</value>
   </data>
-  <data name="ClientBeginRequest" xml:space="preserve">
+  <data name="Client Begin Request" xml:space="preserve">
     <value>Client Begin Request</value>
   </data>
-  <data name="ClientConnected" xml:space="preserve">
+  <data name="Client Connected" xml:space="preserve">
     <value>Client Connected</value>
   </data>
-  <data name="ClientDoneResponse" xml:space="preserve">
+  <data name="Client Done Response" xml:space="preserve">
     <value>Client Done Response</value>
   </data>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
-  <data name="CopySaveSigningCertificate" xml:space="preserve">
+  <data name="Concerning" xml:space="preserve">
+    <value>Concerning</value>
+  </data>
+  <data name="Copy Save Signing Certificate" xml:space="preserve">
     <value>Copy and save the below text into a .cer file to view the signing certificate.</value>
   </data>
+  <data name="day" xml:space="preserve">
+    <value>day</value>
+  </data>
   <data name="Days" xml:space="preserve">
-    <value>Days</value>
+    <value>days</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
@@ -168,7 +210,7 @@
   <data name="Dutch" xml:space="preserve">
     <value>Dutch</value>
   </data>
-  <data name="ElapsedTime" xml:space="preserve">
+  <data name="Elapsed Time" xml:space="preserve">
     <value>Elapsed Time</value>
   </data>
   <data name="Enable" xml:space="preserve">
@@ -180,10 +222,10 @@
   <data name="English" xml:space="preserve">
     <value>English</value>
   </data>
-  <data name="ExtensionDLL" xml:space="preserve">
-    <value>ExtensionDLL</value>
+  <data name="Extension DLL" xml:space="preserve">
+    <value>Extension DLL</value>
   </data>
-  <data name="ExtensionEnabled" xml:space="preserve">
+  <data name="Extension Enabled" xml:space="preserve">
     <value>Extension Enabled</value>
   </data>
   <data name="ExtensionOptions" xml:space="preserve">
@@ -192,43 +234,55 @@
   <data name="ExtensionPath" xml:space="preserve">
     <value>Extension Path</value>
   </data>
-  <data name="FiddlerBeginRequest" xml:space="preserve">
+  <data name="False Positive" xml:space="preserve">
+    <value>False Positive</value>
+  </data>
+  <data name="Fiddler Begin Request" xml:space="preserve">
     <value>Fiddler Begin Request</value>
   </data>
-  <data name="FiddlerUpdateCheck" xml:space="preserve">
+  <data name="Fiddler Update Check" xml:space="preserve">
     <value>Fiddler Update Check</value>
   </data>
-  <data name="ForAnExplanationOfSessionTimersReferTo" xml:space="preserve">
+  <data name="For an explantion of session timers refer to" xml:space="preserve">
     <value>For an explantion of session timers refer to:</value>
   </data>
   <data name="French" xml:space="preserve">
     <value>French</value>
   </data>
-  <data name="GeneralSessionData" xml:space="preserve">
+  <data name="General Session Data" xml:space="preserve">
     <value>General Session Data</value>
   </data>
   <data name="German" xml:space="preserve">
     <value>German</value>
   </data>
-  <data name="GithubExtensionVersion" xml:space="preserve">
-    <value>GithubExtensionVersion</value>
+  <data name="Github Extension Version" xml:space="preserve">
+    <value>Github Extension Version</value>
   </data>
-  <data name="GithubInformation" xml:space="preserve">
-    <value>GithubInformation</value>
+  <data name="Github Information" xml:space="preserve">
+    <value>Github Information</value>
   </data>
-  <data name="GithubRulesetVersion" xml:space="preserve">
-    <value>GithubRulesetVersion</value>
+  <data name="Github Ruleset Version" xml:space="preserve">
+    <value>Github Ruleset Version</value>
   </data>
-  <data name="GotRequestHeaders" xml:space="preserve">
+  <data name="Got Request Headers" xml:space="preserve">
     <value>Got Request Headers</value>
   </data>
-  <data name="GotResponseHeaders" xml:space="preserve">
+  <data name="Got Response Headers" xml:space="preserve">
     <value>Got Response Headers</value>
   </data>
-  <data name="HostIP" xml:space="preserve">
+  <data name="Green" xml:space="preserve">
+    <value>Green</value>
+  </data>
+  <data name="Grey" xml:space="preserve">
+    <value>Grey</value>
+  </data>
+  <data name="Host IP" xml:space="preserve">
     <value>Host IP</value>
   </data>
-  <data name="Hours" xml:space="preserve">
+  <data name="hour" xml:space="preserve">
+    <value>hour</value>
+  </data>
+  <data name="hours" xml:space="preserve">
     <value>hours</value>
   </data>
   <data name="Inspector" xml:space="preserve">
@@ -240,46 +294,63 @@
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
-  <data name="LocalExtensionVersion" xml:space="preserve">
+  <data name="Local Extension Version" xml:space="preserve">
     <value>Local Extension Version</value>
   </data>
-  <data name="LocallyInstalledInformation" xml:space="preserve">
+  <data name="Local Ruleset Version" xml:space="preserve">
+    <value>Local Ruleset Version</value>
+  </data>
+  <data name="Locally Installed Information" xml:space="preserve">
     <value>Locally Installed Information</value>
   </data>
-  <data name="LocalRulesetVersion" xml:space="preserve">
-    <value>Local Ruleset Version</value>
+  <data name="Loopback Tunnel Response Comments" xml:space="preserve">
+    <value>Seeing many or few of these? Either way these aren't typical Microsoft365 traffic sessions. They may be an indication of a proxy client forcing traffic down a certain network path? If there's no Microsoft365 client traffic in this Fiddler trace and it's suspected this could be a factor, change your network, try a different machine without any proxy client / proxy configuration in place.</value>
+  </data>
+  <data name="minute ago" xml:space="preserve">
+    <value>minute ago</value>
+    <comment>In the context of "1 minute ago".</comment>
   </data>
   <data name="Minutes" xml:space="preserve">
     <value>Minutes</value>
   </data>
-  <data name="NameIdentifierFormat" xml:space="preserve">
+  <data name="minutes ago" xml:space="preserve">
+    <value>minutes ago</value>
+    <comment>In the context of "10 minutes ago".</comment>
+  </data>
+  <data name="Name Identifier Format" xml:space="preserve">
     <value>Name Identifier Format</value>
   </data>
-  <data name="NextUpdateCheck" xml:space="preserve">
+  <data name="Next Update Check" xml:space="preserve">
     <value>Next Update Check</value>
   </data>
-  <data name="NoSessionAnalysis" xml:space="preserve">
+  <data name="No Session Analysis" xml:space="preserve">
     <value>No session analysis. Use the 'Process All Sessions' option from the Office365 extension menu to get session analysis.</value>
   </data>
-  <data name="ObscureSettings" xml:space="preserve">
+  <data name="Normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="Obscure Settings" xml:space="preserve">
     <value>Obscure Settings</value>
   </data>
-  <data name="Office365" xml:space="preserve">
+  <data name="Office 365" xml:space="preserve">
     <value>Office 365</value>
   </data>
-  <data name="Office365FiddlerExtension" xml:space="preserve">
+  <data name="Office 365 Fiddler Extension" xml:space="preserve">
     <value>Office 365 Fiddler Extension</value>
+  </data>
+  <data name="On Live Trace" xml:space="preserve">
+    <value>On Live Trace</value>
+  </data>
+  <data name="On Load Saz" xml:space="preserve">
+    <value>On Load Saz</value>
   </data>
   <data name="OnDemand" xml:space="preserve">
     <value>On Demand</value>
   </data>
-  <data name="OnLiveTrace" xml:space="preserve">
-    <value>On Live Trace</value>
+  <data name="Orange" xml:space="preserve">
+    <value>Orange</value>
   </data>
-  <data name="OnLoadSaz" xml:space="preserve">
-    <value>On Load Saz</value>
-  </data>
-  <data name="OverallSessionTimers" xml:space="preserve">
+  <data name="Overall Session Timers" xml:space="preserve">
     <value>Overall Session Timers</value>
   </data>
   <data name="Portuguese" xml:space="preserve">
@@ -288,22 +359,28 @@
   <data name="Process" xml:space="preserve">
     <value>Process</value>
   </data>
+  <data name="Recalculate Selected Sessions" xml:space="preserve">
+    <value>Recalculate Selected Sessions</value>
+  </data>
+  <data name="Red" xml:space="preserve">
+    <value>Red</value>
+  </data>
   <data name="Releases" xml:space="preserve">
     <value>Releases</value>
   </data>
-  <data name="RemoteCapture" xml:space="preserve">
+  <data name="Remote Capture" xml:space="preserve">
     <value>Remote Capture</value>
   </data>
-  <data name="ReportIssues" xml:space="preserve">
+  <data name="Report Issues" xml:space="preserve">
     <value>Report Issues</value>
   </data>
-  <data name="ResponseCode" xml:space="preserve">
+  <data name="Response Code" xml:space="preserve">
     <value>Response Code</value>
   </data>
-  <data name="ResponseServer" xml:space="preserve">
+  <data name="Response Server" xml:space="preserve">
     <value>Response Server</value>
   </data>
-  <data name="SAMLResponseParser" xml:space="preserve">
+  <data name="SAML Response Parser" xml:space="preserve">
     <value>SAML Response Parser</value>
   </data>
   <data name="Save" xml:space="preserve">
@@ -313,41 +390,50 @@
     <value>ScoreForSession</value>
     <comment>Don't translate, this is an internal Fiddler term.</comment>
   </data>
-  <data name="ServerBeginResponse" xml:space="preserve">
+  <data name="Server Begin Response" xml:space="preserve">
     <value>Server Begin Response</value>
   </data>
-  <data name="ServerDoneResponse" xml:space="preserve">
+  <data name="Server Done Response" xml:space="preserve">
     <value>Server Done Response</value>
   </data>
-  <data name="ServerGotRequest" xml:space="preserve">
+  <data name="Server Got Request" xml:space="preserve">
     <value>Server Got Request</value>
   </data>
-  <data name="ServerThinkTime" xml:space="preserve">
+  <data name="Server Think Time" xml:space="preserve">
     <value>Server Think Time</value>
   </data>
-  <data name="ServerTimers" xml:space="preserve">
+  <data name="Server Timers" xml:space="preserve">
     <value>Server Timers</value>
+  </data>
+  <data name="Session Age" xml:space="preserve">
+    <value>Session Age</value>
+  </data>
+  <data name="Session Analysis" xml:space="preserve">
+    <value>Session Analysis</value>
+  </data>
+  <data name="Session Captured" xml:space="preserve">
+    <value>Session Captured</value>
+  </data>
+  <data name="Session collected within 7 days" xml:space="preserve">
+    <value>Session collected within 7 days, data freshness is good. Best case scenario for correlating this data to backend server logs.</value>
+  </data>
+  <data name="Session ID" xml:space="preserve">
+    <value>Session ID</value>
   </data>
   <data name="Session Type" xml:space="preserve">
     <value>Session Type</value>
   </data>
-  <data name="SessionAge" xml:space="preserve">
-    <value>Session Age</value>
+  <data name="Set Session Severity" xml:space="preserve">
+    <value>Set Session Severity</value>
   </data>
-  <data name="SessionAnalysis" xml:space="preserve">
-    <value>SessionAnalysis</value>
-  </data>
-  <data name="SessionCaptured" xml:space="preserve">
-    <value>Session Captured</value>
-  </data>
-  <data name="SessionID" xml:space="preserve">
-    <value>Session ID</value>
+  <data name="Severe" xml:space="preserve">
+    <value>Severe</value>
   </data>
   <data name="Severity" xml:space="preserve">
     <value>Severity</value>
   </data>
-  <data name="SlowRUnningSessionThreshold" xml:space="preserve">
-    <value>SlowRunningSessionThreshold</value>
+  <data name="Slow Running Session Threshold" xml:space="preserve">
+    <value>Slow Running Session Threshold</value>
   </data>
   <data name="Some Session Analysis" xml:space="preserve">
     <value>Some Session Analysis</value>
@@ -355,23 +441,36 @@
   <data name="Spanish" xml:space="preserve">
     <value>Spanish</value>
   </data>
-  <data name="TransitTime" xml:space="preserve">
+  <data name="This is Fiddler itself checking for updates." xml:space="preserve">
+    <value>This is Fiddler itself checking for updates.</value>
+  </data>
+  <data name="Transit Time" xml:space="preserve">
     <value>Transit Time</value>
   </data>
-  <data name="UpdateAvailable" xml:space="preserve">
-    <value>Update Available</value>
+  <data name="Uninteresting" xml:space="preserve">
+    <value>Uninteresting</value>
   </data>
-  <data name="UpToDate" xml:space="preserve">
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="Up To Date" xml:space="preserve">
     <value>Up To Date</value>
   </data>
-  <data name="WarningSessionTimeThreshold" xml:space="preserve">
+  <data name="Update Available" xml:space="preserve">
+    <value>Update Available</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="Warning Session Time Threshold" xml:space="preserve">
     <value>Warning Session Time Threshold</value>
   </data>
-  <data name="WhatAreTheseTwoThresholds" xml:space="preserve">
+  <data name="What are these two thresholds" xml:space="preserve">
     <value>What are these two thresholds?</value>
   </data>
-  <data name="WhatIsScoreForSession" xml:space="preserve">
+  <data name="What is ScoreForSession" xml:space="preserve">
     <value>What is ScoreForSession?</value>
+    <comment>Don't translate the word ScoreForSession.</comment>
   </data>
   <data name="Wiki" xml:space="preserve">
     <value>Wiki</value>

@@ -38,29 +38,29 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             if (TimeSpanDays == 1)
             {
-                TimeSpanDaysText = TimeSpanDays + " day, ";
+                TimeSpanDaysText = TimeSpanDays + $" {LangHelper.GetString("day")}, ";
             }
             else
             {
-                TimeSpanDaysText = TimeSpanDays + " days, ";
+                TimeSpanDaysText = TimeSpanDays + $" {LangHelper.GetString("days")}, ";
             }
 
             if (TimeSpanHours == 1)
             {
-                TimeSpanHoursText = TimeSpanHours + " hour, ";
+                TimeSpanHoursText = TimeSpanHours + $" {LangHelper.GetString("hour")}, ";
             }
             else
             {
-                TimeSpanHoursText = TimeSpanHours + " hours, ";
+                TimeSpanHoursText = TimeSpanHours + $" {LangHelper.GetString("hours")}, ";
             }
 
             if (TimeSpanMinutes == 1)
             {
-                TimeSpanMinutesText = TimeSpanMinutes + " minute ago.";
+                TimeSpanMinutesText = TimeSpanMinutes + $" {LangHelper.GetString("minute ago")}.";
             }
             else
             {
-                TimeSpanMinutesText = TimeSpanMinutes + " minutes ago.";
+                TimeSpanMinutesText = TimeSpanMinutes + $" {LangHelper.GetString("minutes ago")}.";
             }
 
             String DataAge = TimeSpanDaysText + TimeSpanHoursText + TimeSpanMinutesText;
@@ -78,7 +78,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     DataAge = $"<b><span style='color:green'>{DataAge}</span></b>",
-                    CalculatedSessionAge = "<p>Session collected within 7 days, data freshness is good. Best case scenario for correlating this data to backend server logs.</p>"
+                    CalculatedSessionAge = $"<p>{LangHelper.GetString("Session collected within 7 days")}</p>"
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
