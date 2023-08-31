@@ -1,16 +1,8 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
-using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
 using System.Reflection;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -107,8 +99,10 @@ namespace Office365FiddlerExtension.Services
                 } 
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExtensionSessionProcessingEnabled cannot be determined");
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                        $"({this.GetType().Name}): ExtensionSessionProcessingEnabled cannot be determined");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                        $"({this.GetType().Name}): {ex}");
                 }
                 return false;
             }
@@ -126,8 +120,10 @@ namespace Office365FiddlerExtension.Services
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): PreferredLanguage cannot be determined");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): PreferredLanguage cannot be determined");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {ex}");
             }
             return false;
         }
@@ -155,11 +151,13 @@ namespace Office365FiddlerExtension.Services
 
                 Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
 
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): UpdateCheckFreqencyHours set to {ihours}.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): UpdateCheckFreqencyHours set to {ihours}.");
             }
             else
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): UpdateCheckFreqencyHours only accepts a numerical value.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): UpdateCheckFreqencyHours only accepts a numerical value.");
             }
         }
 
@@ -182,9 +180,11 @@ namespace Office365FiddlerExtension.Services
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
 
             // Set the Menu item to reflect change.
+            // REVIEW THIS -- Needs Multi-Language.
             MenuUI.Instance.ExtensionMenu.Text = ExtensionSessionProcessingEnabled ? "Office 365 (Enabled)" : "Office 365 (Disabled)";
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExtensionSessionProcessingEnabled set to {extensionSessionProcessingEnabled}.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): ExtensionSessionProcessingEnabled set to {extensionSessionProcessingEnabled}.");
         }
 
         public bool SessionAnalysisOnLoadSaz
@@ -254,7 +254,8 @@ namespace Office365FiddlerExtension.Services
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): SessionAnalysisOnLoadSaz set to {sessionAnalysisOnLoadSaz}.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): SessionAnalysisOnLoadSaz set to {sessionAnalysisOnLoadSaz}.");
         }
 
         public bool SessionAnalysisOnLiveTrace
@@ -275,7 +276,8 @@ namespace Office365FiddlerExtension.Services
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): SessionAnalysisOnLiveTrace set to {sessionAnalysisOnLiveTrace}.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): SessionAnalysisOnLiveTrace set to {sessionAnalysisOnLiveTrace}.");
         }
 
         public int WarningSessionTimeThreshold
@@ -298,11 +300,13 @@ namespace Office365FiddlerExtension.Services
 
                 Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
 
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): WarningSessionTimeThreshold set to {iWarningSessionTimeThreshold}.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): WarningSessionTimeThreshold set to {iWarningSessionTimeThreshold}.");
             }
             else
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): WarningSessionTimeThreshold only accepts a numerical value.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): WarningSessionTimeThreshold only accepts a numerical value.");
             }
         }
 
@@ -326,11 +330,13 @@ namespace Office365FiddlerExtension.Services
 
                 Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
 
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): SlowRunningSessionThreshold set to {iSlowRunningSessionThreshold}.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): SlowRunningSessionThreshold set to {iSlowRunningSessionThreshold}.");
             }
             else
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): SlowRunningSessionThreshold only accepts a numerical value.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): SlowRunningSessionThreshold only accepts a numerical value.");
             }
         }
 
@@ -342,7 +348,8 @@ namespace Office365FiddlerExtension.Services
             // Save the new Json to the extension setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Incremented ExecutionCount to {extensionSettings.ExecutionCount}.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): Incremented ExecutionCount to {extensionSettings.ExecutionCount}.");
         }
 
         public ExtensionSettingsJson GetDeserializedExtensionSettings()
@@ -359,8 +366,10 @@ namespace Office365FiddlerExtension.Services
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error running GetDeserializedExtensionSettings.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): Error running GetDeserializedExtensionSettings.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {ex}");
 
             }
             return null;
@@ -397,6 +406,7 @@ namespace Office365FiddlerExtension.Services
 
         public string ExtensionDLL { get; set; }
 
+        // REVIEW THIS -- Is it needed?
         public string SessionClassificationJsonFileName { get; set; }
 
         public string PreferredLanguage { get; set; }

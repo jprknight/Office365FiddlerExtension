@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
@@ -89,8 +85,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     DataAge = $"<b><span style='color:orange'>{DataAge}</span></b>",
-                    CalculatedSessionAge = "<p>Session collected within 14 days, data freshness is good, <b><span style='color:orange'>but not ideal</span></b>. "
-                    + "Depending on the backend system, <b><span style='color:orange'>correlating this data to server logs might be possible</span></b>.</p>"
+                    CalculatedSessionAge = LangHelper.GetString("Session collected within 14 days")
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -101,8 +96,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     DataAge = $"<b><span style='color:orange'>{DataAge}</span></b>",
-                    CalculatedSessionAge = "<p><b><span style='color:red'>Session collected between 14 and 30 days ago</span></b>. "
-                    + "Correlating with any backend server logs is <b><span style='color:red'>likely impossible</span></b>. Many systems don't keep logs this long.</p>"
+                    CalculatedSessionAge = LangHelper.GetString("Session collected between 14 and 30 days ago")
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -113,8 +107,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     DataAge = $"<b><span style='color:red'>{DataAge}</span></b>",
-                    CalculatedSessionAge = "<p><b><span style='color:red'>Session collected more than 30 days ago</span></b>. "
-                    + "Correlating with any backend server logs is <b><span style='color:red'>very likely impossible</span></b>. Many systems don't keep logs this long.</p>"
+                    CalculatedSessionAge = LangHelper.GetString("Session collected more than 30 days ago")
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

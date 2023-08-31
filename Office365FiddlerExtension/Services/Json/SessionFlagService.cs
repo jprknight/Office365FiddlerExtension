@@ -474,6 +474,8 @@ namespace Office365FiddlerExtension.Services
 
             public string ProcessName { get; set; }
 
+            public bool SessionTimesInsufficientData { get; set; }
+
             public int SessionAuthenticationConfidenceLevel { get; set; }
 
             public int SessionTypeConfidenceLevel { get; set; }

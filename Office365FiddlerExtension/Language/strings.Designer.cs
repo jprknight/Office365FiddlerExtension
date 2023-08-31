@@ -556,11 +556,110 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NO RESPONSE.
+        /// </summary>
+        internal static string HTTP_0_Authentication {
+            get {
+                return ResourceManager.GetString("HTTP_0 Authentication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NO RESPONSE.
+        /// </summary>
+        internal static string HTTP_0_ResonseServer {
+            get {
+                return ResourceManager.GetString("HTTP_0 ResonseServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 0 - No Response&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_0_Response_Alert {
+            get {
+                return ResourceManager.GetString("HTTP_0 Response Alert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 0 No Response.
+        /// </summary>
+        internal static string HTTP_0_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_0 ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The quantity of these types of server errors need to be considered in context with what you are troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.&lt;p&gt;If you are not seeing expected client traffic, consider if network traces should be collected. Review if there is an underlying network issue such as congestion on routers, which could be causing issues. The Network Connection Status Indicator (NCSI) on the client c [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string HTTP_0_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_0 ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NO RESPONSE.
+        /// </summary>
+        internal static string HTTP_0_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_0 SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 Actually OK. No errors, failed, or exceptions found in response body..
+        /// </summary>
+        internal static string HTTP_200_Actually_OK_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_Actually_OK ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 Actually OK.
+        /// </summary>
+        internal static string HTTP_200_Actually_OK_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_Actually_OK ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 Actually OK. No errors, failed, or exceptions found in response body..
+        /// </summary>
+        internal static string HTTP_200_Actually_OK_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_Actually_OK ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 Actually OK.
+        /// </summary>
+        internal static string HTTP_200_Actually_OK_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_Actually_OK SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inspector.
         /// </summary>
         internal static string Inspector {
             get {
                 return ResourceManager.GetString("Inspector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insufficient data.
+        /// </summary>
+        internal static string Insufficient_data {
+            get {
+                return ResourceManager.GetString("Insufficient data", resourceCulture);
             }
         }
         
@@ -660,6 +759,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Next_Update_Check {
             get {
                 return ResourceManager.GetString("Next Update Check", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Data.
+        /// </summary>
+        internal static string No_Data {
+            get {
+                return ResourceManager.GetString("No Data", resourceCulture);
             }
         }
         
@@ -768,6 +876,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Process {
             get {
                 return ResourceManager.GetString("Process", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process Name.
+        /// </summary>
+        internal static string Process_Name {
+            get {
+                return ResourceManager.GetString("Process Name", resourceCulture);
             }
         }
         
@@ -934,11 +1051,47 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;&lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Session collected between 14 and 30 days ago&lt;/span&gt;&lt;/b&gt;. Correlating with any backend server logs is &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;likely impossible&lt;/span&gt;&lt;/b&gt;. Many systems don&apos;t keep logs this long.&lt;/p&gt;.
+        /// </summary>
+        internal static string Session_collected_between_14_and_30_days_ago {
+            get {
+                return ResourceManager.GetString("Session collected between 14 and 30 days ago", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;&lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Session collected more than 30 days ago&lt;/span&gt;&lt;/b&gt;. Correlating with any backend server logs is &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;very likely impossible&lt;/span&gt;&lt;/b&gt;. Many systems don&apos;t keep logs this long.&lt;/p&gt;.
+        /// </summary>
+        internal static string Session_collected_more_than_30_days_ago {
+            get {
+                return ResourceManager.GetString("Session collected more than 30 days ago", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;Session collected within 14 days, data freshness is good, &lt;b&gt;&lt;span style=&apos;color:orange&apos;&gt;but not ideal&lt;/span&gt;&lt;/b&gt;. Depending on the backend system, &lt;b&gt;&lt;span style=&apos;color:orange&apos;&gt; correlating this data to server logs might be possible&lt;/span&gt;&lt;/b&gt;.&lt;/p&gt;.
+        /// </summary>
+        internal static string Session_collected_within_14_days {
+            get {
+                return ResourceManager.GetString("Session collected within 14 days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Session collected within 7 days, data freshness is good. Best case scenario for correlating this data to backend server logs..
         /// </summary>
         internal static string Session_collected_within_7_days {
             get {
                 return ResourceManager.GetString("Session collected within 7 days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Session Elapsed Time.
+        /// </summary>
+        internal static string Session_Elapsed_Time {
+            get {
+                return ResourceManager.GetString("Session Elapsed Time", resourceCulture);
             }
         }
         
@@ -957,6 +1110,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Session_Type {
             get {
                 return ResourceManager.GetString("Session Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.&lt;/p&gt;&lt;p&gt;If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.&lt;/p&gt;&lt;p&gt;Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.&lt;p&gt;.
+        /// </summary>
+        internal static string SessionTimersDescription {
+            get {
+                return ResourceManager.GetString("SessionTimersDescription", resourceCulture);
             }
         }
         

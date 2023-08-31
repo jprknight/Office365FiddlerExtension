@@ -31,7 +31,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = "SessionElapsedTime",
+                    SectionTitle = LangHelper.GetString("Session Elapsed Time"),
                     ElapsedTime = Milliseconds.ToString()
                 };
 
@@ -43,7 +43,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "SessionElapsedTime_NoData",
-                    ElapsedTime = "No data"
+                    ElapsedTime = LangHelper.GetString("No data")
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -132,7 +132,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "InspectorElapsedTime_Insufficient_Data",
-                    InspectorElapsedTime = "Insufficient data"
+                    InspectorElapsedTime = LangHelper.GetString("Insufficient data")
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

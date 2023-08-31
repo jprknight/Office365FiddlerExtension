@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
@@ -52,9 +48,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 {
                     var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                     {
-                        SessionTimersDescription = "<p>The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.</p>"
-                        + "<p>If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.</p>"
-                        + "<p>Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.<p>"
+                        SessionTimersDescription = LangHelper.GetString("SessionTimersDescription")
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -193,8 +187,9 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    ServerThinkTime = "Insufficient data",
-                    TransitTime = "Insufficient data"
+                    ServerThinkTime = LangHelper.GetString("Insufficient data"),
+                    TransitTime = LangHelper.GetString("Insufficient data"),
+                    SessionTimesInsufficientData = true
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

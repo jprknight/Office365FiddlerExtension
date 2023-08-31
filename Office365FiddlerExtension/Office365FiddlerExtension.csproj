@@ -213,7 +213,7 @@
     <Compile Include="Services\Fiddler\RulesetService.cs" />
     <Compile Include="Services\Json\SessionFlagService.cs" />
     <Compile Include="Services\Json\SettingsJsonService.cs" />
-    <Compile Include="Services\LanguageService.cs" />
+    <Compile Include="Services\Language\LanguageService.cs" />
     <Compile Include="Services\Update\UpdateService.cs" />
     <Compile Include="Services\Update\VersionService.cs" />
     <Compile Include="UI\Forms\About.cs">

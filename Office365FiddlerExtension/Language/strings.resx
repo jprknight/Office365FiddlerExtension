@@ -285,8 +285,45 @@
   <data name="hours" xml:space="preserve">
     <value>hours</value>
   </data>
+  <data name="HTTP_0 Authentication" xml:space="preserve">
+    <value>NO RESPONSE</value>
+    <comment>This is part of a warning statement, keep all caps.</comment>
+  </data>
+  <data name="HTTP_0 ResonseServer" xml:space="preserve">
+    <value>NO RESPONSE</value>
+    <comment>This is part of a warning statement, keep all caps.</comment>
+  </data>
+  <data name="HTTP_0 Response Alert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 0 - No Response&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_0 ResponseCodeDescription" xml:space="preserve">
+    <value>0 No Response</value>
+    <comment>Keep the zero on the front, it's the HTTP response code, actually the lack of one.</comment>
+  </data>
+  <data name="HTTP_0 ResponseComments" xml:space="preserve">
+    <value>The quantity of these types of server errors need to be considered in context with what you are troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.&lt;p&gt;If you are not seeing expected client traffic, consider if network traces should be collected. Review if there is an underlying network issue such as congestion on routers, which could be causing issues. The Network Connection Status Indicator (NCSI) on the client computer might also be an area to investigate.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_0 SessionType" xml:space="preserve">
+    <value>NO RESPONSE</value>
+    <comment>This is part of a warning statement, keep all caps.</comment>
+  </data>
+  <data name="HTTP_200_Actually_OK ResponseAlert" xml:space="preserve">
+    <value>HTTP 200 Actually OK. No errors, failed, or exceptions found in response body.</value>
+  </data>
+  <data name="HTTP_200_Actually_OK ResponseCodeDescription" xml:space="preserve">
+    <value>200 Actually OK</value>
+  </data>
+  <data name="HTTP_200_Actually_OK ResponseComments" xml:space="preserve">
+    <value>HTTP 200 Actually OK. No errors, failed, or exceptions found in response body.</value>
+  </data>
+  <data name="HTTP_200_Actually_OK SessionType" xml:space="preserve">
+    <value>200 Actually OK</value>
+  </data>
   <data name="Inspector" xml:space="preserve">
     <value>Inspector</value>
+  </data>
+  <data name="Insufficient data" xml:space="preserve">
+    <value>Insufficient data</value>
   </data>
   <data name="Issuer" xml:space="preserve">
     <value>Issuer</value>
@@ -323,6 +360,9 @@
   <data name="Next Update Check" xml:space="preserve">
     <value>Next Update Check</value>
   </data>
+  <data name="No Data" xml:space="preserve">
+    <value>No Data</value>
+  </data>
   <data name="No Session Analysis" xml:space="preserve">
     <value>No session analysis. Use the 'Process All Sessions' option from the Office365 extension menu to get session analysis.</value>
   </data>
@@ -358,6 +398,9 @@
   </data>
   <data name="Process" xml:space="preserve">
     <value>Process</value>
+  </data>
+  <data name="Process Name" xml:space="preserve">
+    <value>Process Name</value>
   </data>
   <data name="Recalculate Selected Sessions" xml:space="preserve">
     <value>Recalculate Selected Sessions</value>
@@ -414,14 +457,29 @@
   <data name="Session Captured" xml:space="preserve">
     <value>Session Captured</value>
   </data>
+  <data name="Session collected between 14 and 30 days ago" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;&lt;span style='color:red'&gt;Session collected between 14 and 30 days ago&lt;/span&gt;&lt;/b&gt;. Correlating with any backend server logs is &lt;b&gt;&lt;span style='color:red'&gt;likely impossible&lt;/span&gt;&lt;/b&gt;. Many systems don't keep logs this long.&lt;/p&gt;</value>
+  </data>
+  <data name="Session collected more than 30 days ago" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;&lt;span style='color:red'&gt;Session collected more than 30 days ago&lt;/span&gt;&lt;/b&gt;. Correlating with any backend server logs is &lt;b&gt;&lt;span style='color:red'&gt;very likely impossible&lt;/span&gt;&lt;/b&gt;. Many systems don't keep logs this long.&lt;/p&gt;</value>
+  </data>
+  <data name="Session collected within 14 days" xml:space="preserve">
+    <value>&lt;p&gt;Session collected within 14 days, data freshness is good, &lt;b&gt;&lt;span style='color:orange'&gt;but not ideal&lt;/span&gt;&lt;/b&gt;. Depending on the backend system, &lt;b&gt;&lt;span style='color:orange'&gt; correlating this data to server logs might be possible&lt;/span&gt;&lt;/b&gt;.&lt;/p&gt;</value>
+  </data>
   <data name="Session collected within 7 days" xml:space="preserve">
     <value>Session collected within 7 days, data freshness is good. Best case scenario for correlating this data to backend server logs.</value>
+  </data>
+  <data name="Session Elapsed Time" xml:space="preserve">
+    <value>Session Elapsed Time</value>
   </data>
   <data name="Session ID" xml:space="preserve">
     <value>Session ID</value>
   </data>
   <data name="Session Type" xml:space="preserve">
     <value>Session Type</value>
+  </data>
+  <data name="SessionTimersDescription" xml:space="preserve">
+    <value>&lt;p&gt;The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.&lt;/p&gt;&lt;p&gt;If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.&lt;/p&gt;&lt;p&gt;Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.&lt;p&gt;</value>
   </data>
   <data name="Set Session Severity" xml:space="preserve">
     <value>Set Session Severity</value>
