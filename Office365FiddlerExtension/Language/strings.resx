@@ -420,6 +420,9 @@
   <data name="Response Code" xml:space="preserve">
     <value>Response Code</value>
   </data>
+  <data name="Response Comments No Known Issue" xml:space="preserve">
+    <value>&lt;p&gt;No known issue with Microsoft365 and this type of session. If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: &lt;a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'&gt;https://github.com/jprknight/Office365FiddlerExtension&lt;/a&gt;.&lt;/p&gt;</value>
+  </data>
   <data name="Response Server" xml:space="preserve">
     <value>Response Server</value>
   </data>
@@ -489,6 +492,12 @@
   </data>
   <data name="Severity" xml:space="preserve">
     <value>Severity</value>
+  </data>
+  <data name="Simple Session Analysis" xml:space="preserve">
+    <value>Simple Session Analysis</value>
+  </data>
+  <data name="Simple Session Analysis - Json Read Failure." xml:space="preserve">
+    <value>Simple Session Analysis - Json Read Failure.</value>
   </data>
   <data name="Slow Running Session Threshold" xml:space="preserve">
     <value>Slow Running Session Threshold</value>

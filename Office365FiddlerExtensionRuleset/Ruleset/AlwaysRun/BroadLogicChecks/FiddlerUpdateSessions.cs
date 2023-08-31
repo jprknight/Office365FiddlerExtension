@@ -20,7 +20,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             if (this.session.hostname == "www.fiddler2.com" && this.session.uriContains("UpdateCheck.aspx"))
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Fiddler Updates.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} Fiddler Updates.");
 
                 int sessionAuthenticationConfidenceLevel;
                 int sessionTypeConfidenceLevel;
@@ -38,8 +39,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                        $"({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                        $"({this.GetType().Name}): {this.session.id} {ex}");
 
                     sessionAuthenticationConfidenceLevel = 10;
                     sessionTypeConfidenceLevel = 10;

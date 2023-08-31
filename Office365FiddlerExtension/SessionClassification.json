@@ -16,7 +16,6 @@
     "SessionSeverityFifty": "50 - Black (Concerning) - For sessions which could be interpretted as a false negative. HTTP 200s containing an error or failure are a good example of this.",
     "SessionSeveritySixty": "60 - Red (Severe) - For sessions where a known error condition has been detected. Usually calling out 'Start here first'."
   },
-  "ResponseCommentsNoKnownIssue": "<p>No known issue with Microsoft365 and this type of session. If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: <a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'>https://github.com/jprknight/Office365FiddlerExtension</a>.</p>",
   "BroadLogicChecks": {
     "FiddlerUpdateSessions": {
       "SessionAuthenticationConfidenceLevel": 10,
@@ -31,13 +30,6 @@
       "SessionSeverity": 60
     },
     "LoopBackTunnel": {
-      "SectionTitle": "Broad Logic Checks",
-      "SessionType": "Loopback Tunnel",
-      "SessionResponseServer": "Loopback Tunnel",
-      "SessionResponseCodeDescription": "Loopback Tunnel",
-      "SessionResponseAlert": "Loopback Tunnel",
-      "SessionResponseComments": "Seeing many or few of these? Either way these aren't typical Microsoft365 traffic sessions. They may be an indication of a proxy client forcing traffic down a certain network path? If there's no Microsoft365 client traffic in this Fiddler trace and it's suspected this could be a factor, change your network, try a different machine without any proxy client / proxy configuration in place.",
-      "SessionAuthentication": "Loopback Tunnel",
       "SessionAuthenticationConfidenceLevel": 10,
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 10,
@@ -45,13 +37,6 @@
     }
   },
   "HTTP0s": {
-    "SectionTitle": "HTTP_0s",
-    "SessionType": "!NO RESPONSE!",
-    "SessionResponseServer": "!NO RESPONSE!",
-    "SessionResponseCodeDescription": "0 No Response",
-    "SessionResponseAlert": "<b><span style='color:red'>HTTP 0 - No Response</span></b>",
-    "SessionResponseComments": "The quantity of these types of server errors need to be considered in context with what you are troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.<p>If you are not seeing expected client traffic, consider if network traces should be collected. Review if there is an underlying network issue such as congestion on routers, which could be causing issues. The Network Connection Status Indicator (NCSI) on the client computer might also be an area to investigate.</p>",
-    "SessionAuthentication": "!NO RESPONSE!",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 10,

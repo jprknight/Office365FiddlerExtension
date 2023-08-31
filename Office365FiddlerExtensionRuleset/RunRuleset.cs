@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Fiddler;
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtensionRuleset.Ruleset;
-using Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks;
 using Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s;
 
 namespace Office365FiddlerExtensionRuleset
@@ -778,7 +773,7 @@ namespace Office365FiddlerExtensionRuleset
                         SessionType = "Undefined",
                         ResponseCodeDescription = "Defaulted. HTTP Response Code undefined.",
                         ResponseAlert = "Undefined",
-                        ResponseComments = Preferences.ResponseCommentsNoKnownIssue(),
+                        ResponseComments = LangHelper.GetString("Response Comments No Known Issue"),
 
                         SessionAuthenticationConfidenceLevel = 0,
                         SessionTypeConfidenceLevel = 0,

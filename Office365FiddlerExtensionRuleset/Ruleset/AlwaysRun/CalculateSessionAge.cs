@@ -19,7 +19,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Running CalculateSessionAge.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Running CalculateSessionAge.");
 
             String TimeSpanDaysText;
             String TimeSpanHoursText;

@@ -4,7 +4,7 @@ using Office365FiddlerExtension.Services;
 using System;
 using System.Reflection;
 
-namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
+namespace Office365FiddlerExtensionRuleset.Ruleset
 {
     class LoopBackTunnel
     {
@@ -23,7 +23,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Loopback Tunnel.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Loopback Tunnel.");
 
             int sessionAuthenticationConfidenceLevel;
             int sessionTypeConfidenceLevel;
@@ -41,8 +42,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} {ex}");
 
                 sessionAuthenticationConfidenceLevel = 10;
                 sessionTypeConfidenceLevel = 10;

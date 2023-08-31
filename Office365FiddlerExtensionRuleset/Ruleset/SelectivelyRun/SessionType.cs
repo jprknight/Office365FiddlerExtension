@@ -30,7 +30,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Running SetSessionType_FreeBusy");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Running SetSessionType_FreeBusy");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
@@ -52,7 +53,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Running SetSessionType_Microsoft365_EWS");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Running SetSessionType_Microsoft365_EWS");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
@@ -74,7 +76,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Running SetSessionType_EWS");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Running SetSessionType_EWS");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
@@ -94,7 +97,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             // This check needs to be inclusive, so we don't exclude sessions.
             if (this.session.url.Contains("login.microsoftonline.com") || this.session.HostnameIs("login.microsoftonline.com"))
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Running SetSessionType_Microsoft365_Authentication");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name}" +
+                    $" ({this.GetType().Name}): {this.session.id} Running SetSessionType_Microsoft365_Authentication");
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
@@ -117,7 +121,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Running SetSessionType_ADFS_Authentication");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Running SetSessionType_ADFS_Authentication");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
@@ -144,7 +149,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Running SetSessionType_General_Microsoft365");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Running SetSessionType_General_Microsoft365");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
@@ -173,7 +179,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 || this.session.LocalProcess.Contains("lync")
                 || this.session.LocalProcess.Contains("w3wp"))
                 {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Running SetSessionType_Office_Applications");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} Running SetSessionType_Office_Applications");
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
@@ -199,7 +206,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 || this.session.LocalProcess.Contains("safari")
                 || this.session.LocalProcess.Contains("brave"))
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Running SetSessionType_Internet_Browsers");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} Running SetSessionType_Internet_Browsers");
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
@@ -219,7 +227,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Running SetSessionType_Unclassified");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Running SetSessionType_Unclassified");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {

@@ -943,6 +943,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;No known issue with Microsoft365 and this type of session. If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: &lt;a href=&apos;https://github.com/jprknight/Office365FiddlerExtension&apos; target=&apos;_blank&apos;&gt;https://github.com/jprknight/Office365FiddlerExtension&lt;/a&gt;.&lt;/p&gt;.
+        /// </summary>
+        internal static string Response_Comments_No_Known_Issue {
+            get {
+                return ResourceManager.GetString("Response Comments No Known Issue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Response Server.
         /// </summary>
         internal static string Response_Server {
@@ -1146,6 +1155,24 @@ namespace Office365FiddlerExtension.Language {
         internal static string Severity {
             get {
                 return ResourceManager.GetString("Severity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simple Session Analysis.
+        /// </summary>
+        internal static string Simple_Session_Analysis {
+            get {
+                return ResourceManager.GetString("Simple Session Analysis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simple Session Analysis - Json Read Failure..
+        /// </summary>
+        internal static string Simple_Session_Analysis___Json_Read_Failure_ {
+            get {
+                return ResourceManager.GetString("Simple Session Analysis - Json Read Failure.", resourceCulture);
             }
         }
         

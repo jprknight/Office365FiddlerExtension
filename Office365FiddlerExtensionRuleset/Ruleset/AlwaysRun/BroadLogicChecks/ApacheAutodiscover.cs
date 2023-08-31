@@ -2,11 +2,7 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -29,7 +25,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             //
             if ((this.session.url.Contains("autodiscover") && (this.session.oResponse["server"].Contains("Apache"))))
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Apache is answering Autodiscover requests! Investigate this first!.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} Apache is answering Autodiscover requests! Investigate this first!.");
 
                 int sessionAuthenticationConfidenceLevel;
                 int sessionTypeConfidenceLevel;
@@ -47,8 +44,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                        $"({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                        $"({this.GetType().Name}): {this.session.id} {ex}");
 
                     sessionAuthenticationConfidenceLevel = 5;
                     sessionTypeConfidenceLevel = 10;

@@ -33,7 +33,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Running SetResponseServer_Server.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Running SetResponseServer_Server.");
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
