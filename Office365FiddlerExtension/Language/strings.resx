@@ -117,10 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="200 OK - APACHE AUTODISCOVER" xml:space="preserve">
-    <value>200 OK - APACHE AUTODISCOVER</value>
-    <comment>Probably don't need translating.</comment>
-  </data>
   <data name="About" xml:space="preserve">
     <value>About</value>
   </data>
@@ -132,20 +128,6 @@
   </data>
   <data name="Analyze Selected Sessions" xml:space="preserve">
     <value>Analyze Selected Sessions</value>
-  </data>
-  <data name="APACHE" xml:space="preserve">
-    <value>APACHE</value>
-    <comment>Probably don't need translating.</comment>
-  </data>
-  <data name="APACHE AUTODISCOVER" xml:space="preserve">
-    <value>APACHE AUTODISCOVER</value>
-    <comment>This is part of a warning statement, keep all caps. Probably don't need translating.</comment>
-  </data>
-  <data name="Apache AutoDiscover Response Comments" xml:space="preserve">
-    <value>&lt;b&gt;&lt;span style='color:red'&gt;An Apache Web Server (Unix/Linux) is answering Autodiscover requests!&lt;/span&gt;&lt;/b&gt;&lt;p&gt;This should not be happening. Consider disabling Root Domain Autodiscover lookups.&lt;/p&gt;&lt;p&gt;See ExcludeHttpsRootDomain on &lt;/p&gt;&lt;p&gt;&lt;a href='https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under' target='_blank'&gt;https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under &lt;/a&gt;&lt;/p&gt;&lt;p&gt;Beyond this the web administrator responsible for the server needs to stop the Apache web server from answering these requests.&lt;/p&gt;</value>
-  </data>
-  <data name="Apache is answering Autodiscover requests!" xml:space="preserve">
-    <value>Apache is answering Autodiscover requests!</value>
   </data>
   <data name="Attribute Name Immutable ID" xml:space="preserve">
     <value>Attribute Name Immutable ID</value>
@@ -164,6 +146,36 @@
   </data>
   <data name="Broad Logic Checks" xml:space="preserve">
     <value>Broad Logic Checks</value>
+  </data>
+  <data name="BroadLogicChecks_200 OK - APACHE AUTODISCOVER" xml:space="preserve">
+    <value>200 OK - APACHE AUTODISCOVER</value>
+    <comment>Probably don't need translating.</comment>
+  </data>
+  <data name="BroadLogicChecks_APACHE" xml:space="preserve">
+    <value>APACHE</value>
+    <comment>Probably don't need translating.</comment>
+  </data>
+  <data name="BroadLogicChecks_APACHE AUTODISCOVER" xml:space="preserve">
+    <value>APACHE AUTODISCOVER</value>
+    <comment>This is part of a warning statement, keep all caps. Probably don't need translating.</comment>
+  </data>
+  <data name="BroadLogicChecks_Apache AutoDiscover Response Comments" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;An Apache Web Server (Unix/Linux) is answering Autodiscover requests!&lt;/span&gt;&lt;/b&gt;&lt;p&gt;This should not be happening. Consider disabling Root Domain Autodiscover lookups.&lt;/p&gt;&lt;p&gt;See ExcludeHttpsRootDomain on &lt;/p&gt;&lt;p&gt;&lt;a href='https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under' target='_blank'&gt;https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under &lt;/a&gt;&lt;/p&gt;&lt;p&gt;Beyond this the web administrator responsible for the server needs to stop the Apache web server from answering these requests.&lt;/p&gt;</value>
+  </data>
+  <data name="BroadLogicChecks_Apache is answering Autodiscover requests!" xml:space="preserve">
+    <value>Apache is answering Autodiscover requests!</value>
+  </data>
+  <data name="BroadLogicChecks_Fiddler Update Check" xml:space="preserve">
+    <value>Fiddler Update Check</value>
+  </data>
+  <data name="BroadLogicChecks_Loopback Tunnel Response Comments" xml:space="preserve">
+    <value>Seeing many or few of these? Either way these aren't typical Microsoft365 traffic sessions. They may be an indication of a proxy client forcing traffic down a certain network path? If there's no Microsoft365 client traffic in this Fiddler trace and it's suspected this could be a factor, change your network, try a different machine without any proxy client / proxy configuration in place.</value>
+  </data>
+  <data name="BroadLogicChecks_LoopbackTunnel" xml:space="preserve">
+    <value>Loopback Tunnel</value>
+  </data>
+  <data name="BroadLogicChecks_This is Fiddler itself checking for updates." xml:space="preserve">
+    <value>This is Fiddler itself checking for updates.</value>
   </data>
   <data name="Capture was" xml:space="preserve">
     <value>Capture was</value>
@@ -239,9 +251,6 @@
   </data>
   <data name="Fiddler Begin Request" xml:space="preserve">
     <value>Fiddler Begin Request</value>
-  </data>
-  <data name="Fiddler Update Check" xml:space="preserve">
-    <value>Fiddler Update Check</value>
   </data>
   <data name="For an explantion of session timers refer to" xml:space="preserve">
     <value>For an explantion of session timers refer to:</value>
@@ -319,6 +328,25 @@
   <data name="HTTP_200_Actually_OK SessionType" xml:space="preserve">
     <value>200 Actually OK</value>
   </data>
+  <data name="HTTP_200_Client Access Rule" xml:space="preserve">
+    <value>CLIENT ACCESS RULE</value>
+    <comment>This is part of a warning statement, keep all caps.</comment>
+  </data>
+  <data name="HTTP_200_Client Access Rule ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;CLIENT ACCESS RULE&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_200_Client Access Rule ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK Client Access Rule</value>
+  </data>
+  <data name="HTTP_200_Client Access Rule ResponseComments" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;A client access rule has blocked MAPI connectivity to the mailbox&lt;/span&gt;&lt;/b&gt;.&lt;p&gt;Check if the &lt;b&gt;&lt;span style='color:red'&gt;client access rule includes OutlookAnywhere&lt;/span&gt;&lt;/b&gt;.&lt;/p&gt;&lt;p&gt;Per &lt;a href='https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules' target='_blank'&gt;https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules&lt;/a&gt;, &lt;br /&gt;OutlookAnywhere includes MAPI over HTTP.&lt;p&gt;&lt;p&gt;Remove OutlookAnywhere from the client access rule, wait 1 hour, then test again.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_200_ConnectTunnel" xml:space="preserve">
+    <value>Connect Tunnel</value>
+  </data>
+  <data name="HTTP_200_ConnectTunnel_RepsonseComments" xml:space="preserve">
+    <value>This is an encrypted tunnel. If all or most of the sessions are connect tunnels the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -&gt; Options -&gt; HTTPS tab.&lt;p&gt;If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. &lt;/p&gt;</value>
+  </data>
   <data name="Inspector" xml:space="preserve">
     <value>Inspector</value>
   </data>
@@ -339,9 +367,6 @@
   </data>
   <data name="Locally Installed Information" xml:space="preserve">
     <value>Locally Installed Information</value>
-  </data>
-  <data name="Loopback Tunnel Response Comments" xml:space="preserve">
-    <value>Seeing many or few of these? Either way these aren't typical Microsoft365 traffic sessions. They may be an indication of a proxy client forcing traffic down a certain network path? If there's no Microsoft365 client traffic in this Fiddler trace and it's suspected this could be a factor, change your network, try a different machine without any proxy client / proxy configuration in place.</value>
   </data>
   <data name="minute ago" xml:space="preserve">
     <value>minute ago</value>
@@ -507,9 +532,6 @@
   </data>
   <data name="Spanish" xml:space="preserve">
     <value>Spanish</value>
-  </data>
-  <data name="This is Fiddler itself checking for updates." xml:space="preserve">
-    <value>This is Fiddler itself checking for updates.</value>
   </data>
   <data name="Transit Time" xml:space="preserve">
     <value>Transit Time</value>

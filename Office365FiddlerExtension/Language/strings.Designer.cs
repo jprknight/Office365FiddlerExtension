@@ -61,15 +61,6 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 200 OK - APACHE AUTODISCOVER.
-        /// </summary>
-        internal static string _200_OK___APACHE_AUTODISCOVER {
-            get {
-                return ResourceManager.GetString("200 OK - APACHE AUTODISCOVER", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         internal static string About {
@@ -102,42 +93,6 @@ namespace Office365FiddlerExtension.Language {
         internal static string Analyze_Selected_Sessions {
             get {
                 return ResourceManager.GetString("Analyze Selected Sessions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to APACHE.
-        /// </summary>
-        internal static string APACHE {
-            get {
-                return ResourceManager.GetString("APACHE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to APACHE AUTODISCOVER.
-        /// </summary>
-        internal static string APACHE_AUTODISCOVER {
-            get {
-                return ResourceManager.GetString("APACHE AUTODISCOVER", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;An Apache Web Server (Unix/Linux) is answering Autodiscover requests!&lt;/span&gt;&lt;/b&gt;&lt;p&gt;This should not be happening. Consider disabling Root Domain Autodiscover lookups.&lt;/p&gt;&lt;p&gt;See ExcludeHttpsRootDomain on &lt;/p&gt;&lt;p&gt;&lt;a href=&apos;https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under&apos; target=&apos;_blank&apos;&gt;https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under &lt;/a&gt;&lt;/p&gt;&lt;p [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string Apache_AutoDiscover_Response_Comments {
-            get {
-                return ResourceManager.GetString("Apache AutoDiscover Response Comments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Apache is answering Autodiscover requests!.
-        /// </summary>
-        internal static string Apache_is_answering_Autodiscover_requests_ {
-            get {
-                return ResourceManager.GetString("Apache is answering Autodiscover requests!", resourceCulture);
             }
         }
         
@@ -192,6 +147,87 @@ namespace Office365FiddlerExtension.Language {
         internal static string Broad_Logic_Checks {
             get {
                 return ResourceManager.GetString("Broad Logic Checks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 OK - APACHE AUTODISCOVER.
+        /// </summary>
+        internal static string BroadLogicChecks_200_OK___APACHE_AUTODISCOVER {
+            get {
+                return ResourceManager.GetString("BroadLogicChecks_200 OK - APACHE AUTODISCOVER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to APACHE.
+        /// </summary>
+        internal static string BroadLogicChecks_APACHE {
+            get {
+                return ResourceManager.GetString("BroadLogicChecks_APACHE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to APACHE AUTODISCOVER.
+        /// </summary>
+        internal static string BroadLogicChecks_APACHE_AUTODISCOVER {
+            get {
+                return ResourceManager.GetString("BroadLogicChecks_APACHE AUTODISCOVER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;An Apache Web Server (Unix/Linux) is answering Autodiscover requests!&lt;/span&gt;&lt;/b&gt;&lt;p&gt;This should not be happening. Consider disabling Root Domain Autodiscover lookups.&lt;/p&gt;&lt;p&gt;See ExcludeHttpsRootDomain on &lt;/p&gt;&lt;p&gt;&lt;a href=&apos;https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under&apos; target=&apos;_blank&apos;&gt;https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under &lt;/a&gt;&lt;/p&gt;&lt;p [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BroadLogicChecks_Apache_AutoDiscover_Response_Comments {
+            get {
+                return ResourceManager.GetString("BroadLogicChecks_Apache AutoDiscover Response Comments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apache is answering Autodiscover requests!.
+        /// </summary>
+        internal static string BroadLogicChecks_Apache_is_answering_Autodiscover_requests_ {
+            get {
+                return ResourceManager.GetString("BroadLogicChecks_Apache is answering Autodiscover requests!", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fiddler Update Check.
+        /// </summary>
+        internal static string BroadLogicChecks_Fiddler_Update_Check {
+            get {
+                return ResourceManager.GetString("BroadLogicChecks_Fiddler Update Check", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seeing many or few of these? Either way these aren&apos;t typical Microsoft365 traffic sessions. They may be an indication of a proxy client forcing traffic down a certain network path? If there&apos;s no Microsoft365 client traffic in this Fiddler trace and it&apos;s suspected this could be a factor, change your network, try a different machine without any proxy client / proxy configuration in place..
+        /// </summary>
+        internal static string BroadLogicChecks_Loopback_Tunnel_Response_Comments {
+            get {
+                return ResourceManager.GetString("BroadLogicChecks_Loopback Tunnel Response Comments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loopback Tunnel.
+        /// </summary>
+        internal static string BroadLogicChecks_LoopbackTunnel {
+            get {
+                return ResourceManager.GetString("BroadLogicChecks_LoopbackTunnel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is Fiddler itself checking for updates..
+        /// </summary>
+        internal static string BroadLogicChecks_This_is_Fiddler_itself_checking_for_updates_ {
+            get {
+                return ResourceManager.GetString("BroadLogicChecks_This is Fiddler itself checking for updates.", resourceCulture);
             }
         }
         
@@ -421,15 +457,6 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fiddler Update Check.
-        /// </summary>
-        internal static string Fiddler_Update_Check {
-            get {
-                return ResourceManager.GetString("Fiddler Update Check", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to For an explantion of session timers refer to:.
         /// </summary>
         internal static string For_an_explantion_of_session_timers_refer_to {
@@ -646,6 +673,60 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CLIENT ACCESS RULE.
+        /// </summary>
+        internal static string HTTP_200_Client_Access_Rule {
+            get {
+                return ResourceManager.GetString("HTTP_200_Client Access Rule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;CLIENT ACCESS RULE&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_200_Client_Access_Rule_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_Client Access Rule ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 OK Client Access Rule.
+        /// </summary>
+        internal static string HTTP_200_Client_Access_Rule_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_Client Access Rule ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;A client access rule has blocked MAPI connectivity to the mailbox&lt;/span&gt;&lt;/b&gt;.&lt;p&gt;Check if the &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;client access rule includes OutlookAnywhere&lt;/span&gt;&lt;/b&gt;.&lt;/p&gt;&lt;p&gt;Per &lt;a href=&apos;https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules&apos; target=&apos;_blank&apos;&gt;https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules&lt;/a&gt;, &lt;br /&gt;OutlookAnywhere includ [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string HTTP_200_Client_Access_Rule_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_Client Access Rule ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect Tunnel.
+        /// </summary>
+        internal static string HTTP_200_ConnectTunnel {
+            get {
+                return ResourceManager.GetString("HTTP_200_ConnectTunnel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is an encrypted tunnel. If all or most of the sessions are connect tunnels the sessions collected did not have decryption enabled. Setup Fiddler to &apos;Decrypt HTTPS traffic&apos;, click Tools -&gt; Options -&gt; HTTPS tab.&lt;p&gt;If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. &lt;/p&gt;.
+        /// </summary>
+        internal static string HTTP_200_ConnectTunnel_RepsonseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_ConnectTunnel_RepsonseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inspector.
         /// </summary>
         internal static string Inspector {
@@ -705,15 +786,6 @@ namespace Office365FiddlerExtension.Language {
         internal static string Locally_Installed_Information {
             get {
                 return ResourceManager.GetString("Locally Installed Information", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Seeing many or few of these? Either way these aren&apos;t typical Microsoft365 traffic sessions. They may be an indication of a proxy client forcing traffic down a certain network path? If there&apos;s no Microsoft365 client traffic in this Fiddler trace and it&apos;s suspected this could be a factor, change your network, try a different machine without any proxy client / proxy configuration in place..
-        /// </summary>
-        internal static string Loopback_Tunnel_Response_Comments {
-            get {
-                return ResourceManager.GetString("Loopback Tunnel Response Comments", resourceCulture);
             }
         }
         
@@ -1200,15 +1272,6 @@ namespace Office365FiddlerExtension.Language {
         internal static string Spanish {
             get {
                 return ResourceManager.GetString("Spanish", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This is Fiddler itself checking for updates..
-        /// </summary>
-        internal static string This_is_Fiddler_itself_checking_for_updates_ {
-            get {
-                return ResourceManager.GetString("This is Fiddler itself checking for updates.", resourceCulture);
             }
         }
         

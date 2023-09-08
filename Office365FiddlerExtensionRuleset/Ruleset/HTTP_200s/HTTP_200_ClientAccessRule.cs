@@ -18,15 +18,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_200_ClientAccessRule Instance => _instance ?? (_instance = new HTTP_200_ClientAccessRule());
 
-        /// <summary>
-        /// Connection blocked by Client Access Rules.
-        /// </summary>
-        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;
 
-            // If the session content doesn't match the intended rule, return.
             if (!this.session.fullUrl.Contains("outlook.office365.com/mapi"))
             {
                 return;
@@ -39,12 +34,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Connection blocked by Client Access Rules.");
 
-            string sessionSectionTitle;
-            string sessionType;
-            string sessionResponseCodeDescription;
-            string sessionResponseAlert;
-            string sessionResponseComments;
-
             int sessionAuthenticationConfidenceLevel;
             int sessionTypeConfidenceLevel;
             int sessionResponseServerConfidenceLevel;
@@ -53,12 +42,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             try
             {
                 var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_ClientAccessRule");
-
-                sessionSectionTitle = sessionClassificationJson.SectionTitle;
-                sessionType = sessionClassificationJson.SessionType;
-                sessionResponseCodeDescription = sessionClassificationJson.SessionResponseCodeDescription;
-                sessionResponseAlert = sessionClassificationJson.SessionResponseAlert;
-                sessionResponseComments = sessionClassificationJson.SessionResponseComments;
 
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
@@ -70,17 +53,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
 
-                sessionSectionTitle = "HTTP_200s";
-                sessionType = "!CLIENT ACCESS RULE!";
-                sessionResponseCodeDescription = "200 OK Client Access Rule";
-                sessionResponseAlert = "<b><span style='color:red'>CLIENT ACCESS RULE</span></b>";
-                sessionResponseComments = "The quantity of these types of server errors need to be considered in context with what you are "
-                + "troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could "
-                + "be cause for concern."
-                + "<p>If you are not seeing expected client traffic, consider if network traces should be collected. Review if there is an underlying "
-                + "network issue such as congestion on routers, which could be causing issues. The Network Connection Status Indicator (NCSI) on the "
-                + "client computer might also be an area to investigate.</p>";
-
                 sessionAuthenticationConfidenceLevel = 5;
                 sessionTypeConfidenceLevel = 10;
                 sessionResponseServerConfidenceLevel = 5;
@@ -89,12 +61,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = sessionSectionTitle,
+                SectionTitle = "HTTP_200s",
 
-                SessionType = sessionType,
-                ResponseCodeDescription = sessionResponseCodeDescription,
-                ResponseAlert = sessionResponseAlert,
-                ResponseComments = sessionResponseComments,
+                SessionType = LangHelper.GetString("HTTP_200_Client Access Rule"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_200_Client Access Rule ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_200_Client Access Rule ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_200_Client Access Rule ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -104,7 +76,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
-
         }
     }
 }

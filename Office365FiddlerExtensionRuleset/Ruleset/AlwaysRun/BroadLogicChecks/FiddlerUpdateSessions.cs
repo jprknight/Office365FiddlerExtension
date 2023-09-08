@@ -54,12 +54,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 {
                     SectionTitle = LangHelper.GetString("Broad Logic Checks"),
 
-                    SessionType = LangHelper.GetString("Fiddler Update Check"),
-                    ResponseCodeDescription = LangHelper.GetString("Fiddler Update Check"),
-                    ResponseServer = LangHelper.GetString("Fiddler Update Check"),
-                    ResponseAlert = LangHelper.GetString("Fiddler Update Check"),                    
-                    ResponseComments = LangHelper.GetString("This is Fiddler itself checking for updates."),
-                    Authentication = LangHelper.GetString("Fiddler Update Check"),
+                    SessionType = LangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),
+                    ResponseCodeDescription = LangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),
+                    ResponseServer = LangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),
+                    ResponseAlert = LangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),                    
+                    ResponseComments = LangHelper.GetString("BroadLogicChecks_This is Fiddler itself checking for updates."),
+                    Authentication = LangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

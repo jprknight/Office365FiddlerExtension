@@ -57,12 +57,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = LangHelper.GetString("Broad Logic Checks"),
 
-                SessionType = LangHelper.GetString("Loopback Tunnel"),
-                ResponseServer = LangHelper.GetString("Loopback Tunnel"),
-                ResponseAlert = LangHelper.GetString("Loopback Tunnel"),
-                ResponseCodeDescription = LangHelper.GetString("Loopback Tunnel"),
-                ResponseComments = LangHelper.GetString("Loopback Tunnel Response Comments"),
-                Authentication = LangHelper.GetString("Loopback Tunnel"),
+                SessionType = LangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
+                ResponseServer = LangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
+                ResponseAlert = LangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
+                ResponseCodeDescription = LangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
+                ResponseComments = LangHelper.GetString("BroadLogicChecks_Loopback Tunnel Response Comments"),
+                Authentication = LangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

@@ -59,11 +59,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 {
                     SectionTitle = LangHelper.GetString("Broad Logic Checks"),
 
-                    SessionType = LangHelper.GetString("APACHE AUTODISCOVER"),
-                    ResponseCodeDescription = LangHelper.GetString("200 OK - APACHE AUTODISCOVER"),
-                    ResponseServer = LangHelper.GetString("APACHE"),
-                    ResponseAlert = LangHelper.GetString("Apache is answering Autodiscover requests!"),
-                    ResponseComments = LangHelper.GetString("Apache AutoDiscover Response Comments"),                   
+                    SessionType = LangHelper.GetString("BroadLogicChecks_APACHE AUTODISCOVER"),
+                    ResponseCodeDescription = LangHelper.GetString("BroadLogicChecks_200 OK - APACHE AUTODISCOVER"),
+                    ResponseServer = LangHelper.GetString("BroadLogicChecks_APACHE"),
+                    ResponseAlert = LangHelper.GetString("BroadLogicChecks_Apache is answering Autodiscover requests!"),
+                    ResponseComments = LangHelper.GetString("BroadLogicChecks_Apache AutoDiscover Response Comments"),                   
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

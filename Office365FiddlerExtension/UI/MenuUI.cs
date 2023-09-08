@@ -45,9 +45,9 @@ namespace Office365FiddlerExtension
 
         public MenuItem MiAbout { get; set; }
 
-        public string MenuEnabled = $"{LangHelper.GetString("Office365")} ({LangHelper.GetString("Enabled")})";
+        public string MenuEnabled = $"{LangHelper.GetString("Office 365")} ({LangHelper.GetString("Enabled")})";
 
-        public string MenuDisabled = $"{LangHelper.GetString("Office365")} ({LangHelper.GetString("Disabled")})";
+        public string MenuDisabled = $"{LangHelper.GetString("Office 365")} ({LangHelper.GetString("Disabled")})";
 
         private bool IsInitialized { get; set; }
 

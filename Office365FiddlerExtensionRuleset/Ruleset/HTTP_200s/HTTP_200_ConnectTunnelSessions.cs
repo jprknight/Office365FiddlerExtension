@@ -2,11 +2,7 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 {
@@ -80,14 +76,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             // Ideally looking to do: if (this.Session.utilFindInResponse("CONNECT tunnel, through which encrypted HTTPS traffic flows", false) > 1)
             // Only works reliably when loading a SAZ file and request/response data is immediately available to do logic checks against.
 
-            string sessionSectionTitle;
-            string sessionType;
-            string sessionResponseCodeDescription;
-            string sessionResonseServer;
-            string sessionResponseAlert;
-            string sessionResponseComments;
-            string sessionAuthentication;
-
             int sessionAuthenticationConfidenceLevel;
             int sessionTypeConfidenceLevel;
             int sessionResponseServerConfidenceLevel;
@@ -96,14 +84,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             try
             {
                 var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_ConnectTunnelSessions");
-
-                sessionSectionTitle = sessionClassificationJson.SectionTitle;
-                sessionType = sessionClassificationJson.SessionType;
-                sessionResponseCodeDescription = sessionClassificationJson.SessionResponseCodeDescription;
-                sessionResonseServer = sessionClassificationJson.SessionResponseServer;
-                sessionResponseAlert = sessionClassificationJson.SessionResponseAlert;
-                sessionResponseComments = sessionClassificationJson.SessionResponseComments;
-                sessionAuthentication = sessionClassificationJson.SessionAuthentication;
 
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
@@ -115,16 +95,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
 
-                sessionSectionTitle = "HTTP_200s";
-                sessionType = "Connect Tunnel: " + TLS;
-                sessionResponseCodeDescription = "Connect Tunnel";
-                sessionResonseServer = "Connect Tunnel";
-                sessionResponseAlert = "Connect Tunnel";
-                sessionResponseComments = "This is an encrypted tunnel. If all or most of the sessions are connect tunnels "
-                + "the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -> Options -> HTTPS tab."
-                + "<p>If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. </p>";
-                sessionAuthentication = "Connect Tunnel: " + TLS;
-
                 sessionAuthenticationConfidenceLevel = 10;
                 sessionTypeConfidenceLevel = 10;
                 sessionResponseServerConfidenceLevel = 10;
@@ -133,14 +103,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = sessionSectionTitle,
+                SectionTitle = "HTTP_200s",
 
-                SessionType = sessionType,
-                ResponseCodeDescription = sessionResponseCodeDescription,
-                ResponseServer = sessionResonseServer,
-                ResponseAlert = sessionResponseAlert,
-                ResponseComments = sessionResponseComments,
-                Authentication = sessionAuthentication,
+                SessionType = $"{LangHelper.GetString("HTTP_200_ConnectTunnel")}: {TLS}",
+                ResponseCodeDescription = LangHelper.GetString("HTTP_200_ConnectTunnel"),
+                ResponseServer = LangHelper.GetString("HTTP_200_ConnectTunnel"),
+                ResponseAlert = LangHelper.GetString("HTTP_200_ConnectTunnel"),
+                ResponseComments = LangHelper.GetString("HTTP_200_ConnectTunnel_RepsonseComments"),
+                Authentication = $"{LangHelper.GetString("HTTP_200_ConnectTunnel")}: {TLS}",
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
