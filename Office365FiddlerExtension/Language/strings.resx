@@ -316,6 +316,49 @@
     <value>NO RESPONSE</value>
     <comment>This is part of a warning statement, keep all caps.</comment>
   </data>
+  <data name="HTTP_200s_CTR_AutoDiscover_NotFound_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;Exchange Online / Outlook CTR Autodiscover - Unusual Autodiscover Response&lt;/span&gt;&lt;/b&gt;</value>
+    <comment>Do not translate the HTML code here. Red should not be translated.</comment>
+  </data>
+  <data name="HTTP_200s_CTR_AutoDiscover_NotFound_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK, Unexpected XML response!</value>
+  </data>
+  <data name="HTTP_200s_CTR_AutoDiscover_NotFound_ResponseComments" xml:space="preserve">
+    <value>This session was detected as an Autodiscover response from Exchange Online. However the response did not contain the expected XML data. Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response.</value>
+  </data>
+  <data name="HTTP_200s_CTR_AutoDiscover_NotFound_SessionType" xml:space="preserve">
+    <value>Outlook AutoDiscover XML NOT found!</value>
+  </data>
+  <data name="HTTP_200s_CTR_AutoDiscover_ResponseAlert" xml:space="preserve">
+    <value>Exchange Online / Outlook CTR AutoDiscover.</value>
+  </data>
+  <data name="HTTP_200s_CTR_AutoDiscover_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK EXO AutoDiscover</value>
+  </data>
+  <data name="HTTP_200s_CTR_AutoDiscover_ResponseComments" xml:space="preserve">
+    <value>For AutoDiscover calls which go to outlook.office365.com this is likely an Outlook Click-To-Run (Downloaded or deployed from Office365) client being redirected from Exchange On-Premise to Exchange Online.</value>
+  </data>
+  <data name="HTTP_200s_CTR_AutoDiscover_SessionType" xml:space="preserve">
+    <value>EXO CTR Autodiscover</value>
+  </data>
+  <data name="HTTP_200s_Microsoft365_Any_Other_EWS_ResponseAlert" xml:space="preserve">
+    <value>Exchange Online / Microsoft365 Web Services (EWS) call.</value>
+  </data>
+  <data name="HTTP_200s_Microsoft365_Any_Other_EWS_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK Microsoft365 Other EWS</value>
+  </data>
+  <data name="HTTP_200s_Microsoft365_Any_Other_EWS_ResponseComments" xml:space="preserve">
+    <value>Exchange Online / Microsoft365 Web Services (EWS) call.</value>
+  </data>
+  <data name="HTTP_200s_Microsoft365_Any_Other_EWS_SessionType" xml:space="preserve">
+    <value>Exchange Online / Microsoft365 Web Services</value>
+  </data>
+  <data name="HTTP_200_3S_Suggestions" xml:space="preserve">
+    <value>3S Suggestions</value>
+  </data>
+  <data name="HTTP_200_3S_Suggestions_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK 3S Suggestions</value>
+  </data>
   <data name="HTTP_200_Actually_OK ResponseAlert" xml:space="preserve">
     <value>HTTP 200 Actually OK. No errors, failed, or exceptions found in response body.</value>
   </data>
@@ -457,6 +500,9 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="Scenario" xml:space="preserve">
+    <value>Scenario</value>
+  </data>
   <data name="ScoreForSession" xml:space="preserve">
     <value>ScoreForSession</value>
     <comment>Don't translate, this is an internal Fiddler term.</comment>
@@ -535,6 +581,9 @@
   </data>
   <data name="Transit Time" xml:space="preserve">
     <value>Transit Time</value>
+  </data>
+  <data name="Types" xml:space="preserve">
+    <value>Types</value>
   </data>
   <data name="Uninteresting" xml:space="preserve">
     <value>Uninteresting</value>

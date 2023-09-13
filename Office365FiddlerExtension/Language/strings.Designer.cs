@@ -637,6 +637,24 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 3S Suggestions.
+        /// </summary>
+        internal static string HTTP_200_3S_Suggestions {
+            get {
+                return ResourceManager.GetString("HTTP_200_3S_Suggestions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 OK 3S Suggestions.
+        /// </summary>
+        internal static string HTTP_200_3S_Suggestions_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_3S_Suggestions_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HTTP 200 Actually OK. No errors, failed, or exceptions found in response body..
         /// </summary>
         internal static string HTTP_200_Actually_OK_ResponseAlert {
@@ -723,6 +741,114 @@ namespace Office365FiddlerExtension.Language {
         internal static string HTTP_200_ConnectTunnel_RepsonseComments {
             get {
                 return ResourceManager.GetString("HTTP_200_ConnectTunnel_RepsonseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Exchange Online / Outlook CTR Autodiscover - Unusual Autodiscover Response&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_200s_CTR_AutoDiscover_NotFound_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200s_CTR_AutoDiscover_NotFound_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 OK, Unexpected XML response!.
+        /// </summary>
+        internal static string HTTP_200s_CTR_AutoDiscover_NotFound_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200s_CTR_AutoDiscover_NotFound_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This session was detected as an Autodiscover response from Exchange Online. However the response did not contain the expected XML data. Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response..
+        /// </summary>
+        internal static string HTTP_200s_CTR_AutoDiscover_NotFound_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200s_CTR_AutoDiscover_NotFound_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outlook AutoDiscover XML NOT found!.
+        /// </summary>
+        internal static string HTTP_200s_CTR_AutoDiscover_NotFound_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200s_CTR_AutoDiscover_NotFound_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exchange Online / Outlook CTR AutoDiscover..
+        /// </summary>
+        internal static string HTTP_200s_CTR_AutoDiscover_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200s_CTR_AutoDiscover_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 OK EXO AutoDiscover.
+        /// </summary>
+        internal static string HTTP_200s_CTR_AutoDiscover_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200s_CTR_AutoDiscover_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For AutoDiscover calls which go to outlook.office365.com this is likely an Outlook Click-To-Run (Downloaded or deployed from Office365) client being redirected from Exchange On-Premise to Exchange Online..
+        /// </summary>
+        internal static string HTTP_200s_CTR_AutoDiscover_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200s_CTR_AutoDiscover_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EXO CTR Autodiscover.
+        /// </summary>
+        internal static string HTTP_200s_CTR_AutoDiscover_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200s_CTR_AutoDiscover_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exchange Online / Microsoft365 Web Services (EWS) call..
+        /// </summary>
+        internal static string HTTP_200s_Microsoft365_Any_Other_EWS_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200s_Microsoft365_Any_Other_EWS_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 OK Microsoft365 Other EWS.
+        /// </summary>
+        internal static string HTTP_200s_Microsoft365_Any_Other_EWS_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200s_Microsoft365_Any_Other_EWS_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exchange Online / Microsoft365 Web Services (EWS) call..
+        /// </summary>
+        internal static string HTTP_200s_Microsoft365_Any_Other_EWS_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200s_Microsoft365_Any_Other_EWS_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exchange Online / Microsoft365 Web Services.
+        /// </summary>
+        internal static string HTTP_200s_Microsoft365_Any_Other_EWS_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200s_Microsoft365_Any_Other_EWS_SessionType", resourceCulture);
             }
         }
         
@@ -1051,6 +1177,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scenario.
+        /// </summary>
+        internal static string Scenario {
+            get {
+                return ResourceManager.GetString("Scenario", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ScoreForSession.
         /// </summary>
         internal static string ScoreForSession {
@@ -1281,6 +1416,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Transit_Time {
             get {
                 return ResourceManager.GetString("Transit Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Types.
+        /// </summary>
+        internal static string Types {
+            get {
+                return ResourceManager.GetString("Types", resourceCulture);
             }
         }
         

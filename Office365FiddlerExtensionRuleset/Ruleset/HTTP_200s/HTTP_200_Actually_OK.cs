@@ -53,7 +53,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_200s_Actually_OK",
+                    SectionTitle = "HTTP_200s",
 
                     SessionType = LangHelper.GetString("HTTP_200_Actually_OK SessionType"),
                     ResponseCodeDescription = LangHelper.GetString("HTTP_200_Actually_OK ResponseCodeDescription"),

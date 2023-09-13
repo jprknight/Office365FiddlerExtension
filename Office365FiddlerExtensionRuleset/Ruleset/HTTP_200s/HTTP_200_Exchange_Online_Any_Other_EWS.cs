@@ -65,12 +65,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s_Microsoft365_Any_Other_EWS",
+                SectionTitle = "HTTP_200s",
 
-                SessionType = "Exchange Online / Microsoft365 Web Services",
-                ResponseCodeDescription = "200 OK Microsoft365 Other EWS",
-                ResponseAlert = "Exchange Online / Microsoft365 Web Services (EWS) call.",
-                ResponseComments = "Exchange Online / Microsoft365 Web Services (EWS) call.",
+                SessionType = LangHelper.GetString("HTTP_200s_Microsoft365_Any_Other_EWS_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_200s_Microsoft365_Any_Other_EWS_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_200s_Microsoft365_Any_Other_EWS_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_200s_Microsoft365_Any_Other_EWS_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

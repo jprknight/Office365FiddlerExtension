@@ -67,12 +67,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s_3S_Suggestions",
+                SectionTitle = "HTTP_200s",
 
-                SessionType = "3S Suggestions",
-                ResponseCodeDescription = "200 OK 3S Suggestions",
-                ResponseAlert = "3S Suggestions",
-                ResponseComments = $"Scenario: {scenario} Types: {entityTypes} {clientRequestId}",
+                SessionType = LangHelper.GetString("HTTP_200_3S_Suggestions"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_200_3S_Suggestions_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_200_3S_Suggestions"),
+                ResponseComments = $"{LangHelper.GetString("Scenario")}: {scenario} {LangHelper.GetString("Types")}: {entityTypes} {clientRequestId}",
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
