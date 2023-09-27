@@ -161,6 +161,7 @@
   </data>
   <data name="BroadLogicChecks_Apache AutoDiscover Response Comments" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;An Apache Web Server (Unix/Linux) is answering Autodiscover requests!&lt;/span&gt;&lt;/b&gt;&lt;p&gt;This should not be happening. Consider disabling Root Domain Autodiscover lookups.&lt;/p&gt;&lt;p&gt;See ExcludeHttpsRootDomain on &lt;/p&gt;&lt;p&gt;&lt;a href='https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under' target='_blank'&gt;https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under &lt;/a&gt;&lt;/p&gt;&lt;p&gt;Beyond this the web administrator responsible for the server needs to stop the Apache web server from answering these requests.&lt;/p&gt;</value>
+    <comment>Don't translate anything with &lt; &gt;</comment>
   </data>
   <data name="BroadLogicChecks_Apache is answering Autodiscover requests!" xml:space="preserve">
     <value>Apache is answering Autodiscover requests!</value>
@@ -304,6 +305,7 @@
   </data>
   <data name="HTTP_0 Response Alert" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 0 - No Response&lt;/span&gt;&lt;/b&gt;</value>
+    <comment>Don't translate anything with &lt; &gt;</comment>
   </data>
   <data name="HTTP_0 ResponseCodeDescription" xml:space="preserve">
     <value>0 No Response</value>
@@ -318,7 +320,7 @@
   </data>
   <data name="HTTP_200s_CTR_AutoDiscover_NotFound_ResponseAlert" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;Exchange Online / Outlook CTR Autodiscover - Unusual Autodiscover Response&lt;/span&gt;&lt;/b&gt;</value>
-    <comment>Do not translate the HTML code here. Red should not be translated.</comment>
+    <comment>Don't translate anything with &lt; &gt;</comment>
   </data>
   <data name="HTTP_200s_CTR_AutoDiscover_NotFound_ResponseCodeDescription" xml:space="preserve">
     <value>200 OK, Unexpected XML response!</value>
@@ -533,12 +535,15 @@
   </data>
   <data name="Session collected between 14 and 30 days ago" xml:space="preserve">
     <value>&lt;p&gt;&lt;b&gt;&lt;span style='color:red'&gt;Session collected between 14 and 30 days ago&lt;/span&gt;&lt;/b&gt;. Correlating with any backend server logs is &lt;b&gt;&lt;span style='color:red'&gt;likely impossible&lt;/span&gt;&lt;/b&gt;. Many systems don't keep logs this long.&lt;/p&gt;</value>
+    <comment>Don't translate anything with &lt; &gt;</comment>
   </data>
   <data name="Session collected more than 30 days ago" xml:space="preserve">
     <value>&lt;p&gt;&lt;b&gt;&lt;span style='color:red'&gt;Session collected more than 30 days ago&lt;/span&gt;&lt;/b&gt;. Correlating with any backend server logs is &lt;b&gt;&lt;span style='color:red'&gt;very likely impossible&lt;/span&gt;&lt;/b&gt;. Many systems don't keep logs this long.&lt;/p&gt;</value>
+    <comment>Don't translate anything with &lt; &gt;</comment>
   </data>
   <data name="Session collected within 14 days" xml:space="preserve">
     <value>&lt;p&gt;Session collected within 14 days, data freshness is good, &lt;b&gt;&lt;span style='color:orange'&gt;but not ideal&lt;/span&gt;&lt;/b&gt;. Depending on the backend system, &lt;b&gt;&lt;span style='color:orange'&gt; correlating this data to server logs might be possible&lt;/span&gt;&lt;/b&gt;.&lt;/p&gt;</value>
+    <comment>Don't translate anything with &lt; &gt;</comment>
   </data>
   <data name="Session collected within 7 days" xml:space="preserve">
     <value>Session collected within 7 days, data freshness is good. Best case scenario for correlating this data to backend server logs.</value>
