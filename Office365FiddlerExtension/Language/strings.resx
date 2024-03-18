@@ -208,7 +208,7 @@
   <data name="Copy Save Signing Certificate" xml:space="preserve">
     <value>Copy and save the below text into a .cer file to view the signing certificate.</value>
   </data>
-  <data name="day" xml:space="preserve">
+  <data name="Day" xml:space="preserve">
     <value>day</value>
   </data>
   <data name="Days" xml:space="preserve">
@@ -289,10 +289,10 @@
   <data name="Host IP" xml:space="preserve">
     <value>Host IP</value>
   </data>
-  <data name="hour" xml:space="preserve">
+  <data name="Hour" xml:space="preserve">
     <value>hour</value>
   </data>
-  <data name="hours" xml:space="preserve">
+  <data name="Hours" xml:space="preserve">
     <value>hours</value>
   </data>
   <data name="HTTP_0 Authentication" xml:space="preserve">
@@ -317,6 +317,18 @@
   <data name="HTTP_0 SessionType" xml:space="preserve">
     <value>NO RESPONSE</value>
     <comment>This is part of a warning statement, keep all caps.</comment>
+  </data>
+  <data name="HTTP_0_Outlook_Web_App_Notification_Channel_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;No response for OWA Notification Channel - New emails won't show.&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_0_Outlook_Web_App_Notification_Channel_ResponseCodeDescription" xml:space="preserve">
+    <value>0 No Response OWA Notification Channel</value>
+  </data>
+  <data name="HTTP_0_Outlook_Web_App_Notification_Channel_ResponseComments" xml:space="preserve">
+    <value>Notification Channel is used for OWA to display new mails.</value>
+  </data>
+  <data name="HTTP_0_Outlook_Web_App_Notification_Channel_SessionType" xml:space="preserve">
+    <value>OWA Notification Channel</value>
   </data>
   <data name="HTTP_200s_CTR_AutoDiscover_NotFound_ResponseAlert" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;Exchange Online / Outlook CTR Autodiscover - Unusual Autodiscover Response&lt;/span&gt;&lt;/b&gt;</value>
@@ -343,6 +355,18 @@
   <data name="HTTP_200s_CTR_AutoDiscover_SessionType" xml:space="preserve">
     <value>EXO CTR Autodiscover</value>
   </data>
+  <data name="HTTP_200s_EXO_MSI_Autodiscover_ResponseAlert" xml:space="preserve">
+    <value>Exchange Online / Outlook MSI AutoDiscover.</value>
+  </data>
+  <data name="HTTP_200s_EXO_MSI_Autodiscover_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK Outlook MSI AutoDiscover</value>
+  </data>
+  <data name="HTTP_200s_EXO_MSI_Autodiscover_ResponseComments" xml:space="preserve">
+    <value>For AutoDiscover calls which go to autodiscover-s.outlook.com this is likely an Outlook (MSI / perpetual license) client being redirected from Exchange On-Premise to Exchange Online.</value>
+  </data>
+  <data name="HTTP_200s_EXO_MSI_Autodiscover_SessionType" xml:space="preserve">
+    <value>EXO MSI Autodiscover</value>
+  </data>
   <data name="HTTP_200s_Microsoft365_Any_Other_EWS_ResponseAlert" xml:space="preserve">
     <value>Exchange Online / Microsoft365 Web Services (EWS) call.</value>
   </data>
@@ -354,6 +378,30 @@
   </data>
   <data name="HTTP_200s_Microsoft365_Any_Other_EWS_SessionType" xml:space="preserve">
     <value>Exchange Online / Microsoft365 Web Services</value>
+  </data>
+  <data name="HTTP_200s_MSI_AutoDiscover_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;Exchange Online / Outlook MSI AutoDiscover - Unusual AutoDiscover Response&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_200s_MSI_AutoDiscover_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK, Unexpected AutoDiscover XML response.</value>
+  </data>
+  <data name="HTTP_200s_MSI_AutoDiscover_ResponseComments" xml:space="preserve">
+    <value>This session was detected as an AutoDiscover response from Exchange Online. However the response did not contain the expected XML data. Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response.</value>
+  </data>
+  <data name="HTTP_200s_MSI_AutoDiscover_SessionType" xml:space="preserve">
+    <value>"!EXO MSI AutoDiscover!"</value>
+  </data>
+  <data name="HTTP_200s_OnPremise_Exchange_EWS_ResponseAlert" xml:space="preserve">
+    <value>Exchange OnPremise Web Services (EWS) call.</value>
+  </data>
+  <data name="HTTP_200s_OnPremise_Exchange_EWS_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK Exchange Web Services / EWS</value>
+  </data>
+  <data name="HTTP_200s_OnPremise_Exchange_EWS_ResponseComments" xml:space="preserve">
+    <value>Exchange OnPremise Web Services (EWS) call.</value>
+  </data>
+  <data name="HTTP_200s_OnPremise_Exchange_EWS_SessionType" xml:space="preserve">
+    <value>Exchange OnPremise Web Services</value>
   </data>
   <data name="HTTP_200_3S_Suggestions" xml:space="preserve">
     <value>3S Suggestions</value>
@@ -385,12 +433,479 @@
   </data>
   <data name="HTTP_200_Client Access Rule ResponseComments" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;A client access rule has blocked MAPI connectivity to the mailbox&lt;/span&gt;&lt;/b&gt;.&lt;p&gt;Check if the &lt;b&gt;&lt;span style='color:red'&gt;client access rule includes OutlookAnywhere&lt;/span&gt;&lt;/b&gt;.&lt;/p&gt;&lt;p&gt;Per &lt;a href='https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules' target='_blank'&gt;https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules&lt;/a&gt;, &lt;br /&gt;OutlookAnywhere includes MAPI over HTTP.&lt;p&gt;&lt;p&gt;Remove OutlookAnywhere from the client access rule, wait 1 hour, then test again.&lt;/p&gt;</value>
+    <comment>Don't translate anything with &lt; &gt;</comment>
   </data>
   <data name="HTTP_200_ConnectTunnel" xml:space="preserve">
     <value>Connect Tunnel</value>
   </data>
   <data name="HTTP_200_ConnectTunnel_RepsonseComments" xml:space="preserve">
     <value>This is an encrypted tunnel. If all or most of the sessions are connect tunnels the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -&gt; Options -&gt; HTTPS tab.&lt;p&gt;If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. &lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_200_Javascript_ResponseAlert" xml:space="preserve">
+    <value>HTTP 200 OK with Javascript.</value>
+  </data>
+  <data name="HTTP_200_Javascript_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK with Javascript.</value>
+  </data>
+  <data name="HTTP_200_Javascript_ResponseComments" xml:space="preserve">
+    <value>&lt;p&gt;HTTP 200 OK response with javascript.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_200_Javascript_SessionType" xml:space="preserve">
+    <value>HTTP 200 OK with Javascript</value>
+  </data>
+  <data name="HTTP_200_Lurking_Errors_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;'error', 'failed' or 'exception' found in response body&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_200_Lurking_Errors_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK, but possibly bad.</value>
+  </data>
+  <data name="HTTP_200_Lurking_Errors_ResponseCommentsEnd" xml:space="preserve">
+    <value>&lt;p&gt;Check the content body of the response for any failures you recognise. You may find &lt;b&gt;false positives, if lots of Javascript or other web code&lt;/b&gt; is being loaded.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_200_Lurking_Errors_ResponseCommentsStart" xml:space="preserve">
+    <value>&lt;p&gt;Session response body was scanned and errors or failures were found in response body. Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review.&lt;/p&gt;&lt;p&gt;After splitting all words in the response body the following were found:&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_200_Lurking_Errors_SessionType" xml:space="preserve">
+    <value>!FAILURE LURKING!</value>
+  </data>
+  <data name="HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseAlert" xml:space="preserve">
+    <value>!Exchange On-Premise Autodiscover redirect!</value>
+  </data>
+  <data name="HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK, Incorrect Redirect Address!</value>
+  </data>
+  <data name="HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseCommentsEnd" xml:space="preserve">
+    <value>&lt;/p&gt;&lt;p&gt;If this is an Office 365 mailbox the &lt;b&gt;targetAddress from On-Premise is not sending Outlook to Office 365&lt;/b&gt;!&lt;/p&gt;</value>
+    <comment>Variable sits in between start and end values.</comment>
+  </data>
+  <data name="HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseCommentsStart" xml:space="preserve">
+    <value>Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com. &lt;p&gt;RedirectAddress:</value>
+    <comment>Variable sits in between start and end values.</comment>
+  </data>
+  <data name="HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseServer" xml:space="preserve">
+    <value>Exchange Server</value>
+  </data>
+  <data name="HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_SessionType" xml:space="preserve">
+    <value>!AUTODISCOVER INCORRECT REDIRECT!</value>
+  </data>
+  <data name="HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;Exchange On-Premise Autodiscover Redirect&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK, !Email address not found!</value>
+  </data>
+  <data name="HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_ResponseComments" xml:space="preserve">
+    <value>Exchange On-Premise Autodiscover redirect address can't be found. Look for other On-Premise Autodiscover responses, we may have a valid Autodiscover targetAddress from On-Premise in another session in this trace. Seeing some redirects return a HTTP 500 from Exchange OnPremise have been seen in a normal, working Outlook client which can connect to the Exchange Online mailbox.</value>
+  </data>
+  <data name="HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_ResponseServer" xml:space="preserve">
+    <value>Exchange Server</value>
+  </data>
+  <data name="HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_SessionType" xml:space="preserve">
+    <value>!NO AUTOD REDIRECT ADDR!</value>
+  </data>
+  <data name="HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_ResponseAlert" xml:space="preserve">
+    <value>Exchange On-Premise Autodiscover redirect.</value>
+  </data>
+  <data name="HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK Redirect Address</value>
+  </data>
+  <data name="HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_ResponseCommentsEnd" xml:space="preserve">
+    <value>&lt;/p&gt;&lt;p&gt;This is what we want to see, the mail.onmicrosoft.com redirect address (you may know this as the &lt;b&gt;target address&lt;/b&gt; or &lt;b&gt;remote routing address&lt;/b&gt;) from On-Premise sends Outlook (MSI / Perpetual license) to Office 365 / Exchange Online.&lt;/p&gt;</value>
+    <comment>Variable sits in between start and end values.</comment>
+  </data>
+  <data name="HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_ResponseCommentsStart" xml:space="preserve">
+    <value>Exchange On-Premise Autodiscover redirect address to Exchange Online found. &lt;p&gt;RedirectAddress:</value>
+    <comment>Variable sits in between start and end values.</comment>
+  </data>
+  <data name="HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_SessionType" xml:space="preserve">
+    <value>Exchange On-Premise AutoDiscover Redirect</value>
+  </data>
+  <data name="HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi_ResponseAlert" xml:space="preserve">
+    <value>Outlook for Windows M365 MAPI traffic</value>
+  </data>
+  <data name="HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK Microsoft365 / Exchange Online MAPI</value>
+  </data>
+  <data name="HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi_SessionType" xml:space="preserve">
+    <value>Outlook Microsoft365 MAPI</value>
+  </data>
+  <data name="HTTP_200_Outlook_Exchange_OnPremise_Mapi_ResponseAlert" xml:space="preserve">
+    <value>Outlook for Windows MAPI traffic</value>
+  </data>
+  <data name="HTTP_200_Outlook_Exchange_OnPremise_Mapi_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK Exchange MAPI</value>
+  </data>
+  <data name="HTTP_200_Outlook_Exchange_OnPremise_Mapi_ResponseComments" xml:space="preserve">
+    <value>This is normal Outlook MAPI over HTTP traffic to an Exchange OnPremise mailbox.</value>
+  </data>
+  <data name="HTTP_200_Outlook_Exchange_OnPremise_Mapi_SessionType" xml:space="preserve">
+    <value>Outlook Exchange Server MAPI</value>
+  </data>
+  <data name="HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;Store Error Protocol Disabled&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK - &lt;b&gt;&lt;span style='color:red'&gt;PROTOCOL DISABLED&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_ResponseComments" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;Store Error Protocol disabled found in response body.&lt;/span&gt;&lt;/b&gt; Expect user to &lt;b&gt;NOT be able to connect using connecting client application.&lt;/b&gt;.</value>
+  </data>
+  <data name="HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_SessionType" xml:space="preserve">
+    <value>***PROTOCOL DISABLED***</value>
+  </data>
+  <data name="HTTP_200_Outlook_NSPI_ResponseAlert" xml:space="preserve">
+    <value>Outlook for Windows NSPI traffic</value>
+  </data>
+  <data name="HTTP_200_Outlook_NSPI_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK Outlook NSPI</value>
+  </data>
+  <data name="HTTP_200_Outlook_NSPI_ResponseComments" xml:space="preserve">
+    <value>This is normal Outlook traffic to an Exchange On-Premise mailbox. Name Service Provider Interface (NSPI).</value>
+  </data>
+  <data name="HTTP_200_Outlook_NSPI_SessionType" xml:space="preserve">
+    <value>Outlook NSPI</value>
+  </data>
+  <data name="HTTP_200_Outlook_RPC_ResponseAlert" xml:space="preserve">
+    <value>Outlook for Windows RPC traffic</value>
+  </data>
+  <data name="HTTP_200_Outlook_RPC_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK Outlook over RPC</value>
+  </data>
+  <data name="HTTP_200_Outlook_RPC_ResponseComments" xml:space="preserve">
+    <value>This is normal Outlook RPC over HTTP traffic to an Exchange Server mailbox.</value>
+  </data>
+  <data name="HTTP_200_Outlook_RPC_SessionType" xml:space="preserve">
+    <value>Outlook Exchange Server RPC</value>
+  </data>
+  <data name="HTTP_200_Outlook_Web_App_Notification_Channel_ResponseAlert" xml:space="preserve">
+    <value>Notification Channel is used for OWA to display new mails.</value>
+  </data>
+  <data name="HTTP_200_Outlook_Web_App_Notification_Channel_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK OWA Notification Channel</value>
+  </data>
+  <data name="HTTP_200_Outlook_Web_App_Notification_Channel_ResponseComments" xml:space="preserve">
+    <value>Notification Channel is used for OWA to display new mails.</value>
+  </data>
+  <data name="HTTP_200_Outlook_Web_App_Notification_Channel_SessionType" xml:space="preserve">
+    <value>OWA Notification Channel</value>
+  </data>
+  <data name="HTTP_200_Outlook_Web_App_ResponseAlert" xml:space="preserve">
+    <value>Outlook Web App</value>
+  </data>
+  <data name="HTTP_200_Outlook_Web_App_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK Outlook Web App / OWA</value>
+  </data>
+  <data name="HTTP_200_Outlook_Web_App_ResponseComments" xml:space="preserve">
+    <value>This is normal Outlook Web App traffic to an Exchange mailbox.</value>
+  </data>
+  <data name="HTTP_200_Outlook_Web_App_SessionType" xml:space="preserve">
+    <value>Outlook Web App</value>
+  </data>
+  <data name="HTTP_200_REST_People_Request_ResponseAlert" xml:space="preserve">
+    <value>REST People</value>
+  </data>
+  <data name="HTTP_200_REST_People_Request_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK REST People Request</value>
+  </data>
+  <data name="HTTP_200_REST_People_Request_SessionType" xml:space="preserve">
+    <value>REST People</value>
+  </data>
+  <data name="HTTP_200_Unified_Groups_Settings_ResponseAlert" xml:space="preserve">
+    <value>GetUnifiedGroupsSettings EWS call.</value>
+  </data>
+  <data name="HTTP_200_Unified_Groups_Settings_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK Get Unified Groups Settings</value>
+  </data>
+  <data name="HTTP_200_Unified_Groups_Settings_ResponseComments" xml:space="preserve">
+    <value>&lt;GroupCreationEnabled&gt;true&lt;/GroupCreationEnabled&gt; found in response body. Expect user to be able to create Office 365 groups in Outlook.</value>
+  </data>
+  <data name="HTTP_200_Unified_Groups_Settings_SessionType" xml:space="preserve">
+    <value>EWS GetUnifiedGroupsSettings</value>
+  </data>
+  <data name="HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseAlert" xml:space="preserve">
+    <value>GetUnifiedGroupsSettings EWS call</value>
+  </data>
+  <data name="HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK, GetUnifiedGroupsSettings not found.</value>
+  </data>
+  <data name="HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseComments" xml:space="preserve">
+    <value>Though GetUnifiedGroupsSettings scenario was detected neither &lt;GroupCreationEnabled&gt;true&lt;/GroupCreationEnabled&gt; nor &lt;GroupCreationEnabled&gt;false&lt;/GroupCreationEnabled&gt; was found in the response body. Check the Raw tab for more details.</value>
+  </data>
+  <data name="HTTP_200_Unified_Groups_Settings_Settings_Not_Found_SessionType" xml:space="preserve">
+    <value>!EWS GetUnifiedGroupsSettings!</value>
+  </data>
+  <data name="HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;GetUnifiedGroupsSettings EWS call&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK, User cannot create Unified Groups.</value>
+  </data>
+  <data name="HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseComments" xml:space="preserve">
+    <value>&lt;GroupCreationEnabled&gt;false&lt;/GroupCreationEnabled&gt; found in response body. Expect user to &lt;b&gt;NOT be able to create Office 365 groups&lt;/b&gt; in Outlook.</value>
+  </data>
+  <data name="HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_SessionType" xml:space="preserve">
+    <value>EWS GetUnifiedGroupsSettings</value>
+  </data>
+  <data name="HTTP_302_Redirect_AllOthers_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:green'&gt;Redirect.&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_302_Redirect_AllOthers_ResponseCodeDescription" xml:space="preserve">
+    <value>302 Redirect / Found</value>
+  </data>
+  <data name="HTTP_302_Redirect_AllOthers_ResponseComments" xml:space="preserve">
+    <value>Redirects within Office 365 client applications or servers are not unusual. The only potential downfall is too many of them. However if this happens you would normally see a too many redirects exception thrown as a server response.</value>
+  </data>
+  <data name="HTTP_302_Redirect_AllOthers_SessionType" xml:space="preserve">
+    <value>Redirect</value>
+  </data>
+  <data name="HTTP_302_Redirect_AutoDiscover_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:green'&gt;Exchange Autodiscover redirect.&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_302_Redirect_AutoDiscover_ResponseCodeDescription" xml:space="preserve">
+    <value>302 Redirect / Found</value>
+  </data>
+  <data name="HTTP_302_Redirect_AutoDiscover_ResponseComments" xml:space="preserve">
+    <value>This type of traffic is typically an Autodiscover redirect response from Exchange On-Premise sending the Outlook client to connect to Exchange Online.</value>
+  </data>
+  <data name="HTTP_302_Redirect_AutoDiscover_SessionType" xml:space="preserve">
+    <value>Autodiscover Redirect</value>
+  </data>
+  <data name="HTTP_307_All_Other_Redirects_ResponseAlert" xml:space="preserve">
+    <value>HTTP 307 Temporary Redirect</value>
+  </data>
+  <data name="HTTP_307_All_Other_Redirects_ResponseCodeDescription" xml:space="preserve">
+    <value>307 Temporary Redirect</value>
+  </data>
+  <data name="HTTP_307_All_Other_Redirects_ResponseComments" xml:space="preserve">
+    <value>&lt;p&gt;Temporary Redirects might be an indication of an issue, but aren't in themselves a smoking gun.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_307_All_Other_Redirects_SessionType" xml:space="preserve">
+    <value>307 Temporary Redirect</value>
+  </data>
+  <data name="HTTP_307_AutoDiscover_Temporary_Redirect_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 307 Temporary Redirect&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_307_AutoDiscover_Temporary_Redirect_ResponseCodeDescription" xml:space="preserve">
+    <value>!307 Temporary Redirect!</value>
+  </data>
+  <data name="HTTP_307_AutoDiscover_Temporary_Redirect_ResponseComments" xml:space="preserve">
+    <value>&lt;b&gt;Temporary Redirects have been seen to redirect Exchange Online Autodiscover calls back to On-Premise resources, breaking Outlook connectivity&lt;/b&gt;. Likely cause is a local networking device. Test outside of the LAN to confirm. &lt;p&gt;This session is an Autodiscover request for Exchange Online which has not been sent to &lt;a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'&gt;https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml&lt;/a&gt; as expected.&lt;/p&gt;&lt;p&gt;Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_307_AutoDiscover_Temporary_Redirect_ResponseServer" xml:space="preserve">
+    <value>***UNEXPECTED LOCATION***</value>
+  </data>
+  <data name="HTTP_307_AutoDiscover_Temporary_Redirect_SessionType" xml:space="preserve">
+    <value>***UNEXPECTED LOCATION***</value>
+  </data>
+  <data name="HTTP_307_Other_AutoDiscover_Redirects_ResponseAlert" xml:space="preserve">
+    <value>HTTP 307 Temporary Redirect</value>
+  </data>
+  <data name="HTTP_307_Other_AutoDiscover_Redirects_ResponseCodeDescription" xml:space="preserve">
+    <value>307 Temporary Redirect</value>
+  </data>
+  <data name="HTTP_307_Other_AutoDiscover_Redirects_ResponseComments" xml:space="preserve">
+    <value>Temporary Redirects have been seen to redirect Exchange Online Autodiscover calls back to On-Premise resources, breaking Outlook connectivity. &lt;p&gt;Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place. &lt;/p&gt;&lt;p&gt;If this session is not for an Outlook process then the information above may not be relevant to the issue under investigation.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_307_Other_AutoDiscover_Redirects_SessionType" xml:space="preserve">
+    <value>307 Temporary Redirect</value>
+  </data>
+  <data name="HTTP_400s_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 400 Bad Request&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_400s_ResponseCodeDescription" xml:space="preserve">
+    <value>400 Bad Request</value>
+  </data>
+  <data name="HTTP_400s_ResponseComments" xml:space="preserve">
+    <value>HTTP 400: Bad Request. Seeing small numbers of these may not be an issue. However, if many are seen this should be investigated further.</value>
+  </data>
+  <data name="HTTP_400s_SessionType" xml:space="preserve">
+    <value>400 Bad Request</value>
+  </data>
+  <data name="HTTP_401_Everything_Else_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:orange'&gt;Authentication Challenge&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_401_Everything_Else_ResponseCodeDescription" xml:space="preserve">
+    <value>401 Unauthorized (RFC 7235)</value>
+  </data>
+  <data name="HTTP_401_Everything_Else_ResponseComments" xml:space="preserve">
+    <value>Authentication Challenge. &lt;b&gt;These are expected&lt;/b&gt; and are not an issue as long as a subsequent HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. &lt;p&gt;If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_401_Everything_Else_SessionType" xml:space="preserve">
+    <value>401 Unauthorized</value>
+  </data>
+  <data name="HTTP_401_EWS_ResponseAlert" xml:space="preserve">
+    <value>Exchange Web Services (EWS) call.</value>
+  </data>
+  <data name="HTTP_401_EWS_ResponseCodeDescription" xml:space="preserve">
+    <value>401 Exchange Web Services (EWS) call.</value>
+  </data>
+  <data name="HTTP_401_EWS_ResponseComments" xml:space="preserve">
+    <value>Exchange Web Services (EWS) call.</value>
+  </data>
+  <data name="HTTP_401_EWS_SessionType" xml:space="preserve">
+    <value>Exchange Web Services</value>
+  </data>
+  <data name="HTTP_401_Exchange_Online_AutoDiscover_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:orange'&gt;Autodiscover Authentication Challenge&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_401_Exchange_Online_AutoDiscover_ResponseCodeDescription" xml:space="preserve">
+    <value>401 Unauthorized (RFC 7235)</value>
+  </data>
+  <data name="HTTP_401_Exchange_Online_AutoDiscover_ResponseComments" xml:space="preserve">
+    <value>Autodiscover Authentication Challenge. If the host for this session is autodiscover-s.outlook.com this is likely Outlook (MSI / perpetual license) being redirected from Exchange On-Premise.&lt;p&gt;&lt;b&gt;These are expected&lt;/b&gt; and are not an issue as long as a subsequent HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. &lt;p&gt;If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_401_Exchange_Online_AutoDiscover_SessionType" xml:space="preserve">
+    <value>Exchange Online AutoDiscover</value>
+  </data>
+  <data name="HTTP_401_Exchange_Server_AutoDiscover_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:orange'&gt;Autodiscover Authentication Challenge&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_401_Exchange_Server_AutoDiscover_ResponseCodeDescription" xml:space="preserve">
+    <value>401 Unauthorized (RFC 7235)</value>
+  </data>
+  <data name="HTTP_401_Exchange_Server_AutoDiscover_ResponseComments" xml:space="preserve">
+    <value>Autodiscover Authentication Challenge. &lt;p&gt;&lt;b&gt;These are expected&lt;/b&gt; and are not an issue as long as a subsequent HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. &lt;p&gt;If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_401_Exchange_Server_AutoDiscover_SessionType" xml:space="preserve">
+    <value>Exchange Server AutoDiscover</value>
+  </data>
+  <data name="HTTP_403_Forbidden_Everything_Else_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 403 Forbidden&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_403_Forbidden_Everything_Else_ResponseCodeDescription" xml:space="preserve">
+    <value>403 Forbidden</value>
+  </data>
+  <data name="HTTP_403_Forbidden_Everything_Else_ResponseComments" xml:space="preserve">
+    <value>While HTTP 403's can be symptomatic of a proxy server blocking traffic, however the phrase 'Access Denied' was not detected in the response body.&lt;p&gt;A small number of HTTP 403's can be seen in normal working scenarios. Check the Raw and WebView tabs to look for anything which looks suspect.&lt;/p&gt;&lt;p&gt;If you are troubleshooting Free/Busy (Meeting availability info) or setting Out of Office messages then you may be more interested in these.&lt;/p&gt;&lt;p&gt;See: &lt;a href='https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-2010/dd877045(v=exchg.140)' target='_blank'&gt;https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-2010/dd877045(v=exchg.140) &lt;/a&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_403_Forbidden_Everything_Else_SessionType" xml:space="preserve">
+    <value>HTTP 403 FORBIDDEN</value>
+  </data>
+  <data name="HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 403 Forbidden&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseCodeDescription" xml:space="preserve">
+    <value>403 EWS Forbidden</value>
+  </data>
+  <data name="HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseComments" xml:space="preserve">
+    <value>&lt;p&gt;If you are troubleshooting a 3rd party EWS application (using application impersonation) and the service account mailbox has been recently migrated into the cloud, ensure mailbox is licensed and to log into the service account mailbox for the first time using OWA at &lt;a href='https://outlook.office365.com' target='_blank'&gt;https://outlook.office365.com&lt;/a&gt; to set the mailbox language / culture.&lt;/p&gt;&lt;p&gt;Validate with: Get-Mailbox service-account@domain.com | FL Languages&lt;/p&gt;&lt;p&gt;Without the language set on the mailbox, EWS will not work properly.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_SessionType" xml:space="preserve">
+    <value>HTTP 403 EWS FORBIDDEN</value>
+  </data>
+  <data name="HTTP_403_Forbidden_Proxy_Block_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 403 Access Denied - WEB PROXY BLOCK!&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_403_Forbidden_Proxy_Block_ResponseCodeDescription" xml:space="preserve">
+    <value>HTTP 403 Forbidden; !WEB PROXY BLOCK!</value>
+  </data>
+  <data name="HTTP_403_Forbidden_Proxy_Block_ResponseComments" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;Is your firewall or web proxy blocking Outlook connectivity?&lt;/span&gt;&lt;/b&gt; &lt;p&gt;To fire this message a HTTP 403 response code was detected and '&lt;b&gt;&lt;span style='color:red'&gt;Access Denied&lt;/span&gt;&lt;/b&gt;' was found in the response body.&lt;/p&gt;&lt;p&gt;Check the WebView tab, do you see anything which indicates traffic is blocked?&lt;p&gt;&lt;b&gt;&lt;span style='color:red'&gt;Is there a message branded by or from your proxy device indiciating it blocked traffic?&lt;/span&gt;&lt;/b&gt; A common scenario when first deploying Office365 / Exchange Online is a web proxy device blocking access to consumer webmail which can impact Outlook connectivity and potentially other Office 365 applications.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_403_Forbidden_Proxy_Block_SessionType" xml:space="preserve">
+    <value>***WEB PROXY BLOCK***</value>
+  </data>
+  <data name="HTTP_404s_ResponseAlerts" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 404 Not Found&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_404s_ResponseCodeDescription" xml:space="preserve">
+    <value>404 Not Found</value>
+  </data>
+  <data name="HTTP_404s_ResponseComments" xml:space="preserve">
+    <value>The quantity of these types of server errors need to be considered in context with what you are troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.</value>
+  </data>
+  <data name="HTTP_404s_SessionType" xml:space="preserve">
+    <value>HTTP 404 Not Found</value>
+  </data>
+  <data name="HTTP_405s_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 405: Method Not Allowed&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_405s_ResponseCodeDescription" xml:space="preserve">
+    <value>405 Method Not Allowed</value>
+  </data>
+  <data name="HTTP_405s_ResponseComments" xml:space="preserve">
+    <value>Was there a GET when only a POST is allowed or vice-versa, or was HTTP tried when HTTPS is required?</value>
+  </data>
+  <data name="HTTP_405s_SessionType" xml:space="preserve">
+    <value>405 Method Not Allowed</value>
+  </data>
+  <data name="HTTP_407s_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 407: Proxy Authentication Required&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_407s_ResponseCodeDescription" xml:space="preserve">
+    <value>407 Proxy Authentication Required (RFC 7235)</value>
+  </data>
+  <data name="HTTP_407s_ResponseComments" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;Proxy Authentication Required&lt;/span&gt;&lt;/b&gt;&lt;p&gt;Seeing these when investigating an Office 365 connectivity could be a &lt;b&gt;big indicator of an issue&lt;/b&gt;.&lt;/p&gt;&lt;p&gt;Look to engage the network or security team who is responsible for the proxy infrastructure and give them the information from these HTTP 407 sessions to troubleshoot with.&lt;/p&gt;&lt;p&gt;Office 365 application traffic should be exempt from proxy authentication or better yet follow Microsoft's recommendation to bypass the proxy for Office365 traffic.&lt;/p&gt;&lt;p&gt;See Microsoft 365 Connectivity Principals in &lt;a href='https://docs.microsoft.com/en-us/microsoft-365/enterprise/microsoft-365-network-connectivity-principles?view=o365-worldwide#microsoft-365-connectivity-principles' target='_blank'&gt;https://docs.microsoft.com/en-us/microsoft-365/enterprise/microsoft-365-network-connectivity-principles?view=o365-worldwide#microsoft-365-connectivity-principles &lt;/a&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_407s_SessionType" xml:space="preserve">
+    <value>HTTP 407 Proxy Auth Required</value>
+  </data>
+  <data name="HTTP_456_Anything_Else_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 456 Multi-Factor Authentication?&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_456_Anything_Else_ResponseCodeDescription" xml:space="preserve">
+    <value>HTTP 456 Multi-Factor Authentication?</value>
+  </data>
+  <data name="HTTP_456_Anything_Else_ResponseComments" xml:space="preserve">
+    <value>See details on Raw tab. Is Modern Authentication disabled?&lt;p&gt;This has been seen where users have &lt;b&gt;&lt;span style='color:red'&gt;MFA enabled/enforced, but Modern Authentication is not enabled&lt;/span&gt;&lt;/b&gt; in the Office 365 workload being connected to.&lt;/p&gt;&lt;p&gt;See &lt;a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx' target='_blank'&gt;https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662 &lt;/a&gt;&lt;/p&gt;&lt;a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx' target='_blank'&gt;https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx &lt;/a&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_456_Anything_Else_SessionType" xml:space="preserve">
+    <value>Multi-Factor Auth?</value>
+  </data>
+  <data name="HTTP_456_Multi_Factor_Required_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 456 Multi-Factor Authentication&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_456_Multi_Factor_Required_ResponseCodeDescription" xml:space="preserve">
+    <value>HTTP 456 !Multi-Factor Auth!</value>
+  </data>
+  <data name="HTTP_456_Multi_Factor_Required_ResponseComments" xml:space="preserve">
+    <value>See details on Raw tab. Look for the presence of 'you must use multi-factor authentication'.&lt;p&gt;This has been seen where users have &lt;b&gt;&lt;span style='color:red'&gt;MFA enabled/enforced, but Modern Authentication is not enabled&lt;/span&gt;&lt;/b&gt; in the Office 365 workload being connected to&lt;/p&gt;&lt;p&gt;See &lt;a href='https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662' target='_blank'&gt;https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662 &lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx' target='_blank'&gt;https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx &lt;/a&gt;</value>
+  </data>
+  <data name="HTTP_456_Multi_Factor_Required_SessionType" xml:space="preserve">
+    <value>!Multi-Factor Auth!</value>
+  </data>
+  <data name="HTTP_456_OAuth_Not_Available_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 456 Multi-Factor Authentication&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_456_OAuth_Not_Available_ResponseCodeDescription" xml:space="preserve">
+    <value>HTTP 456 !Multi-Factor Auth!</value>
+  </data>
+  <data name="HTTP_456_OAuth_Not_Available_ResponseComments" xml:space="preserve">
+    <value>See details on Raw tab. Look for the presence of 'oauth_not_available'.&lt;p&gt;This has been seen where users have &lt;b&gt;&lt;span style='color:red'&gt;MFA enabled/enforced, but Modern Authentication&lt;/span&gt;&lt;/b&gt; is not enabled in the Office 365 workload being connected to&lt;/p&gt;&lt;p&gt;See &lt;a href='https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662' target='_blank'&gt;https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662 &lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href='https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx' target='_blank'&gt;https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx &lt;/a&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_456_OAuth_Not_Available_SessionType" xml:space="preserve">
+    <value>!Multi-Factor Auth!</value>
+  </data>
+  <data name="HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 500 Internal Server Error - EWS Impersonate User Denied&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseCodeDescription" xml:space="preserve">
+    <value>500 EWS Impersonate User Denied</value>
+  </data>
+  <data name="HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseComments" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;EWS Impersonate User Denied&lt;/span&gt;&lt;/b&gt; found in this session response. Check the service account in use has impersonation rights on the mailbox you are trying to work with. Are the impersonation permissions given directly on the service account or via a security group?&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_500_Internal_Server_Error_Impersonate_User_Denied_SessionType" xml:space="preserve">
+    <value>***EWS Impersonate User Denied***</value>
+  </data>
+  <data name="HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseCodeDescription" xml:space="preserve">
+    <value>500 OWA Something went wrong</value>
+  </data>
+  <data name="HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_SessionType" xml:space="preserve">
+    <value>***OWA SOMETHING WENT WRONG***</value>
+  </data>
+  <data name="HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 500 Internal Server Error - Repeating redirects detected&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseCodeDescription" xml:space="preserve">
+    <value>500 Internal Server Error</value>
+  </data>
+  <data name="HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseComments" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;Repeating redirects detected&lt;/span&gt;&lt;/b&gt; found in this session response. This response has been seen with OWA and federated domains. Is this issue seen with non-federated user accounts? If not this might suggest an issue with a federation service.&lt;p&gt;Alternatively does the impacted account have too many roles assigned? Too many roles on an account have been seen as a cause of this type of issue.&lt;/p&gt;&lt;p&gt;Otherwise this might be an issue which needs to be raised to Microsoft support.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_500_Internal_Server_Error_Repeating_Redirects_SessionType" xml:space="preserve">
+    <value>***REPEATING REDIRECTS DETECTED***</value>
   </data>
   <data name="Inspector" xml:space="preserve">
     <value>Inspector</value>
@@ -413,14 +928,14 @@
   <data name="Locally Installed Information" xml:space="preserve">
     <value>Locally Installed Information</value>
   </data>
-  <data name="minute ago" xml:space="preserve">
+  <data name="Minute Ago" xml:space="preserve">
     <value>minute ago</value>
     <comment>In the context of "1 minute ago".</comment>
   </data>
   <data name="Minutes" xml:space="preserve">
     <value>Minutes</value>
   </data>
-  <data name="minutes ago" xml:space="preserve">
+  <data name="Minutes Ago" xml:space="preserve">
     <value>minutes ago</value>
     <comment>In the context of "10 minutes ago".</comment>
   </data>
@@ -478,6 +993,9 @@
   <data name="Red" xml:space="preserve">
     <value>Red</value>
   </data>
+  <data name="RedirectAddressNotFound" xml:space="preserve">
+    <value>Redirect address not found by extension.</value>
+  </data>
   <data name="Releases" xml:space="preserve">
     <value>Releases</value>
   </data>
@@ -492,6 +1010,7 @@
   </data>
   <data name="Response Comments No Known Issue" xml:space="preserve">
     <value>&lt;p&gt;No known issue with Microsoft365 and this type of session. If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: &lt;a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'&gt;https://github.com/jprknight/Office365FiddlerExtension&lt;/a&gt;.&lt;/p&gt;</value>
+    <comment>Don't translate anything with &lt; &gt;</comment>
   </data>
   <data name="Response Server" xml:space="preserve">
     <value>Response Server</value>
@@ -559,6 +1078,7 @@
   </data>
   <data name="SessionTimersDescription" xml:space="preserve">
     <value>&lt;p&gt;The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.&lt;/p&gt;&lt;p&gt;If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.&lt;/p&gt;&lt;p&gt;Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.&lt;p&gt;</value>
+    <comment>Don't translate anything with &lt; &gt;</comment>
   </data>
   <data name="Set Session Severity" xml:space="preserve">
     <value>Set Session Severity</value>

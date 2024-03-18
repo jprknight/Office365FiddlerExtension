@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
@@ -59,15 +55,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 {
                     SectionTitle = "HTTP_401s",
 
-                    SessionType = "Microsoft365 AutoDiscover",
-                    ResponseCodeDescription = "401 Unauthorized (RFC 7235)",
-                    ResponseAlert = "<b><span style='color:orange'>Autodiscover Authentication Challenge</span></b>",
-                    ResponseComments = "Autodiscover Authentication Challenge. If the host for this session is autodiscover-s.outlook.com this is likely Outlook "
-                    + "(MSI / perpetual license) being redirected from Exchange On-Premise."
-                    + "<p><b>These are expected</b> and are not an issue as long as a subsequent "
-                    + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. "
-                    + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>",
-                    Authentication = "Autodiscover Microsoft365 Auth Challenge",
+                    SessionType = LangHelper.GetString("HTTP_401_Exchange_Online_AutoDiscover_SessionType"),
+                    ResponseCodeDescription = LangHelper.GetString("HTTP_401_Exchange_Online_AutoDiscover_ResponseCodeDescription"),
+                    ResponseAlert = LangHelper.GetString("HTTP_401_Exchange_Online_AutoDiscover_ResponseAlert"),
+                    ResponseComments = LangHelper.GetString("HTTP_401_Exchange_Online_AutoDiscover_ResponseComments"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -116,14 +107,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 {
                     SectionTitle = "HTTP_401s",
 
-                    SessionType = "Exchange OnPremise AutoDiscover",
-                    ResponseCodeDescription = "401 Unauthorized (RFC 7235)",
-                    ResponseAlert = "<b><span style='color:orange'>Autodiscover Authentication Challenge</span></b>",
-                    ResponseComments = "Autodiscover Authentication Challenge."
-                    + "<p><b>These are expected</b> and are not an issue as long as a subsequent "
-                    + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. "
-                    + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>",
-                    Authentication = "Autodiscover OnPremise Auth Challenge",
+                    SessionType = LangHelper.GetString("HTTP_401_Exchange_Server_AutoDiscover_SessionType"),
+                    ResponseCodeDescription = LangHelper.GetString("HTTP_401_Exchange_Server_AutoDiscover_ResponseCodeDescription"),
+                    ResponseAlert = LangHelper.GetString("HTTP_401_Exchange_Server_AutoDiscover_ResponseAlert"),
+                    ResponseComments = LangHelper.GetString("HTTP_401_Exchange_Server_AutoDiscover_ResponseComments"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -175,11 +162,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_401s",
 
-                SessionType = "Exchange Web Services",
-                ResponseCodeDescription = "401 Exchange Web Services (EWS) call.",
-                ResponseAlert = "Exchange Web Services (EWS) call.",
-                ResponseComments = "Exchange Web Services (EWS) call.",
-                Authentication = "Auth Challenge",
+                SessionType = LangHelper.GetString("HTTP_401_EWS_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_401_EWS_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_401_EWS_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_401_EWS_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -225,13 +211,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_401s",
 
-                SessionType = "401 Unauthorized",
-                ResponseCodeDescription = "401 Unauthorized (RFC 7235)",
-                ResponseAlert = "<b><span style='color:orange'>Authentication Challenge</span></b>",
-                ResponseComments = "Authentication Challenge. <b>These are expected</b> and are not an issue as long as a subsequent "
-                + "HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. "
-                + "<p>If you do not see HTTP 200's following HTTP 401's look for a wider authentication issue.</p>",
-                Authentication = "Auth Challenge",
+                SessionType = LangHelper.GetString("HTTP_401_Everything_Else_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_401_Everything_Else_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_401_Everything_Else_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_401_Everything_Else_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

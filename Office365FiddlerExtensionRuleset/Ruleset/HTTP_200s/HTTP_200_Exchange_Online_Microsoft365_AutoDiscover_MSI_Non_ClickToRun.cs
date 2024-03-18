@@ -2,11 +2,7 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -69,13 +65,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                     {
-                        SectionTitle = "HTTP_200s_MSI_AutoDiscover",
+                        SectionTitle = "HTTP_200s",
 
-                        SessionType = "EXO MSI Autodiscover",
-                        ResponseCodeDescription = "200 OK Outlook MSI AutoDiscover",
-                        ResponseAlert = "Exchange Online / Outlook MSI AutoDiscover.",
-                        ResponseComments = "For AutoDiscover calls which go to autodiscover-s.outlook.com this is likely an Outlook (MSI / perpetual license) client"
-                        + " being redirected from Exchange On-Premise to Exchange Online.",
+                        SessionType = LangHelper.GetString("HTTP_200s_EXO_MSI_Autodiscover_SessionType"),
+                        ResponseCodeDescription = LangHelper.GetString("HTTP_200s_EXO_MSI_Autodiscover_ResponseCodeDescription"),
+                        ResponseAlert = LangHelper.GetString("HTTP_200s_EXO_MSI_Autodiscover_ResponseAlert"),
+                        ResponseComments = LangHelper.GetString("HTTP_200s_EXO_MSI_Autodiscover_ResponseComments"),
 
                         SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                         SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -116,13 +111,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                     var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                     {
-                        SectionTitle = "HTTP_200s_MSI_AutoDiscover",
+                        SectionTitle = "HTTP_200s",
 
-                        SessionType = "!EXO MSI AutoDiscover!",
-                        ResponseCodeDescription = "200 OK, Unexpected AutoDiscover XML response.",
-                        ResponseAlert = "<b><span style='color:red'>Exchange Online / Outlook MSI AutoDiscover - Unusual AutoDiscover Response</span></b>",
-                        ResponseComments = "This session was detected as an AutoDiscover response from Exchange Online. However the response did not contain "
-                        + "the expected XML data. Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response.",
+                        SessionType = LangHelper.GetString("HTTP_200s_MSI_AutoDiscover_SessionType"),
+                        ResponseCodeDescription = LangHelper.GetString("HTTP_200s_MSI_AutoDiscover_ResponseCodeDescription"),
+                        ResponseAlert = LangHelper.GetString("HTTP_200s_MSI_AutoDiscover_ResponseAlert"),
+                        ResponseComments = LangHelper.GetString("HTTP_200s_MSI_AutoDiscover_ResponseComments"),
 
                         SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                         SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

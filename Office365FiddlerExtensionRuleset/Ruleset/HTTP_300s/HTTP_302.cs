@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
@@ -52,11 +48,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_302s",
 
-                SessionType = "Autodiscover Redirect",
-                ResponseCodeDescription = "302 Redirect / Found",
-                ResponseAlert = "<b><span style='color:green'>Exchange Autodiscover redirect.</span></b>",
-                ResponseComments = "This type of traffic is typically an Autodiscover redirect response from "
-                    + "Exchange On-Premise sending the Outlook client to connect to Exchange Online.",
+                SessionType = LangHelper.GetString("HTTP_302_Redirect_AutoDiscover_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_302_Redirect_AutoDiscover_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_302_Redirect_AutoDiscover_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_302_Redirect_AutoDiscover_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -102,12 +97,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_302s",
 
-                SessionType = "Redirect",
-                ResponseCodeDescription = "302 Redirect / Found",
-                ResponseAlert = "<b><span style='color:green'>Redirect.</span></b>",
-                ResponseComments = "Redirects within Office 365 client applications or servers are not unusual. "
-                    + "The only potential downfall is too many of them. However if this happens you would normally see a too many "
-                    + "redirects exception thrown as a server response.",
+                SessionType = LangHelper.GetString("HTTP_302_Redirect_AllOthers_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_302_Redirect_AllOthers_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_302_Redirect_AllOthers_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_302_Redirect_AllOthers_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

@@ -2,11 +2,7 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -76,17 +72,13 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_200s_Redirect_Address_Not_Found",
+                    SectionTitle = "HTTP_200s",
 
-                    SessionType = "!NO AUTOD REDIRECT ADDR!",
-                    ResponseCodeDescription = "200 OK, !Email address not found!",
-                    ResponseServer = "Fiddler Update Check",
-                    ResponseAlert = "<b><span style='color:red'>Exchange On-Premise Autodiscover Redirect</span></b>",
-                    ResponseComments = "Exchange On-Premise Autodiscover redirect address can't be found. "
-                    + "Look for other On-Premise Autodiscover responses, we may have a "
-                    + "valid Autodiscover targetAddress from On-Premise in another session in this trace."
-                    + "Seeing some redirects return a HTTP 500 from Exchange OnPremise have been seen in a normal, working Outlook "
-                    + "client which can connect to the Exchange Online mailbox.",
+                    SessionType = LangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_SessionType"),
+                    ResponseCodeDescription = LangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_ResponseCodeDescription"),
+                    ResponseServer = LangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_ResponseServer"),
+                    ResponseAlert = LangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_ResponseAlert"),
+                    ResponseComments = LangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_ResponseComments"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

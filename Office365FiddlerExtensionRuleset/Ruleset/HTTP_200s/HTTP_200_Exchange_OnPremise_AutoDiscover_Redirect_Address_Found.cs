@@ -2,11 +2,7 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -64,7 +60,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
             else
             {
-                RedirectAddress = "Redirect address not found by extension.";
+                RedirectAddress = LangHelper.GetString("RedirectAddressNotFound");
             }
 
             if (RedirectAddress.Contains(".onmicrosoft.com"))
@@ -97,16 +93,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_200s_Redirect_Address",
+                    SectionTitle = "HTTP_200s",
 
-                    SessionType = "On-Prem AutoD Redirect",
-                    ResponseCodeDescription = "200 OK Redirect Address",
-                    ResponseAlert = "Exchange On-Premise Autodiscover redirect.",
-                    ResponseComments = "Exchange On-Premise Autodiscover redirect address to Exchange Online found."
-                    + "<p>RedirectAddress: "
+                    SessionType = LangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_SessionType"),
+                    ResponseCodeDescription = LangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_ResponseCodeDescription"),
+                    ResponseAlert = LangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_ResponseAlert"),
+                    ResponseComments = LangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_ResponseCommentsStart")
+                    + " "
                     + RedirectAddress
-                    + "</p><p>This is what we want to see, the mail.onmicrosoft.com redirect address (you may know this as the <b>target address</b> or "
-                    + "<b>remote routing address</b>) from On-Premise sends Outlook (MSI / Perpetual license) to Office 365 / Exchange Online.</p>",
+                    + LangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_ResponseCommentsEnd"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -150,15 +145,16 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_200s_Redirect_Address_Not_Found",
+                    SectionTitle = "HTTP_200s",
 
-                    SessionType = "!AUTOD INCORRECT REDIRECT!",
-                    ResponseCodeDescription = "200 OK, Incorrect Redirect Address!",
-                    ResponseServer = "Fiddler Update Check",
-                    ResponseAlert = "!Exchange On-Premise Autodiscover redirect!",
-                    ResponseComments = "Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com." +
-                    "<p>RedirectAddress: " + RedirectAddress +
-                    "</p><p>If this is an Office 365 mailbox the <b>targetAddress from On-Premise is not sending Outlook to Office 365</b>!</p>",
+                    SessionType = LangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_SessionType"),
+                    ResponseCodeDescription = LangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseCodeDescription"),
+                    ResponseServer = LangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseServer"),
+                    ResponseAlert = LangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseAlert"),
+                    ResponseComments = LangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseCommentsStart")
+                    + " "
+                    + RedirectAddress
+                    + LangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseCommentsEnd"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

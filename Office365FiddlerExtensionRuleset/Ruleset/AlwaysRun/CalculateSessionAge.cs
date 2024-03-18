@@ -35,29 +35,29 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             if (TimeSpanDays == 1)
             {
-                TimeSpanDaysText = TimeSpanDays + $" {LangHelper.GetString("day")}, ";
+                TimeSpanDaysText = TimeSpanDays + $" {LangHelper.GetString("Day")}, ";
             }
             else
             {
-                TimeSpanDaysText = TimeSpanDays + $" {LangHelper.GetString("days")}, ";
+                TimeSpanDaysText = TimeSpanDays + $" {LangHelper.GetString("Days")}, ";
             }
 
             if (TimeSpanHours == 1)
             {
-                TimeSpanHoursText = TimeSpanHours + $" {LangHelper.GetString("hour")}, ";
+                TimeSpanHoursText = TimeSpanHours + $" {LangHelper.GetString("Hour")}, ";
             }
             else
             {
-                TimeSpanHoursText = TimeSpanHours + $" {LangHelper.GetString("hours")}, ";
+                TimeSpanHoursText = TimeSpanHours + $" {LangHelper.GetString("Hours")}, ";
             }
 
             if (TimeSpanMinutes == 1)
             {
-                TimeSpanMinutesText = TimeSpanMinutes + $" {LangHelper.GetString("minute ago")}.";
+                TimeSpanMinutesText = TimeSpanMinutes + $" {LangHelper.GetString("Minute Ago")}.";
             }
             else
             {
-                TimeSpanMinutesText = TimeSpanMinutes + $" {LangHelper.GetString("minutes ago")}.";
+                TimeSpanMinutesText = TimeSpanMinutes + $" {LangHelper.GetString("Minutes Ago")}.";
             }
 
             String DataAge = TimeSpanDaysText + TimeSpanHoursText + TimeSpanMinutesText;

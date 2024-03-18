@@ -289,6 +289,14 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
+                    HTTP_200_OWA_Notification_Channel.Instance.Run(this.session);
+                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+                    {
+                        break;
+                    }
+
+                    ///////////////////////////////
+
                     HTTP_200_Outlook_RPC.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {

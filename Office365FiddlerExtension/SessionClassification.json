@@ -9,12 +9,12 @@
     "SessionSeverity": "Runs on a scale of 0 - 60 and determines the colours of sessions used by the extension.",
     "SessionColours": "According to session severity",
     "-=-=-=-=-=-": "-=-=-=-=-=-",
-    "SessionSeverityTen": "10 Grey (Uninteresting) - For sessions which don't have any relation to the current trace being analysed for the issue being worked on.",
-    "SessionSeverityTwenty": "20 - Blue (False Positive) - For sessions where an error could be falsely blamed for the issue being investigated.",
+    "SessionSeverityTen": "10 Grey (Uninteresting) - For sessions which don't contain any information which could ientify an issue.",
+    "SessionSeverityTwenty": "20 - Blue (False Positive) - For sessions where an error could be falsely blamed for the issue being investigated. For example, AutoDiscover to https://autodiscover.domain.mail.onmicrosoft.com/autodiscover/autodiscover.xml are not expected to respond.",
     "SessionSeverityThirty": "30 - Green (Normal) - For sessions where no error condition is found.",
     "SessionSeverityFourty": "40 - Orange (Warning) - For sessions which could present an issue, but are stil expected to be seen in normal working scenarios. HTTP 401s authentication challenges are a good example of this.",
     "SessionSeverityFifty": "50 - Black (Concerning) - For sessions which could be interpretted as a false negative. HTTP 200s containing an error or failure are a good example of this.",
-    "SessionSeveritySixty": "60 - Red (Severe) - For sessions where a known error condition has been detected. Usually calling out 'Start here first'."
+    "SessionSeveritySixty": "60 - Red (Severe) - For sessions where a known error condition has been detected."
   },
   "BroadLogicChecks": {
     "FiddlerUpdateSessions": {

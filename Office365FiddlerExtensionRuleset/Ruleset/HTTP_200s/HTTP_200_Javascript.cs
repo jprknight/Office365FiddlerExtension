@@ -2,11 +2,7 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -55,12 +51,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s_Javascript",
+                SectionTitle = "HTTP_200s",
 
-                SessionType = "HTTP 200 OK with Javascript",
-                ResponseCodeDescription = "HTTP 200 OK with Javascript.",
-                ResponseAlert = "HTTP 200 OK with Javascript.",
-                ResponseComments = "<p>HTTP 200 OK response with javascript.</p>",
+                SessionType = LangHelper.GetString("HTTP_200_Javascript_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_200_Javascript_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_200_Javascript_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_200_Javascript_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

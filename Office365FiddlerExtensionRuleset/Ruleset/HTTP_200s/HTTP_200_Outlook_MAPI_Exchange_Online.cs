@@ -2,11 +2,7 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -65,11 +61,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s_Microsoft365_Mapi",
+                SectionTitle = "HTTP_200s",
 
-                SessionType = "Outlook M365 MAPI",
-                ResponseCodeDescription = "200 OK Microsoft365 / Exchange Online MAPI",
-                ResponseAlert = "Outlook for Windows M365 MAPI traffic",
+                SessionType = LangHelper.GetString("HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi_ResponseAlert"),
                 ResponseComments = "This is normal Outlook MAPI over HTTP traffic to an Exchange Online / Microsoft365 mailbox.",
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,

@@ -2,11 +2,7 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -109,17 +105,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_200s_Lurking_Errors",
 
-                SessionType = "!FAILURE LURKING!",
-                ResponseCodeDescription = "200 OK, but possibly bad.",
-                ResponseAlert = "<b><span style='color:red'>'error', 'failed' or 'exception' found in response body</span></b>",
-                ResponseComments = "<p>Session response body was scanned and errors or failures were found in response body. "
-                + "Check the Raw tab, click 'View in Notepad' button bottom right, and search for error in the response to review.</p>"
-                + "<p>After splitting all words in the response body the following were found:</p>"
+                SessionType = LangHelper.GetString("HTTP_200_Lurking_Errors_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_200_Lurking_Errors_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_200_Lurking_Errors_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_200_Lurking_Errors_ResponseCommentsStart")
                 + "<p>" + wordCountErrorText + "</p>"
                 + "<p>" + wordCountFailedText + "</p>"
                 + "<p>" + wordCountExceptionText + "</p>"
-                + "<p>Check the content body of the response for any failures you recognise. You may find <b>false positives, "
-                + "if lots of Javascript or other web code</b> is being loaded.</p>",
+                + LangHelper.GetString("HTTP_200_Lurking_Errors_ResponseCommentsEnd"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

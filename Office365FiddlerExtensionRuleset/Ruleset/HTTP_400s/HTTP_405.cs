@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
@@ -52,10 +48,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_405s",
 
-                SessionType = "405 Method Not Allowed",
-                ResponseCodeDescription = "405 Method Not Allowed",
-                ResponseAlert = "<b><span style='color:red'>HTTP 405: Method Not Allowed</span></b>",
-                ResponseComments = "Was there a GET when only a POST is allowed or vice-versa, or was HTTP tried when HTTPS is required?",
+                SessionType = LangHelper.GetString("HTTP_405s_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_405s_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_405s_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_405s_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

@@ -64,14 +64,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_500s",
 
-                SessionType = "***REPEATING REDIRECTS DETECTED***",
-                ResponseCodeDescription = "500 Internal Server Error",
-                ResponseAlert = "<b><span style='color:red'>HTTP 500 Internal Server Error - Repeating redirects detected</span></b>",
-                ResponseComments = "<b><span style='color:red'>Repeating redirects detected</span></b> found in this session response. "
-                + "This response has been seen with OWA and federated domains. Is this issue seen with non-federated user accounts? "
-                + "If not this might suggest an issue with a federation service. "
-                + "<p>Alternatively does the impacted account have too many roles assigned? Too many roles on an account have been seen as a cause of this type of issue.</p>"
-                + "<p>Otherwise this might be an issue which needs to be raised to Microsoft support.</p>",
+                SessionType = LangHelper.GetString("HTTP_500_Internal_Server_Error_Repeating_Redirects_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -134,12 +130,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_500s",
 
-                SessionType = "***EWS Impersonate User Denied***",
-                ResponseCodeDescription = "500 EWS Impersonate User Denied",
-                ResponseAlert = "<b><span style='color:red'>HTTP 500 Internal Server Error - EWS Impersonate User Denied</span></b>",
-                ResponseComments = "<b><span style='color:red'>EWS Impersonate User Denied</span></b> found in this session response. "
-                + "Check the service account in use has impersonation rights on the mailbox you are trying to work with."
-                + "Are the impersonation permissions given directly on the service account or via a security group?</p>",
+                SessionType = LangHelper.GetString("HTTP_500_Internal_Server_Error_Impersonate_User_Denied_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -197,14 +191,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_500s",
 
-                SessionType = "***OWA SOMETHING WENT WRONG***",
-                ResponseCodeDescription = "500 OWA Something went wrong",
-                ResponseAlert = "<b><span style='color:red'>HTTP 500 Internal Server Error - OWA Something went wrong.</span></b>",
-                ResponseComments = "<b><span style='color:red'>OWA - Something went wrong</span></b> found in this session response. "
-                + "<p>Check the response Raw and Webview tabs to see what further details can be pulled on the issue.</p>"
-                + "<p>Does the issue reproduce with federated and non-federated (managed) domains?</p>"
-                + "<p>Does the issue reproduce in different browsers?</p>"
-                + "<p>Otherwise this might be an issue which needs to be raised to Microsoft support.</p>",
+                SessionType = LangHelper.GetString("HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

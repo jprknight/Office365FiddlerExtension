@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
@@ -56,17 +52,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 {
                     SectionTitle = "HTTP_403s",
 
-                    SessionType = "***WEB PROXY BLOCK***",
-                    ResponseCodeDescription = "HTTP 403 Forbidden; !WEB PROXY BLOCK!",
-                    ResponseAlert = "<b><span style='color:red'>HTTP 403 Access Denied - WEB PROXY BLOCK!</span></b>",
-                    ResponseComments = "<b><span style='color:red'>Is your firewall or web proxy blocking Outlook connectivity?</span></b> "
-                    + "<p>To fire this message a HTTP 403 response code was detected and '<b><span style='color:red'>Access Denied</span></b>' was found in "
-                    + "the response body.</p>"
-                    + "<p>Check the WebView tab, do you see anything which indicates traffic is blocked?"
-                    + "<p><b><span style='color:red'>Is there a message branded by or from "
-                    + "your proxy device indiciating it blocked traffic?</span></b> "
-                    + "A common scenario when first deploying Office365 / Exchange Online "
-                    + "is a web proxy device blocking access to consumer webmail which can impact Outlook connectivity and potentially other Office 365 applications.</p>",
+                    SessionType = LangHelper.GetString("HTTP_403_Forbidden_Proxy_Block_SessionType"),
+                    ResponseCodeDescription = LangHelper.GetString("HTTP_403_Forbidden_Proxy_Block_ResponseCodeDescription"),
+                    ResponseAlert = LangHelper.GetString("HTTP_403_Forbidden_Proxy_Block_ResponseAlert"),
+                    ResponseComments = LangHelper.GetString("HTTP_403_Forbidden_Proxy_Block_ResponseComments"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -117,14 +106,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 {
                     SectionTitle = "HTTP_403s_EWS_Mailbox_Language",
 
-                    SessionType = "HTTP 403 EWS FORBIDDEN",
-                    ResponseCodeDescription = "403 EWS Forbidden",
-                    ResponseAlert = "<b><span style='color:red'>HTTP 403 Forbidden</span></b>",
-                    ResponseComments = "<p>If you are troubleshooting a 3rd party EWS application (using application impersonation) and the service account mailbox "
-                    + "has been recently migrated into the cloud, ensure mailbox is licensed and to log into the service account mailbox for the first time using OWA at "
-                    + "<a href='https://outlook.office365.com' target='_blank'>https://outlook.office365.com</a> to set the mailbox language / culture.</p>"
-                    + "<p>Validate with: Get-Mailbox service-account@domain.com | FL Languages</p>"
-                    + "<p>Without the language set on the mailbox, EWS will not work properly.</p>",
+                    SessionType = LangHelper.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_SessionType"),
+                    ResponseCodeDescription = LangHelper.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseCodeDescription"),
+                    ResponseAlert = LangHelper.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseAlert"),
+                    ResponseComments = LangHelper.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseComments"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -170,15 +155,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_403s",
 
-                SessionType = "HTTP 403 FORBIDDEN",
-                ResponseCodeDescription = "403 Forbidden",
-                ResponseAlert = "<b><span style='color:red'>HTTP 403 Forbidden</span></b>",
-                ResponseComments = "While HTTP 403's can be symptomatic of a proxy server blocking traffic, "
-                + "however the phrase 'Access Denied' was not detected in the response body."
-                + "<p>A small number of HTTP 403's can be seen in normal working scenarios. Check the Raw and WebView tabs to look for anything which looks suspect.</p>"
-                + "<p>If you are troubleshooting Free/Busy (Meeting availability info) or setting Out of Office messages then you may be more interested in these.</p>"
-                + "<p>See: <a href='https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-2010/dd877045(v=exchg.140)' target='_blank'>"
-                + "https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-2010/dd877045(v=exchg.140) </a></p>",
+                SessionType = LangHelper.GetString("HTTP_403_Forbidden_Everything_Else_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_403_Forbidden_Everything_Else_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_403_Forbidden_Everything_Else_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_403_Forbidden_Everything_Else_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
