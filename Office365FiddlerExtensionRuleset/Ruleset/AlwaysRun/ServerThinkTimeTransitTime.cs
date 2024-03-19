@@ -70,7 +70,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     {
                         sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
-                            ServerThinkTime = $"<b><span style='color:green'>{ServerSeconds} second ({ServerMilliseconds}ms).</span></b>"
+                            ServerThinkTime = $"<b><span style='color:green'>"
+                                + $"{ServerSeconds} {LangHelper.GetString("Second")} ({ServerMilliseconds}{LangHelper.GetString("Milliseconds")}).</span></b>"
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -80,7 +81,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     {
                         sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
-                            ServerThinkTime = $"<b><span style='color:green'>{ServerSeconds} seconds ({ServerMilliseconds}ms).</span></b>"
+                            ServerThinkTime = $"<b><span style='color:green'>"
+                                + $"{ServerSeconds} {LangHelper.GetString("Seconds")} ({ServerMilliseconds}{LangHelper.GetString("Milliseconds")}).</span></b>"
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -92,7 +94,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     {
                         sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
-                            TransitTime = $"<b><span style='color:red'>{dTransitTimeMilliseconds}ms.</span></b>"
+                            TransitTime = $"<b><span style='color:red'>{dTransitTimeMilliseconds}{LangHelper.GetString("Milliseconds")}.</span></b>"
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -102,7 +104,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     {
                         sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
-                            TransitTime = $"<b><span style='color:red'>{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms).</span></b>"
+                            TransitTime = $"<b><span style='color:red'>"
+                                + $"{iTransitTimeSeconds} {LangHelper.GetString("Second")} ({dTransitTimeMilliseconds}{LangHelper.GetString("Milliseconds")}).</span></b>"
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -112,7 +115,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     {
                         sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
-                            TransitTime = $"<b><span style='color:red'>{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms).</span></b>"
+                            TransitTime = $"<b><span style='color:red'>"
+                                + $"{iTransitTimeSeconds} {LangHelper.GetString("Seconds")} ({dTransitTimeMilliseconds}{LangHelper.GetString("Milliseconds")}).</span></b>"
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -125,7 +129,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     {
                         var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
-                            ServerThinkTime = $"{ServerMilliseconds}ms"
+                            ServerThinkTime = $"{ServerMilliseconds}{LangHelper.GetString("Milliseconds")}"
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -135,7 +139,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     {
                         var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
-                            ServerThinkTime = $"{ServerSeconds} second ({ServerMilliseconds}ms)."
+                            ServerThinkTime = $"{ServerSeconds} {LangHelper.GetString("Second")} ({ServerMilliseconds}{LangHelper.GetString("Milliseconds")})."
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -145,7 +149,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     {
                         var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
-                            ServerThinkTime = $"{ServerSeconds} seconds ({ServerMilliseconds}ms)."
+                            ServerThinkTime = $"{ServerSeconds} {LangHelper.GetString("Seconds")} ({ServerMilliseconds}{LangHelper.GetString("Milliseconds")})."
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -156,7 +160,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     {
                         var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
-                            TransitTime = $"{dTransitTimeMilliseconds}ms"
+                            TransitTime = $"{dTransitTimeMilliseconds}{LangHelper.GetString("Milliseconds")}"
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -166,7 +170,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     {
                         var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
-                            TransitTime = $"{iTransitTimeSeconds} second ({dTransitTimeMilliseconds} ms)."
+                            TransitTime = $"{iTransitTimeSeconds} {LangHelper.GetString("Second")} ({dTransitTimeMilliseconds}{LangHelper.GetString("Milliseconds")})."
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -176,7 +180,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     {
                         var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
-                            TransitTime = $"{iTransitTimeSeconds} seconds ({dTransitTimeMilliseconds} ms)."
+                            TransitTime = $"{iTransitTimeSeconds} {LangHelper.GetString("Seconds")} ({dTransitTimeMilliseconds}{LangHelper.GetString("Milliseconds")})."
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

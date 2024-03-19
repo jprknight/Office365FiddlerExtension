@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
@@ -69,12 +65,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_504s",
 
-                SessionType = "***INTERNET BLOCKED***",
-                ResponseCodeDescription = "504 Gateway Timeout - Internet Access Blocked",
-                ResponseAlert = "<b><span style='color:red'>HTTP 504 Gateway Timeout -- Internet Access Blocked</span></b>",
-                ResponseComments = "Detected the keywords 'internet' and 'access' and 'blocked'. Potentially the computer this trace was collected "
-                + "from has been <b><span style='color:red'>quaratined for internet access by a LAN based network security device</span></b>."
-                + "<p>Validate this by checking the webview and raw tabs for more information.</p>",
+                SessionType = LangHelper.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -122,11 +116,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_504s",
 
-                SessionType = "Gateway Timeout",
-                ResponseCodeDescription = "504 Gateway Timeout",
-                ResponseAlert = "<b><span style='color:red'>HTTP 504 Gateway Timeout</span></b>",
-                ResponseComments = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting "
-                + "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.",
+                SessionType = LangHelper.GetString("HTTP_504_Gateway_Timeout_Anything_Else_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_504_Gateway_Timeout_Anything_Else_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_504_Gateway_Timeout_Anything_Else_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_504_Gateway_Timeout_Anything_Else_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

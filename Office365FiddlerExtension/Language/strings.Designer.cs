@@ -70,6 +70,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ADFS Authentication.
+        /// </summary>
+        internal static string ADFS_Authentication {
+            get {
+                return ResourceManager.GetString("ADFS Authentication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All Session Analysis.
         /// </summary>
         internal static string All_Session_Analysis {
@@ -120,6 +129,204 @@ namespace Office365FiddlerExtension.Language {
         internal static string Authentication {
             get {
                 return ResourceManager.GetString("Authentication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Third-party SAML response found. SAML response parser not running..
+        /// </summary>
+        internal static string Authentication_3rd_Party_Saml_Response_AuthenticationDescription {
+            get {
+                return ResourceManager.GetString("Authentication_3rd_Party_Saml_Response_AuthenticationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Third-party SAMLResponseParser.
+        /// </summary>
+        internal static string Authentication_3rd_Party_Saml_Response_AuthenticationType {
+            get {
+                return ResourceManager.GetString("Authentication_3rd_Party_Saml_Response_AuthenticationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Third-party SAML response found. SAML response parser not running..
+        /// </summary>
+        internal static string Authentication_3rd_Party_Saml_Response_ResponseComments {
+            get {
+                return ResourceManager.GetString("Authentication_3rd_Party_Saml_Response_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SAML token issued by third-party IDP. SAML response parser not running..
+        /// </summary>
+        internal static string Authentication_3rd_Party_Saml_Response_SamlParserNotRunning {
+            get {
+                return ResourceManager.GetString("Authentication_3rd_Party_Saml_Response_SamlParserNotRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3rd-party SAMLResponseParser.
+        /// </summary>
+        internal static string Authentication_3rd_Party_Saml_Response_SessionType {
+            get {
+                return ResourceManager.GetString("Authentication_3rd_Party_Saml_Response_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Client Basic Auth Capable.
+        /// </summary>
+        internal static string Authentication_Basic_Auth_Capable_Client_Authentication {
+            get {
+                return ResourceManager.GetString("Authentication_Basic_Auth_Capable_Client_Authentication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is stating it is Basic Authentication capable. Whether it is used or not will depend on whether Basic Authentication is enabled in the Office 365 service.&lt;p&gt;If this is Outlook, in all likelihood this is an Outlook 2013 (updated prior to Modern Auth), Outlook 2010 or an older Outlook client, which does not support Modern Authentication.&lt;br /&gt;MutiFactor Authentication will not work as expected with Basic Authentication only capable Outlook clients&lt;/p&gt;.
+        /// </summary>
+        internal static string Authentication_Basic_Auth_Capable_Client_AuthenticationDescription {
+            get {
+                return ResourceManager.GetString("Authentication_Basic_Auth_Capable_Client_AuthenticationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Client Basic Auth Token.
+        /// </summary>
+        internal static string Authentication_Basic_Auth_Client_Using_Token_Authentication {
+            get {
+                return ResourceManager.GetString("Authentication_Basic_Auth_Client_Using_Token_Authentication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to accessing resources with a Basic Authentication security token.&lt;br /&gt;&lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;It&apos;s time to think about Modern Authentication!&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string Authentication_Basic_Auth_Client_Using_Token_AuthenticationDescription {
+            get {
+                return ResourceManager.GetString("Authentication_Basic_Auth_Client_Using_Token_AuthenticationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Client Modern Auth Capable.
+        /// </summary>
+        internal static string Authentication_Modern_Auth_Capable_Client_Authentication {
+            get {
+                return ResourceManager.GetString("Authentication_Modern_Auth_Capable_Client_Authentication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is stating it is Modern Authentication capable. Whether it is used or not will depend on whether Modern Authentication is enabled in the Office 365 service..
+        /// </summary>
+        internal static string Authentication_Modern_Auth_Capable_Client_AuthenticationDescription {
+            get {
+                return ResourceManager.GetString("Authentication_Modern_Auth_Capable_Client_AuthenticationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modern Auth Token.
+        /// </summary>
+        internal static string Authentication_Modern_Auth_Client_Using_Token_Authentication {
+            get {
+                return ResourceManager.GetString("Authentication_Modern_Auth_Client_Using_Token_Authentication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to accessing resources with a Modern Authentication security token..
+        /// </summary>
+        internal static string Authentication_Modern_Auth_Client_Using_Token_AuthenticationDescription {
+            get {
+                return ResourceManager.GetString("Authentication_Modern_Auth_Client_Using_Token_AuthenticationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modern Auth Disabled.
+        /// </summary>
+        internal static string Authentication_Modern_Auth_Disabled_Authentication {
+            get {
+                return ResourceManager.GetString("Authentication_Modern_Auth_Disabled_Authentication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to it&apos;s highly unusual for this to be the case for Microsoft365.&lt;p&gt;MutiFactor Authentication will not work as expected while Modern Authentication is disabled in the Microsoft365 workload. For Exchange Online, the following is important for Outlook connectivity:&lt;/p&gt;&lt;p&gt;Outlook 2010 and older do not support Modern Authentication and by extension MutliFactor Authentication.&lt;/p&gt;&lt;p&gt;Outlook 2013 supports modern authentication with updates and the EnableADAL registry key set to 1.&lt;/p&gt;&lt;p&gt;See https://support.microsoft. [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Authentication_Modern_Auth_Disabled_AuthenticationDescriptionEnd {
+            get {
+                return ResourceManager.GetString("Authentication_Modern_Auth_Disabled_AuthenticationDescriptionEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Session authentication has Modern Authentication disabled. At this point in.
+        /// </summary>
+        internal static string Authentication_Modern_Auth_Disabled_AuthenticationDescriptionStart {
+            get {
+                return ResourceManager.GetString("Authentication_Modern_Auth_Disabled_AuthenticationDescriptionStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Auth Headers.
+        /// </summary>
+        internal static string Authentication_No_Auth_Headers {
+            get {
+                return ResourceManager.GetString("Authentication_No_Auth_Headers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SAMLResponseParser.
+        /// </summary>
+        internal static string Authentication_SAML_Response_Parser_Authentication {
+            get {
+                return ResourceManager.GetString("Authentication_SAML_Response_Parser_Authentication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ADFS SAML response found. See below for SAML response parser..
+        /// </summary>
+        internal static string Authentication_SAML_Response_Parser_AuthenticationDescription {
+            get {
+                return ResourceManager.GetString("Authentication_SAML_Response_Parser_AuthenticationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SAMLResponseParser.
+        /// </summary>
+        internal static string Authentication_SAML_Response_Parser_AuthenticationType {
+            get {
+                return ResourceManager.GetString("Authentication_SAML_Response_Parser_AuthenticationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ADFS SAML response found. See below for SAML response parser..
+        /// </summary>
+        internal static string Authentication_SAML_Response_Parser_ResponseComments {
+            get {
+                return ResourceManager.GetString("Authentication_SAML_Response_Parser_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SAML Request/Response.
+        /// </summary>
+        internal static string Authentication_SAML_Response_Parser_SessionType {
+            get {
+                return ResourceManager.GetString("Authentication_SAML_Response_Parser_SessionType", resourceCulture);
             }
         }
         
@@ -403,6 +610,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exchange Web Services.
+        /// </summary>
+        internal static string Exchange_Web_Services {
+            get {
+                return ResourceManager.GetString("Exchange Web Services", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extension DLL.
         /// </summary>
         internal static string Extension_DLL {
@@ -466,11 +682,29 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Free/Busy.
+        /// </summary>
+        internal static string FreeBusy {
+            get {
+                return ResourceManager.GetString("FreeBusy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to French.
         /// </summary>
         internal static string French {
             get {
                 return ResourceManager.GetString("French", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General Microsoft365.
+        /// </summary>
+        internal static string General_Microsoft365 {
+            get {
+                return ResourceManager.GetString("General Microsoft365", resourceCulture);
             }
         }
         
@@ -2294,6 +2528,42 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 500 Internal Server Error&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_500_Internal_Server_Error_All_Others_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_All_Others_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 500 Internal Server Error.
+        /// </summary>
+        internal static string HTTP_500_Internal_Server_Error_All_Others_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_All_Others_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Consider the server that issued this response, look at the IP address in the &apos;Host IP&apos; column and lookup where it is hosted to know who should be looking at the issue..
+        /// </summary>
+        internal static string HTTP_500_Internal_Server_Error_All_Others_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_All_Others_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to !HTTP 500 Internal Server Error!.
+        /// </summary>
+        internal static string HTTP_500_Internal_Server_Error_All_Others_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_All_Others_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 500 Internal Server Error - EWS Impersonate User Denied&lt;/span&gt;&lt;/b&gt;.
         /// </summary>
         internal static string HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseAlert {
@@ -2402,6 +2672,362 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;AUTODISCOVER&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 502 Bad Gateway.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This AutoDiscover request was refused by the server it was sent to. Check the raw tab for further details..
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to !AUTODISCOVER!.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 502 Bad Gateway&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_Anything_Else_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Anything_Else_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 502 Bad Gateway.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_Anything_Else_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Anything_Else_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Potential to cause the issue you are investigating. Do you see expected responses beyond this session in the trace? Is the Host IP for the device issuing this response with a subnet within your lan or something in a cloud provider&apos;s network?.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_Anything_Else_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Anything_Else_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to !Bad Gateway!.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_Anything_Else_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Anything_Else_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Domain not detected.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_Domain_Not_Detected {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_Domain_Not_Detected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:green&apos;&gt;False Positive&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 502 Bad Gateway False Positive.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to on port 443. &lt;p&gt;Validate this message by confirming the Host IP (if shown) is an Office 365 Host/IP address and perform a telnet to it on port 80.&lt;/p&gt;&lt;p&gt;If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects requests on port 80 to &lt;a href=&apos;https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml&apos; target=&apos;_blank&apos;&gt;https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml&lt;/a&gt;&lt;p&gt;The reason for this is Microsoft does not [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCommentsEnd {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCommentsEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:green&apos;&gt;False Positive&lt;/span&gt;&lt;/b&gt;. By design Office 365 Autodiscover does not respond to.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCommentsStart {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCommentsStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to False Positive.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:green&apos;&gt;False Positive&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 502 Bad Gateway False Positive.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:green&apos;&gt;False positive on HTTP 502&lt;/span&gt;&lt;/b&gt;. By design, the host only accepts connections on port 25, port 443 is not available.&lt;p&gt;To validate this above lookup the record, confirm it is a MX record and attempt to connect to the MX host on ports 25 and 443.&lt;/p&gt;.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to False Positive.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:green&apos;&gt;False Positive&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 502 Bad Gateway False Positive.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telemetry failing is unlikely the cause of significant Office 365 client issues..
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to False Positive.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_Telemetry_False_Positive_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 503 Service Unavailable&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_503_Service_Unavailable_Everything_Else_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Everything_Else_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 503 Service Unavailable.
+        /// </summary>
+        internal static string HTTP_503_Service_Unavailable_Everything_Else_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Everything_Else_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Server that was contacted in this session reports it is unavailable&lt;/span&gt;&lt;/b&gt;. Look at the server that issued this response, it is healthy? Contactable? Contactable consistently or intermittently? Consider other session server responses in the 500&apos;s (500, 502 or 503) in conjunction with this session..
+        /// </summary>
+        internal static string HTTP_503_Service_Unavailable_Everything_Else_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Everything_Else_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to !Service Unavailable!.
+        /// </summary>
+        internal static string HTTP_503_Service_Unavailable_Everything_Else_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Everything_Else_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;FederatedSTSUnreachable&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseAle" +
+                        "rt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 503 Federation Service Unavailable.
+        /// </summary>
+        internal static string HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseCod" +
+                        "eDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;&lt;b&gt;Expected responses for ADFS&lt;/b&gt; (other federation services such as Ping, OKTA may vary)&lt;/p&gt;&lt;b&gt;AuthURL&lt;/b&gt;: Normally expected to show federation service logon page.&lt;br /&gt;&lt;b&gt;STSAuthURL&lt;/b&gt;: Normally expected to show HTTP 400.&lt;br /&gt;&lt;b&gt;MEXURL&lt;/b&gt;: Normally expected to show long stream of XML data.&lt;br /&gt;&lt;p&gt;If any of these show the HTTP 503 Service Unavailable this &lt;b&gt;confirms some kind of failure on the federation service&lt;/b&gt;.&lt;/p&gt;&lt;p&gt;If however you get the expected responses, this &lt;b&gt;does not neccessarily m [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseCommentsEnd {
+            get {
+                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseCom" +
+                        "mentsEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 503: FederatedSTSUnreachable&lt;/span&gt;&lt;/b&gt;.&lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;The fedeation service is unreachable or unavailable&lt;/span&gt;&lt;/b&gt;.&lt;p&gt;&lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Troubleshoot this issue first before doing anything else.&lt;/span&gt;&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check the Raw tab for additional details.&lt;/p&gt;&lt;p&gt;Check the realm page for the authenticating domain. Check the below links from the Realm page to see if the IDP gives the expected responses.&lt;/p&gt;.
+        /// </summary>
+        internal static string HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseCommentsStart {
+            get {
+                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseCom" +
+                        "mentsStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ***FederatedSTSUnreachable***.
+        /// </summary>
+        internal static string HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_SessionType" +
+                        "", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 504 Gateway Timeout&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_504_Gateway_Timeout_Anything_Else_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_504_Gateway_Timeout_Anything_Else_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 504 Gateway Timeout.
+        /// </summary>
+        internal static string HTTP_504_Gateway_Timeout_Anything_Else_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_504_Gateway_Timeout_Anything_Else_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The quantity of these types of server errors need to be considered in context with what you are troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern..
+        /// </summary>
+        internal static string HTTP_504_Gateway_Timeout_Anything_Else_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_504_Gateway_Timeout_Anything_Else_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gateway Timeout.
+        /// </summary>
+        internal static string HTTP_504_Gateway_Timeout_Anything_Else_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_504_Gateway_Timeout_Anything_Else_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 504 Gateway Timeout -- Internet Access Blocked&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 504 Gateway Timeout - Internet Access Blocked.
+        /// </summary>
+        internal static string HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detected the keywords &apos;internet&apos; and &apos;access&apos; and &apos;blocked&apos;. Potentially the computer this trace was collected from has been &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;quaratined for internet access by a LAN based network security device&lt;/span&gt;&lt;/b&gt;.&lt;p&gt;Validate this by checking the webview and raw tabs for more information.&lt;/p&gt;.
+        /// </summary>
+        internal static string HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ***INTERNET BLOCKED***.
+        /// </summary>
+        internal static string HTTP_504_Gateway_Timeout_Internet_Access_Blocked_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inspector.
         /// </summary>
         internal static string Inspector {
@@ -2461,6 +3087,105 @@ namespace Office365FiddlerExtension.Language {
         internal static string Locally_Installed_Information {
             get {
                 return ResourceManager.GetString("Locally Installed Information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Long Running Client Session&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string LongRunningSessionsClientSlow_ResponseAlert {
+            get {
+                return ResourceManager.GetString("LongRunningSessionsClientSlow_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;&lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Long running session found&lt;/span&gt;&lt;/b&gt;. A small number of long running sessions in the &lt; 10 seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue.&lt;/p&gt;&lt;p&gt;If, however, you are troubleshooting an application performance issue, consider the number of sessions which have this warning. Investigate any proxy device or load balancer in your network, or any other device sitting between the client computer and access to the application ser [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string LongRunningSessionsClientSlow_ResponseComments {
+            get {
+                return ResourceManager.GetString("LongRunningSessionsClientSlow_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Long Running Client Session.
+        /// </summary>
+        internal static string LongRunningSessionsClientSlow_SessionType {
+            get {
+                return ResourceManager.GetString("LongRunningSessionsClientSlow_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Long Running Server Session&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string LongRunningSessionsServerSlow_ResponseAlert {
+            get {
+                return ResourceManager.GetString("LongRunningSessionsServerSlow_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Long running Server session found. A small number of long running sessions in the &lt; 10 seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue.&lt;p&gt;If, however, you are troubleshooting an application performance issue, consider the number of sessions which have this warning alongany proxy device in your network, or any other device sitting between the client computer and access to the internet. Try the divide and conquer approach. What can you remove or bypass f [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string LongRunningSessionsServerSlow_ResponseComments {
+            get {
+                return ResourceManager.GetString("LongRunningSessionsServerSlow_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Long Running Server Session.
+        /// </summary>
+        internal static string LongRunningSessionsServerSlow_SessionType {
+            get {
+                return ResourceManager.GetString("LongRunningSessionsServerSlow_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:orange&apos;&gt;Roundtrip Time Warning&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string LongRunningSessionsWarning_ResponseAlert {
+            get {
+                return ResourceManager.GetString("LongRunningSessionsWarning_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This session took more than 2.5 seconds to complete. A small number of sessions completing roundtrip in this timeframe is not necessary sign of an issue..
+        /// </summary>
+        internal static string LongRunningSessionsWarning_ResponseComments {
+            get {
+                return ResourceManager.GetString("LongRunningSessionsWarning_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Roundtrip Time Warning.
+        /// </summary>
+        internal static string LongRunningSessionsWarning_SessionType {
+            get {
+                return ResourceManager.GetString("LongRunningSessionsWarning_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Microsoft365 Authentication.
+        /// </summary>
+        internal static string Microsoft365_Authentication {
+            get {
+                return ResourceManager.GetString("Microsoft365 Authentication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ms.
+        /// </summary>
+        internal static string Milliseconds {
+            get {
+                return ResourceManager.GetString("Milliseconds", resourceCulture);
             }
         }
         
@@ -2717,11 +3442,101 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Type Unknown.
+        /// </summary>
+        internal static string ResponseServer_Unknown {
+            get {
+                return ResourceManager.GetString("ResponseServer_Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SAML Response Parser.
         /// </summary>
         internal static string SAML_Response_Parser {
             get {
                 return ResourceManager.GetString("SAML Response Parser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SAML AttributeNameImmutibleID could not be determined..
+        /// </summary>
+        internal static string SamlToken_AttributeNameImmutibleID_Could_Not_Be_Determined {
+            get {
+                return ResourceManager.GetString("SamlToken_AttributeNameImmutibleID_Could_Not_Be_Determined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SAML AttributeNameUPN could not be determined..
+        /// </summary>
+        internal static string SamlToken_AttributeNameUPN_Could_Not_Be_Determined {
+            get {
+                return ResourceManager.GetString("SamlToken_AttributeNameUPN_Could_Not_Be_Determined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data points not found for AttributeNameUPN.
+        /// </summary>
+        internal static string SamlToken_AttributeNameUPN_Data_Points_Not_Found {
+            get {
+                return ResourceManager.GetString("SamlToken_AttributeNameUPN_Data_Points_Not_Found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data points not found for NameIdentifierFormat.
+        /// </summary>
+        internal static string SamlToken_NameIdentifierFormat_Data_Points_Not_Found {
+            get {
+                return ResourceManager.GetString("SamlToken_NameIdentifierFormat_Data_Points_Not_Found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No SAML Data in session.
+        /// </summary>
+        internal static string SamlToken_No_Data {
+            get {
+                return ResourceManager.GetString("SamlToken_No_Data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SAML signing certificate could not be determined..
+        /// </summary>
+        internal static string SamlToken_SigningCertificate_Could_Not_Be_Determined {
+            get {
+                return ResourceManager.GetString("SamlToken_SigningCertificate_Could_Not_Be_Determined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data points not found for SigningCertificate..
+        /// </summary>
+        internal static string SamlToken_SigningCertificate_Data_Points_Not_Found {
+            get {
+                return ResourceManager.GetString("SamlToken_SigningCertificate_Data_Points_Not_Found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data points not found for TokenAttributeNameImmutibleID.
+        /// </summary>
+        internal static string SamlToken_TokenAttributeNameImmutibleID_Data_Points_Not_Found {
+            get {
+                return ResourceManager.GetString("SamlToken_TokenAttributeNameImmutibleID_Data_Points_Not_Found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Issuer in SAML token could not be determined..
+        /// </summary>
+        internal static string SamlToken_TokenIssuer_Could_Not_Be_Determined {
+            get {
+                return ResourceManager.GetString("SamlToken_TokenIssuer_Could_Not_Be_Determined", resourceCulture);
             }
         }
         
@@ -2749,6 +3564,24 @@ namespace Office365FiddlerExtension.Language {
         internal static string ScoreForSession {
             get {
                 return ResourceManager.GetString("ScoreForSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to second.
+        /// </summary>
+        internal static string Second {
+            get {
+                return ResourceManager.GetString("Second", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to seconds.
+        /// </summary>
+        internal static string Seconds {
+            get {
+                return ResourceManager.GetString("Seconds", resourceCulture);
             }
         }
         
@@ -2897,6 +3730,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Office 365 Fiddler Extension does not yet have a way to classify this session.&lt;p&gt;If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: &lt;a href=&apos;https://github.com/jprknight/Office365FiddlerExtension&apos; target=&apos;_blank&apos;&gt;https://github.com/jprknight/Office365FiddlerExtension&lt;/a&gt;.&lt;/p&gt;.
+        /// </summary>
+        internal static string SessionType_Unknown_ResponseComments {
+            get {
+                return ResourceManager.GetString("SessionType_Unknown_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set Session Severity.
         /// </summary>
         internal static string Set_Session_Severity {
@@ -2983,6 +3825,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Types {
             get {
                 return ResourceManager.GetString("Types", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unclassified.
+        /// </summary>
+        internal static string Unclassified {
+            get {
+                return ResourceManager.GetString("Unclassified", resourceCulture);
             }
         }
         

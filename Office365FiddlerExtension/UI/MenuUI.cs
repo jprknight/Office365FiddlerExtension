@@ -23,7 +23,7 @@ namespace Office365FiddlerExtension
 
         public MenuItem MiEnabled { get; set; }
 
-        public MenuItem MiLanguage { get; set; }
+        //public MenuItem MiLanguage { get; set; }
 
         public MenuItem MiLanguage_English_ENGB { get; set; }
 
@@ -68,7 +68,7 @@ namespace Office365FiddlerExtension
                 {
                     Checked = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
                 };
-
+                /*
                 this.MiLanguage = new MenuItem(LangHelper.GetString("Language"));
 
                 this.MiLanguage_English_ENGB = new MenuItem($"{LangHelper.GetString("English")} (en-GB)", new EventHandler(this.MiLanguageEnglishENGB_Click))
@@ -101,7 +101,7 @@ namespace Office365FiddlerExtension
                 {
                     Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("ES")
                 };
-
+                */
                 this.MiReleasesDownloadWebpage = new MenuItem($"{LangHelper.GetString("Releases")}", new System.EventHandler(this.MiReleasesDownloadWebpage_click));
 
                 this.MiWiki = new MenuItem($"{LangHelper.GetString("Wiki")}", new System.EventHandler(this.MiWiki_Click));
@@ -113,8 +113,8 @@ namespace Office365FiddlerExtension
                 // Add menu items to top level menu.
                 this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { this.MiEnabled,
                     new MenuItem("-"),
-                    this.MiLanguage,
-                    new MenuItem("-"),
+                    //this.MiLanguage,
+                    //new MenuItem("-"),
                     this.MiReleasesDownloadWebpage,
                     this.MiWiki,
                     this.MiReportIssues,
@@ -122,6 +122,7 @@ namespace Office365FiddlerExtension
                     this.MiAbout
                 });
 
+                /*
                 this.MiLanguage.MenuItems.AddRange(new MenuItem[] {
                     this.MiLanguage_English_ENGB,
                     this.MiLanguage_English_ENUS,
@@ -130,13 +131,14 @@ namespace Office365FiddlerExtension
                     this.MiLanguage_PT,
                     this.MiLanguage_ES
                 });
-                
+                */
 
                 FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExtensionMenu);
                 IsInitialized = true;
             }
         }
 
+        /*
         private void CheckLanguageSelection()
         {
             MiLanguage_English_ENUS.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-US");
@@ -189,6 +191,7 @@ namespace Office365FiddlerExtension
 
             CheckLanguageSelection();
         }
+        */
 
         private void MiAbout_Click(object sender, EventArgs e)
         {

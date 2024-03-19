@@ -65,7 +65,7 @@ namespace Office365FiddlerExtension.Services
                 session.oFlags.Remove("X-SACL");
                 session.oFlags.Remove("X-STCL");
                 session.oFlags.Remove("X-SRSCL");
-                // REVIEW THIS -- Commenting out this last line, so analysis can be retained in a saved SAZ file.
+                // Commenting out this last line, so analysis can be retained in a saved SAZ file.
                 //session.oFlags.Remove("MICROSOFT365FIDDLEREXTENSIONJSON");
             }
 

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
@@ -39,11 +35,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "LongRunningSesions_Warning",
 
-                SessionType = "Roundtrip Time Warning",
-                ResponseCodeDescription = "",
-                ResponseAlert = "<b><span style='color:orange'>Roundtrip Time Warning</span></b>",
-                ResponseComments = "This session took more than 2.5 seconds to complete. "
-                + "A small number of sessions completing roundtrip in this timeframe is not necessary sign of an issue.",
+                SessionType = LangHelper.GetString("LongRunningSessionsWarning_SessionType"),
+                //ResponseCodeDescription = "",
+                ResponseAlert = LangHelper.GetString("LongRunningSessionsWarning_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("LongRunningSessionsWarning_ResponseComments"),
 
                 SessionSeverity = 40
             };
@@ -70,16 +65,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "LongRunningSessions_Client_Session",
 
-                SessionType = "Long Running Client Session",
-                ResponseCodeDescription = "",
-                ResponseAlert = "<b><span style='color:red'>Long Running Client Session</span></b>",
-                ResponseComments = "<p><b><span style='color:red'>Long running session found</span></b>. A small number of long running sessions in the < 10 "
-                + "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue.</p>"
-                + "<p>If, however, you are troubleshooting an application performance issue, consider the number of sessions which "
-                + "have this warning. Investigate any proxy device or load balancer in your network, "
-                + "or any other device sitting between the client computer and access to the application server the data resides on.</p>"
-                + "<p>Try the divide and conquer approach. What can you remove or bypass from the equation to see if the application then performs "
-                + "normally?</p>",
+                SessionType = LangHelper.GetString("LongRunningSessionsClientSlow_SessionType"),
+                //ResponseCodeDescription = "",
+                ResponseAlert = LangHelper.GetString("LongRunningSessionsClientSlow_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("LongRunningSessionsClientSlow_ResponseComments"),
 
                 SessionSeverity = 60
             };
@@ -107,16 +96,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "LongRunningSessions_Server_Session",
 
-                SessionType = "Long Running Server Session",
-                ResponseCodeDescription = "",
-                ResponseAlert = "<b><span style='color:red'>Long Running Server Session</span></b>",
-                ResponseComments = "Long running Server session found. A small number of long running sessions in the < 10 "
-                + "seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue."
-                + "<p>If, however, you are troubleshooting an application performance issue, consider the number of sessions which "
-                + "have this warning alongany proxy device in your network, "
-                + "or any other device sitting between the client computer and access to the internet."
-                + "Try the divide and conquer approach. What can you remove or bypass from the equation to see if the application then performs "
-                + "normally?</p>",
+                SessionType = LangHelper.GetString("LongRunningSessionsServerSlow_SessionType"),
+                //ResponseCodeDescription = "",
+                ResponseAlert = LangHelper.GetString("LongRunningSessionsServerSlow_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("LongRunningSessionsServerSlow_ResponseComments"),
 
                 SessionSeverity = 60
             };

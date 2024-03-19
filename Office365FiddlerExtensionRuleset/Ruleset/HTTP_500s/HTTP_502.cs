@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
@@ -64,10 +60,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_502s",
 
-                SessionType = "False Positive",
-                ResponseCodeDescription = "502 Bad Gateway False Positive",
-                ResponseAlert = "<b><span style='color:green'>False Positive</span></b>",
-                ResponseComments = "Telemetry failing is unlikely the cause of significant Office 365 client issues.",
+                SessionType = LangHelper.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -109,7 +105,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_502s|HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive");
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_502s|HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -130,14 +126,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_502s",
 
-                SessionType = "False Positive",
-                ResponseCodeDescription = "502 Bad Gateway False Positive",
-                ResponseAlert = "<b><span style='color:green'>False Positive</span></b>",
-                ResponseComments = "<b><span style='color:green'>False positive on HTTP 502</span></b>. "
-                + "By design, the host only accepts connections on port 25, port 443 is not available."
-                + "<p>To validate this above lookup the record, confirm it is a MX record and attempt to connect to the MX host on ports 25 and 443.</p>",
-                ResponseServer = "False Positive",
-                Authentication = "False Positive",
+                SessionType = LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseComments"),
+                ResponseServer = LangHelper.GetString("False Positive"),
+                Authentication = LangHelper.GetString("False Positive"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -207,26 +201,23 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
             else
             {
-                AutoDFalsePositiveDomain = "<Domain not detected by extension>";
+                AutoDFalsePositiveDomain = $"<{LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_Domain_Not_Detected")}>";
             }
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_502s",
 
-                SessionType = "False Positive",
-                ResponseCodeDescription = "502 Bad Gateway False Positive",
-                ResponseAlert = "<b><span style='color:green'>False Positive</span></b>",
-                ResponseComments = "<b><span style='color:green'>False Positive</span></b>. By design Office 365 Autodiscover does not respond to "
+                SessionType = LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCommentsStart")
+                + " "
                 + AutoDFalsePositiveDomain
-                + " on port 443. "
-                + "<p>Validate this message by confirming the Host IP (if shown) is an Office 365 Host/IP address and perform a telnet to it on port 80.</p>"
-                + "<p>If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects "
-                + "requests on port 80 to <a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a>"
-                + "<p>The reason for this is Microsoft does not maintain SSL certificates for every tenant domain name registered on the .onmicrosoft.com domain."
-                + "AutoDiscover redirects to autodiscover-s.outlook.com which does accept connections on 443 and Microsoft does maintain SSL certificates for this endpoint.</p>",
-                ResponseServer = "False Positive",
-                Authentication = "False Positive",
+                + " "
+                + LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCommentsEnd"),
+                ResponseServer = LangHelper.GetString("False Positive"),
+                Authentication = LangHelper.GetString("False Positive"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -284,10 +275,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover",
 
-                SessionType = "!AUTODISCOVER!",
-                ResponseCodeDescription = "502 Bad Gateway",
-                ResponseAlert = "<b><span style='color:red'>AUTODISCOVER</span></b>",
-                ResponseComments = "This AutoDiscover request was refused by the server it was sent to. Check the raw tab for further details.",
+                SessionType = LangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -335,12 +326,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_502s",
 
-                SessionType = "!Bad Gateway!",
-                ResponseCodeDescription = "502 Bad Gateway",
-                ResponseAlert = "<b><span style='color:red'>HTTP 502 Bad Gateway</span></b>",
-                ResponseComments = "Potential to cause the issue you are investigating. "
-                + "Do you see expected responses beyond this session in the trace? Is the Host IP for the device issuing this response with a subnet "
-                + "within your lan or something in a cloud provider's network?",
+                SessionType = LangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

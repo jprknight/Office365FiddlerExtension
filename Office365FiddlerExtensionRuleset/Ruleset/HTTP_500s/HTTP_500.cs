@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
@@ -240,11 +236,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_500s",
 
-                SessionType = "!HTTP 500 Internal Server Error!",
-                ResponseCodeDescription = "500 Internal Server Error",
-                ResponseAlert = "<b><span style='color:red'>HTTP 500 Internal Server Error</span></b>",
-                ResponseComments = "Consider the server that issued this response, look at the IP address in the 'Host IP' "
-                + "column and lookup where it is hosted to know who should be looking at the issue.",
+                SessionType = LangHelper.GetString("HTTP_500_Internal_Server_Error_All_Others_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_500_Internal_Server_Error_All_Others_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_500_Internal_Server_Error_All_Others_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_500_Internal_Server_Error_All_Others_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

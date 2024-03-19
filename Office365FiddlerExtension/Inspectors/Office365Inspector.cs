@@ -224,8 +224,7 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine($"{LangHelper.GetString("Response Code")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
-                //REVIEW THIS. Add this into a resource file or Extension URLs.
-                ResultsString.AppendLine($"<a href='https://en.wikipedia.org/wiki/List_of_HTTP_status_codes' target='_blank'>{ExtensionSessionFlags.ResponseCodeDescription}</a>");
+                ResultsString.AppendLine($"<a href='{URLsJsonService.Instance.GetDeserializedExtensionURLs().ResponseCodes}' target='_blank'>{ExtensionSessionFlags.ResponseCodeDescription}</a>");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
@@ -288,7 +287,8 @@ namespace Office365FiddlerExtension.Inspectors
                     ResultsString.AppendLine("</tr>");
                 }
 
-                // REVIEW THIS. Make un-calculable inspector Elapsed time 0 or something. Or make this logic check if integer. Multi-language could break this.
+                // REVIEW THIS - Checked March 2024. Make un-calculable inspector Elapsed time 0 or something. Or make this logic check if integer. Multi-language could break this.
+                // Ignore this unless multi language support is implemented.
                 if (ExtensionSessionFlags.InspectorElapsedTime != "Insufficient data")
                 {
                     ResultsString.AppendLine("<tr>");
@@ -316,7 +316,8 @@ namespace Office365FiddlerExtension.Inspectors
 
                 // Authentication
                 #region Authentication
-                // REVIEW THIS -- Multi Language mess with this logic?
+                // REVIEW THIS - Checked March 2024 - Multi Language mess with this logic?
+                // Ignore this unless multi language support is implemented.
                 if (ExtensionSessionFlags.Authentication != "No Auth Headers")
                 {
                     ResultsString.AppendLine($"<h2>{LangHelper.GetString("Authentication")}</h2>");

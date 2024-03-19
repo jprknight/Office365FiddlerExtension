@@ -180,7 +180,7 @@ namespace Office365FiddlerExtension.Services
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
 
             // Set the Menu item to reflect change.
-            // REVIEW THIS -- Needs Multi-Language.
+            // REVIEW THIS - Checked March 2024 - Change needed if enabling Multi-Language support.
             MenuUI.Instance.ExtensionMenu.Text = ExtensionSessionProcessingEnabled ? "Office 365 (Enabled)" : "Office 365 (Disabled)";
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
@@ -406,7 +406,6 @@ namespace Office365FiddlerExtension.Services
 
         public string ExtensionDLL { get; set; }
 
-        // REVIEW THIS -- Is it needed?
         public string SessionClassificationJsonFileName { get; set; }
 
         public string PreferredLanguage { get; set; }

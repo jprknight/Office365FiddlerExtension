@@ -51,6 +51,7 @@
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\ApacheAutodiscover.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\FiddlerUpdateSessions.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\LoopBackTunnel.cs" />
+    <Compile Include="Ruleset\HTTP_0\HTTP_0_OWA_Notification_Channel.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_3S_Suggestions.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Actually_OK.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_ClientAccessRule.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_OWA.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_REST_People_Request.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Unified_Groups_Settings.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_OWA_Notification_Channel.cs" />
     <Compile Include="Ruleset\HTTP_300s\HTTP_302.cs" />
     <Compile Include="Ruleset\HTTP_300s\HTTP_307.cs" />
     <Compile Include="Ruleset\HTTP_400s\HTTP_400.cs" />
@@ -88,7 +90,7 @@
     <Compile Include="Ruleset\SelectivelyRun\LongRunningSessions.cs" />
     <Compile Include="Ruleset\SelectivelyRun\ResponseServer.cs" />
     <Compile Include="Ruleset\SelectivelyRun\SessionType.cs" />
-    <Compile Include="Ruleset\SessionWordSearch.cs" />
+    <Compile Include="Ruleset\SessionContentSearch.cs" />
     <Compile Include="Ruleset\AlwaysRun\CalculateSessionAge.cs" />
     <Compile Include="Ruleset\AlwaysRun\ProcessName.cs" />
     <Compile Include="Ruleset\AlwaysRun\ServerThinkTimeTransitTime.cs" />

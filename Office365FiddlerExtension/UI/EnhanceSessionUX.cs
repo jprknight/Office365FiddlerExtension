@@ -1,12 +1,6 @@
 ﻿using Office365FiddlerExtension.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Fiddler;
 using Newtonsoft.Json;
-using System.Reflection;
 
 namespace Office365FiddlerExtension.UI
 {

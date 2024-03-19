@@ -23,9 +23,9 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
-            int wordCountError = SessionWordSearch.Instance.Search(this.session, "Error");
-            int wordCountFailed = SessionWordSearch.Instance.Search(this.session, "failed");
-            int wordCountException = SessionWordSearch.Instance.Search(this.session, "exception");
+            int wordCountError = SessionContentSearch.Instance.SearchForWord(this.session, "Error");
+            int wordCountFailed = SessionContentSearch.Instance.SearchForWord(this.session, "failed");
+            int wordCountException = SessionContentSearch.Instance.SearchForWord(this.session, "exception");
 
             string wordCountErrorText;
             string wordCountFailedText;

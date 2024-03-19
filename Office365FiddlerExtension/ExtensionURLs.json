@@ -4,6 +4,7 @@
   "ExtensionVersion": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/ExtensionVersion.json",
   "SessionClassification": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/SessionClassification.json",
   "Installer": "https://github.com/jprknight/Office365FiddlerExtension/releases/latest",
+  "ResponseCodes": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes",
   "Wiki": "https://github.com/jprknight/Office365FiddlerExtension/wiki",
   "WikiSessionTimeThresholds": "https://github.com/jprknight/Office365FiddlerExtension/wiki/Session-Time-Thresholds",
   "WikiScoreForSession": "https://github.com/jprknight/Office365FiddlerExtension/wiki/What-is-ScoreForSession%3F",

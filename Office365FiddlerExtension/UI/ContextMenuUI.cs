@@ -1,10 +1,6 @@
 ﻿using Fiddler;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 using Office365FiddlerExtension.UI;

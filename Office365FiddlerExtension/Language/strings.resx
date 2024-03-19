@@ -120,6 +120,9 @@
   <data name="About" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="ADFS Authentication" xml:space="preserve">
+    <value>ADFS Authentication</value>
+  </data>
   <data name="All Session Analysis" xml:space="preserve">
     <value>All Session Analysis</value>
   </data>
@@ -137,6 +140,72 @@
   </data>
   <data name="Authentication" xml:space="preserve">
     <value>Authentication</value>
+  </data>
+  <data name="Authentication_3rd_Party_Saml_Response_AuthenticationDescription" xml:space="preserve">
+    <value>Third-party SAML response found. SAML response parser not running.</value>
+  </data>
+  <data name="Authentication_3rd_Party_Saml_Response_AuthenticationType" xml:space="preserve">
+    <value>Third-party SAMLResponseParser</value>
+  </data>
+  <data name="Authentication_3rd_Party_Saml_Response_ResponseComments" xml:space="preserve">
+    <value>Third-party SAML response found. SAML response parser not running.</value>
+  </data>
+  <data name="Authentication_3rd_Party_Saml_Response_SamlParserNotRunning" xml:space="preserve">
+    <value>SAML token issued by third-party IDP. SAML response parser not running.</value>
+  </data>
+  <data name="Authentication_3rd_Party_Saml_Response_SessionType" xml:space="preserve">
+    <value>3rd-party SAMLResponseParser</value>
+  </data>
+  <data name="Authentication_Basic_Auth_Capable_Client_Authentication" xml:space="preserve">
+    <value>Client Basic Auth Capable</value>
+  </data>
+  <data name="Authentication_Basic_Auth_Capable_Client_AuthenticationDescription" xml:space="preserve">
+    <value>is stating it is Basic Authentication capable. Whether it is used or not will depend on whether Basic Authentication is enabled in the Office 365 service.&lt;p&gt;If this is Outlook, in all likelihood this is an Outlook 2013 (updated prior to Modern Auth), Outlook 2010 or an older Outlook client, which does not support Modern Authentication.&lt;br /&gt;MutiFactor Authentication will not work as expected with Basic Authentication only capable Outlook clients&lt;/p&gt;</value>
+  </data>
+  <data name="Authentication_Basic_Auth_Client_Using_Token_Authentication" xml:space="preserve">
+    <value>Client Basic Auth Token</value>
+  </data>
+  <data name="Authentication_Basic_Auth_Client_Using_Token_AuthenticationDescription" xml:space="preserve">
+    <value>accessing resources with a Basic Authentication security token.&lt;br /&gt;&lt;b&gt;&lt;span style='color:red'&gt;It's time to think about Modern Authentication!&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="Authentication_Modern_Auth_Capable_Client_Authentication" xml:space="preserve">
+    <value>Client Modern Auth Capable</value>
+  </data>
+  <data name="Authentication_Modern_Auth_Capable_Client_AuthenticationDescription" xml:space="preserve">
+    <value>is stating it is Modern Authentication capable. Whether it is used or not will depend on whether Modern Authentication is enabled in the Office 365 service.</value>
+  </data>
+  <data name="Authentication_Modern_Auth_Client_Using_Token_Authentication" xml:space="preserve">
+    <value>Modern Auth Token</value>
+  </data>
+  <data name="Authentication_Modern_Auth_Client_Using_Token_AuthenticationDescription" xml:space="preserve">
+    <value>accessing resources with a Modern Authentication security token.</value>
+  </data>
+  <data name="Authentication_Modern_Auth_Disabled_Authentication" xml:space="preserve">
+    <value>Modern Auth Disabled</value>
+  </data>
+  <data name="Authentication_Modern_Auth_Disabled_AuthenticationDescriptionEnd" xml:space="preserve">
+    <value>it's highly unusual for this to be the case for Microsoft365.&lt;p&gt;MutiFactor Authentication will not work as expected while Modern Authentication is disabled in the Microsoft365 workload. For Exchange Online, the following is important for Outlook connectivity:&lt;/p&gt;&lt;p&gt;Outlook 2010 and older do not support Modern Authentication and by extension MutliFactor Authentication.&lt;/p&gt;&lt;p&gt;Outlook 2013 supports modern authentication with updates and the EnableADAL registry key set to 1.&lt;/p&gt;&lt;p&gt;See https://support.microsoft.com/en-us/help/4041439/modern-authentication-configuration-requirements-for-transition-from-o &lt;/p&gt;&lt;p&gt;Outlook 2016 or newer. No updates or registry keys needed for Modern Authentication.&lt;/p&gt;</value>
+  </data>
+  <data name="Authentication_Modern_Auth_Disabled_AuthenticationDescriptionStart" xml:space="preserve">
+    <value>Session authentication has Modern Authentication disabled. At this point in</value>
+  </data>
+  <data name="Authentication_No_Auth_Headers" xml:space="preserve">
+    <value>No Auth Headers</value>
+  </data>
+  <data name="Authentication_SAML_Response_Parser_Authentication" xml:space="preserve">
+    <value>SAMLResponseParser</value>
+  </data>
+  <data name="Authentication_SAML_Response_Parser_AuthenticationDescription" xml:space="preserve">
+    <value>ADFS SAML response found. See below for SAML response parser.</value>
+  </data>
+  <data name="Authentication_SAML_Response_Parser_AuthenticationType" xml:space="preserve">
+    <value>SAMLResponseParser</value>
+  </data>
+  <data name="Authentication_SAML_Response_Parser_ResponseComments" xml:space="preserve">
+    <value>ADFS SAML response found. See below for SAML response parser.</value>
+  </data>
+  <data name="Authentication_SAML_Response_Parser_SessionType" xml:space="preserve">
+    <value>SAML Request/Response</value>
   </data>
   <data name="Black" xml:space="preserve">
     <value>Black</value>
@@ -235,6 +304,9 @@
   <data name="English" xml:space="preserve">
     <value>English</value>
   </data>
+  <data name="Exchange Web Services" xml:space="preserve">
+    <value>Exchange Web Services</value>
+  </data>
   <data name="Extension DLL" xml:space="preserve">
     <value>Extension DLL</value>
   </data>
@@ -256,8 +328,14 @@
   <data name="For an explantion of session timers refer to" xml:space="preserve">
     <value>For an explantion of session timers refer to:</value>
   </data>
+  <data name="FreeBusy" xml:space="preserve">
+    <value>Free/Busy</value>
+  </data>
   <data name="French" xml:space="preserve">
     <value>French</value>
+  </data>
+  <data name="General Microsoft365" xml:space="preserve">
+    <value>General Microsoft365</value>
   </data>
   <data name="General Session Data" xml:space="preserve">
     <value>General Session Data</value>
@@ -877,6 +955,18 @@
   <data name="HTTP_456_OAuth_Not_Available_SessionType" xml:space="preserve">
     <value>!Multi-Factor Auth!</value>
   </data>
+  <data name="HTTP_500_Internal_Server_Error_All_Others_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 500 Internal Server Error&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_500_Internal_Server_Error_All_Others_ResponseCodeDescription" xml:space="preserve">
+    <value>500 Internal Server Error</value>
+  </data>
+  <data name="HTTP_500_Internal_Server_Error_All_Others_ResponseComments" xml:space="preserve">
+    <value>Consider the server that issued this response, look at the IP address in the 'Host IP' column and lookup where it is hosted to know who should be looking at the issue.</value>
+  </data>
+  <data name="HTTP_500_Internal_Server_Error_All_Others_SessionType" xml:space="preserve">
+    <value>!HTTP 500 Internal Server Error!</value>
+  </data>
   <data name="HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseAlert" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 500 Internal Server Error - EWS Impersonate User Denied&lt;/span&gt;&lt;/b&gt;</value>
   </data>
@@ -889,8 +979,14 @@
   <data name="HTTP_500_Internal_Server_Error_Impersonate_User_Denied_SessionType" xml:space="preserve">
     <value>***EWS Impersonate User Denied***</value>
   </data>
+  <data name="HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 500 Internal Server Error - OWA Something went wrong.&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
   <data name="HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseCodeDescription" xml:space="preserve">
     <value>500 OWA Something went wrong</value>
+  </data>
+  <data name="HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseComments" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;OWA - Something went wrong&lt;/span&gt;&lt;/b&gt; found in this session response.&lt;p&gt;Check the response Raw and Webview tabs to see what further details can be pulled on the issue.&lt;/p&gt;&lt;p&gt;Does the issue reproduce with federated and non-federated (managed) domains?&lt;/p&gt;&lt;p&gt;Does the issue reproduce in different browsers?&lt;/p&gt;&lt;p&gt;Otherwise this might be an issue which needs to be raised to Microsoft support.&lt;/p&gt;</value>
   </data>
   <data name="HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_SessionType" xml:space="preserve">
     <value>***OWA SOMETHING WENT WRONG***</value>
@@ -906,6 +1002,123 @@
   </data>
   <data name="HTTP_500_Internal_Server_Error_Repeating_Redirects_SessionType" xml:space="preserve">
     <value>***REPEATING REDIRECTS DETECTED***</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;AUTODISCOVER&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseCodeDescription" xml:space="preserve">
+    <value>502 Bad Gateway</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseComments" xml:space="preserve">
+    <value>This AutoDiscover request was refused by the server it was sent to. Check the raw tab for further details.</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_SessionType" xml:space="preserve">
+    <value>!AUTODISCOVER!</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_Anything_Else_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 502 Bad Gateway&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_Anything_Else_ResponseCodeDescription" xml:space="preserve">
+    <value>502 Bad Gateway</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_Anything_Else_ResponseComments" xml:space="preserve">
+    <value>Potential to cause the issue you are investigating. Do you see expected responses beyond this session in the trace? Is the Host IP for the device issuing this response with a subnet within your lan or something in a cloud provider's network?</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_Anything_Else_SessionType" xml:space="preserve">
+    <value>!Bad Gateway!</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_Domain_Not_Detected" xml:space="preserve">
+    <value>Domain not detected</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:green'&gt;False Positive&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCodeDescription" xml:space="preserve">
+    <value>502 Bad Gateway False Positive</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCommentsEnd" xml:space="preserve">
+    <value>on port 443. &lt;p&gt;Validate this message by confirming the Host IP (if shown) is an Office 365 Host/IP address and perform a telnet to it on port 80.&lt;/p&gt;&lt;p&gt;If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects requests on port 80 to &lt;a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'&gt;https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml&lt;/a&gt;&lt;p&gt;The reason for this is Microsoft does not maintain SSL certificates for every tenant domain name registered on the .onmicrosoft.com domain. AutoDiscover redirects to autodiscover-s.outlook.com which does accept connections on 443 and Microsoft does maintain SSL certificates for this endpoint.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCommentsStart" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:green'&gt;False Positive&lt;/span&gt;&lt;/b&gt;. By design Office 365 Autodiscover does not respond to</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_SessionType" xml:space="preserve">
+    <value>False Positive</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:green'&gt;False Positive&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_ResponseCodeDescription" xml:space="preserve">
+    <value>502 Bad Gateway False Positive</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_ResponseComments" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:green'&gt;False positive on HTTP 502&lt;/span&gt;&lt;/b&gt;. By design, the host only accepts connections on port 25, port 443 is not available.&lt;p&gt;To validate this above lookup the record, confirm it is a MX record and attempt to connect to the MX host on ports 25 and 443.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_SessionType" xml:space="preserve">
+    <value>False Positive</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:green'&gt;False Positive&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseCodeDescription" xml:space="preserve">
+    <value>502 Bad Gateway False Positive</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseComments" xml:space="preserve">
+    <value>Telemetry failing is unlikely the cause of significant Office 365 client issues.</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_Telemetry_False_Positive_SessionType" xml:space="preserve">
+    <value>False Positive</value>
+  </data>
+  <data name="HTTP_503_Service_Unavailable_Everything_Else_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 503 Service Unavailable&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_503_Service_Unavailable_Everything_Else_ResponseCodeDescription" xml:space="preserve">
+    <value>503 Service Unavailable</value>
+  </data>
+  <data name="HTTP_503_Service_Unavailable_Everything_Else_ResponseComments" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;Server that was contacted in this session reports it is unavailable&lt;/span&gt;&lt;/b&gt;. Look at the server that issued this response, it is healthy? Contactable? Contactable consistently or intermittently? Consider other session server responses in the 500's (500, 502 or 503) in conjunction with this session.</value>
+  </data>
+  <data name="HTTP_503_Service_Unavailable_Everything_Else_SessionType" xml:space="preserve">
+    <value>!Service Unavailable!</value>
+  </data>
+  <data name="HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;FederatedSTSUnreachable&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseCodeDescription" xml:space="preserve">
+    <value>503 Federation Service Unavailable</value>
+  </data>
+  <data name="HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseCommentsEnd" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;Expected responses for ADFS&lt;/b&gt; (other federation services such as Ping, OKTA may vary)&lt;/p&gt;&lt;b&gt;AuthURL&lt;/b&gt;: Normally expected to show federation service logon page.&lt;br /&gt;&lt;b&gt;STSAuthURL&lt;/b&gt;: Normally expected to show HTTP 400.&lt;br /&gt;&lt;b&gt;MEXURL&lt;/b&gt;: Normally expected to show long stream of XML data.&lt;br /&gt;&lt;p&gt;If any of these show the HTTP 503 Service Unavailable this &lt;b&gt;confirms some kind of failure on the federation service&lt;/b&gt;.&lt;/p&gt;&lt;p&gt;If however you get the expected responses, this &lt;b&gt;does not neccessarily mean the federation service / everything authentication is healthy&lt;/b&gt;. Further investigation is advised. You could try hitting these endpoints a few times and see if you get an intermittent failure.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseCommentsStart" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 503: FederatedSTSUnreachable&lt;/span&gt;&lt;/b&gt;.&lt;b&gt;&lt;span style='color:red'&gt;The fedeation service is unreachable or unavailable&lt;/span&gt;&lt;/b&gt;.&lt;p&gt;&lt;b&gt;&lt;span style='color:red'&gt;Troubleshoot this issue first before doing anything else.&lt;/span&gt;&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check the Raw tab for additional details.&lt;/p&gt;&lt;p&gt;Check the realm page for the authenticating domain. Check the below links from the Realm page to see if the IDP gives the expected responses.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_SessionType" xml:space="preserve">
+    <value>***FederatedSTSUnreachable***</value>
+  </data>
+  <data name="HTTP_504_Gateway_Timeout_Anything_Else_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 504 Gateway Timeout&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_504_Gateway_Timeout_Anything_Else_ResponseCodeDescription" xml:space="preserve">
+    <value>504 Gateway Timeout</value>
+  </data>
+  <data name="HTTP_504_Gateway_Timeout_Anything_Else_ResponseComments" xml:space="preserve">
+    <value>The quantity of these types of server errors need to be considered in context with what you are troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.</value>
+  </data>
+  <data name="HTTP_504_Gateway_Timeout_Anything_Else_SessionType" xml:space="preserve">
+    <value>Gateway Timeout</value>
+  </data>
+  <data name="HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 504 Gateway Timeout -- Internet Access Blocked&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseCodeDescription" xml:space="preserve">
+    <value>504 Gateway Timeout - Internet Access Blocked</value>
+  </data>
+  <data name="HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseComments" xml:space="preserve">
+    <value>Detected the keywords 'internet' and 'access' and 'blocked'. Potentially the computer this trace was collected from has been &lt;b&gt;&lt;span style='color:red'&gt;quaratined for internet access by a LAN based network security device&lt;/span&gt;&lt;/b&gt;.&lt;p&gt;Validate this by checking the webview and raw tabs for more information.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_504_Gateway_Timeout_Internet_Access_Blocked_SessionType" xml:space="preserve">
+    <value>***INTERNET BLOCKED***</value>
   </data>
   <data name="Inspector" xml:space="preserve">
     <value>Inspector</value>
@@ -927,6 +1140,39 @@
   </data>
   <data name="Locally Installed Information" xml:space="preserve">
     <value>Locally Installed Information</value>
+  </data>
+  <data name="LongRunningSessionsClientSlow_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;Long Running Client Session&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="LongRunningSessionsClientSlow_ResponseComments" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;&lt;span style='color:red'&gt;Long running session found&lt;/span&gt;&lt;/b&gt;. A small number of long running sessions in the &lt; 10 seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue.&lt;/p&gt;&lt;p&gt;If, however, you are troubleshooting an application performance issue, consider the number of sessions which have this warning. Investigate any proxy device or load balancer in your network, or any other device sitting between the client computer and access to the application server the data resides on.&lt;/p&gt;&lt;p&gt;Try the divide and conquer approach. What can you remove or bypass from the equation to see if the application then performs normally?&lt;/p&gt;</value>
+  </data>
+  <data name="LongRunningSessionsClientSlow_SessionType" xml:space="preserve">
+    <value>Long Running Client Session</value>
+  </data>
+  <data name="LongRunningSessionsServerSlow_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;Long Running Server Session&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="LongRunningSessionsServerSlow_ResponseComments" xml:space="preserve">
+    <value>Long running Server session found. A small number of long running sessions in the &lt; 10 seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue.&lt;p&gt;If, however, you are troubleshooting an application performance issue, consider the number of sessions which have this warning alongany proxy device in your network, or any other device sitting between the client computer and access to the internet. Try the divide and conquer approach. What can you remove or bypass from the equation to see if the application then performs normally?&lt;/p&gt;</value>
+  </data>
+  <data name="LongRunningSessionsServerSlow_SessionType" xml:space="preserve">
+    <value>Long Running Server Session</value>
+  </data>
+  <data name="LongRunningSessionsWarning_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:orange'&gt;Roundtrip Time Warning&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="LongRunningSessionsWarning_ResponseComments" xml:space="preserve">
+    <value>This session took more than 2.5 seconds to complete. A small number of sessions completing roundtrip in this timeframe is not necessary sign of an issue.</value>
+  </data>
+  <data name="LongRunningSessionsWarning_SessionType" xml:space="preserve">
+    <value>Roundtrip Time Warning</value>
+  </data>
+  <data name="Microsoft365 Authentication" xml:space="preserve">
+    <value>Microsoft365 Authentication</value>
+  </data>
+  <data name="Milliseconds" xml:space="preserve">
+    <value>ms</value>
   </data>
   <data name="Minute Ago" xml:space="preserve">
     <value>minute ago</value>
@@ -1015,8 +1261,38 @@
   <data name="Response Server" xml:space="preserve">
     <value>Response Server</value>
   </data>
+  <data name="ResponseServer_Unknown" xml:space="preserve">
+    <value>Type Unknown</value>
+  </data>
   <data name="SAML Response Parser" xml:space="preserve">
     <value>SAML Response Parser</value>
+  </data>
+  <data name="SamlToken_AttributeNameImmutibleID_Could_Not_Be_Determined" xml:space="preserve">
+    <value>SAML AttributeNameImmutibleID could not be determined.</value>
+  </data>
+  <data name="SamlToken_AttributeNameUPN_Could_Not_Be_Determined" xml:space="preserve">
+    <value>SAML AttributeNameUPN could not be determined.</value>
+  </data>
+  <data name="SamlToken_AttributeNameUPN_Data_Points_Not_Found" xml:space="preserve">
+    <value>Data points not found for AttributeNameUPN</value>
+  </data>
+  <data name="SamlToken_NameIdentifierFormat_Data_Points_Not_Found" xml:space="preserve">
+    <value>Data points not found for NameIdentifierFormat</value>
+  </data>
+  <data name="SamlToken_No_Data" xml:space="preserve">
+    <value>No SAML Data in session</value>
+  </data>
+  <data name="SamlToken_SigningCertificate_Could_Not_Be_Determined" xml:space="preserve">
+    <value>SAML signing certificate could not be determined.</value>
+  </data>
+  <data name="SamlToken_SigningCertificate_Data_Points_Not_Found" xml:space="preserve">
+    <value>Data points not found for SigningCertificate.</value>
+  </data>
+  <data name="SamlToken_TokenAttributeNameImmutibleID_Data_Points_Not_Found" xml:space="preserve">
+    <value>Data points not found for TokenAttributeNameImmutibleID</value>
+  </data>
+  <data name="SamlToken_TokenIssuer_Could_Not_Be_Determined" xml:space="preserve">
+    <value>Issuer in SAML token could not be determined.</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
@@ -1027,6 +1303,12 @@
   <data name="ScoreForSession" xml:space="preserve">
     <value>ScoreForSession</value>
     <comment>Don't translate, this is an internal Fiddler term.</comment>
+  </data>
+  <data name="Second" xml:space="preserve">
+    <value>second</value>
+  </data>
+  <data name="Seconds" xml:space="preserve">
+    <value>seconds</value>
   </data>
   <data name="Server Begin Response" xml:space="preserve">
     <value>Server Begin Response</value>
@@ -1080,6 +1362,9 @@
     <value>&lt;p&gt;The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.&lt;/p&gt;&lt;p&gt;If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.&lt;/p&gt;&lt;p&gt;Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.&lt;p&gt;</value>
     <comment>Don't translate anything with &lt; &gt;</comment>
   </data>
+  <data name="SessionType_Unknown_ResponseComments" xml:space="preserve">
+    <value>The Office 365 Fiddler Extension does not yet have a way to classify this session.&lt;p&gt;If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: &lt;a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'&gt;https://github.com/jprknight/Office365FiddlerExtension&lt;/a&gt;.&lt;/p&gt;</value>
+  </data>
   <data name="Set Session Severity" xml:space="preserve">
     <value>Set Session Severity</value>
   </data>
@@ -1109,6 +1394,9 @@
   </data>
   <data name="Types" xml:space="preserve">
     <value>Types</value>
+  </data>
+  <data name="Unclassified" xml:space="preserve">
+    <value>Unclassified</value>
   </data>
   <data name="Uninteresting" xml:space="preserve">
     <value>Uninteresting</value>
