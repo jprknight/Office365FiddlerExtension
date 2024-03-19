@@ -1330,7 +1330,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ***PROTOCOL DISABLED***.
+        ///   Looks up a localized string similar to !PROTOCOL DISABLED!.
         /// </summary>
         internal static string HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_SessionType {
             get {
@@ -1790,7 +1790,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;!EXO MSI AutoDiscover!&quot;.
+        ///   Looks up a localized string similar to !EXO MSI AutoDiscover!.
         /// </summary>
         internal static string HTTP_200s_MSI_AutoDiscover_SessionType {
             get {
@@ -1970,7 +1970,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ***UNEXPECTED LOCATION***.
+        ///   Looks up a localized string similar to !UNEXPECTED LOCATION!.
         /// </summary>
         internal static string HTTP_307_AutoDiscover_Temporary_Redirect_ResponseServer {
             get {
@@ -1979,7 +1979,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ***UNEXPECTED LOCATION***.
+        ///   Looks up a localized string similar to !UNEXPECTED LOCATION!.
         /// </summary>
         internal static string HTTP_307_AutoDiscover_Temporary_Redirect_SessionType {
             get {
@@ -2303,7 +2303,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ***WEB PROXY BLOCK***.
+        ///   Looks up a localized string similar to !WEB PROXY BLOCK!.
         /// </summary>
         internal static string HTTP_403_Forbidden_Proxy_Block_SessionType {
             get {
@@ -2591,7 +2591,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ***EWS Impersonate User Denied***.
+        ///   Looks up a localized string similar to !EWS Impersonate User Denied!.
         /// </summary>
         internal static string HTTP_500_Internal_Server_Error_Impersonate_User_Denied_SessionType {
             get {
@@ -2627,7 +2627,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ***OWA SOMETHING WENT WRONG***.
+        ///   Looks up a localized string similar to !OWA SOMETHING WENT WRONG!.
         /// </summary>
         internal static string HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_SessionType {
             get {
@@ -2663,7 +2663,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ***REPEATING REDIRECTS DETECTED***.
+        ///   Looks up a localized string similar to !REPEATING REDIRECTS DETECTED!.
         /// </summary>
         internal static string HTTP_500_Internal_Server_Error_Repeating_Redirects_SessionType {
             get {
@@ -3019,7 +3019,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ***INTERNET BLOCKED***.
+        ///   Looks up a localized string similar to !INTERNET BLOCKED!.
         /// </summary>
         internal static string HTTP_504_Gateway_Timeout_Internet_Access_Blocked_SessionType {
             get {
