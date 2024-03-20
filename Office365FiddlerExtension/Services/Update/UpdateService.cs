@@ -38,7 +38,7 @@ namespace Office365FiddlerExtension.Services
             //UpdateSessionClassificationJsonFromGithub();
         }
 
-        private async void UpdateSessionClassificationJsonFromGithub()
+        public async void UpdateSessionClassificationJsonFromGithub()
         {
             var extensionURLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
 

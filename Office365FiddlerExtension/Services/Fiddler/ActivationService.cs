@@ -36,6 +36,11 @@ namespace Office365FiddlerExtension.Services
                 VersionJsonService.Instance.CreateExtensionVersionFiddlerSetting();
                 SessionClassificationService.Instance.CreateSessionClassificationFiddlerSetting();
 
+                if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+                {
+                    UpdateService.Instance.UpdateSessionClassificationJsonFromGithub();
+                }
+                
                 // If the enable setting is true, throw messages to the user if updates are available.
                 if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().ExtensionSessionProcessingEnabled)
                 {
