@@ -106,9 +106,9 @@ namespace Office365FiddlerExtension.Services
         }
 
         /// <summary>
-        /// Analyze the selected sessions in Fiddler. Called from the MenuUI and ContextMenuUI.
+        /// Analyse the selected sessions in Fiddler. Called from the MenuUI and ContextMenuUI.
         /// </summary>
-        public void AnalyzeSelectedSessions()
+        public void AnalyseSelectedSessions()
         {
             var Sessions = FiddlerApplication.UI.GetSelectedSessions();
 
@@ -135,9 +135,9 @@ namespace Office365FiddlerExtension.Services
         }
 
         /// <summary>
-        /// Analyze all sessions loaded in Fiddler. Called from the MenuUI and ContextMenuUI.
+        /// Analyse all sessions loaded in Fiddler. Called from the MenuUI and ContextMenuUI.
         /// </summary>
-        public void AnalyzeAllSessions()
+        /*public void AnalyseAllSessions()
         {
             var Sessions = FiddlerApplication.UI.GetAllSessions();
 
@@ -162,6 +162,7 @@ namespace Office365FiddlerExtension.Services
                 }
             }
         }
+        */
 
         /// <summary>
         /// Clear colourisation and column data fill on selected sessions. Called from the MenuUI and ContextMenuUI.
@@ -176,6 +177,8 @@ namespace Office365FiddlerExtension.Services
                 this.session = Session;
 
                 EnhanceSessionUX.Instance.NormaliseSession(this.session);
+
+                this.session["Microsoft365FiddlerExtensionJson"] = null;
 
                 this.session.RefreshUI();
             }

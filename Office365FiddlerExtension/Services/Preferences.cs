@@ -1,10 +1,7 @@
 ﻿using Fiddler;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtension.Services
 {

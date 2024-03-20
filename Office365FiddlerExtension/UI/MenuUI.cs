@@ -2,7 +2,7 @@
 using Fiddler;
 using System;
 using System.Windows.Forms;
-using Microsoft.Extensions.FileSystemGlobbing;
+//using Microsoft.Extensions.FileSystemGlobbing;
 using Office365FiddlerExtension.UI;
 using System.Reflection;
 

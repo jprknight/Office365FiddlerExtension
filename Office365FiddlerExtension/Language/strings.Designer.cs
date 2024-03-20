@@ -88,20 +88,20 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Analyze All Sessions.
+        ///   Looks up a localized string similar to Analyse All Sessions.
         /// </summary>
-        internal static string Analyze_All_Sessions {
+        internal static string Analyse_All_Sessions {
             get {
-                return ResourceManager.GetString("Analyze All Sessions", resourceCulture);
+                return ResourceManager.GetString("Analyse All Sessions", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Analyze Selected Sessions.
+        ///   Looks up a localized string similar to Analyse Selected Sessions.
         /// </summary>
-        internal static string Analyze_Selected_Sessions {
+        internal static string Analyse_Selected_Sessions {
             get {
-                return ResourceManager.GetString("Analyze Selected Sessions", resourceCulture);
+                return ResourceManager.GetString("Analyse Selected Sessions", resourceCulture);
             }
         }
         
@@ -3037,6 +3037,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;No session analysis available.&lt;/p&gt;&lt;p&gt;Click &apos;Analyse Selected Sessions&apos; from the context menu for session analysis.&lt;/p&gt;.
+        /// </summary>
+        internal static string Inspector_Session_Analysis {
+            get {
+                return ResourceManager.GetString("Inspector_Session_Analysis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Insufficient data.
         /// </summary>
         internal static string Insufficient_data {
@@ -3708,6 +3717,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Session_ID {
             get {
                 return ResourceManager.GetString("Session ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Session Severity.
+        /// </summary>
+        internal static string Session_Severity {
+            get {
+                return ResourceManager.GetString("Session_Severity", resourceCulture);
             }
         }
         

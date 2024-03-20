@@ -1,5 +1,5 @@
 {
-  "LastUpdated": "2023-08-09",
+  "LastUpdated": "2024-03-20",
   "LastUpdatedDateFormat": "YYYY-MM-DD",
   "DataStructureHelper": {
     "About": "This helper isn't used in code, it's just here to describe the data.",
@@ -188,7 +188,7 @@
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 5,
-      "SessionSeverity": 40
+      "SessionSeverity": 30
     },
     "HTTP_200_Lurking_Errors": {
       "SessionAuthenticationConfidenceLevel": 5,

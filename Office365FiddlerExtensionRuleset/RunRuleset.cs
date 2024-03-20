@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using Fiddler;
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;

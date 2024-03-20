@@ -1,15 +1,8 @@
 ﻿using Fiddler;
-using Office365FiddlerExtension.UI;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Reflection;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Office365FiddlerExtension.Services
 {

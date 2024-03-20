@@ -126,11 +126,11 @@
   <data name="All Session Analysis" xml:space="preserve">
     <value>All Session Analysis</value>
   </data>
-  <data name="Analyze All Sessions" xml:space="preserve">
-    <value>Analyze All Sessions</value>
+  <data name="Analyse All Sessions" xml:space="preserve">
+    <value>Analyse All Sessions</value>
   </data>
-  <data name="Analyze Selected Sessions" xml:space="preserve">
-    <value>Analyze Selected Sessions</value>
+  <data name="Analyse Selected Sessions" xml:space="preserve">
+    <value>Analyse Selected Sessions</value>
   </data>
   <data name="Attribute Name Immutable ID" xml:space="preserve">
     <value>Attribute Name Immutable ID</value>
@@ -1123,6 +1123,9 @@
   <data name="Inspector" xml:space="preserve">
     <value>Inspector</value>
   </data>
+  <data name="Inspector_Session_Analysis" xml:space="preserve">
+    <value>&lt;p&gt;No session analysis available.&lt;/p&gt;&lt;p&gt;Click 'Analyse Selected Sessions' from the context menu for session analysis.&lt;/p&gt;</value>
+  </data>
   <data name="Insufficient data" xml:space="preserve">
     <value>Insufficient data</value>
   </data>
@@ -1364,6 +1367,9 @@
   </data>
   <data name="SessionType_Unknown_ResponseComments" xml:space="preserve">
     <value>The Office 365 Fiddler Extension does not yet have a way to classify this session.&lt;p&gt;If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: &lt;a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'&gt;https://github.com/jprknight/Office365FiddlerExtension&lt;/a&gt;.&lt;/p&gt;</value>
+  </data>
+  <data name="Session_Severity" xml:space="preserve">
+    <value>Session Severity</value>
   </data>
   <data name="Set Session Severity" xml:space="preserve">
     <value>Set Session Severity</value>

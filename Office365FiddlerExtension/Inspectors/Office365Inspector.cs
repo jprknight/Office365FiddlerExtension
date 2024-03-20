@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using System.Text;
 using Office365FiddlerExtension.UI;
-using Newtonsoft.Json;
-using Microsoft.Diagnostics.Instrumentation.Extensions.Intercept;
 
 namespace Office365FiddlerExtension.Inspectors
 {
@@ -168,7 +166,7 @@ namespace Office365FiddlerExtension.Inspectors
                 // Clear ResultsString.
                 Clear();
                 ResultsString.AppendLine($"<br /><h2>{LangHelper.GetString("Office 365 Fiddler Extension")}</h2>");
-                ResultsString.AppendLine($"<p>{LangHelper.GetString("Office 365 Fiddler Extension")}</p>");
+                ResultsString.AppendLine($"<p>{LangHelper.GetString("Inspector_Session_Analysis")}</p>");
                 Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
                 return;
             }
@@ -188,7 +186,7 @@ namespace Office365FiddlerExtension.Inspectors
                     // Clear ResultsString.
                     Clear();
                     ResultsString.AppendLine($"<br /><h2>{LangHelper.GetString("Office 365 Fiddler Extension")}</h2>");
-                    ResultsString.AppendLine($"<p>{LangHelper.GetString("Office 365 Fiddler Extension")}</p>");
+                    ResultsString.AppendLine($"<p>{LangHelper.GetString("Inspector_Session_Analysis")}</p>");
                     Office365ResponseControl.ResultsOutput.DocumentText = ResultsString.ToString();
                     return;
                 }
@@ -225,6 +223,39 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine($"<a href='{URLsJsonService.Instance.GetDeserializedExtensionURLs().ResponseCodes}' target='_blank'>{ExtensionSessionFlags.ResponseCodeDescription}</a>");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("</tr>");
+
+                ResultsString.AppendLine("<tr>");
+                ResultsString.AppendLine("<td>");
+                ResultsString.AppendLine($"{LangHelper.GetString("Session_Severity")}");
+                ResultsString.AppendLine("</td>");
+                ResultsString.AppendLine("<td>");
+                
+                switch (ExtensionSessionFlags.SessionSeverity)
+                {
+                    case 10:
+                        ResultsString.AppendLine($"{ExtensionSessionFlags.SessionSeverity}");
+                        break;
+                    case 20:
+                        ResultsString.AppendLine($"{ExtensionSessionFlags.SessionSeverity}");
+                        break;
+                    case 30:
+                        ResultsString.AppendLine($"<span style='color:green'>{ExtensionSessionFlags.SessionSeverity}</span>");
+                        break;
+                    case 40:
+                        ResultsString.AppendLine($"<span style='color:orange'>{ExtensionSessionFlags.SessionSeverity}</span>");
+                        break;
+                    case 50:
+                        ResultsString.AppendLine($"{ExtensionSessionFlags.SessionSeverity}");
+                        break;
+                    case 60:
+                        ResultsString.AppendLine($"<span style='color:red'><b>{ExtensionSessionFlags.SessionSeverity}</b></span>");
+                        break;
+                    default:
+                        ResultsString.AppendLine($"<span style='color:red'><b>Unexpected value: {ExtensionSessionFlags.SessionSeverity}</b></span>");
+                        break;
+                }
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
