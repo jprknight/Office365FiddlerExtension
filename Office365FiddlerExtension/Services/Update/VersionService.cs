@@ -42,6 +42,9 @@ namespace Office365FiddlerExtension.Services
             return 0;
         }
 
+        // REVIEW -- BUG -- OR logic here is flawed in checking for updated versions.
+        // Probably need to concatinate the ints together and then compare.
+
         public Boolean IsExtensionDLLUpdateAvailable()
         {
             var githubJsonVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
@@ -115,6 +118,9 @@ namespace Office365FiddlerExtension.Services
 
             return null;
         }
+
+        // REVIEW -- BUG -- OR logic here is flawed in checking for updated versions.
+        // Probably need to concatinate the ints together and then compare.
 
         public Boolean IsRulesetDLLUpdateAvailable()
         {
