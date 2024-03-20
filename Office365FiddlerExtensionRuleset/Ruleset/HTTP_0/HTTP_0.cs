@@ -18,7 +18,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 0 No response.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} HTTP 0 No response.");
 
             int sessionAuthenticationConfidenceLevel;
             int sessionTypeConfidenceLevel;
@@ -28,6 +29,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             try
             {
                 var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP0s");
+
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -35,10 +37,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
-                
-                sessionAuthenticationConfidenceLevel = 5;
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} {ex}");
+
+                sessionAuthenticationConfidenceLevel = 10;
                 sessionTypeConfidenceLevel = 10;
                 sessionResponseServerConfidenceLevel = 10;
                 sessionSeverity = 60;
@@ -46,18 +50,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_0s",
+                SectionTitle = "HTTP_0",
 
-                SessionType = "!NO RESPONSE!",
-                ResponseServer = "!NO RESPONSE!",
-                ResponseCodeDescription = "0 No Response",
-                ResponseAlert = "<b><span style='color:red'>HTTP 0 - No Response</span></b>",
-                ResponseComments = "The quantity of these types of server errors need to be considered in context with what you are "
-                + "troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could "
-                + "be cause for concern."
-                + "<p>If you are not seeing expected client traffic, consider if network traces should be collected. Review if there is an underlying "
-                + "network issue such as congestion on routers, which could be causing issues. The Network Connection Status Indicator (NCSI) on the "
-                + "client computer might also be an area to investigate.</p>",
+                SessionType = LangHelper.GetString("HTTP_0 SessionType"),
+                ResponseServer = LangHelper.GetString("HTTP_0 ResonseServer"),
+                ResponseAlert = LangHelper.GetString("HTTP_0 Response Alert"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_0 ResponseCodeDescription"),
+                ResponseComments = LangHelper.GetString("HTTP_0 ResponseComments"),
+                Authentication = LangHelper.GetString("HTTP_0 Authentication"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

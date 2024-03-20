@@ -2,11 +2,7 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -65,13 +61,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_200s_Unfied_Groups_Settings",
+                    SectionTitle = "HTTP_200s",
 
-                    SessionType = "EWS GetUnifiedGroupsSettings",
-                    ResponseCodeDescription = "200 OK Get Unified Groups Settings",
-                    ResponseAlert = "GetUnifiedGroupsSettings EWS call.",
-                    ResponseComments = "<GroupCreationEnabled>true</GroupCreationEnabled> found in response body. "
-                    + "Expect user to be able to create Office 365 groups in Outlook.",
+                    SessionType = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_SessionType"),
+                    ResponseCodeDescription = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_ResponseCodeDescription"),
+                    ResponseAlert = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_ResponseAlert"),
+                    ResponseComments = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_ResponseComments"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -113,13 +108,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_200s_Unified_Groups_Settings",
+                    SectionTitle = "HTTP_200s",
 
-                    SessionType = "EWS GetUnifiedGroupsSettings",
-                    ResponseCodeDescription = "200 OK, User cannot create Unified Groups.",
-                    ResponseAlert = "<b><span style='color:red'>GetUnifiedGroupsSettings EWS call</span></b>",
-                    ResponseComments = "<GroupCreationEnabled>false</GroupCreationEnabled> found in response body. "
-                    + "Expect user to <b>NOT be able to create Office 365 groups</b> in Outlook.",
+                    SessionType = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_SessionType"),
+                    ResponseCodeDescription = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseCodeDescription"),
+                    ResponseAlert = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseAlert"),
+                    ResponseComments = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseComments"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -161,13 +155,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_200s_Unified_Groups_Settings",
+                    SectionTitle = "HTTP_200s",
 
-                    SessionType = "!EWS GetUnifiedGroupsSettings!",
-                    ResponseCodeDescription = "200 OK, GetUnifiedGroupsSettings not found.",
-                    ResponseAlert = "GetUnifiedGroupsSettings EWS call",
-                    ResponseComments = "Though GetUnifiedGroupsSettings scenario was detected neither <GroupCreationEnabled>true</GroupCreationEnabled> nor"
-                    + "<GroupCreationEnabled>false</GroupCreationEnabled> was found in the response body. Check the Raw tab for more details.",
+                    SessionType = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_SessionType"),
+                    ResponseCodeDescription = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseCodeDescription"),
+                    ResponseAlert = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseAlert"),
+                    ResponseComments = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseComments"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

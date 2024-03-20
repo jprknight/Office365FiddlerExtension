@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
@@ -23,7 +19,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Running SetElapsedTime.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Running SetElapsedTime.");
 
             if (this.session.Timers.ClientBeginRequest.ToString("H:mm:ss.fff") != "0:00:00.000" && this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
             {
@@ -31,7 +28,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = "SessionElapsedTime",
+                    SectionTitle = LangHelper.GetString("Session Elapsed Time"),
                     ElapsedTime = Milliseconds.ToString()
                 };
 
@@ -43,7 +40,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "SessionElapsedTime_NoData",
-                    ElapsedTime = "No data"
+                    ElapsedTime = LangHelper.GetString("No data")
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -56,7 +53,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Running SetInspectorElapsedTime.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Running SetInspectorElapsedTime.");
 
             // ClientDoneResponse can be blank. If so do not try to calculate and output Elapsed Time, we end up with a hideously large number.
             if (this.session.Timers.ClientDoneResponse.ToString("H:mm:ss.fff") != "0:00:00.000")
@@ -70,7 +68,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "InspectorElapsedTime_LessThanOneSecond",
-                        InspectorElapsedTime = $"{ClientMilliseconds}ms"
+                        InspectorElapsedTime = $"{ClientMilliseconds}{LangHelper.GetString("Milliseconds")}"
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -82,7 +80,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "InspectorElapsedTime_Warning",
-                        InspectorElapsedTime = $"<b><span style='color:orange'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>"
+                        InspectorElapsedTime = $"<b><span style='color:orange'>"
+                            + $"{ClientSeconds} {LangHelper.GetString("Seconds")} ({ClientMilliseconds}{LangHelper.GetString("Milliseconds")}).</span></b>"
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -94,7 +93,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "InspectorElapsedTime_Slow",
-                        InspectorElapsedTime = $"<b><span style='color:red'>{ClientSeconds} seconds ({ClientMilliseconds}ms).</span></b>"
+                        InspectorElapsedTime = $"<b><span style='color:red'>"
+                            + $"{ClientSeconds} {LangHelper.GetString("Seconds")} ({ClientMilliseconds}{LangHelper.GetString("Milliseconds")}).</span></b>"
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -108,7 +108,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
                             SectionTitle = "InspectorElapsedTime_MoreThanOneSecond",
-                            InspectorElapsedTime = $"{ClientSeconds} second({ClientMilliseconds}ms)."
+                            InspectorElapsedTime = $"{ClientSeconds} {LangHelper.GetString("Second")} ({ClientMilliseconds}{LangHelper.GetString("Milliseconds")})."
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -119,7 +119,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
                             SectionTitle = "InspectorElapsedTime_Else",
-                            InspectorElapsedTime = $"{ClientSeconds} seconds ({ClientMilliseconds}ms)."
+                            InspectorElapsedTime = $"{ClientSeconds} {LangHelper.GetString("Seconds")} ({ClientMilliseconds}{LangHelper.GetString("Milliseconds")})."
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -132,7 +132,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "InspectorElapsedTime_Insufficient_Data",
-                    InspectorElapsedTime = "Insufficient data"
+
+                    InspectorElapsedTime = LangHelper.GetString("Insufficient data")
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

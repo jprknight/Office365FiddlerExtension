@@ -2,11 +2,7 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -26,7 +22,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Simple Session Analysis");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} {LangHelper.GetString("Simple Session Analysis")}");
 
             string sessionSectionTitle;
             string sessionType;
@@ -41,7 +38,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection(ResponseCodeSection);
 
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {sessionClassificationJson.SessionType}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} {sessionClassificationJson.SessionType}");
 
                 sessionSectionTitle = sessionClassificationJson.SectionTitle;
                 sessionType = sessionClassificationJson.SessionType;
@@ -54,12 +52,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} {ex}");
 
-                sessionSectionTitle = "Simple Session Analysis - Json Read Failure.";
-                sessionType = "Simple Session Analysis";
-                sessionResponseAlert = "Simple Session Analysis - Json Read Failure.";
+                sessionSectionTitle = LangHelper.GetString("Simple Session Analysis - Json Read Failure.");
+                sessionType = LangHelper.GetString("Simple Session Analysis");
+                sessionResponseAlert = LangHelper.GetString("Simple Session Analysis - Json Read Failure.");
 
                 sessionAuthenticationConfidenceLevel = 5;
                 sessionTypeConfidenceLevel = 10;
@@ -74,7 +74,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 ResponseCodeDescription = sessionType,
                 ResponseAlert = sessionResponseAlert,
-                ResponseComments = Preferences.ResponseCommentsNoKnownIssue(),
+                ResponseComments = LangHelper.GetString("Response Comments No Known Issue"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

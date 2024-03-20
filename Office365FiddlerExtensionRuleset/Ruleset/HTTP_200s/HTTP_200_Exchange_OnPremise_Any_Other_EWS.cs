@@ -2,11 +2,7 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -68,12 +64,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s_OnPremise_Exchange_EWS",
+                SectionTitle = "HTTP_200s",
 
-                SessionType = "Exchange OnPremise Web Services",
-                ResponseCodeDescription = "200 OK Exchange Web Services / EWS",
-                ResponseAlert = "Exchange OnPremise Web Services (EWS) call.",
-                ResponseComments = "Exchange OnPremise Web Services (EWS) call.",
+                SessionType = LangHelper.GetString("HTTP_200s_OnPremise_Exchange_EWS_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_200s_OnPremise_Exchange_EWS_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_200s_OnPremise_Exchange_EWS_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_200s_OnPremise_Exchange_EWS_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

@@ -2,11 +2,7 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -66,13 +62,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s_Mapi_Protocol_Disabled",
+                SectionTitle = "HTTP_200s",
 
-                SessionType = "***PROTOCOL DISABLED***",
-                ResponseCodeDescription = "200 OK - <b><span style='color:red'>PROTOCOL DISABLED</span></b>",
-                ResponseAlert = "<b><span style='color:red'>Store Error Protocol Disabled</span></b>",
-                ResponseComments = "<b><span style='color:red'>Store Error Protocol disabled found in response body.</span></b>"
-                + "Expect user to <b>NOT be able to connect using connecting client application.</b>.",
+                SessionType = LangHelper.GetString("HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

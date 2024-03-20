@@ -2,11 +2,7 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -18,21 +14,16 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_200_ClientAccessRule Instance => _instance ?? (_instance = new HTTP_200_ClientAccessRule());
 
-        /// <summary>
-        /// Connection blocked by Client Access Rules.
-        /// </summary>
-        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;
 
-            // If the session content doesn't match the intended rule, return.
             if (!this.session.fullUrl.Contains("outlook.office365.com/mapi"))
             {
                 return;
             }
 
-            if (!(this.session.utilFindInResponse("Connection blocked by Client Access Rules", false) > 1))
+            if (!(SessionContentSearch.Instance.SearchForPhrase(this.session, "Connection blocked by Client Access Rules")))
             {
                 return;
             }
@@ -47,6 +38,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             try
             {
                 var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_ClientAccessRule");
+
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -65,17 +57,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s_Client_Access_Rule",
+                SectionTitle = "HTTP_200s",
 
-                SessionType = "!CLIENT ACCESS RULE!",
-                ResponseCodeDescription = "200 OK Client Access Rule",
-                ResponseAlert = "<b><span style='color:red'>CLIENT ACCESS RULE</span></b>",
-                ResponseComments = "<b><span style='color:red'>A client access rule has blocked MAPI connectivity to the mailbox</span></b>. "
-                + "<p>Check if the <b><span style='color:red'>client access rule includes OutlookAnywhere</span></b>.</p>"
-                + "<p>Per <a href='https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules' target='_blank'>"
-                + "https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules </a>, <br />"
-                + "OutlookAnywhere includes MAPI over HTTP.<p>"
-                + "<p>Remove OutlookAnywhere from the client access rule, wait 1 hour, then test again.</p>",
+                SessionType = LangHelper.GetString("HTTP_200_Client Access Rule"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_200_Client Access Rule ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_200_Client Access Rule ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_200_Client Access Rule ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -85,7 +72,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
-
         }
     }
 }

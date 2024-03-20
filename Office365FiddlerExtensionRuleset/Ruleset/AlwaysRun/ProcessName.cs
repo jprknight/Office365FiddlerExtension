@@ -1,10 +1,6 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
@@ -30,12 +26,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             // No local process to split.
             else
             {
-                ProcessName = "Remote Capture";
+                ProcessName = LangHelper.GetString("Remote Capture");
             }
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "ProcessName",
+                SectionTitle = LangHelper.GetString("Process Name"),
                 ProcessName = ProcessName
             };
 

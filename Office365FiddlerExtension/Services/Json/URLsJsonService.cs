@@ -1,13 +1,7 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
-using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -40,7 +34,6 @@ namespace Office365FiddlerExtension.Services
         }
 
         // Setting to store Json extension URLs. Update from remote.
-#pragma warning disable IDE0052
         private static string _extensionURLs;
 
         public static string ExtensionURLs
@@ -57,9 +50,6 @@ namespace Office365FiddlerExtension.Services
                 return;
             }
 
-            // REVIEW THIS. URLs needs to move to master once it's a valid URL.
-            // Requires pull request of this branch into master.
-
             var URLs = new
             {
                 TelemetryInstrumentationKey = "87fb55ab-0052-4970-9318-7c740220e3c0",
@@ -67,6 +57,7 @@ namespace Office365FiddlerExtension.Services
                 ExtensionVersion = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/ExtensionVersion.json",
                 SessionClassification = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/SessionClassification.json",
                 Installer = "https://github.com/jprknight/Office365FiddlerExtension/releases/latest",
+                ResponseCodes = "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes",
                 Wiki = "https://github.com/jprknight/Office365FiddlerExtension/wiki",
                 WikiSessionTimeThresholds = "https://github.com/jprknight/Office365FiddlerExtension/wiki/Session-Time-Thresholds",
                 WikiScoreForSession = "https://github.com/jprknight/Office365FiddlerExtension/wiki/What-is-ScoreForSession%3F",
@@ -100,6 +91,8 @@ namespace Office365FiddlerExtension.Services
         public string ExtensionVersion { get; set; }
 
         public string Installer { get; set; }
+
+        public string ResponseCodes { get; set; }
 
         public string Wiki { get; set; }
 

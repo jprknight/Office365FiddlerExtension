@@ -2,11 +2,8 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -79,11 +76,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s_REST_People_Request",
+                SectionTitle = "HTTP_200s",
 
-                SessionType = $"REST People {sessionType}",
-                ResponseCodeDescription = "200 OK REST People Request",
-                ResponseAlert = $"REST People {sessionType}",
+                SessionType = $"{LangHelper.GetString("HTTP_200_REST_People_Request_SessionType")} {sessionType}",
+                ResponseCodeDescription = LangHelper.GetString("HTTP_200_REST_People_Request_ResponseCodeDescription"),
+                ResponseAlert = $"{LangHelper.GetString("HTTP_200_REST_People_Request_ResponseAlert")} {sessionType}",
                 ResponseComments = $"{requestId} $search:{queryStrings["$search"]} $top:{queryStrings["$top"]} $skip:{queryStrings["$skip"]} $select:{queryStrings["$select"]} $filter:{queryStrings["$filter"]}",
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,

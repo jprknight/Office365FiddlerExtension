@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using Fiddler;
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtensionRuleset.Ruleset;
-using Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks;
+using Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s;
 
 namespace Office365FiddlerExtensionRuleset
 {
@@ -26,7 +21,6 @@ namespace Office365FiddlerExtensionRuleset
 
             // Broad logic checks on sessions regardless of response code.
             FiddlerUpdateSessions.Instance.Run(this.session);
-            ConnectTunnelSessions.Instance.Run(this.session);
             ApacheAutodiscover.Instance.Run(this.session);
             LoopBackTunnel.Instance.Run(this.session);
 
@@ -246,6 +240,14 @@ namespace Office365FiddlerExtensionRuleset
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_103s");
                     break;
                 case 200:
+                    HTTP_200_ConnectTunnelSessions.Instance.Run(this.session);
+                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+                    {
+                        break;
+                    }
+
+                    ///////////////////////////////
+
                     HTTP_200_ClientAccessRule.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
@@ -279,6 +281,14 @@ namespace Office365FiddlerExtensionRuleset
                     ///////////////////////////////
 
                     HTTP_200_OWA.Instance.Run(this.session);
+                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+                    {
+                        break;
+                    }
+
+                    ///////////////////////////////
+
+                    HTTP_200_OWA_Notification_Channel.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -770,7 +780,7 @@ namespace Office365FiddlerExtensionRuleset
                         SessionType = "Undefined",
                         ResponseCodeDescription = "Defaulted. HTTP Response Code undefined.",
                         ResponseAlert = "Undefined",
-                        ResponseComments = Preferences.ResponseCommentsNoKnownIssue(),
+                        ResponseComments = LangHelper.GetString("Response Comments No Known Issue"),
 
                         SessionAuthenticationConfidenceLevel = 0,
                         SessionTypeConfidenceLevel = 0,

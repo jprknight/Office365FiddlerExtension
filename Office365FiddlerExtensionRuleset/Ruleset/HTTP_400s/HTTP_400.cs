@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
@@ -52,10 +48,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_400s",
 
-                SessionType = "400 Bad Request",
-                ResponseCodeDescription = "400 Bad Request",
-                ResponseAlert = "<b><span style='color:red'>HTTP 400 Bad Request</span></b>",
-                ResponseComments = "HTTP 400: Bad Request. Seeing small numbers of these may not be an issue. However, if many are seen this should be investigated further.",
+                SessionType = LangHelper.GetString("HTTP_400s_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_400s_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_400s_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_400s_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

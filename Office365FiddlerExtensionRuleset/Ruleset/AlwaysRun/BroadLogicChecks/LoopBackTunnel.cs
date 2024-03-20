@@ -2,13 +2,9 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
+namespace Office365FiddlerExtensionRuleset.Ruleset
 {
     class LoopBackTunnel
     {
@@ -27,7 +23,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Loopback Tunnel.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Loopback Tunnel.");
 
             int sessionAuthenticationConfidenceLevel;
             int sessionTypeConfidenceLevel;
@@ -37,6 +34,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
             try
             {
                 var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|LoopBackTunnel");
+
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -44,8 +42,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} {ex}");
 
                 sessionAuthenticationConfidenceLevel = 10;
                 sessionTypeConfidenceLevel = 10;
@@ -55,17 +55,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "Broad Logic Checks",
+                SectionTitle = LangHelper.GetString("Broad Logic Checks"),
 
-                SessionType = "Loopback Tunnel",
-                ResponseServer = "Loopback Tunnel",
-                ResponseAlert = "Loopback Tunnel",
-                ResponseCodeDescription = "Loopback Tunnel",
-                ResponseComments = "Seeing many or few of these? Either way these aren't typical Microsoft365 traffic sessions. "
-                + "They may be an indication of a proxy client forcing traffic down a certain network path?"
-                + "If there's no Microsoft365 client traffic in this Fiddler trace and it's suspected this could be a factor, "
-                + "change your network, try a different machine without any proxy client / proxy configuration in place.",
-                Authentication = "Loopback Tunnel",
+                SessionType = LangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
+                ResponseServer = LangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
+                ResponseAlert = LangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
+                ResponseCodeDescription = LangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
+                ResponseComments = LangHelper.GetString("BroadLogicChecks_Loopback Tunnel Response Comments"),
+                Authentication = LangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

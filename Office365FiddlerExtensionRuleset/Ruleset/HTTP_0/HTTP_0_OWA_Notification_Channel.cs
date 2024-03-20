@@ -6,29 +6,29 @@ using System.Reflection;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
-    class HTTP_200_OWA
+    class HTTP_0_OWA_Notification_Channel
     {
         internal Session session { get; set; }
 
-        private static HTTP_200_OWA _instance;
+        private static HTTP_0_OWA_Notification_Channel _instance;
 
-        public static HTTP_200_OWA Instance => _instance ?? (_instance = new HTTP_200_OWA());
+        public static HTTP_0_OWA_Notification_Channel Instance => _instance ?? (_instance = new HTTP_0_OWA_Notification_Channel());
 
         /// <summary>
-        /// Outlook Web App.
+        /// Outlook Web App Notification Channel.
         /// </summary>
         /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;
 
-            // If the session isn't OWA traffic, return.
-            if (!this.session.uriContains("/owa/"))
+            // If the session isn't for OWA notification channel, return.
+            if (!this.session.uriContains("/owa/notificationchannel/"))
             {
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Outlook Web App.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 0 Outlook Web App Notification Channel.");
 
             int sessionAuthenticationConfidenceLevel;
             int sessionTypeConfidenceLevel;
@@ -37,7 +37,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Outlook_Web_App");
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_0s|HTTP_0_Outlook_Web_App_Notification_Channel");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -56,12 +56,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s",
+                SectionTitle = "HTTP_0s",
 
-                SessionType = LangHelper.GetString("HTTP_200_Outlook_Web_App_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_200_Outlook_Web_App_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_200_Outlook_Web_App_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_200_Outlook_Web_App_ResponseComments"),
+                SessionType = LangHelper.GetString("HTTP_0_Outlook_Web_App_Notification_Channel_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_0_Outlook_Web_App_Notification_Channel_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_0_Outlook_Web_App_Notification_Channel_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_0_Outlook_Web_App_Notification_Channel_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
@@ -21,8 +17,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         public void HTTP_307_AutoDiscover_Temporary_Redirect(Session session)
         {
             this.session = session;
-
-            
 
             // Specific scenario where a HTTP 307 Temporary Redirect incorrectly send an EXO Autodiscover request to an On-Premise resource, breaking Outlook connectivity.
             if (this.session.hostname.Contains("autodiscover") &&
@@ -60,16 +54,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 {
                     SectionTitle = "HTTP_307s",
 
-                    SessionType = "***UNEXPECTED LOCATION***",
-                    ResponseCodeDescription = "!307 Temporary Redirect!",
-                    ResponseServer = "***UNEXPECTED LOCATION***",
-                    ResponseAlert = "<b><span style='color:red'>HTTP 307 Temporary Redirect</span></b>",
-                    ResponseComments = "<b>Temporary Redirects have been seen to redirect Exchange Online Autodiscover "
-                    + "calls back to On-Premise resources, breaking Outlook connectivity</b>. Likely cause is a local networking device. Test outside of the LAN to confirm."
-                    + "<p>This session is an Autodiscover request for Exchange Online which has not been sent to "
-                    + "<a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</a> as expected.</p>"
-                    + "<p>Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place.</p>",
-                    Authentication = "***UNEXPECTED LOCATION***",
+                    SessionType = LangHelper.GetString("HTTP_307_AutoDiscover_Temporary_Redirect_SessionType"),
+                    ResponseCodeDescription = LangHelper.GetString("HTTP_307_AutoDiscover_Temporary_Redirect_ResponseCodeDescription"),
+                    ResponseServer = LangHelper.GetString("HTTP_307_AutoDiscover_Temporary_Redirect_ResponseServer"),
+                    ResponseAlert = LangHelper.GetString("HTTP_307_AutoDiscover_Temporary_Redirect_ResponseAlert"),
+                    ResponseComments = LangHelper.GetString("HTTP_307_AutoDiscover_Temporary_Redirect_ResponseComments"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -116,13 +105,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_307s",
 
-                SessionType = "307 Temporary Redirect",
-                ResponseCodeDescription = "307 Temporary Redirect",
-                ResponseAlert = "HTTP 307 Temporary Redirect",
-                ResponseComments = "Temporary Redirects have been seen to redirect Exchange Online Autodiscover calls "
-                + "back to On-Premise resources, breaking Outlook connectivity. "
-                + "<p>Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place. </p>"
-                + "<p>If this session is not for an Outlook process then the information above may not be relevant to the issue under investigation.</p>",
+                SessionType = LangHelper.GetString("HTTP_307_Other_AutoDiscover_Redirects_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_307_Other_AutoDiscover_Redirects_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_307_Other_AutoDiscover_Redirects_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_307_Other_AutoDiscover_Redirects_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -165,10 +151,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_307s",
 
-                SessionType = "307 Temporary Redirect",
-                ResponseCodeDescription = "307 Temporary Redirect",
-                ResponseAlert = "HTTP 307 Temporary Redirect",
-                ResponseComments = "<p>Temporary Redirects might be an indication of an issue, but aren't in themselves a smoking gun.</p>",
+                SessionType = LangHelper.GetString("HTTP_307_All_Other_Redirects_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_307_All_Other_Redirects_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_307_All_Other_Redirects_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_307_All_Other_Redirects_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

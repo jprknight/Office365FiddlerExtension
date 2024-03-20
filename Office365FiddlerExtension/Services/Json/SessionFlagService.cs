@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Fiddler;
 using Newtonsoft.Json;
 using Office365FiddlerExtension.UI;
 using System.Reflection;
-using Newtonsoft.Json.Linq;
-using static System.Collections.Specialized.BitVector32;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -113,51 +106,102 @@ namespace Office365FiddlerExtension.Services
         }
 
         /// <summary>
-        /// Processes the selected sessions in Fiddler. Called from the MenuUI and ContextMenuUI.
+        /// Analyse the selected sessions in Fiddler. Called from the MenuUI and ContextMenuUI.
         /// </summary>
-        public void ProcessSelectedSessions()
+        public void AnalyseSelectedSessions()
         {
             var Sessions = FiddlerApplication.UI.GetSelectedSessions();
 
             foreach (var Session in Sessions)
             {
                 this.session = Session;
-                SessionService.Instance.OnPeekAtResponseHeaders(this.session);
+
+                // If the session already has the Microsoft365FiddlerExtensionJson flag set with high confidence session classifications set,
+                // enhance the session based on prior / stored analysis.
+                if (GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10
+                    && GetDeserializedSessionFlags(this.session).SessionResponseServerConfidenceLevel == 10
+                    && GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        $"Enhancing {this.session.id} based on existing session flags ({GetDeserializedSessionFlags(this.session).SessionType}).");
+
+                    EnhanceSessionUX.Instance.EnhanceSession(this.session);
+                }
+                else
+                {
+                    SessionService.Instance.OnPeekAtResponseHeaders(this.session);
+                }
             }
         }
 
         /// <summary>
-        /// Processes all sessions loaded in Fiddler. Called from the MenuUI and ContextMenuUI.
+        /// Analyse all sessions loaded in Fiddler. Called from the MenuUI and ContextMenuUI.
         /// </summary>
-        public void ProcessAllSessions()
+        /*public void AnalyseAllSessions()
         {
             var Sessions = FiddlerApplication.UI.GetAllSessions();
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Processing all {Sessions.Count()} current sessions.");
 
             foreach (var Session in Sessions)
             {
                 this.session = Session;
-                SessionService.Instance.OnPeekAtResponseHeaders(this.session);
-            }
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Processed {Sessions.Count()} sessions.");
+                // If the session already has the Microsoft365FiddlerExtensionJson flag set with high confidence session classifications set,
+                // enhance the session based on prior / stored analysis.
+                if (GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10
+                    && GetDeserializedSessionFlags(this.session).SessionResponseServerConfidenceLevel == 10
+                    && GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        $"Enhancing {this.session.id} based on existing session flags ({GetDeserializedSessionFlags(this.session).SessionType}).");
+
+                    EnhanceSessionUX.Instance.EnhanceSession(this.session);
+                }
+                else
+                {
+                    SessionService.Instance.OnPeekAtResponseHeaders(this.session);
+                }
+            }
         }
+        */
 
         /// <summary>
-        /// Clears processing from all sessions loaded in Fiddler. Called from the MenuUI and ContextMenuUI.
+        /// Clear colourisation and column data fill on selected sessions. Called from the MenuUI and ContextMenuUI.
         /// </summary>
-        public void ClearAllSessionProcessing()
+        public void ClearAnalysisSelectedSessions()
         {
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Clearing all current session procesing.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Clearing session procesing from selected sessions.");
 
-            var Sessions = FiddlerApplication.UI.GetAllSessions();
+            var Sessions = FiddlerApplication.UI.GetSelectedSessions();
             foreach (var Session in Sessions)
             {
                 this.session = Session;
 
                 EnhanceSessionUX.Instance.NormaliseSession(this.session);
 
+                this.session["Microsoft365FiddlerExtensionJson"] = null;
+
                 this.session.RefreshUI();
+            }
+        }
+
+        /// <summary>
+        /// Recalculate the Microsoft365FiddlerExtensionJson session flag on selected sessions.
+        /// </summary>
+        public void CmiRecalculateAnalysisSelectedSessions()
+        {
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Recalculating session analysis on selected sessions.");
+
+            var Sessions = FiddlerApplication.UI.GetSelectedSessions();
+            foreach (var Session in Sessions)
+            {
+                this.session = Session;
+
+                EnhanceSessionUX.Instance.NormaliseSession(this.session);
+                this.session.RefreshUI();
+
+                this.session["Microsoft365FiddlerExtensionJson"] = null;
+
+                SessionService.Instance.OnPeekAtResponseHeaders(this.session);
             }
         }
 
@@ -432,6 +476,8 @@ namespace Office365FiddlerExtension.Services
             public string SamlTokenAttributeNameImmutibleID { get; set; }
 
             public string ProcessName { get; set; }
+
+            public bool SessionTimesInsufficientData { get; set; }
 
             public int SessionAuthenticationConfidenceLevel { get; set; }
 

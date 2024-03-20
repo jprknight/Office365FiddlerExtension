@@ -1,14 +1,7 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
-using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -41,7 +34,6 @@ namespace Office365FiddlerExtension.Services
         }
 
         // Setting to store Json version information to run update checks against. Updated from remote.
-#pragma warning disable IDE0052
         private static string _extensionVersion;
 
         public static string ExtensionVersion
@@ -56,7 +48,6 @@ namespace Office365FiddlerExtension.Services
             {
                 var VersionItems = new
                 {
-                    UpdateMessage = "A new version of the Office 365 Fiddler Extension is available.",
                     ExtensionMajor = Assembly.GetExecutingAssembly().GetName().Version.Major,
                     ExtensionMinor = Assembly.GetExecutingAssembly().GetName().Version.Minor,
                     ExtensionBuild = Assembly.GetExecutingAssembly().GetName().Version.Build,
@@ -74,16 +65,10 @@ namespace Office365FiddlerExtension.Services
                 // Save the new Json to the Fiddler setting.
                 ExtensionVersion = jsonData;
             }
-            else
-            {
-                UpdateService.Instance.CreateVersionJsonFromGithub();
-            }
         }
 
         public class ExtensionVersionFlags
         {
-            public string UpdateMessage { get; set; }
-
             public int ExtensionMajor { get; set; }
 
             public int ExtensionMinor { get; set; }

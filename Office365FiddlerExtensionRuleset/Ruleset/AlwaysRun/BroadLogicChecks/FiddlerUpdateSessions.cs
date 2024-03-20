@@ -2,13 +2,9 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
+namespace Office365FiddlerExtensionRuleset.Ruleset
 {
     class FiddlerUpdateSessions
     {
@@ -24,7 +20,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
 
             if (this.session.hostname == "www.fiddler2.com" && this.session.uriContains("UpdateCheck.aspx"))
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Fiddler Updates.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} Fiddler Updates.");
 
                 int sessionAuthenticationConfidenceLevel;
                 int sessionTypeConfidenceLevel;
@@ -34,6 +31,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
                 try
                 {
                     var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|FiddlerUpdateSessions");
+                    
                     sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                     sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                     sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -41,8 +39,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                        $"({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                        $"({this.GetType().Name}): {this.session.id} {ex}");
 
                     sessionAuthenticationConfidenceLevel = 10;
                     sessionTypeConfidenceLevel = 10;
@@ -52,14 +52,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun.BroadLogicChecks
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = "Broad Logic Checks",
+                    SectionTitle = LangHelper.GetString("Broad Logic Checks"),
 
-                    SessionType = "Fiddler Update Check",
-                    ResponseServer = "Fiddler Update Check",
-                    ResponseAlert = "Fiddler Update Check",
-                    ResponseCodeDescription = "Fiddler Update Check",
-                    ResponseComments = "This is Fiddler itself checking for updates.",
-                    Authentication = "Fiddler Update Check",
+                    SessionType = LangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),
+                    ResponseCodeDescription = LangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),
+                    ResponseServer = LangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),
+                    ResponseAlert = LangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),                    
+                    ResponseComments = LangHelper.GetString("BroadLogicChecks_This is Fiddler itself checking for updates."),
+                    Authentication = LangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

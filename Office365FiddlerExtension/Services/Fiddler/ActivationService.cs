@@ -27,12 +27,7 @@ namespace Office365FiddlerExtension.Services
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
 
-                // If the enable setting is true, throw messages to the user if updates are available.
-                if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().ExtensionSessionProcessingEnabled)
-                {
-                    VersionService.Instance.NotifyUserIfExtensionUpdateIsAvailable();
-                    VersionService.Instance.NotifyUserIfRulesetUpdateIsAvailable();
-                }
+                LangHelper.ChangeLanguage(SettingsJsonService.Instance.GetDeserializedExtensionSettings().PreferredLanguage);
 
                 // Ensure Fiddler settings (settings, URLs, & verison) for the extension have been created.
                 // Avoid null exceptions.
@@ -40,6 +35,13 @@ namespace Office365FiddlerExtension.Services
                 URLsJsonService.Instance.CreateExtensionURLFiddlerSetting();
                 VersionJsonService.Instance.CreateExtensionVersionFiddlerSetting();
                 SessionClassificationService.Instance.CreateSessionClassificationFiddlerSetting();
+
+                // If the enable setting is true, throw messages to the user if updates are available.
+                if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().ExtensionSessionProcessingEnabled)
+                {
+                    VersionService.Instance.NotifyUserIfExtensionUpdateIsAvailable();
+                    VersionService.Instance.NotifyUserIfRulesetUpdateIsAvailable();
+                }
 
                 // Set Fiddler settings as needed.
                 SettingsJsonService.Instance.IncrementExecutionCount();

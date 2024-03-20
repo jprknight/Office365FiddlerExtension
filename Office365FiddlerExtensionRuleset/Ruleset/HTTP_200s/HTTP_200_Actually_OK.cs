@@ -2,11 +2,7 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -22,11 +18,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 OK");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} HTTP 200 OK");
 
-            if (SessionWordSearch.Instance.Search(this.session, "Error") == 0 &&
-                SessionWordSearch.Instance.Search(this.session, "failed") == 0 &&
-                SessionWordSearch.Instance.Search(this.session, "exception") == 0)
+            if (SessionContentSearch.Instance.SearchForWord(this.session, "Error") == 0 &&
+                SessionContentSearch.Instance.SearchForWord(this.session, "failed") == 0 &&
+                SessionContentSearch.Instance.SearchForWord(this.session, "exception") == 0)
             {
                 int sessionAuthenticationConfidenceLevel;
                 int sessionTypeConfidenceLevel;
@@ -43,8 +40,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                        $"({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                        $"({this.GetType().Name}): {this.session.id} {ex}");
 
                     sessionAuthenticationConfidenceLevel = 5;
                     sessionTypeConfidenceLevel = 10;
@@ -54,12 +53,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = "HTTP_200s_Actually_OK",
+                    SectionTitle = "HTTP_200s",
 
-                    SessionType = "200 Actually OK",
-                    ResponseCodeDescription = "200 Actually OK",
-                    ResponseAlert = "HTTP 200 Actually OK. No errors, failed, or exceptions found in response body.",
-                    ResponseComments = "HTTP 200 Actually OK. No errors, failed, or exceptions found in response body.",
+                    SessionType = LangHelper.GetString("HTTP_200_Actually_OK SessionType"),
+                    ResponseCodeDescription = LangHelper.GetString("HTTP_200_Actually_OK ResponseCodeDescription"),
+                    ResponseAlert = LangHelper.GetString("HTTP_200_Actually_OK ResponseAlert"),
+                    ResponseComments = LangHelper.GetString("HTTP_200_Actually_OK ResponseComments"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

@@ -2,11 +2,7 @@
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -60,12 +56,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "HTTP_200s_Outlook_RPC",
+                SectionTitle = "HTTP_200s",
 
-                SessionType = "Outlook RPC",
-                ResponseCodeDescription = "200 OK Outlook over RPC",
-                ResponseAlert = "Outlook for Windows RPC traffic",
-                ResponseComments = "This is normal Outlook RPC over HTTP traffic to an Exchange On-Premise mailbox.",
+                SessionType = LangHelper.GetString("HTTP_200_Outlook_RPC_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_200_Outlook_RPC_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_200_Outlook_RPC_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_200_Outlook_RPC_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

@@ -25,7 +25,7 @@ namespace Office365FiddlerExtension.UI
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             var extensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
-            this.Text = $"About: {Assembly.GetExecutingAssembly().GetName().Name} v{extensionVersion.ExtensionMajor}.{extensionVersion.ExtensionMinor}.{extensionVersion.ExtensionBuild}";
+            this.Text = $"{LangHelper.GetString("About")}: {Assembly.GetExecutingAssembly().GetName().Name} v{extensionVersion.ExtensionMajor}.{extensionVersion.ExtensionMinor}.{extensionVersion.ExtensionBuild}";
 
             ///////////////////
             /// Extension Information
@@ -38,23 +38,23 @@ namespace Office365FiddlerExtension.UI
 
             if (VersionService.Instance.IsExtensionDLLUpdateAvailable())
             {
-                LocalExtensionVersionUpdateMessageLabel.Text = "Update Available";
+                LocalExtensionVersionUpdateMessageLabel.Text = LangHelper.GetString("UpdateAvailable");
                 LocalExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Red;
             }
             else
             {
-                LocalExtensionVersionUpdateMessageLabel.Text = "Up to date";
+                LocalExtensionVersionUpdateMessageLabel.Text = LangHelper.GetString("UpToDate");
                 LocalExtensionVersionUpdateMessageLabel.ForeColor= System.Drawing.Color.Green;
             }
 
             if (VersionService.Instance.IsRulesetDLLUpdateAvailable())
             {
-                LocalRulesetVersionUpdateMessageLabel.Text = "Update Available";
+                LocalRulesetVersionUpdateMessageLabel.Text = LangHelper.GetString("UpdateAvailable");
                 LocalRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Red;
             }
             else
             {
-                LocalRulesetVersionUpdateMessageLabel.Text = "Up to date";
+                LocalRulesetVersionUpdateMessageLabel.Text = LangHelper.GetString("UpToDate");
                 LocalRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Green;
             }
 
@@ -67,12 +67,12 @@ namespace Office365FiddlerExtension.UI
 
             if (VersionService.Instance.IsExtensionDLLUpdateAvailable())
             {
-                GithubExtensionVersionUpdateMessageLabel.Text = "Update Available";
+                GithubExtensionVersionUpdateMessageLabel.Text = LangHelper.GetString("UpdateAvailable");
                 GithubExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Red;
             }
             else
             {
-                GithubExtensionVersionUpdateMessageLabel.Text = "Up to date";
+                GithubExtensionVersionUpdateMessageLabel.Text = LangHelper.GetString("UpToDate");
                 GithubExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Green;
             }
 
@@ -80,12 +80,12 @@ namespace Office365FiddlerExtension.UI
 
             if (VersionService.Instance.IsRulesetDLLUpdateAvailable())
             {
-                GithubRulesetVersionUpdateMessageLabel.Text = "Update Available";
+                GithubRulesetVersionUpdateMessageLabel.Text = LangHelper.GetString("UpdateAvailable");
                 GithubRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Red;
             }
             else
             {
-                GithubRulesetVersionUpdateMessageLabel.Text = "Up to date";
+                GithubRulesetVersionUpdateMessageLabel.Text = LangHelper.GetString("UpToDate");
                 GithubRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Green;
             }
 

@@ -1,12 +1,6 @@
 ﻿using Office365FiddlerExtension.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Fiddler;
 using Newtonsoft.Json;
-using System.Reflection;
 
 namespace Office365FiddlerExtension.UI
 {
@@ -36,10 +30,10 @@ namespace Office365FiddlerExtension.UI
 
             var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
 
-            // Set session background colour. Default to gray if undefined.
+            // Set session background colour. Default to grey if undefined.
             switch (ExtensionSessionFlags.SessionSeverity)
             {
-                case 10: // GRAY - Uninteresting.
+                case 10: // GREY - Uninteresting.
                     this.session["UI-BACKCOLOR"] = "#BDBDBD";
                     this.session["UI-COLOR"] = "#000000";
                     break;

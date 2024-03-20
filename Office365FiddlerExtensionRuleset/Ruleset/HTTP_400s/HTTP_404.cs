@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
@@ -52,11 +48,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_404s",
 
-                SessionType = "HTTP 404 Not Found",
-                ResponseCodeDescription = "404 Not Found",
-                ResponseAlert = "<b><span style='color:red'>HTTP 404 Not Found</span></b>",
-                ResponseComments = "The quantity of these types of server errors need to be considered in context with what you are troubleshooting "
-                + "and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.",
+                SessionType = LangHelper.GetString("HTTP_404s_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_404s_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_404s_ResponseAlerts"),
+                ResponseComments = LangHelper.GetString("HTTP_404s_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

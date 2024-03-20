@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
@@ -52,17 +48,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "HTTP_407s",
 
-                SessionType = "HTTP 407 Proxy Auth Required",
-                ResponseCodeDescription = "407 Proxy Authentication Required (RFC 7235)",
-                ResponseAlert = "<b><span style='color:red'>HTTP 407: Proxy Authentication Required</span></b>",
-                ResponseComments = "<b><span style='color:red'>Proxy Authentication Required</span></b>"
-                + "<p>Seeing these when investigating an Office 365 connectivity could be a <b>big indicator of an issue</b>.</p>"
-                + "<p>Look to engage the network or security team who is responsible for the proxy infrastructure and give them "
-                + "the information from these HTTP 407 sessions to troubleshoot with.</p>"
-                + "<p>Office 365 application traffic should be exempt from proxy authentication or better yet follow Microsoft's recommendation "
-                + "to bypass the proxy for Office365 traffic.</p>"
-                + "<p>See Microsoft 365 Connectivity Principals in <a href='https://docs.microsoft.com/en-us/microsoft-365/enterprise/microsoft-365-network-connectivity-principles?view=o365-worldwide#microsoft-365-connectivity-principles' target='_blank'>"
-                + "https://docs.microsoft.com/en-us/microsoft-365/enterprise/microsoft-365-network-connectivity-principles?view=o365-worldwide#microsoft-365-connectivity-principles </a></p>",
+                SessionType = LangHelper.GetString("HTTP_407s_SessionType"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_407s_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_407s_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_407s_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

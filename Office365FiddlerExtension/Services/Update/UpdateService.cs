@@ -1,15 +1,8 @@
 ﻿using Fiddler;
-using Office365FiddlerExtension.UI;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Reflection;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -23,14 +16,14 @@ namespace Office365FiddlerExtension.Services
 
         public void Initialize()
         {
-            /*
-            REVIEW THIS -- UNCOMMENT THIS CODE BEFORE GOING PRODUCTION.
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): NeverWebCall enabled, returning.");
                 return;                    
             }
-
+            
+            /*
+            REVIEW THIS -- UNCOMMENT THIS CODE BEFORE GOING PRODUCTION.
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             if (DateTime.Now < extensionSettings.NextUpdateCheck)
             {
@@ -38,9 +31,11 @@ namespace Office365FiddlerExtension.Services
                 return;
             }
             */
+
             UpdateURLsJsonFromGithub();
             UpdateVersionJsonFromGithub();
-            UpdateSessionClassificationJsonFromGithub();
+            // REVIEW THIS -- Uncomment this before going production.
+            //UpdateSessionClassificationJsonFromGithub();
         }
 
         private async void UpdateSessionClassificationJsonFromGithub()
@@ -77,7 +72,7 @@ namespace Office365FiddlerExtension.Services
                     }
                     else
                     {
-                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): SessionClassification Fiddler setting not update needed.");
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): SessionClassification Fiddler setting no update needed.");
                     }
                 }
                 catch (Exception ex)
@@ -85,11 +80,6 @@ namespace Office365FiddlerExtension.Services
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving SessionClassification from Github {ex}");
                 }
             }
-        }
-
-        public void CreateVersionJsonFromGithub()
-        {
-            UpdateVersionJsonFromGithub();
         }
 
         private async void UpdateVersionJsonFromGithub()
@@ -126,7 +116,7 @@ namespace Office365FiddlerExtension.Services
                     }
                     else
                     {
-                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeVersion Fiddler setting not update needed.");
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeVersion Fiddler setting no update needed.");
                     }
                 }
                 catch (Exception ex)
@@ -162,7 +152,7 @@ namespace Office365FiddlerExtension.Services
                     // Save this new data into the ExtensionURLs Fiddler setting.
                     if (URLsJsonService.ExtensionURLs != jsonString)
                     {
-                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeURLs Fiddler setting updated.");
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExtensionURLs Fiddler setting updated.");
                         URLsJsonService.ExtensionURLs = jsonString;
 
                         // Update the next update check timestamp.
@@ -170,7 +160,7 @@ namespace Office365FiddlerExtension.Services
                     }
                     else
                     {
-                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeURLs Fiddler setting no update needed.");
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExtensionURLs Fiddler setting no update needed.");
                     }
                 }
                 catch (Exception ex)

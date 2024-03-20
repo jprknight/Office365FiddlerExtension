@@ -1,10 +1,7 @@
 ﻿using Fiddler;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -19,11 +16,11 @@ namespace Office365FiddlerExtension.Services
         /// Used across response code logic.
         /// </summary>
         /// <returns></returns>
-        public static string ResponseCommentsNoKnownIssue()
+        /*private static string ResponseCommentsNoKnownIssue()
         {
             var parsedObject = JObject.Parse(Preferences.SessionClassification);
             return parsedObject["ResponseCommentsNoKnownIssue"].ToString();
-        }
+        }*/
 
         public static string LogPrepend()
         {
@@ -48,13 +45,15 @@ namespace Office365FiddlerExtension.Services
             return 2500;
         }*/
 
-        // REVIEW THIS. Keep this as a sample of might be an async function.
+        // Keep this as a sample of might be an async function.
+        /*
         public static Task<bool> SetDefaultPreferences()
         {
             //ExtensionEnabled = true;
 
             return Task.FromResult(true);
         }
+        */
 
         // Keep this around to migrate legacy settings to Json settings.
 #pragma warning disable IDE0052
