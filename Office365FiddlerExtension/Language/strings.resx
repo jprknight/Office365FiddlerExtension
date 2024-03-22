@@ -403,10 +403,10 @@
     <value>0 No Response OWA Notification Channel</value>
   </data>
   <data name="HTTP_0_Outlook_Web_App_Notification_Channel_ResponseComments" xml:space="preserve">
-    <value>Notification Channel is used for OWA to display new mails.</value>
+    <value>&lt;p&gt;Notification Channel is used for OWA to display new mails.&lt;/p&gt;&lt;p&gt;&lt;b&gt;&lt;span style='color:red'&gt;No response for OWA Notification Channel - New emails won't show.&lt;/span&gt;&lt;/b&gt;&lt;/p&gt;</value>
   </data>
   <data name="HTTP_0_Outlook_Web_App_Notification_Channel_SessionType" xml:space="preserve">
-    <value>OWA Notification Channel</value>
+    <value>!OWA NOTIFICATION CHANNELl!</value>
   </data>
   <data name="HTTP_200s_CTR_AutoDiscover_NotFound_ResponseAlert" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;Exchange Online / Outlook CTR Autodiscover - Unusual Autodiscover Response&lt;/span&gt;&lt;/b&gt;</value>
@@ -500,7 +500,7 @@
     <value>200 Actually OK</value>
   </data>
   <data name="HTTP_200_Client Access Rule" xml:space="preserve">
-    <value>CLIENT ACCESS RULE</value>
+    <value>!CLIENT ACCESS RULE!</value>
     <comment>This is part of a warning statement, keep all caps.</comment>
   </data>
   <data name="HTTP_200_Client Access Rule ResponseAlert" xml:space="preserve">

@@ -130,6 +130,14 @@ namespace Office365FiddlerExtension.Services
 
         }
 
+        private static string _microsoftURLsIPsWebService;
+
+        public static string MicrosoftURLsIPsWebService
+        {
+            get => _microsoftURLsIPsWebService = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.MicrosoftURLsIPsWebService", null);
+            set { _microsoftURLsIPsWebService = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.MicrosoftURLsIPsWebService", value); }
+        }
+
         // Setting to store Json extension URLs. Update from remote.
         /*private static string _extensionURLs;
 

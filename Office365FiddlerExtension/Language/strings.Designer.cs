@@ -844,7 +844,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notification Channel is used for OWA to display new mails..
+        ///   Looks up a localized string similar to &lt;p&gt;Notification Channel is used for OWA to display new mails.&lt;/p&gt;&lt;p&gt;&lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;No response for OWA Notification Channel - New emails won&apos;t show.&lt;/span&gt;&lt;/b&gt;&lt;/p&gt;.
         /// </summary>
         internal static string HTTP_0_Outlook_Web_App_Notification_Channel_ResponseComments {
             get {
@@ -853,7 +853,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OWA Notification Channel.
+        ///   Looks up a localized string similar to !OWA NOTIFICATION CHANNELl!.
         /// </summary>
         internal static string HTTP_0_Outlook_Web_App_Notification_Channel_SessionType {
             get {
@@ -961,7 +961,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CLIENT ACCESS RULE.
+        ///   Looks up a localized string similar to !CLIENT ACCESS RULE!.
         /// </summary>
         internal static string HTTP_200_Client_Access_Rule {
             get {

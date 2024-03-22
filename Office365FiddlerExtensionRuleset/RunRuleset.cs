@@ -234,6 +234,14 @@ namespace Office365FiddlerExtensionRuleset
             switch (this.session.responseCode)
             {
                 case 0:
+                    HTTP_0_OWA_Notification_Channel.Instance.Run(this.session);
+                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+                    {
+                        break;
+                    }
+
+                    ///////////////////////////////
+
                     HTTP_0.Instance.HTTP_0_NoSessionResponse(this.session);
                     break;
                 case 103:
@@ -280,7 +288,7 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200_OWA.Instance.Run(this.session);
+                    HTTP_200_OWA_Notification_Channel.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;
@@ -288,7 +296,7 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
-                    HTTP_200_OWA_Notification_Channel.Instance.Run(this.session);
+                    HTTP_200_OWA.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;

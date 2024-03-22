@@ -51,7 +51,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionAuthenticationConfidenceLevel = 5;
                 sessionTypeConfidenceLevel = 10;
                 sessionResponseServerConfidenceLevel = 5;
-                sessionSeverity = 30;
+                sessionSeverity = 60;
             }
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()

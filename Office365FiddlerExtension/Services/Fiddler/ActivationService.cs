@@ -36,12 +36,7 @@ namespace Office365FiddlerExtension.Services
                 VersionJsonService.Instance.CreateExtensionVersionFiddlerSetting();
                 SessionClassificationService.Instance.CreateSessionClassificationFiddlerSetting();
 
-                if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
-                {
-                    UpdateService.Instance.UpdateSessionClassificationJsonFromGithub();
-                }
-                
-                // If the enable setting is true, throw messages to the user if updates are available.
+                // If the extension enabled setting is true, throw messages to the user if updates are available.
                 if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().ExtensionSessionProcessingEnabled)
                 {
                     VersionService.Instance.NotifyUserIfExtensionUpdateIsAvailable();
@@ -55,7 +50,7 @@ namespace Office365FiddlerExtension.Services
 
                 InitializeTelemetry();
 
-                // Update as needed.
+                // Update as needed. -- All web update calls live here.
                 UpdateService.Instance.Initialize();
 
                 // Add extension menu.
