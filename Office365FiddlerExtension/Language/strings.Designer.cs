@@ -3055,7 +3055,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to is within a Microsoft365 subnet.
+        ///   Looks up a localized string similar to is a public IP address within a Microsoft365 subnet.
         /// </summary>
         internal static string IsMicrosoft365subnet {
             get {
@@ -3073,7 +3073,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to is a public IP address, but is not within a Microsoft365 subnet..
+        ///   Looks up a localized string similar to is a public IP address, which is not within a Microsoft365 subnet..
         /// </summary>
         internal static string IsPublicIPAddress {
             get {

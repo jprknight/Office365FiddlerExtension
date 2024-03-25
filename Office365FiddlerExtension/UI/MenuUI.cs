@@ -2,7 +2,6 @@
 using Fiddler;
 using System;
 using System.Windows.Forms;
-//using Microsoft.Extensions.FileSystemGlobbing;
 using Office365FiddlerExtension.UI;
 using System.Reflection;
 
@@ -199,13 +198,15 @@ namespace Office365FiddlerExtension
             about.Show();
         }
 
+        /*
         private void MiClearAllSessionProcessing_Click(object sender, EventArgs e)
         {
             SessionFlagService.Instance.ClearAnalysisSelectedSessions();
         }
+        */
 
         // Menu item event handlers.
-        public void MiEnabled_Click(object sender, EventArgs e)
+        private void MiEnabled_Click(object sender, EventArgs e)
         {
             // Invert menu item checked.
             MiEnabled.Checked = !MiEnabled.Checked;
@@ -213,7 +214,7 @@ namespace Office365FiddlerExtension
             SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(MiEnabled.Checked);
         }
 
-        public void MiWiki_Click(object sender, EventArgs e)
+        private void MiWiki_Click(object sender, EventArgs e)
         {
             var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
 
@@ -221,14 +222,14 @@ namespace Office365FiddlerExtension
             System.Diagnostics.Process.Start(URLs.Wiki);
         }
 
-        public void MiReleasesDownloadWebpage_click(object sender, EventArgs e)
+        private void MiReleasesDownloadWebpage_click(object sender, EventArgs e)
         {
             var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
             // Fire up a web browser to the project Wiki URL.
             System.Diagnostics.Process.Start(URLs.Installer);
         }
 
-        public void MiReportIssues_Click(object sender, EventArgs e)
+        private void MiReportIssues_Click(object sender, EventArgs e)
         {
             var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
             // Fire up a web browser to the project issues URL.

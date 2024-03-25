@@ -56,7 +56,6 @@ namespace Office365FiddlerExtension.Services
         */
 
         // Keep this around to migrate legacy settings to Json settings.
-#pragma warning disable IDE0052
         private static bool _extensionEnabled;
         
         public static bool ExtensionEnabled

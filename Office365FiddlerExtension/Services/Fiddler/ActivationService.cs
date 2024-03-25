@@ -14,8 +14,11 @@ namespace Office365FiddlerExtension.Services
         private bool IsInitialized { get; set; }
 
         /// <summary>
+        /// 
+        /// MAIN
+        /// 
         /// This should be considered the main constructor for the extension. 
-        /// It's called after the UI has loaded.
+        /// It's called after the Fiddler UI has loaded.
         /// </summary>
         public void OnLoad()
         {

@@ -60,7 +60,7 @@ namespace Office365FiddlerExtension.UI
         }
 
         // Called by EnhanceUX to populate column data.
-        public string ElapsedTime(Session session)
+        private string ElapsedTime(Session session)
         {
             this.session = session;
 
@@ -69,8 +69,7 @@ namespace Office365FiddlerExtension.UI
             return ExtensionSessionFlags.ElapsedTime;
         }
 
-        // Called by ActivationService to populate column data.
-        public string SessionType(Session session)
+        private string SessionType(Session session)
         {
             this.session = session;
 
@@ -79,8 +78,7 @@ namespace Office365FiddlerExtension.UI
             return ExtensionSessionFlags.SessionType;
         }
 
-        // Called by ActivationService to populate column data.
-        public string Authentication(Session session)
+        private string Authentication(Session session)
         {
             this.session = session;
 
@@ -89,8 +87,7 @@ namespace Office365FiddlerExtension.UI
             return ExtensionSessionFlags.Authentication;
         }
 
-        // Called by ActivationService to populate column data.
-        public string ResponseServer(Session session)
+        private string ResponseServer(Session session)
         {
             this.session = session;
 
@@ -99,7 +96,7 @@ namespace Office365FiddlerExtension.UI
             return ExtensionSessionFlags.ResponseServer;
         }
 
-        public string HostIP(Session session)
+        private string HostIP(Session session)
         {
             this.session = session;
 

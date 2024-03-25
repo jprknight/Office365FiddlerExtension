@@ -39,7 +39,7 @@ namespace Office365FiddlerExtension.Services
             UpdateMicrosft365URLsIPsFromWeb();
         }
 
-        public async void UpdateSessionClassificationJsonFromGithub()
+        private async void UpdateSessionClassificationJsonFromGithub()
         {
             var extensionURLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
 

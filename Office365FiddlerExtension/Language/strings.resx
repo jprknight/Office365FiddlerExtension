@@ -1130,13 +1130,13 @@
     <value>Insufficient data</value>
   </data>
   <data name="IsMicrosoft365subnet" xml:space="preserve">
-    <value>is within a Microsoft365 subnet</value>
+    <value>is a public IP address within a Microsoft365 subnet</value>
   </data>
   <data name="IsPrivateSubnet" xml:space="preserve">
     <value>is within a private subnet on a</value>
   </data>
   <data name="IsPublicIPAddress" xml:space="preserve">
-    <value>is a public IP address, but is not within a Microsoft365 subnet.</value>
+    <value>is a public IP address, which is not within a Microsoft365 subnet.</value>
   </data>
   <data name="Issuer" xml:space="preserve">
     <value>Issuer</value>
