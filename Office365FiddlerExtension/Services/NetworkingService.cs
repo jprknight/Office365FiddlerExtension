@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Net.Sockets;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Fiddler;
 using System.IO;
 using System.Net.Http;
-using System.Windows.Forms;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -47,15 +44,22 @@ namespace Office365FiddlerExtension.Services
             var address = IPAddress.Parse(ipAddress);
             var slashIdx = subnetMask.IndexOf("/");
             if (slashIdx == -1)
+            {
                 // We only handle netmasks in format "IP/PrefixLength".
-                throw new NotSupportedException("Only SubNetMasks with a given prefix length are supported.");
+                //throw new NotSupportedException("Only SubNetMasks with a given prefix length are supported.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"(NetworkingService) IsInSubnetMask: Only SubNetMasks with a given prefix length are supported.");
+                return false;
+            }
 
             // First parse the address of the netmask before the prefix length.
             var maskAddress = IPAddress.Parse(subnetMask.Substring(0, slashIdx));
 
             if (maskAddress.AddressFamily != address.AddressFamily)
+            {
                 // We got something like an IPV4-Address for an IPv6-Mask. This is not valid.
                 return false;
+            }
 
             // Now find out how long the prefix is.
             int maskLength = int.Parse(subnetMask.Substring(slashIdx + 1));
@@ -64,7 +68,12 @@ namespace Office365FiddlerExtension.Services
                 return true;
 
             if (maskLength < 0)
-                throw new NotSupportedException("A Subnetmask should not be less than 0.");
+            {
+                // throw new NotSupportedException("A Subnetmask should not be less than 0.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"(NetworkingService) IsInSubnetMask: A Subnetmask should not be less than 0.");
+                return false;
+            }
 
             if (maskAddress.AddressFamily == AddressFamily.InterNetwork)
             {
@@ -89,7 +98,13 @@ namespace Office365FiddlerExtension.Services
                 var ipAddressLength = ipAddressBits.Length;
 
                 if (maskAddressBits.Length != ipAddressBits.Length)
-                    throw new ArgumentException("Length of IP Address and Subnet Mask do not match.");
+                {
+                    // throw new ArgumentException("Length of IP Address and Subnet Mask do not match.");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"(NetworkingService) IsInSubnetMask: Length of IP Address and Subnet Mask do not match.");
+                    return false;
+                }
+                    
 
                 // Compare the prefix bits.
                 for (var i = ipAddressLength - 1; i >= ipAddressLength - maskLength; i--)
@@ -102,36 +117,6 @@ namespace Office365FiddlerExtension.Services
             return false;
         }
 
-        // https://www.newtonsoft.com/json/help/html/M_Newtonsoft_Json_Linq_JToken_Children.htm
-
-        /*
-        These two functions are consistent with what has been created in other classes, but it looks as though these aren't needed here.      
-
-        public EndPointJson GetDeserializedEndpointJsonChild(string json)
-        {
-            try
-            {
-                //return JsonConvert.DeserializeObject<SessionFlagService.ExtensionSessionFlags>(SessionFlagService.Instance.GetSessionJsonData(this.session));
-                return JsonConvert.DeserializeObject<NetworkingService.EndPointJson>(NetworkingService.Instance.GetEndpointJsonData(json));
-            }
-            catch (Exception ex)
-            {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error deserializing session flags.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
-            }
-            return null;
-        }
-
-        public string GetEndpointJsonData(string json)
-        {
-            // Make sure the extension session flag is created if it doesn't exist.
-            CreateExtensionSessionFlag(this.session);
-
-            return this.session["Microsoft365FiddlerExtensionJson"];
-        }
-
-        */
-
         /// <summary>
         /// Function to read Microsoft365 URls and IPs json data, iterate through children, to 
         /// confirm IP address is or is not a Microsoft365 IP address.
@@ -143,6 +128,7 @@ namespace Office365FiddlerExtension.Services
             this.session = session;
 
             bool isMicrosoft365IP = false;
+            string matchingSubnet = "";
 
             if (this.session["X-HostIP"] == null)
             {
@@ -150,77 +136,49 @@ namespace Office365FiddlerExtension.Services
                 return false;
             }
 
-            // Serialize the string to Json.
-
             if (Preferences.MicrosoftURLsIPsWebService.Length == 0)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} MicrosoftURLsIPsWebService is null.");
                 return false;
             }
             
-            // https://stackoverflow.com/questions/34690581/error-reading-jobject-from-jsonreader-current-jsonreader-item-is-not-an-object
-            //Preferences.MicrosoftURLsIPsWebService = Preferences.MicrosoftURLsIPsWebService.TrimStart(new char[] { '[' }).TrimEnd(new char[] { ']' });
-
-            //JObject jObject = JObject.Parse(Preferences.MicrosoftURLsIPsWebService);
-
             JArray jArray = JArray.Parse(Preferences.MicrosoftURLsIPsWebService);
 
-            var children = jArray.Children();//.Children();
+            var children = jArray.Children();
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): CHILDREN COUNT: {children.Count()}");
-
-            //var valuesList = new List<string>();
-            foreach (JObject child in children)
+            foreach (JObject child in children.Cast<JObject>())
             {
-                //valuesList.AddRange(child["values"].ToObject<List<string>>());
-
-                var childJson = JsonConvert.DeserializeObject<NetworkingService.EndPointJson>(child.ToString());
-
-                foreach (string subnet in childJson.ips)
+                try
                 {
-                    if (IsInSubnetMask(this.session["X-HostIP"], subnet))
+                    // Attempting to deserialize the Json object within child can and will fail here.
+                    // Multiple Json sections in the source data do not include IPs, the only include URLs.
+                    // For this reason this entire section needs to be within a try, catch statement to handle the failures in code.
+                    var childJson = JsonConvert.DeserializeObject<NetworkingService.EndPointJson>(child.ToString());
+
+                    // Iterate through the subnets in each child.
+                    foreach (string subnet in childJson.ips)
                     {
-                        isMicrosoft365IP = true;
-
-                        string message = $"CHILDREN COUNT: {this.session["X-HostIP"]} {subnet} / {isMicrosoft365IP}";
-                        string caption = "Error Detected in Input";
-                        MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-                        DialogResult result;
-
-                        // Displays the MessageBox.
-                        result = MessageBox.Show(message, caption, buttons);
+                        if (IsInSubnetMask(this.session["X-HostIP"], subnet))
+                        {
+                            isMicrosoft365IP = true;
+                            matchingSubnet = subnet;
+                            break;
+                        }
+                        //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        //        $"{this.session["X-HostIP"]} in subnet {subnet}. isMicrosoft365IP = {isMicrosoft365IP}.");
                     }
+                }
+                catch (Exception ex)
+                {
+                    // Do nothing here. We're expecting to have some children which do not include ips, which will throw an exception.
+                    // Just want to ignore / handle these failures.
+
+                    //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    //                $"{this.session["X-HostIP"]} Exception {ex}");
                 }
             }
 
-            string message1 = $"FINISHED: {isMicrosoft365IP}";
-            string caption1 = "Error Detected in Input";
-            MessageBoxButtons buttons1 = MessageBoxButtons.YesNo;
-            DialogResult result1;
-
-            // Displays the MessageBox.
-            result1 = MessageBox.Show(message1, caption1, buttons1);
-
-            //JObject endpointdata = JObject.Parse(Preferences.MicrosoftURLsIPsWebService);
-
-            //IList<JToken> list = endpointdata.Children();
-
-            //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): CHILDREN COUNT: {Microsoft365URLsIPsJson.Count}");
-            /*
-            for (int i = 0; i < Microsoft365URLsIPsJson.Count; i++)
-            {
-                var jsonChild = JsonConvert.DeserializeObject<NetworkingService.EndPointJson>((string)list[i]);
-
-                foreach (string subnet in jsonChild.ips)
-                {
-                    if (IsInSubnetMask(this.session["X-HostIP"], subnet))
-                    {
-                        isMicrosoft365IP = true;
-                    }
-                }
-            }
-            */
-            return isMicrosoft365IP;
+            return true;
         }
 
         /// <summary>
@@ -303,6 +261,4 @@ namespace Office365FiddlerExtension.Services
             public string notes { get; set; }
         }
     }
-
-
 }

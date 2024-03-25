@@ -303,8 +303,6 @@ namespace Office365FiddlerExtension.Inspectors
                     ResultsString.AppendLine("<td>");
                     ResultsString.AppendLine(this.session["X-HostIP"]);
 
-                    // REVIEW BUG - Null object returned here. Needs work.
-
                     if (NetworkingService.Instance.IsMicrosoft365IPAddress(this.session))
                     {
                         ResultsString.AppendLine(" -- This is a Microsoft365 IP Address.");
