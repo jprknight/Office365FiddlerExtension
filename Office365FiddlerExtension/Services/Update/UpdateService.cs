@@ -36,17 +36,11 @@ namespace Office365FiddlerExtension.Services
             UpdateURLsJsonFromGithub();
             UpdateVersionJsonFromGithub();
             UpdateSessionClassificationJsonFromGithub();
-            _ = NetworkingService.Instance.UpdateMicrosft365URLsIPsFromWebAsync();
+            UpdateMicrosft365URLsIPsFromWeb();
         }
 
         public async void UpdateSessionClassificationJsonFromGithub()
         {
-            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
-            {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (UpdateService): NeverWebCall enabled, returning.");
-                return;
-            }
-
             var extensionURLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
 
             using (var getSettings = new HttpClient())
@@ -174,6 +168,51 @@ namespace Office365FiddlerExtension.Services
                 {
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving ExtensionURLs from Github {URLsJsonService.ExtensionURLs}");
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving ExtensionURLs from Github {ex}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update the Microsoft 365 URLs and IP addresses data from the web. Store it in an application preference for use in session analysis.
+        /// Function intended to only be run once per Fiddler session to avoid any 429 "Too Many Requests" from the data source.
+        /// </summary>
+        private async void UpdateMicrosft365URLsIPsFromWeb()
+        {
+            var extensionURLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
+
+            using (var getSettings = new HttpClient())
+            {
+                try
+                {
+                    var response = await getSettings.GetAsync(extensionURLs.MicrosoftURLsIPsWebService);
+
+                    response.EnsureSuccessStatusCode();
+
+                    var jsonString = string.Empty;
+
+                    using (var stream = await response.Content.ReadAsStreamAsync())
+                    {
+                        stream.Position = 0;
+                        using (var reader = new StreamReader(stream))
+                        {
+                            jsonString = await reader.ReadToEndAsync();
+                        }
+                    }
+
+                    // Save this new data into the SessionClassification Fiddler setting.
+                    if (Preferences.MicrosoftURLsIPsWebService != jsonString)
+                    {
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): MicrosoftURLsIPsWebService Fiddler setting updated.");
+                        Preferences.MicrosoftURLsIPsWebService = jsonString;
+                    }
+                    else
+                    {
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): MicrosoftURLsIPsWebService Fiddler setting no update needed.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving MicrosoftURLsIPsWebService from Github {ex}");
                 }
             }
         }

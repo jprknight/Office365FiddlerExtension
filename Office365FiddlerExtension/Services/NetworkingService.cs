@@ -4,12 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Net.Sockets;
 using System.Net;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Fiddler;
-using System.IO;
-using System.Net.Http;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -213,60 +210,6 @@ namespace Office365FiddlerExtension.Services
             }
 
             return Tuple.Create(isMicrosoft365IP,matchingSubnet);
-        }
-
-        /// <summary>
-        /// Update the Microsoft 365 URLs and IP addresses data from the web. Store it in an application preference for use in session analysis.
-        /// Function intended to only be run once per Fiddler session to avoid any 429 "Too Many Requests" from the data source.
-        /// </summary>
-        public async Task UpdateMicrosft365URLsIPsFromWebAsync()
-        {
-            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
-            {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (NetworkingService): NeverWebCall enabled, returning.");
-                return;
-            }
-
-            var extensionURLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
-
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                $"({this.GetType().Name}): Update attempt on Microsoft365 URLs and IPs at: {extensionURLs.MicrosoftURLsIPsWebService}");
-
-            using (var getSettings = new HttpClient())
-            {
-                try
-                {
-                    var response = await getSettings.GetAsync(extensionURLs.MicrosoftURLsIPsWebService);
-
-                    response.EnsureSuccessStatusCode();
-
-                    var jsonString = string.Empty;
-
-                    using (var stream = await response.Content.ReadAsStreamAsync())
-                    {
-                        stream.Position = 0;
-                        using (var reader = new StreamReader(stream))
-                        {
-                            jsonString = await reader.ReadToEndAsync();
-                        }
-                    }
-
-                    // Save this new data into the SessionClassification Fiddler setting.
-                    if (Preferences.MicrosoftURLsIPsWebService != jsonString)
-                    {
-                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): MicrosoftURLsIPsWebService Fiddler setting updated.");
-                        Preferences.MicrosoftURLsIPsWebService = jsonString;
-                    }
-                    else
-                    {
-                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): MicrosoftURLsIPsWebService Fiddler setting no update needed.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving MicrosoftURLsIPsWebService from Github {ex}");
-                }
-            }
         }
 
         public class EndPointJson
