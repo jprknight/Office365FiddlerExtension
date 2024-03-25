@@ -19,11 +19,12 @@ namespace Office365FiddlerExtension.Services
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): NeverWebCall enabled, returning.");
-                return;                    
+                return;
             }
             
             /*
             REVIEW THIS -- UNCOMMENT THIS CODE BEFORE GOING PRODUCTION.
+            This is what stops the extension checking every time Fiddler is opened or the extension is initialized.
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             if (DateTime.Now < extensionSettings.NextUpdateCheck)
             {
@@ -34,12 +35,18 @@ namespace Office365FiddlerExtension.Services
 
             UpdateURLsJsonFromGithub();
             UpdateVersionJsonFromGithub();
-            // REVIEW THIS -- Uncomment this before going production.
-            //UpdateSessionClassificationJsonFromGithub();
+            UpdateSessionClassificationJsonFromGithub();
+            _ = NetworkingService.Instance.UpdateMicrosft365URLsIPsFromWebAsync();
         }
 
-        private async void UpdateSessionClassificationJsonFromGithub()
+        public async void UpdateSessionClassificationJsonFromGithub()
         {
+            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (UpdateService): NeverWebCall enabled, returning.");
+                return;
+            }
+
             var extensionURLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
 
             using (var getSettings = new HttpClient())

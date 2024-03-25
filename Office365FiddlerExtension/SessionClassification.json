@@ -88,6 +88,12 @@
       "SessionResponseServerConfidenceLevel": 5,
       "SessionSeverity": 30
     },
+    "HTTP_200_Outlook_Web_App_Notification_Channel": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
     "HTTP_200_Outlook_RPC": {
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 5,

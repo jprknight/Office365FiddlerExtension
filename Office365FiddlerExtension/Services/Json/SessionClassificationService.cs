@@ -47,6 +47,11 @@ namespace Office365FiddlerExtension.Services
             return JsonConvert.DeserializeObject<SessionClassificationJsonSection>(jsonSection);
         }
 
+        /// <summary>
+        /// SessionClassification.json is delivered to the output directory, for any users who have 'NeverWebCall' true.
+        /// Create the application preference to store the Json in to be read from.
+        /// </summary>
+
         public void CreateSessionClassificationFiddlerSetting()
         {
             if (Preferences.SessionClassification != null)

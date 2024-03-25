@@ -55,13 +55,15 @@ namespace Office365FiddlerExtension.Services
                 TelemetryInstrumentationKey = "87fb55ab-0052-4970-9318-7c740220e3c0",
                 ExtensionURL = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/ExtensionURLs.json",
                 ExtensionVersion = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/ExtensionVersion.json",
-                SessionClassification = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/SessionClassification.json",
                 Installer = "https://github.com/jprknight/Office365FiddlerExtension/releases/latest",
+                MicrosoftURLsIPs = "https://learn.microsoft.com/en-us/microsoft-365/enterprise/urls-and-ip-address-ranges?view=o365-worldwide",
+                MicrosoftURLsIPsWebService = "https://endpoints.office.com/endpoints/worldwide?clientrequestid=b10c5ed1-bad1-445f-b386-b919946339a7",
+                ReportIssues = "https://github.com/jprknight/Office365FiddlerExtension/issues",
                 ResponseCodes = "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes",
+                SessionClassification = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/SessionClassification.json",
                 Wiki = "https://github.com/jprknight/Office365FiddlerExtension/wiki",
                 WikiSessionTimeThresholds = "https://github.com/jprknight/Office365FiddlerExtension/wiki/Session-Time-Thresholds",
-                WikiScoreForSession = "https://github.com/jprknight/Office365FiddlerExtension/wiki/What-is-ScoreForSession%3F",
-                ReportIssues = "https://github.com/jprknight/Office365FiddlerExtension/issues"
+                WikiScoreForSession = "https://github.com/jprknight/Office365FiddlerExtension/wiki/What-is-ScoreForSession%3F"
             };
 
             // Transform the object to a Json object.
@@ -91,6 +93,8 @@ namespace Office365FiddlerExtension.Services
         public string ExtensionVersion { get; set; }
 
         public string Installer { get; set; }
+
+        public string MicrosoftURLsIPsWebService { get; set; }
 
         public string ResponseCodes { get; set; }
 

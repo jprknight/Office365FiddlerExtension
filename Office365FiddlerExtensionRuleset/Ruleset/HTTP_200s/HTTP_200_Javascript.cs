@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
 using System.Reflection;
+using static Office365FiddlerExtension.Services.SessionFlagService;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -37,6 +38,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
                 sessionSeverity = sessionClassificationJson.SessionSeverity;
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {sessionClassificationJson.SessionSeverity}");
             }
             catch (Exception ex)
             {
@@ -46,7 +48,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionAuthenticationConfidenceLevel = 5;
                 sessionTypeConfidenceLevel = 10;
                 sessionResponseServerConfidenceLevel = 5;
-                sessionSeverity = 40;
+                sessionSeverity = 60;
             }
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
@@ -62,10 +64,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
                 SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
                 SessionSeverity = sessionSeverity
-            };
+            };            
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Javascript; severity: {SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionSeverity}");
         }
     }
 }

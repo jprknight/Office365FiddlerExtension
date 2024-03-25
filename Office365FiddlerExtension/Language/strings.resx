@@ -403,10 +403,10 @@
     <value>0 No Response OWA Notification Channel</value>
   </data>
   <data name="HTTP_0_Outlook_Web_App_Notification_Channel_ResponseComments" xml:space="preserve">
-    <value>Notification Channel is used for OWA to display new mails.</value>
+    <value>&lt;p&gt;Notification Channel is used for OWA to display new mails.&lt;/p&gt;&lt;p&gt;&lt;b&gt;&lt;span style='color:red'&gt;No response for OWA Notification Channel - New emails won't show.&lt;/span&gt;&lt;/b&gt;&lt;/p&gt;</value>
   </data>
   <data name="HTTP_0_Outlook_Web_App_Notification_Channel_SessionType" xml:space="preserve">
-    <value>OWA Notification Channel</value>
+    <value>!OWA NOTIFICATION CHANNELl!</value>
   </data>
   <data name="HTTP_200s_CTR_AutoDiscover_NotFound_ResponseAlert" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;Exchange Online / Outlook CTR Autodiscover - Unusual Autodiscover Response&lt;/span&gt;&lt;/b&gt;</value>
@@ -500,7 +500,7 @@
     <value>200 Actually OK</value>
   </data>
   <data name="HTTP_200_Client Access Rule" xml:space="preserve">
-    <value>CLIENT ACCESS RULE</value>
+    <value>!CLIENT ACCESS RULE!</value>
     <comment>This is part of a warning statement, keep all caps.</comment>
   </data>
   <data name="HTTP_200_Client Access Rule ResponseAlert" xml:space="preserve">
@@ -1094,7 +1094,7 @@
     <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 503: FederatedSTSUnreachable&lt;/span&gt;&lt;/b&gt;.&lt;b&gt;&lt;span style='color:red'&gt;The fedeation service is unreachable or unavailable&lt;/span&gt;&lt;/b&gt;.&lt;p&gt;&lt;b&gt;&lt;span style='color:red'&gt;Troubleshoot this issue first before doing anything else.&lt;/span&gt;&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check the Raw tab for additional details.&lt;/p&gt;&lt;p&gt;Check the realm page for the authenticating domain. Check the below links from the Realm page to see if the IDP gives the expected responses.&lt;/p&gt;</value>
   </data>
   <data name="HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_SessionType" xml:space="preserve">
-    <value>***FederatedSTSUnreachable***</value>
+    <value>!FederatedSTSUnreachable!</value>
   </data>
   <data name="HTTP_504_Gateway_Timeout_Anything_Else_ResponseAlert" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 504 Gateway Timeout&lt;/span&gt;&lt;/b&gt;</value>
@@ -1128,6 +1128,15 @@
   </data>
   <data name="Insufficient data" xml:space="preserve">
     <value>Insufficient data</value>
+  </data>
+  <data name="IsMicrosoft365subnet" xml:space="preserve">
+    <value>is within a Microsoft365 subnet</value>
+  </data>
+  <data name="IsPrivateSubnet" xml:space="preserve">
+    <value>is within a private subnet on a</value>
+  </data>
+  <data name="IsPublicIPAddress" xml:space="preserve">
+    <value>is a public IP address, but is not within a Microsoft365 subnet.</value>
   </data>
   <data name="Issuer" xml:space="preserve">
     <value>Issuer</value>
@@ -1190,6 +1199,9 @@
   </data>
   <data name="Name Identifier Format" xml:space="preserve">
     <value>Name Identifier Format</value>
+  </data>
+  <data name="network" xml:space="preserve">
+    <value>network</value>
   </data>
   <data name="Next Update Check" xml:space="preserve">
     <value>Next Update Check</value>
@@ -1260,6 +1272,12 @@
   <data name="Response Comments No Known Issue" xml:space="preserve">
     <value>&lt;p&gt;No known issue with Microsoft365 and this type of session. If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: &lt;a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'&gt;https://github.com/jprknight/Office365FiddlerExtension&lt;/a&gt;.&lt;/p&gt;</value>
     <comment>Don't translate anything with &lt; &gt;</comment>
+  </data>
+  <data name="Response Host" xml:space="preserve">
+    <value>Response Host</value>
+  </data>
+  <data name="Response Host Info" xml:space="preserve">
+    <value>Information on the host/server/device which responded to this request.</value>
   </data>
   <data name="Response Server" xml:space="preserve">
     <value>Response Server</value>
@@ -1361,6 +1379,9 @@
   <data name="Session Type" xml:space="preserve">
     <value>Session Type</value>
   </data>
+  <data name="Sessionanalysisperformed" xml:space="preserve">
+    <value>Session analysis performed on:</value>
+  </data>
   <data name="SessionTimersDescription" xml:space="preserve">
     <value>&lt;p&gt;The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.&lt;/p&gt;&lt;p&gt;If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.&lt;/p&gt;&lt;p&gt;Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.&lt;p&gt;</value>
     <comment>Don't translate anything with &lt; &gt;</comment>
@@ -1397,6 +1418,9 @@
   </data>
   <data name="Transit Time" xml:space="preserve">
     <value>Transit Time</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
   </data>
   <data name="Types" xml:space="preserve">
     <value>Types</value>

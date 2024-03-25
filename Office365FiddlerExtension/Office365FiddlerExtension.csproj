@@ -208,7 +208,8 @@
     <Compile Include="Services\Fiddler\RulesetService.cs" />
     <Compile Include="Services\Json\SessionFlagService.cs" />
     <Compile Include="Services\Json\SettingsJsonService.cs" />
-    <Compile Include="Services\Language\LanguageService.cs" />
+    <Compile Include="Services\LanguageService.cs" />
+    <Compile Include="Services\NetworkingService.cs" />
     <Compile Include="Services\Update\UpdateService.cs" />
     <Compile Include="Services\Update\VersionService.cs" />
     <Compile Include="UI\Forms\About.cs">
@@ -242,7 +243,7 @@
     <Compile Include="UI\Forms\Office365ResponseControl.Designer.cs">
       <DependentUpon>Office365ResponseControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Services\Telemetry\TelemetryService.cs" />
+    <Compile Include="Services\TelemetryService.cs" />
     <Compile Include="UI\EnhanceSessionUX.cs" />
   </ItemGroup>
   <ItemGroup>

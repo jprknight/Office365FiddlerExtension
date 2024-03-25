@@ -103,14 +103,9 @@ namespace Office365FiddlerExtension.UI
         {
             this.session = session;
 
-            if (this.session["X-HostIP"] != null && this.session["X-HostIP"] != "")
-            {
-                return this.session["X-HostIP"];
-            }
-            else
-            {
-                return LangHelper.GetString("Unknown");
-            }
+            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
+
+            return ExtensionSessionFlags.HostIP;
         }
     }
 }

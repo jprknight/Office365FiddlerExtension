@@ -46,9 +46,15 @@ namespace Office365FiddlerExtension.Services
         {
             var githubJsonVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
-            if (Assembly.GetExecutingAssembly().GetName().Version.Major < githubJsonVersion.ExtensionMajor ||
-                Assembly.GetExecutingAssembly().GetName().Version.Minor < githubJsonVersion.ExtensionMinor ||
-                Assembly.GetExecutingAssembly().GetName().Version.Build < githubJsonVersion.ExtensionBuild)
+            int localVersion = Assembly.GetExecutingAssembly().GetName().Version.Major
+                + Assembly.GetExecutingAssembly().GetName().Version.Minor
+                + Assembly.GetExecutingAssembly().GetName().Version.Build;
+
+            int githubVersion = githubJsonVersion.ExtensionMajor
+                + githubJsonVersion.ExtensionMinor
+                + githubJsonVersion.ExtensionBuild;
+
+            if (localVersion < githubVersion)
             {
                 return true;
             }
@@ -129,9 +135,15 @@ namespace Office365FiddlerExtension.Services
                 FileInfo file = (from f in dirInfo.GetFiles(pattern) orderby f.LastWriteTime descending select f).First();
                 FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(file.FullName);
 
-                if (VersionService.Instance.LocalRulesetDLLVerison("Major") < githubJsonVersion.RulesetMajor ||
-                VersionService.Instance.LocalRulesetDLLVerison("Minor") < githubJsonVersion.RulesetMinor ||
-                VersionService.Instance.LocalRulesetDLLVerison("Build") < githubJsonVersion.RulesetBuild)
+                int localVersion = VersionService.Instance.LocalRulesetDLLVerison("Major")
+                    + VersionService.Instance.LocalRulesetDLLVerison("Minor")
+                    + VersionService.Instance.LocalRulesetDLLVerison("Build");
+
+                int GithubVersion = githubJsonVersion.RulesetMajor
+                    + githubJsonVersion.RulesetMinor
+                    + githubJsonVersion.RulesetBuild;
+
+                if (localVersion < GithubVersion)
                 {
                     return true;
                 }
