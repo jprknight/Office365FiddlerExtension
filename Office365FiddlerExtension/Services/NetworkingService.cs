@@ -40,8 +40,8 @@ namespace Office365FiddlerExtension.Services
             {
                 // We only handle netmasks in format "IP/PrefixLength".
                 //throw new NotSupportedException("Only SubNetMasks with a given prefix length are supported.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"(NetworkingService) IsInSubnetMask: Only SubNetMasks with a given prefix length are supported.");
+                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                //    $"(NetworkingService) IsInSubnetMask: Only SubNetMasks with a given prefix length are supported.");
                 return false;
             }
 
@@ -51,8 +51,8 @@ namespace Office365FiddlerExtension.Services
             if (maskAddress.AddressFamily != address.AddressFamily)
             {
                 // We got something like an IPV4-Address for an IPv6-Mask. This is not valid.
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"(NetworkingService) IsInSubnetMask: Received something like an IPV4-Address for an IPv6-Mask. This is not valid.");
+                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                //    $"(NetworkingService) IsInSubnetMask: Received something like an IPV4-Address for an IPv6-Mask. This is not valid.");
                 return false;
             }
 
@@ -65,8 +65,8 @@ namespace Office365FiddlerExtension.Services
             if (maskLength < 0)
             {
                 // throw new NotSupportedException("A Subnetmask should not be less than 0.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"(NetworkingService) IsInSubnetMask: A Subnetmask should not be less than 0.");
+                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                //    $"(NetworkingService) IsInSubnetMask: A Subnetmask should not be less than 0.");
                 return false;
             }
 
@@ -95,8 +95,8 @@ namespace Office365FiddlerExtension.Services
                 if (maskAddressBits.Length != ipAddressBits.Length)
                 {
                     // throw new ArgumentException("Length of IP Address and Subnet Mask do not match.");
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"(NetworkingService) IsInSubnetMask: Length of IP Address and Subnet Mask do not match.");
+                    //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    //    $"(NetworkingService) IsInSubnetMask: Length of IP Address and Subnet Mask do not match.");
                     return false;
                 }
                     
