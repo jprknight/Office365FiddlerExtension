@@ -178,7 +178,7 @@ namespace Office365FiddlerExtension.Services
                 }
             }
 
-            return true;
+            return isMicrosoft365IP;
         }
 
         /// <summary>
