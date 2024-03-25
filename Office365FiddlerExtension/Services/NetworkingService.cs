@@ -20,13 +20,6 @@ namespace Office365FiddlerExtension.Services
 
         public static NetworkingService Instance => _instance ?? (_instance = new NetworkingService());
 
-        // Need to call a function in this class to:
-        //   Start out with a bool IsMicrosoft365IP = false.
-        //   Iterate through all the children json objects in the json data stored in an application preference.
-        //   For each interation / child, iterate through each each IP found in the child, and run the IsInSubnetMask(this.session.hostip, each.child.subnet)
-        //     If IsInSubnetMask returns true, set IsMicrosoft365IP to true.
-
-
         /// <summary>
         /// Returns TRUE if the given IP address is contained in the given subnetmask, FALSE otherwise.
         /// Examples:
@@ -58,6 +51,8 @@ namespace Office365FiddlerExtension.Services
             if (maskAddress.AddressFamily != address.AddressFamily)
             {
                 // We got something like an IPV4-Address for an IPv6-Mask. This is not valid.
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"(NetworkingService) IsInSubnetMask: Received something like an IPV4-Address for an IPv6-Mask. This is not valid.");
                 return false;
             }
 
@@ -118,12 +113,51 @@ namespace Office365FiddlerExtension.Services
         }
 
         /// <summary>
-        /// Function to read Microsoft365 URls and IPs json data, iterate through children, to 
-        /// confirm IP address is or is not a Microsoft365 IP address.
+        /// Tuple which takes in session, and returns if the HostIP associated with the session is within
+        /// a private network or not.
         /// </summary>
-        /// <param name="json"></param>
-        /// <returns>this.session["X-HostIP"] null</returns>
-        public bool IsMicrosoft365IPAddress(Session session)
+        /// <param name="session"></param>
+        /// <returns>bool isPrivateIPAddress, string classType</returns>
+        public Tuple<bool,string> IsPrivateIPAddress(Session session)
+        {
+            this.session = session;
+
+            bool isPrivateIPAddress = false;
+            string classType = "";
+
+            if (this.session["X-HostIP"] == null)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Session X-HostIP is null.");
+                return Tuple.Create(false, "");
+            }
+
+            if (IsInSubnetMask(this.session["X-HostIP"], "10.0.0.0/8"))
+            {
+                isPrivateIPAddress = true;
+                classType = "class A";
+            }
+            else if (IsInSubnetMask(this.session["X-HostIP"], "172.16.0.0/12"))
+            {
+                isPrivateIPAddress = true;
+                classType = "class B";
+            }
+            else if (IsInSubnetMask(this.session["X-HostIP"], "192.168.0.0/16"))
+            {
+                isPrivateIPAddress = true;
+                classType = "class C";
+            }
+
+            return Tuple.Create(isPrivateIPAddress, classType);
+        }
+
+
+        /// <summary>
+        /// Tuple which takes in session, and returns if the HostIP associated with the session is within
+        /// a Microsoft365 subnet or not.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns>bool isMicrosoft365IP, string matchingSubnet</returns>
+        public Tuple<bool,string> IsMicrosoft365IPAddress(Session session)
         {
             this.session = session;
 
@@ -133,13 +167,13 @@ namespace Office365FiddlerExtension.Services
             if (this.session["X-HostIP"] == null)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Session X-HostIP is null.");
-                return false;
+                return Tuple.Create(false, "");
             }
 
             if (Preferences.MicrosoftURLsIPsWebService.Length == 0)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} MicrosoftURLsIPsWebService is null.");
-                return false;
+                return Tuple.Create(false, "");
             }
             
             JArray jArray = JArray.Parse(Preferences.MicrosoftURLsIPsWebService);
@@ -178,7 +212,7 @@ namespace Office365FiddlerExtension.Services
                 }
             }
 
-            return isMicrosoft365IP;
+            return Tuple.Create(isMicrosoft365IP,matchingSubnet);
         }
 
         /// <summary>
@@ -234,7 +268,6 @@ namespace Office365FiddlerExtension.Services
                 }
             }
         }
-
 
         public class EndPointJson
         {

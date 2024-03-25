@@ -303,15 +303,27 @@ namespace Office365FiddlerExtension.Inspectors
                     ResultsString.AppendLine("<td>");
                     ResultsString.AppendLine(this.session["X-HostIP"]);
 
-                    if (NetworkingService.Instance.IsMicrosoft365IPAddress(this.session))
+                    // Tuple -- tupleIsPrivateIPAddress (bool), matching subnet (string).
+                    Tuple<bool, string> tupleIsPrivateIPAddress = NetworkingService.Instance.IsPrivateIPAddress(this.session);
+
+                    if (tupleIsPrivateIPAddress.Item1)
                     {
-                        ResultsString.AppendLine(" -- This is a Microsoft365 IP Address.");
+                        ResultsString.AppendLine($" -- Is within a private subnet on a {tupleIsPrivateIPAddress.Item2} network.");
                     }
                     else
                     {
-                        ResultsString.AppendLine(" -- This is NOT a Microsoft365 IP Address.");
-                    }
+                        // Tuple -- IsMicrosoft365IP (bool), matching subnet (string).
+                        Tuple<bool, string> tupleIsMicrosoft365IPAddress = NetworkingService.Instance.IsMicrosoft365IPAddress(this.session);
 
+                        if (tupleIsMicrosoft365IPAddress.Item1)
+                        {
+                            ResultsString.AppendLine($" -- Is within a Microsoft365 subnet <b>{tupleIsMicrosoft365IPAddress.Item2}</b>.");
+                        }
+                        else
+                        {
+                            ResultsString.AppendLine(" -- This isn't a Microsoft365 IP Address.");
+                        }
+                    }
                     
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
