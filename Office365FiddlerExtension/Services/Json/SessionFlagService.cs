@@ -92,6 +92,7 @@ namespace Office365FiddlerExtension.Services
                 SamlTokenNameIdentifierFormat = "",
                 SamlTokenAttributeNameImmutibleID = "",
                 ProcessName = "",
+                HostIP = "",
                 SessionAuthenticationConfidenceLevel = "0",
                 SessionTypeConfidenceLevel = "0",
                 SessionResponseServerConfidenceLevel = "0",
@@ -379,6 +380,13 @@ namespace Office365FiddlerExtension.Services
                 updatedSessionFlagsJson.ProcessName = existingSessionFlagsJson.ProcessName;
             }
 
+            // Host IP
+            if (updatedSessionFlagsJson.HostIP == null)
+            {
+                updatedSessionFlagsJson.HostIP = existingSessionFlagsJson.HostIP;
+            }
+
+
             // Session Confidence Levels
 
             // If the updated Session Confidence Levels are lower than the existing Session Confidence Levels, use the 
@@ -476,6 +484,8 @@ namespace Office365FiddlerExtension.Services
             public string SamlTokenAttributeNameImmutibleID { get; set; }
 
             public string ProcessName { get; set; }
+
+            public string HostIP { get; set; }
 
             public bool SessionTimesInsufficientData { get; set; }
 

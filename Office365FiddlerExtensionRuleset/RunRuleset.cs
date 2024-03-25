@@ -3,6 +3,7 @@ using Fiddler;
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtensionRuleset.Ruleset;
+using Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun;
 using Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s;
 
 namespace Office365FiddlerExtensionRuleset
@@ -18,6 +19,9 @@ namespace Office365FiddlerExtensionRuleset
             ///////////////////////////////
             ///
             // Always run these functions on every session.
+
+            // Host IP.
+            HostIP.Instance.SetHostIP(this.session);
 
             // Broad logic checks on sessions regardless of response code.
             FiddlerUpdateSessions.Instance.Run(this.session);
@@ -35,7 +39,7 @@ namespace Office365FiddlerExtensionRuleset
             SessionElapsedTime.Instance.SetInspectorElapsedTime(this.session);
 
             // Set Process Name.
-            ProcessName.Instance.SetProcessName(this.session);
+            ProcessName.Instance.SetProcessName(this.session);          
 
             ///////////////////////////////
             ///

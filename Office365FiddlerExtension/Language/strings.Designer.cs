@@ -2946,7 +2946,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ***FederatedSTSUnreachable***.
+        ///   Looks up a localized string similar to !FederatedSTSUnreachable!.
         /// </summary>
         internal static string HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_SessionType {
             get {
@@ -3051,6 +3051,33 @@ namespace Office365FiddlerExtension.Language {
         internal static string Insufficient_data {
             get {
                 return ResourceManager.GetString("Insufficient data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is within a Microsoft365 subnet.
+        /// </summary>
+        internal static string IsMicrosoft365subnet {
+            get {
+                return ResourceManager.GetString("IsMicrosoft365subnet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is within a private subnet on a.
+        /// </summary>
+        internal static string IsPrivateSubnet {
+            get {
+                return ResourceManager.GetString("IsPrivateSubnet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is a public IP address, but is not within a Microsoft365 subnet..
+        /// </summary>
+        internal static string IsPublicIPAddress {
+            get {
+                return ResourceManager.GetString("IsPublicIPAddress", resourceCulture);
             }
         }
         
@@ -3231,6 +3258,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Name_Identifier_Format {
             get {
                 return ResourceManager.GetString("Name Identifier Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to network.
+        /// </summary>
+        internal static string network {
+            get {
+                return ResourceManager.GetString("network", resourceCulture);
             }
         }
         
@@ -3438,6 +3474,24 @@ namespace Office365FiddlerExtension.Language {
         internal static string Response_Comments_No_Known_Issue {
             get {
                 return ResourceManager.GetString("Response Comments No Known Issue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Response Host.
+        /// </summary>
+        internal static string Response_Host {
+            get {
+                return ResourceManager.GetString("Response Host", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Information on the host/server/device which responded to this request..
+        /// </summary>
+        internal static string Response_Host_Info {
+            get {
+                return ResourceManager.GetString("Response Host Info", resourceCulture);
             }
         }
         
@@ -3739,6 +3793,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Session analysis performed on:.
+        /// </summary>
+        internal static string Sessionanalysisperformed {
+            get {
+                return ResourceManager.GetString("Sessionanalysisperformed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;p&gt;The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.&lt;/p&gt;&lt;p&gt;If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.&lt;/p&gt;&lt;p&gt;Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.&lt;p&gt;.
         /// </summary>
         internal static string SessionTimersDescription {
@@ -3834,6 +3897,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Transit_Time {
             get {
                 return ResourceManager.GetString("Transit Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        internal static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
         

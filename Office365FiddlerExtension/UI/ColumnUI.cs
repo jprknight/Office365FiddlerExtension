@@ -103,34 +103,9 @@ namespace Office365FiddlerExtension.UI
         {
             this.session = session;
 
-            if (this.session["X-HostIP"] != null && this.session["X-HostIP"] != "")
-            {
-                // Tuple -- tupleIsPrivateIPAddress (bool), matching subnet (string).
-                Tuple<bool, string> tupleIsPrivateIPAddress = NetworkingService.Instance.IsPrivateIPAddress(this.session);
+            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
 
-                if (tupleIsPrivateIPAddress.Item1)
-                {
-                    return "LAN:" + this.session["X-HostIP"];
-                }
-                else
-                {
-                    // Tuple -- IsMicrosoft365IP (bool), matching subnet (string).
-                    Tuple<bool, string> tupleIsMicrosoft365IPAddress = NetworkingService.Instance.IsMicrosoft365IPAddress(this.session);
-
-                    if (tupleIsMicrosoft365IPAddress.Item1)
-                    {
-                        return "M365:" + this.session["X-HostIP"];
-                    }
-                    else
-                    {
-                        return this.session["X-HostIP"];
-                    }
-                }
-            }
-            else
-            {
-                return LangHelper.GetString("Unknown");
-            }
+            return ExtensionSessionFlags.HostIP;
         }
     }
 }

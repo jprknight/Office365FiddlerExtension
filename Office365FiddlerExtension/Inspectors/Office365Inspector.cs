@@ -270,15 +270,6 @@ namespace Office365FiddlerExtension.Inspectors
 
                 ResultsString.AppendLine("<tr>");
                 ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine($"{LangHelper.GetString("Session Analysis")}");
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("<td>");
-                ResultsString.AppendLine(DateTime.Now.ToString("dddd, dd MMMM yyyy"));
-                ResultsString.AppendLine("</td>");
-                ResultsString.AppendLine("</tr>");
-
-                ResultsString.AppendLine("<tr>");
-                ResultsString.AppendLine("<td>");
                 ResultsString.AppendLine($"{LangHelper.GetString("Capture was")}");
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("<td>");
@@ -295,36 +286,16 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
-                if ((this.session["X-HostIP"] != null) && (this.session["X-HostIP"] != "")) {
+                // REVIEW THIS - Checked March 2024. Make un-calculable inspector Elapsed time 0 or something. Or make this logic check if integer. Multi-language could break this.
+                // Ignore this unless multi language support is implemented.
+                if (ExtensionSessionFlags.InspectorElapsedTime != "Insufficient data")
+                {
                     ResultsString.AppendLine("<tr>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine($"{LangHelper.GetString("Host IP")}");
+                    ResultsString.AppendLine($"{LangHelper.GetString("Elapsed Time")}");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(this.session["X-HostIP"]);
-
-                    // Tuple -- tupleIsPrivateIPAddress (bool), matching subnet (string).
-                    Tuple<bool, string> tupleIsPrivateIPAddress = NetworkingService.Instance.IsPrivateIPAddress(this.session);
-
-                    if (tupleIsPrivateIPAddress.Item1)
-                    {
-                        ResultsString.AppendLine($" -- Is within a private subnet on a {tupleIsPrivateIPAddress.Item2} network.");
-                    }
-                    else
-                    {
-                        // Tuple -- IsMicrosoft365IP (bool), matching subnet (string).
-                        Tuple<bool, string> tupleIsMicrosoft365IPAddress = NetworkingService.Instance.IsMicrosoft365IPAddress(this.session);
-
-                        if (tupleIsMicrosoft365IPAddress.Item1)
-                        {
-                            ResultsString.AppendLine($" -- Is within a Microsoft365 subnet <b>{tupleIsMicrosoft365IPAddress.Item2}</b>.");
-                        }
-                        else
-                        {
-                            ResultsString.AppendLine(" -- This isn't a Microsoft365 IP Address.");
-                        }
-                    }
-                    
+                    ResultsString.AppendLine(ExtensionSessionFlags.InspectorElapsedTime);
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
                 }
@@ -341,26 +312,53 @@ namespace Office365FiddlerExtension.Inspectors
                     ResultsString.AppendLine("</tr>");
                 }
 
-                // REVIEW THIS - Checked March 2024. Make un-calculable inspector Elapsed time 0 or something. Or make this logic check if integer. Multi-language could break this.
-                // Ignore this unless multi language support is implemented.
-                if (ExtensionSessionFlags.InspectorElapsedTime != "Insufficient data")
+                if ((this.session["X-HostIP"] != null) && (this.session["X-HostIP"] != ""))
                 {
                     ResultsString.AppendLine("<tr>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine($"{LangHelper.GetString("Elapsed Time")}");
+                    ResultsString.AppendLine($"{LangHelper.GetString("Host IP")}");
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("<td>");
-                    ResultsString.AppendLine(ExtensionSessionFlags.InspectorElapsedTime);
+                    ResultsString.AppendLine(this.session["X-HostIP"]);
+
                     ResultsString.AppendLine("</td>");
                     ResultsString.AppendLine("</tr>");
                 }
 
                 ResultsString.AppendLine("</table>");
+
+                if ((this.session["X-HostIP"] != null) && (this.session["X-HostIP"] != ""))
+                {
+                    // Tuple -- tupleIsPrivateIPAddress (bool), matching subnet (string).
+                    Tuple<bool, string> tupleIsPrivateIPAddress = NetworkingService.Instance.IsPrivateIPAddress(this.session);
+
+                    if (tupleIsPrivateIPAddress.Item1)
+                    {
+                        ResultsString.AppendLine($"<p>{this.session["X-HostIP"]} {LangHelper.GetString("IsPrivateSubnet")} " +
+                            $"{tupleIsPrivateIPAddress.Item2} {LangHelper.GetString("network")}.</p>");
+                    }
+                    else
+                    {
+                        // Tuple -- IsMicrosoft365IP (bool), matching subnet (string).
+                        Tuple<bool, string> tupleIsMicrosoft365IPAddress = NetworkingService.Instance.IsMicrosoft365IPAddress(this.session);
+
+                        if (tupleIsMicrosoft365IPAddress.Item1)
+                        {
+                            ResultsString.AppendLine($"<p>{this.session["X-HostIP"]} {LangHelper.GetString("IsMicrosoft365subnet")}: " +
+                                $"{tupleIsMicrosoft365IPAddress.Item2}.</p>");
+                        }
+                        else
+                        {
+                            ResultsString.AppendLine($"<p>{this.session["X-HostIP"]} {LangHelper.GetString("IsPublicIPAddress")}</p>");
+                        }
+                    }
+                }
+
                 #endregion
 
                 // Session Analysis.
                 ResultsString.AppendLine($"<h2>{LangHelper.GetString("Session Analysis")}</h2>");
-
+                
                 ResultsString.AppendLine($"<p>{ExtensionSessionFlags.ResponseComments}</p>");
 
                 // Session Age.
