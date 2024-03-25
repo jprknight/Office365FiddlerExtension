@@ -3,6 +3,7 @@
   "ExtensionURL": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/ExtensionURLs.json",
   "ExtensionVersion": "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/ExtensionVersion.json",
   "Installer": "https://github.com/jprknight/Office365FiddlerExtension/releases/latest",
+  "MicrosoftURLsIPs": "https://learn.microsoft.com/en-us/microsoft-365/enterprise/urls-and-ip-address-ranges?view=o365-worldwide",
   "MicrosoftURLsIPsWebService": "https://endpoints.office.com/endpoints/worldwide?clientrequestid=b10c5ed1-bad1-445f-b386-b919946339a7",
   "ReportIssues": "https://github.com/jprknight/Office365FiddlerExtension/issues",
   "ResponseCodes": "https://en.wikipedia.org/wiki/List_of_HTTP_status_codes",

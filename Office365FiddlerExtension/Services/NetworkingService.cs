@@ -202,7 +202,7 @@ namespace Office365FiddlerExtension.Services
                         //        $"{this.session["X-HostIP"]} in subnet {subnet}. isMicrosoft365IP = {isMicrosoft365IP}.");
                     }
                 }
-                catch (Exception ex)
+                catch //(Exception ex)
                 {
                     // Do nothing here. We're expecting to have some children which do not include ips, which will throw an exception.
                     // Just want to ignore / handle these failures.
