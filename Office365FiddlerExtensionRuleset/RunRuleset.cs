@@ -20,9 +20,6 @@ namespace Office365FiddlerExtensionRuleset
             ///
             // Always run these functions on every session.
 
-            // Host IP.
-            HostIP.Instance.SetHostIP(this.session);
-
             // Broad logic checks on sessions regardless of response code.
             FiddlerUpdateSessions.Instance.Run(this.session);
             ApacheAutodiscover.Instance.Run(this.session);
@@ -39,7 +36,10 @@ namespace Office365FiddlerExtensionRuleset
             SessionElapsedTime.Instance.SetInspectorElapsedTime(this.session);
 
             // Set Process Name.
-            ProcessName.Instance.SetProcessName(this.session);          
+            ProcessName.Instance.SetProcessName(this.session);
+
+            // Host IP.
+            HostIP.Instance.SetHostIP(this.session);
 
             ///////////////////////////////
             ///
