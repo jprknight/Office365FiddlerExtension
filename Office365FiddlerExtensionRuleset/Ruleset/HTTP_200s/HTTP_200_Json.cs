@@ -103,23 +103,48 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     sessionSeverity = 50;
                 }
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                // Empty response body.
+                if (this.session.GetResponseBodyAsString() == null || this.session.GetResponseBodyAsString() == "")
                 {
-                    SectionTitle = "HTTP_200s",
+                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                    {
+                        SectionTitle = "HTTP_200s",
 
-                    SessionType = LangHelper.GetString("HTTP_200_Json_Invalid_SessionType"),
-                    ResponseCodeDescription = LangHelper.GetString("HTTP_200_Json_Invalid_ResponseCodeDescription"),
-                    ResponseAlert = LangHelper.GetString("HTTP_200_Json_Invalid_ResponseAlert"),
-                    ResponseComments = LangHelper.GetString("HTTP_200_Json_Invalid_ResponseComments"),
+                        SessionType = LangHelper.GetString("HTTP_200_Json_SessionType_EmptyResponseBody"),
+                        ResponseCodeDescription = LangHelper.GetString("HTTP_200_Json_Invalid_ResponseCodeDescription"),
+                        ResponseAlert = LangHelper.GetString("HTTP_200_Json_Invalid_ResponseAlert"),
+                        ResponseComments = $"{LangHelper.GetString("HTTP_200_Json_EmptyResponseBody")}",
 
-                    SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                    SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                    SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                    SessionSeverity = sessionSeverity
-                };
+                        SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                        SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                        SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                        SessionSeverity = sessionSeverity
+                    };
 
-                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                }
+                // Something in the response body.
+                else
+                {
+                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                    {
+                        SectionTitle = "HTTP_200s",
+
+                        SessionType = LangHelper.GetString("HTTP_200_Json_Invalid_SessionType"),
+                        ResponseCodeDescription = LangHelper.GetString("HTTP_200_Json_Invalid_ResponseCodeDescription"),
+                        ResponseAlert = LangHelper.GetString("HTTP_200_Json_Invalid_ResponseAlert"),
+                        ResponseComments = $"{LangHelper.GetString("HTTP_200_Json_Invalid_ResponseComments")} <p>{LangHelper.GetString("Response Body")}</p>{this.session.GetResponseBodyAsString()}",
+
+                        SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                        SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                        SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                        SessionSeverity = sessionSeverity
+                    };
+
+                    var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                }
 
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 invalid Json; severity: {SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionSeverity}");
             }

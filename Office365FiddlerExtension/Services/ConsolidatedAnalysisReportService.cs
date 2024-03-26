@@ -16,8 +16,17 @@ namespace Office365FiddlerExtension.Services
 
         public static ConsolidatedAnalysisReportService Instance => _instance ?? (_instance = new ConsolidatedAnalysisReportService());
 
-        public void SetProcessName(ConsolidatedAnalysisReportService session)
+        public void CreateCAR()
         {
+            // Create a HTML report summarising findings from the selected sessions.
+            // If only one session is selected, prompt user to select a group of sessions or all sessions.
+            // Record the logged on user who created the report, on what date/time, and the machine name.
+            // Determine percentage of sessions that are connect tunnels. TLS version.
+            // Determine percentage of sessions that are 401 Auth Challenges.
+            // Determine percentage of HTTP 200 OK sessions with are not OK.
+            // Determine percentage of sessions with severity of 60.
+            // Call out information from the top offenders.
+
             var Sessions = FiddlerApplication.UI.GetSelectedSessions();
 
             int connectTunnelCount = 0;

@@ -112,6 +112,9 @@
       <Name>Office365FiddlerExtension</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="HowToAddARule.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /y /s "$(TargetDir)*.*" "C:\Tools\Fiddler\Inspectors"</PostBuildEvent>

@@ -1051,6 +1051,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;Though the session has a content type of Json, there is an empty response body. Check the host, URL, and process on this session to determine if this is a point of interest for the issue you&apos;re troubleshooting.&lt;/p&gt;.
+        /// </summary>
+        internal static string HTTP_200_Json_EmptyResponseBody {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_EmptyResponseBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to !INVALID JSON!.
         /// </summary>
         internal static string HTTP_200_Json_Invalid_ResponseAlert {
@@ -1069,7 +1078,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;HTTP 200 OK response with invalid json in the response. This might indiciate an issue with the server or device which was transmitting the json data to the client computer.&lt;/p&gt;.
+        ///   Looks up a localized string similar to &lt;p&gt;HTTP 200 OK response with invalid json in the response. This might indiciate an issue with the server or device which was transmitting the json data to the client computer. Look for partial Json below in the response body. If you see no Json at all, then this means the response has a content type which contains Json, but there was no actual Json in the response.&lt;/p&gt;.
         /// </summary>
         internal static string HTTP_200_Json_Invalid_ResponseComments {
             get {
@@ -1078,7 +1087,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 200 OK with INVALID JSON.
+        ///   Looks up a localized string similar to !200 OK with INVALID JSON!.
         /// </summary>
         internal static string HTTP_200_Json_Invalid_SessionType {
             get {
@@ -1119,6 +1128,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string HTTP_200_Json_SessionType {
             get {
                 return ResourceManager.GetString("HTTP_200_Json_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to !200 OK NO JSON!.
+        /// </summary>
+        internal static string HTTP_200_Json_SessionType_EmptyResponseBody {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_SessionType_EmptyResponseBody", resourceCulture);
             }
         }
         
@@ -2807,7 +2825,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to !Bad Gateway!.
+        ///   Looks up a localized string similar to !BAD GATEWAY!.
         /// </summary>
         internal static string HTTP_502_Bad_Gateway_Anything_Else_SessionType {
             get {
@@ -2969,7 +2987,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to !Service Unavailable!.
+        ///   Looks up a localized string similar to !SERVICE UNAVAILABLE!.
         /// </summary>
         internal static string HTTP_503_Service_Unavailable_Everything_Else_SessionType {
             get {
@@ -3528,6 +3546,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Report_Issues {
             get {
                 return ResourceManager.GetString("Report Issues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Response Body:.
+        /// </summary>
+        internal static string Response_Body {
+            get {
+                return ResourceManager.GetString("Response Body", resourceCulture);
             }
         }
         

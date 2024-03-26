@@ -531,6 +531,9 @@
   <data name="HTTP_200_Javascript_SessionType" xml:space="preserve">
     <value>200 OK with Javascript</value>
   </data>
+  <data name="HTTP_200_Json_EmptyResponseBody" xml:space="preserve">
+    <value>&lt;p&gt;Though the session has a content type of Json, there is an empty response body. Check the host, URL, and process on this session to determine if this is a point of interest for the issue you're troubleshooting.&lt;/p&gt;</value>
+  </data>
   <data name="HTTP_200_Json_Invalid_ResponseAlert" xml:space="preserve">
     <value>!INVALID JSON!</value>
   </data>
@@ -538,10 +541,10 @@
     <value>200 OK with INVALID JSON</value>
   </data>
   <data name="HTTP_200_Json_Invalid_ResponseComments" xml:space="preserve">
-    <value>&lt;p&gt;HTTP 200 OK response with invalid json in the response. This might indiciate an issue with the server or device which was transmitting the json data to the client computer.&lt;/p&gt;</value>
+    <value>&lt;p&gt;HTTP 200 OK response with invalid json in the response. This might indiciate an issue with the server or device which was transmitting the json data to the client computer. Look for partial Json below in the response body. If you see no Json at all, then this means the response has a content type which contains Json, but there was no actual Json in the response.&lt;/p&gt;</value>
   </data>
   <data name="HTTP_200_Json_Invalid_SessionType" xml:space="preserve">
-    <value>200 OK with INVALID JSON</value>
+    <value>!200 OK with INVALID JSON!</value>
   </data>
   <data name="HTTP_200_Json_ResponseAlert" xml:space="preserve">
     <value>HTTP 200 OK with Json.</value>
@@ -554,6 +557,9 @@
   </data>
   <data name="HTTP_200_Json_SessionType" xml:space="preserve">
     <value>200 OK with Json</value>
+  </data>
+  <data name="HTTP_200_Json_SessionType_EmptyResponseBody" xml:space="preserve">
+    <value>!200 OK NO JSON!</value>
   </data>
   <data name="HTTP_200_Lurking_Errors_ResponseAlert" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;'error', 'failed' or 'exception' found in response body&lt;/span&gt;&lt;/b&gt;</value>
@@ -1049,7 +1055,7 @@
     <value>Potential to cause the issue you are investigating. Do you see expected responses beyond this session in the trace? Is the Host IP for the device issuing this response with a subnet within your lan or something in a cloud provider's network?</value>
   </data>
   <data name="HTTP_502_Bad_Gateway_Anything_Else_SessionType" xml:space="preserve">
-    <value>!Bad Gateway!</value>
+    <value>!BAD GATEWAY!</value>
   </data>
   <data name="HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_Domain_Not_Detected" xml:space="preserve">
     <value>Domain not detected</value>
@@ -1103,7 +1109,7 @@
     <value>&lt;b&gt;&lt;span style='color:red'&gt;Server that was contacted in this session reports it is unavailable&lt;/span&gt;&lt;/b&gt;. Look at the server that issued this response, it is healthy? Contactable? Contactable consistently or intermittently? Consider other session server responses in the 500's (500, 502 or 503) in conjunction with this session.</value>
   </data>
   <data name="HTTP_503_Service_Unavailable_Everything_Else_SessionType" xml:space="preserve">
-    <value>!Service Unavailable!</value>
+    <value>!SERVICE UNAVAILABLE!</value>
   </data>
   <data name="HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseAlert" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;FederatedSTSUnreachable&lt;/span&gt;&lt;/b&gt;</value>
@@ -1289,6 +1295,9 @@
   </data>
   <data name="Report Issues" xml:space="preserve">
     <value>Report Issues</value>
+  </data>
+  <data name="Response Body" xml:space="preserve">
+    <value>Response Body:</value>
   </data>
   <data name="Response Code" xml:space="preserve">
     <value>Response Code</value>
