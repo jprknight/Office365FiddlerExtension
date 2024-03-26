@@ -64,6 +64,7 @@
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_AddressNotFound.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Javascript.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Json.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Lurking_Errors.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Outlook_MAPI_Exchange_Online.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Outlook_MAPI_Exchange_OnPremise.cs" />

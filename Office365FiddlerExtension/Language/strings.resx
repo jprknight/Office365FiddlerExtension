@@ -529,7 +529,31 @@
     <value>&lt;p&gt;HTTP 200 OK response with javascript.&lt;/p&gt;</value>
   </data>
   <data name="HTTP_200_Javascript_SessionType" xml:space="preserve">
-    <value>HTTP 200 OK with Javascript</value>
+    <value>200 OK with Javascript</value>
+  </data>
+  <data name="HTTP_200_Json_Invalid_ResponseAlert" xml:space="preserve">
+    <value>!INVALID JSON!</value>
+  </data>
+  <data name="HTTP_200_Json_Invalid_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK with INVALID JSON</value>
+  </data>
+  <data name="HTTP_200_Json_Invalid_ResponseComments" xml:space="preserve">
+    <value>&lt;p&gt;HTTP 200 OK response with invalid json in the response. This might indiciate an issue with the server or device which was transmitting the json data to the client computer.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_200_Json_Invalid_SessionType" xml:space="preserve">
+    <value>200 OK with INVALID JSON</value>
+  </data>
+  <data name="HTTP_200_Json_ResponseAlert" xml:space="preserve">
+    <value>HTTP 200 OK with Json.</value>
+  </data>
+  <data name="HTTP_200_Json_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK with Json.</value>
+  </data>
+  <data name="HTTP_200_Json_ResponseComments" xml:space="preserve">
+    <value>&lt;p&gt;HTTP 200 OK response with Json.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_200_Json_SessionType" xml:space="preserve">
+    <value>200 OK with Json</value>
   </data>
   <data name="HTTP_200_Lurking_Errors_ResponseAlert" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;'error', 'failed' or 'exception' found in response body&lt;/span&gt;&lt;/b&gt;</value>
@@ -1261,7 +1285,7 @@
     <value>Releases</value>
   </data>
   <data name="Remote Capture" xml:space="preserve">
-    <value>Remote Capture</value>
+    <value>The process is not recorded in the session, it is unknown which application this data was recorded from.</value>
   </data>
   <data name="Report Issues" xml:space="preserve">
     <value>Report Issues</value>

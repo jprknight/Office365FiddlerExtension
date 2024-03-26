@@ -1042,11 +1042,83 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HTTP 200 OK with Javascript.
+        ///   Looks up a localized string similar to 200 OK with Javascript.
         /// </summary>
         internal static string HTTP_200_Javascript_SessionType {
             get {
                 return ResourceManager.GetString("HTTP_200_Javascript_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to !INVALID JSON!.
+        /// </summary>
+        internal static string HTTP_200_Json_Invalid_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_Invalid_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 OK with INVALID JSON.
+        /// </summary>
+        internal static string HTTP_200_Json_Invalid_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_Invalid_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;HTTP 200 OK response with invalid json in the response. This might indiciate an issue with the server or device which was transmitting the json data to the client computer.&lt;/p&gt;.
+        /// </summary>
+        internal static string HTTP_200_Json_Invalid_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_Invalid_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 OK with INVALID JSON.
+        /// </summary>
+        internal static string HTTP_200_Json_Invalid_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_Invalid_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 OK with Json..
+        /// </summary>
+        internal static string HTTP_200_Json_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 OK with Json..
+        /// </summary>
+        internal static string HTTP_200_Json_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;HTTP 200 OK response with Json.&lt;/p&gt;.
+        /// </summary>
+        internal static string HTTP_200_Json_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 OK with Json.
+        /// </summary>
+        internal static string HTTP_200_Json_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_SessionType", resourceCulture);
             }
         }
         
@@ -3442,7 +3514,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remote Capture.
+        ///   Looks up a localized string similar to The process is not recorded in the session, it is unknown which application this data was recorded from..
         /// </summary>
         internal static string Remote_Capture {
             get {

@@ -31,6 +31,11 @@ namespace Office365FiddlerExtension.Services
         /// <exception cref="ArgumentException"></exception>
         public static bool IsInSubnetMask(string ipAddress, string subnetMask)
         {
+            if (ipAddress.Contains("Not Present"))
+            {
+                return false;
+            }
+
             var address = IPAddress.Parse(ipAddress);
             var slashIdx = subnetMask.IndexOf("/");
             if (slashIdx == -1)

@@ -202,6 +202,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>strings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\ConsolidatedAnalysisReportService.cs" />
+    <Compile Include="Services\Json\JsonValidatorService.cs" />
     <Compile Include="Services\Json\SessionClassificationService.cs" />
     <Compile Include="Services\Json\URLsJsonService.cs" />
     <Compile Include="Services\Json\VersionJsonService.cs" />

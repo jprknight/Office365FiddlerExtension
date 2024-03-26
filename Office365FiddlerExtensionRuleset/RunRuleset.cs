@@ -396,6 +396,14 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
+                    HTTP_200_Json.Instance.Run(this.session);
+                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+                    {
+                        break;
+                    }
+
+                    ///////////////////////////////
+
                     HTTP_200_Javascript.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
