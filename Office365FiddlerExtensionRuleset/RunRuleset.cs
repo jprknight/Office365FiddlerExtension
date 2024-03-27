@@ -23,6 +23,7 @@ namespace Office365FiddlerExtensionRuleset
             // Broad logic checks on sessions regardless of response code.
             FiddlerUpdateSessions.Instance.Run(this.session);
             ApacheAutodiscover.Instance.Run(this.session);
+            ConnectTunnelTLSVersion.Instance.Run(this.session);
             LoopBackTunnel.Instance.Run(this.session);
 
             // Calculate Session Age for inspector with HTML mark-up.

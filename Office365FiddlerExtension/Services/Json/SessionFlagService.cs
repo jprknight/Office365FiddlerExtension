@@ -96,7 +96,8 @@ namespace Office365FiddlerExtension.Services
                 SessionAuthenticationConfidenceLevel = "0",
                 SessionTypeConfidenceLevel = "0",
                 SessionResponseServerConfidenceLevel = "0",
-                SessionSeverity = "0"
+                SessionSeverity = "0",
+                TLSVersion = ""
             };
 
             // Transform the object to a Json object.
@@ -386,6 +387,11 @@ namespace Office365FiddlerExtension.Services
                 updatedSessionFlagsJson.HostIP = existingSessionFlagsJson.HostIP;
             }
 
+            // TLS Version
+            if (updatedSessionFlagsJson.TLSVersion == null)
+            {
+                updatedSessionFlagsJson.TLSVersion = existingSessionFlagsJson.TLSVersion;
+            }
 
             // Session Confidence Levels
 
@@ -496,6 +502,8 @@ namespace Office365FiddlerExtension.Services
             public int SessionResponseServerConfidenceLevel { get; set; }
 
             public int SessionSeverity { get; set; }
+
+            public string TLSVersion { get; set; }
         }
     }
 }
