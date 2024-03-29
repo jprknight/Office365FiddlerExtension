@@ -139,7 +139,7 @@ namespace Office365FiddlerExtension.Services
         /// <summary>
         /// Analyse all sessions loaded in Fiddler. Called from the MenuUI and ContextMenuUI.
         /// </summary>
-        /*public void AnalyseAllSessions()
+        public void AnalyseAllSessions()
         {
             var Sessions = FiddlerApplication.UI.GetAllSessions();
 
@@ -164,10 +164,9 @@ namespace Office365FiddlerExtension.Services
                 }
             }
         }
-        */
 
         /// <summary>
-        /// Clear colourisation and column data fill on selected sessions. Called from the MenuUI and ContextMenuUI.
+        /// Clear colourisation and column data fill on all sessions.
         /// </summary>
         public void ClearAnalysisSelectedSessions()
         {
@@ -184,6 +183,58 @@ namespace Office365FiddlerExtension.Services
 
                 this.session.RefreshUI();
             }
+        }
+
+        /// <summary>
+        /// Clear colourisation and column data fill on selected sessions.
+        /// </summary>
+        public void ClearAnalysisAllSessions()
+        {
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Clearing session procesing from all sessions.");
+
+            var Sessions = FiddlerApplication.UI.GetAllSessions();
+            foreach (var Session in Sessions)
+            {
+                this.session = Session;
+
+                EnhanceSessionUX.Instance.NormaliseSession(this.session);
+
+                this.session["Microsoft365FiddlerExtensionJson"] = null;
+
+                this.session.RefreshUI();
+            }
+        }
+
+        public Tuple<bool, int> CheckAllSessionsAreAnalysed()
+        {
+            int sessionsWithNoAnalysis = 0;
+
+            var Sessions = FiddlerApplication.UI.GetAllSessions();
+
+            foreach (var Session in Sessions)
+            {
+                this.session = Session;
+
+                // If the session already has the Microsoft365FiddlerExtensionJson flag set with high confidence session classifications set,
+                // enhance the session based on prior / stored analysis.
+                if (GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10
+                    && GetDeserializedSessionFlags(this.session).SessionResponseServerConfidenceLevel == 10
+                    && GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+                {
+                    // Do nothing here.
+                }
+                else
+                {
+                    sessionsWithNoAnalysis++;
+                }
+            }
+
+            if (sessionsWithNoAnalysis == 0)
+            {
+                return Tuple.Create(true,0);
+            }
+
+            return Tuple.Create(false,sessionsWithNoAnalysis);
         }
 
         /// <summary>

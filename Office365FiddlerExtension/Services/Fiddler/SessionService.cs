@@ -1,6 +1,7 @@
 ﻿using Fiddler;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtension.UI;
+using System.Linq;
 using System.Reflection;
 
 namespace Office365FiddlerExtension
@@ -25,6 +26,11 @@ namespace Office365FiddlerExtension
             RulesetService.Instance.RunRuleSet(this.session);
 
             EnhanceSessionUX.Instance.EnhanceSession(this.session);
+        }
+
+        public int AllSessionsCount()
+        {
+            return FiddlerApplication.UI.GetAllSessions().Count();
         }
     }
 }

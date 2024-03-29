@@ -44,7 +44,7 @@ namespace Office365FiddlerExtension.Services
                 }
                 catch (Exception ex) //some other exception
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} JSON EXCEPTION: {ex.ToString()}");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} JSON EXCEPTION: {ex}");
                     return false;
                 }
             }
@@ -76,7 +76,7 @@ namespace Office365FiddlerExtension.Services
                 }
                 catch (Exception ex) //some other exception
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} JSON EXCEPTION: {ex.ToString()}");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} JSON EXCEPTION: {ex}");
                     return false;
                 }
             }

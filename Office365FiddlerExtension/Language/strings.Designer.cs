@@ -106,6 +106,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Analysed.
+        /// </summary>
+        internal static string Analysed {
+            get {
+                return ResourceManager.GetString("Analysed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attribute Name Immutable ID.
         /// </summary>
         internal static string Attribute_Name_Immutable_ID {
@@ -457,6 +466,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear All Session Analysis.
+        /// </summary>
+        internal static string Clear_All_Session_Analysis {
+            get {
+                return ResourceManager.GetString("Clear All Session Analysis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear Selected Sessions.
         /// </summary>
         internal static string Clear_Selected_Sessions {
@@ -520,11 +538,38 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Consolidated Analysis Report.
+        /// </summary>
+        internal static string Consolidated_Analysis_Report {
+            get {
+                return ResourceManager.GetString("Consolidated Analysis Report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sessions have not been analysed to be able to create the Consolidated Analysis Report. Would you like to analyse them now so the report can be generated?.
+        /// </summary>
+        internal static string ConsolidatedAnalysisReportNotAllSessionsHaveAnalysis {
+            get {
+                return ResourceManager.GetString("ConsolidatedAnalysisReportNotAllSessionsHaveAnalysis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy and save the below text into a .cer file to view the signing certificate..
         /// </summary>
         internal static string Copy_Save_Signing_Certificate {
             get {
                 return ResourceManager.GetString("Copy Save Signing Certificate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Consolidated Analysis Report.
+        /// </summary>
+        internal static string Create_Consolidated_Analysis_Report {
+            get {
+                return ResourceManager.GetString("Create Consolidated Analysis Report", resourceCulture);
             }
         }
         
@@ -3145,6 +3190,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Interesting Sessions.
+        /// </summary>
+        internal static string Interesting_Sessions {
+            get {
+                return ResourceManager.GetString("Interesting Sessions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to is a public IP address within a Microsoft365 subnet.
         /// </summary>
         internal static string IsMicrosoft365subnet {
@@ -3496,6 +3550,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Processes.
+        /// </summary>
+        internal static string Processes {
+            get {
+                return ResourceManager.GetString("Processes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recalculate Selected Sessions.
         /// </summary>
         internal static string Recalculate_Selected_Sessions {
@@ -3793,6 +3856,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Session.
+        /// </summary>
+        internal static string Session {
+            get {
+                return ResourceManager.GetString("Session", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Session Age.
         /// </summary>
         internal static string Session_Age {
@@ -3897,6 +3969,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Sessionanalysisperformed {
             get {
                 return ResourceManager.GetString("Sessionanalysisperformed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sessions in trace from.
+        /// </summary>
+        internal static string sessions_in_trace_from {
+            get {
+                return ResourceManager.GetString("sessions in trace from", resourceCulture);
             }
         }
         

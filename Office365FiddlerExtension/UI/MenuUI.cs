@@ -23,7 +23,7 @@ namespace Office365FiddlerExtension
         public MenuItem MiEnabled { get; set; }
 
         //public MenuItem MiLanguage { get; set; }
-
+        /*
         public MenuItem MiLanguage_English_ENGB { get; set; }
 
         public MenuItem MiLanguage_English_ENUS { get; set; }
@@ -35,6 +35,13 @@ namespace Office365FiddlerExtension
         public MenuItem MiLanguage_PT { get; set; }
 
         public MenuItem MiLanguage_ES { get; set; }
+        */
+
+        public MenuItem MiAnalyseAllSessions { get; set; }
+
+        public MenuItem MiClearAllSessionAnalysis { get; set; }
+
+        public MenuItem MiCreateConsolidatedAnalysisReport { get; set; }
 
         public MenuItem MiReleasesDownloadWebpage { get; set; }
 
@@ -101,6 +108,13 @@ namespace Office365FiddlerExtension
                     Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("ES")
                 };
                 */
+
+                this.MiAnalyseAllSessions = new MenuItem($"{LangHelper.GetString("Analyse All Sessions")}", new System.EventHandler(this.MiAnalyseAllSessions_Click));
+
+                this.MiClearAllSessionAnalysis = new MenuItem($"{LangHelper.GetString("Clear All Session Analysis")}", new System.EventHandler(this.MiClearAllSessionAnalysis_Click));
+
+                this.MiCreateConsolidatedAnalysisReport = new MenuItem($"{LangHelper.GetString("Create Consolidated Analysis Report")}", new System.EventHandler(this.MiCreateConsolidatedAnalysisReport_Click));
+
                 this.MiReleasesDownloadWebpage = new MenuItem($"{LangHelper.GetString("Releases")}", new System.EventHandler(this.MiReleasesDownloadWebpage_click));
 
                 this.MiWiki = new MenuItem($"{LangHelper.GetString("Wiki")}", new System.EventHandler(this.MiWiki_Click));
@@ -112,8 +126,12 @@ namespace Office365FiddlerExtension
                 // Add menu items to top level menu.
                 this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { this.MiEnabled,
                     new MenuItem("-"),
+                    this.MiAnalyseAllSessions,
+                    this.MiClearAllSessionAnalysis,
+                    new MenuItem("-"),
+                    this.MiCreateConsolidatedAnalysisReport,
                     //this.MiLanguage,
-                    //new MenuItem("-"),
+                    new MenuItem("-"),
                     this.MiReleasesDownloadWebpage,
                     this.MiWiki,
                     this.MiReportIssues,
@@ -234,6 +252,21 @@ namespace Office365FiddlerExtension
             var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
             // Fire up a web browser to the project issues URL.
             System.Diagnostics.Process.Start(URLs.ReportIssues);
+        }
+
+        private void MiAnalyseAllSessions_Click(object sender, EventArgs e)
+        {
+            SessionFlagService.Instance.AnalyseAllSessions();
+        }
+
+        private void MiClearAllSessionAnalysis_Click(object sender, EventArgs e)
+        {
+            SessionFlagService.Instance.ClearAnalysisAllSessions();
+        }
+
+        private void MiCreateConsolidatedAnalysisReport_Click(object sender, EventArgs e)
+        {
+            ConsolidatedAnalysisReportService.Instance.CreateCAR();
         }
     }
 }

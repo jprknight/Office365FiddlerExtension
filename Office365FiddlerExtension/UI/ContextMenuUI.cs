@@ -48,7 +48,7 @@ namespace Office365FiddlerExtension
 
         private readonly MenuItem CmiSessionSeveritySixty = new MenuItem($"60 - {LangHelper.GetString("Red")} ({LangHelper.GetString("Severe")})");
 
-        private readonly MenuItem CmiCreateConsolidatedAnalysisReport = new MenuItem("Create Consolidated Analysis Report...");
+        private readonly MenuItem CmiCreateConsolidatedAnalysisReport = new MenuItem($"{LangHelper.GetString("Create Consolidated Analysis Report")}");
 
         private bool IsInitialized { get; set; }
 

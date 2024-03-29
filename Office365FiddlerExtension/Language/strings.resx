@@ -132,6 +132,9 @@
   <data name="Analyse Selected Sessions" xml:space="preserve">
     <value>Analyse Selected Sessions</value>
   </data>
+  <data name="Analysed" xml:space="preserve">
+    <value>Analysed</value>
+  </data>
   <data name="Attribute Name Immutable ID" xml:space="preserve">
     <value>Attribute Name Immutable ID</value>
   </data>
@@ -253,6 +256,9 @@
   <data name="Check for updates every" xml:space="preserve">
     <value>Check for updates every</value>
   </data>
+  <data name="Clear All Session Analysis" xml:space="preserve">
+    <value>Clear All Session Analysis</value>
+  </data>
   <data name="Clear Selected Sessions" xml:space="preserve">
     <value>Clear Selected Sessions</value>
   </data>
@@ -274,8 +280,17 @@
   <data name="Concerning" xml:space="preserve">
     <value>Concerning</value>
   </data>
+  <data name="Consolidated Analysis Report" xml:space="preserve">
+    <value>Consolidated Analysis Report</value>
+  </data>
+  <data name="ConsolidatedAnalysisReportNotAllSessionsHaveAnalysis" xml:space="preserve">
+    <value>sessions have not been analysed to be able to create the Consolidated Analysis Report. Would you like to analyse them now so the report can be generated?</value>
+  </data>
   <data name="Copy Save Signing Certificate" xml:space="preserve">
     <value>Copy and save the below text into a .cer file to view the signing certificate.</value>
+  </data>
+  <data name="Create Consolidated Analysis Report" xml:space="preserve">
+    <value>Create Consolidated Analysis Report</value>
   </data>
   <data name="Day" xml:space="preserve">
     <value>day</value>
@@ -1159,6 +1174,9 @@
   <data name="Insufficient data" xml:space="preserve">
     <value>Insufficient data</value>
   </data>
+  <data name="Interesting Sessions" xml:space="preserve">
+    <value>Interesting Sessions</value>
+  </data>
   <data name="IsMicrosoft365subnet" xml:space="preserve">
     <value>is a public IP address within a Microsoft365 subnet</value>
   </data>
@@ -1278,6 +1296,9 @@
   <data name="Process Name" xml:space="preserve">
     <value>Process Name</value>
   </data>
+  <data name="Processes" xml:space="preserve">
+    <value>Processes</value>
+  </data>
   <data name="Recalculate Selected Sessions" xml:space="preserve">
     <value>Recalculate Selected Sessions</value>
   </data>
@@ -1379,6 +1400,9 @@
   <data name="Server Timers" xml:space="preserve">
     <value>Server Timers</value>
   </data>
+  <data name="Session" xml:space="preserve">
+    <value>Session</value>
+  </data>
   <data name="Session Age" xml:space="preserve">
     <value>Session Age</value>
   </data>
@@ -1414,6 +1438,9 @@
   </data>
   <data name="Sessionanalysisperformed" xml:space="preserve">
     <value>Session analysis performed on:</value>
+  </data>
+  <data name="sessions in trace from" xml:space="preserve">
+    <value>sessions in trace from</value>
   </data>
   <data name="SessionTimersDescription" xml:space="preserve">
     <value>&lt;p&gt;The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.&lt;/p&gt;&lt;p&gt;If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.&lt;/p&gt;&lt;p&gt;Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.&lt;p&gt;</value>
