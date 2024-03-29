@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.Services
         /// </summary>
         /// <param name="Session"></param>
         /// <returns>bool</returns>
-        public bool IsValidJson(Session session)
+        public bool IsValidJsonSession(Session session)
         {
             this.session = session;
 
@@ -33,6 +33,38 @@ namespace Office365FiddlerExtension.Services
                 try
                 {
                     var obj = JToken.Parse(strInput);
+                    //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} TRUE: {strInput}");
+                    return true;
+                }
+                catch (JsonReaderException jex)
+                {
+                    //Exception in parsing json
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} EXCEPTION PARSING JSON: {jex.Message}");
+                    return false;
+                }
+                catch (Exception ex) //some other exception
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} JSON EXCEPTION: {ex.ToString()}");
+                    return false;
+                }
+            }
+            else
+            {
+                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} FALSE: {strInput}");
+                return false;
+            }
+        }
+
+        public bool IsValidJsonString(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json)) { return false; }
+            json = json.Trim();
+            if ((json.StartsWith("{") && json.EndsWith("}")) || //For object
+                (json.StartsWith("[") && json.EndsWith("]"))) //For array
+            {
+                try
+                {
+                    var obj = JToken.Parse(json);
                     //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} TRUE: {strInput}");
                     return true;
                 }

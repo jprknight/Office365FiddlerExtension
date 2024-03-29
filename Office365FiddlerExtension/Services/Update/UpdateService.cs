@@ -62,6 +62,13 @@ namespace Office365FiddlerExtension.Services
                         }
                     }
 
+                    if (!JsonValidatorService.Instance.IsValidJsonString(jsonString))
+                    {
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Invalid Json in SessionClassification from Github, not updating locally.");
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {jsonString}");
+                        return;
+                    }
+
                     // Save this new data into the SessionClassification Fiddler setting.
                     if (Preferences.SessionClassification != jsonString)
                     {
@@ -104,6 +111,13 @@ namespace Office365FiddlerExtension.Services
                         {
                             jsonString = await reader.ReadToEndAsync();
                         }
+                    }
+
+                    if (!JsonValidatorService.Instance.IsValidJsonString(jsonString))
+                    {
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Invalid Json in ExtensionVersion from Github, not updating locally.");
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {jsonString}");
+                        return;
                     }
 
                     // Save this new data into the ExtensionVerison Fiddler setting.
@@ -150,11 +164,18 @@ namespace Office365FiddlerExtension.Services
                         }
                     }
 
+                    if (!JsonValidatorService.Instance.IsValidJsonString(jsonString))
+                    {
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Invalid Json in ExtensionURLs from Github, not updating locally.");
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {jsonString}");                        
+                        return;
+                    }
+
                     // Save this new data into the ExtensionURLs Fiddler setting.
-                    if (URLsJsonService.ExtensionURLs != jsonString)
+                    if (Preferences.ExtensionURLs != jsonString)
                     {
                         FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExtensionURLs Fiddler setting updated.");
-                        URLsJsonService.ExtensionURLs = jsonString;
+                        Preferences.ExtensionURLs = jsonString;
 
                         // Update the next update check timestamp.
                         SettingsJsonService.Instance.SetNextUpdateTimestamp();
@@ -166,7 +187,7 @@ namespace Office365FiddlerExtension.Services
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving ExtensionURLs from Github {URLsJsonService.ExtensionURLs}");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving ExtensionURLs from Github {Preferences.ExtensionURLs}");
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving ExtensionURLs from Github {ex}");
                 }
             }
@@ -197,6 +218,13 @@ namespace Office365FiddlerExtension.Services
                         {
                             jsonString = await reader.ReadToEndAsync();
                         }
+                    }
+
+                    if (!JsonValidatorService.Instance.IsValidJsonString(jsonString))
+                    {
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Invalid Json in MicrosoftURLsIPsWebService from Github, not updating locally.");
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {jsonString}");
+                        return;
                     }
 
                     // Save this new data into the SessionClassification Fiddler setting.

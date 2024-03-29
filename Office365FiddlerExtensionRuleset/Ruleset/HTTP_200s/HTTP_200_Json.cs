@@ -24,7 +24,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
 
             // Valid Json in response.
-            if (JsonValidatorService.Instance.IsValidJson(this.session))
+            if (JsonValidatorService.Instance.IsValidJsonSession(this.session))
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Json");
 

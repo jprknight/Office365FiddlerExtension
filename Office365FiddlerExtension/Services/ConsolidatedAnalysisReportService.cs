@@ -77,7 +77,6 @@ namespace Office365FiddlerExtension.Services
                     ResultsString.AppendLine("<hr />");
                 }
 
-
                 ////////////////////////////////////
                 ///
                 /// Connect Tunnels.
