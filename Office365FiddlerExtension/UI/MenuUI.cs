@@ -109,11 +109,20 @@ namespace Office365FiddlerExtension
                 };
                 */
 
-                this.MiAnalyseAllSessions = new MenuItem($"{LangHelper.GetString("Analyse All Sessions")}", new System.EventHandler(this.MiAnalyseAllSessions_Click));
+                this.MiAnalyseAllSessions = new MenuItem($"{LangHelper.GetString("Analyse All Sessions")}", new System.EventHandler(this.MiAnalyseAllSessions_Click))
+                {
+                    Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
+                };
 
-                this.MiClearAllSessionAnalysis = new MenuItem($"{LangHelper.GetString("Clear All Session Analysis")}", new System.EventHandler(this.MiClearAllSessionAnalysis_Click));
+                this.MiClearAllSessionAnalysis = new MenuItem($"{LangHelper.GetString("Clear All Session Analysis")}", new System.EventHandler(this.MiClearAllSessionAnalysis_Click))
+                {
+                    Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
+                };
 
-                this.MiCreateConsolidatedAnalysisReport = new MenuItem($"{LangHelper.GetString("Create Consolidated Analysis Report")}", new System.EventHandler(this.MiCreateConsolidatedAnalysisReport_Click));
+                this.MiCreateConsolidatedAnalysisReport = new MenuItem($"{LangHelper.GetString("Create Consolidated Analysis Report")}", new System.EventHandler(this.MiCreateConsolidatedAnalysisReport_Click))
+                {
+                    Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
+                };
 
                 this.MiReleasesDownloadWebpage = new MenuItem($"{LangHelper.GetString("Releases")}", new System.EventHandler(this.MiReleasesDownloadWebpage_click));
 
@@ -228,6 +237,14 @@ namespace Office365FiddlerExtension
         {
             // Invert menu item checked.
             MiEnabled.Checked = !MiEnabled.Checked;
+            MiAnalyseAllSessions.Enabled = !MiAnalyseAllSessions.Enabled;
+            MiClearAllSessionAnalysis.Enabled = !MiClearAllSessionAnalysis.Enabled;
+            MiCreateConsolidatedAnalysisReport.Enabled = !MiCreateConsolidatedAnalysisReport.Enabled;
+            ContextMenuUI.Instance.InvertCmiAnalyseSelectedSessionsEnabled();
+            ContextMenuUI.Instance.InvertCmiClearAnalysisSelectedSessions();
+            ContextMenuUI.Instance.InvertCmiSetSessionSeverity();
+            ContextMenuUI.Instance.InvertCmiCreateConsolidatedReportEnabled();
+
             // Set ExtensionEnabled according to menu item checked.
             SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(MiEnabled.Checked);
         }

@@ -26,6 +26,21 @@ namespace Office365FiddlerExtension.Services
         /// </summary>
         public void CreateCAR()
         {
+            if (SessionService.Instance.AllSessionsCount() == 0)
+            {
+                string message = $"{SessionService.Instance.AllSessionsCount()} {LangHelper.GetString("sessions")}. {LangHelper.GetString("LoadOrImportSessions")}";
+
+                string caption = $"{LangHelper.GetString("Office 365 Fiddler Extension")}";
+
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+
+                //Display the MessageBox.
+                result = MessageBox.Show(message, caption, buttons, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+
+                return;
+            }
+
             // Tuple -- checkAllSessionsAreAnalysed (bool), not analysed count (int).
             Tuple<bool, int> checkAllSessionsAreAnalysed = SessionFlagService.Instance.CheckAllSessionsAreAnalysed();
 
@@ -65,7 +80,7 @@ namespace Office365FiddlerExtension.Services
             InterestingSessions = new StringBuilder();
             int interestingSessionsCount = 0;
 
-            ResultsString.AppendLine("<html>");
+            ResultsString.AppendLine(" <html>");
             ResultsString.AppendLine("<body>");
             ResultsString.AppendLine($"<h1>{LangHelper.GetString("Office365 Fiddler Extension")} - {LangHelper.GetString("Consolidated Analysis Report")} - {DateTime.Now:dddd, MMM dd yyyy}</h1>");
 

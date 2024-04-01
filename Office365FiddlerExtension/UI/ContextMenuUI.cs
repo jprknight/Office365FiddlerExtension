@@ -99,6 +99,14 @@ namespace Office365FiddlerExtension
             CmiSessionSeveritySixty.Click += new EventHandler(CmiSessionSeveritySixty_Click);
 
             CmiCreateConsolidatedAnalysisReport.Click += new EventHandler(CmiCreateConsolidatedAnalysisReport_Click);
+
+            if (!SettingsJsonService.Instance.ExtensionSessionProcessingEnabled)
+            {
+                CmiAnalyseSelectedSessions.Enabled = false;
+                CmiClearAnalysisSelectedSessions.Enabled = false;
+                CmiSetSessionSeverity.Enabled = false;
+                CmiCreateConsolidatedAnalysisReport.Enabled = false;
+            }
         }
 
         private void CmiRecalculateAnalysisSelectedSessions_Click(object sender, EventArgs e)
@@ -154,6 +162,26 @@ namespace Office365FiddlerExtension
         private void CmiCreateConsolidatedAnalysisReport_Click(object sender, EventArgs e)
         {
             ConsolidatedAnalysisReportService.Instance.CreateCAR();
+        }
+
+        public void InvertCmiAnalyseSelectedSessionsEnabled()
+        {
+            CmiAnalyseSelectedSessions.Enabled = !CmiAnalyseSelectedSessions.Enabled;
+        }
+
+        public void InvertCmiSetSessionSeverity()
+        {
+            CmiSetSessionSeverity.Enabled = !CmiSetSessionSeverity.Enabled;
+        }
+
+        public void InvertCmiClearAnalysisSelectedSessions()
+        {
+            CmiClearAnalysisSelectedSessions.Enabled = !CmiClearAnalysisSelectedSessions.Enabled;
+        }
+
+        public void InvertCmiCreateConsolidatedReportEnabled()
+        {
+            CmiCreateConsolidatedAnalysisReport.Enabled = !CmiCreateConsolidatedAnalysisReport.Enabled;
         }
     }
 }

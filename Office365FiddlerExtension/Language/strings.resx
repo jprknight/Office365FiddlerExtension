@@ -1192,6 +1192,9 @@
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="LoadOrImportSessions" xml:space="preserve">
+    <value>Load or import some sessions to analyse and create a Consolidationed Analysis Report.</value>
+  </data>
   <data name="Local Extension Version" xml:space="preserve">
     <value>Local Extension Version</value>
   </data>
@@ -1438,6 +1441,9 @@
   </data>
   <data name="Sessionanalysisperformed" xml:space="preserve">
     <value>Session analysis performed on:</value>
+  </data>
+  <data name="sessions" xml:space="preserve">
+    <value>sessions</value>
   </data>
   <data name="sessions in trace from" xml:space="preserve">
     <value>sessions in trace from</value>

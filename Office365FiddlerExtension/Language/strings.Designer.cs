@@ -3244,6 +3244,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Load or import some sessions to analyse and create a Consolidationed Analysis Report..
+        /// </summary>
+        internal static string LoadOrImportSessions {
+            get {
+                return ResourceManager.GetString("LoadOrImportSessions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Local Extension Version.
         /// </summary>
         internal static string Local_Extension_Version {
@@ -3969,6 +3978,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Sessionanalysisperformed {
             get {
                 return ResourceManager.GetString("Sessionanalysisperformed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sessions.
+        /// </summary>
+        internal static string sessions {
+            get {
+                return ResourceManager.GetString("sessions", resourceCulture);
             }
         }
         
