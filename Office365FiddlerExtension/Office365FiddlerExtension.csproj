@@ -226,6 +226,12 @@
     <Compile Include="Services\Fiddler\SazFileService.cs" />
     <Compile Include="Services\Fiddler\SessionService.cs" />
     <Compile Include="Inspectors\Office365Inspector.cs" />
+    <Compile Include="UI\Forms\CheckIP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\CheckIP.Designer.cs">
+      <DependentUpon>CheckIP.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\MenuUI.cs" />
     <Compile Include="Services\Preferences.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -260,6 +266,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\CheckIP.resx">
+      <DependentUpon>CheckIP.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\Office365ResponseControl.resx">
       <DependentUpon>Office365ResponseControl.cs</DependentUpon>

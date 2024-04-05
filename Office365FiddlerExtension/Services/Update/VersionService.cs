@@ -67,7 +67,7 @@ namespace Office365FiddlerExtension.Services
             return false;
         }
 
-        private void NotifyUserIfExtensionUpdateIsAvailable()
+        public void NotifyUserIfExtensionUpdateIsAvailable()
         {
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {

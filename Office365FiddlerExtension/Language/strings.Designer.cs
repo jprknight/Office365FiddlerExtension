@@ -466,6 +466,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check IP Address.
+        /// </summary>
+        internal static string Check_IP_Address {
+            get {
+                return ResourceManager.GetString("Check IP Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear All Session Analysis.
         /// </summary>
         internal static string Clear_All_Session_Analysis {

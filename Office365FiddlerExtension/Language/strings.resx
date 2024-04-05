@@ -256,6 +256,9 @@
   <data name="Check for updates every" xml:space="preserve">
     <value>Check for updates every</value>
   </data>
+  <data name="Check IP Address" xml:space="preserve">
+    <value>Check IP Address</value>
+  </data>
   <data name="Clear All Session Analysis" xml:space="preserve">
     <value>Clear All Session Analysis</value>
   </data>

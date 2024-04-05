@@ -4,6 +4,7 @@ using System;
 using System.Windows.Forms;
 using Office365FiddlerExtension.UI;
 using System.Reflection;
+using Office365FiddlerExtension.UI.Forms;
 
 namespace Office365FiddlerExtension
 {
@@ -42,6 +43,8 @@ namespace Office365FiddlerExtension
         public MenuItem MiClearAllSessionAnalysis { get; set; }
 
         public MenuItem MiCreateConsolidatedAnalysisReport { get; set; }
+
+        public MenuItem MiCheckIP {  get; set; }
 
         public MenuItem MiReleasesDownloadWebpage { get; set; }
 
@@ -124,6 +127,11 @@ namespace Office365FiddlerExtension
                     Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
                 };
 
+                this.MiCheckIP = new MenuItem($"{LangHelper.GetString("Check IP Address")}", new System.EventHandler(this.MiCheckIPAddress_Click))
+                {
+                    Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
+                };
+
                 this.MiReleasesDownloadWebpage = new MenuItem($"{LangHelper.GetString("Releases")}", new System.EventHandler(this.MiReleasesDownloadWebpage_click));
 
                 this.MiWiki = new MenuItem($"{LangHelper.GetString("Wiki")}", new System.EventHandler(this.MiWiki_Click));
@@ -139,6 +147,8 @@ namespace Office365FiddlerExtension
                     this.MiClearAllSessionAnalysis,
                     new MenuItem("-"),
                     this.MiCreateConsolidatedAnalysisReport,
+                    new MenuItem ("-"),
+                    this.MiCheckIP,
                     //this.MiLanguage,
                     new MenuItem("-"),
                     this.MiReleasesDownloadWebpage,
@@ -284,6 +294,12 @@ namespace Office365FiddlerExtension
         private void MiCreateConsolidatedAnalysisReport_Click(object sender, EventArgs e)
         {
             ConsolidatedAnalysisReportService.Instance.CreateCAR();
+        }
+
+        private void MiCheckIPAddress_Click(object sender, EventArgs e)
+        {
+            CheckIP checkIP = new CheckIP();
+            checkIP.Show();
         }
     }
 }
