@@ -33,10 +33,9 @@ namespace Office365FiddlerExtension.Services
                 string caption = $"{LangHelper.GetString("Office 365 Fiddler Extension")}";
 
                 MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
 
                 //Display the MessageBox.
-                result = MessageBox.Show(message, caption, buttons, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                MessageBox.Show(message, caption, buttons, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 
                 return;
             }

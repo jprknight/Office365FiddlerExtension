@@ -275,7 +275,7 @@ namespace Office365FiddlerExtension.Services
                     var childJson = JsonConvert.DeserializeObject<NetworkingService.EndPointJson>(child.ToString());
 
                     // Iterate through the subnets in each child.
-                    foreach (string subnet in childJson.ips)
+                    foreach (string subnet in childJson.IPs)
                     {
                         if (!NetworkingService.Instance.IsValidIPAddress(this.session["X-HostIP"]))
                         {
@@ -342,7 +342,7 @@ namespace Office365FiddlerExtension.Services
                     var childJson = JsonConvert.DeserializeObject<NetworkingService.EndPointJson>(child.ToString());
 
                     // Iterate through the subnets in each child.
-                    foreach (string subnet in childJson.ips)
+                    foreach (string subnet in childJson.IPs)
                     {
                         if (!NetworkingService.Instance.IsValidIPAddress(ipAddress))
                         {
@@ -375,27 +375,27 @@ namespace Office365FiddlerExtension.Services
 
         public class EndPointJson
         {
-            public int id { get; set; }
+            public int Id { get; set; }
 
-            public string serviceArea { get; set; }
+            public string ServiceArea { get; set; }
 
-            public string serviceAreaDisplayName { get; set; }
+            public string ServiceAreaDisplayName { get; set; }
 
-            public ArrayList urls { get; set; }
+            public ArrayList Urls { get; set; }
 
-            public ArrayList ips { get; set; }
+            public ArrayList IPs { get; set; }
 
-            public string tcpPorts { get; set; }
+            public string TcpPorts { get; set; }
 
-            public string udpPorts { get; set; }
+            public string UDPPorts { get; set; }
 
-            public bool expressRoute { get; set; }
+            public bool ExpressRoute { get; set; }
 
-            public string category { get; set; }
+            public string Category { get; set; }
 
-            public bool required { get; set; }
+            public bool Required { get; set; }
 
-            public string notes { get; set; }
+            public string Notes { get; set; }
         }
     }
 }

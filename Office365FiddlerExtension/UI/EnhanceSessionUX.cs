@@ -5,8 +5,7 @@ using Newtonsoft.Json;
 namespace Office365FiddlerExtension.UI
 {
     /// <summary>
-    /// Set colours on session foreground and background. Called from SessionHandler once
-    /// session flags have been set by extension ruleset.
+    /// Set colours on session foreground and background.
     /// </summary>
     public  class EnhanceSessionUX
     {
