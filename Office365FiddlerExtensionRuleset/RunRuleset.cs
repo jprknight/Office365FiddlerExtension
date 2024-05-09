@@ -25,6 +25,7 @@ namespace Office365FiddlerExtensionRuleset
             ApacheAutodiscover.Instance.Run(this.session);
             ConnectTunnelTLSVersion.Instance.Run(this.session);
             LoopBackTunnel.Instance.Run(this.session);
+            PreSessionType.Instance.Run(this.session);
 
             // Calculate Session Age for inspector with HTML mark-up.
             CalculateSessionAge.Instance.SessionAge(this.session);
@@ -103,24 +104,6 @@ namespace Office365FiddlerExtensionRuleset
             // SESSION TYPE
             #region SessionType
             // If the session does not already have a high session type classification confidence, run these functions.
-            ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
-            {
-                PreSessionType.Instance.SetSessionType_Legacy_FreeBusy(this.session);
-            }
-
-            ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
-            {
-                PreSessionType.Instance.SetSessionType_Outlook_Desktop_FreeBusy(this.session);
-            }
-
-            ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
-            {
-                PreSessionType.Instance.SetSessionType_OWA_FreeBusy(this.session);
-            }
-
             ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
             {

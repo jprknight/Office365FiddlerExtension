@@ -13,7 +13,16 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static PreSessionType Instance => _instance ?? (_instance = new PreSessionType());
 
-        public void SetSessionType_Legacy_FreeBusy(Session session)
+        public void Run(Session session)
+        {
+            this.session = session;
+
+            SetSessionType_Legacy_FreeBusy(this.session);
+            SetSessionType_Outlook_Desktop_FreeBusy(this.session);
+            SetSessionType_OWA_FreeBusy(this.session);
+        }
+
+        private void SetSessionType_Legacy_FreeBusy(Session session)
         {
             this.session = session;
 
@@ -40,7 +49,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void SetSessionType_Outlook_Desktop_FreeBusy(Session session)
+        private void SetSessionType_Outlook_Desktop_FreeBusy(Session session)
         {
             // If the session doesn't contain any of these features, return.
             this.session = session;
@@ -66,7 +75,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void SetSessionType_OWA_FreeBusy(Session session)
+        private void SetSessionType_OWA_FreeBusy(Session session)
         {
             // If the session doesn't contain any of these features, return.
             this.session = session;
