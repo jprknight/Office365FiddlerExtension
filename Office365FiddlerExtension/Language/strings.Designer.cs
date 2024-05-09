@@ -2456,6 +2456,43 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Free/Busy Forbidden Error&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 403 Free/Busy Forbidden Error.
+        /// </summary>
+        internal static string HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseCodeDescriptio" +
+                        "n", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A Free/Busy call was sent and the response contained a HTTP 403 Forbidden error..
+        /// </summary>
+        internal static string HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to !Free/Busy Forbidden!.
+        /// </summary>
+        internal static string HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 404 Not Found&lt;/span&gt;&lt;/b&gt;.
         /// </summary>
         internal static string HTTP_404s_ResponseAlerts {

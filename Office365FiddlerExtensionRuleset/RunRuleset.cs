@@ -106,7 +106,19 @@ namespace Office365FiddlerExtensionRuleset
             ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
             {
-                SessionType.Instance.SetSessionType_FreeBusy(this.session);
+                PreSessionType.Instance.SetSessionType_Legacy_FreeBusy(this.session);
+            }
+
+            ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
+            {
+                PreSessionType.Instance.SetSessionType_Outlook_Desktop_FreeBusy(this.session);
+            }
+
+            ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
+            {
+                PreSessionType.Instance.SetSessionType_OWA_FreeBusy(this.session);
             }
 
             ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
@@ -528,6 +540,13 @@ namespace Office365FiddlerExtensionRuleset
                     {
                         break;
                     }
+
+                    HTTP_403.Instance.HTTP_403_FreeBusy_Request_Failed_Forbidden(this.session);
+                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+                    {
+                        break;
+                    }
+
                     HTTP_403.Instance.HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {

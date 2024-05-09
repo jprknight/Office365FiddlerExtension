@@ -895,6 +895,18 @@
   <data name="HTTP_401_Exchange_Server_AutoDiscover_SessionType" xml:space="preserve">
     <value>Exchange Server AutoDiscover</value>
   </data>
+  <data name="HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;Free/Busy Forbidden Error&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseCodeDescription" xml:space="preserve">
+    <value>403 Free/Busy Forbidden Error</value>
+  </data>
+  <data name="HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseComments" xml:space="preserve">
+    <value>A Free/Busy call was sent and the response contained a HTTP 403 Forbidden error.</value>
+  </data>
+  <data name="HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_SessionType" xml:space="preserve">
+    <value>!Free/Busy Forbidden!</value>
+  </data>
   <data name="HTTP_403_Forbidden_Everything_Else_ResponseAlert" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 403 Forbidden&lt;/span&gt;&lt;/b&gt;</value>
   </data>

@@ -13,33 +13,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static SessionType Instance => _instance ?? (_instance = new SessionType());
 
-        public void SetSessionType_FreeBusy(Session session)
-        {
-            this.session = session;
-
-            // If the session doesn't contain any of these features, return.
-            if (!this.session.fullUrl.Contains("WSSecurity")
-                || (!this.session.fullUrl.Contains("GetUserAvailability")
-                || !(this.session.utilFindInResponse("GetUserAvailability", false) > 1)))
-            {
-                return;
-            }
-
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                $"({this.GetType().Name}): {this.session.id} Running SetSessionType_FreeBusy");
-
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
-            {
-                SectionTitle = "SessionType_Free/Busy",
-
-                SessionType = LangHelper.GetString("FreeBusy"),
-                SessionTypeConfidenceLevel = 10
-            };
-
-            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
-        }
-
         public void SetSessionType_Microsoft365_EWS(Session session)
         {
             this.session = session;
