@@ -132,6 +132,9 @@
   <data name="Analyse Selected Sessions" xml:space="preserve">
     <value>Analyse Selected Sessions</value>
   </data>
+  <data name="Analysed" xml:space="preserve">
+    <value>Analysed</value>
+  </data>
   <data name="Attribute Name Immutable ID" xml:space="preserve">
     <value>Attribute Name Immutable ID</value>
   </data>
@@ -253,6 +256,12 @@
   <data name="Check for updates every" xml:space="preserve">
     <value>Check for updates every</value>
   </data>
+  <data name="Check IP Address" xml:space="preserve">
+    <value>Check IP Address</value>
+  </data>
+  <data name="Clear All Session Analysis" xml:space="preserve">
+    <value>Clear All Session Analysis</value>
+  </data>
   <data name="Clear Selected Sessions" xml:space="preserve">
     <value>Clear Selected Sessions</value>
   </data>
@@ -274,8 +283,17 @@
   <data name="Concerning" xml:space="preserve">
     <value>Concerning</value>
   </data>
+  <data name="Consolidated Analysis Report" xml:space="preserve">
+    <value>Consolidated Analysis Report</value>
+  </data>
+  <data name="ConsolidatedAnalysisReportNotAllSessionsHaveAnalysis" xml:space="preserve">
+    <value>sessions have not been analysed to be able to create the Consolidated Analysis Report. Would you like to analyse them now so the report can be generated?</value>
+  </data>
   <data name="Copy Save Signing Certificate" xml:space="preserve">
     <value>Copy and save the below text into a .cer file to view the signing certificate.</value>
+  </data>
+  <data name="Create Consolidated Analysis Report" xml:space="preserve">
+    <value>Create Consolidated Analysis Report</value>
   </data>
   <data name="Day" xml:space="preserve">
     <value>day</value>
@@ -529,7 +547,49 @@
     <value>&lt;p&gt;HTTP 200 OK response with javascript.&lt;/p&gt;</value>
   </data>
   <data name="HTTP_200_Javascript_SessionType" xml:space="preserve">
-    <value>HTTP 200 OK with Javascript</value>
+    <value>200 OK with Javascript</value>
+  </data>
+  <data name="HTTP_200_Json_EmptyResponseBody" xml:space="preserve">
+    <value>&lt;p&gt;Though the session has a content type of Json, there is an empty response body. Check the host, URL, and process on this session to determine if this is a point of interest for the issue you're troubleshooting.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_200_Json_Invalid_ResponseAlert" xml:space="preserve">
+    <value>!INVALID JSON!</value>
+  </data>
+  <data name="HTTP_200_Json_Invalid_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK with INVALID JSON</value>
+  </data>
+  <data name="HTTP_200_Json_Invalid_ResponseComments" xml:space="preserve">
+    <value>&lt;p&gt;HTTP 200 OK response with invalid json in the response. This might indiciate an issue with the server or device which was transmitting the json data to the client computer. Look for partial Json below in the response body. If you see no Json at all, then this means the response has a content type which contains Json, but there was no actual Json in the response.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_200_Json_Invalid_SessionType" xml:space="preserve">
+    <value>!200 OK with INVALID JSON!</value>
+  </data>
+  <data name="HTTP_200_Json_ResponseAlert" xml:space="preserve">
+    <value>HTTP 200 OK with Json.</value>
+  </data>
+  <data name="HTTP_200_Json_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK with Json.</value>
+  </data>
+  <data name="HTTP_200_Json_ResponseComments" xml:space="preserve">
+    <value>&lt;p&gt;HTTP 200 OK response with Json.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_200_Json_SessionType" xml:space="preserve">
+    <value>200 OK with Json</value>
+  </data>
+  <data name="HTTP_200_Json_SessionType_EmptyResponseBody" xml:space="preserve">
+    <value>!200 OK NO JSON!</value>
+  </data>
+  <data name="HTTP_200_Legacy_FreeBusy_ResponseAlert" xml:space="preserve">
+    <value>Legacy Client Free/Busy</value>
+  </data>
+  <data name="HTTP_200_Legacy_FreeBusy_ResponseCodeDescription" xml:space="preserve">
+    <value>HTTP 200 Legacy Client Free/Busy</value>
+  </data>
+  <data name="HTTP_200_Legacy_FreeBusy_ResponseComments" xml:space="preserve">
+    <value>This is a legacy Free/Busy call in as much as it has URL patterns seen in older Outlook clients. Newer Outlook clients and OWA now make calls to Free/Busy in the Microsoft cloud using different URLs. This could also be a Free/Busy call to Exchange Server if the target mailbox isn't in the Microsoft cloud.</value>
+  </data>
+  <data name="HTTP_200_Legacy_FreeBusy_SessionType" xml:space="preserve">
+    <value>Legacy Client Free/Busy</value>
   </data>
   <data name="HTTP_200_Lurking_Errors_ResponseAlert" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;'error', 'failed' or 'exception' found in response body&lt;/span&gt;&lt;/b&gt;</value>
@@ -619,6 +679,18 @@
   <data name="HTTP_200_Outlook_Exchange_OnPremise_Mapi_SessionType" xml:space="preserve">
     <value>Outlook Exchange Server MAPI</value>
   </data>
+  <data name="HTTP_200_Outlook_For_Windows_FreeBusy_ResponseAlert" xml:space="preserve">
+    <value>Outlook for Windows Free/Busy</value>
+  </data>
+  <data name="HTTP_200_Outlook_For_Windows_FreeBusy_ResponseCodeDescription" xml:space="preserve">
+    <value>HTTP 200 Outlook for Windows Free/Busy</value>
+  </data>
+  <data name="HTTP_200_Outlook_For_Windows_FreeBusy_ResponseComments" xml:space="preserve">
+    <value>This is an Outlook for Windows Free/Busy call to the Microsoft Cloud.</value>
+  </data>
+  <data name="HTTP_200_Outlook_For_Windows_FreeBusy_SessionType" xml:space="preserve">
+    <value>Outlook for Windows Free/Busy</value>
+  </data>
   <data name="HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_ResponseAlert" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;Store Error Protocol Disabled&lt;/span&gt;&lt;/b&gt;</value>
   </data>
@@ -678,6 +750,18 @@
   </data>
   <data name="HTTP_200_Outlook_Web_App_SessionType" xml:space="preserve">
     <value>Outlook Web App</value>
+  </data>
+  <data name="HTTP_200_OWA_FreeBusy_ResponseAlert" xml:space="preserve">
+    <value>OWA Free/Busy</value>
+  </data>
+  <data name="HTTP_200_OWA_FreeBusy_ResponseCodeDescription" xml:space="preserve">
+    <value>HTTP 200 OWA Free/Busy</value>
+  </data>
+  <data name="HTTP_200_OWA_FreeBusy_ResponseComments" xml:space="preserve">
+    <value>This is an OWA Free/Busy call to the Microsoft Cloud.</value>
+  </data>
+  <data name="HTTP_200_OWA_FreeBusy_SessionType" xml:space="preserve">
+    <value>OWA Free/Busy</value>
   </data>
   <data name="HTTP_200_REST_People_Request_ResponseAlert" xml:space="preserve">
     <value>REST People</value>
@@ -846,6 +930,18 @@
   </data>
   <data name="HTTP_401_Exchange_Server_AutoDiscover_SessionType" xml:space="preserve">
     <value>Exchange Server AutoDiscover</value>
+  </data>
+  <data name="HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;Free/Busy Forbidden Error&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseCodeDescription" xml:space="preserve">
+    <value>403 Free/Busy Forbidden Error</value>
+  </data>
+  <data name="HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseComments" xml:space="preserve">
+    <value>A Free/Busy call was sent and the response contained a HTTP 403 Forbidden error.</value>
+  </data>
+  <data name="HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_SessionType" xml:space="preserve">
+    <value>!Free/Busy Forbidden!</value>
   </data>
   <data name="HTTP_403_Forbidden_Everything_Else_ResponseAlert" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 403 Forbidden&lt;/span&gt;&lt;/b&gt;</value>
@@ -1025,7 +1121,7 @@
     <value>Potential to cause the issue you are investigating. Do you see expected responses beyond this session in the trace? Is the Host IP for the device issuing this response with a subnet within your lan or something in a cloud provider's network?</value>
   </data>
   <data name="HTTP_502_Bad_Gateway_Anything_Else_SessionType" xml:space="preserve">
-    <value>!Bad Gateway!</value>
+    <value>!BAD GATEWAY!</value>
   </data>
   <data name="HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_Domain_Not_Detected" xml:space="preserve">
     <value>Domain not detected</value>
@@ -1079,7 +1175,7 @@
     <value>&lt;b&gt;&lt;span style='color:red'&gt;Server that was contacted in this session reports it is unavailable&lt;/span&gt;&lt;/b&gt;. Look at the server that issued this response, it is healthy? Contactable? Contactable consistently or intermittently? Consider other session server responses in the 500's (500, 502 or 503) in conjunction with this session.</value>
   </data>
   <data name="HTTP_503_Service_Unavailable_Everything_Else_SessionType" xml:space="preserve">
-    <value>!Service Unavailable!</value>
+    <value>!SERVICE UNAVAILABLE!</value>
   </data>
   <data name="HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseAlert" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;FederatedSTSUnreachable&lt;/span&gt;&lt;/b&gt;</value>
@@ -1129,20 +1225,26 @@
   <data name="Insufficient data" xml:space="preserve">
     <value>Insufficient data</value>
   </data>
+  <data name="Interesting Sessions" xml:space="preserve">
+    <value>Interesting Sessions</value>
+  </data>
   <data name="IsMicrosoft365subnet" xml:space="preserve">
-    <value>is within a Microsoft365 subnet</value>
+    <value>is a public IP address within a Microsoft365 subnet</value>
   </data>
   <data name="IsPrivateSubnet" xml:space="preserve">
     <value>is within a private subnet on a</value>
   </data>
   <data name="IsPublicIPAddress" xml:space="preserve">
-    <value>is a public IP address, but is not within a Microsoft365 subnet.</value>
+    <value>is a public IP address, which is not within a Microsoft365 subnet.</value>
   </data>
   <data name="Issuer" xml:space="preserve">
     <value>Issuer</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
+  </data>
+  <data name="LoadOrImportSessions" xml:space="preserve">
+    <value>Load or import some sessions to analyse and create a Consolidationed Analysis Report.</value>
   </data>
   <data name="Local Extension Version" xml:space="preserve">
     <value>Local Extension Version</value>
@@ -1248,6 +1350,9 @@
   <data name="Process Name" xml:space="preserve">
     <value>Process Name</value>
   </data>
+  <data name="Processes" xml:space="preserve">
+    <value>Processes</value>
+  </data>
   <data name="Recalculate Selected Sessions" xml:space="preserve">
     <value>Recalculate Selected Sessions</value>
   </data>
@@ -1261,10 +1366,13 @@
     <value>Releases</value>
   </data>
   <data name="Remote Capture" xml:space="preserve">
-    <value>Remote Capture</value>
+    <value>The process is not recorded in the session, it is unknown which application this data was recorded from.</value>
   </data>
   <data name="Report Issues" xml:space="preserve">
     <value>Report Issues</value>
+  </data>
+  <data name="Response Body" xml:space="preserve">
+    <value>Response Body:</value>
   </data>
   <data name="Response Code" xml:space="preserve">
     <value>Response Code</value>
@@ -1346,6 +1454,9 @@
   <data name="Server Timers" xml:space="preserve">
     <value>Server Timers</value>
   </data>
+  <data name="Session" xml:space="preserve">
+    <value>Session</value>
+  </data>
   <data name="Session Age" xml:space="preserve">
     <value>Session Age</value>
   </data>
@@ -1381,6 +1492,12 @@
   </data>
   <data name="Sessionanalysisperformed" xml:space="preserve">
     <value>Session analysis performed on:</value>
+  </data>
+  <data name="sessions" xml:space="preserve">
+    <value>sessions</value>
+  </data>
+  <data name="sessions in trace from" xml:space="preserve">
+    <value>sessions in trace from</value>
   </data>
   <data name="SessionTimersDescription" xml:space="preserve">
     <value>&lt;p&gt;The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.&lt;/p&gt;&lt;p&gt;If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.&lt;/p&gt;&lt;p&gt;Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.&lt;p&gt;</value>

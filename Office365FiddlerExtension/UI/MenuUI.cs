@@ -2,9 +2,9 @@
 using Fiddler;
 using System;
 using System.Windows.Forms;
-//using Microsoft.Extensions.FileSystemGlobbing;
 using Office365FiddlerExtension.UI;
 using System.Reflection;
+using Office365FiddlerExtension.UI.Forms;
 
 namespace Office365FiddlerExtension
 {
@@ -24,7 +24,7 @@ namespace Office365FiddlerExtension
         public MenuItem MiEnabled { get; set; }
 
         //public MenuItem MiLanguage { get; set; }
-
+        /*
         public MenuItem MiLanguage_English_ENGB { get; set; }
 
         public MenuItem MiLanguage_English_ENUS { get; set; }
@@ -36,6 +36,15 @@ namespace Office365FiddlerExtension
         public MenuItem MiLanguage_PT { get; set; }
 
         public MenuItem MiLanguage_ES { get; set; }
+        */
+
+        public MenuItem MiAnalyseAllSessions { get; set; }
+
+        public MenuItem MiClearAllSessionAnalysis { get; set; }
+
+        public MenuItem MiCreateConsolidatedAnalysisReport { get; set; }
+
+        public MenuItem MiCheckIP {  get; set; }
 
         public MenuItem MiReleasesDownloadWebpage { get; set; }
 
@@ -102,6 +111,27 @@ namespace Office365FiddlerExtension
                     Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("ES")
                 };
                 */
+
+                this.MiAnalyseAllSessions = new MenuItem($"{LangHelper.GetString("Analyse All Sessions")}", new System.EventHandler(this.MiAnalyseAllSessions_Click))
+                {
+                    Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
+                };
+
+                this.MiClearAllSessionAnalysis = new MenuItem($"{LangHelper.GetString("Clear All Session Analysis")}", new System.EventHandler(this.MiClearAllSessionAnalysis_Click))
+                {
+                    Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
+                };
+
+                this.MiCreateConsolidatedAnalysisReport = new MenuItem($"{LangHelper.GetString("Create Consolidated Analysis Report")}", new System.EventHandler(this.MiCreateConsolidatedAnalysisReport_Click))
+                {
+                    Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
+                };
+
+                this.MiCheckIP = new MenuItem($"{LangHelper.GetString("Check IP Address")}", new System.EventHandler(this.MiCheckIPAddress_Click))
+                {
+                    Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
+                };
+
                 this.MiReleasesDownloadWebpage = new MenuItem($"{LangHelper.GetString("Releases")}", new System.EventHandler(this.MiReleasesDownloadWebpage_click));
 
                 this.MiWiki = new MenuItem($"{LangHelper.GetString("Wiki")}", new System.EventHandler(this.MiWiki_Click));
@@ -113,8 +143,14 @@ namespace Office365FiddlerExtension
                 // Add menu items to top level menu.
                 this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { this.MiEnabled,
                     new MenuItem("-"),
+                    this.MiAnalyseAllSessions,
+                    this.MiClearAllSessionAnalysis,
+                    new MenuItem("-"),
+                    this.MiCreateConsolidatedAnalysisReport,
+                    new MenuItem ("-"),
+                    this.MiCheckIP,
                     //this.MiLanguage,
-                    //new MenuItem("-"),
+                    new MenuItem("-"),
                     this.MiReleasesDownloadWebpage,
                     this.MiWiki,
                     this.MiReportIssues,
@@ -199,21 +235,31 @@ namespace Office365FiddlerExtension
             about.Show();
         }
 
+        /*
         private void MiClearAllSessionProcessing_Click(object sender, EventArgs e)
         {
             SessionFlagService.Instance.ClearAnalysisSelectedSessions();
         }
+        */
 
         // Menu item event handlers.
-        public void MiEnabled_Click(object sender, EventArgs e)
+        private void MiEnabled_Click(object sender, EventArgs e)
         {
             // Invert menu item checked.
             MiEnabled.Checked = !MiEnabled.Checked;
+            MiAnalyseAllSessions.Enabled = !MiAnalyseAllSessions.Enabled;
+            MiClearAllSessionAnalysis.Enabled = !MiClearAllSessionAnalysis.Enabled;
+            MiCreateConsolidatedAnalysisReport.Enabled = !MiCreateConsolidatedAnalysisReport.Enabled;
+            ContextMenuUI.Instance.InvertCmiAnalyseSelectedSessionsEnabled();
+            ContextMenuUI.Instance.InvertCmiClearAnalysisSelectedSessions();
+            ContextMenuUI.Instance.InvertCmiSetSessionSeverity();
+            ContextMenuUI.Instance.InvertCmiCreateConsolidatedReportEnabled();
+
             // Set ExtensionEnabled according to menu item checked.
             SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(MiEnabled.Checked);
         }
 
-        public void MiWiki_Click(object sender, EventArgs e)
+        private void MiWiki_Click(object sender, EventArgs e)
         {
             var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
 
@@ -221,18 +267,39 @@ namespace Office365FiddlerExtension
             System.Diagnostics.Process.Start(URLs.Wiki);
         }
 
-        public void MiReleasesDownloadWebpage_click(object sender, EventArgs e)
+        private void MiReleasesDownloadWebpage_click(object sender, EventArgs e)
         {
             var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
             // Fire up a web browser to the project Wiki URL.
             System.Diagnostics.Process.Start(URLs.Installer);
         }
 
-        public void MiReportIssues_Click(object sender, EventArgs e)
+        private void MiReportIssues_Click(object sender, EventArgs e)
         {
             var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
             // Fire up a web browser to the project issues URL.
             System.Diagnostics.Process.Start(URLs.ReportIssues);
+        }
+
+        private void MiAnalyseAllSessions_Click(object sender, EventArgs e)
+        {
+            SessionFlagService.Instance.AnalyseAllSessions();
+        }
+
+        private void MiClearAllSessionAnalysis_Click(object sender, EventArgs e)
+        {
+            SessionFlagService.Instance.ClearAnalysisAllSessions();
+        }
+
+        private void MiCreateConsolidatedAnalysisReport_Click(object sender, EventArgs e)
+        {
+            ConsolidatedAnalysisReportService.Instance.CreateCAR();
+        }
+
+        private void MiCheckIPAddress_Click(object sender, EventArgs e)
+        {
+            CheckIP checkIP = new CheckIP();
+            checkIP.Show();
         }
     }
 }

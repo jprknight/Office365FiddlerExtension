@@ -52,6 +52,7 @@
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\FiddlerUpdateSessions.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\LoopBackTunnel.cs" />
     <Compile Include="Ruleset\AlwaysRun\HostIP.cs" />
+    <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\ConnectTunnelTLSVersion.cs" />
     <Compile Include="Ruleset\HTTP_0\HTTP_0_OWA_Notification_Channel.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_3S_Suggestions.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Actually_OK.cs" />
@@ -63,7 +64,9 @@
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_OnPremise_Any_Other_EWS.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_AddressNotFound.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_FreeBusy.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Javascript.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Json.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Lurking_Errors.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Outlook_MAPI_Exchange_Online.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Outlook_MAPI_Exchange_OnPremise.cs" />
@@ -110,6 +113,9 @@
       <Project>{5d9f84f0-77f3-45f5-8da9-c89db69bd643}</Project>
       <Name>Office365FiddlerExtension</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="HowToAddARule.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

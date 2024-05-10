@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
 using System.Reflection;
-using static Office365FiddlerExtension.Services.SessionFlagService;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {

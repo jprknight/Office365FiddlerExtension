@@ -56,7 +56,6 @@ namespace Office365FiddlerExtension.Services
         */
 
         // Keep this around to migrate legacy settings to Json settings.
-#pragma warning disable IDE0052
         private static bool _extensionEnabled;
         
         public static bool ExtensionEnabled
@@ -119,6 +118,15 @@ namespace Office365FiddlerExtension.Services
         {
             get => _extensionSettings = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.ExtensionSettings", null);
             set { _extensionSettings = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionSettings", value); }
+        }
+
+        // Setting to store Json extension URLs. Update from remote.
+        private static string _extensionURLs;
+
+        public static string ExtensionURLs
+        {
+            get => _extensionURLs = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.ExtensionURLs", null);
+            set { _extensionURLs = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionURLs", value); }
         }
 
         private static string _sessionClassification;

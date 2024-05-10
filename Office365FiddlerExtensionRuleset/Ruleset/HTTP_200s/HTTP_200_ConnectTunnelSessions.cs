@@ -4,7 +4,7 @@ using Office365FiddlerExtension.Services;
 using System;
 using System.Reflection;
 
-namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
+namespace Office365FiddlerExtensionRuleset.Ruleset
 {
     class HTTP_200_ConnectTunnelSessions
     {
@@ -29,56 +29,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             {
                 return;
             }
-
-            string TLS;
-
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Broad Logic Checks (connect tunnel).");
-
-            // TLS 1.0 in request/response pair.
-
-            // Request:
-            //   Version: 3.1 (TLS/1.0)
-
-            //Response:
-            //   Secure Protocol: Tls
-            //   Cipher: Aes256 256bits
-            //   Hash Algorithm: Sha1 160bits
-
-            if (SessionContentSearch.Instance.SearchForPhrase(this.session, "Secure Protocol: Tls10") || SessionContentSearch.Instance.SearchForPhrase(this.session, "(TLS/1.0)"))
-            //if (this.session.utilFindInResponse("Secure Protocol: Tls10", false) > 1 || this.session.utilFindInResponse("(TLS/1.0)", false) > 1)
-            {
-                TLS = "TLS 1.0";
-            }
-            // TLS 1.1 in request/response pair.
-            else if (SessionContentSearch.Instance.SearchForPhrase(this.session, "Secure Protocol: Tls11") || SessionContentSearch.Instance.SearchForPhrase(this.session, "(TLS/1.1)"))
-            //else if (this.session.utilFindInResponse("Secure Protocol: Tls11", false) > 1 || this.session.utilFindInRequest("(TLS/1.1)", false) > 1)
-            {
-                TLS = "TLS 1.1";
-            }
-            // TLS 1.2 in request/response pair.
-            else if (SessionContentSearch.Instance.SearchForPhrase(this.session,"Secure Protocol: Tls12") || SessionContentSearch.Instance.SearchForPhrase(this.session, "(TLS/1.2)"))
-            //else if (this.session.utilFindInRequest("Secure Protocol: Tls12", false) > 1 || this.session.utilFindInRequest("(TLS/1.2)", false) > 1)
-            {
-                TLS = "TLS 1.2";
-            }
-            else if (SessionContentSearch.Instance.SearchForPhrase(this.session, "Secure Protocol: Tls13") || SessionContentSearch.Instance.SearchForPhrase(this.session, "(TLS/1.3)"))
-            //else if (this.session.utilFindInRequest("Secure Protocol: Tls13", false) > 1 || this.session.utilFindInRequest("(TLS/1.3)", false) > 1)
-            {
-                TLS = "TLS 1.3";
-            }
-            else
-            {
-                // If we cannot determine the TLS version do nothing.
-                // This can happen when live tracing traffic. The request/responses cannot be read fast enough to get accurate results.
-                TLS = "TLS Unknown";
-            }
-
+            
             // 11/1/2022 -- There was some old code accompanying this comment, leaving this as it might be useful information for the future.
 
             // Trying to check session response body for a string value using !this.Session.bHasResponse does not impact performance, but is not reliable.
             // Using this.Session.GetResponseBodyAsString().Length == 0 kills performance. Fiddler wouldn't even load with this code in place.
             // Ideally looking to do: if (this.Session.utilFindInResponse("CONNECT tunnel, through which encrypted HTTPS traffic flows", false) > 1)
             // Only works reliably when loading a SAZ file and request/response data is immediately available to do logic checks against.
+
+            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
 
             int sessionAuthenticationConfidenceLevel;
             int sessionTypeConfidenceLevel;
@@ -109,12 +68,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             {
                 SectionTitle = "HTTP_200s",
 
-                SessionType = $"{LangHelper.GetString("HTTP_200_ConnectTunnel")}: {TLS}",
+                SessionType = $"{LangHelper.GetString("HTTP_200_ConnectTunnel")}: TLS {ExtensionSessionFlags.TLSVersion}",
                 ResponseCodeDescription = LangHelper.GetString("HTTP_200_ConnectTunnel"),
                 ResponseServer = LangHelper.GetString("HTTP_200_ConnectTunnel"),
                 ResponseAlert = LangHelper.GetString("HTTP_200_ConnectTunnel"),
                 ResponseComments = LangHelper.GetString("HTTP_200_ConnectTunnel_RepsonseComments"),
-                Authentication = $"{LangHelper.GetString("HTTP_200_ConnectTunnel")}: {TLS}",
+                Authentication = $"{LangHelper.GetString("HTTP_200_ConnectTunnel")}: TLS {ExtensionSessionFlags.TLSVersion}",
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

@@ -106,6 +106,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Analysed.
+        /// </summary>
+        internal static string Analysed {
+            get {
+                return ResourceManager.GetString("Analysed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attribute Name Immutable ID.
         /// </summary>
         internal static string Attribute_Name_Immutable_ID {
@@ -457,6 +466,24 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check IP Address.
+        /// </summary>
+        internal static string Check_IP_Address {
+            get {
+                return ResourceManager.GetString("Check IP Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear All Session Analysis.
+        /// </summary>
+        internal static string Clear_All_Session_Analysis {
+            get {
+                return ResourceManager.GetString("Clear All Session Analysis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear Selected Sessions.
         /// </summary>
         internal static string Clear_Selected_Sessions {
@@ -520,11 +547,38 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Consolidated Analysis Report.
+        /// </summary>
+        internal static string Consolidated_Analysis_Report {
+            get {
+                return ResourceManager.GetString("Consolidated Analysis Report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sessions have not been analysed to be able to create the Consolidated Analysis Report. Would you like to analyse them now so the report can be generated?.
+        /// </summary>
+        internal static string ConsolidatedAnalysisReportNotAllSessionsHaveAnalysis {
+            get {
+                return ResourceManager.GetString("ConsolidatedAnalysisReportNotAllSessionsHaveAnalysis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy and save the below text into a .cer file to view the signing certificate..
         /// </summary>
         internal static string Copy_Save_Signing_Certificate {
             get {
                 return ResourceManager.GetString("Copy Save Signing Certificate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Consolidated Analysis Report.
+        /// </summary>
+        internal static string Create_Consolidated_Analysis_Report {
+            get {
+                return ResourceManager.GetString("Create Consolidated Analysis Report", resourceCulture);
             }
         }
         
@@ -1042,11 +1096,137 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HTTP 200 OK with Javascript.
+        ///   Looks up a localized string similar to 200 OK with Javascript.
         /// </summary>
         internal static string HTTP_200_Javascript_SessionType {
             get {
                 return ResourceManager.GetString("HTTP_200_Javascript_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;Though the session has a content type of Json, there is an empty response body. Check the host, URL, and process on this session to determine if this is a point of interest for the issue you&apos;re troubleshooting.&lt;/p&gt;.
+        /// </summary>
+        internal static string HTTP_200_Json_EmptyResponseBody {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_EmptyResponseBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to !INVALID JSON!.
+        /// </summary>
+        internal static string HTTP_200_Json_Invalid_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_Invalid_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 OK with INVALID JSON.
+        /// </summary>
+        internal static string HTTP_200_Json_Invalid_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_Invalid_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;HTTP 200 OK response with invalid json in the response. This might indiciate an issue with the server or device which was transmitting the json data to the client computer. Look for partial Json below in the response body. If you see no Json at all, then this means the response has a content type which contains Json, but there was no actual Json in the response.&lt;/p&gt;.
+        /// </summary>
+        internal static string HTTP_200_Json_Invalid_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_Invalid_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to !200 OK with INVALID JSON!.
+        /// </summary>
+        internal static string HTTP_200_Json_Invalid_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_Invalid_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 OK with Json..
+        /// </summary>
+        internal static string HTTP_200_Json_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 OK with Json..
+        /// </summary>
+        internal static string HTTP_200_Json_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;HTTP 200 OK response with Json.&lt;/p&gt;.
+        /// </summary>
+        internal static string HTTP_200_Json_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 OK with Json.
+        /// </summary>
+        internal static string HTTP_200_Json_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to !200 OK NO JSON!.
+        /// </summary>
+        internal static string HTTP_200_Json_SessionType_EmptyResponseBody {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_SessionType_EmptyResponseBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Legacy Client Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_Legacy_FreeBusy_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_Legacy_FreeBusy_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 Legacy Client Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_Legacy_FreeBusy_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_Legacy_FreeBusy_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is a legacy Free/Busy call in as much as it has URL patterns seen in older Outlook clients. Newer Outlook clients and OWA now make calls to Free/Busy in the Microsoft cloud using different URLs. This could also be a Free/Busy call to Exchange Server if the target mailbox isn&apos;t in the Microsoft cloud..
+        /// </summary>
+        internal static string HTTP_200_Legacy_FreeBusy_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_Legacy_FreeBusy_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Legacy Client Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_Legacy_FreeBusy_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_Legacy_FreeBusy_SessionType", resourceCulture);
             }
         }
         
@@ -1303,6 +1483,42 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Outlook for Windows Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_Outlook_For_Windows_FreeBusy_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 Outlook for Windows Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_Outlook_For_Windows_FreeBusy_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is an Outlook for Windows Free/Busy call to the Microsoft Cloud..
+        /// </summary>
+        internal static string HTTP_200_Outlook_For_Windows_FreeBusy_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outlook for Windows Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_Outlook_For_Windows_FreeBusy_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Store Error Protocol Disabled&lt;/span&gt;&lt;/b&gt;.
         /// </summary>
         internal static string HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_ResponseAlert {
@@ -1479,6 +1695,42 @@ namespace Office365FiddlerExtension.Language {
         internal static string HTTP_200_Outlook_Web_App_SessionType {
             get {
                 return ResourceManager.GetString("HTTP_200_Outlook_Web_App_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OWA Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_OWA_FreeBusy_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_OWA_FreeBusy_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 OWA Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_OWA_FreeBusy_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_OWA_FreeBusy_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is an OWA Free/Busy call to the Microsoft Cloud..
+        /// </summary>
+        internal static string HTTP_200_OWA_FreeBusy_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_OWA_FreeBusy_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OWA Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_OWA_FreeBusy_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_OWA_FreeBusy_SessionType", resourceCulture);
             }
         }
         
@@ -2312,6 +2564,43 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Free/Busy Forbidden Error&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 403 Free/Busy Forbidden Error.
+        /// </summary>
+        internal static string HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseCodeDescriptio" +
+                        "n", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A Free/Busy call was sent and the response contained a HTTP 403 Forbidden error..
+        /// </summary>
+        internal static string HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to !Free/Busy Forbidden!.
+        /// </summary>
+        internal static string HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 404 Not Found&lt;/span&gt;&lt;/b&gt;.
         /// </summary>
         internal static string HTTP_404s_ResponseAlerts {
@@ -2735,7 +3024,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to !Bad Gateway!.
+        ///   Looks up a localized string similar to !BAD GATEWAY!.
         /// </summary>
         internal static string HTTP_502_Bad_Gateway_Anything_Else_SessionType {
             get {
@@ -2897,7 +3186,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to !Service Unavailable!.
+        ///   Looks up a localized string similar to !SERVICE UNAVAILABLE!.
         /// </summary>
         internal static string HTTP_503_Service_Unavailable_Everything_Else_SessionType {
             get {
@@ -3055,7 +3344,16 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to is within a Microsoft365 subnet.
+        ///   Looks up a localized string similar to Interesting Sessions.
+        /// </summary>
+        internal static string Interesting_Sessions {
+            get {
+                return ResourceManager.GetString("Interesting Sessions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is a public IP address within a Microsoft365 subnet.
         /// </summary>
         internal static string IsMicrosoft365subnet {
             get {
@@ -3073,7 +3371,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to is a public IP address, but is not within a Microsoft365 subnet..
+        ///   Looks up a localized string similar to is a public IP address, which is not within a Microsoft365 subnet..
         /// </summary>
         internal static string IsPublicIPAddress {
             get {
@@ -3096,6 +3394,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Language {
             get {
                 return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load or import some sessions to analyse and create a Consolidationed Analysis Report..
+        /// </summary>
+        internal static string LoadOrImportSessions {
+            get {
+                return ResourceManager.GetString("LoadOrImportSessions", resourceCulture);
             }
         }
         
@@ -3406,6 +3713,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Processes.
+        /// </summary>
+        internal static string Processes {
+            get {
+                return ResourceManager.GetString("Processes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recalculate Selected Sessions.
         /// </summary>
         internal static string Recalculate_Selected_Sessions {
@@ -3442,7 +3758,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remote Capture.
+        ///   Looks up a localized string similar to The process is not recorded in the session, it is unknown which application this data was recorded from..
         /// </summary>
         internal static string Remote_Capture {
             get {
@@ -3456,6 +3772,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Report_Issues {
             get {
                 return ResourceManager.GetString("Report Issues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Response Body:.
+        /// </summary>
+        internal static string Response_Body {
+            get {
+                return ResourceManager.GetString("Response Body", resourceCulture);
             }
         }
         
@@ -3694,6 +4019,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Session.
+        /// </summary>
+        internal static string Session {
+            get {
+                return ResourceManager.GetString("Session", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Session Age.
         /// </summary>
         internal static string Session_Age {
@@ -3798,6 +4132,24 @@ namespace Office365FiddlerExtension.Language {
         internal static string Sessionanalysisperformed {
             get {
                 return ResourceManager.GetString("Sessionanalysisperformed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sessions.
+        /// </summary>
+        internal static string sessions {
+            get {
+                return ResourceManager.GetString("sessions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sessions in trace from.
+        /// </summary>
+        internal static string sessions_in_trace_from {
+            get {
+                return ResourceManager.GetString("sessions in trace from", resourceCulture);
             }
         }
         

@@ -14,8 +14,11 @@ namespace Office365FiddlerExtension.Services
         private bool IsInitialized { get; set; }
 
         /// <summary>
+        /// 
+        /// MAIN
+        /// 
         /// This should be considered the main constructor for the extension. 
-        /// It's called after the UI has loaded.
+        /// It's called after the Fiddler UI has loaded.
         /// </summary>
         public void OnLoad()
         {
@@ -27,7 +30,8 @@ namespace Office365FiddlerExtension.Services
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
 
-                LangHelper.ChangeLanguage(SettingsJsonService.Instance.GetDeserializedExtensionSettings().PreferredLanguage);
+                // Not currently supporting language changing in the application.
+                // LangHelper.ChangeLanguage(SettingsJsonService.Instance.GetDeserializedExtensionSettings().PreferredLanguage);
 
                 // Ensure Fiddler settings (settings, URLs, & verison) for the extension have been created.
                 // Avoid null exceptions.

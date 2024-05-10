@@ -1,12 +1,12 @@
 ﻿using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Office365FiddlerExtension.UI
 {
     /// <summary>
-    /// Set colours on session foreground and background. Called from SessionHandler once
-    /// session flags have been set by extension ruleset.
+    /// Set colours on session foreground and background.
     /// </summary>
     public  class EnhanceSessionUX
     {
@@ -59,6 +59,9 @@ namespace Office365FiddlerExtension.UI
                     break;                    
                 default:
                     // Default to light pink, so we know if something isn't caught.
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                        $"({this.GetType().Name}): {this.session.id} Session severity NOT set, session background set to pink.");
+
                     this.session["UI-BACKCOLOR"] = "#FFB6C1";
                     this.session["UI-COLOR"] = "#000000";
                     break;

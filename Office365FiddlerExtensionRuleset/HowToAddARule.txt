@@ -1,0 +1,13 @@
+﻿Determine if the rule will live under BroadLogicChecks. These are HTTP response code agnostic.
+
+Determine if the rule will live under a specific HTTP response code.
+
+Create the class using HTTP_200_Actually_OK.cs as a template.
+
+Don't forget 'this.session = session;' if you do the session will fall through the ruleset and have a pink background with no analysis.
+
+Create the Json section within Office365FiddlerExtension\SessionClassification.json, so that the color of the session can be changed via Github if it needs to change.
+
+Add any strings to Office365FiddlerExtension\Language\strings.resx
+
+Finally add add a line to call the new function in Office365FiddlerExtensionRulleset\RunRuleset.cs

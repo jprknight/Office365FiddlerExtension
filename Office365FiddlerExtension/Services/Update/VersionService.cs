@@ -44,6 +44,11 @@ namespace Office365FiddlerExtension.Services
 
         public Boolean IsExtensionDLLUpdateAvailable()
         {
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                return false;
+            }
+
             var githubJsonVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
             int localVersion = Assembly.GetExecutingAssembly().GetName().Version.Major
@@ -64,6 +69,11 @@ namespace Office365FiddlerExtension.Services
 
         public void NotifyUserIfExtensionUpdateIsAvailable()
         {
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                return;
+            }
+
             if (!VersionService.Instance.IsExtensionDLLUpdateAvailable())
             { 
                 return; 
