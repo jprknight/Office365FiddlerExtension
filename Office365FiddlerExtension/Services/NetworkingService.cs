@@ -26,7 +26,7 @@ namespace Office365FiddlerExtension.Services
             catch (Exception ex)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"(NetworkingService) IsInSubnetMask: Issue with IP address format.");
+                    $"(NetworkingService) IsInSubnetMask: Issue with IP address format: {ipAddress}");
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} {ex}");
                 return false;
             }
@@ -63,7 +63,7 @@ namespace Office365FiddlerExtension.Services
             catch (Exception ex)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"(NetworkingService) IsInSubnetMask: Issue with IP address format.");
+                    $"(NetworkingService) IsInSubnetMask: Issue with IP address format: {ipAddress}");
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} {ex}");
                 return false;
             }
