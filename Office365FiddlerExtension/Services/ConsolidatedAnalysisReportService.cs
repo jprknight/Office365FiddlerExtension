@@ -200,7 +200,7 @@ namespace Office365FiddlerExtension.Services
 
             if (percentageConnectTunnels >= 80)
             {
-                ResultsString.AppendLine($"<p><span style='color=red'>There's a high percentage of sessions which are connect tunnels ({percentageConnectTunnels}%. " +
+                ResultsString.AppendLine($"<p><span style='color=red'>There's a high percentage of sessions which are connect tunnels ({percentageConnectTunnels.ToString("F")}%). " +
                     "It's likely decryption wasn't enabled in Fiddler when this trace was collected.</span></p>");
             }
 
