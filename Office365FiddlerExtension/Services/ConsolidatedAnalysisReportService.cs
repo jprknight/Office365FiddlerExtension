@@ -81,7 +81,7 @@ namespace Office365FiddlerExtension.Services
 
             ResultsString.AppendLine(" <html>");
             ResultsString.AppendLine("<body>");
-            ResultsString.AppendLine($"<h1>{LangHelper.GetString("Office365 Fiddler Extension")} - {LangHelper.GetString("Consolidated Analysis Report")} - {DateTime.Now:dddd, MMM dd yyyy}</h1>");
+            ResultsString.AppendLine($"<h1>{LangHelper.GetString("Office 365 Fiddler Extension")} - {LangHelper.GetString("Consolidated Analysis Report")} - {DateTime.Now:dddd, MMM dd yyyy}</h1>");
 
             Dictionary<string, int> sessionProcesses = new Dictionary<string, int>();
             Dictionary<string, int> tlsVersions = new Dictionary<string, int>();
