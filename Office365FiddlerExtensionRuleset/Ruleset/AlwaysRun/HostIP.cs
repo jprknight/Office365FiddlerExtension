@@ -24,16 +24,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Session X-HostIP is null.");
 
-                return;
+                hostIP = "NOT PRESENT";
             }
-
-            if (this.session["X-HostIP"].Contains("Not Present"))
+            else if (this.session["X-HostIP"].Contains("Not Present"))
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Session X-HostIP is 'Not Present'.");
 
                 hostIP = "NOT PRESENT";
             }
-            else if (this.session["X-HostIP"] != null && this.session["X-HostIP"] != "")
+            else if (this.session["X-HostIP"] != "")
             {
                 // Tuple -- tupleIsPrivateIPAddress (bool), matching subnet (string).
                 Tuple<bool, string> tupleIsPrivateIPAddress = NetworkingService.Instance.IsPrivateIPAddress(this.session);
