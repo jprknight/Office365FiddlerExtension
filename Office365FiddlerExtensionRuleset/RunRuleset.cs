@@ -3,14 +3,33 @@ using Fiddler;
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtensionRuleset.Ruleset;
-using Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun;
-using Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s;
 
 namespace Office365FiddlerExtensionRuleset
 {
     public class RunRuleSet
     {
         internal Session session { get; set; }
+
+        private bool SessionAnalysisCompleted(Session session)
+        {
+            this.session = session;
+
+            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
+
+            // Session Analysis IS completed.
+
+            // Session analysis here means only SessionTypeConfidenceLevel and SessionResponseServerConfidenceLevel.
+            // SessionAuthenticationConfidenceLevel is the last thing to be worked out so isn't used here.
+            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10 
+                && ExtensionSessionFlags.SessionResponseServerConfidenceLevel == 10)
+                //&& ExtensionSessionFlags.SessionAuthenticationConfidenceLevel < 10)
+            {
+                return true;
+            }
+
+            // Session Analysis is NOT completed.
+            return false;
+        }
 
         public void Initialize(Session session)
         {
@@ -25,7 +44,6 @@ namespace Office365FiddlerExtensionRuleset
             ApacheAutodiscover.Instance.Run(this.session);
             ConnectTunnelTLSVersion.Instance.Run(this.session);
             LoopBackTunnel.Instance.Run(this.session);
-            PreSessionType.Instance.Run(this.session);
 
             // Calculate Session Age for inspector with HTML mark-up.
             CalculateSessionAge.Instance.SessionAge(this.session);
@@ -45,10 +63,9 @@ namespace Office365FiddlerExtensionRuleset
 
             ///////////////////////////////
             ///
-            // From here on out only run functions where there isn't a high level of confidence
-            // on session classification.
+            // From here on out only run functions where session analysis isn't completed.
             var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
+            if (!SessionAnalysisCompleted(this.session))
             {
                 ResponseCodeLogic(this.session);
             }
@@ -103,6 +120,11 @@ namespace Office365FiddlerExtensionRuleset
             ///////////////////////////////
             // SESSION TYPE
             #region SessionType
+
+            // Just run this without checking whether we think session analysis is completed or not, nor
+            // SessionTypeConfidenceLevel.
+            //FreeBusy.Instance.Run(this.session);
+
             // If the session does not already have a high session type classification confidence, run these functions.
             ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
             if (ExtensionSessionFlags.SessionTypeConfidenceLevel < 10)
@@ -385,6 +407,14 @@ namespace Office365FiddlerExtensionRuleset
                     ///////////////////////////////
 
                     HTTP_200_Exchange_Online_Any_Other_EWS.Instance.Run(this.session);
+                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+                    {
+                        break;
+                    }
+
+                    ///////////////////////////////
+
+                    HTTP_200_FreeBusy.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {
                         break;

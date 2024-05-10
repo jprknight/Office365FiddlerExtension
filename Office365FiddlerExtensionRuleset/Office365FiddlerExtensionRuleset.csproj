@@ -50,7 +50,6 @@
   <ItemGroup>
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\ApacheAutodiscover.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\FiddlerUpdateSessions.cs" />
-    <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\PreSessionType.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\LoopBackTunnel.cs" />
     <Compile Include="Ruleset\AlwaysRun\HostIP.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\ConnectTunnelTLSVersion.cs" />
@@ -65,6 +64,7 @@
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_OnPremise_Any_Other_EWS.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_AddressNotFound.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_FreeBusy.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Javascript.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Json.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Lurking_Errors.cs" />

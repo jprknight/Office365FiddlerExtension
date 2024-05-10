@@ -1195,6 +1195,42 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Legacy Client Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_Legacy_FreeBusy_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_Legacy_FreeBusy_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 Legacy Client Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_Legacy_FreeBusy_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_Legacy_FreeBusy_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is a legacy Free/Busy call in as much as it has URL patterns seen in older Outlook clients. Newer Outlook clients and OWA now make calls to Free/Busy in the Microsoft cloud using different URLs. This could also be a Free/Busy call to Exchange Server if the target mailbox isn&apos;t in the Microsoft cloud..
+        /// </summary>
+        internal static string HTTP_200_Legacy_FreeBusy_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_Legacy_FreeBusy_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Legacy Client Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_Legacy_FreeBusy_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_Legacy_FreeBusy_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;&apos;error&apos;, &apos;failed&apos; or &apos;exception&apos; found in response body&lt;/span&gt;&lt;/b&gt;.
         /// </summary>
         internal static string HTTP_200_Lurking_Errors_ResponseAlert {
@@ -1447,6 +1483,42 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Outlook for Windows Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_Outlook_For_Windows_FreeBusy_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 Outlook for Windows Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_Outlook_For_Windows_FreeBusy_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is an Outlook for Windows Free/Busy call to the Microsoft Cloud..
+        /// </summary>
+        internal static string HTTP_200_Outlook_For_Windows_FreeBusy_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outlook for Windows Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_Outlook_For_Windows_FreeBusy_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Store Error Protocol Disabled&lt;/span&gt;&lt;/b&gt;.
         /// </summary>
         internal static string HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_ResponseAlert {
@@ -1623,6 +1695,42 @@ namespace Office365FiddlerExtension.Language {
         internal static string HTTP_200_Outlook_Web_App_SessionType {
             get {
                 return ResourceManager.GetString("HTTP_200_Outlook_Web_App_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OWA Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_OWA_FreeBusy_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_OWA_FreeBusy_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 OWA Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_OWA_FreeBusy_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_OWA_FreeBusy_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is an OWA Free/Busy call to the Microsoft Cloud..
+        /// </summary>
+        internal static string HTTP_200_OWA_FreeBusy_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_OWA_FreeBusy_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OWA Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_OWA_FreeBusy_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_OWA_FreeBusy_SessionType", resourceCulture);
             }
         }
         

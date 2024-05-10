@@ -190,6 +190,24 @@
       "SessionResponseServerConfidenceLevel": 5,
       "SessionSeverity": 30
     },
+    "HTTP_200_Legacy_FreeBusy": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_200_Outlook_For_Windows_FreeBusy": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_200_OWA_FreeBusy": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
     "HTTP_200_Javascript": {
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 10,

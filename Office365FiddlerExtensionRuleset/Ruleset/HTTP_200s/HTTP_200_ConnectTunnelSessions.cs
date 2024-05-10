@@ -4,7 +4,7 @@ using Office365FiddlerExtension.Services;
 using System;
 using System.Reflection;
 
-namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
+namespace Office365FiddlerExtensionRuleset.Ruleset
 {
     class HTTP_200_ConnectTunnelSessions
     {

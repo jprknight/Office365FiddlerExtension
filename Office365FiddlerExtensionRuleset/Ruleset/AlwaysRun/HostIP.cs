@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using System;
 
-namespace Office365FiddlerExtensionRuleset.Ruleset.AlwaysRun
+namespace Office365FiddlerExtensionRuleset.Ruleset
 {
     class HostIP
     {
