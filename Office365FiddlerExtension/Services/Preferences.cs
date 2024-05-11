@@ -120,6 +120,15 @@ namespace Office365FiddlerExtension.Services
             set { _extensionSettings = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionSettings", value); }
         }
 
+        // Setting to store Json version information to run update checks against. Updated from remote.
+        private static string _extensionVersion;
+
+        public static string ExtensionVersion
+        {
+            get => _extensionVersion = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.ExtensionVersion", null);
+            set { _extensionVersion = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionVersion", value); }
+        }
+
         // Setting to store Json extension URLs. Update from remote.
         private static string _extensionURLs;
 
