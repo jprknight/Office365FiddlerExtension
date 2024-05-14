@@ -18,6 +18,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            // Only run these functions as necessary.If Session Type Confidence is met, stop.
             FreeBusy_Failure_Result_Set_Too_Many_Calendar_Entries(this.session);
             if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
             {
