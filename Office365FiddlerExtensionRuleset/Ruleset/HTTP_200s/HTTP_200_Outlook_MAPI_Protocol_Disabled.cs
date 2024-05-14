@@ -23,7 +23,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             this.session = session;
 
             // If this isn't Office 365 MAPI traffic, return.
-            if (!this.session.HostnameIs("outlook.office365.com") && (!this.session.uriContains("/mapi/emsmdb/?MailboxId=")))
+            if (!this.session.HostnameIs("outlook.office365.com"))
+            {
+                return;
+            }
+
+            if (!this.session.uriContains("/mapi/emsmdb/?MailboxId="))
             {
                 return;
             }
