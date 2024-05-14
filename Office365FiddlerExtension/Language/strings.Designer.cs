@@ -1069,6 +1069,42 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Free/Busy Error! Result set has too many calendar items..
+        /// </summary>
+        internal static string HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 OK, giving a Free/Busy error!.
+        /// </summary>
+        internal static string HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 OK session response, but there is a Free/Busy error returned within the response body. The error suggests there are too many calendar items in the result set. Look for meetings on the calendar in the target mailbox which have a large number of recurrences. Maybe ideal guidelines are make weekly or monthly meetings for the current year only. Daily meetings maybe make these for 3 months at a time..
+        /// </summary>
+        internal static string HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to !FREE/BUSY ERROR!.
+        /// </summary>
+        internal static string HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HTTP 200 OK with Javascript..
         /// </summary>
         internal static string HTTP_200_Javascript_ResponseAlert {

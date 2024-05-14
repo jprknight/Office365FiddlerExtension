@@ -190,6 +190,12 @@
       "SessionResponseServerConfidenceLevel": 5,
       "SessionSeverity": 30
     },
+    "HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
     "HTTP_200_Legacy_FreeBusy": {
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 10,

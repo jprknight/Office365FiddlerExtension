@@ -537,6 +537,18 @@
   <data name="HTTP_200_ConnectTunnel_RepsonseComments" xml:space="preserve">
     <value>This is an encrypted tunnel. If all or most of the sessions are connect tunnels the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -&gt; Options -&gt; HTTPS tab.&lt;p&gt;If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. &lt;/p&gt;</value>
   </data>
+  <data name="HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseAlert" xml:space="preserve">
+    <value>Free/Busy Error! Result set has too many calendar items.</value>
+  </data>
+  <data name="HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseCodeDescription" xml:space="preserve">
+    <value>HTTP 200 OK, giving a Free/Busy error!</value>
+  </data>
+  <data name="HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseComments" xml:space="preserve">
+    <value>HTTP 200 OK session response, but there is a Free/Busy error returned within the response body. The error suggests there are too many calendar items in the result set. Look for meetings on the calendar in the target mailbox which have a large number of recurrences. Maybe ideal guidelines are make weekly or monthly meetings for the current year only. Daily meetings maybe make these for 3 months at a time.</value>
+  </data>
+  <data name="HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_SessionType" xml:space="preserve">
+    <value>!FREE/BUSY ERROR!</value>
+  </data>
   <data name="HTTP_200_Javascript_ResponseAlert" xml:space="preserve">
     <value>HTTP 200 OK with Javascript.</value>
   </data>
