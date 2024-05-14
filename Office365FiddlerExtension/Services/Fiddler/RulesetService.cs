@@ -1,25 +1,9 @@
 ﻿using Fiddler;
-using FiddlerCore.Utilities.SmartAssembly.Attributes;
-using Microsoft.CSharp;
-using Microsoft.Win32;
-using Office365FiddlerExtension.Properties;
 using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
 using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Net.Http;
 using System.Reflection;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Office365FiddlerExtension.Services;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Windows.Forms;
-using Microsoft.Extensions.FileSystemGlobbing.Internal;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -37,6 +21,14 @@ namespace Office365FiddlerExtension.Services
         public void RunRuleSet(Session session)
         {
             this.session = session;
+
+            // Avoid null object exceptions when the SessionClassification is not yet created.
+            // First run after extension install scenario. Once the SessionClassification Json preference
+            // is created, this won't come into play.
+            if (Preferences.SessionClassification == null)
+            {
+                return;
+            }
 
             var ExtensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 

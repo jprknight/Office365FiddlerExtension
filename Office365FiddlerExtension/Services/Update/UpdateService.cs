@@ -121,10 +121,10 @@ namespace Office365FiddlerExtension.Services
                     }
 
                     // Save this new data into the ExtensionVerison Fiddler setting.
-                    if (VersionJsonService.ExtensionVersion != jsonString)
+                    if (Preferences.ExtensionVersion != jsonString)
                     {
                         FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeVersion Fiddler setting updated.");
-                        VersionJsonService.ExtensionVersion = jsonString;
+                        Preferences.ExtensionVersion = jsonString;
 
                         // Update the next update check timestamp.
                         SettingsJsonService.Instance.SetNextUpdateTimestamp();

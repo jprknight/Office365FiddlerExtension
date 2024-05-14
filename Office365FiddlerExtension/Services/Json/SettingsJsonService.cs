@@ -66,10 +66,12 @@ namespace Office365FiddlerExtension.Services
                 SessionAnalysisOnLiveTrace = "True",
                 WarningSessionTimeThreshold = "2500",
                 SlowRunningSessionThreshold = "5000",
+                ExtensionPath = AssemblyDirectory,
+                ExtensionDLL = AssemblyName,
                 SessionClassificationJsonFileName = "SessionClassification.json",
                 UpdateCheckFrequencyHours = 72,
                 InspectorScoreForSession = 100,
-                PreferredLanguage = "en-US"
+                PreferredLanguage = "en-GB"
             };
 
             // Transform the object to a Json object.
