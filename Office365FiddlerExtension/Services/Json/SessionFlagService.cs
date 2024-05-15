@@ -116,7 +116,6 @@ namespace Office365FiddlerExtension.Services
         {
             var Sessions = FiddlerApplication.UI.GetSelectedSessions();
 
-            // Record the start timestamp.
             var sw = Stopwatch.StartNew();
 
             foreach (var Session in Sessions)
@@ -139,7 +138,7 @@ namespace Office365FiddlerExtension.Services
                     SessionService.Instance.OnPeekAtResponseHeaders(this.session);
                 }
             }
-            // Calculate the session analysis period for the number of sessions analysed.
+            
             sw.Stop();
             TimeSpan time = sw.Elapsed;
 
@@ -154,7 +153,6 @@ namespace Office365FiddlerExtension.Services
         {
             var Sessions = FiddlerApplication.UI.GetAllSessions();
 
-            // Record the start timestamp.
             var sw = Stopwatch.StartNew();
 
             foreach (var Session in Sessions)
@@ -178,7 +176,6 @@ namespace Office365FiddlerExtension.Services
                 }
             }
 
-            // Calculate the session analysis period for the number of sessions analysed.
             sw.Stop();
             TimeSpan time = sw.Elapsed;
 
