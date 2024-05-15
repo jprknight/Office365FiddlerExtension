@@ -33,6 +33,12 @@ namespace Office365FiddlerExtensionRuleset
 
         public void Initialize(Session session)
         {
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}):" +
+                $" Starting v" +
+                $"{Assembly.GetExecutingAssembly().GetName().Version.Major}." +
+                $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
+                $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
+
             this.session = session;
 
             ///////////////////////////////
