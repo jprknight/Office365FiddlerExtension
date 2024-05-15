@@ -13,7 +13,50 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static ResponseServer Instance => _instance ?? (_instance = new ResponseServer());
 
-        public void SetResponseServer_Server(Session session)
+        public void Run(Session session)
+        {
+            this.session = session;
+
+            SetResponseServer_Server(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionResponseServerConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetResponseServer_Host(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionResponseServerConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetResponseServer_PoweredBy(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionResponseServerConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetResponseServer_ServedBy(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionResponseServerConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetResponseServer_ServerName(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionResponseServerConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetResponseServer_Akami(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionResponseServerConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetResponseServer_Unknown(this.session);
+        }
+
+        private void SetResponseServer_Server(Session session)
         {
             this.session = session;
 
@@ -44,7 +87,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void SetResponseServer_Host(Session session) 
+        private void SetResponseServer_Host(Session session) 
         {
             this.session = session;
 
@@ -72,7 +115,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void SetResponseServer_PoweredBy(Session session) 
+        private void SetResponseServer_PoweredBy(Session session) 
         {
             this.session = session;
 
@@ -100,7 +143,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);            
         }
 
-        public void SetResponseServer_ServedBy(Session session) 
+        private void SetResponseServer_ServedBy(Session session) 
         {
             this.session = session;
 
@@ -127,7 +170,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);            
         }
 
-        public void SetResponseServer_ServerName(Session session) 
+        private void SetResponseServer_ServerName(Session session) 
         {
             this.session = session;
 
@@ -154,7 +197,28 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void SetResponseServer_Unknown(Session session)
+        private void SetResponseServer_Akami(Session session)
+        {
+            this.session = session;
+
+            if (this.session.oResponse["X-CDN-Provider"] != "Akamai")
+            {
+                return;
+            }
+
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            {
+                SectionTitle = "ResponseServer_Akami",
+
+                ResponseServer = "X-Server-Name: " + this.session.oResponse["X-CDN-Provider"],
+                SessionResponseServerConfidenceLevel = 10
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+        }
+
+        private void SetResponseServer_Unknown(Session session)
         {
             this.session = session;
 

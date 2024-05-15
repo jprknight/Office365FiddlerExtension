@@ -541,7 +541,7 @@
     <value>Free/Busy Error! Result set has too many calendar items.</value>
   </data>
   <data name="HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseCodeDescription" xml:space="preserve">
-    <value>HTTP 200 OK, giving a Free/Busy error!</value>
+    <value>HTTP 200 OK - Free/Busy error!</value>
   </data>
   <data name="HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseComments" xml:space="preserve">
     <value>HTTP 200 OK session response, but there is a Free/Busy error returned within the response body. The error suggests there are too many calendar items in the result set. Maybe there are too many meetings on the calendar within a period of time for the Free/Busy lookup to return. Another possibility is to look for meetings on the calendar in the target mailbox which have a large number of recurrences. Some ideal guidelines are to make weekly or monthly meetings for the current year only. Make daily meetings for 3 months at a time.</value>
@@ -1556,6 +1556,9 @@
   </data>
   <data name="Unclassified" xml:space="preserve">
     <value>Unclassified</value>
+  </data>
+  <data name="Undefined" xml:space="preserve">
+    <value>Undefined</value>
   </data>
   <data name="Uninteresting" xml:space="preserve">
     <value>Uninteresting</value>

@@ -1078,7 +1078,7 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HTTP 200 OK, giving a Free/Busy error!.
+        ///   Looks up a localized string similar to HTTP 200 OK - Free/Busy error!.
         /// </summary>
         internal static string HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseCodeDescription {
             get {
@@ -4312,6 +4312,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Unclassified {
             get {
                 return ResourceManager.GetString("Unclassified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undefined.
+        /// </summary>
+        internal static string Undefined {
+            get {
+                return ResourceManager.GetString("Undefined", resourceCulture);
             }
         }
         

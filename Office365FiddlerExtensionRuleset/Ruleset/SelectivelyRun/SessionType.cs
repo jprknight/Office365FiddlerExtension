@@ -13,7 +13,56 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static SessionType Instance => _instance ?? (_instance = new SessionType());
 
-        public void SetSessionType_Microsoft365_EWS(Session session)
+        public void Run(Session session)
+        {
+            this.session = session;
+
+            SetSessionType_Microsoft365_EWS(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetSessionType_EWS(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetSessionType_Microsoft365_Authentication(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetSessionType_ADFS_Authentication(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetSessionType_General_Microsoft365(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetSessionType_Office_Applications(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetSessionType_Internet_Browsers(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetSessionType_Unknown(this.session);
+        }
+
+        private void SetSessionType_Microsoft365_EWS(Session session)
         {
             this.session = session;
 
@@ -37,7 +86,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void SetSessionType_EWS(Session session)
+        private void SetSessionType_EWS(Session session)
         {
             this.session = session;
 
@@ -61,7 +110,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void SetSessionType_Microsoft365_Authentication(Session session)
+        private void SetSessionType_Microsoft365_Authentication(Session session)
         {
             this.session = session;
 
@@ -84,7 +133,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
         }
 
-        public void SetSessionType_ADFS_Authentication(Session session)
+        private void SetSessionType_ADFS_Authentication(Session session)
         {
             this.session = session;
 
@@ -108,7 +157,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void SetSessionType_General_Microsoft365(Session session)
+        private void SetSessionType_General_Microsoft365(Session session)
         {
             this.session = session;
 
@@ -137,7 +186,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void SetSessionType_Office_Applications(Session session)
+        private void SetSessionType_Office_Applications(Session session)
         {
             this.session = session;
 
@@ -170,7 +219,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
         }
 
-        public void SetSessionType_Internet_Browsers(Session session)
+        private void SetSessionType_Internet_Browsers(Session session)
         {
             this.session = session;
 
@@ -198,7 +247,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
         }
 
-        public void SetSessionType_Unknown(Session session)
+        private void SetSessionType_Unknown(Session session)
         {
             
             this.session = session;

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtension.UI;
+using System.Diagnostics;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -95,6 +96,9 @@ namespace Office365FiddlerExtension.Services
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz with Extension Enabled: {SettingsJsonService.Instance.ExtensionSessionProcessingEnabled}, {Assembly.GetExecutingAssembly().GetName().CodeBase.Substring(8)}.");
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz processing: {e.sFilename}");
 
+            // Record the start timestamp.
+            var sw = Stopwatch.StartNew();
+
             foreach (Session session in e.arrSessions)
             {
                 this.session = session;
@@ -116,7 +120,12 @@ namespace Office365FiddlerExtension.Services
                 }
             }
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz processed: {e.sFilename}");
+            // Calculate the session analysis period for the number of sessions analysed.
+            sw.Stop();
+            TimeSpan time = sw.Elapsed;
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        $"LoadSaz processed {e.arrSessions.Count()} sessions in {sw.ElapsedMilliseconds}ms from {e.sFilename}.");
 
             FiddlerApplication.UI.lvSessions.EndUpdate();
         }
