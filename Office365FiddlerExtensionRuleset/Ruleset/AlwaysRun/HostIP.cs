@@ -31,7 +31,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             // If NeverWebCall is false, return.
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
-                {
+            {
                 return;
             }
 
