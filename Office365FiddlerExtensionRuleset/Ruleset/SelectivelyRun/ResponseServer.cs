@@ -189,7 +189,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "ResponseServer_ServerName",
 
-                ResponseServer = "X-Server-Name: " + this.session.oResponse["X-Server-Name"],
+                ResponseServer = this.session.oResponse["X-Server-Name"],
                 SessionResponseServerConfidenceLevel = 10
             };
 
@@ -210,7 +210,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 SectionTitle = "ResponseServer_Akami",
 
-                ResponseServer = "X-CDN-Provider: " + this.session.oResponse["X-CDN-Provider"],
+                ResponseServer = "CDN:Akami",
                 SessionResponseServerConfidenceLevel = 10
             };
 

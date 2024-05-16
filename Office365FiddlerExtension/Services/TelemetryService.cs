@@ -124,7 +124,7 @@ namespace Office365FiddlerExtension.Services
         {
             var ExtensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
-            if (ExtensionSettings.NeverWebCall)
+            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 return;
             }

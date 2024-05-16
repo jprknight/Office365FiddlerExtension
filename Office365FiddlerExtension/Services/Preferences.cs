@@ -56,6 +56,8 @@ namespace Office365FiddlerExtension.Services
         */
 
         // Keep this around to migrate legacy settings to Json settings.
+        // Look this up in Json settings with:
+        // SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall
         private static bool _extensionEnabled;
         
         public static bool ExtensionEnabled

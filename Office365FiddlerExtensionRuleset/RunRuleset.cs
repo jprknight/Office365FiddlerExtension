@@ -65,7 +65,7 @@ namespace Office365FiddlerExtensionRuleset
             ProcessName.Instance.SetProcessName(this.session);
 
             // Host IP.
-            HostIP.Instance.SetHostIP(this.session);
+            HostIP.Instance.Run(this.session);
 
             ///////////////////////////////
             ///

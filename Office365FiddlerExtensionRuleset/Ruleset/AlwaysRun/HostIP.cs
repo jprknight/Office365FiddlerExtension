@@ -14,8 +14,67 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HostIP Instance => _instance ?? (_instance = new HostIP());
 
-        public void SetHostIP(Session session)
+        public void Run(Session session)
         {
+            this.session = session;
+
+            NeverWebCall_True_SetHostIP(this.session);
+
+            NeverWebCall_False_SetHostIP(this.session);
+        }
+
+        private void NeverWebCall_True_SetHostIP(Session session)
+        {
+            this.session = session;
+
+            string hostIP;
+
+            // If NeverWebCall is false, return.
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+                {
+                return;
+            }
+
+            if (this.session["X-HostIP"] == null)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Session X-HostIP is null.");
+
+                hostIP = "NOT PRESENT";
+            }
+            else if (this.session["X-HostIP"].Contains("Not Present"))
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} Session X-HostIP is 'Not Present'.");
+
+                hostIP = "NOT PRESENT";
+            }
+            else if (this.session["X-HostIP"] != "")
+            {
+                hostIP = this.session["X-HostIP"];
+            }
+            else
+            {
+                hostIP = "UNKNOWN";
+            }
+
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            {
+                SectionTitle = LangHelper.GetString("HostIP"),
+                HostIP = hostIP
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);             
+        }
+
+        private void NeverWebCall_False_SetHostIP(Session session)
+        {
+            // If NeverWebCall is true, return;
+
+            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                return;
+            }
+
             this.session = session;
 
             string hostIP;
