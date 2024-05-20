@@ -14,7 +14,29 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_403 Instance => _instance ?? (_instance = new HTTP_403());
 
-        public void HTTP_403_Forbidden_Proxy_Block(Session session)
+        public void Run(Session session)
+        {
+            HTTP_403_Forbidden_Proxy_Block(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            HTTP_403_FreeBusy_Request_Failed_Forbidden(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+            HTTP_403_Forbidden_Everything_Else(this.session);
+        }
+
+        private void HTTP_403_Forbidden_Proxy_Block(Session session)
         {
             this.session = session;
 
@@ -68,7 +90,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
         }
 
-        public void HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set(Session session)
+        private void HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set(Session session)
         {
             // 3rd-party EWS application could not connect to Exchange Online mailbox until culture/language was set for the first time in OWA.
 
@@ -121,7 +143,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
         }
 
-        public void HTTP_403_FreeBusy_Request_Failed_Forbidden(Session session)
+        private void HTTP_403_FreeBusy_Request_Failed_Forbidden(Session session)
         {
             // [{"data":{"getSchedule":{"schedules":[{"availabilityView":"","error":{"message":"Request failed with http code Forbidden","responseCode":"403","diagnosticData":"CalculatedRequestType:External_Substrate;LID:38070;FailureMessage:Request failed with http code Forbidden;ResponseCode:403;"},
 
@@ -191,7 +213,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson_HTTP403_FreeBusyForbidden, false);
         }
 
-        public void HTTP_403_Forbidden_Everything_Else(Session session)
+        private void HTTP_403_Forbidden_Everything_Else(Session session)
         {
             this.session = session;
 

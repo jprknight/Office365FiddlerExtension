@@ -2,9 +2,9 @@
   "ExtensionMajor": 2,
   "ExtensionMinor": 0,
   "ExtensionBuild": 0,
-  "RulesetMajor": 2023,
-  "RulesetMinor": 8,
-  "RulesetBuild": 7,
+  "RulesetMajor": 2024,
+  "RulesetMinor": 5,
+  "RulesetBuild": 14,
   "ExtensionPattern": "Office365FiddlerExtension*.dll",
   "RulesetZip": "Office365FiddlerExtensionRuleset.zip",
   "RulesetDLLPattern": "Office365FiddlerExtensionRuleset*.dll"

@@ -3,6 +3,8 @@ using Fiddler;
 using Newtonsoft.Json;
 using Office365FiddlerExtension.UI;
 using System.Reflection;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -114,6 +116,8 @@ namespace Office365FiddlerExtension.Services
         {
             var Sessions = FiddlerApplication.UI.GetSelectedSessions();
 
+            var sw = Stopwatch.StartNew();
+
             foreach (var Session in Sessions)
             {
                 this.session = Session;
@@ -134,6 +138,12 @@ namespace Office365FiddlerExtension.Services
                     SessionService.Instance.OnPeekAtResponseHeaders(this.session);
                 }
             }
+            
+            sw.Stop();
+            TimeSpan time = sw.Elapsed;
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        $"Analysed {Sessions.Count()} selected sessions in {sw.ElapsedMilliseconds}ms.");
         }
 
         /// <summary>
@@ -143,6 +153,8 @@ namespace Office365FiddlerExtension.Services
         {
             var Sessions = FiddlerApplication.UI.GetAllSessions();
 
+            var sw = Stopwatch.StartNew();
+
             foreach (var Session in Sessions)
             {
                 this.session = Session;
@@ -163,6 +175,12 @@ namespace Office365FiddlerExtension.Services
                     SessionService.Instance.OnPeekAtResponseHeaders(this.session);
                 }
             }
+
+            sw.Stop();
+            TimeSpan time = sw.Elapsed;
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        $"Analysed {Sessions.Count()} all visible sessions in {sw.ElapsedMilliseconds}ms.");
         }
 
         /// <summary>

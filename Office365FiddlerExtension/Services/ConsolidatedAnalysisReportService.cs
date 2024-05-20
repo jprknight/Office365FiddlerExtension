@@ -81,7 +81,7 @@ namespace Office365FiddlerExtension.Services
 
             ResultsString.AppendLine(" <html>");
             ResultsString.AppendLine("<body>");
-            ResultsString.AppendLine($"<h1>{LangHelper.GetString("Office365 Fiddler Extension")} - {LangHelper.GetString("Consolidated Analysis Report")} - {DateTime.Now:dddd, MMM dd yyyy}</h1>");
+            ResultsString.AppendLine($"<h1>{LangHelper.GetString("Office 365 Fiddler Extension")} - {LangHelper.GetString("Consolidated Analysis Report")} - {DateTime.Now:dddd, MMM dd yyyy}</h1>");
 
             Dictionary<string, int> sessionProcesses = new Dictionary<string, int>();
             Dictionary<string, int> tlsVersions = new Dictionary<string, int>();
@@ -200,7 +200,7 @@ namespace Office365FiddlerExtension.Services
 
             if (percentageConnectTunnels >= 80)
             {
-                ResultsString.AppendLine($"<p><span style='color=red'>There's a high percentage of sessions which are connect tunnels ({percentageConnectTunnels}%. " +
+                ResultsString.AppendLine($"<p><span style='color=red'>There's a high percentage of sessions which are connect tunnels ({percentageConnectTunnels.ToString("F")}%). " +
                     "It's likely decryption wasn't enabled in Fiddler when this trace was collected.</span></p>");
             }
 

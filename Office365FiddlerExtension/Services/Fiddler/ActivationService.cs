@@ -1,5 +1,6 @@
 ﻿using Fiddler;
 using Office365FiddlerExtension.UI;
+using System;
 using System.Reflection;
 
 namespace Office365FiddlerExtension.Services
@@ -40,17 +41,17 @@ namespace Office365FiddlerExtension.Services
                 VersionJsonService.Instance.CreateExtensionVersionFiddlerSetting();
                 SessionClassificationService.Instance.CreateSessionClassificationFiddlerSetting();
 
+                // Set Fiddler settings as needed.
+                SettingsJsonService.Instance.SetExtensionDLL();
+                SettingsJsonService.Instance.SetExtensionPath();
+                SettingsJsonService.Instance.IncrementExecutionCount();
+
                 // If the extension enabled setting is true, throw messages to the user if updates are available.
                 if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().ExtensionSessionProcessingEnabled)
                 {
                     VersionService.Instance.NotifyUserIfExtensionUpdateIsAvailable();
                     VersionService.Instance.NotifyUserIfRulesetUpdateIsAvailable();
                 }
-
-                // Set Fiddler settings as needed.
-                SettingsJsonService.Instance.IncrementExecutionCount();
-                SettingsJsonService.Instance.SetExtensionDLL();
-                SettingsJsonService.Instance.SetExtensionPath();
 
                 InitializeTelemetry();
 
@@ -110,8 +111,15 @@ namespace Office365FiddlerExtension.Services
             // If session analysis on live trace is enabled, run.
             if (SettingsJsonService.Instance.SessionAnalysisOnLiveTrace)
             {
-                SessionService.Instance.OnPeekAtResponseHeaders(this.session);
-                this.session.RefreshUI();
+                try
+                {
+                    SessionService.Instance.OnPeekAtResponseHeaders(this.session);
+                    this.session.RefreshUI();
+                }
+                catch (Exception ex)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+                }
             }
         }
 

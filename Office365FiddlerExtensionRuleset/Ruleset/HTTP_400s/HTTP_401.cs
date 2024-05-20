@@ -14,7 +14,30 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_401 Instance => _instance ?? (_instance = new HTTP_401());
 
-        public void HTTP_401_Exchange_Online_AutoDiscover(Session session)
+        public void Run(Session session)
+        {
+            HTTP_401_Exchange_Online_AutoDiscover(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            HTTP_401_Exchange_OnPremise_AutoDiscover(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            HTTP_401_EWS(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            HTTP_401_Everything_Else(this.session);
+        }
+
+        private void HTTP_401_Exchange_Online_AutoDiscover(Session session)
         {
             this.session = session;
 
@@ -71,7 +94,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
         }
 
-        public void HTTP_401_Exchange_OnPremise_AutoDiscover(Session session)
+        private void HTTP_401_Exchange_OnPremise_AutoDiscover(Session session)
         {
             this.session = session;
 
@@ -123,7 +146,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
         }
 
-        public void HTTP_401_EWS(Session session)
+        private void HTTP_401_EWS(Session session)
         {
             this.session = session;
 
@@ -177,7 +200,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void HTTP_401_Everything_Else(Session session)
+        private void HTTP_401_Everything_Else(Session session)
         {
             this.session = session;
 

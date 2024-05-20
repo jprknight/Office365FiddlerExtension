@@ -14,7 +14,24 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_456 Instance => _instance ?? (_instance = new HTTP_456());
 
-        public void HTTP_456_Multi_Factor_Required(Session session)
+        public void Run(Session session)
+        {
+            HTTP_456_Multi_Factor_Required(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            HTTP_456_OAuth_Not_Available(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            HTTP_456_Anything_Else(this.session);
+        }
+
+        private void HTTP_456_Multi_Factor_Required(Session session)
         {
             this.session = session;
 
@@ -68,7 +85,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void HTTP_456_OAuth_Not_Available(Session session)
+        private void HTTP_456_OAuth_Not_Available(Session session)
         {
             this.session = session;
 
@@ -122,7 +139,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void HTTP_456_Anything_Else(Session session)
+        private void HTTP_456_Anything_Else(Session session)
         {
             this.session = session;
 

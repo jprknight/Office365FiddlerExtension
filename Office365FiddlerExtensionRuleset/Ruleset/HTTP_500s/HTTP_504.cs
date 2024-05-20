@@ -14,7 +14,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_504 Instance => _instance ?? (_instance = new HTTP_504());
 
-        public void HTTP_504_Gateway_Timeout_Internet_Access_Blocked(Session session)
+        public void Run(Session session)
+        {
+            HTTP_504_Gateway_Timeout_Internet_Access_Blocked(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+            HTTP_504_Gateway_Timeout_Anything_Else(this.session);
+        }
+
+        private void HTTP_504_Gateway_Timeout_Internet_Access_Blocked(Session session)
         {
             // HTTP 504 Bad Gateway 'internet has been blocked'
 
@@ -80,7 +90,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);            
         }
 
-        public void HTTP_504_Gateway_Timeout_Anything_Else(Session session)
+        private void HTTP_504_Gateway_Timeout_Anything_Else(Session session)
         {
             // Pick up any other 504 Gateway Timeout and write data into the comments box.
 

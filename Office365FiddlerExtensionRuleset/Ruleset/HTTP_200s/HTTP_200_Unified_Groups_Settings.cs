@@ -23,9 +23,18 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             this.session = session;
 
             // If this session isn't for Microsoft 365 Unified Group Settings, return.
-            if (!this.session.HostnameIs("outlook.office365.com") &&
-                (!this.session.uriContains("ews/exchange.asmx") &&
-                (!(this.session.utilFindInRequest("GetUnifiedGroupsSettings", false) > 1))))
+            if (!this.session.HostnameIs("outlook.office365.com"))
+            {
+                return;
+            }
+
+            if (!this.session.uriContains("ews/exchange.asmx"))
+            {
+                return;
+            }
+            
+            if (!SessionContentSearch.Instance.SearchForPhrase(this.session, "GetUnifiedGroupsSettings"))
+            //(!(this.session.utilFindInRequest("GetUnifiedGroupsSettings", false) > 1))))
             {
                 return;
             }

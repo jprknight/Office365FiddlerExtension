@@ -23,7 +23,7 @@ namespace Office365FiddlerExtension.Services
 
             try
             {
-                return JsonConvert.DeserializeObject<ExtensionVersionFlags>(ExtensionVersion, JsonSettings);
+                return JsonConvert.DeserializeObject<ExtensionVersionFlags>(Preferences.ExtensionVersion, JsonSettings);
             }
             catch (Exception ex)
             {
@@ -33,38 +33,26 @@ namespace Office365FiddlerExtension.Services
             return null;
         }
 
-        // Setting to store Json version information to run update checks against. Updated from remote.
-        private static string _extensionVersion;
-
-        public static string ExtensionVersion
-        {
-            get => _extensionVersion = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.ExtensionVersion", null);
-            set { _extensionVersion = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionVersion", value); }
-        }
-
         public void CreateExtensionVersionFiddlerSetting()
         {
-            if (Preferences.NeverWebCall)
+            var VersionItems = new
             {
-                var VersionItems = new
-                {
-                    ExtensionMajor = Assembly.GetExecutingAssembly().GetName().Version.Major,
-                    ExtensionMinor = Assembly.GetExecutingAssembly().GetName().Version.Minor,
-                    ExtensionBuild = Assembly.GetExecutingAssembly().GetName().Version.Build,
-                    RulesetMajor = "1776",
-                    RulesetMinor = "7",
-                    RulesetBuild = "4",
-                    ExtensionZip = "Office365FiddlerExtension.zip",
-                    RulesetZip = "Office365FiddlerExtensionRuleset.zip",
-                    RulesetDLLPattern = "Office365FiddlerExtensionRuleset*.dll"
-                };
+                ExtensionMajor = Assembly.GetExecutingAssembly().GetName().Version.Major,
+                ExtensionMinor = Assembly.GetExecutingAssembly().GetName().Version.Minor,
+                ExtensionBuild = Assembly.GetExecutingAssembly().GetName().Version.Build,
+                RulesetMajor = "1776",
+                RulesetMinor = "7",
+                RulesetBuild = "4",
+                ExtensionZip = "Office365FiddlerExtension.zip",
+                RulesetZip = "Office365FiddlerExtensionRuleset.zip",
+                RulesetDLLPattern = "Office365FiddlerExtensionRuleset*.dll"
+            };
 
-                // Transform the object to a Json object.
-                string jsonData = JsonConvert.SerializeObject(VersionItems);
+            // Transform the object to a Json object.
+            string jsonData = JsonConvert.SerializeObject(VersionItems);
 
-                // Save the new Json to the Fiddler setting.
-                ExtensionVersion = jsonData;
-            }
+            // Save the new Json to the Fiddler setting.
+            Preferences.ExtensionVersion = jsonData;
         }
 
         public class ExtensionVersionFlags

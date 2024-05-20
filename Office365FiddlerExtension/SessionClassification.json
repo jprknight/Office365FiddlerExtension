@@ -1,5 +1,5 @@
 {
-  "LastUpdated": "2024-03-20",
+  "LastUpdated": "2024-05-14",
   "LastUpdatedDateFormat": "YYYY-MM-DD",
   "DataStructureHelper": {
     "About": "This helper isn't used in code, it's just here to describe the data.",
@@ -189,6 +189,12 @@
       "SessionTypeConfidenceLevel": 5,
       "SessionResponseServerConfidenceLevel": 5,
       "SessionSeverity": 30
+    },
+    "HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
     },
     "HTTP_200_Legacy_FreeBusy": {
       "SessionAuthenticationConfidenceLevel": 5,

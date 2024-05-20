@@ -26,7 +26,7 @@ namespace Office365FiddlerExtension.Services
             catch (Exception ex)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"(NetworkingService) IsInSubnetMask: Issue with IP address format.");
+                    $"(NetworkingService) IsInSubnetMask: Issue with IP address format: {ipAddress}");
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} {ex}");
                 return false;
             }
@@ -63,7 +63,7 @@ namespace Office365FiddlerExtension.Services
             catch (Exception ex)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"(NetworkingService) IsInSubnetMask: Issue with IP address format.");
+                    $"(NetworkingService) IsInSubnetMask: Issue with IP address format: {ipAddress}");
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} {ex}");
                 return false;
             }
@@ -244,6 +244,12 @@ namespace Office365FiddlerExtension.Services
         /// <returns>bool isMicrosoft365IP, string matchingSubnet</returns>
         public Tuple<bool,string> IsMicrosoft365IPAddress(Session session)
         {
+            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} NeverWebCall true, returning.");
+                return Tuple.Create(false, "NeverWebCall true.");
+            }
+
             this.session = session;
 
             bool isMicrosoft365IP = false;

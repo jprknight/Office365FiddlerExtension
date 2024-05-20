@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Office365FiddlerExtension.Services;
 using Fiddler;
 using Newtonsoft.Json;
@@ -15,7 +14,54 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static Authentication Instance => _instance ?? (_instance = new Authentication());
 
-        public void SetAuthentication_NoAuthHeaders(Session session)
+        public void Run(Session session)
+        {
+            this.session = session;
+
+            SetAuthentication_NoAuthHeaders(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetAuthentication_SAML_Parser(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetAuthentication_Basic_Modern_Auth_Disabled(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetAuthentication_Modern_Auth_Capable_Client(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetAuthentication_Modern_Auth_Client_Using_Token(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetAuthentication_Basic_Auth_Capable_Client(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            SetAuthentication_Basic_Auth_Client_Using_Token(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10)
+            {
+                return;
+            }
+        }
+
+        private void SetAuthentication_NoAuthHeaders(Session session)
         {
             this.session = session;
 
@@ -44,7 +90,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void SetAuthentication_SAML_Parser(Session session)
+        private void SetAuthentication_SAML_Parser(Session session)
         {
             this.session = session;
 
@@ -127,7 +173,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
         }
 
-        public void SetAuthentication_Basic_Modern_Auth_Disabled(Session session)
+        private void SetAuthentication_Basic_Modern_Auth_Disabled(Session session)
         {
             this.session = session;
 
@@ -137,11 +183,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             SAMLParserFieldsNoData(this.session);
 
-            int KeywordFourMillion = SearchSessionForWord(this.session, "4000000");
-            int KeywordFlighting = SearchSessionForWord(this.session, "Flighting");
-            int Keywordenabled = SearchSessionForWord(this.session, "enabled");
-            int Keyworddomain = SearchSessionForWord(this.session, "domain");
-            int Keywordoauth_not_available = SearchSessionForWord(this.session, "oauth_not_available");
+            int KeywordFourMillion = SessionContentSearch.Instance.SearchForWord(this.session, "4000000");
+            int KeywordFlighting = SessionContentSearch.Instance.SearchForWord(this.session, "Flighting");
+            int Keywordenabled = SessionContentSearch.Instance.SearchForWord(this.session, "enabled");
+            int Keyworddomain = SessionContentSearch.Instance.SearchForWord(this.session, "domain");
+            int Keywordoauth_not_available = SessionContentSearch.Instance.SearchForWord(this.session, "oauth_not_available");
 
             if (KeywordFourMillion == 0 && KeywordFlighting == 0 && Keywordenabled == 0 &&
                 Keyworddomain == 0 && Keywordoauth_not_available == 0)
@@ -168,7 +214,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
         }
 
-        public void SetAuthentication_Modern_Auth_Capable_Client(Session session)
+        private void SetAuthentication_Modern_Auth_Capable_Client(Session session)
         {
             this.session = session;
 
@@ -198,7 +244,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void SetAuthentication_Basic_Auth_Capable_Client(Session session)
+        private void SetAuthentication_Basic_Auth_Capable_Client(Session session)
         {
             this.session = session;
 
@@ -228,7 +274,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void SetAuthentication_Modern_Auth_Client_Using_Token(Session session)
+        private void SetAuthentication_Modern_Auth_Client_Using_Token(Session session)
         {
             this.session = session;
 
@@ -259,7 +305,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         }
 
-        public void SetAuthentication_Basic_Auth_Client_Using_Token(Session session)
+        private void SetAuthentication_Basic_Auth_Client_Using_Token(Session session)
         {
             this.session = session;
 
@@ -644,29 +690,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
-        }
-
-        private int SearchSessionForWord(Session session, string searchTerm)
-        {
-            // Count the occurrences of common search terms match up to certain HTTP response codes to highlight certain scenarios.
-            //
-            // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-count-occurrences-of-a-word-in-a-string-linq
-            //
-
-            string text = session.ToString();
-
-            //Convert the string into an array of words  
-            string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',', '"' }, StringSplitOptions.RemoveEmptyEntries);
-
-            // Create the query. Use ToLowerInvariant to match "data" and "Data"   
-            var matchQuery = from word in source
-                             where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()
-                             select word;
-
-            // Count the matches, which executes the query.  
-            int wordCount = matchQuery.Count();
-
-            return wordCount;
         }
     }
 }

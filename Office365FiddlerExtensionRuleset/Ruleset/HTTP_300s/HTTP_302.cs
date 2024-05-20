@@ -14,7 +14,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_302 Instance => _instance ?? (_instance = new HTTP_302());
 
-        public void HTTP_302_Redirect_AutoDiscover(Session session)
+        public void Run(Session session)
+        {
+            HTTP_302_Redirect_AutoDiscover(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+            HTTP_302_Redirect_AllOthers(this.session);
+        }
+
+        private void HTTP_302_Redirect_AutoDiscover(Session session)
         {
             this.session = session;
 
@@ -63,7 +73,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void HTTP_302_Redirect_AllOthers(Session session)
+        private void HTTP_302_Redirect_AllOthers(Session session)
         {
             this.session = session;
 

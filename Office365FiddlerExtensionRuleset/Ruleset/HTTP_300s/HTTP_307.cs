@@ -14,6 +14,23 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_307 Instance => _instance ?? (_instance = new HTTP_307());
 
+        public void Run(Session session)
+        {
+            HTTP_307_AutoDiscover_Temporary_Redirect(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            HTTP_307_Other_AutoDiscover_Redirects(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            HTTP_307_All_Other_Redirects(this.session);
+        }
+
         public void HTTP_307_AutoDiscover_Temporary_Redirect(Session session)
         {
             this.session = session;

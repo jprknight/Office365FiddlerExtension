@@ -14,7 +14,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_503 Instance => _instance ?? (_instance = new HTTP_503());
 
-        public void HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable(Session session)
+        public void Run(Session session)
+        {
+            HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+            HTTP_503_Service_Unavailable_Everything_Else(this.session);
+        }
+
+        private void HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable(Session session)
         {
             this.session = session;
 
@@ -73,7 +83,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);           
         }
 
-        public void HTTP_503_Service_Unavailable_Everything_Else(Session session)
+        private void HTTP_503_Service_Unavailable_Everything_Else(Session session)
         {
             this.session = session;
 

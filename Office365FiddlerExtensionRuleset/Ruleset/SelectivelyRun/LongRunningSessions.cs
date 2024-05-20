@@ -14,8 +14,33 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static LongRunningSessions Instance => _instance ?? (_instance = new LongRunningSessions());
 
+        public void Run(Session session)
+        {
+            this.session = session;
+
+            // Start by checking for Session Type Confidence of 10 and returning if already there.
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            LongRunningSessionsWarning(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            LongRunningSessionsClientSlow(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            LongRunningSessionsServerSlow(this.session);
+        }
+
         // Function to highlight long running sessions.
-        public void LongRunningSessionsWarning(Session session)
+        private void LongRunningSessionsWarning(Session session)
         {
             this.session = session;
 
@@ -46,7 +71,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void LongRunningSessionsClientSlow(Session session) {
+        private void LongRunningSessionsClientSlow(Session session) {
 
             this.session = session;
 
@@ -77,7 +102,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void LongRunningSessionsServerSlow(Session session) {
+        private void LongRunningSessionsServerSlow(Session session) {
 
             this.session = session;
 

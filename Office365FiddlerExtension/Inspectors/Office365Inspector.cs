@@ -339,17 +339,24 @@ namespace Office365FiddlerExtension.Inspectors
                     }
                     else
                     {
-                        // Tuple -- IsMicrosoft365IP (bool), matching subnet (string).
-                        Tuple<bool, string> tupleIsMicrosoft365IPAddress = NetworkingService.Instance.IsMicrosoft365IPAddress(this.session);
-
-                        if (tupleIsMicrosoft365IPAddress.Item1)
+                        if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
                         {
-                            ResultsString.AppendLine($"<p>{this.session["X-HostIP"]} {LangHelper.GetString("IsMicrosoft365subnet")}: " +
-                                $"{tupleIsMicrosoft365IPAddress.Item2}.</p>");
+                            ResultsString.AppendLine($"<p>{this.session["X-HostIP"]}</p>");
                         }
                         else
                         {
-                            ResultsString.AppendLine($"<p>{this.session["X-HostIP"]} {LangHelper.GetString("IsPublicIPAddress")}</p>");
+                            // Tuple -- IsMicrosoft365IP (bool), matching subnet (string).
+                            Tuple<bool, string> tupleIsMicrosoft365IPAddress = NetworkingService.Instance.IsMicrosoft365IPAddress(this.session);
+
+                            if (tupleIsMicrosoft365IPAddress.Item1)
+                            {
+                                ResultsString.AppendLine($"<p>{this.session["X-HostIP"]} {LangHelper.GetString("IsMicrosoft365subnet")}: " +
+                                    $"{tupleIsMicrosoft365IPAddress.Item2}.</p>");
+                            }
+                            else
+                            {
+                                ResultsString.AppendLine($"<p>{this.session["X-HostIP"]} {LangHelper.GetString("IsPublicIPAddress")}</p>");
+                            }
                         }
                     }
                 }
