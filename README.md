@@ -53,20 +53,19 @@ Columns are added into the session view on the left side of Fiddler, scroll the 
 ### Extension v2 Update Notes
 The extension has had a complete rewrite giving it the ability to update from the web via Json files, adding new features, and improving the code structure.
 
-The ruleset is now contained within its own DLL file. This means any ruleset updates can be delivered more frequently, extension updates can have a different release cadence.
-Many ruleset updates added which have accumulated since the last release in Winter 2022.
-Extensive use of Json for update notifications, session information, version information, URLs, and for minor rule updates from the Github repo, all of which are automated updates the extension runs periodically.
-Improved performance in the ruleset logic. Session analysis is also stored within flags inside sessions. Loading a Saz file previously saved with the extension enabled will process exceptionally fast upon reloading. In this scenario instead of running through the ruleset, the stored values are used.
-The extension can still be set to never web call for isolated environments, if it's important for you to turn these features off. -- Make sure to have SessionClassification.json in your \Fiddler\Inspectors\ folder if you want to do this.
-Session Severity added to the list of attributes stamped onto sessions by the extension. -- These directly correlate to the colors the extension uses on sessions.
-Session Severity has a scale of 0 – 60. As shown below the scale of Session Severity correlates to the colourisation of sessions the extension provides:
-
-10 Grey (Uninteresting)
-20 Bue (False Positive)
-30 Green (Normal)
-40 Orange (Warning)
-50 Black (Concerning)
-60 Red (Severe)
+* The ruleset is now contained within its own DLL file. This means any ruleset updates can be delivered more frequently, extension updates can have a different release cadence.
+* Many ruleset updates added which have accumulated since the last release in Winter 2022.
+* Extensive use of Json for update notifications, session information, version information, URLs, and for minor rule updates from the Github repo, all of which are automated updates the extension runs periodically.
+* Improved performance in the ruleset logic. Session analysis is also stored within flags inside sessions. Loading a Saz file previously saved with the extension enabled will process exceptionally fast upon reloading. In this scenario instead of running through the ruleset, the stored values are used.
+* The extension can still be set to never web call for isolated environments, if it's important for you to turn these features off. -- Make sure to have SessionClassification.json in your \Fiddler\Inspectors\ folder if you want to do this.
+* Session Severity added to the list of attributes stamped onto sessions by the extension. -- These directly correlate to the colors the extension uses on sessions.
+* Session Severity has a scale of 0 – 60. As shown below the scale of Session Severity correlates to the colourisation of sessions the extension provides:
+** 10 Grey (Uninteresting)
+** 20 Bue (False Positive)
+** 30 Green (Normal)
+** 40 Orange (Warning)
+** 50 Black (Concerning)
+** 60 Red (Severe)
 
 ## Project Links
 
