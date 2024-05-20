@@ -14,7 +14,36 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_502 Instance => _instance ?? (_instance = new HTTP_502());
 
-        public void HTTP_502_Bad_Gateway_Telemetry_False_Positive(Session session)
+        public void Run(Session session)
+        {
+            HTTP_502_Bad_Gateway_Telemetry_False_Positive(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+            
+            HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            HTTP_502_Bad_Gateway_Anything_Else(this.session);
+        }
+
+        private void HTTP_502_Bad_Gateway_Telemetry_False_Positive(Session session)
         {
             // Telemetry false positive.
 
@@ -75,7 +104,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);            
         }
 
-        public void HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive(Session session)
+        private void HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive(Session session)
         {
             // Exchange Online DNS lookup on contoso.onmicrosoft.com, False Positive.
 
@@ -143,7 +172,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);            
         }
 
-        public void HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive(Session session)
+        private void HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive(Session session)
         {
             // Exchange Online connection to autodiscover.contoso.mail.onmicrosoft.com, False Positive.
 
@@ -229,7 +258,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
         }
 
-        public void HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover(Session session)
+        private void HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover(Session session)
         {
             // Anything else Exchange Autodiscover.
 
@@ -290,7 +319,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);            
         }
 
-        public void HTTP_502_Bad_Gateway_Anything_Else(Session session)
+        private void HTTP_502_Bad_Gateway_Anything_Else(Session session)
         {
             // Everything else.
 

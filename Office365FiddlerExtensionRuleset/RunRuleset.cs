@@ -113,15 +113,7 @@ namespace Office365FiddlerExtensionRuleset
             switch (this.session.responseCode)
             {
                 case 0:
-                    HTTP_0_OWA_Notification_Channel.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_0.Instance.HTTP_0_NoSessionResponse(this.session);
+                    HTTP_0.Instance.Run(this.session);
                     break;
                 case 103:
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_103s");
@@ -342,12 +334,7 @@ namespace Office365FiddlerExtensionRuleset
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_301s");
                     break;
                 case 302:
-                    HTTP_302.Instance.HTTP_302_Redirect_AutoDiscover(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-                    HTTP_302.Instance.HTTP_302_Redirect_AllOthers(this.session);
+                    HTTP_302.Instance.Run(this.session);
                     break;
                 case 303:
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_303s");
@@ -362,17 +349,7 @@ namespace Office365FiddlerExtensionRuleset
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_306s");
                     break;
                 case 307:
-                    HTTP_307.Instance.HTTP_307_AutoDiscover_Temporary_Redirect(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-                    HTTP_307.Instance.HTTP_307_Other_AutoDiscover_Redirects(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-                    HTTP_307.Instance.HTTP_307_All_Other_Redirects(this.session);
+                    HTTP_307.Instance.Run(this.session);
                     break;
                 case 308:
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_308s");
@@ -381,48 +358,13 @@ namespace Office365FiddlerExtensionRuleset
                     HTTP_400.Instance.HTTP_400_Bad_Request(this.session);
                     break;
                 case 401:
-                    HTTP_401.Instance.HTTP_401_Exchange_Online_AutoDiscover(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    HTTP_401.Instance.HTTP_401_Exchange_OnPremise_AutoDiscover(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    HTTP_401.Instance.HTTP_401_EWS(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    HTTP_401.Instance.HTTP_401_Everything_Else(this.session);
+                    HTTP_401.Instance.Run(this.session);
                     break;
                 case 402:
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_402s");
                     break;
                 case 403:
-                    HTTP_403.Instance.HTTP_403_Forbidden_Proxy_Block(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    HTTP_403.Instance.HTTP_403_FreeBusy_Request_Failed_Forbidden(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    HTTP_403.Instance.HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-                    HTTP_403.Instance.HTTP_403_Forbidden_Everything_Else(this.session);
+                    HTTP_403.Instance.Run(this.session);
                     break;
                 case 404:
                     HTTP_404.Instance.HTTP_404_Not_Found(this.session);
@@ -518,17 +460,7 @@ namespace Office365FiddlerExtensionRuleset
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_451s");
                     break;
                 case 456:
-                    HTTP_456.Instance.HTTP_456_Multi_Factor_Required(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-                    HTTP_456.Instance.HTTP_456_OAuth_Not_Available(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-                    HTTP_456.Instance.HTTP_456_Anything_Else(this.session);
+                    HTTP_456.Instance.Run(this.session);
                     break;
                 case 460:
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_460s");
@@ -555,73 +487,19 @@ namespace Office365FiddlerExtensionRuleset
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_499s");
                     break;
                 case 500:
-                    HTTP_500.Instance.HTTP_500_Internal_Server_Error_Repeating_Redirects(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    HTTP_500.Instance.HTTP_500_Internal_Server_Error_Impersonate_User_Denied(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    HTTP_500.Instance.HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    HTTP_500.Instance.HTTP_500_Internal_Server_Error_All_Others(this.session);
+                    HTTP_500.Instance.Run(this.session);
                     break;
                 case 501:
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_501s");
                     break;
                 case 502:
-                    HTTP_502.Instance.HTTP_502_Bad_Gateway_Telemetry_False_Positive(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    HTTP_502.Instance.HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    HTTP_502.Instance.HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    HTTP_502.Instance.HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    HTTP_502.Instance.HTTP_502_Bad_Gateway_Anything_Else(this.session);
+                    HTTP_502.Instance.Run(this.session);
                     break;
                 case 503:
-                    HTTP_503.Instance.HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    HTTP_503.Instance.HTTP_503_Service_Unavailable_Everything_Else(this.session);
+                    HTTP_503.Instance.Run(this.session);
                     break;
                 case 504:
-                    HTTP_504.Instance.HTTP_504_Gateway_Timeout_Internet_Access_Blocked(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    HTTP_504.Instance.HTTP_504_Gateway_Timeout_Anything_Else(this.session);
+                    HTTP_504.Instance.Run(this.session);
                     break;
                 case 505:
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_505s");

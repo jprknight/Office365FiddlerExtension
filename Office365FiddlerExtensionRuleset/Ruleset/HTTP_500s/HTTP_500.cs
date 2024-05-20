@@ -14,7 +14,34 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_500 Instance => _instance ?? (_instance = new HTTP_500());
 
-        public void HTTP_500_Internal_Server_Error_Repeating_Redirects(Session session)
+        public void Run(Session session)
+        {
+            HTTP_500_Internal_Server_Error_Repeating_Redirects(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            HTTP_500_Internal_Server_Error_Impersonate_User_Denied(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong(this.session);
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+
+            HTTP_500_Internal_Server_Error_All_Others(this.session);
+            if(SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            {
+                return;
+            }
+        }
+
+        private void HTTP_500_Internal_Server_Error_Repeating_Redirects(Session session)
         {
             // Repeating Redirects Detected.
 
@@ -75,7 +102,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false); 
         }
 
-        public void HTTP_500_Internal_Server_Error_Impersonate_User_Denied(Session session)
+        private void HTTP_500_Internal_Server_Error_Impersonate_User_Denied(Session session)
         {
             // EWS ErrorImpersonateUserDenied.
 
@@ -141,7 +168,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong(Session session)
+        private void HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong(Session session)
         {
             // Microsoft365 OWA - Something went wrong.
 
@@ -202,7 +229,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void HTTP_500_Internal_Server_Error_All_Others(Session session)
+        private void HTTP_500_Internal_Server_Error_All_Others(Session session)
         {
             this.session = session;
 

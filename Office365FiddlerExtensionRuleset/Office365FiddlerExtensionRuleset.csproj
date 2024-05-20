@@ -53,7 +53,6 @@
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\LoopBackTunnel.cs" />
     <Compile Include="Ruleset\AlwaysRun\HostIP.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\ConnectTunnelTLSVersion.cs" />
-    <Compile Include="Ruleset\HTTP_0\HTTP_0_OWA_Notification_Channel.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_3S_Suggestions.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Actually_OK.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_ClientAccessRule.cs" />
