@@ -10,4 +10,5 @@ Create the Json section within Office365FiddlerExtension\SessionClassification.j
 
 Add any strings to Office365FiddlerExtension\Language\strings.resx
 
-Finally add add a line to call the new function in Office365FiddlerExtensionRulleset\RunRuleset.cs
+Finally add add a line to call the new function in Office365FiddlerExtensionRulleset\RunRuleset.cs 
+or the public Run function in a response code class.

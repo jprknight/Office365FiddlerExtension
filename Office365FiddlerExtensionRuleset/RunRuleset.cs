@@ -6,6 +6,7 @@ using Office365FiddlerExtensionRuleset.Ruleset;
 
 namespace Office365FiddlerExtensionRuleset
 {
+    // Main.
     public class RunRuleSet
     {
         internal Session session { get; set; }
