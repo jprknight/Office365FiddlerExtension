@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace Office365FiddlerExtensionRuleset.Ruleset
+namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 {
     internal class HTTP_200_REST_People_Request
     {

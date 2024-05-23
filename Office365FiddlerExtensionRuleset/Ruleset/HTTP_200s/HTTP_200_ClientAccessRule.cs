@@ -4,7 +4,7 @@ using Office365FiddlerExtension.Services;
 using System;
 using System.Reflection;
 
-namespace Office365FiddlerExtensionRuleset.Ruleset
+namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 {
     class HTTP_200_ClientAccessRule
     {
