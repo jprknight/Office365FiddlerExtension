@@ -57,6 +57,7 @@
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Actually_OK.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_ClientAccessRule.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_ConnectTunnelSessions.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_Culture_Not_Found.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_Online_Any_Other_EWS.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun.cs" />

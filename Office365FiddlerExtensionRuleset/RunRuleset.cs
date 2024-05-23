@@ -136,6 +136,14 @@ namespace Office365FiddlerExtensionRuleset
 
                     ///////////////////////////////
 
+                    HTTP_200_Culture_Not_Found.Instance.Run(this.session);
+                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+                    {
+                        break;
+                    }
+
+                    ///////////////////////////////
+                    
                     HTTP_200_Outlook_MAPI_Protocol_Disabled.Instance.Run(this.session);
                     if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                     {

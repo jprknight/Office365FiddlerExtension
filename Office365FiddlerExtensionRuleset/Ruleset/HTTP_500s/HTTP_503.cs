@@ -16,6 +16,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public void Run(Session session)
         {
+            this.session = session;
+
             HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable(this.session);
             if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
             {

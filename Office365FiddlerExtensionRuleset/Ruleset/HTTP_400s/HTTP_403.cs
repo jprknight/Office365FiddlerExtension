@@ -16,6 +16,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public void Run(Session session)
         {
+            this.session = session;
+
             HTTP_403_Forbidden_Proxy_Block(this.session);
             if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
             {

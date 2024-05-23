@@ -16,6 +16,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public void Run(Session session)
         {
+            this.session = session;
+
             HTTP_500_Internal_Server_Error_Repeating_Redirects(this.session);
             if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
             {
