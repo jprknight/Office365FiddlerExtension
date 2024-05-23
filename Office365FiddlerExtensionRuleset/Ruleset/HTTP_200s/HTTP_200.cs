@@ -12,6 +12,16 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_200 Instance => _instance ?? (_instance = new HTTP_200());
 
+        /*
+        
+        Main for sessions with a HTTP 200 response code.
+        Many types of sessions come back with a HTTP 200 "OK" response from the server,
+        but actually contain some error condition in the response.
+        The classes called here highlight HTTP 200 sessions which are not "OK" and
+        clears those that are.
+
+        */
+
         public void Run(Session session)
         {
             this.session = session;
@@ -32,6 +42,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             ///////////////////////////////
 
+            // Call this before any MAPI sessions. If we have a culture error this take precedence.
             HTTP_200_Culture_Not_Found.Instance.Run(this.session);
             if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
             {

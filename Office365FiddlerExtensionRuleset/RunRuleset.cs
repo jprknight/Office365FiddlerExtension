@@ -32,6 +32,14 @@ namespace Office365FiddlerExtensionRuleset
             return false;
         }
 
+        /// <summary>
+        /// 
+        /// MAIN
+        /// 
+        /// This should be considered the main constructor for the extension ruleset DLL. 
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
         public void Initialize(Session session)
         {
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}):" +
