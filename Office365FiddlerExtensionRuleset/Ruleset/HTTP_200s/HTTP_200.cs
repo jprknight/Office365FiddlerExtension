@@ -20,6 +20,9 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         The classes called here highlight HTTP 200 sessions which are not "OK" and
         clears those that are.
 
+        This is intended to be the only class what pulls from the namespace ending 
+        in .HTTP_200s.
+
         */
 
         public void Run(Session session)
