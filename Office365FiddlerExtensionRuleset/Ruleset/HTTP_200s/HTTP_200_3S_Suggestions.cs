@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 
-namespace Office365FiddlerExtensionRuleset.Ruleset
+namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 {
     class HTTP_200_3S_Suggestions
     {

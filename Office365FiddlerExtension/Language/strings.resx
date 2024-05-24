@@ -537,6 +537,18 @@
   <data name="HTTP_200_ConnectTunnel_RepsonseComments" xml:space="preserve">
     <value>This is an encrypted tunnel. If all or most of the sessions are connect tunnels the sessions collected did not have decryption enabled. Setup Fiddler to 'Decrypt HTTPS traffic', click Tools -&gt; Options -&gt; HTTPS tab.&lt;p&gt;If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. &lt;/p&gt;</value>
   </data>
+  <data name="HTTP_200_CultureNotFound_ResponseAlert" xml:space="preserve">
+    <value>!Mailbox Culture not found!</value>
+  </data>
+  <data name="HTTP_200_CultureNotFound_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK, MAILBOX CULTURE NOT FOUND!</value>
+  </data>
+  <data name="HTTP_200_CultureNotFound_ResponseComments" xml:space="preserve">
+    <value>Mailbox Culture is not found / has an invalid value. Try signing into OWA to set the mailbox language and / or locale to a valid selection such as en-US.</value>
+  </data>
+  <data name="HTTP_200_CultureNotFound_Session_Type" xml:space="preserve">
+    <value>!MBX CULTURE NOT FOUND!</value>
+  </data>
   <data name="HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseAlert" xml:space="preserve">
     <value>Free/Busy Error! Result set has too many calendar items.</value>
   </data>

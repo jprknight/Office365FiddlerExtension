@@ -16,8 +16,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public void Run(Session session)
         {
+            this.session = session;
+
             HTTP_302_Redirect_AutoDiscover(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }

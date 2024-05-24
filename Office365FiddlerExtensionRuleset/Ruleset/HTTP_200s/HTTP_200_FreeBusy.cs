@@ -4,7 +4,7 @@ using Office365FiddlerExtension.Services;
 using System;
 using System.Reflection;
 
-namespace Office365FiddlerExtensionRuleset.Ruleset
+namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 {
     class HTTP_200_FreeBusy
     {
@@ -20,19 +20,19 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             // Only run these functions as necessary.If Session Type Confidence is met, stop.
             FreeBusy_Failure_Result_Set_Too_Many_Calendar_Entries(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
             Legacy_FreeBusy(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
             Outlook_For_Windows_FreeBusy(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
@@ -50,12 +50,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-            if (!SessionContentSearch.Instance.SearchForPhrase(this.session, "GetUserAvailability"))
+            if (!RulesetUtilities.Instance.SearchForPhrase(this.session, "GetUserAvailability"))
             {
                 return;
             }
 
-            if (!SessionContentSearch.Instance.SearchForPhrase(this.session, "The result set contains too many calendar entries"))
+            if (!RulesetUtilities.Instance.SearchForPhrase(this.session, "The result set contains too many calendar entries"))
             {
                 return;
             }

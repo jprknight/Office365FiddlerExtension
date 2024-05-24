@@ -1069,6 +1069,42 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to !Mailbox Culture not found!.
+        /// </summary>
+        internal static string HTTP_200_CultureNotFound_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_CultureNotFound_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 OK, MAILBOX CULTURE NOT FOUND!.
+        /// </summary>
+        internal static string HTTP_200_CultureNotFound_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_CultureNotFound_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mailbox Culture is not found / has an invalid value. Try signing into OWA to set the mailbox language and / or locale to a valid selection such as en-US..
+        /// </summary>
+        internal static string HTTP_200_CultureNotFound_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_CultureNotFound_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to !MBX CULTURE NOT FOUND!.
+        /// </summary>
+        internal static string HTTP_200_CultureNotFound_Session_Type {
+            get {
+                return ResourceManager.GetString("HTTP_200_CultureNotFound_Session_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Free/Busy Error! Result set has too many calendar items..
         /// </summary>
         internal static string HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseAlert {

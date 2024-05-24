@@ -6,29 +6,40 @@ using System.Reflection;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 {
-    class HTTP_200_OWA_Notification_Channel
+    class HTTP_200_Culture_Not_Found
     {
         internal Session session { get; set; }
 
-        private static HTTP_200_OWA_Notification_Channel _instance;
+        private static HTTP_200_Culture_Not_Found _instance;
 
-        public static HTTP_200_OWA_Notification_Channel Instance => _instance ?? (_instance = new HTTP_200_OWA_Notification_Channel());
+        public static HTTP_200_Culture_Not_Found Instance => _instance ?? (_instance = new HTTP_200_Culture_Not_Found());
+        /*
+        HTTP 200 Outlook MAPI session.
+        
+        System.Globalization.CultureNotFoundException: Culture is not supported. (Parameter 'culture')
+        4096 (0x1000) is an invalid culture identifier.
 
-        /// <summary>
-        /// Outlook Web App Notification Channel.
-        /// </summary>
-        /// <param name="session"></param>
+        */
         public void Run(Session session)
         {
             this.session = session;
 
-            // If the session isn't for OWA notification channel, return.
-            if (!this.session.uriContains("/owa/notificationchannel/"))
+            if (!this.session.uriContains("outlook.office365.com"))
             {
                 return;
             }
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Outlook Web App Notification Channel.");
+            if (!this.session.uriContains("mapi/emsmdb/"))
+            {
+                return;
+            }
+
+            if (!RulesetUtilities.Instance.SearchForPhrase(this.session, "Culture is not supported"))
+            {
+                return;
+            }
+
+            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
 
             int sessionAuthenticationConfidenceLevel;
             int sessionTypeConfidenceLevel;
@@ -37,7 +48,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Outlook_Web_App_Notification_Channel");
+                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_CultureNotFound");
+
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -51,17 +63,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 sessionAuthenticationConfidenceLevel = 5;
                 sessionTypeConfidenceLevel = 10;
                 sessionResponseServerConfidenceLevel = 5;
-                sessionSeverity = 30;
+                sessionSeverity = 60;
             }
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_200s",
 
-                SessionType = LangHelper.GetString("HTTP_200_Outlook_Web_App_Notification_Channel_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_200_Outlook_Web_App_Notification_Channel_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_200_Outlook_Web_App_Notification_Channel_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_200_Outlook_Web_App_Notification_Channel_ResponseComments"),
+                SessionType = LangHelper.GetString("HTTP_200_CultureNotFound_Session_Type"),
+                ResponseCodeDescription = LangHelper.GetString("HTTP_200_CultureNotFound_ResponseCodeDescription"),
+                ResponseAlert = LangHelper.GetString("HTTP_200_CultureNotFound_ResponseAlert"),
+                ResponseComments = LangHelper.GetString("HTTP_200_CultureNotFound_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -71,6 +83,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+
         }
     }
 }

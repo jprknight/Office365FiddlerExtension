@@ -4,7 +4,7 @@ using System.Reflection;
 using Office365FiddlerExtension.Services;
 using Newtonsoft.Json;
 
-namespace Office365FiddlerExtensionRuleset.Ruleset
+namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 {
     public class HTTP_200_Json
     {

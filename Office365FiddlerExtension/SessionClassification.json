@@ -64,6 +64,12 @@
       "SessionResponseServerConfidenceLevel": 5,
       "SessionSeverity": 60
     },
+    "HTTP_200_CultureNotFound": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
     "HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled": {
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 10,

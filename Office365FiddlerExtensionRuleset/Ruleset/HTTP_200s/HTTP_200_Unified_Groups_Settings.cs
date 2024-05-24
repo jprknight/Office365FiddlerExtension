@@ -4,7 +4,7 @@ using Office365FiddlerExtension.Services;
 using System;
 using System.Reflection;
 
-namespace Office365FiddlerExtensionRuleset.Ruleset
+namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 {
     class HTTP_200_Unified_Groups_Settings
     {
@@ -33,7 +33,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
             
-            if (!SessionContentSearch.Instance.SearchForPhrase(this.session, "GetUnifiedGroupsSettings"))
+            if (!RulesetUtilities.Instance.SearchForPhrase(this.session, "GetUnifiedGroupsSettings"))
             //(!(this.session.utilFindInRequest("GetUnifiedGroupsSettings", false) > 1))))
             {
                 return;

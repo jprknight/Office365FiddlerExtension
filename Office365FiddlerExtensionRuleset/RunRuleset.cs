@@ -1,46 +1,34 @@
 ﻿using System.Reflection;
 using Fiddler;
-using Newtonsoft.Json;
-using Office365FiddlerExtension.Services;
 using Office365FiddlerExtensionRuleset.Ruleset;
 
 namespace Office365FiddlerExtensionRuleset
 {
-    // Main.
     public class RunRuleSet
     {
         internal Session session { get; set; }
 
-        private bool SessionAnalysisCompleted(Session session)
+        /// <summary>
+        /// 
+        /// MAIN
+        /// 
+        /// This should be considered the main constructor for the extension ruleset DLL. 
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        public void Initialize(Session session)
         {
             this.session = session;
 
-            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
-
-            // Session Analysis IS completed.
-
-            // Session analysis here means only SessionTypeConfidenceLevel and SessionResponseServerConfidenceLevel.
-            // SessionAuthenticationConfidenceLevel is the last thing to be worked out so isn't used here.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10 
-                && ExtensionSessionFlags.SessionResponseServerConfidenceLevel == 10)
-                //&& ExtensionSessionFlags.SessionAuthenticationConfidenceLevel < 10)
+            // Only want to see this once in the Fiddler log.
+            if (this.session.id == 1)
             {
-                return true;
-            }
-
-            // Session Analysis is NOT completed.
-            return false;
-        }
-
-        public void Initialize(Session session)
-        {
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}):" +
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}):" +
                 $" Starting v" +
                 $"{Assembly.GetExecutingAssembly().GetName().Version.Major}." +
                 $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
                 $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
-
-            this.session = session;
+            }
 
             ///////////////////////////////
             ///
@@ -71,16 +59,13 @@ namespace Office365FiddlerExtensionRuleset
             ///////////////////////////////
             ///
             // From here on out only run functions where session analysis isn't completed.
-            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
-            if (!SessionAnalysisCompleted(this.session))
+            if (!RulesetUtilities.Instance.SessionAnalysisCompleted(this.session))
             {
                 ResponseCodeLogic(this.session);
             }
 
             ///////////////////////////////
             // AUTHENTICATION
-
-            // If the session does not already have a high auth classification confidence, run.
             Authentication.Instance.Run(this.session);
 
             ///////////////////////////////
@@ -89,19 +74,10 @@ namespace Office365FiddlerExtensionRuleset
 
             ///////////////////////////////
             // RESPONSE SERVER
-
-            // If the session does not already have a high response server classification confidence, run
-            // this function as a last effort to classify the session type.
-            // None of these overlap, so not checking SessionResponseServerConfidenceLevel before running each function.
             ResponseServer.Instance.Run(this.session);
 
             ///////////////////////////////
             // LONG RUNNING SESSIONS
-            
-            // If session has not been classified run Long Running Session override functions.
-            // In relatively few scenarios has roundtrip time been an underlying cause.
-            // So this is the last function to run after all other logic has been exhausted.
-            // Typically network traces are used to validate the underlying network connectivity.
             LongRunningSessions.Instance.Run(this.session);
         }
 
@@ -120,183 +96,7 @@ namespace Office365FiddlerExtensionRuleset
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_103s");
                     break;
                 case 200:
-                    HTTP_200_ConnectTunnelSessions.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_ClientAccessRule.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_Outlook_MAPI_Protocol_Disabled.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_Outlook_MAPI_Exchange_Online.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_Outlook_MAPI_Exchange_OnPremise.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_OWA_Notification_Channel.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_OWA.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_Outlook_RPC.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_Outlook_NSPI.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_AddressNotFound.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_Unified_Groups_Settings.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_3S_Suggestions.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_REST_People_Request.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_Exchange_OnPremise_Any_Other_EWS.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_Exchange_Online_Any_Other_EWS.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_FreeBusy.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_Json.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_Javascript.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_Lurking_Errors.Instance.Run(this.session);
-                    if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
-                    {
-                        break;
-                    }
-
-                    ///////////////////////////////
-
-                    HTTP_200_Actually_OK.Instance.Run(this.session);
+                    HTTP_200.Instance.Run(this.session);
                     break;
                 case 201:
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_201s");
@@ -560,25 +360,7 @@ namespace Office365FiddlerExtensionRuleset
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_598s");
                     break;
                 default:
-                    // Not setting colours on sessions not recognised.
-
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
-                    {
-                        SectionTitle = LangHelper.GetString("Undefined"),
-
-                        SessionType = LangHelper.GetString("Undefined"),
-                        ResponseCodeDescription = LangHelper.GetString("Undefined"),
-                        ResponseAlert = LangHelper.GetString("Undefined"),
-                        ResponseComments = LangHelper.GetString("Response Comments No Known Issue"),
-
-                        SessionAuthenticationConfidenceLevel = 0,
-                        SessionTypeConfidenceLevel = 0,
-                        SessionResponseServerConfidenceLevel = 0,
-                        SessionSeverity = 10
-                    };
-
-                    var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    Default_UnknownResponseCode.Instance.Run(this.session);
                     break;
             }
         }

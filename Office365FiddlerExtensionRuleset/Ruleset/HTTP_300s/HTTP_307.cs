@@ -16,14 +16,16 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public void Run(Session session)
         {
+            this.session = session;
+
             HTTP_307_AutoDiscover_Temporary_Redirect(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
             HTTP_307_Other_AutoDiscover_Redirects(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
