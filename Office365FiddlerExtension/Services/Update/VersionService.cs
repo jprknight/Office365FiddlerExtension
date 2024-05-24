@@ -56,12 +56,14 @@ namespace Office365FiddlerExtension.Services
                 + Assembly.GetExecutingAssembly().GetName().Version.Minor
                 + Assembly.GetExecutingAssembly().GetName().Version.Build;
 
+            /*
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}) " +
                 $"Local version " +
                 $"{Assembly.GetExecutingAssembly().GetName().Version.Major}." +
                 $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
                 $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
+            */
 
             var githubJsonVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
@@ -69,12 +71,14 @@ namespace Office365FiddlerExtension.Services
                 + githubJsonVersion.ExtensionMinor
                 + githubJsonVersion.ExtensionBuild;
 
+            /*
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}) " +
                 $"Github version " +
                 $"{githubJsonVersion.ExtensionMajor}." +
                 $"{githubJsonVersion.ExtensionMinor}." +
                 $"{githubJsonVersion.ExtensionBuild}");
+            */
 
             if (localVersion < githubVersion)
             {
