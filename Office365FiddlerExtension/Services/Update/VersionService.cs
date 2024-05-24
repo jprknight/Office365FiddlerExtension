@@ -44,20 +44,40 @@ namespace Office365FiddlerExtension.Services
 
         public Boolean IsExtensionDLLUpdateAvailable()
         {
-            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}) " +
+                    $"({System.Reflection.MethodBase.GetCurrentMethod().Name}) " +
+                    $"Never Web Call stopping extension update check.");
                 return false;
             }
-
-            var githubJsonVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
             int localVersion = Assembly.GetExecutingAssembly().GetName().Version.Major
                 + Assembly.GetExecutingAssembly().GetName().Version.Minor
                 + Assembly.GetExecutingAssembly().GetName().Version.Build;
 
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}) " +
+                $"({System.Reflection.MethodBase.GetCurrentMethod().Name}) " +
+                $"Local version " +
+                $"{Assembly.GetExecutingAssembly().GetName().Version.Major}." +
+                $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
+                $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
+
+            var githubJsonVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
+
             int githubVersion = githubJsonVersion.ExtensionMajor
                 + githubJsonVersion.ExtensionMinor
                 + githubJsonVersion.ExtensionBuild;
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}) " +
+                $"({System.Reflection.MethodBase.GetCurrentMethod().Name}) " +
+                $"Github version " +
+                $"{githubJsonVersion.ExtensionMajor}." +
+                $"{githubJsonVersion.ExtensionMinor}." +
+                $"{githubJsonVersion.ExtensionBuild}");
 
             if (localVersion < githubVersion)
             {
@@ -69,13 +89,18 @@ namespace Office365FiddlerExtension.Services
 
         public void NotifyUserIfExtensionUpdateIsAvailable()
         {
-            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name})" +
+                    $"({System.Reflection.MethodBase.GetCurrentMethod().Name}) " +
+                    "Never Web Call preventing update checking.");
                 return;
             }
 
             if (!VersionService.Instance.IsExtensionDLLUpdateAvailable())
-            { 
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}) No extension update available.");
                 return; 
             }
             
@@ -228,6 +253,5 @@ namespace Office365FiddlerExtension.Services
                 System.Diagnostics.Process.Start(URLsJsonService.Instance.GetDeserializedExtensionURLs().Installer);
             }
         }
-
     }
 }

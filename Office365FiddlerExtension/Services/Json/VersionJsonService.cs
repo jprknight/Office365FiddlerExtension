@@ -35,6 +35,13 @@ namespace Office365FiddlerExtension.Services
 
         public void CreateExtensionVersionFiddlerSetting()
         {
+            // If the ExtensionVersion Fiddler preference contains valid Json data, return.
+            if (JsonValidatorService.Instance.IsValidJsonString(Preferences.ExtensionVersion))
+            {
+
+                return;
+            }
+
             var VersionItems = new
             {
                 ExtensionMajor = Assembly.GetExecutingAssembly().GetName().Version.Major,

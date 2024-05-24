@@ -45,14 +45,7 @@ namespace Office365FiddlerExtension.Services
                 SettingsJsonService.Instance.SetExtensionDLL();
                 SettingsJsonService.Instance.SetExtensionPath();
                 SettingsJsonService.Instance.IncrementExecutionCount();
-
-                // If the extension enabled setting is true, throw messages to the user if updates are available.
-                if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().ExtensionSessionProcessingEnabled)
-                {
-                    VersionService.Instance.NotifyUserIfExtensionUpdateIsAvailable();
-                    VersionService.Instance.NotifyUserIfRulesetUpdateIsAvailable();
-                }
-
+                                
                 InitializeTelemetry();
 
                 // Update as needed. -- All web update calls live here.
@@ -69,6 +62,9 @@ namespace Office365FiddlerExtension.Services
 
                 FiddlerApplication.OnLoadSAZ += SazFileService.Instance.LoadSaz;
                 FiddlerApplication.OnSaveSAZ += SazFileService.Instance.SaveSaz;
+
+                VersionService.Instance.NotifyUserIfExtensionUpdateIsAvailable();
+                VersionService.Instance.NotifyUserIfRulesetUpdateIsAvailable();
 
                 IsInitialized = true;
             }
