@@ -18,13 +18,17 @@ namespace Office365FiddlerExtensionRuleset
         /// <param name="session"></param>
         public void Initialize(Session session)
         {
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}):" +
+            this.session = session;
+
+            // Only want to see this once in the Fiddler log.
+            if (this.session.id == 1)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}):" +
                 $" Starting v" +
                 $"{Assembly.GetExecutingAssembly().GetName().Version.Major}." +
                 $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
                 $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
-
-            this.session = session;
+            }
 
             ///////////////////////////////
             ///
