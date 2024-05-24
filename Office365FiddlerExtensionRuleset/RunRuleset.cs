@@ -1,12 +1,9 @@
 ﻿using System.Reflection;
 using Fiddler;
-using Newtonsoft.Json;
-using Office365FiddlerExtension.Services;
 using Office365FiddlerExtensionRuleset.Ruleset;
 
 namespace Office365FiddlerExtensionRuleset
 {
-    // Main.
     public class RunRuleSet
     {
         internal Session session { get; set; }
@@ -58,7 +55,6 @@ namespace Office365FiddlerExtensionRuleset
             ///////////////////////////////
             ///
             // From here on out only run functions where session analysis isn't completed.
-            // var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
             if (!RulesetUtilities.Instance.SessionAnalysisCompleted(this.session))
             {
                 ResponseCodeLogic(this.session);
@@ -66,8 +62,6 @@ namespace Office365FiddlerExtensionRuleset
 
             ///////////////////////////////
             // AUTHENTICATION
-
-            // If the session does not already have a high auth classification confidence, run.
             Authentication.Instance.Run(this.session);
 
             ///////////////////////////////
@@ -76,19 +70,10 @@ namespace Office365FiddlerExtensionRuleset
 
             ///////////////////////////////
             // RESPONSE SERVER
-
-            // If the session does not already have a high response server classification confidence, run
-            // this function as a last effort to classify the session type.
-            // None of these overlap, so not checking SessionResponseServerConfidenceLevel before running each function.
             ResponseServer.Instance.Run(this.session);
 
             ///////////////////////////////
             // LONG RUNNING SESSIONS
-            
-            // If session has not been classified run Long Running Session override functions.
-            // In relatively few scenarios has roundtrip time been an underlying cause.
-            // So this is the last function to run after all other logic has been exhausted.
-            // Typically network traces are used to validate the underlying network connectivity.
             LongRunningSessions.Instance.Run(this.session);
         }
 
@@ -371,25 +356,7 @@ namespace Office365FiddlerExtensionRuleset
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_598s");
                     break;
                 default:
-                    // Not setting colours on sessions not recognised.
-
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
-                    {
-                        SectionTitle = LangHelper.GetString("Undefined"),
-
-                        SessionType = LangHelper.GetString("Undefined"),
-                        ResponseCodeDescription = LangHelper.GetString("Undefined"),
-                        ResponseAlert = LangHelper.GetString("Undefined"),
-                        ResponseComments = LangHelper.GetString("Response Comments No Known Issue"),
-
-                        SessionAuthenticationConfidenceLevel = 0,
-                        SessionTypeConfidenceLevel = 0,
-                        SessionResponseServerConfidenceLevel = 0,
-                        SessionSeverity = 10
-                    };
-
-                    var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    Default_UnknownResponseCode.Instance.Run(this.session);
                     break;
             }
         }
