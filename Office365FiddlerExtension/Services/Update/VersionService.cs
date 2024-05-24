@@ -48,7 +48,6 @@ namespace Office365FiddlerExtension.Services
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}) " +
-                    $"({System.Reflection.MethodBase.GetCurrentMethod().Name}) " +
                     $"Never Web Call stopping extension update check.");
                 return false;
             }
@@ -59,7 +58,6 @@ namespace Office365FiddlerExtension.Services
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}) " +
-                $"({System.Reflection.MethodBase.GetCurrentMethod().Name}) " +
                 $"Local version " +
                 $"{Assembly.GetExecutingAssembly().GetName().Version.Major}." +
                 $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
@@ -73,7 +71,6 @@ namespace Office365FiddlerExtension.Services
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}) " +
-                $"({System.Reflection.MethodBase.GetCurrentMethod().Name}) " +
                 $"Github version " +
                 $"{githubJsonVersion.ExtensionMajor}." +
                 $"{githubJsonVersion.ExtensionMinor}." +
@@ -93,7 +90,6 @@ namespace Office365FiddlerExtension.Services
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name})" +
-                    $"({System.Reflection.MethodBase.GetCurrentMethod().Name}) " +
                     "Never Web Call preventing update checking.");
                 return;
             }
