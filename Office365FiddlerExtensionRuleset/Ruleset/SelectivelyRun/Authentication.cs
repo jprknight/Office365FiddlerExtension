@@ -19,43 +19,43 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             this.session = session;
 
             SetAuthentication_NoAuthHeaders(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionAuthenticationConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
             SetAuthentication_SAML_Parser(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionAuthenticationConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
             SetAuthentication_Basic_Modern_Auth_Disabled(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionAuthenticationConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
             SetAuthentication_Modern_Auth_Capable_Client(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionAuthenticationConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
             SetAuthentication_Modern_Auth_Client_Using_Token(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionAuthenticationConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
             SetAuthentication_Basic_Auth_Capable_Client(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionAuthenticationConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
             SetAuthentication_Basic_Auth_Client_Using_Token(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionAuthenticationConfidenceLevel_Ten(this.session))
             {
                 return;
             }
@@ -183,11 +183,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             SAMLParserFieldsNoData(this.session);
 
-            int KeywordFourMillion = SessionContentSearch.Instance.SearchForWord(this.session, "4000000");
-            int KeywordFlighting = SessionContentSearch.Instance.SearchForWord(this.session, "Flighting");
-            int Keywordenabled = SessionContentSearch.Instance.SearchForWord(this.session, "enabled");
-            int Keyworddomain = SessionContentSearch.Instance.SearchForWord(this.session, "domain");
-            int Keywordoauth_not_available = SessionContentSearch.Instance.SearchForWord(this.session, "oauth_not_available");
+            int KeywordFourMillion = RulesetUtilities.Instance.SearchForWord(this.session, "4000000");
+            int KeywordFlighting = RulesetUtilities.Instance.SearchForWord(this.session, "Flighting");
+            int Keywordenabled = RulesetUtilities.Instance.SearchForWord(this.session, "enabled");
+            int Keyworddomain = RulesetUtilities.Instance.SearchForWord(this.session, "domain");
+            int Keywordoauth_not_available = RulesetUtilities.Instance.SearchForWord(this.session, "oauth_not_available");
 
             if (KeywordFourMillion == 0 && KeywordFlighting == 0 && Keywordenabled == 0 &&
                 Keyworddomain == 0 && Keywordoauth_not_available == 0)

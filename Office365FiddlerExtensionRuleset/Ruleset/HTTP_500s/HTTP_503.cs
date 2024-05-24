@@ -19,7 +19,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             this.session = session;
 
             HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
@@ -31,7 +31,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             this.session = session;
 
             // 3/19/2024 - SearchForWord works here, SearchForPhrase does not. Going with the easy route.
-            if (SessionContentSearch.Instance.SearchForWord(this.session, "FederatedSTSUnreachable") == 0)
+            if (RulesetUtilities.Instance.SearchForWord(this.session, "FederatedSTSUnreachable") == 0)
             {
                 return;
             }

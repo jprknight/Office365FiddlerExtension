@@ -19,7 +19,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             this.session = session;
 
             HTTP_0_NoSessionResponse(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }

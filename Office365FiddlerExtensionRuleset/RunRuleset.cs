@@ -11,27 +11,6 @@ namespace Office365FiddlerExtensionRuleset
     {
         internal Session session { get; set; }
 
-        private bool SessionAnalysisCompleted(Session session)
-        {
-            this.session = session;
-
-            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
-
-            // Session Analysis IS completed.
-
-            // Session analysis here means only SessionTypeConfidenceLevel and SessionResponseServerConfidenceLevel.
-            // SessionAuthenticationConfidenceLevel is the last thing to be worked out so isn't used here.
-            if (ExtensionSessionFlags.SessionTypeConfidenceLevel == 10 
-                && ExtensionSessionFlags.SessionResponseServerConfidenceLevel == 10)
-                //&& ExtensionSessionFlags.SessionAuthenticationConfidenceLevel < 10)
-            {
-                return true;
-            }
-
-            // Session Analysis is NOT completed.
-            return false;
-        }
-
         /// <summary>
         /// 
         /// MAIN
@@ -79,8 +58,8 @@ namespace Office365FiddlerExtensionRuleset
             ///////////////////////////////
             ///
             // From here on out only run functions where session analysis isn't completed.
-            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
-            if (!SessionAnalysisCompleted(this.session))
+            // var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
+            if (!RulesetUtilities.Instance.SessionAnalysisCompleted(this.session))
             {
                 ResponseCodeLogic(this.session);
             }

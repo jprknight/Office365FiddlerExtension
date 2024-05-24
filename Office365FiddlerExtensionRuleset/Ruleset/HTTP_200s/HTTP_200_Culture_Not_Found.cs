@@ -34,7 +34,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 return;
             }
 
-            if (!SessionContentSearch.Instance.SearchForPhrase(this.session, "Culture is not supported"))
+            if (!RulesetUtilities.Instance.SearchForPhrase(this.session, "Culture is not supported"))
             {
                 return;
             }

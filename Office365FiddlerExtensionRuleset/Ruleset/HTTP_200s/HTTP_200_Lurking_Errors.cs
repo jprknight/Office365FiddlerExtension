@@ -23,9 +23,9 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
         {
             this.session = session;
 
-            int wordCountError = SessionContentSearch.Instance.SearchForWord(this.session, "Error");
-            int wordCountFailed = SessionContentSearch.Instance.SearchForWord(this.session, "failed");
-            int wordCountException = SessionContentSearch.Instance.SearchForWord(this.session, "exception");
+            int wordCountError = RulesetUtilities.Instance.SearchForWord(this.session, "Error");
+            int wordCountFailed = RulesetUtilities.Instance.SearchForWord(this.session, "failed");
+            int wordCountException = RulesetUtilities.Instance.SearchForWord(this.session, "exception");
 
             string wordCountErrorText;
             string wordCountFailedText;

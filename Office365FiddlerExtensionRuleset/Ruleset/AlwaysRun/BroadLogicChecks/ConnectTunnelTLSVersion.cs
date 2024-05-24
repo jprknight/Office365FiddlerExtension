@@ -35,24 +35,24 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             //   Cipher: Aes256 256bits
             //   Hash Algorithm: Sha1 160bits
 
-            if (SessionContentSearch.Instance.SearchForPhrase(this.session, "Secure Protocol: Tls10") || SessionContentSearch.Instance.SearchForPhrase(this.session, "(TLS/1.0)"))
+            if (RulesetUtilities.Instance.SearchForPhrase(this.session, "Secure Protocol: Tls10") || RulesetUtilities.Instance.SearchForPhrase(this.session, "(TLS/1.0)"))
             //if (this.session.utilFindInResponse("Secure Protocol: Tls10", false) > 1 || this.session.utilFindInResponse("(TLS/1.0)", false) > 1)
             {
                 TLS = "1.0";
             }
             // TLS 1.1 in request/response pair.
-            else if (SessionContentSearch.Instance.SearchForPhrase(this.session, "Secure Protocol: Tls11") || SessionContentSearch.Instance.SearchForPhrase(this.session, "(TLS/1.1)"))
+            else if (RulesetUtilities.Instance.SearchForPhrase(this.session, "Secure Protocol: Tls11") || RulesetUtilities.Instance.SearchForPhrase(this.session, "(TLS/1.1)"))
             //else if (this.session.utilFindInResponse("Secure Protocol: Tls11", false) > 1 || this.session.utilFindInRequest("(TLS/1.1)", false) > 1)
             {
                 TLS = "1.1";
             }
             // TLS 1.2 in request/response pair.
-            else if (SessionContentSearch.Instance.SearchForPhrase(this.session, "Secure Protocol: Tls12") || SessionContentSearch.Instance.SearchForPhrase(this.session, "(TLS/1.2)"))
+            else if (RulesetUtilities.Instance.SearchForPhrase(this.session, "Secure Protocol: Tls12") || RulesetUtilities.Instance.SearchForPhrase(this.session, "(TLS/1.2)"))
             //else if (this.session.utilFindInRequest("Secure Protocol: Tls12", false) > 1 || this.session.utilFindInRequest("(TLS/1.2)", false) > 1)
             {
                 TLS = "1.2";
             }
-            else if (SessionContentSearch.Instance.SearchForPhrase(this.session, "Secure Protocol: Tls13") || SessionContentSearch.Instance.SearchForPhrase(this.session, "(TLS/1.3)"))
+            else if (RulesetUtilities.Instance.SearchForPhrase(this.session, "Secure Protocol: Tls13") || RulesetUtilities.Instance.SearchForPhrase(this.session, "(TLS/1.3)"))
             //else if (this.session.utilFindInRequest("Secure Protocol: Tls13", false) > 1 || this.session.utilFindInRequest("(TLS/1.3)", false) > 1)
             {
                 TLS = "1.3";

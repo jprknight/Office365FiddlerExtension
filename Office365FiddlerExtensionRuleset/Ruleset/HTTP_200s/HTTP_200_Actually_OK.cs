@@ -21,9 +21,9 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} HTTP 200 OK");
 
-            if (SessionContentSearch.Instance.SearchForWord(this.session, "Error") == 0 &&
-                SessionContentSearch.Instance.SearchForWord(this.session, "failed") == 0 &&
-                SessionContentSearch.Instance.SearchForWord(this.session, "exception") == 0)
+            if (RulesetUtilities.Instance.SearchForWord(this.session, "Error") == 0 &&
+                RulesetUtilities.Instance.SearchForWord(this.session, "failed") == 0 &&
+                RulesetUtilities.Instance.SearchForWord(this.session, "exception") == 0)
             {
                 int sessionAuthenticationConfidenceLevel;
                 int sessionTypeConfidenceLevel;

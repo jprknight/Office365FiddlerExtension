@@ -95,7 +95,7 @@
     <Compile Include="Ruleset\SelectivelyRun\LongRunningSessions.cs" />
     <Compile Include="Ruleset\SelectivelyRun\ResponseServer.cs" />
     <Compile Include="Ruleset\SelectivelyRun\SessionType.cs" />
-    <Compile Include="Ruleset\SessionContentSearch.cs" />
+    <Compile Include="Ruleset\RulesetUtilities.cs" />
     <Compile Include="Ruleset\AlwaysRun\CalculateSessionAge.cs" />
     <Compile Include="Ruleset\AlwaysRun\ProcessName.cs" />
     <Compile Include="Ruleset\AlwaysRun\ServerThinkTimeTransitTime.cs" />

@@ -19,19 +19,19 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             this.session = session;
 
             HTTP_403_Forbidden_Proxy_Block(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
             HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
             HTTP_403_FreeBusy_Request_Failed_Forbidden(this.session);
-            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
@@ -166,7 +166,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
 
             // If the session doesn't contain this error text, return.
-            if (!SessionContentSearch.Instance.SearchForPhrase(this.session, "Request failed with http code Forbidden"))
+            if (!RulesetUtilities.Instance.SearchForPhrase(this.session, "Request failed with http code Forbidden"))
             {
                 return;
             }

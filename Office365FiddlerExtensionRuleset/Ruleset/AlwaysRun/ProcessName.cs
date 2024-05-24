@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using Office365FiddlerExtension.Services;
-using Office365FiddlerExtension.UI;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {

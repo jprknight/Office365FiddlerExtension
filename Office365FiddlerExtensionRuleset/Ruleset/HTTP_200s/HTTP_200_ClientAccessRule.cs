@@ -23,7 +23,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 return;
             }
 
-            if (!(SessionContentSearch.Instance.SearchForPhrase(this.session, "Connection blocked by Client Access Rules")))
+            if (!(RulesetUtilities.Instance.SearchForPhrase(this.session, "Connection blocked by Client Access Rules")))
             {
                 return;
             }

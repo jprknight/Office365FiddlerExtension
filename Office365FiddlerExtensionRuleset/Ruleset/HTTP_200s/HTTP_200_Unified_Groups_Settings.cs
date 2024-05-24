@@ -33,7 +33,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 return;
             }
             
-            if (!SessionContentSearch.Instance.SearchForPhrase(this.session, "GetUnifiedGroupsSettings"))
+            if (!RulesetUtilities.Instance.SearchForPhrase(this.session, "GetUnifiedGroupsSettings"))
             //(!(this.session.utilFindInRequest("GetUnifiedGroupsSettings", false) > 1))))
             {
                 return;
