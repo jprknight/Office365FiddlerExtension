@@ -50,6 +50,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public bool StopProcessing_SessionTypeConfidenceLevel_Ten(Session session)
         {
+            this.session = session;
+
             if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
             {
                 return true;
@@ -59,6 +61,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public bool StopProcessing_SessionAuthenticationConfidenceLevel_Ten(Session session)
         {
+            this.session = session;
+
             if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10)
             {
                 return true;
@@ -68,6 +72,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public bool StopProcessing_SessionResponseServerConfidenceLevel_Ten(Session session)
         {
+            this.session = session;
+
             if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionResponseServerConfidenceLevel == 10)
             {
                 return true;
