@@ -124,6 +124,7 @@ namespace Office365FiddlerExtension.Services
                     if (Preferences.ExtensionVersion != jsonString)
                     {
                         FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExtensionVersion Fiddler setting updated.");
+                        
                         Preferences.ExtensionVersion = jsonString;
 
                         // Update the next update check timestamp.
