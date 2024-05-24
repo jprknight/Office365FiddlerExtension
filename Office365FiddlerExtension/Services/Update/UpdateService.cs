@@ -123,7 +123,7 @@ namespace Office365FiddlerExtension.Services
                     // Save this new data into the ExtensionVerison Fiddler setting.
                     if (Preferences.ExtensionVersion != jsonString)
                     {
-                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeVersion Fiddler setting updated.");
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExtensionVersion Fiddler setting updated.");
                         Preferences.ExtensionVersion = jsonString;
 
                         // Update the next update check timestamp.
@@ -131,12 +131,12 @@ namespace Office365FiddlerExtension.Services
                     }
                     else
                     {
-                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExchangeVersion Fiddler setting no update needed.");
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExtensionVersion Fiddler setting no update needed.");
                     }
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving ExchangeVersion from Github {ex}");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error retrieving ExtensionVersion from Github {ex}");
                 }
             }
         }
