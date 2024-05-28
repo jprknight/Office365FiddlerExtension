@@ -43,8 +43,8 @@ You're expecting to extract these files to both of the folders above for the ext
 
 2. **Review the result** on your own computer by installing Fiddler Classic, installing the extension, and...
 * Opening or double clicking the SAZ file. Loaded sessions are automatically analysed.
-* Importing the HTTP archive. Click File, Import Sessions, "HTTPArchive" and choose your HAR file. Once loaded click The Office 365 menu item, click 'Analyse All Sessions'.
-* Importing the JSON browser net trace. Click File, Import Sessions, "NetLog JSON" and choose your JSON file. Once loaded click The Office 365 menu item, click 'Analyse All Sessions'.
+* Importing the HTTP archive. Click File, Import Sessions, "HTTPArchive" and choose your HAR file. Once loaded click The Office 365 menu and click 'Analyse All Sessions'.
+* Importing the JSON browser net trace. Click File, Import Sessions, "NetLog JSON" and choose your JSON file. Once loaded click The Office 365 menu and click 'Analyse All Sessions'.
 
 ## Functionality Breakdown
 
