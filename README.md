@@ -4,6 +4,8 @@ This Fiddler Extension is an Office 365 / Microsoft 365 centric parser to effici
 
 ## Deployment Script
 
+Earlier versions of the extension were deployed with a .net installer. You're best off uninstalling these before installing the newer version with the deployment script. However, it isn't necessary, the deployment script will remove old versions of the extension dll when running the install routine.
+
 The best way to get the Office 365 Fiddler Extension is via the deployment script. Run the below in PowerShell on your computer: 
 
 `Invoke-Expression (New-Object Net.WebClient).DownloadString('https://aka.ms/Deploy-Office365FiddlerExtension')`
