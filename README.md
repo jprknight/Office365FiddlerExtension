@@ -33,8 +33,6 @@ You're expecting to extract these files to both of the folders above for the ext
 * Office365FiddlerExtensionRuleset.pdb
 * SessionClassification.json
 
-![Office 365 Fiddler Extension Deployment Script](https://github.com/jprknight/Office365FiddlerExtension/blob/master/docs/Office365FiddlerExtensionDeploymentScript.png)
-
 ## How To Use The Extension
 
 1. **Reproduce an issue** from the computer where it is seen:
