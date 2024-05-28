@@ -2,7 +2,9 @@
 
 This Fiddler Extension is an Office 365 / Microsoft 365 centric parser to efficiently troubleshoot Office 365 client application connectivity and functionality.
 
-## Deployment Script
+## Extension Installation
+
+### Deployment Script
 
 Earlier versions of the extension were deployed with a .net installer. You're best off uninstalling these before installing the newer version with the deployment script. However, it isn't necessary, the deployment script will remove old versions of the extension dll when running the install routine.
 
