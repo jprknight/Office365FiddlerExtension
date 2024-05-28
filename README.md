@@ -36,7 +36,8 @@ You're expecting to extract these files to both of the folders above for the ext
 ## How To Use The Extension
 
 1. **Reproduce an issue** from the computer where it is seen:
-* NOTE: You don't need the extension installed on the computer where the issue is seen.
+
+NOTE: You don't need the extension installed on the computer where the issue is seen.
 * Use Fiddler Classic, FiddlerCap, or FiddlerAnywhere to collect a **SAZ file** trace with <a href="https://docs.telerik.com/fiddler/configure-fiddler/tasks/decrypthttps">decrypt HTTPS traffic</a> enabled.
 * Use F12 Developer tools and save a **HAR file** from a browser session.
 * Use **JSON Network Log Export** (edge://net-export/ in Edge browser). Note, with this option you'll need the <a href="https://github.com/ericlaw1979/FiddlerImportNetlog/releases/latest">Fiddler Import Netlog</a> plugin, to have the "NetLog JSON" import option in Fiddler.
@@ -65,16 +66,16 @@ Think traffic lights, with some extras.
 
 * **Response Inspector Tab** - Look for Session Analysis, for helpful information on any given session.
 * **Office 365 Menu**
-  * Turn extension off and on.
-  * Analyse all sessions -- Analyse all sessions in the view in Fiddler. This will also fill in any sessions which do not already have session analysis.
-  * Clear All Session Analysis -- Clear all session analysis values on all sessions.
-  * Create Consolidated Analysis Report -- Creates a HTML report, highlighting the most interesting sessions and other statistical information from the sessions in the view in Fiddler.
-  * Check IP Address -- Manually check if an IP address is in a private, public, or Microsoft 365 subnet.
+  * Turn extension **off/on**.
+  * **Analyse all sessions** -- Analyse all sessions in the view in Fiddler. This will also fill in any sessions which do not already have session analysis.
+  * **Clear All Session Analysis** -- Clear all session analysis values on all sessions.
+  * **Create Consolidated Analysis Report** -- Creates a HTML report, highlighting the most interesting sessions and other statistical information from the sessions in the view in Fiddler.
+  * **Check IP Address** -- Manually check if an IP address is in a private, public, or Microsoft 365 subnet.
 * **Context Menu** - Additional options for processing sessions.
-  * Analyse Selected Sessions -- Analyse selected sessions in the view in Fiddler.
-  * Clear Selected Sessions -- Clear session analysis values on selected sessions in the view in Fiddler.
-  * Set Session Severity -- Manually set severity or recalculate session severity with extension, on selected sessions.
-  * Create Consolidated Analysis Report -- Creates a HTML report, highlighting the most interesting sessions and other statistical information from the sessions in the view in Fiddler.
+  * **Analyse Selected Sessions** -- Analyse selected sessions in the view in Fiddler.
+  * **Clear Selected Sessions** -- Clear session analysis values on selected sessions in the view in Fiddler.
+  * **Set Session Severity** -- Manually set severity or recalculate session severity with extension, on selected sessions.
+  * **Create Consolidated Analysis Report** -- Creates a HTML report, highlighting the most interesting sessions and other statistical information from the sessions in the view in Fiddler.
  
 ### Session Columns
 
