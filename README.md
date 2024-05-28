@@ -36,6 +36,7 @@ You're expecting to extract these files to both of the folders above for the ext
 ## How To Use The Extension
 
 1. **Reproduce an issue** from the computer where it is seen:
+* NOTE: You don't need the extension installed on the computer where the issue is seen.
 * Use Fiddler Classic, FiddlerCap, or FiddlerAnywhere to collect a trace with <a href="https://docs.telerik.com/fiddler/configure-fiddler/tasks/decrypthttps">decrypt HTTPS traffic</a> enabled.
 * Use F12 Developer tools and save a HAR file from a browser session.
 * Use Network Log Export (edge://net-export/ in Edge browser). Note, with this option you'll need the <a href="https://github.com/ericlaw1979/FiddlerImportNetlog/releases/latest">Fiddler Import Netlog</a> plugin, to have the "NetLog JSON" import option in Fiddler.
