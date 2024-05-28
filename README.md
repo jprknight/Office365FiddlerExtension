@@ -2,18 +2,6 @@
 
 This Fiddler Extension is an Office 365 / Microsoft 365 centric parser to efficiently troubleshoot Office 365 client application connectivity and functionality.
 
-## How To Use The Extension
-
-1. Reproduce an issue / behaviour from the computer where it is seen:
-* Use Fiddler Classic, FiddlerCap, or FiddlerAnywhere to collect a trace with <a href="https://docs.telerik.com/fiddler/configure-fiddler/tasks/decrypthttps" target="_blank">decrypt HTTPS traffic</a> enabled.
-* Use F12 Developer tools and save a HAR file from a browser session.
-* Use Network Log Export <a href="edge://net-export/" target="_blank">edge://net-export/</a>. Note, with this option you'll need the <a href="https://github.com/ericlaw1979/FiddlerImportNetlog/releases/latest" target="_blank">Fiddler Import Netlog</a> plugin, to have the "NetLog JSON" import option in Fiddler.
-
-3. Review the result: On your own computer install Fiddler Classic, install the extension and...
-* Open / double click the SAZ file, loaded sessions are automatically analysed.
-* Import the HTTP archive. Click The Office 365 menu item, click 'Analyse All Sessions'.
-* Import the JSON browser net trace. Click The Office 365 menu item, click 'Analyse All Sessions'.
-
 ## Deployment Script
 
 The best way to get the Office 365 Fiddler Extension is via the deployment script. Run the below in PowerShell on your computer: 
@@ -25,6 +13,18 @@ Don't want to use the aka.ms short link, or not working? Use this instead:
 `Invoke-Expression (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/Deploy-Office365FiddlerExtension.ps1')`
 
 ![Office 365 Fiddler Extension Deployment Script](https://github.com/jprknight/Office365FiddlerExtension/blob/master/docs/Office365FiddlerExtensionDeploymentScript.png)
+
+## How To Use The Extension
+
+1. **Reproduce an issue** from the computer where it is seen:
+* Use Fiddler Classic, FiddlerCap, or FiddlerAnywhere to collect a trace with <a href="https://docs.telerik.com/fiddler/configure-fiddler/tasks/decrypthttps" target="_blank">decrypt HTTPS traffic</a> enabled.
+* Use F12 Developer tools and save a HAR file from a browser session.
+* Use Network Log Export <a href="edge://net-export/" target="_blank">edge://net-export/</a>. Note, with this option you'll need the <a href="https://github.com/ericlaw1979/FiddlerImportNetlog/releases/latest" target="_blank">Fiddler Import Netlog</a> plugin, to have the "NetLog JSON" import option in Fiddler.
+
+3. **Review the result** on your own computer by installing Fiddler Classic, installing the extension, and...
+* Open / double clicking the SAZ file. Loaded sessions are automatically analysed.
+* Importing the HTTP archive. Click File, Import Sessions, "HTTPArchive" and choose your HAR file. Once loaded click The Office 365 menu item, click 'Analyse All Sessions'.
+* Importing the JSON browser net trace. Click File, Import Sessions, "NetLog JSON" and choose your JSON file. Once loaded click The Office 365 menu item, click 'Analyse All Sessions'.
 
 ## Functionality Breakdown
 
@@ -78,7 +78,7 @@ Assuming you don't have never web call enabled, the extension pulls from the Mic
   * A Microsoft 365 IP address. Host IP will show similar to "M365:40.99.10.34".
 * **Authentication** - Authentication details detected in the session.
 
-### Other
+### Other Information
 
 - The **ruleset is now contained within its own DLL file**. This means any ruleset updates can be delivered more frequently, extension updates can have a different release cadence.
 - **Many ruleset updates** applied, which have accumulated since the last release in Winter 2022.
