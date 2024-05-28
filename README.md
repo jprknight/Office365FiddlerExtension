@@ -73,7 +73,7 @@ Columns are added into the session view on the left side of Fiddler, scroll the 
 * **Session Type** - What kind of session was detected.
 * **Host IP** - IP address of the device / server which responded.
 Assuming you don't have never web call enabled, the extension pulls from the Microsoft URLs and IPs Web Service, to tell you if a host IP is:
-  * A private LAN IP address. Host IP will show similar to "LAN:192.168.1.1".
+  * A private LAN IP address. Host IP will show similar to "LAN:10.0.0.1".
   * A public IP address. Host IP will show similar to "PUB:8.8.8.8".
   * A Microsoft 365 IP address. Host IP will show similar to "M365:40.99.10.34".
 * **Authentication** - Authentication details detected in the session.
@@ -84,9 +84,9 @@ Assuming you don't have never web call enabled, the extension pulls from the Mic
 - **Many ruleset updates** applied, which have accumulated since the last release in Winter 2022.
 - **Error handling greatly improved**. Errors are typically logged to the Fiddler log within the application rather than throwing popup boxes.
 - **Extensive use of Json** for update notifications, session information, version information, URLs, and for minor rule updates from the Github repo, all of which are automated updates the extension runs periodically.
-  * URLs: https://github.com/jprknight/Office365FiddlerExtension/blob/master/Office365FiddlerExtension/ExtensionURLs.json
-  * Version: https://github.com/jprknight/Office365FiddlerExtension/blob/master/Office365FiddlerExtension/ExtensionVersion.json
-  * Session Classification: https://github.com/jprknight/Office365FiddlerExtension/blob/master/Office365FiddlerExtension/SessionClassification.json
+  * URLs -- Extension URLs can be updated in the Github repo, and the extension downloads the updates: https://github.com/jprknight/Office365FiddlerExtension/blob/master/Office365FiddlerExtension/ExtensionURLs.json
+  * Version -- Version information can be updated in the Github and the extension notifies of the updates: https://github.com/jprknight/Office365FiddlerExtension/blob/master/Office365FiddlerExtension/ExtensionVersion.json
+  * Session Classification -- Colorisation of sessions can be updated within the Github and consumed by the extension on next update: https://github.com/jprknight/Office365FiddlerExtension/blob/master/Office365FiddlerExtension/SessionClassification.json
 - **Improved performance** in the ruleset logic. Lots of coding to ensure session logic only runs once, and compute intensive code is exited from as soon as possible when not needed.
 - **Session analysis is stored within flags** inside sessions. Loading a Saz file previously saved with the extension enabled will process exceptionally fast. In this scenario instead of running through the ruleset, the stored values are used.
 - The extension can still be set to **never web call** for isolated environments, if it's important for you to turn these features off. -- Make sure to have SessionClassification.json in your \Fiddler\Inspectors\ folder if you want to do this. Just note you won't see any update notices and you get to use the expanded Host IP features.
