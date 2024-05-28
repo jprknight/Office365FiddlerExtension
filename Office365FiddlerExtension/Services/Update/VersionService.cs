@@ -48,7 +48,6 @@ namespace Office365FiddlerExtension.Services
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}) " +
-                    $"({System.Reflection.MethodBase.GetCurrentMethod().Name}) " +
                     $"Never Web Call stopping extension update check.");
                 return false;
             }
@@ -57,13 +56,14 @@ namespace Office365FiddlerExtension.Services
                 + Assembly.GetExecutingAssembly().GetName().Version.Minor
                 + Assembly.GetExecutingAssembly().GetName().Version.Build;
 
+            /*
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}) " +
-                $"({System.Reflection.MethodBase.GetCurrentMethod().Name}) " +
                 $"Local version " +
                 $"{Assembly.GetExecutingAssembly().GetName().Version.Major}." +
                 $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
                 $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
+            */
 
             var githubJsonVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
@@ -71,13 +71,14 @@ namespace Office365FiddlerExtension.Services
                 + githubJsonVersion.ExtensionMinor
                 + githubJsonVersion.ExtensionBuild;
 
+            /*
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}) " +
-                $"({System.Reflection.MethodBase.GetCurrentMethod().Name}) " +
                 $"Github version " +
                 $"{githubJsonVersion.ExtensionMajor}." +
                 $"{githubJsonVersion.ExtensionMinor}." +
                 $"{githubJsonVersion.ExtensionBuild}");
+            */
 
             if (localVersion < githubVersion)
             {
@@ -93,7 +94,6 @@ namespace Office365FiddlerExtension.Services
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name})" +
-                    $"({System.Reflection.MethodBase.GetCurrentMethod().Name}) " +
                     "Never Web Call preventing update checking.");
                 return;
             }

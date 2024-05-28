@@ -1,11 +1,15 @@
 {
   "ExtensionMajor": 2,
   "ExtensionMinor": 0,
-  "ExtensionBuild": 3,
+  "ExtensionBuild": 2,
   "RulesetMajor": 2024,
   "RulesetMinor": 5,
-  "RulesetBuild": 30,
+  "RulesetBuild": 24,
   "ExtensionPattern": "Office365FiddlerExtension*.dll",
   "RulesetZip": "Office365FiddlerExtensionRuleset.zip",
-  "RulesetDLLPattern": "Office365FiddlerExtensionRuleset*.dll"
+  "RulesetDLLPattern": "Office365FiddlerExtensionRuleset*.dll",
+  "Also Update These Files": "This gives the best chance of telling all legacy versions of the extension 'There is an update available.'",
+  "Legacy EXOFiddlerInspector update.xml": "https://github.com/jprknight/Office365FiddlerExtension/blob/master/EXOFiddlerInspector/update.xml",
+  "Legacy Office365FiddlerInspector update.xml": "https://github.com/jprknight/Office365FiddlerExtension/blob/master/Office365FiddlerInspector/update.xml",
+  "Legacy Office365FiddlerExention update.xml": "https://github.com/jprknight/Office365FiddlerExtension/tree/master/Office365FiddlerExtension"
 }
