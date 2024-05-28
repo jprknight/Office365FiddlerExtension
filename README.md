@@ -89,7 +89,7 @@ Assuming you don't have never web call enabled, the extension pulls from the Mic
   * Version -- Version information can be updated in the Github and the extension notifies of the updates: https://github.com/jprknight/Office365FiddlerExtension/blob/master/Office365FiddlerExtension/ExtensionVersion.json
   * Session Classification -- Colorisation of sessions can be updated within the Github and consumed by the extension on next update: https://github.com/jprknight/Office365FiddlerExtension/blob/master/Office365FiddlerExtension/SessionClassification.json
 - **Improved performance** in the ruleset logic. Lots of coding to ensure session logic only runs once, and compute intensive code is exited from as soon as possible when not needed.
-- **Session analysis is stored within flags** inside sessions. Loading a Saz file previously saved with the extension enabled will process exceptionally fast. In this scenario instead of running through the ruleset, the stored values are used.
+- When saving a SAZ file with the extension enabled **session analysis is stored within flags**. Loading a Saz file previously saved with the extension enabled will process exceptionally faster. In this scenario instead of running through the ruleset, the stored values are used.
 - The extension can still be set to **never web call** for isolated environments, if it's important for you to turn these features off. -- Make sure to have SessionClassification.json in your \Fiddler\Inspectors\ folder if you want to do this. Just note you won't see any update notices and you get to use the expanded Host IP features.
 
 ## Project Links
