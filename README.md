@@ -94,10 +94,10 @@ Assuming you don't have never web call enabled, the extension pulls from the Mic
 
 ## Project Links
 
-**Wiki:** <a href="https://aka.ms/O365FiddlerExtensionWiki" target="_blank">https://aka.ms/O365FiddlerExtensionWiki</a>
+**Wiki:** https://aka.ms/O365FiddlerExtensionWiki"
 
-**Issues:** <a href="https://aka.ms/O365FiddlerExtensionIssues" target="_blank">https://aka.ms/O365FiddlerExtensionIssues</a>
+**Issues:** https://aka.ms/O365FiddlerExtensionIssues
 
-**Download:** <a href="https://aka.ms/O365FiddlerExtension" target="_blank">https://aka.ms/O365FiddlerExtension</a>
+**Download:** https://aka.ms/O365FiddlerExtension
 
-**EHLO team blog post:** <a href="https://techcommunity.microsoft.com/t5/exchange-team-blog/introducing-the-exchange-online-fiddler-extension/ba-p/608788" target="_blank">EHLO Blog Article</a>
+**EHLO team blog post:** https://techcommunity.microsoft.com/t5/exchange-team-blog/introducing-the-exchange-online-fiddler-extension/ba-p/608788"
