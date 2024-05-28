@@ -4,8 +4,15 @@ This Fiddler Extension is an Office 365 centric parser to efficiently troublesho
 
 ## How To Use The Extension
 
-1. Reproduce an issue / behaviour: Use Fiddler Classic, FiddlerCap, or FiddlerAnywhere to collect a trace (decrypt traffic) on the computer where the issue is seen. Save the result as a SAZ file, and transfer to your own computer.
-2. Review the result (SAZ) file: On your own computer install Fiddler Classic, install the extension, and open the SAZ file, HTTP archive, or Json browser net trace.
+1. Reproduce an issue / behaviour from the computer where it is seen:
+* Use Fiddler Classic, FiddlerCap, or FiddlerAnywhere to collect a trace with <a href="https://docs.telerik.com/fiddler/configure-fiddler/tasks/decrypthttps" target="_blank">decrypt HTTPS traffic</a> enabled.
+* Use F12 Developer tools and save a HAR file from a browser session.
+* Use Network Log Export <a href="edge://net-export/" target="_blank">edge://net-export/</a>. Note, with this option you'll need the <a href="https://github.com/ericlaw1979/FiddlerImportNetlog/releases/latest" target="_blank">Fiddler Import Netlog</a> plugin, to have the "NetLog JSON" import option in Fiddler.
+
+3. Review the result: On your own computer install Fiddler Classic, install the extension and...
+* Open / double click the SAZ file, loaded sessions are automatically analysed.
+* Import the HTTP archive. Click The Office 365 menu item, click 'Analyse All Sessions'.
+* Import the JSON browser net trace. Click The Office 365 menu item, click 'Analyse All Sessions'.
 
 ## Deployment Script
 
@@ -32,40 +39,53 @@ Think traffic lights, with some extras.
 * Blue -- False positive detected, most prominiently HTTP 502's, see Session Analysis on the response inspector for details.
 * Green -- Nothing bad detected.
 * Gray -- Unlikely to be of interest.
+* Pink -- Something went wrong with the extension logic. This is the default fallback color. Look for errors in the Fiddler log. Open an issue on the 'Issues' tab to contact the extension author.
 
 ### User Interface
 
 * **Response Inspector Tab** - Look for Session Analysis, for helpful information on any given session.
-* **Office 365 Menu** - Turn off/on extension features.
+* **Office 365 Menu**
+  * Turn extension off and on.
+  * Analyse all sessions -- Analyse all sessions in the view in Fiddler. This will also fill in any sessions which do not already have session analysis.
+  * Clear All Session Analysis -- Clear all session analysis values on all sessions.
+  * Create Consolidated Analysis Report -- Creates a HTML report, highlighting the most interesting sessions and other statistical information from the sessions in the view in Fiddler.
+  * Check IP Address -- Manually check if an IP address is in a private, public, or Microsoft 365 subnet.
 * **Context Menu** - Additional options for processing sessions.
 
 ### Session Columns
 
 Columns are added into the session view on the left side of Fiddler, scroll the view to the right if you don't immediately see them. Re-order the columns to your preferences.
 
-* **Severity** - Numnerical value given the severity of the session (0 - 60).
+* **Severity** - Session Severity has a scale of 0 – 60. The scale of Session Severity correlates to the colourisation of sessions the extension provides:
+  * 00 Pink (Something went wrong in the extension)
+  * 10 Grey (Uninteresting)
+  * 20 Bue (False Positive)
+  * 30 Green (Normal)
+  * 40 Orange (Warning)
+  * 50 Black (Concerning)
+  * 60 Red (Severe)
 * **Elapsed Time** - The roundtrip time for the request/response.
 * **Response Server** - What kind of device / server responded to the request.
 * **Session Type** - What kind of session was detected.
 * **Host IP** - IP address of the device / server which responded.
+Assuming you don't have never web call enabled, the extension pulls from the Microsoft URLs and IPs Web Service, to tell you if a host IP is:
+  * A private LAN IP address. Host IP will show similar to "LAN:192.168.1.1".
+  * A public IP address. Host IP will show similar to "PUB:8.8.8.8".
+  * A Microsoft 365 IP address. Host IP will show similar to "M365:40.99.10.34".
 * **Authentication** - Authentication details detected in the session.
 
-### Extension v2 Update Notes
-The extension has had a complete rewrite giving it the ability to update from the web via Json files, adding new features, and improving the code structure.
+### Other
 
-* The ruleset is now contained within its own DLL file. This means any ruleset updates can be delivered more frequently, extension updates can have a different release cadence.
-* Many ruleset updates added which have accumulated since the last release in Winter 2022.
-* Extensive use of Json for update notifications, session information, version information, URLs, and for minor rule updates from the Github repo, all of which are automated updates the extension runs periodically.
-* Improved performance in the ruleset logic. Session analysis is also stored within flags inside sessions. Loading a Saz file previously saved with the extension enabled will process exceptionally fast upon reloading. In this scenario instead of running through the ruleset, the stored values are used.
-* The extension can still be set to never web call for isolated environments, if it's important for you to turn these features off. -- Make sure to have SessionClassification.json in your \Fiddler\Inspectors\ folder if you want to do this.
-* Session Severity added to the list of attributes stamped onto sessions by the extension. -- These directly correlate to the colors the extension uses on sessions.
-* Session Severity has a scale of 0 – 60. As shown below the scale of Session Severity correlates to the colourisation of sessions the extension provides:
-** 10 Grey (Uninteresting)
-** 20 Bue (False Positive)
-** 30 Green (Normal)
-** 40 Orange (Warning)
-** 50 Black (Concerning)
-** 60 Red (Severe)
+- The **ruleset is now contained within its own DLL file**. This means any ruleset updates can be delivered more frequently, extension updates can have a different release cadence.
+- **Many ruleset updates** applied, which have accumulated since the last release in Winter 2022.
+- **Error handling greatly improved**. Errors are typically logged to the Fiddler log within the application rather than throwing popup boxes.
+- **Extensive use of Json** for update notifications, session information, version information, URLs, and for minor rule updates from the Github repo, all of which are automated updates the extension runs periodically.
+  * URLs: https://github.com/jprknight/Office365FiddlerExtension/blob/master/Office365FiddlerExtension/ExtensionURLs.json
+  * Version: https://github.com/jprknight/Office365FiddlerExtension/blob/master/Office365FiddlerExtension/ExtensionVersion.json
+  * Session Classification: https://github.com/jprknight/Office365FiddlerExtension/blob/master/Office365FiddlerExtension/SessionClassification.json
+- **Improved performance** in the ruleset logic. Lots of coding to ensure session logic only runs once, and compute intensive code is exited from as soon as possible when not needed.
+- **Session analysis is stored within flags** inside sessions. Loading a Saz file previously saved with the extension enabled will process exceptionally fast. In this scenario instead of running through the ruleset, the stored values are used.
+- The extension can still be set to **never web call** for isolated environments, if it's important for you to turn these features off. -- Make sure to have SessionClassification.json in your \Fiddler\Inspectors\ folder if you want to do this. Just note you won't see any update notices and you get to use the expanded Host IP features.
 
 ## Project Links
 
