@@ -1,6 +1,6 @@
 ## Extension Purpose
 
-This Fiddler Extension is an Office 365 centric parser to efficiently troubleshoot Office 365 client application connectivity and functionality.
+This Fiddler Extension is an Office 365 / Microsoft 365 centric parser to efficiently troubleshoot Office 365 client application connectivity and functionality.
 
 ## How To Use The Extension
 
@@ -51,7 +51,11 @@ Think traffic lights, with some extras.
   * Create Consolidated Analysis Report -- Creates a HTML report, highlighting the most interesting sessions and other statistical information from the sessions in the view in Fiddler.
   * Check IP Address -- Manually check if an IP address is in a private, public, or Microsoft 365 subnet.
 * **Context Menu** - Additional options for processing sessions.
-
+  * Analyse Selected Sessions -- Analyse selected sessions in the view in Fiddler.
+  * Clear Selected Sessions -- Clear session analysis values on selected sessions in the view in Fiddler.
+  * Set Session Severity -- Manually set severity or recalculate session severity with extension, on selected sessions.
+  * Create Consolidated Analysis Report -- Creates a HTML report, highlighting the most interesting sessions and other statistical information from the sessions in the view in Fiddler.
+ 
 ### Session Columns
 
 Columns are added into the session view on the left side of Fiddler, scroll the view to the right if you don't immediately see them. Re-order the columns to your preferences.
