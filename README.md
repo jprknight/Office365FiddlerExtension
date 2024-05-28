@@ -80,6 +80,7 @@ Assuming you don't have never web call enabled, the extension pulls from the Mic
 
 ### Other Information
 
+- In comparison to earlier versions of the extension the structure of the **solution is now much more comparmentalised**. Individual classes can be updated for very specific purposes without impacting the whole solution.
 - The **ruleset is now contained within its own DLL file**. This means any ruleset updates can be delivered more frequently, extension updates can have a different release cadence.
 - **Many ruleset updates** applied, which have accumulated since the last release in Winter 2022.
 - **Error handling greatly improved**. Errors are typically logged to the Fiddler log within the application rather than throwing popup boxes.
