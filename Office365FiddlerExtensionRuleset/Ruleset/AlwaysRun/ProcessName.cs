@@ -13,7 +13,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static ProcessName Instance => _instance ?? (_instance = new ProcessName());
 
-        public void SetProcessName(Session session)
+        /// <summary>
+        /// Set the process name. Used in the UI column and the response inspector.
+        /// </summary>
+        /// <param name="session"></param>
+        public void Run(Session session)
         {
             this.session = session;
 

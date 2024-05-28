@@ -14,8 +14,23 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static SessionElapsedTime Instance => _instance ?? (_instance = new SessionElapsedTime());
 
-        // Function where Elapsed Time column data is populated.
-        public void SetElapsedTime(Session session)
+        /// <summary>
+        /// Calculate session elapsed time for the UI column and response inspector.
+        /// </summary>
+        /// <param name="session"></param>
+        public void Run(Session session)
+        {
+            this.session = session;
+
+            SetElapsedTime(this.session);
+            SetInspectorElapsedTime(this.session);
+        }
+
+        /// <summary>
+        /// Calculate session elapsed time for the UI column.
+        /// </summary>
+        /// <param name="session"></param>
+        private void SetElapsedTime(Session session)
         {
             this.session = session;
 
@@ -48,8 +63,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
         }
 
-        // Function to set the Elapsed Time for the inspector. HTML mark up.
-        public void SetInspectorElapsedTime(Session session)
+        /// <summary>
+        /// Determine the elapsed time for the response inspector.
+        /// </summary>
+        /// <param name="session"></param>
+        private void SetInspectorElapsedTime(Session session)
         {
             this.session = session;
 

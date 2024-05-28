@@ -6,10 +6,6 @@ using System.Reflection;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
-    /// <summary>
-    /// Session analysis where there is no conditional logic for the response code.
-    /// Pull session analysis values from SessionClassification.json and set simple session analysis in session headers.
-    /// </summary>
     class SimpleSessionAnalysis
     {
         internal Session session { get; set; }
@@ -18,6 +14,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static SimpleSessionAnalysis Instance => _instance ?? (_instance = new SimpleSessionAnalysis());
 
+        /// <summary>
+        /// Run simple session analysis, where there is no conditional logic for the response code.
+        /// Pull session analysis values from SessionClassification.json and set simple session analysis in session headers.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="ResponseCodeSection"></param>
         public void Run(Session session, String ResponseCodeSection)
         {
             this.session = session;

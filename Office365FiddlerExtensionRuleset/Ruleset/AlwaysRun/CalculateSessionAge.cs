@@ -14,8 +14,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static CalculateSessionAge Instance => _instance ?? (_instance = new CalculateSessionAge());
 
-        // Calculate session age on Inspector.
-        public void SessionAge(Session session)
+        /// <summary>
+        /// Calculate the session age for the response inspector.
+        /// </summary>
+        /// <param name="session"></param>
+        public void Run(Session session)
         {
             this.session = session;
 

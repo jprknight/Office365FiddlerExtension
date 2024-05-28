@@ -14,8 +14,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static ServerThinkTimeTransitTime Instance => _instance ?? (_instance = new ServerThinkTimeTransitTime());
 
-        // Set Server Think Time and Transit Time for Inspector.
-        public void SetServerThinkTimeTransitTime(Session session)
+        /// <summary>
+        /// Calculate the 'Server Think Time' and 'Transit Time' for the response inspector.
+        /// </summary>
+        /// <param name="session"></param>
+        public void Run(Session session)
         {
             this.session = session;
 

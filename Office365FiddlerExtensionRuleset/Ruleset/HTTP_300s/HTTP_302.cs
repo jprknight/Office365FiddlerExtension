@@ -14,6 +14,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_302 Instance => _instance ?? (_instance = new HTTP_302());
 
+        /// <summary>
+        /// Set session analysis values for a HTTP 302 response code.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;

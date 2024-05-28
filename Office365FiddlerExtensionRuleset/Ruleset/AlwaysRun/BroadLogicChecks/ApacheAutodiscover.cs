@@ -14,6 +14,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static ApacheAutodiscover Instance => _instance ?? (_instance = new ApacheAutodiscover());
 
+        /// <summary>
+        /// Determine if the current session has an Apache server responding to an AutoDiscover call.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;

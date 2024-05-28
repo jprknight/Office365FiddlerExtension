@@ -14,6 +14,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_0 Instance => _instance ?? (_instance = new HTTP_0());
 
+        /// <summary>
+        /// Set session analysis values when no response code is seen.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;

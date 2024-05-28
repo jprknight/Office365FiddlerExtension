@@ -13,6 +13,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static SessionType Instance => _instance ?? (_instance = new SessionType());
 
+        /// <summary>
+        /// Set the session type, run towards end of ruleset processing as a final catch all.
+        /// Used by the UI column and response inspector.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;

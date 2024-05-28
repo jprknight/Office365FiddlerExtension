@@ -14,6 +14,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static LoopBackTunnel Instance => _instance ?? (_instance = new LoopBackTunnel());
 
+        /// <summary>
+        /// Determine if the current session is a loopback tunnel.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;

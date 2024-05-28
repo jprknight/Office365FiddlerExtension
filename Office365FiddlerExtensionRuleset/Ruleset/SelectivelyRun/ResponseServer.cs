@@ -13,6 +13,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static ResponseServer Instance => _instance ?? (_instance = new ResponseServer());
 
+        /// <summary>
+        /// Set the response server, run towards end of ruleset processing as a final catch all.
+        /// Used by the UI column and response inspector.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;

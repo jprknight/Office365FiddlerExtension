@@ -14,6 +14,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_405 Instance => _instance ?? (_instance = new HTTP_405());
 
+        /// <summary>
+        /// Set session analysis values for a HTTP 405 response code.
+        /// </summary>
+        /// <param name="session"></param>
         public void HTTP_405_Method_Not_Allowed(Session session)
         {
             this.session = session;

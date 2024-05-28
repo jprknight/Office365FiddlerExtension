@@ -14,6 +14,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_456 Instance => _instance ?? (_instance = new HTTP_456());
 
+        /// <summary>
+        /// Set session analysis values for a HTTP 456 response code.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;

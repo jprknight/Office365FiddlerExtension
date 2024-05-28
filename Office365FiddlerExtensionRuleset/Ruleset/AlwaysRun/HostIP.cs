@@ -14,6 +14,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HostIP Instance => _instance ?? (_instance = new HostIP());
 
+        /// <summary>
+        /// Set the HostIP, handling whether NeverWebCall is true or false. Used in the UI column and the response inspector.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;

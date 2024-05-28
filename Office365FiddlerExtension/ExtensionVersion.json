@@ -11,5 +11,5 @@
   "Also Update These Files": "This gives the best chance of telling all legacy versions of the extension 'There is an update available.'",
   "Legacy EXOFiddlerInspector update.xml": "https://github.com/jprknight/Office365FiddlerExtension/blob/master/EXOFiddlerInspector/update.xml",
   "Legacy Office365FiddlerInspector update.xml": "https://github.com/jprknight/Office365FiddlerExtension/blob/master/Office365FiddlerInspector/update.xml",
-  "Legacy Office365FiddlerExention update.xml": "https://github.com/jprknight/Office365FiddlerExtension/tree/master/Office365FiddlerExtension"
+  "Legacy Office365FiddlerExention update.xml": "https://github.com/jprknight/Office365FiddlerExtension/blob/master/Office365FiddlerExtension/update.xml"
 }

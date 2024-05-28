@@ -20,6 +20,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         private static RulesetUtilities _instance;
         public static RulesetUtilities Instance => _instance ?? (_instance = new RulesetUtilities());
 
+        /// <summary>
+        /// Search for a word in a string. Split words in the string by spaces and these symbols: . ? ! ; : ,
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="searchTerm"></param>
+        /// <returns></returns>
         public int SearchForWord(Session session, String searchTerm)
         {
             this.session = session;
@@ -36,6 +42,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             return matchQuery.Count();
         }
 
+        /// <summary>
+        /// Search for a phrase in a string.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="searchTerm"></param>
+        /// <returns></returns>
         public bool SearchForPhrase(Session session, String searchTerm)
         {
             this.session = session;
@@ -48,6 +60,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             return true;
         }
 
+        /// <summary>
+        /// Used to return a boolean value on whether the session type confidence level has already been set to 10 or not.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns></returns>
         public bool StopProcessing_SessionTypeConfidenceLevel_Ten(Session session)
         {
             this.session = session;
@@ -59,6 +76,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             return false;
         }
 
+        /// <summary>
+        /// Used to return a boolean value on whether the session authentication confidence level has already been set to 10 or not.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns></returns>
         public bool StopProcessing_SessionAuthenticationConfidenceLevel_Ten(Session session)
         {
             this.session = session;
@@ -70,6 +92,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             return false;
         }
 
+        /// <summary>
+        /// Used to return a boolean value on whether the session response server confidence level has already been set to 10 or not.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns></returns>
         public bool StopProcessing_SessionResponseServerConfidenceLevel_Ten(Session session)
         {
             this.session = session;
@@ -81,6 +108,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             return false;
         }
 
+        /// <summary>
+        /// Used to return a boolean value on whether the session type and response server confidence levels have both already been set to 10 or not.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns></returns>
         public bool SessionAnalysisCompleted(Session session)
         {
             this.session = session;

@@ -12,6 +12,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         private static ConnectTunnelTLSVersion _instance;
         public static ConnectTunnelTLSVersion Instance => _instance ?? (_instance = new ConnectTunnelTLSVersion());
 
+        /// <summary>
+        /// Determine if the current session is a connect tunnel, if so set the TLS version.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;

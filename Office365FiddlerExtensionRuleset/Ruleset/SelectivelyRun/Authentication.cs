@@ -14,6 +14,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static Authentication Instance => _instance ?? (_instance = new Authentication());
 
+        /// <summary>
+        /// Set authentication based on data available in the session. Used in the UI column and response inspector.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;

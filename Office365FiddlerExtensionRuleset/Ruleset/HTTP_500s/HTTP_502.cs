@@ -14,6 +14,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_502 Instance => _instance ?? (_instance = new HTTP_502());
 
+        /// <summary>
+        /// Set session analysis values for a HTTP 502 response code.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;

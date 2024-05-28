@@ -14,6 +14,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_400 Instance => _instance ?? (_instance = new HTTP_400());
 
+        /// <summary>
+        /// Set session analysis values for a HTTP 400 response code.
+        /// </summary>
+        /// <param name="session"></param>
         public void HTTP_400_Bad_Request(Session session)
         {
             this.session = session;

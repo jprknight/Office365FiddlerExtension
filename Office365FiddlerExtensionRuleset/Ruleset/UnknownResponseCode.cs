@@ -4,14 +4,14 @@ using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
-    class Default_UnknownResponseCode
+    class UnknownResponseCode
     {
 
         internal Session session { get; set; }
 
-        private static Default_UnknownResponseCode _instance;
+        private static UnknownResponseCode _instance;
 
-        public static Default_UnknownResponseCode Instance => _instance ?? (_instance = new Default_UnknownResponseCode());
+        public static UnknownResponseCode Instance => _instance ?? (_instance = new UnknownResponseCode());
 
         public void Run(Session session)
         {

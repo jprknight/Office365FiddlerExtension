@@ -14,6 +14,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static LongRunningSessions Instance => _instance ?? (_instance = new LongRunningSessions());
 
+        /// <summary>
+        /// Set long running sessions. Always run last as typically any other session analysis is more useful.
+        /// Network captures rather than application data are better used when network retransmits are suspected as
+        /// an underlying cause for a given issue. Used in the UI columns and response inspector.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;

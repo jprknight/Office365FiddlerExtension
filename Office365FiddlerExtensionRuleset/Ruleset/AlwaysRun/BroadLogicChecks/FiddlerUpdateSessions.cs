@@ -14,6 +14,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static FiddlerUpdateSessions Instance => _instance ?? (_instance = new FiddlerUpdateSessions());
 
+        /// <summary>
+        /// Determine if the current session is a Fiddler update session.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;
