@@ -37,14 +37,14 @@ You're expecting to extract these files to both of the folders above for the ext
 
 1. **Reproduce an issue** from the computer where it is seen:
 * NOTE: You don't need the extension installed on the computer where the issue is seen.
-* Use Fiddler Classic, FiddlerCap, or FiddlerAnywhere to collect a trace with <a href="https://docs.telerik.com/fiddler/configure-fiddler/tasks/decrypthttps">decrypt HTTPS traffic</a> enabled.
-* Use F12 Developer tools and save a HAR file from a browser session.
-* Use Network Log Export (edge://net-export/ in Edge browser). Note, with this option you'll need the <a href="https://github.com/ericlaw1979/FiddlerImportNetlog/releases/latest">Fiddler Import Netlog</a> plugin, to have the "NetLog JSON" import option in Fiddler.
+* Use Fiddler Classic, FiddlerCap, or FiddlerAnywhere to collect a **SAZ file** trace with <a href="https://docs.telerik.com/fiddler/configure-fiddler/tasks/decrypthttps">decrypt HTTPS traffic</a> enabled.
+* Use F12 Developer tools and save a **HAR file** from a browser session.
+* Use **JSON Network Log Export** (edge://net-export/ in Edge browser). Note, with this option you'll need the <a href="https://github.com/ericlaw1979/FiddlerImportNetlog/releases/latest">Fiddler Import Netlog</a> plugin, to have the "NetLog JSON" import option in Fiddler.
 
 2. **Review the result** on your own computer by installing Fiddler Classic, installing the extension, and...
-* Opening or double clicking the SAZ file. Loaded sessions are automatically analysed.
-* Importing the HTTP archive. Click File, Import Sessions, "HTTPArchive" and choose your HAR file. Once loaded click The Office 365 menu and click 'Analyse All Sessions'.
-* Importing the JSON browser net trace. Click File, Import Sessions, "NetLog JSON" and choose your JSON file. Once loaded click The Office 365 menu and click 'Analyse All Sessions'.
+* Opening or double clicking the **SAZ file**. As Fiddler loads the SAZ filem the sessions are automatically analysed.
+* Importing a **HAR file**: Click File, Import Sessions, "HTTPArchive" and choose your HAR file. Once loaded click The Office 365 menu and click 'Analyse All Sessions'.
+* Importing a **JSON Network Log Export**: Click File, Import Sessions, "NetLog JSON" and choose your JSON file. Once loaded click The Office 365 menu and click 'Analyse All Sessions'.
 
 ## Functionality Breakdown
 
