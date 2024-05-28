@@ -14,6 +14,23 @@ Don't want to use the aka.ms short link, or not working? Use this link instead, 
 
 `Invoke-Expression (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/Deploy-Office365FiddlerExtension.ps1')`
 
+### Manual Install
+
+Download the Office365FiddlerExtension.zip file and extract the contents into your \Fiddler\Inspectors and \Fiddler\Scripts installation folder. Fiddler will then load the extension the next time it loads.
+
+You're expecting to extract these files to both of the folders above for the extension to successfully run:
+
+* Microsoft.ApplicationInsights.dll
+* Microsoft.ApplicationInsights.pdb
+* Microsoft.ApplicationInsights.xml
+* Office365FiddlerExtension.dll
+* Office365FiddlerExtension.dll.config
+* Office365FiddlerExtension.pdb
+* Office365FiddlerExtensionRuleset.dll
+* Office365FiddlerExtensionRuleset.dll.config
+* Office365FiddlerExtensionRuleset.pdb
+* SessionClassification.json
+
 ![Office 365 Fiddler Extension Deployment Script](https://github.com/jprknight/Office365FiddlerExtension/blob/master/docs/Office365FiddlerExtensionDeploymentScript.png)
 
 ## How To Use The Extension
