@@ -21,7 +21,7 @@ Don't want to use the aka.ms short link, or not working? Use this link instead, 
 * Use F12 Developer tools and save a HAR file from a browser session.
 * Use Network Log Export (edge://net-export/ in Edge browser). Note, with this option you'll need the <a href="https://github.com/ericlaw1979/FiddlerImportNetlog/releases/latest">Fiddler Import Netlog</a> plugin, to have the "NetLog JSON" import option in Fiddler.
 
-3. **Review the result** on your own computer by installing Fiddler Classic, installing the extension, and...
+2. **Review the result** on your own computer by installing Fiddler Classic, installing the extension, and...
 * Open / double clicking the SAZ file. Loaded sessions are automatically analysed.
 * Importing the HTTP archive. Click File, Import Sessions, "HTTPArchive" and choose your HAR file. Once loaded click The Office 365 menu item, click 'Analyse All Sessions'.
 * Importing the JSON browser net trace. Click File, Import Sessions, "NetLog JSON" and choose your JSON file. Once loaded click The Office 365 menu item, click 'Analyse All Sessions'.
