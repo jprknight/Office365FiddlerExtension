@@ -17,9 +17,9 @@ Don't want to use the aka.ms short link, or not working? Use this instead:
 ## How To Use The Extension
 
 1. **Reproduce an issue** from the computer where it is seen:
-* Use Fiddler Classic, FiddlerCap, or FiddlerAnywhere to collect a trace with <a href="https://docs.telerik.com/fiddler/configure-fiddler/tasks/decrypthttps" target="_blank">decrypt HTTPS traffic</a> enabled.
+* Use Fiddler Classic, FiddlerCap, or FiddlerAnywhere to collect a trace with <a href="https://docs.telerik.com/fiddler/configure-fiddler/tasks/decrypthttps">decrypt HTTPS traffic</a> enabled.
 * Use F12 Developer tools and save a HAR file from a browser session.
-* Use Network Log Export <a href="edge://net-export/" target="_blank">edge://net-export/</a>. Note, with this option you'll need the <a href="https://github.com/ericlaw1979/FiddlerImportNetlog/releases/latest" target="_blank">Fiddler Import Netlog</a> plugin, to have the "NetLog JSON" import option in Fiddler.
+* Use Network Log Export <a href="edge://net-export/" target="_blank">edge://net-export/</a>. Note, with this option you'll need the <a href="https://github.com/ericlaw1979/FiddlerImportNetlog/releases/latest">Fiddler Import Netlog</a> plugin, to have the "NetLog JSON" import option in Fiddler.
 
 3. **Review the result** on your own computer by installing Fiddler Classic, installing the extension, and...
 * Open / double clicking the SAZ file. Loaded sessions are automatically analysed.
