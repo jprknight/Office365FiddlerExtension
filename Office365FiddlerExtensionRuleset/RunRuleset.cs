@@ -10,6 +10,10 @@ namespace Office365FiddlerExtensionRuleset
 
         /// <summary>
         /// This should be considered the main constructor for the extension ruleset DLL.
+        /// 
+        /// RunRuleset.cs and RunRulesetResponseCodes.cs are what core code remains from SessionProcessor.cs 
+        /// from version 1 of the extension.
+        /// 
         /// </summary>
         /// <param name="session"></param>
         public void Initialize(Session session)
@@ -27,8 +31,7 @@ namespace Office365FiddlerExtensionRuleset
             }
 
             ///////////////////////////////
-            /// Always run these functions on every session.
-            /// Broad logic checks on sessions regardless of response code.
+            /// Always run these functions on every session (Broad Logic Checks).
             FiddlerUpdateSessions.Instance.Run(this.session);
 
             ApacheAutodiscover.Instance.Run(this.session);
@@ -36,7 +39,8 @@ namespace Office365FiddlerExtensionRuleset
             ConnectTunnelTLSVersion.Instance.Run(this.session);
             
             LoopBackTunnel.Instance.Run(this.session);
-            
+            ///
+            ///////////////////////////////
             /// Populate session flag data.
             CalculateSessionAge.Instance.Run(this.session);
             
@@ -47,7 +51,6 @@ namespace Office365FiddlerExtensionRuleset
             ProcessName.Instance.Run(this.session);
             
             HostIP.Instance.Run(this.session);
-
             ///
             ///////////////////////////////
             /// Run code based on response code in session.

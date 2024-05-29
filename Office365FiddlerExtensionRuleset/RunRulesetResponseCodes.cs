@@ -13,6 +13,10 @@ namespace Office365FiddlerExtensionRuleset
 
         /// <summary>
         /// Call other classes with a switch statement based on the session response code.
+        /// 
+        /// RunRuleset.cs and RunRulesetResponseCodes.cs are what core code remains from SessionProcessor.cs 
+        /// from version 1 of the extension.
+        /// 
         /// </summary>
         /// <param name="session"></param>
         public void Run(Session session)
