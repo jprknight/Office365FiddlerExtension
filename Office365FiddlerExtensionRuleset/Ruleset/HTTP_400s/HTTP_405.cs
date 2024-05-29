@@ -18,7 +18,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         /// Set session analysis values for a HTTP 405 response code.
         /// </summary>
         /// <param name="session"></param>
-        public void HTTP_405_Method_Not_Allowed(Session session)
+        public void Run(Session session)
         {
             this.session = session;
 

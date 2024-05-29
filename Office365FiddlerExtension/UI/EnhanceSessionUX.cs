@@ -24,6 +24,10 @@ namespace Office365FiddlerExtension.UI
             this.session["UI-COLOR"] = "#000000";
         }
 
+        /// <summary>
+        /// Set colours on sessions according to session severity value.
+        /// </summary>
+        /// <param name="session"></param>
         public void EnhanceSession(Session session)
         {
             this.session = session;
@@ -69,6 +73,9 @@ namespace Office365FiddlerExtension.UI
             this.session.RefreshUI();
         }
 
+        /// <summary>
+        /// Set session severity to 10, uninteresting.
+        /// </summary>
         public void SetSessionUninteresting()
         {
             var sessions = FiddlerApplication.UI.GetSelectedSessions();
@@ -89,6 +96,9 @@ namespace Office365FiddlerExtension.UI
             }
         }
 
+        /// <summary>
+        /// Set session severity to 20, false positive.
+        /// </summary>
         public void SetSessionFalsePositive()
         {
             var sessions = FiddlerApplication.UI.GetSelectedSessions();
@@ -109,6 +119,9 @@ namespace Office365FiddlerExtension.UI
             }
         }
 
+        /// <summary>
+        /// Set session severity to 30, normal.
+        /// </summary>
         public void SetSessionNormal()
         {
             var sessions = FiddlerApplication.UI.GetSelectedSessions();
@@ -129,6 +142,9 @@ namespace Office365FiddlerExtension.UI
             }
         }
 
+        /// <summary>
+        /// Set session severity to 40, warning.
+        /// </summary>
         public void SetSessionWarning()
         {
             var sessions = FiddlerApplication.UI.GetSelectedSessions();
@@ -149,6 +165,9 @@ namespace Office365FiddlerExtension.UI
             }
         }
 
+        /// <summary>
+        /// Set session severity to 50, concerning.
+        /// </summary>
         public void SetSessionConcerning()
         {
             var sessions = FiddlerApplication.UI.GetSelectedSessions();
@@ -169,6 +188,9 @@ namespace Office365FiddlerExtension.UI
             }
         }
 
+        /// <summary>
+        /// Set session severity to 60, severe.
+        /// </summary>
         public void SetSessionSevere()
         {
             var sessions = FiddlerApplication.UI.GetSelectedSessions();

@@ -13,6 +13,10 @@ namespace Office365FiddlerExtension.Services
         private static URLsJsonService _instance;
         public static URLsJsonService Instance => _instance ?? (_instance = new URLsJsonService());
 
+        /// <summary>
+        /// Get Json deserialised extension URLs.
+        /// </summary>
+        /// <returns></returns>
         public ExtensionURLsJson GetDeserializedExtensionURLs()
         {
             if (!JsonValidatorService.Instance.IsValidJsonString(Preferences.ExtensionURLs))
@@ -39,7 +43,10 @@ namespace Office365FiddlerExtension.Services
             return null;
         }
 
-        public void CreateExtensionURLFiddlerSetting()
+        /// <summary>
+        /// If it doesn't already exist, create the extension URLs application preference.
+        /// </summary>
+        public void CreateExtensionURLFiddlerApplicationPreference()
         {
             // If the Extension URLs Json already exists, none of this needs to run.
             if (Preferences.ExtensionURLs != null || Preferences.ExtensionURLs == "")

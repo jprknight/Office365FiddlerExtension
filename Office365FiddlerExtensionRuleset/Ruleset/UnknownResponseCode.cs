@@ -13,6 +13,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static UnknownResponseCode Instance => _instance ?? (_instance = new UnknownResponseCode());
 
+        /// <summary>
+        /// Set session flags for any session which has an unknown / undefined response code in the extension.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             // Not setting colours on sessions not recognised.

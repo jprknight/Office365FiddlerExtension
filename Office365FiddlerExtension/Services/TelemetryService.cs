@@ -6,6 +6,7 @@ using System.Text;
 using Fiddler;
 using System.Linq;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -84,7 +85,7 @@ namespace Office365FiddlerExtension.Services
 
                     Client.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
 
-                    Client.Context.Component.Version = Preferences.AppVersion;
+                    Client.Context.Component.Version = AppVersion;
 
                     TrackEvent("UserSession");
 
@@ -200,6 +201,17 @@ namespace Office365FiddlerExtension.Services
                     sb.Append(hashBytes[i].ToString("X2"));
                 }
                 return sb.ToString();
+            }
+        }
+
+        private static string AppVersion
+        {
+            get
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+
+                FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+                return fileVersionInfo.FileVersion;
             }
         }
     }

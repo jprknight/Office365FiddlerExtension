@@ -18,7 +18,7 @@ namespace Office365FiddlerExtension.Services
         /// <summary>
         /// Create settings if they don't exist. 
         /// </summary>
-        public void CreateExtensionSettingsFiddlerSetting()
+        public void CreateExtensionSettingsFiddlerApplicationPreference()
         {
             if (Preferences.ExtensionSettings != null)
             {
@@ -91,6 +91,11 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
+        /// <summary>
+        /// Determine if the extension session processing enabled is true/false.
+        /// Use this when wanting to determine if compute intensive operations should be performed or not.
+        /// </summary>
+        /// <returns>bool</returns>
         public bool ExtensionSessionProcessingEnabled
         {
             get
@@ -110,6 +115,11 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
+        /// <summary>
+        /// Returns bool on whether the Preferred language is the current language in use.
+        /// </summary>
+        /// <param name="language"></param>
+        /// <returns>bool</returns>
         public bool GetPreferredLanguageBool(string language )
         {
             try
@@ -130,6 +140,9 @@ namespace Office365FiddlerExtension.Services
             return false;
         }
 
+        /// <summary>
+        /// Set next update timestamp.
+        /// </summary>
         public void SetNextUpdateTimestamp()
         {
             // Pull & Deserialize Json from ExtensionSettings.
@@ -141,6 +154,10 @@ namespace Office365FiddlerExtension.Services
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
         }
 
+        /// <summary>
+        /// Set the update check frequency hours.
+        /// </summary>
+        /// <param name="hours"></param>
         public void SetUpdateCheckFrequencyHours(string hours)
         {
             // Validate input is int and only act if it is.
@@ -163,14 +180,10 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
-        public String TelemetryInstrumentationKey
-        {
-            get
-            {
-                return URLsJsonService.Instance.GetDeserializedExtensionURLs().TelemetryInstrumentationKey;
-            }
-        }
-
+        /// <summary>
+        /// Set extension session processing enabled.
+        /// </summary>
+        /// <param name="extensionSessionProcessingEnabled"></param>
         public void SetExtensionSessionProcessingEnabled(Boolean extensionSessionProcessingEnabled)
         {
             // Pull & Deserialize Json from ExtensionSettings.
@@ -189,6 +202,10 @@ namespace Office365FiddlerExtension.Services
                 $"({this.GetType().Name}): ExtensionSessionProcessingEnabled set to {extensionSessionProcessingEnabled}.");
         }
 
+        /// <summary>
+        /// Determine if session analysis on load Saz is enabled.
+        /// </summary>
+        /// <returns>bool</returns>
         public bool SessionAnalysisOnLoadSaz
         {
             get
@@ -197,6 +214,10 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
+        /// <summary>
+        /// Gets assembly directory.
+        /// </summary>
+        /// <returns>string assembly directory.</returns>
         public static string AssemblyDirectory
         {
             get
@@ -208,6 +229,10 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
+        /// <summary>
+        /// Gets assembly name.
+        /// </summary>
+        /// <returns>string assembly name.</returns>
         public static string AssemblyName
         {
             get
@@ -216,6 +241,9 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
+        /// <summary>
+        /// Sets extension path in extension settings Json preference.
+        /// </summary>
         public void SetExtensionPath()
         {
             // Pull & Deserialize Json from ExtensionSettings.
@@ -227,14 +255,9 @@ namespace Office365FiddlerExtension.Services
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
         }
 
-        public string ExtensionDLL
-        {
-            get
-            {
-                return SettingsJsonService.Instance.GetDeserializedExtensionSettings().ExtensionDLL;
-            }
-        }
-
+        /// <summary>
+        /// Sets extension DLL in extension settings Json preference.
+        /// </summary>
         public void SetExtensionDLL()
         {
             // Pull & Deserialize Json from ExtensionSettings.
@@ -246,6 +269,10 @@ namespace Office365FiddlerExtension.Services
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
         }
 
+        /// <summary>
+        /// Set session analysis on load saz in extension settings Json preference.
+        /// </summary>
+        /// <param name="sessionAnalysisOnLoadSaz"></param>
         public void SetSessionAnalysisOnLoadSaz(Boolean sessionAnalysisOnLoadSaz)
         {
             // Pull & Deserialize Json from ExtensionSettings.
@@ -260,6 +287,10 @@ namespace Office365FiddlerExtension.Services
                 $"({this.GetType().Name}): SessionAnalysisOnLoadSaz set to {sessionAnalysisOnLoadSaz}.");
         }
 
+        /// <summary>
+        /// Get Session analysis on live trace from extension settings Json application preference.
+        /// </summary>
+        /// <returns>bool</returns>
         public bool SessionAnalysisOnLiveTrace
         {
             get
@@ -268,6 +299,10 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
+        /// <summary>
+        /// Set session analysis on live trace in extension settings Json application preference.
+        /// </summary>
+        /// <param name="sessionAnalysisOnLiveTrace"></param>
         public void SetSessionAnalysisOnLiveTrace(Boolean sessionAnalysisOnLiveTrace)
         {
             // Pull & Deserialize Json from ExtensionSettings.
@@ -282,6 +317,10 @@ namespace Office365FiddlerExtension.Services
                 $"({this.GetType().Name}): SessionAnalysisOnLiveTrace set to {sessionAnalysisOnLiveTrace}.");
         }
 
+        /// <summary>
+        /// Get Warning session time threshold from extension settings Json application preference.
+        /// </summary>
+        /// <return>int</return>
         public int WarningSessionTimeThreshold
         {
             get
@@ -290,7 +329,11 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
-        public void UpdateWarningSessionTimeThreshold(string warningSessionTimeThreshold)
+        /// <summary>
+        /// Set warning session time threshold in extension settings Json application preference.
+        /// </summary>
+        /// <param name="warningSessionTimeThreshold"></param>
+        public void SetWarningSessionTimeThreshold(string warningSessionTimeThreshold)
         {
             // Validate input is int and only act if it is.
             var isNumberic = int.TryParse(warningSessionTimeThreshold, out int iWarningSessionTimeThreshold);
@@ -312,6 +355,10 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
+        /// <summary>
+        /// Get slow running session threshold from extension settings Json application preference.
+        /// </summary>
+        /// <return>int</return>
         public int SlowRunningSessionThreshold
         {
             get
@@ -320,7 +367,11 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
-        public void UpdateSlowRunningSessionThreshold(string slowRunningSessionThreshold)
+        /// <summary>
+        /// Set slow running session threshold in extension settings Json application preference.
+        /// </summary>
+        /// <param name="slowRunningSessionThreshold"></param>
+        public void SetSlowRunningSessionThreshold(string slowRunningSessionThreshold)
         {
             // Validate input is int and only act if it is.
             var isNumberic = int.TryParse(slowRunningSessionThreshold, out int iSlowRunningSessionThreshold);
@@ -342,6 +393,9 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
+        /// <summary>
+        /// Increment execution count in extension settings Json application preference.
+        /// </summary>
         public void IncrementExecutionCount()
         {
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
@@ -354,6 +408,10 @@ namespace Office365FiddlerExtension.Services
                 $"({this.GetType().Name}): Incremented ExecutionCount to {extensionSettings.ExecutionCount}.");
         }
 
+        /// <summary>
+        /// Get Json deserialised extension settings from application preference.
+        /// </summary>
+        /// <returns></returns>
         public ExtensionSettingsJson GetDeserializedExtensionSettings()
         {
             var JsonSettings = new JsonSerializerSettings

@@ -14,7 +14,7 @@ namespace Office365FiddlerExtension.Services
         public static JsonValidatorService Instance => _instance ?? (_instance = new JsonValidatorService());
 
         /// <summary>
-        /// Function to determine if the Json in a session response is valid Json. 
+        /// Determine if the Json in a session response is valid Json. 
         /// If it is, we can mark a HTTP 200 response session as actually ok with more confidence.
         /// </summary>
         /// <param name="Session"></param>
@@ -55,6 +55,11 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
+        /// <summary>
+        /// Determine if the string provided is valid Json.
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns>bool</returns>
         public bool IsValidJsonString(string json)
         {
             if (string.IsNullOrWhiteSpace(json)) { return false; }

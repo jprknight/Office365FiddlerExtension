@@ -1,13 +1,6 @@
 ﻿using Office365FiddlerExtension.Services;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Fiddler;
 
@@ -242,9 +235,9 @@ namespace Office365FiddlerExtension.UI
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            SettingsJsonService.Instance.UpdateSlowRunningSessionThreshold(SlowRunningSessionThresholdTextbox.Text);
+            SettingsJsonService.Instance.SetSlowRunningSessionThreshold(SlowRunningSessionThresholdTextbox.Text);
 
-            SettingsJsonService.Instance.UpdateWarningSessionTimeThreshold(WarningSessionTimeThresholdTextbox.Text);
+            SettingsJsonService.Instance.SetWarningSessionTimeThreshold(WarningSessionTimeThresholdTextbox.Text);
 
             SettingsJsonService.Instance.SetUpdateCheckFrequencyHours(NextUpdateCheckTextbox.Text);
         }

@@ -26,9 +26,9 @@ namespace Office365FiddlerExtension.Services
         /// </summary>
         public void CreateCAR()
         {
-            if (SessionService.Instance.AllSessionsCount() == 0)
+            if (FiddlerApplication.UI.GetAllSessions().Count() == 0)
             {
-                string message = $"{SessionService.Instance.AllSessionsCount()} {LangHelper.GetString("sessions")}. {LangHelper.GetString("LoadOrImportSessions")}";
+                string message = $"{FiddlerApplication.UI.GetAllSessions().Count()} {LangHelper.GetString("sessions")}. {LangHelper.GetString("LoadOrImportSessions")}";
 
                 string caption = $"{LangHelper.GetString("Office 365 Fiddler Extension")}";
 
@@ -46,7 +46,7 @@ namespace Office365FiddlerExtension.Services
             // All sessions have analysis, proceed to create the CAR.
             if (!checkAllSessionsAreAnalysed.Item1)
             {
-                string message = $"{checkAllSessionsAreAnalysed.Item2} of {SessionService.Instance.AllSessionsCount()} {LangHelper.GetString("ConsolidatedAnalysisReportNotAllSessionsHaveAnalysis")}";
+                string message = $"{checkAllSessionsAreAnalysed.Item2} of {FiddlerApplication.UI.GetAllSessions().Count()} {LangHelper.GetString("ConsolidatedAnalysisReportNotAllSessionsHaveAnalysis")}";
 
                 string caption = $"{LangHelper.GetString("Office 365 Fiddler Extension")}";
 
@@ -175,7 +175,7 @@ namespace Office365FiddlerExtension.Services
             foreach (KeyValuePair<string, int> processkvp in sessionProcesses)
             {
                 // Cast to double, and cast an input to double to break out of int rounding down, and giving a zero result.
-                double processresult = (double)processkvp.Value / SessionService.Instance.AllSessionsCount() * 100;
+                double processresult = (double)processkvp.Value / FiddlerApplication.UI.GetAllSessions().Count() * 100;
                 ResultsString.AppendLine($"<tr><td>{processkvp.Key}</td><td>{Math.Round(processresult, 2)}%</td></tr>");
             }
             ResultsString.AppendLine("</table>");
@@ -196,7 +196,7 @@ namespace Office365FiddlerExtension.Services
 
             ResultsString.AppendLine("</table>");
 
-            double percentageConnectTunnels = (double)connectTunnelCount / SessionService.Instance.AllSessionsCount() * 100;
+            double percentageConnectTunnels = (double)connectTunnelCount / FiddlerApplication.UI.GetAllSessions().Count() * 100;
 
             if (percentageConnectTunnels >= 80)
             {
@@ -205,7 +205,7 @@ namespace Office365FiddlerExtension.Services
             }
 
             // Cast to double, and cast an input to double to break out of int rounding down, and giving a zero result.
-            double http401count = (double)http401 / SessionService.Instance.AllSessionsCount() * 100;
+            double http401count = (double)http401 / FiddlerApplication.UI.GetAllSessions().Count() * 100;
 
             if (http401count > 50)
             {

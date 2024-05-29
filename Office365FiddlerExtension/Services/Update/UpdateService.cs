@@ -14,6 +14,9 @@ namespace Office365FiddlerExtension.Services
         private static UpdateService _instance;
         public static UpdateService Instance => _instance ?? (_instance = new UpdateService());
 
+        /// <summary>
+        /// Check for updates for URLs, extension version, session classification data, and Microsoft 365 URLs web service data from the web.
+        /// </summary>
         public void Initialize()
         {
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
@@ -39,6 +42,9 @@ namespace Office365FiddlerExtension.Services
             UpdateMicrosft365URLsIPsFromWeb();
         }
 
+        /// <summary>
+        /// Update session classification Json from Github repo.
+        /// </summary>
         private async void UpdateSessionClassificationJsonFromGithub()
         {
             var extensionURLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
@@ -90,6 +96,9 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
+        /// <summary>
+        /// Update version Json from Github repo.
+        /// </summary>
         private async void UpdateVersionJsonFromGithub()
         {
             var extensionURLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
@@ -142,6 +151,9 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
+        /// <summary>
+        /// Update URLs Json from Github repo.
+        /// </summary>
         private async void UpdateURLsJsonFromGithub()
         {
             var extensionURLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();

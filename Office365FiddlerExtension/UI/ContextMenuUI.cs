@@ -8,7 +8,7 @@ using Office365FiddlerExtension.UI;
 namespace Office365FiddlerExtension
 {
     /// <summary>
-    /// Add context menu into Fiddler application UI.
+    /// Create and add context menu into Fiddler application UI.
     /// </summary>
     public class ContextMenuUI
     {
@@ -52,6 +52,9 @@ namespace Office365FiddlerExtension
 
         private bool IsInitialized { get; set; }
 
+        /// <summary>
+        /// Create menu and add to Fiddler UI.
+        /// </summary>
         public void initialize()
         {
             if (IsInitialized) return;
@@ -109,76 +112,133 @@ namespace Office365FiddlerExtension
             }
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CmiRecalculateAnalysisSelectedSessions_Click(object sender, EventArgs e)
         {
             SessionFlagService.Instance.CmiRecalculateAnalysisSelectedSessions();
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CmiSessionSeverityTen_Click(object sender, EventArgs e)
         {
             EnhanceSessionUX.Instance.SetSessionUninteresting();
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CmiSessionSeverityTwenty_Click(object sender, EventArgs e)
         {
             EnhanceSessionUX.Instance.SetSessionFalsePositive();
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CmiSessionSeverityThirty_Click(object sender, EventArgs e)
         {
             EnhanceSessionUX.Instance.SetSessionNormal();
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CmiSessionSeverityFourty_Click(object sender, EventArgs e)
         {
             EnhanceSessionUX.Instance.SetSessionWarning();
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CmiSessionSeverityFifty_Click(object sender, EventArgs e)
         {
             EnhanceSessionUX.Instance.SetSessionConcerning();
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CmiSessionSeveritySixty_Click(object sender, EventArgs e)
         {
             EnhanceSessionUX.Instance.SetSessionSevere();
         }
-        
+
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CmiClearAnalysisSelectedSessions_Click(object sender, EventArgs e)
         {
             SessionFlagService.Instance.ClearAnalysisSelectedSessions();
         }
 
-        /*private void CmiAnalyseAllSessions_Click(object sender, EventArgs e)
-        {
-            SessionFlagService.Instance.AnalyseAllSessions();
-        }*/
-
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CmiAnalyseSelectedSessions_Click(object sender, EventArgs e)
         {
             SessionFlagService.Instance.AnalyseSelectedSessions();
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CmiCreateConsolidatedAnalysisReport_Click(object sender, EventArgs e)
         {
             ConsolidatedAnalysisReportService.Instance.CreateCAR();
         }
 
+        /// <summary>
+        /// Invert Analyse Selected Sessions menu item enabled property.
+        /// </summary>
         public void InvertCmiAnalyseSelectedSessionsEnabled()
         {
             CmiAnalyseSelectedSessions.Enabled = !CmiAnalyseSelectedSessions.Enabled;
         }
 
+        /// <summary>
+        /// Invert Set Sessions Severity menu item enabled property.
+        /// </summary>
         public void InvertCmiSetSessionSeverity()
         {
             CmiSetSessionSeverity.Enabled = !CmiSetSessionSeverity.Enabled;
         }
 
+        /// <summary>
+        /// Invert Clear Analysis Selected Sessions menu item enabled property.
+        /// </summary>
         public void InvertCmiClearAnalysisSelectedSessions()
         {
             CmiClearAnalysisSelectedSessions.Enabled = !CmiClearAnalysisSelectedSessions.Enabled;
         }
 
+        /// <summary>
+        /// Invert Create Consolidated Report menu item enabled property.
+        /// </summary>
         public void InvertCmiCreateConsolidatedReportEnabled()
         {
             CmiCreateConsolidatedAnalysisReport.Enabled = !CmiCreateConsolidatedAnalysisReport.Enabled;

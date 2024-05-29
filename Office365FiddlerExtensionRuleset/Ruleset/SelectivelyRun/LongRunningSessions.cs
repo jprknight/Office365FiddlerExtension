@@ -45,7 +45,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             LongRunningSessionsServerSlow(this.session);
         }
 
-        // Function to highlight long running sessions.
+        /// <summary>
+        /// Set session flags to highlight long running sessions warning.
+        /// </summary>
+        /// <param name="session"></param>
         private void LongRunningSessionsWarning(Session session)
         {
             this.session = session;
@@ -77,6 +80,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set session flags to highlight long running sessions client slow. 
+        /// </summary>
+        /// <param name="session"></param>
         private void LongRunningSessionsClientSlow(Session session) {
 
             this.session = session;
@@ -108,6 +115,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set session flags to highlight long running sessions server slow.
+        /// </summary>
+        /// <param name="session"></param>
         private void LongRunningSessionsServerSlow(Session session) {
 
             this.session = session;

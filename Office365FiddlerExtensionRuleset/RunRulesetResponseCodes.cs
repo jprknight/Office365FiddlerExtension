@@ -94,7 +94,7 @@ namespace Office365FiddlerExtensionRuleset
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_308s");
                     break;
                 case 400:
-                    HTTP_400.Instance.HTTP_400_Bad_Request(this.session);
+                    HTTP_400.Instance.Run(this.session);
                     break;
                 case 401:
                     HTTP_401.Instance.Run(this.session);
@@ -106,16 +106,16 @@ namespace Office365FiddlerExtensionRuleset
                     HTTP_403.Instance.Run(this.session);
                     break;
                 case 404:
-                    HTTP_404.Instance.HTTP_404_Not_Found(this.session);
+                    HTTP_404.Instance.Run(this.session);
                     break;
                 case 405:
-                    HTTP_405.Instance.HTTP_405_Method_Not_Allowed(this.session);
+                    HTTP_405.Instance.Run(this.session);
                     break;
                 case 406:
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_406s");
                     break;
                 case 407:
-                    HTTP_407.Instance.HTTP_407_Proxy_Auth_Required(this.session);
+                    HTTP_407.Instance.Run(this.session);
                     break;
                 case 408:
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_408s");

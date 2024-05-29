@@ -36,10 +36,10 @@ namespace Office365FiddlerExtension.Services
 
                 // Ensure Fiddler settings (settings, URLs, & verison) for the extension have been created.
                 // Avoid null exceptions.
-                SettingsJsonService.Instance.CreateExtensionSettingsFiddlerSetting();
-                URLsJsonService.Instance.CreateExtensionURLFiddlerSetting();
-                VersionJsonService.Instance.CreateExtensionVersionFiddlerSetting();
-                SessionClassificationService.Instance.CreateSessionClassificationFiddlerSetting();
+                SettingsJsonService.Instance.CreateExtensionSettingsFiddlerApplicationPreference();
+                URLsJsonService.Instance.CreateExtensionURLFiddlerApplicationPreference();
+                VersionJsonService.Instance.CreateExtensionVersionFiddlerApplicationPreference();
+                SessionClassificationService.Instance.CreateSessionClassificationFiddlerApplicationPreference();
 
                 // Set Fiddler settings as needed.
                 SettingsJsonService.Instance.SetExtensionDLL();

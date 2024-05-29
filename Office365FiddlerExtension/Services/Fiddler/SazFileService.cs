@@ -1,12 +1,7 @@
 ﻿using Fiddler;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Management.Instrumentation;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Office365FiddlerExtension.Services;
 using Office365FiddlerExtension.UI;
 using System.Diagnostics;
 
@@ -24,7 +19,7 @@ namespace Office365FiddlerExtension.Services
         public static SazFileService Instance => _instance ?? (_instance = new SazFileService());
 
         /// <summary>
-        /// Function to handle saving a SAZ file.
+        /// Handle saving a SAZ file.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -74,7 +69,8 @@ namespace Office365FiddlerExtension.Services
         }
 
         /// <summary>
-        /// Function to handle loading a SAZ file.
+        /// Handle loading a SAZ file. If the sessions already have session analysis with all three 
+        /// confidence levels set to 10, use stored analysis for faster load times.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -120,7 +116,7 @@ namespace Office365FiddlerExtension.Services
             }
 
             sw.Stop();
-            TimeSpan time = sw.Elapsed;
+            //TimeSpan time = sw.Elapsed;
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
                         $"LoadSaz processed {e.arrSessions.Count()} sessions in {sw.ElapsedMilliseconds}ms from {e.sFilename}.");

@@ -67,6 +67,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SetSessionType_Unknown(this.session);
         }
 
+        /// <summary>
+        /// Set Session Type session flag to Microsoft 365 Exchange Web Services (EWS).
+        /// </summary>
+        /// <param name="session"></param>
         private void SetSessionType_Microsoft365_EWS(Session session)
         {
             this.session = session;
@@ -91,6 +95,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set Session Type session flag to any other Exchange Web Services (EWS).
+        /// </summary>
+        /// <param name="session"></param>
         private void SetSessionType_EWS(Session session)
         {
             this.session = session;
@@ -115,6 +123,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set Session Type session flag to Microsoft 365 Authentication.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetSessionType_Microsoft365_Authentication(Session session)
         {
             this.session = session;
@@ -138,6 +150,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
         }
 
+        /// <summary>
+        /// Set Session Type session flag to Active Directory Federation Services (ADFS) authentication.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetSessionType_ADFS_Authentication(Session session)
         {
             this.session = session;
@@ -162,6 +178,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set Session Type session flag to generalised Microsoft 365.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetSessionType_General_Microsoft365(Session session)
         {
             this.session = session;
@@ -191,6 +211,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set Session Type session flag to the name of the process executible on the session.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetSessionType_Office_Applications(Session session)
         {
             this.session = session;
@@ -206,7 +230,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 || this.session.LocalProcess.Contains("onedrive")
                 || this.session.LocalProcess.Contains("lync")
                 || this.session.LocalProcess.Contains("w3wp"))
-                {
+            {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): {this.session.id} Running SetSessionType_Office_Applications");
 
@@ -224,6 +248,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
         }
 
+        /// <summary>
+        /// Set the Session Type session flag to the name of a browser process executible.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetSessionType_Internet_Browsers(Session session)
         {
             this.session = session;
@@ -233,7 +261,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 || this.session.LocalProcess.Contains("firefox")
                 || this.session.LocalProcess.Contains("edge")
                 || this.session.LocalProcess.Contains("safari")
-                || this.session.LocalProcess.Contains("brave"))
+                || this.session.LocalProcess.Contains("brave")
+                || this.session.LocalProcess.Contains("opera"))
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): {this.session.id} Running SetSessionType_Internet_Browsers");
@@ -251,7 +280,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             }
         }
-
+        
+        /// <summary>
+        /// Set Session Type session flag to unknown as a final fallback.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetSessionType_Unknown(Session session)
         {
             

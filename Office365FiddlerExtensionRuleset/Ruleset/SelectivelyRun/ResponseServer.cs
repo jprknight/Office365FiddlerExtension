@@ -52,7 +52,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-            SetResponseServer_Akami(this.session);
+            SetResponseServer_CDN(this.session);
             if (RulesetUtilities.Instance.StopProcessing_SessionResponseServerConfidenceLevel_Ten(this.session))
             {
                 return;
@@ -61,6 +61,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SetResponseServer_Unknown(this.session);
         }
 
+        /// <summary>
+        /// Set Response Server session flag as the "Server" response value.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetResponseServer_Server(Session session)
         {
             this.session = session;
@@ -92,6 +96,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set Response Server session flag as the "Host" session value.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetResponseServer_Host(Session session) 
         {
             this.session = session;
@@ -120,6 +128,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set Response Server session flag as the "X-Powered-By" session value.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetResponseServer_PoweredBy(Session session) 
         {
             this.session = session;
@@ -148,6 +160,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);            
         }
 
+        /// <summary>
+        /// Set Response Server session flag as the "X-Served-By" session value.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetResponseServer_ServedBy(Session session) 
         {
             this.session = session;
@@ -175,6 +191,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);            
         }
 
+        /// <summary>
+        /// Set Response Server session flag as the "X-Server-Name" session value.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetResponseServer_ServerName(Session session) 
         {
             this.session = session;
@@ -202,20 +222,29 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        private void SetResponseServer_Akami(Session session)
+        /// <summary>
+        /// Set Response Server session flag as the "X-CDN-Provider" session value.
+        /// </summary>
+        /// <param name="session"></param>
+        private void SetResponseServer_CDN(Session session)
         {
             this.session = session;
 
-            if (this.session.oResponse["X-CDN-Provider"] != "Akamai")
+            if (this.session.oResponse["X-CDN-Provider"] == null)
+            {
+                return;
+            }
+
+            if (this.session.oResponse["X-CDN-Provider"] == "")
             {
                 return;
             }
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = "ResponseServer_Akami",
+                SectionTitle = "ResponseServer_CDN",
 
-                ResponseServer = "CDN:Akami",
+                ResponseServer = this.session.oResponse["X-CDN-Provider"],
                 SessionResponseServerConfidenceLevel = 10
             };
 
@@ -223,6 +252,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set Response Server session flag as unknown as a final fallback.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetResponseServer_Unknown(Session session)
         {
             this.session = session;

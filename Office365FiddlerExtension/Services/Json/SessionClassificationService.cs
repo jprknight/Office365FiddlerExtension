@@ -9,7 +9,7 @@ using System.Reflection;
 namespace Office365FiddlerExtension.Services
 {
     /// <summary>
-    /// 
+    /// Process the session classification Json the extension uses for sessions per response code.
     /// </summary>
     public class SessionClassificationService
     {
@@ -52,7 +52,7 @@ namespace Office365FiddlerExtension.Services
         /// Create the application preference to store the Json in to be read from.
         /// </summary>
 
-        public void CreateSessionClassificationFiddlerSetting()
+        public void CreateSessionClassificationFiddlerApplicationPreference()
         {
             if (Preferences.SessionClassification != null)
             {

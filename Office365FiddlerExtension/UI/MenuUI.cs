@@ -60,13 +60,11 @@ namespace Office365FiddlerExtension
 
         private bool IsInitialized { get; set; }
 
+        /// <summary>
+        /// Create and add menu into Fiddler UI.
+        /// </summary>
         public void Initialize()
         {
-            /// <remarks>
-            /// If this is the first time the extension has been run, make sure all extension options are enabled.
-            /// Beyond do nothing other than keep a running count of the number of extension executions.
-            /// </remarks>
-            /// 
             if (!IsInitialized)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Adding menu to UI.");
@@ -229,20 +227,22 @@ namespace Office365FiddlerExtension
         }
         */
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MiAbout_Click(object sender, EventArgs e)
         {
             About about = new About();
             about.Show();
         }
 
-        /*
-        private void MiClearAllSessionProcessing_Click(object sender, EventArgs e)
-        {
-            SessionFlagService.Instance.ClearAnalysisSelectedSessions();
-        }
-        */
-
-        // Menu item event handlers.
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MiEnabled_Click(object sender, EventArgs e)
         {
             // Invert menu item checked.
@@ -259,6 +259,11 @@ namespace Office365FiddlerExtension
             SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(MiEnabled.Checked);
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MiWiki_Click(object sender, EventArgs e)
         {
             var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
@@ -267,6 +272,11 @@ namespace Office365FiddlerExtension
             System.Diagnostics.Process.Start(URLs.Wiki);
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MiReleasesDownloadWebpage_click(object sender, EventArgs e)
         {
             var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
@@ -274,6 +284,11 @@ namespace Office365FiddlerExtension
             System.Diagnostics.Process.Start(URLs.Installer);
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MiReportIssues_Click(object sender, EventArgs e)
         {
             var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
@@ -281,21 +296,41 @@ namespace Office365FiddlerExtension
             System.Diagnostics.Process.Start(URLs.ReportIssues);
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MiAnalyseAllSessions_Click(object sender, EventArgs e)
         {
             SessionFlagService.Instance.AnalyseAllSessions();
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MiClearAllSessionAnalysis_Click(object sender, EventArgs e)
         {
             SessionFlagService.Instance.ClearAnalysisAllSessions();
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MiCreateConsolidatedAnalysisReport_Click(object sender, EventArgs e)
         {
             ConsolidatedAnalysisReportService.Instance.CreateCAR();
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MiCheckIPAddress_Click(object sender, EventArgs e)
         {
             CheckIP checkIP = new CheckIP();

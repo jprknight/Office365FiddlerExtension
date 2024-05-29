@@ -18,7 +18,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         /// Set session analysis values for a HTTP 404 response code.
         /// </summary>
         /// <param name="session"></param>
-        public void HTTP_404_Not_Found(Session session)
+        public void Run(Session session)
         {
             this.session = session;
 

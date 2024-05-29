@@ -1,7 +1,6 @@
 ﻿using Fiddler;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtension.UI;
-using System.Linq;
 
 namespace Office365FiddlerExtension
 {
@@ -15,6 +14,10 @@ namespace Office365FiddlerExtension
 
         public static SessionService Instance => _instance ?? (_instance = new SessionService());
 
+        /// <summary>
+        /// Decode request & response, Run ruleset, Enhance sessions in UI.
+        /// </summary>
+        /// <param name="Session"></param>
         public void OnPeekAtResponseHeaders(Session Session)
         {
             this.session = Session;
@@ -22,14 +25,9 @@ namespace Office365FiddlerExtension
             this.session.utilDecodeRequest(true);
             this.session.utilDecodeResponse(true);
 
-            RulesetService.Instance.RunRuleSet(this.session);
+            RulesetService.Instance.CallRunRuleSet(this.session);
 
             EnhanceSessionUX.Instance.EnhanceSession(this.session);
-        }
-
-        public int AllSessionsCount()
-        {
-            return FiddlerApplication.UI.GetAllSessions().Count();
         }
     }
 }

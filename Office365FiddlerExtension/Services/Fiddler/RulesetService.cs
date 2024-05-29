@@ -18,7 +18,11 @@ namespace Office365FiddlerExtension.Services
 
         public static RulesetService Instance => _instance ?? (_instance = new RulesetService());
 
-        public void RunRuleSet(Session session)
+        /// <summary>
+        /// Call out to the ruleset DLL to run logic against the current session.
+        /// </summary>
+        /// <param name="session"></param>
+        public void CallRunRuleSet(Session session)
         {
             this.session = session;
 

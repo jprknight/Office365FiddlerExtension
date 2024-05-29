@@ -17,6 +17,11 @@ namespace Office365FiddlerExtension.Services
 
         public static NetworkingService Instance => _instance ?? (_instance = new NetworkingService());
 
+        /// <summary>
+        /// Test if the provided IP address is a valid IP address.
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        /// <returns>bool</returns>
         public bool IsValidIPAddress(string ipAddress)
         {
             try

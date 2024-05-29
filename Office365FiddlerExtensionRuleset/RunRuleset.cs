@@ -9,7 +9,7 @@ namespace Office365FiddlerExtensionRuleset
         internal Session session { get; set; }
 
         /// <summary>
-        /// This should be considered the main constructor for the extension ruleset DLL. 
+        /// This should be considered the main constructor for the extension ruleset DLL.
         /// </summary>
         /// <param name="session"></param>
         public void Initialize(Session session)
@@ -28,8 +28,7 @@ namespace Office365FiddlerExtensionRuleset
 
             ///////////////////////////////
             /// Always run these functions on every session.
-
-            // Broad logic checks on sessions regardless of response code.
+            /// Broad logic checks on sessions regardless of response code.
             FiddlerUpdateSessions.Instance.Run(this.session);
 
             ApacheAutodiscover.Instance.Run(this.session);
@@ -38,6 +37,7 @@ namespace Office365FiddlerExtensionRuleset
             
             LoopBackTunnel.Instance.Run(this.session);
             
+            /// Populate session flag data.
             CalculateSessionAge.Instance.Run(this.session);
             
             ServerThinkTimeTransitTime.Instance.Run(this.session);

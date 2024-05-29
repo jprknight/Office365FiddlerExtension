@@ -10,17 +10,28 @@ namespace Office365FiddlerExtension.Services
     {
         private static ResourceManager _resourcemanager;
 
+        /// <summary>
+        /// 
+        /// </summary>
         static LangHelper()
         {
             _resourcemanager = new ResourceManager("Office365FiddlerExtension.Language.strings", Assembly.GetExecutingAssembly());
-
         }
 
+        /// <summary>
+        /// Get string from the strings.resx langauge resource file.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static string GetString(string name)
         {
             return _resourcemanager.GetString(name);
         }
 
+        /// <summary>
+        /// Change language.
+        /// </summary>
+        /// <param name="language"></param>
         public static void ChangeLanguage(string language)
         {
             var cultureInfo = new CultureInfo(language);

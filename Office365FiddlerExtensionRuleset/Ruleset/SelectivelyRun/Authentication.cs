@@ -65,6 +65,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
         }
 
+        /// <summary>
+        /// Set authentication Json session flags when there are no authentication headers in the session.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetAuthentication_NoAuthHeaders(Session session)
         {
             this.session = session;
@@ -94,6 +98,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set authentication Json session flags for the SAML Parser.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetAuthentication_SAML_Parser(Session session)
         {
             this.session = session;
@@ -177,6 +185,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
         }
 
+        /// <summary>
+        /// Set authentication Json session flags when a client is doing basic authentication, modern authentication is disabled.
+        /// A depreciated scenario for Exchange Online, leaving for Exchange OnPremise.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetAuthentication_Basic_Modern_Auth_Disabled(Session session)
         {
             this.session = session;
@@ -218,6 +231,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
         }
 
+        /// <summary>
+        /// Set authentication Json session flags when a client is using trying to use modern (bearer) authentication.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetAuthentication_Modern_Auth_Capable_Client(Session session)
         {
             this.session = session;
@@ -248,6 +265,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set authentication Json session flags when a client is trying to use basic authentication.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetAuthentication_Basic_Auth_Capable_Client(Session session)
         {
             this.session = session;
@@ -278,6 +299,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set authentication Json session flags when a client is using modern authentication with a token.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetAuthentication_Modern_Auth_Client_Using_Token(Session session)
         {
             this.session = session;
@@ -309,6 +334,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         }
 
+        /// <summary>
+        /// Set authentication Json session flags when a client is using basic authentication with a token.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetAuthentication_Basic_Auth_Client_Using_Token(Session session)
         {
             this.session = session;
@@ -339,6 +368,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set token issuer within the SAML Parser.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetTokenIssuer(Session session)
         {
             this.session = session;
@@ -400,6 +433,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set signing certificate within the SAML Parser.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetSigningCertificate(Session session)
         {
             this.session = session;
@@ -458,6 +495,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set AttributeNameUPN within the SAML Parser.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetAttributeNameUPN(Session session)
         {
             this.session = session;
@@ -535,6 +576,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set NameIdentifierFormat within the SAML Parser.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetNameIdentifierFormat(Session session)
         {
             this.session = session;
@@ -594,6 +639,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set AttributeNameImmutableID within the SAML Parser.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetAttributeNameImmutableID(Session session)
         {
             // AttributeNameImmutableID
@@ -677,7 +726,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
         
-
+        /// <summary>
+        /// Set no data within the SAML Parser.
+        /// </summary>
+        /// <param name="session"></param>
         private void SAMLParserFieldsNoData(Session session)
         {
             this.session = session;

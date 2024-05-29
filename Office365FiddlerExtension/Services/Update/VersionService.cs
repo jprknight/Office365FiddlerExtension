@@ -27,6 +27,11 @@ namespace Office365FiddlerExtension.Services
                 $"{Assembly.GetExecutingAssembly().GetName().Version.Build}";
         }
 
+        /// <summary>
+        /// Get executing assembly version info.
+        /// </summary>
+        /// <param name="versionPart"></param>
+        /// <returns>int Major, Minor, Build versions.</returns>
         public int LocalExtensionDLLVerison(string versionPart)
         {
             switch (versionPart)
@@ -42,6 +47,10 @@ namespace Office365FiddlerExtension.Services
             return 0;
         }
 
+        /// <summary>
+        /// Determines if an extension update is available.
+        /// </summary>
+        /// <returns>bool</returns>
         public Boolean IsExtensionDLLUpdateAvailable()
         {
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
@@ -88,6 +97,9 @@ namespace Office365FiddlerExtension.Services
             return false;
         }
 
+        /// <summary>
+        /// Throw a message box if there is an extension update available.
+        /// </summary>
         public void NotifyUserIfExtensionUpdateIsAvailable()
         {
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
@@ -132,9 +144,9 @@ namespace Office365FiddlerExtension.Services
         }
 
         /// <summary>
-        /// Ruleset
+        /// Get the extension ruleset version from the DLL.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>string Major.Minor.Build</returns>
         public string GetExtensionRulesetDLLVersion()
         {
             var ExtensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
@@ -157,6 +169,10 @@ namespace Office365FiddlerExtension.Services
             return null;
         }
 
+        /// <summary>
+        /// Determines if a ruleset DLL update is available.
+        /// </summary>
+        /// <returns></returns>
         public Boolean IsRulesetDLLUpdateAvailable()
         {
             var githubJsonVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
@@ -191,6 +207,11 @@ namespace Office365FiddlerExtension.Services
             return false;
         }
 
+        /// <summary>
+        /// Gets the local ruleset DLL version info.
+        /// </summary>
+        /// <param name="versionPart"></param>
+        /// <returns>int Major, Minor, Build versions.</returns>
         public int LocalRulesetDLLVerison(string versionPart)
         {
             var ExtensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
@@ -220,6 +241,9 @@ namespace Office365FiddlerExtension.Services
             return 0;
         }
 
+        /// <summary>
+        /// Throw a message box if there is a ruleset update available.
+        /// </summary>
         public void NotifyUserIfRulesetUpdateIsAvailable()
         {
             if (!VersionService.Instance.IsRulesetDLLUpdateAvailable())

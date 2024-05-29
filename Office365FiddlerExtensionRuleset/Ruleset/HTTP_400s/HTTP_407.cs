@@ -18,7 +18,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         /// Set session analysis values for a HTTP 407 response code.
         /// </summary>
         /// <param name="session"></param>
-        public void HTTP_407_Proxy_Auth_Required(Session session)
+        public void Run(Session session)
         {
             this.session = session;
 
