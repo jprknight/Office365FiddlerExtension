@@ -260,6 +260,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 || this.session.LocalProcess.Contains("chrome")
                 || this.session.LocalProcess.Contains("firefox")
                 || this.session.LocalProcess.Contains("edge")
+                || this.session.LocalProcess.Contains("msedge")
                 || this.session.LocalProcess.Contains("safari")
                 || this.session.LocalProcess.Contains("brave")
                 || this.session.LocalProcess.Contains("opera"))
