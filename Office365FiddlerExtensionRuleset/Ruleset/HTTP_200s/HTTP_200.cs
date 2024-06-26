@@ -90,6 +90,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             ///////////////////////////////
 
+            HTTP_200_OWA_Attachments.Instance.Run(this.session);
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
+            ///////////////////////////////
+
             HTTP_200_Outlook_RPC.Instance.Run(this.session);
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
 

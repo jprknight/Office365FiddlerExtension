@@ -1,5 +1,5 @@
 {
-  "LastUpdated": "2024-05-14",
+  "LastUpdated": "2024-06-26",
   "LastUpdatedDateFormat": "YYYY-MM-DD",
   "DataStructureHelper": {
     "About": "This helper isn't used in code, it's just here to describe the data.",
@@ -209,6 +209,18 @@
       "SessionSeverity": 30
     },
     "HTTP_200_Outlook_For_Windows_FreeBusy": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_200_OWA_AttachmentThumbnail": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
+    "HTTP_200_OWA_Attachment": {
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 5,

@@ -1771,6 +1771,78 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 OWA Attachment Service.
+        /// </summary>
+        internal static string HTTP_200_OWA_Attachment_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_OWA_Attachment_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 OWA Attachment Service.
+        /// </summary>
+        internal static string HTTP_200_OWA_Attachment_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_OWA_Attachment_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OWA session is retrieving attachments from the attachment service in the Microsoft cloud..
+        /// </summary>
+        internal static string HTTP_200_OWA_Attachment_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_OWA_Attachment_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 OK.
+        /// </summary>
+        internal static string HTTP_200_OWA_Attachment_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_OWA_Attachment_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 OWA Attachment Service.
+        /// </summary>
+        internal static string HTTP_200_OWA_AttachmentThumbnail_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_OWA_AttachmentThumbnail_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 OWA Attachment Service.
+        /// </summary>
+        internal static string HTTP_200_OWA_AttachmentThumbnail_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_OWA_AttachmentThumbnail_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OWA session is retrieving thumbnails or previews from the attachment service in the Microsoft cloud..
+        /// </summary>
+        internal static string HTTP_200_OWA_AttachmentThumbnail_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_OWA_AttachmentThumbnail_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 OK.
+        /// </summary>
+        internal static string HTTP_200_OWA_AttachmentThumbnail_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_OWA_AttachmentThumbnail_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OWA Free/Busy.
         /// </summary>
         internal static string HTTP_200_OWA_FreeBusy_ResponseAlert {

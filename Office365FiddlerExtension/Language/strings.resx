@@ -775,6 +775,30 @@
   <data name="HTTP_200_Outlook_Web_App_SessionType" xml:space="preserve">
     <value>Outlook Web App</value>
   </data>
+  <data name="HTTP_200_OWA_AttachmentThumbnail_ResponseAlert" xml:space="preserve">
+    <value>HTTP 200 OWA Attachment Service</value>
+  </data>
+  <data name="HTTP_200_OWA_AttachmentThumbnail_ResponseCodeDescription" xml:space="preserve">
+    <value>HTTP 200 OWA Attachment Service</value>
+  </data>
+  <data name="HTTP_200_OWA_AttachmentThumbnail_ResponseComments" xml:space="preserve">
+    <value>OWA session is retrieving thumbnails or previews from the attachment service in the Microsoft cloud.</value>
+  </data>
+  <data name="HTTP_200_OWA_AttachmentThumbnail_SessionType" xml:space="preserve">
+    <value>HTTP 200 OK</value>
+  </data>
+  <data name="HTTP_200_OWA_Attachment_ResponseAlert" xml:space="preserve">
+    <value>HTTP 200 OWA Attachment Service</value>
+  </data>
+  <data name="HTTP_200_OWA_Attachment_ResponseCodeDescription" xml:space="preserve">
+    <value>HTTP 200 OWA Attachment Service</value>
+  </data>
+  <data name="HTTP_200_OWA_Attachment_ResponseComments" xml:space="preserve">
+    <value>OWA session is retrieving attachments from the attachment service in the Microsoft cloud.</value>
+  </data>
+  <data name="HTTP_200_OWA_Attachment_SessionType" xml:space="preserve">
+    <value>HTTP 200 OK</value>
+  </data>
   <data name="HTTP_200_OWA_FreeBusy_ResponseAlert" xml:space="preserve">
     <value>OWA Free/Busy</value>
   </data>
