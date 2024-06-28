@@ -1,6 +1,7 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using System;
 using System.Reflection;
 
@@ -34,7 +35,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 try
                 {
-                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|FiddlerUpdateSessions");
+                    var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|FiddlerUpdateSessions");
                     
                     sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                     sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
@@ -56,14 +57,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = LangHelper.GetString("Broad Logic Checks"),
+                    SectionTitle = RulesetLangHelper.GetString("Broad Logic Checks"),
 
-                    SessionType = LangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),
-                    ResponseCodeDescription = LangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),
-                    ResponseServer = LangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),
-                    ResponseAlert = LangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),                    
-                    ResponseComments = LangHelper.GetString("BroadLogicChecks_This is Fiddler itself checking for updates."),
-                    Authentication = LangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),
+                    SessionType = RulesetLangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),
+                    ResponseCodeDescription = RulesetLangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),
+                    ResponseServer = RulesetLangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),
+                    ResponseAlert = RulesetLangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),                    
+                    ResponseComments = RulesetLangHelper.GetString("BroadLogicChecks_This is Fiddler itself checking for updates."),
+                    Authentication = RulesetLangHelper.GetString("BroadLogicChecks_Fiddler Update Check"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

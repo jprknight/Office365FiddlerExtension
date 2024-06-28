@@ -1,6 +1,6 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using System;
 using System.Reflection;
 
@@ -37,7 +37,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_ClientAccessRule");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_ClientAccessRule");
 
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
@@ -55,14 +55,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 sessionSeverity = 60;
             }
             
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_200s",
 
-                SessionType = LangHelper.GetString("HTTP_200_Client Access Rule"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_200_Client Access Rule ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_200_Client Access Rule ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_200_Client Access Rule ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_200_Client Access Rule"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_Client Access Rule ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Client Access Rule ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_200_Client Access Rule ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -71,7 +71,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

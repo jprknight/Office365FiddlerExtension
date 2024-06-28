@@ -1,6 +1,6 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using System;
 using System.Reflection;
 
@@ -37,7 +37,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Outlook_NSPI");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Outlook_NSPI");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -54,14 +54,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 sessionSeverity = 30;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_200s",
 
-                SessionType = LangHelper.GetString("HTTP_200_Outlook_NSPI_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_200_Outlook_NSPI_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_200_Outlook_NSPI_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_200_Outlook_NSPI_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_200_Outlook_NSPI_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_Outlook_NSPI_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Outlook_NSPI_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_200_Outlook_NSPI_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -70,7 +70,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

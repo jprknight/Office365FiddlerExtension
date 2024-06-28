@@ -1,4 +1,4 @@
-﻿using Office365FiddlerExtension.Services;
+﻿using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -83,16 +83,16 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} Running SetSessionType_Microsoft365_EWS");
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "SessionType_Microsoft365_EWS",
 
-                SessionType = LangHelper.GetString("Exchange Web Services"),
+                SessionType = RulesetLangHelper.GetString("Exchange Web Services"),
                 SessionTypeConfidenceLevel = 10
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         /// <summary>
@@ -111,16 +111,16 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} Running SetSessionType_EWS");
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "SessionType_EWS",
 
-                SessionType = LangHelper.GetString("Exchange Web Services"),
+                SessionType = RulesetLangHelper.GetString("Exchange Web Services"),
                 SessionTypeConfidenceLevel = 10
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         /// <summary>
@@ -137,16 +137,16 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name}" +
                     $" ({this.GetType().Name}): {this.session.id} Running SetSessionType_Microsoft365_Authentication");
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "SessionType_Microsoft365_Authentication",
 
-                    SessionType = LangHelper.GetString("Microsoft365 Authentication"),
+                    SessionType = RulesetLangHelper.GetString("Microsoft365 Authentication"),
                     SessionTypeConfidenceLevel = 10
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
 
@@ -166,16 +166,16 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} Running SetSessionType_ADFS_Authentication");
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "SessionType_ADFS_Authentication",
 
-                SessionType = LangHelper.GetString("ADFS Authentication"),
+                SessionType = RulesetLangHelper.GetString("ADFS Authentication"),
                 SessionTypeConfidenceLevel = 10
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         /// <summary>
@@ -199,16 +199,16 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} Running SetSessionType_General_Microsoft365");
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "SessionType_General_Microsoft365",
 
-                SessionType = LangHelper.GetString("General Microsoft365"),
+                SessionType = RulesetLangHelper.GetString("General Microsoft365"),
                 SessionTypeConfidenceLevel = 10
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         /// <summary>
@@ -234,7 +234,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): {this.session.id} Running SetSessionType_Office_Applications");
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "SessionType_Office_Applications",
 
@@ -243,7 +243,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
 
             }
         }
@@ -268,7 +268,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): {this.session.id} Running SetSessionType_Internet_Browsers");
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "SessionType_Internet_Browsers",
 
@@ -277,7 +277,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
 
             }
         }
@@ -294,19 +294,19 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} Running SetSessionType_Unclassified");
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "SetSessionType",
 
                 SessionType = this.session["X-ProcessName"],
-                ResponseAlert = LangHelper.GetString("Unclassified"),
-                ResponseComments = LangHelper.GetString("SessionType_Unknown_ResponseComments"),
+                ResponseAlert = RulesetLangHelper.GetString("Unclassified"),
+                ResponseComments = RulesetLangHelper.GetString("SessionType_Unknown_ResponseComments"),
 
                 SessionTypeConfidenceLevel = 10
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

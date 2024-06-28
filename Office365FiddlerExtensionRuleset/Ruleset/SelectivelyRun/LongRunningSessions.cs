@@ -1,5 +1,5 @@
 ﻿using System;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -56,7 +56,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
 
             // If the session is less than the warning threshold (quick) and more than the slow running threshold (slow), return.
-            if (ClientMilliseconds < SettingsJsonService.Instance.WarningSessionTimeThreshold && ClientMilliseconds > SettingsJsonService.Instance.SlowRunningSessionThreshold)
+            if (ClientMilliseconds < RulesetSettingsJsonService.Instance.WarningSessionTimeThreshold && ClientMilliseconds > 
+                RulesetSettingsJsonService.Instance.SlowRunningSessionThreshold)
             {
                 return;
             }
@@ -65,19 +66,18 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 $"({this.GetType().Name}): {this.session.id} Running LongRunningSessionsWarning.");
 
             // Warn on a 2.5 second roundtrip time. Using ClientMilliseconds here since that represents the complete round trip.
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "LongRunningSesions_Warning",
 
-                SessionType = LangHelper.GetString("LongRunningSessionsWarning_SessionType"),
-                //ResponseCodeDescription = "",
-                ResponseAlert = LangHelper.GetString("LongRunningSessionsWarning_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("LongRunningSessionsWarning_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("LongRunningSessionsWarning_SessionType"),
+                ResponseAlert = RulesetLangHelper.GetString("LongRunningSessionsWarning_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("LongRunningSessionsWarning_ResponseComments"),
 
                 SessionSeverity = 40
             };
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             double ClientMilliseconds = Math.Round((this.session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
 
             // If the session round trip time is less than the slow session threshold, return.
-            if (ClientMilliseconds < SettingsJsonService.Instance.SlowRunningSessionThreshold)
+            if (ClientMilliseconds < RulesetSettingsJsonService.Instance.SlowRunningSessionThreshold)
             {
                 return;
             }
@@ -99,20 +99,19 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} Long running client session.");
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "LongRunningSessions_Client_Session",
 
-                SessionType = LangHelper.GetString("LongRunningSessionsClientSlow_SessionType"),
-                //ResponseCodeDescription = "",
-                ResponseAlert = LangHelper.GetString("LongRunningSessionsClientSlow_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("LongRunningSessionsClientSlow_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("LongRunningSessionsClientSlow_SessionType"),
+                ResponseAlert = RulesetLangHelper.GetString("LongRunningSessionsClientSlow_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("LongRunningSessionsClientSlow_ResponseComments"),
 
                 SessionSeverity = 60
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         /// <summary>
@@ -126,7 +125,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             double ServerMilliseconds = Math.Round((this.session.Timers.ServerBeginResponse - this.session.Timers.ServerGotRequest).TotalMilliseconds);
 
             // If the Office 365 server think time runs longer than 5,000ms or 5 seconds.
-            if (ServerMilliseconds < SettingsJsonService.Instance.SlowRunningSessionThreshold)
+            if (ServerMilliseconds < RulesetSettingsJsonService.Instance.SlowRunningSessionThreshold)
             {
                 return;
             }
@@ -134,20 +133,19 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} Long running Office 365 session.");
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "LongRunningSessions_Server_Session",
 
-                SessionType = LangHelper.GetString("LongRunningSessionsServerSlow_SessionType"),
-                //ResponseCodeDescription = "",
-                ResponseAlert = LangHelper.GetString("LongRunningSessionsServerSlow_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("LongRunningSessionsServerSlow_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("LongRunningSessionsServerSlow_SessionType"),
+                ResponseAlert = RulesetLangHelper.GetString("LongRunningSessionsServerSlow_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("LongRunningSessionsServerSlow_ResponseComments"),
 
                 SessionSeverity = 60
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);           
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);           
         }
     }
 }

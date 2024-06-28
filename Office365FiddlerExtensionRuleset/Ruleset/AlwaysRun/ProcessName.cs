@@ -1,7 +1,7 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
 using System;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -35,17 +35,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 // It got set correctly, even with a RefreshUI() the ProcessName is not shown in the column.
                 // So this is just here for the inspector.
                 // Typically, this is only really an issue for mobile device or remote captures anyway.
-                ProcessName = LangHelper.GetString("Unknown");
+                ProcessName = RulesetLangHelper.GetString("Unknown");
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = LangHelper.GetString("Process Name"),
+                SectionTitle = RulesetLangHelper.GetString("Process Name"),
                 ProcessName = ProcessName
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

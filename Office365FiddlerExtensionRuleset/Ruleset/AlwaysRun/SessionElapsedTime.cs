@@ -1,5 +1,5 @@
 ﻿using System;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -41,25 +41,25 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = LangHelper.GetString("Session Elapsed Time"),
+                    SectionTitle = RulesetLangHelper.GetString("Session Elapsed Time"),
                     ElapsedTime = Milliseconds.ToString()
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
             else
             {
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "SessionElapsedTime_NoData",
-                    ElapsedTime = LangHelper.GetString("No data")
+                    ElapsedTime = RulesetLangHelper.GetString("No data")
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
 
@@ -83,79 +83,79 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 // If the roundtrip time is less than 1 second show the result in milliseconds.
                 if (ClientMilliseconds < 1000)
                 {
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                    var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "InspectorElapsedTime_LessThanOneSecond",
-                        InspectorElapsedTime = $"{ClientMilliseconds}{LangHelper.GetString("Milliseconds")}"
+                        InspectorElapsedTime = $"{ClientMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}"
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                 }
                 // If the roundtrip is over warning and under slow running thresholds; orange.
-                else if (ClientMilliseconds > SettingsJsonService.Instance.WarningSessionTimeThreshold && ClientMilliseconds < SettingsJsonService.Instance.SlowRunningSessionThreshold)
+                else if (ClientMilliseconds > RulesetSettingsJsonService.Instance.WarningSessionTimeThreshold && ClientMilliseconds < RulesetSettingsJsonService.Instance.SlowRunningSessionThreshold)
                 {
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                    var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "InspectorElapsedTime_Warning",
                         InspectorElapsedTime = $"<b><span style='color:orange'>"
-                            + $"{ClientSeconds} {LangHelper.GetString("Seconds")} ({ClientMilliseconds}{LangHelper.GetString("Milliseconds")}).</span></b>"
+                            + $"{ClientSeconds} {RulesetLangHelper.GetString("Seconds")} ({ClientMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}).</span></b>"
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                 }
                 // If roundtrip is over slow running threshold; red.
-                else if (ClientMilliseconds > SettingsJsonService.Instance.SlowRunningSessionThreshold)
+                else if (ClientMilliseconds > RulesetSettingsJsonService.Instance.SlowRunningSessionThreshold)
                 {
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                    var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "InspectorElapsedTime_Slow",
                         InspectorElapsedTime = $"<b><span style='color:red'>"
-                            + $"{ClientSeconds} {LangHelper.GetString("Seconds")} ({ClientMilliseconds}{LangHelper.GetString("Milliseconds")}).</span></b>"
+                            + $"{ClientSeconds} {RulesetLangHelper.GetString("Seconds")} ({ClientMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}).</span></b>"
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                 }
                 // If the roundtrip time is more than 1 second show the result in seconds.
                 else
                 {
                     if (ClientSeconds == 1)
                     {
-                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                         {
                             SectionTitle = "InspectorElapsedTime_MoreThanOneSecond",
-                            InspectorElapsedTime = $"{ClientSeconds} {LangHelper.GetString("Second")} ({ClientMilliseconds}{LangHelper.GetString("Milliseconds")})."
+                            InspectorElapsedTime = $"{ClientSeconds} {RulesetLangHelper.GetString("Second")} ({ClientMilliseconds}{RulesetLangHelper.GetString("Milliseconds")})."
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else
                     {
-                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                         {
                             SectionTitle = "InspectorElapsedTime_Else",
-                            InspectorElapsedTime = $"{ClientSeconds} {LangHelper.GetString("Seconds")} ({ClientMilliseconds}{LangHelper.GetString("Milliseconds")})."
+                            InspectorElapsedTime = $"{ClientSeconds} {RulesetLangHelper.GetString("Seconds")} ({ClientMilliseconds}{RulesetLangHelper.GetString("Milliseconds")})."
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                 }
             }
             else
             {
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "InspectorElapsedTime_Insufficient_Data",
 
-                    InspectorElapsedTime = LangHelper.GetString("Insufficient data")
+                    InspectorElapsedTime = RulesetLangHelper.GetString("Insufficient data")
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
     }

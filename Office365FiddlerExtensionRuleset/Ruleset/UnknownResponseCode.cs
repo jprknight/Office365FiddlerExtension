@@ -1,6 +1,6 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -21,14 +21,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             // Not setting colours on sessions not recognised.
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = LangHelper.GetString("Undefined"),
+                SectionTitle = RulesetLangHelper.GetString("Undefined"),
 
-                SessionType = LangHelper.GetString("Undefined"),
-                ResponseCodeDescription = LangHelper.GetString("Undefined"),
-                ResponseAlert = LangHelper.GetString("Undefined"),
-                ResponseComments = LangHelper.GetString("Response Comments No Known Issue"),
+                SessionType = RulesetLangHelper.GetString("Undefined"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("Undefined"),
+                ResponseAlert = RulesetLangHelper.GetString("Undefined"),
+                ResponseComments = RulesetLangHelper.GetString("Response Comments No Known Issue"),
 
                 SessionAuthenticationConfidenceLevel = 0,
                 SessionTypeConfidenceLevel = 0,
@@ -37,7 +37,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

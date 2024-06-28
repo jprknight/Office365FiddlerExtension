@@ -1,7 +1,7 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using System;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
@@ -44,7 +44,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP0s");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP0s");
 
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
@@ -64,16 +64,16 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 60;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_0",
 
-                SessionType = LangHelper.GetString("HTTP_0 SessionType"),
-                ResponseServer = LangHelper.GetString("HTTP_0 ResonseServer"),
-                ResponseAlert = LangHelper.GetString("HTTP_0 Response Alert"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_0 ResponseCodeDescription"),
-                ResponseComments = LangHelper.GetString("HTTP_0 ResponseComments"),
-                Authentication = LangHelper.GetString("HTTP_0 Authentication"),
+                SessionType = RulesetLangHelper.GetString("HTTP_0 SessionType"),
+                ResponseServer = RulesetLangHelper.GetString("HTTP_0 ResonseServer"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_0 Response Alert"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_0 ResponseCodeDescription"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_0 ResponseComments"),
+                Authentication = RulesetLangHelper.GetString("HTTP_0 Authentication"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -82,7 +82,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         private void HTTP_0_OWA_Notification_Channel(Session session)
@@ -104,7 +104,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_0s|HTTP_0_Outlook_Web_App_Notification_Channel");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_0s|HTTP_0_Outlook_Web_App_Notification_Channel");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -121,14 +121,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 60;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_0s",
 
-                SessionType = LangHelper.GetString("HTTP_0_Outlook_Web_App_Notification_Channel_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_0_Outlook_Web_App_Notification_Channel_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_0_Outlook_Web_App_Notification_Channel_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_0_Outlook_Web_App_Notification_Channel_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_0_Outlook_Web_App_Notification_Channel_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_0_Outlook_Web_App_Notification_Channel_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_0_Outlook_Web_App_Notification_Channel_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_0_Outlook_Web_App_Notification_Channel_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -137,7 +137,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

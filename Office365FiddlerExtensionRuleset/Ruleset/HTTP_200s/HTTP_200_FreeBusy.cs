@@ -1,6 +1,6 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using System;
 using System.Reflection;
 
@@ -70,7 +70,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items");
 
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
@@ -88,14 +88,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 sessionSeverity = 60;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "Free/Busy_Result_Set_Too_Many_Calendar_Items",
 
-                SessionType = LangHelper.GetString("HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -104,7 +104,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         private void Legacy_FreeBusy(Session session)
@@ -129,7 +129,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Legacy_FreeBusy");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Legacy_FreeBusy");
 
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
@@ -147,14 +147,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 sessionSeverity = 30;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "Legacy_Free/Busy",
 
-                SessionType = LangHelper.GetString("HTTP_200_Legacy_FreeBusy_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_200_Legacy_FreeBusy_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_200_Legacy_FreeBusy_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_200_Legacy_FreeBusy_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_200_Legacy_FreeBusy_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_Legacy_FreeBusy_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Legacy_FreeBusy_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_200_Legacy_FreeBusy_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -163,7 +163,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         private void Outlook_For_Windows_FreeBusy(Session session)
@@ -187,7 +187,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Outlook_For_Windows_FreeBusy");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Outlook_For_Windows_FreeBusy");
 
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
@@ -205,14 +205,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 sessionSeverity = 30;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "Outlook_For_Windows_Free/Busy",
 
-                SessionType = LangHelper.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -221,7 +221,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         private void OWA_FreeBusy(Session session)
@@ -247,7 +247,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_OWA_FreeBusy");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_OWA_FreeBusy");
 
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
@@ -265,14 +265,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 sessionSeverity = 30;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "OWA_Free/Busy",
 
-                SessionType = LangHelper.GetString("HTTP_200_OWA_FreeBusy_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_200_OWA_FreeBusy_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_200_OWA_FreeBusy_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_200_OWA_FreeBusy_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_200_OWA_FreeBusy_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_OWA_FreeBusy_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_200_OWA_FreeBusy_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_200_OWA_FreeBusy_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -281,7 +281,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

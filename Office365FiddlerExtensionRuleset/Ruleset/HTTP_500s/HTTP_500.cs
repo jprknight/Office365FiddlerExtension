@@ -1,5 +1,5 @@
 ﻿using System;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -72,7 +72,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_500s|HTTP_500_Internal_Server_Error_Repeating_Redirects");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_500s|HTTP_500_Internal_Server_Error_Repeating_Redirects");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -89,14 +89,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 60;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_500s",
 
-                SessionType = LangHelper.GetString("HTTP_500_Internal_Server_Error_Repeating_Redirects_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_500_Internal_Server_Error_Repeating_Redirects_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -105,7 +105,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false); 
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false); 
         }
 
         private void HTTP_500_Internal_Server_Error_Impersonate_User_Denied(Session session)
@@ -138,7 +138,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_500s|HTTP_500_Internal_Server_Error_Impersonate_User_Denied");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_500s|HTTP_500_Internal_Server_Error_Impersonate_User_Denied");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -155,14 +155,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 60;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_500s",
 
-                SessionType = LangHelper.GetString("HTTP_500_Internal_Server_Error_Impersonate_User_Denied_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_500_Internal_Server_Error_Impersonate_User_Denied_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -171,7 +171,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         private void HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong(Session session)
@@ -199,7 +199,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_500s|HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_500s|HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -216,14 +216,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 60;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_500s",
 
-                SessionType = LangHelper.GetString("HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -232,7 +232,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         private void HTTP_500_Internal_Server_Error_All_Others(Session session)
@@ -248,7 +248,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_500s|HTTP_500_Internal_Server_Error_All_Others");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_500s|HTTP_500_Internal_Server_Error_All_Others");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -265,14 +265,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 60;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_500s",
 
-                SessionType = LangHelper.GetString("HTTP_500_Internal_Server_Error_All_Others_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_500_Internal_Server_Error_All_Others_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_500_Internal_Server_Error_All_Others_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_500_Internal_Server_Error_All_Others_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_500_Internal_Server_Error_All_Others_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_500_Internal_Server_Error_All_Others_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_500_Internal_Server_Error_All_Others_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_500_Internal_Server_Error_All_Others_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -281,7 +281,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

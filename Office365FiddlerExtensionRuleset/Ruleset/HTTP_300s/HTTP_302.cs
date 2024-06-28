@@ -1,5 +1,5 @@
 ﻿using System;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -43,7 +43,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP302s|HTTP_302_Redirect_AutoDiscover");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP302s|HTTP_302_Redirect_AutoDiscover");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -60,14 +60,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 30;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_302s",
 
-                SessionType = LangHelper.GetString("HTTP_302_Redirect_AutoDiscover_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_302_Redirect_AutoDiscover_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_302_Redirect_AutoDiscover_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_302_Redirect_AutoDiscover_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_302_Redirect_AutoDiscover_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_302_Redirect_AutoDiscover_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_302_Redirect_AutoDiscover_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_302_Redirect_AutoDiscover_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -76,7 +76,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         private void HTTP_302_Redirect_AllOthers(Session session)
@@ -92,7 +92,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP302s|HTTP_302_Redirect_AllOthers");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP302s|HTTP_302_Redirect_AllOthers");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -109,14 +109,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 30;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_302s",
 
-                SessionType = LangHelper.GetString("HTTP_302_Redirect_AllOthers_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_302_Redirect_AllOthers_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_302_Redirect_AllOthers_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_302_Redirect_AllOthers_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_302_Redirect_AllOthers_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_302_Redirect_AllOthers_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_302_Redirect_AllOthers_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_302_Redirect_AllOthers_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -125,7 +125,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

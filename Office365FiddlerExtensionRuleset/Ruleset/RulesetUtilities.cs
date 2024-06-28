@@ -2,7 +2,6 @@
 using Office365FiddlerExtension.Services;
 using System;
 using System.Linq;
-using static System.Collections.Specialized.BitVector32;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {

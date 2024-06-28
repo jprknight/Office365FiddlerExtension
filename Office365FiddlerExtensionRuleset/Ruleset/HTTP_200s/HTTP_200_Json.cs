@@ -1,7 +1,7 @@
 ﻿using Fiddler;
 using System;
 using System.Reflection;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using Newtonsoft.Json;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
@@ -24,7 +24,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             }
 
             // Valid Json in response.
-            if (JsonValidatorService.Instance.IsValidJsonSession(this.session))
+            if (Office365FiddlerExtension.Services.JsonValidatorService.Instance.IsValidJsonSession(this.session))
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Json");
 
@@ -35,7 +35,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
                 try
                 {
-                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Json");
+                    var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Json");
                     sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                     sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                     sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -53,14 +53,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                     sessionSeverity = 30;
                 }
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_200s",
 
-                    SessionType = LangHelper.GetString("HTTP_200_Json_SessionType"),
-                    ResponseCodeDescription = LangHelper.GetString("HTTP_200_Json_ResponseCodeDescription"),
-                    ResponseAlert = LangHelper.GetString("HTTP_200_Json_ResponseAlert"),
-                    ResponseComments = LangHelper.GetString("HTTP_200_Json_ResponseComments"),
+                    SessionType = RulesetLangHelper.GetString("HTTP_200_Json_SessionType"),
+                    ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_Json_ResponseCodeDescription"),
+                    ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Json_ResponseAlert"),
+                    ResponseComments = RulesetLangHelper.GetString("HTTP_200_Json_ResponseComments"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -69,9 +69,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
 
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Json; severity: {SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionSeverity}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"{this.session.id} HTTP 200 Json; severity: {RulesetSessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionSeverity}");
             }
             // Invalid Json in response.
             else
@@ -85,12 +86,13 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
                 try
                 {
-                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Json_Invalid");
+                    var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Json_Invalid");
                     sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                     sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                     sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
                     sessionSeverity = sessionClassificationJson.SessionSeverity;
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {sessionClassificationJson.SessionSeverity}");
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        $"{this.session.id} {sessionClassificationJson.SessionSeverity}");
                 }
                 catch (Exception ex)
                 {
@@ -106,14 +108,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 // Empty response body.
                 if (this.session.GetResponseBodyAsString() == null || this.session.GetResponseBodyAsString() == "")
                 {
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                    var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "HTTP_200s",
 
-                        SessionType = LangHelper.GetString("HTTP_200_Json_SessionType_EmptyResponseBody"),
-                        ResponseCodeDescription = LangHelper.GetString("HTTP_200_Json_Invalid_ResponseCodeDescription"),
-                        ResponseAlert = LangHelper.GetString("HTTP_200_Json_Invalid_ResponseAlert"),
-                        ResponseComments = $"{LangHelper.GetString("HTTP_200_Json_EmptyResponseBody")}",
+                        SessionType = RulesetLangHelper.GetString("HTTP_200_Json_SessionType_EmptyResponseBody"),
+                        ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_Json_Invalid_ResponseCodeDescription"),
+                        ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Json_Invalid_ResponseAlert"),
+                        ResponseComments = $"{RulesetLangHelper.GetString("HTTP_200_Json_EmptyResponseBody")}",
 
                         SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                         SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -122,19 +124,20 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                 }
                 // Something in the response body.
                 else
                 {
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                    var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "HTTP_200s",
 
-                        SessionType = LangHelper.GetString("HTTP_200_Json_Invalid_SessionType"),
-                        ResponseCodeDescription = LangHelper.GetString("HTTP_200_Json_Invalid_ResponseCodeDescription"),
-                        ResponseAlert = LangHelper.GetString("HTTP_200_Json_Invalid_ResponseAlert"),
-                        ResponseComments = $"{LangHelper.GetString("HTTP_200_Json_Invalid_ResponseComments")} <p>{LangHelper.GetString("Response Body")}</p>{this.session.GetResponseBodyAsString()}",
+                        SessionType = RulesetLangHelper.GetString("HTTP_200_Json_Invalid_SessionType"),
+                        ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_Json_Invalid_ResponseCodeDescription"),
+                        ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Json_Invalid_ResponseAlert"),
+                        ResponseComments = $"{RulesetLangHelper.GetString("HTTP_200_Json_Invalid_ResponseComments")} <p>" +
+                            $"{RulesetLangHelper.GetString("Response Body")}</p>{this.session.GetResponseBodyAsString()}",
 
                         SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                         SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -143,10 +146,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                 }
 
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 invalid Json; severity: {SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionSeverity}");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"{this.session.id} HTTP 200 invalid Json; severity: {RulesetSessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionSeverity}");
             }
         }
     }

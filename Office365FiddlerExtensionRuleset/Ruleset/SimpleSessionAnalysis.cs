@@ -1,6 +1,7 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using System;
 using System.Reflection;
 
@@ -38,7 +39,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection(ResponseCodeSection);
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection(ResponseCodeSection);
 
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): {this.session.id} {sessionClassificationJson.SessionType}");
@@ -59,9 +60,9 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): {this.session.id} {ex}");
 
-                sessionSectionTitle = LangHelper.GetString("Simple Session Analysis - Json Read Failure.");
-                sessionType = LangHelper.GetString("Simple Session Analysis");
-                sessionResponseAlert = LangHelper.GetString("Simple Session Analysis - Json Read Failure.");
+                sessionSectionTitle = RulesetLangHelper.GetString("Simple Session Analysis - Json Read Failure.");
+                sessionType = RulesetLangHelper.GetString("Simple Session Analysis");
+                sessionResponseAlert = RulesetLangHelper.GetString("Simple Session Analysis - Json Read Failure.");
 
                 sessionAuthenticationConfidenceLevel = 5;
                 sessionTypeConfidenceLevel = 10;
@@ -76,7 +77,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 ResponseCodeDescription = sessionType,
                 ResponseAlert = sessionResponseAlert,
-                ResponseComments = LangHelper.GetString("Response Comments No Known Issue"),
+                ResponseComments = RulesetLangHelper.GetString("Response Comments No Known Issue"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
