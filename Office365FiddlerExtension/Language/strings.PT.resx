@@ -230,7 +230,7 @@
     <comment>Menu</comment>
   </data>
   <data name="Enabled" xml:space="preserve">
-    <value>Enabled</value>
+    <value>EnabledPT</value>
     <comment>Menu</comment>
   </data>
   <data name="English" xml:space="preserve">
@@ -455,7 +455,7 @@
   </data>
   <data name="ScoreForSession" xml:space="preserve">
     <value>ScoreForSession</value>
-    <comment>About -- Do not translate. This is an internal to Fiddler setting, context may be lost if translated.</comment>
+    <comment>About -- Do not translate the term 'ScoreForSession'. This is an internal to Fiddler setting, context may be lost if translated.</comment>
   </data>
   <data name="Server Begin Response" xml:space="preserve">
     <value>Server Begin Response</value>
@@ -571,7 +571,7 @@
   </data>
   <data name="What is ScoreForSession" xml:space="preserve">
     <value>What is ScoreForSession?</value>
-    <comment>About -- Do not translate. This is an internal to Fiddler setting, context may be lost if translated.</comment>
+    <comment>About -- Do not translate the term 'ScoreForSession'. This is an internal to Fiddler setting, context may be lost if translated.</comment>
   </data>
   <data name="Wiki" xml:space="preserve">
     <value>Wiki</value>

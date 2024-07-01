@@ -32,19 +32,150 @@ namespace Office365FiddlerExtension.UI
         /// </summary>
         private void AddExtensionColumns()
         {
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Adding columns to Fiddler UI.");
+
+            // FiddlerApplication.UI.lvSessions.AddBoundColumn("Column Title", int position, int width, Session Flag or function for data);
+            // FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 2, 110, UpdateSessionUX.Instance.ElapsedTime);
+
+            // If column names are blank or empty strings they don't seem to be added in the Fiddler UI.
+            // Make sure each column has a valid string to add to the UI with.
+
+            // Elapsed Time.
+
             try
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Adding columns to UI.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add Elapsed Time column to Fiddler UI.");
 
-                // FiddlerApplication.UI.lvSessions.AddBoundColumn("Column Title", int position, int width, Session Flag or function for data);
-                // FiddlerApplication.UI.lvSessions.AddBoundColumn("Elapsed Time", 2, 110, UpdateSessionUX.Instance.ElapsedTime);
+                string strElapsedTime;
 
-                FiddlerApplication.UI.lvSessions.AddBoundColumn($"{LangHelper.GetString("Elapsed Time")} (ms)", -1, 110, true, ElapsedTime);
-                FiddlerApplication.UI.lvSessions.AddBoundColumn(LangHelper.GetString("Severity"), -1, 60, true, SessionSeverity);
-                FiddlerApplication.UI.lvSessions.AddBoundColumn(LangHelper.GetString("Session Type"), 150, SessionType);
-                FiddlerApplication.UI.lvSessions.AddBoundColumn(LangHelper.GetString("Authentication"), 140, Authentication);
-                FiddlerApplication.UI.lvSessions.AddBoundColumn(LangHelper.GetString("Response Server"), 130, ResponseServer);
-                FiddlerApplication.UI.lvSessions.AddBoundColumn(LangHelper.GetString("Host IP"), 110, HostIP);
+                if (LangHelper.GetString("Elapsed Time") == "")
+                {
+                    strElapsedTime = "Elapsed Time (ms)";
+                }
+                else
+                {
+                    strElapsedTime = $"{LangHelper.GetString("Elapsed Time")} (ms)";
+                }
+
+                FiddlerApplication.UI.lvSessions.AddBoundColumn(strElapsedTime, -1, 110, true, ElapsedTime);
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+            }
+
+            // Severity.
+
+            try
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add Severity column to Fiddler UI.");
+
+                string strSeverity;
+
+                if (LangHelper.GetString("Severity") == "")
+                {
+                    strSeverity = "Severity";
+                }
+                else
+                {
+                    strSeverity = LangHelper.GetString("Severity");
+                }
+
+                FiddlerApplication.UI.lvSessions.AddBoundColumn(strSeverity, -1, 60, true, SessionSeverity);
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+            }
+
+            // Session Type.
+
+            try
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add Session Type column to Fiddler UI.");
+
+                string strSessionType;
+
+                if (LangHelper.GetString("Session Type") == "")
+                {
+                    strSessionType = "Session Type";
+                }
+                else
+                {
+                    strSessionType = LangHelper.GetString("Session Type");
+                }
+
+                FiddlerApplication.UI.lvSessions.AddBoundColumn(strSessionType, 150, SessionType);
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+            }
+
+            // Authentication.
+
+            try
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add Authentication column to Fiddler UI.");
+
+                string strAuthentication;
+
+                if (LangHelper.GetString("Authentication") == "")
+                {
+                    strAuthentication = "Authentication";
+                }
+                else
+                {
+                    strAuthentication = LangHelper.GetString("Authentication");
+                }
+
+                FiddlerApplication.UI.lvSessions.AddBoundColumn(strAuthentication, 140, Authentication);
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+            }
+
+            // Response Server.
+
+            try
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add Response Server column to Fiddler UI.");
+
+                string strResponseServer;
+
+                if (LangHelper.GetString("Response Server") == "")
+                {
+                    strResponseServer = "Response Server";
+                }
+                else
+                {
+                    strResponseServer = LangHelper.GetString("Response Server");
+                }
+
+                FiddlerApplication.UI.lvSessions.AddBoundColumn(strResponseServer, 130, ResponseServer);
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+            }
+
+            try
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add Host IP column to Fiddler UI.");
+
+                string strHostIP;
+
+                if (LangHelper.GetString("Host IP") == "")
+                {
+                    strHostIP = "Host IP";
+                }
+                else
+                {
+                    strHostIP = LangHelper.GetString("Host IP");
+                }
+
+                FiddlerApplication.UI.lvSessions.AddBoundColumn(strHostIP, 110, HostIP);
             }
             catch (Exception ex)
             {

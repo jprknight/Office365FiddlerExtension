@@ -61,40 +61,35 @@ namespace Office365FiddlerExtension.Services
                 return false;
             }
 
-            int localVersion = Assembly.GetExecutingAssembly().GetName().Version.Major
-                + Assembly.GetExecutingAssembly().GetName().Version.Minor
-                + Assembly.GetExecutingAssembly().GetName().Version.Build;
-
-            /*
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                $"({this.GetType().Name}) " +
-                $"Local version " +
-                $"{Assembly.GetExecutingAssembly().GetName().Version.Major}." +
-                $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
-                $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
-            */
-
             var githubJsonVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
-            int githubVersion = githubJsonVersion.ExtensionMajor
-                + githubJsonVersion.ExtensionMinor
-                + githubJsonVersion.ExtensionBuild;
-
-            /*
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                $"({this.GetType().Name}) " +
-                $"Github version " +
-                $"{githubJsonVersion.ExtensionMajor}." +
-                $"{githubJsonVersion.ExtensionMinor}." +
-                $"{githubJsonVersion.ExtensionBuild}");
-            */
-
-            if (localVersion < githubVersion)
+            if (VersionService.Instance.LocalRulesetDLLVerison("Major") >= githubJsonVersion.RulesetMajor
+                && VersionService.Instance.LocalRulesetDLLVerison("Minor") >= githubJsonVersion.RulesetMinor
+                && VersionService.Instance.LocalRulesetDLLVerison("Build") >= githubJsonVersion.RulesetBuild)
             {
+                // Update not available.
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} Extension DLL update not available; "
+                    + $"Local Version: v{VersionService.Instance.LocalRulesetDLLVerison("Major")}, "
+                    + $"{VersionService.Instance.LocalRulesetDLLVerison("Minor")}, "
+                    + $"{VersionService.Instance.LocalRulesetDLLVerison("Build")}. "
+                    + $"Github Version: {githubJsonVersion.RulesetMajor}, "
+                    + $"{githubJsonVersion.RulesetMinor}, "
+                    + $"{githubJsonVersion.RulesetBuild}.");
+                return false;
+            }
+            // One of the local major, minor, or build are less than the Github versions, return true.
+            // There is an update available.
+            else
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} Extension DLL update available; "
+                    + $"Local Version: v{VersionService.Instance.LocalRulesetDLLVerison("Major")}, "
+                    + $"{VersionService.Instance.LocalRulesetDLLVerison("Minor")}, "
+                    + $"{VersionService.Instance.LocalRulesetDLLVerison("Build")}. "
+                    + $"Github Version: {githubJsonVersion.RulesetMajor}, "
+                    + $"{githubJsonVersion.RulesetMinor}, "
+                    + $"{githubJsonVersion.RulesetBuild}.");
                 return true;
             }
-
-            return false;
         }
 
         /// <summary>
@@ -186,16 +181,33 @@ namespace Office365FiddlerExtension.Services
                 FileInfo file = (from f in dirInfo.GetFiles(pattern) orderby f.LastWriteTime descending select f).First();
                 FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(file.FullName);
 
-                int localVersion = VersionService.Instance.LocalRulesetDLLVerison("Major")
-                    + VersionService.Instance.LocalRulesetDLLVerison("Minor")
-                    + VersionService.Instance.LocalRulesetDLLVerison("Build");
-
-                int GithubVersion = githubJsonVersion.RulesetMajor
-                    + githubJsonVersion.RulesetMinor
-                    + githubJsonVersion.RulesetBuild;
-
-                if (localVersion < GithubVersion)
+                // If the local major, minor, and build are all equal to or more than the Github versions, return false.
+                // There is no update available.
+                if (VersionService.Instance.LocalRulesetDLLVerison("Major") >= githubJsonVersion.RulesetMajor
+                    && VersionService.Instance.LocalRulesetDLLVerison("Minor") >= githubJsonVersion.RulesetMinor
+                    && VersionService.Instance.LocalRulesetDLLVerison("Build") >= githubJsonVersion.RulesetBuild)
                 {
+                    // Update not available.
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} Ruleset DLL update not available; "
+                        + $"Local Version: v{VersionService.Instance.LocalRulesetDLLVerison("Major")}, "
+                        + $"{VersionService.Instance.LocalRulesetDLLVerison("Minor")}, "
+                        + $"{VersionService.Instance.LocalRulesetDLLVerison("Build")}. "
+                        + $"Github Version: {githubJsonVersion.RulesetMajor}, "
+                        + $"{githubJsonVersion.RulesetMinor}, "
+                        + $"{githubJsonVersion.RulesetBuild}.");
+                    return false;
+                }
+                // One of the local major, minor, or build are less than the Github versions, return true.
+                // There is an update available.
+                else
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} Ruleset DLL update available; "
+                        + $"Local Version: v{VersionService.Instance.LocalRulesetDLLVerison("Major")}, "
+                        + $"{VersionService.Instance.LocalRulesetDLLVerison("Minor")}, "
+                        + $"{VersionService.Instance.LocalRulesetDLLVerison("Build")}. "
+                        + $"Github Version: {githubJsonVersion.RulesetMajor}, "
+                        + $"{githubJsonVersion.RulesetMinor}, "
+                        + $"{githubJsonVersion.RulesetBuild}.");
                     return true;
                 }
             }
@@ -248,6 +260,7 @@ namespace Office365FiddlerExtension.Services
         {
             if (!VersionService.Instance.IsRulesetDLLUpdateAvailable())
             {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} IsRulesetDLLUpdateAvailable returned false.");
                 return;
             }
 

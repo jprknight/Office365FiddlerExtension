@@ -59,57 +59,65 @@ namespace Office365FiddlerExtension
         {
             if (IsInitialized) return;
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Adding context menu to UI.");
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add context menu to Fiddler UI.");
 
-            CmiAnalyseSelectedSessions.Click += new EventHandler(CmiAnalyseSelectedSessions_Click);
-
-            //CmiAnalyseAllSessions.Click += new EventHandler(CmiAnalyseAllSessions_Click);
-
-            CmiClearAnalysisSelectedSessions.Click += new EventHandler(CmiClearAnalysisSelectedSessions_Click);
-
-            //FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(0, CmiAnalyseAllSessions);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(0, CmiAnalyseSelectedSessions);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(1, CmiClearAnalysisSelectedSessions);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(2, Separator1);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(3, CmiSetSessionSeverity);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(4, Separator2);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(5, CmiCreateConsolidatedAnalysisReport);
-            FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(6, Separator3);
-
-            this.CmiSetSessionSeverity.MenuItems.AddRange(new MenuItem[] {
-                this.CmiRecalculateAnalysisSelectedSessions,
-                this.SubMenuSeparator,
-                this.CmiSessionSeverityTen,
-                this.CmiSessionSeverityTwenty,
-                this.CmiSessionSeverityThirty,
-                this.CmiSessionSeverityFourty,
-                this.CmiSessionSeverityFifty,
-                this.CmiSessionSeveritySixty
-            });
-
-            CmiRecalculateAnalysisSelectedSessions.Click += new EventHandler(CmiRecalculateAnalysisSelectedSessions_Click);
-
-            CmiSessionSeverityTen.Click += new EventHandler(CmiSessionSeverityTen_Click);
-
-            CmiSessionSeverityTwenty.Click += new EventHandler(CmiSessionSeverityTwenty_Click);
-
-            CmiSessionSeverityThirty.Click += new EventHandler(CmiSessionSeverityThirty_Click);
-
-            CmiSessionSeverityFourty.Click += new EventHandler(CmiSessionSeverityFourty_Click);
-
-            CmiSessionSeverityFifty.Click += new EventHandler(CmiSessionSeverityFifty_Click);
-
-            CmiSessionSeveritySixty.Click += new EventHandler(CmiSessionSeveritySixty_Click);
-
-            CmiCreateConsolidatedAnalysisReport.Click += new EventHandler(CmiCreateConsolidatedAnalysisReport_Click);
-
-            if (!SettingsJsonService.Instance.ExtensionSessionProcessingEnabled)
+            try
             {
-                CmiAnalyseSelectedSessions.Enabled = false;
-                CmiClearAnalysisSelectedSessions.Enabled = false;
-                CmiSetSessionSeverity.Enabled = false;
-                CmiCreateConsolidatedAnalysisReport.Enabled = false;
+                CmiAnalyseSelectedSessions.Click += new EventHandler(CmiAnalyseSelectedSessions_Click);
+
+                //CmiAnalyseAllSessions.Click += new EventHandler(CmiAnalyseAllSessions_Click);
+
+                CmiClearAnalysisSelectedSessions.Click += new EventHandler(CmiClearAnalysisSelectedSessions_Click);
+
+                //FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(0, CmiAnalyseAllSessions);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(0, CmiAnalyseSelectedSessions);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(1, CmiClearAnalysisSelectedSessions);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(2, Separator1);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(3, CmiSetSessionSeverity);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(4, Separator2);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(5, CmiCreateConsolidatedAnalysisReport);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(6, Separator3);
+
+                this.CmiSetSessionSeverity.MenuItems.AddRange(new MenuItem[] {
+                    this.CmiRecalculateAnalysisSelectedSessions,
+                    this.SubMenuSeparator,
+                    this.CmiSessionSeverityTen,
+                    this.CmiSessionSeverityTwenty,
+                    this.CmiSessionSeverityThirty,
+                    this.CmiSessionSeverityFourty,
+                    this.CmiSessionSeverityFifty,
+                    this.CmiSessionSeveritySixty
+                });
+
+                CmiRecalculateAnalysisSelectedSessions.Click += new EventHandler(CmiRecalculateAnalysisSelectedSessions_Click);
+
+                CmiSessionSeverityTen.Click += new EventHandler(CmiSessionSeverityTen_Click);
+
+                CmiSessionSeverityTwenty.Click += new EventHandler(CmiSessionSeverityTwenty_Click);
+
+                CmiSessionSeverityThirty.Click += new EventHandler(CmiSessionSeverityThirty_Click);
+
+                CmiSessionSeverityFourty.Click += new EventHandler(CmiSessionSeverityFourty_Click);
+
+                CmiSessionSeverityFifty.Click += new EventHandler(CmiSessionSeverityFifty_Click);
+
+                CmiSessionSeveritySixty.Click += new EventHandler(CmiSessionSeveritySixty_Click);
+
+                CmiCreateConsolidatedAnalysisReport.Click += new EventHandler(CmiCreateConsolidatedAnalysisReport_Click);
+
+                if (!SettingsJsonService.Instance.ExtensionSessionProcessingEnabled)
+                {
+                    CmiAnalyseSelectedSessions.Enabled = false;
+                    CmiClearAnalysisSelectedSessions.Enabled = false;
+                    CmiSetSessionSeverity.Enabled = false;
+                    CmiCreateConsolidatedAnalysisReport.Enabled = false;
+                }
             }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+            }
+            
         }
 
         /// <summary>

@@ -31,15 +31,15 @@ namespace Office365FiddlerExtension.Services
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
 
-                // Not currently supporting language changing in the application.
-                // LangHelper.ChangeLanguage(SettingsJsonService.Instance.GetDeserializedExtensionSettings().PreferredLanguage);
-
                 // Ensure Fiddler settings (settings, URLs, & verison) for the extension have been created.
                 // Avoid null exceptions.
                 SettingsJsonService.Instance.CreateExtensionSettingsFiddlerApplicationPreference();
                 URLsJsonService.Instance.CreateExtensionURLFiddlerApplicationPreference();
                 VersionJsonService.Instance.CreateExtensionVersionFiddlerApplicationPreference();
                 SessionClassificationService.Instance.CreateSessionClassificationFiddlerApplicationPreference();
+
+                // Set extension language based on preferred language.
+                LangHelper.ChangeLanguage(SettingsJsonService.Instance.GetDeserializedExtensionSettings().PreferredLanguage);
 
                 // Set Fiddler settings as needed.
                 SettingsJsonService.Instance.SetExtensionDLL();

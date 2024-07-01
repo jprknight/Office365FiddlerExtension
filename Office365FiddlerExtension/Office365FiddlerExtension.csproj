@@ -197,6 +197,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Language\strings.PT.Designer.cs">
+      <DependentUpon>strings.PT.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Language\strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -255,6 +260,11 @@
     <Compile Include="UI\EnhanceSessionUX.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Language\strings.PT.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>strings.PT.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Language\strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>strings.Designer.cs</LastGenOutput>
@@ -314,4 +324,25 @@ xcopy /y /s "$(TargetDir)*.*" "C:\Tools\Fiddler\Inspectors"</PostBuildEvent>
   <Import Project="..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.11.0\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.11.0\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets')" />
   <Import Project="..\packages\Microsoft.ApplicationInsights.WindowsServer.2.11.0\build\Microsoft.ApplicationInsights.WindowsServer.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.2.11.0\build\Microsoft.ApplicationInsights.WindowsServer.targets')" />
   <ProjectExtensions />
+  <PropertyGroup>
+    <PreBuildEvent>del C:\Tools\Fiddler\Scripts\Office365FiddlerExtension.dll
+del C:\Tools\Fiddler\Scripts\Office365FiddlerExtension.dll.config
+del C:\Tools\Fiddler\Scripts\Office365FiddlerExtension.pdb
+
+del C:\Tools\Fiddler\Scripts\Office365FiddlerExtensionRuleset.dll
+del C:\Tools\Fiddler\Scripts\Office365FiddlerExtensionRuleset.dll.config
+del C:\Tools\Fiddler\Scripts\Office365FiddlerExtensionRuleset.pdb
+
+del C:\Tools\Fiddler\Scripts\SessionClassification.json
+
+del C:\Tools\Fiddler\Inspectors\Office365FiddlerExtension.dll
+del C:\Tools\Fiddler\Inspectors\Office365FiddlerExtension.dll.config
+del C:\Tools\Fiddler\Inspectors\Office365FiddlerExtension.pdb
+
+del C:\Tools\Fiddler\Inspectors\Office365FiddlerExtensionRuleset.dll
+del C:\Tools\Fiddler\Inspectors\Office365FiddlerExtensionRuleset.dll.config
+del C:\Tools\Fiddler\Inspectors\Office365FiddlerExtensionRuleset.pdb
+
+del C:\Tools\Fiddler\Inspectors\SessionClassification.json</PreBuildEvent>
+  </PropertyGroup>
 </Project>

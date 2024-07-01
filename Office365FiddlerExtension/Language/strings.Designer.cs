@@ -133,29 +133,20 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Broad Logic Checks.
-        /// </summary>
-        internal static string Broad_Logic_Checks {
-            get {
-                return ResourceManager.GetString("Broad Logic Checks", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Capture was.
-        /// </summary>
-        internal static string Capture_was {
-            get {
-                return ResourceManager.GetString("Capture was", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Check for updates every.
         /// </summary>
         internal static string Check_for_updates_every {
             get {
                 return ResourceManager.GetString("Check for updates every", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to hours..
+        /// </summary>
+        internal static string Check_for_updates_every_hours {
+            get {
+                return ResourceManager.GetString("Check for updates every hours", resourceCulture);
             }
         }
         
@@ -360,18 +351,18 @@ namespace Office365FiddlerExtension.Language {
         /// <summary>
         ///   Looks up a localized string similar to Extension Options.
         /// </summary>
-        internal static string ExtensionOptions {
+        internal static string Extension_Options {
             get {
-                return ResourceManager.GetString("ExtensionOptions", resourceCulture);
+                return ResourceManager.GetString("Extension Options", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Extension Path.
         /// </summary>
-        internal static string ExtensionPath {
+        internal static string Extension_Path {
             get {
-                return ResourceManager.GetString("ExtensionPath", resourceCulture);
+                return ResourceManager.GetString("Extension Path", resourceCulture);
             }
         }
         
@@ -399,15 +390,6 @@ namespace Office365FiddlerExtension.Language {
         internal static string For_an_explantion_of_session_timers_refer_to {
             get {
                 return ResourceManager.GetString("For an explantion of session timers refer to", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Free/Busy.
-        /// </summary>
-        internal static string FreeBusy {
-            get {
-                return ResourceManager.GetString("FreeBusy", resourceCulture);
             }
         }
         
@@ -502,6 +484,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Host IP.
+        /// </summary>
+        internal static string Host_IP {
+            get {
+                return ResourceManager.GetString("Host IP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inspector.
         /// </summary>
         internal static string Inspector {
@@ -516,15 +507,6 @@ namespace Office365FiddlerExtension.Language {
         internal static string Inspector_Session_Analysis {
             get {
                 return ResourceManager.GetString("Inspector_Session_Analysis", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Insufficient data.
-        /// </summary>
-        internal static string Insufficient_data {
-            get {
-                return ResourceManager.GetString("Insufficient data", resourceCulture);
             }
         }
         
@@ -619,15 +601,6 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Minutes.
-        /// </summary>
-        internal static string Minutes {
-            get {
-                return ResourceManager.GetString("Minutes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Name Identifier Format.
         /// </summary>
         internal static string Name_Identifier_Format {
@@ -651,15 +624,6 @@ namespace Office365FiddlerExtension.Language {
         internal static string Next_Update_Check {
             get {
                 return ResourceManager.GetString("Next Update Check", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No Data.
-        /// </summary>
-        internal static string No_Data {
-            get {
-                return ResourceManager.GetString("No Data", resourceCulture);
             }
         }
         
@@ -723,15 +687,6 @@ namespace Office365FiddlerExtension.Language {
         internal static string On_Load_Saz {
             get {
                 return ResourceManager.GetString("On Load Saz", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to On Demand.
-        /// </summary>
-        internal static string OnDemand {
-            get {
-                return ResourceManager.GetString("OnDemand", resourceCulture);
             }
         }
         
@@ -817,29 +772,11 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The process is not recorded in the session, it is unknown which application this data was recorded from..
-        /// </summary>
-        internal static string Remote_Capture {
-            get {
-                return ResourceManager.GetString("Remote Capture", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Report Issues.
         /// </summary>
         internal static string Report_Issues {
             get {
                 return ResourceManager.GetString("Report Issues", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Response Body:.
-        /// </summary>
-        internal static string Response_Body {
-            get {
-                return ResourceManager.GetString("Response Body", resourceCulture);
             }
         }
         
@@ -853,38 +790,11 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Response Host.
-        /// </summary>
-        internal static string Response_Host {
-            get {
-                return ResourceManager.GetString("Response Host", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Information on the host/server/device which responded to this request..
-        /// </summary>
-        internal static string Response_Host_Info {
-            get {
-                return ResourceManager.GetString("Response Host Info", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Response Server.
         /// </summary>
         internal static string Response_Server {
             get {
                 return ResourceManager.GetString("Response Server", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type Unknown.
-        /// </summary>
-        internal static string ResponseServer_Unknown {
-            get {
-                return ResourceManager.GetString("ResponseServer_Unknown", resourceCulture);
             }
         }
         
@@ -907,38 +817,11 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scenario.
-        /// </summary>
-        internal static string Scenario {
-            get {
-                return ResourceManager.GetString("Scenario", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to ScoreForSession.
         /// </summary>
         internal static string ScoreForSession {
             get {
                 return ResourceManager.GetString("ScoreForSession", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to second.
-        /// </summary>
-        internal static string Second {
-            get {
-                return ResourceManager.GetString("Second", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to seconds.
-        /// </summary>
-        internal static string Seconds {
-            get {
-                return ResourceManager.GetString("Seconds", resourceCulture);
             }
         }
         
@@ -1078,24 +961,6 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.&lt;/p&gt;&lt;p&gt;If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.&lt;/p&gt;&lt;p&gt;Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.&lt;p&gt;.
-        /// </summary>
-        internal static string SessionTimersDescription {
-            get {
-                return ResourceManager.GetString("SessionTimersDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The Office 365 Fiddler Extension does not yet have a way to classify this session.&lt;p&gt;If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: &lt;a href=&apos;https://github.com/jprknight/Office365FiddlerExtension&apos; target=&apos;_blank&apos;&gt;https://github.com/jprknight/Office365FiddlerExtension&lt;/a&gt;.&lt;/p&gt;.
-        /// </summary>
-        internal static string SessionType_Unknown_ResponseComments {
-            get {
-                return ResourceManager.GetString("SessionType_Unknown_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Set Session Severity.
         /// </summary>
         internal static string Set_Session_Severity {
@@ -1132,11 +997,11 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Some Session Analysis.
+        ///   Looks up a localized string similar to Some Session analysis.
         /// </summary>
-        internal static string Some_Session_Analysis {
+        internal static string Some_Session_analysis {
             get {
-                return ResourceManager.GetString("Some Session Analysis", resourceCulture);
+                return ResourceManager.GetString("Some Session analysis", resourceCulture);
             }
         }
         
@@ -1159,56 +1024,11 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type.
-        /// </summary>
-        internal static string Type {
-            get {
-                return ResourceManager.GetString("Type", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Types.
-        /// </summary>
-        internal static string Types {
-            get {
-                return ResourceManager.GetString("Types", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unclassified.
-        /// </summary>
-        internal static string Unclassified {
-            get {
-                return ResourceManager.GetString("Unclassified", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Undefined.
-        /// </summary>
-        internal static string Undefined {
-            get {
-                return ResourceManager.GetString("Undefined", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Uninteresting.
         /// </summary>
         internal static string Uninteresting {
             get {
                 return ResourceManager.GetString("Uninteresting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unknown.
-        /// </summary>
-        internal static string Unknown {
-            get {
-                return ResourceManager.GetString("Unknown", resourceCulture);
             }
         }
         

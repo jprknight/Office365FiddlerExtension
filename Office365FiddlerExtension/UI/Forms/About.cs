@@ -21,6 +21,45 @@ namespace Office365FiddlerExtension.UI
             this.Text = $"{LangHelper.GetString("About")}: {Assembly.GetExecutingAssembly().GetName().Name} v{extensionVersion.ExtensionMajor}.{extensionVersion.ExtensionMinor}.{extensionVersion.ExtensionBuild}";
 
             ///////////////////
+            ///
+            /// Set labels and text according to preferred language set.
+            ///
+
+            this.InfoGroupbox.Text = LangHelper.GetString("Locally Installed Information");
+            this.ExtensionPathLabel.Text = LangHelper.GetString("Extension Path");
+            this.ExtensionDLLLabel.Text = LangHelper.GetString("Extension DLL");
+            this.LocalExtensionVersionLabel.Text = LangHelper.GetString("Local Extension Version");
+            this.LocalRulesetVersionLabel.Text = LangHelper.GetString("Local Ruleset Version");
+
+            this.GithubInfoGroupbox.Text = LangHelper.GetString("Github Information");
+            this.GithubExtensionVersionLabel.Text = LangHelper.GetString("Github Extension Version");
+            this.GithubRulesetVersionLabel.Text = LangHelper.GetString("Github Ruleset Version");
+            this.NextUpdateCheckTimestampLabel.Text = LangHelper.GetString("Next Update Check");
+            this.InstructionsLabel.Text = LangHelper.GetString("Click the link below for update instructions");
+            this.UpdateLinkLabel.Text = URLsJsonService.Instance.GetDeserializedExtensionURLs().Installer;
+
+            this.ExtensionOptionsGroupbox.Text = LangHelper.GetString("Extension Options");
+            this.ExtensionEnabledCheckbox.Text = LangHelper.GetString("Extension Enabled");
+            this.AllSessionAnalysisRadioButton.Text = LangHelper.GetString("All Session Analysis");
+            this.SomeSessionAnalysisRadioButton.Text = LangHelper.GetString("Some Session analysis");
+            this.SessionAnalysisOnLoadSazCheckbox.Text = LangHelper.GetString("On Load Saz");
+            this.SessionAnalysisOnLiveTraceCheckbox.Text = LangHelper.GetString("On Live Trace");
+            this.NextUpdateCheckLabel.Text = LangHelper.GetString("Check for updates every");
+            this.HoursLabel.Text = LangHelper.GetString("Check for updates every hours");
+            this.LanguageLabel.Text = LangHelper.GetString("Language");
+            this.LanguageTextBox.Text = SettingsJsonService.Instance.GetDeserializedExtensionSettings().PreferredLanguage;
+
+            this.ObscureSettingsGroupbox.Text = LangHelper.GetString("Obscure Settings");
+            this.ScoreForSessionLabel.Text = LangHelper.GetString("ScoreForSession");
+            this.WhatIsScoreForSessionLinkLabel.Text = LangHelper.GetString("What is ScoreForSession");
+            this.WarningSessionTimeThresholdLabel.Text = LangHelper.GetString("Warning Session Time Threshold");
+            this.SlowRunningSessionThresholdLabel.Text = LangHelper.GetString("Slow Running Session Threshold");
+            this.SessionTimeThresholdLinkLabel.Text = LangHelper.GetString("What are these two thresholds");
+
+            this.SaveButton.Text = LangHelper.GetString("Save");
+            this.CloseButton.Text = LangHelper.GetString("Close");
+
+            ///////////////////
             /// Extension Information
 
             ExtensionPathTextbox.Text = extensionSettings.ExtensionPath;
@@ -37,7 +76,7 @@ namespace Office365FiddlerExtension.UI
             else
             {
                 LocalExtensionVersionUpdateMessageLabel.Text = LangHelper.GetString("Up To Date");
-                LocalExtensionVersionUpdateMessageLabel.ForeColor= System.Drawing.Color.Green;
+                LocalExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Green;
             }
 
             if (VersionService.Instance.IsRulesetDLLUpdateAvailable())
@@ -83,8 +122,6 @@ namespace Office365FiddlerExtension.UI
             }
 
             NextUpdateCheckTimestampTextbox.Text = extensionSettings.NextUpdateCheck.ToString();
-
-            UpdateLinkLabel.Text = URLsJsonService.Instance.GetDeserializedExtensionURLs().Installer;
 
             ///////////////////
             /// Extension Options
@@ -159,15 +196,15 @@ namespace Office365FiddlerExtension.UI
             {
                 AllSessionAnalysisRadioButton.Enabled = true;
                 SomeSessionAnalysisRadioButton.Enabled = true;
-                SessionAnalysisOnLoadSazCheckbox.Enabled = true;
-                SessionAnalysisOnLiveTraceCheckbox.Enabled = true;
+                SessionAnalysisOnLoadSazCheckbox.Enabled = SomeSessionAnalysisRadioButton.Checked;
+                SessionAnalysisOnLiveTraceCheckbox.Enabled = SomeSessionAnalysisRadioButton.Checked;
             }
             else
             {
                 AllSessionAnalysisRadioButton.Enabled = false;
                 SomeSessionAnalysisRadioButton.Enabled = false;
-                SessionAnalysisOnLoadSazCheckbox.Enabled = false;
-                SessionAnalysisOnLiveTraceCheckbox.Enabled = false;
+                SessionAnalysisOnLoadSazCheckbox.Enabled = SomeSessionAnalysisRadioButton.Checked;
+                SessionAnalysisOnLiveTraceCheckbox.Enabled = SomeSessionAnalysisRadioButton.Checked;
             }
         }
 
