@@ -63,31 +63,35 @@ namespace Office365FiddlerExtension.Services
 
             var githubJsonVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
-            if (VersionService.Instance.LocalRulesetDLLVerison("Major") >= githubJsonVersion.RulesetMajor
-                && VersionService.Instance.LocalRulesetDLLVerison("Minor") >= githubJsonVersion.RulesetMinor
-                && VersionService.Instance.LocalRulesetDLLVerison("Build") >= githubJsonVersion.RulesetBuild)
+            if (VersionService.Instance.LocalExtensionDLLVerison("Major") >= githubJsonVersion.ExtensionMajor
+                && VersionService.Instance.LocalExtensionDLLVerison("Minor") >= githubJsonVersion.ExtensionMinor
+                && VersionService.Instance.LocalExtensionDLLVerison("Build") >= githubJsonVersion.ExtensionBuild)
             {
                 // Update not available.
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} Extension DLL update not available; "
-                    + $"Local Version: v{VersionService.Instance.LocalRulesetDLLVerison("Major")}, "
-                    + $"{VersionService.Instance.LocalRulesetDLLVerison("Minor")}, "
-                    + $"{VersionService.Instance.LocalRulesetDLLVerison("Build")}. "
-                    + $"Github Version: {githubJsonVersion.RulesetMajor}, "
-                    + $"{githubJsonVersion.RulesetMinor}, "
-                    + $"{githubJsonVersion.RulesetBuild}.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} "
+                    + $"({this.GetType().Name}): "
+                    + $"Extension DLL up to date or newer; "
+                    + $"Local Version: v{VersionService.Instance.LocalExtensionDLLVerison("Major")}."
+                    + $"{VersionService.Instance.LocalExtensionDLLVerison("Minor")}."
+                    + $"{VersionService.Instance.LocalExtensionDLLVerison("Build")}. "
+                    + $"Github Version: {githubJsonVersion.ExtensionMajor}."
+                    + $"{githubJsonVersion.ExtensionMinor}."
+                    + $"{githubJsonVersion.ExtensionBuild}.");
                 return false;
             }
             // One of the local major, minor, or build are less than the Github versions, return true.
             // There is an update available.
             else
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} Extension DLL update available; "
-                    + $"Local Version: v{VersionService.Instance.LocalRulesetDLLVerison("Major")}, "
-                    + $"{VersionService.Instance.LocalRulesetDLLVerison("Minor")}, "
-                    + $"{VersionService.Instance.LocalRulesetDLLVerison("Build")}. "
-                    + $"Github Version: {githubJsonVersion.RulesetMajor}, "
-                    + $"{githubJsonVersion.RulesetMinor}, "
-                    + $"{githubJsonVersion.RulesetBuild}.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} "
+                    + $"({this.GetType().Name}): "
+                    + $"Extension DLL update available; "
+                    + $"Local Version: v{VersionService.Instance.LocalExtensionDLLVerison("Major")}."
+                    + $"{VersionService.Instance.LocalExtensionDLLVerison("Minor")}."
+                    + $"{VersionService.Instance.LocalExtensionDLLVerison("Build")}. "
+                    + $"Github Version: {githubJsonVersion.ExtensionMajor}."
+                    + $"{githubJsonVersion.ExtensionMinor}."
+                    + $"{githubJsonVersion.ExtensionBuild}.");
                 return true;
             }
         }
@@ -107,7 +111,7 @@ namespace Office365FiddlerExtension.Services
 
             if (!VersionService.Instance.IsExtensionDLLUpdateAvailable())
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}) No extension update available.");
+                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): No extension update available.");
                 return; 
             }
             
@@ -188,12 +192,14 @@ namespace Office365FiddlerExtension.Services
                     && VersionService.Instance.LocalRulesetDLLVerison("Build") >= githubJsonVersion.RulesetBuild)
                 {
                     // Update not available.
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} Ruleset DLL update not available; "
-                        + $"Local Version: v{VersionService.Instance.LocalRulesetDLLVerison("Major")}, "
-                        + $"{VersionService.Instance.LocalRulesetDLLVerison("Minor")}, "
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} "
+                        + $"({this.GetType().Name}): "
+                        + $"Ruleset DLL up to date or newer; "
+                        + $"Local Version: v{VersionService.Instance.LocalRulesetDLLVerison("Major")}."
+                        + $"{VersionService.Instance.LocalRulesetDLLVerison("Minor")}."
                         + $"{VersionService.Instance.LocalRulesetDLLVerison("Build")}. "
-                        + $"Github Version: {githubJsonVersion.RulesetMajor}, "
-                        + $"{githubJsonVersion.RulesetMinor}, "
+                        + $"Github Version: {githubJsonVersion.RulesetMajor}."
+                        + $"{githubJsonVersion.RulesetMinor}."
                         + $"{githubJsonVersion.RulesetBuild}.");
                     return false;
                 }
@@ -201,12 +207,14 @@ namespace Office365FiddlerExtension.Services
                 // There is an update available.
                 else
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} Ruleset DLL update available; "
-                        + $"Local Version: v{VersionService.Instance.LocalRulesetDLLVerison("Major")}, "
-                        + $"{VersionService.Instance.LocalRulesetDLLVerison("Minor")}, "
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} "
+                        + $"({this.GetType().Name}): " 
+                        + $"Ruleset DLL update available; "
+                        + $"Local Version: v{VersionService.Instance.LocalRulesetDLLVerison("Major")}."
+                        + $"{VersionService.Instance.LocalRulesetDLLVerison("Minor")}."
                         + $"{VersionService.Instance.LocalRulesetDLLVerison("Build")}. "
-                        + $"Github Version: {githubJsonVersion.RulesetMajor}, "
-                        + $"{githubJsonVersion.RulesetMinor}, "
+                        + $"Github Version: {githubJsonVersion.RulesetMajor}."
+                        + $"{githubJsonVersion.RulesetMinor}."
                         + $"{githubJsonVersion.RulesetBuild}.");
                     return true;
                 }
@@ -258,9 +266,17 @@ namespace Office365FiddlerExtension.Services
         /// </summary>
         public void NotifyUserIfRulesetUpdateIsAvailable()
         {
+            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name})" +
+                    "Never Web Call preventing update checking.");
+                return;
+            }
+
             if (!VersionService.Instance.IsRulesetDLLUpdateAvailable())
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} IsRulesetDLLUpdateAvailable returned false.");
+                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): IsRulesetDLLUpdateAvailable returned false.");
                 return;
             }
 

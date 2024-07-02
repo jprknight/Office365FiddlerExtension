@@ -117,32 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>About</value>
-  </data>
   <data name="ADFS Authentication" xml:space="preserve">
     <value>ADFS Authentication</value>
-  </data>
-  <data name="All Session Analysis" xml:space="preserve">
-    <value>All Session Analysis</value>
-  </data>
-  <data name="Analyse All Sessions" xml:space="preserve">
-    <value>Analyse All Sessions</value>
-  </data>
-  <data name="Analyse Selected Sessions" xml:space="preserve">
-    <value>Analyse Selected Sessions</value>
-  </data>
-  <data name="Analysed" xml:space="preserve">
-    <value>Analysed</value>
-  </data>
-  <data name="Attribute Name Immutable ID" xml:space="preserve">
-    <value>Attribute Name Immutable ID</value>
-  </data>
-  <data name="Attribute Name UPN" xml:space="preserve">
-    <value>Attribute Name UPN</value>
-  </data>
-  <data name="Authentication" xml:space="preserve">
-    <value>Authentication</value>
+    <comment>SelectivelyRun Authentication</comment>
   </data>
   <data name="Authentication_3rd_Party_Saml_Response_AuthenticationDescription" xml:space="preserve">
     <value>Third-party SAML response found. SAML response parser not running.</value>
@@ -210,12 +187,6 @@
   <data name="Authentication_SAML_Response_Parser_SessionType" xml:space="preserve">
     <value>SAML Request/Response</value>
   </data>
-  <data name="Black" xml:space="preserve">
-    <value>Black</value>
-  </data>
-  <data name="Blue" xml:space="preserve">
-    <value>Blue</value>
-  </data>
   <data name="Broad Logic Checks" xml:space="preserve">
     <value>Broad Logic Checks</value>
   </data>
@@ -250,146 +221,33 @@
   <data name="BroadLogicChecks_This is Fiddler itself checking for updates." xml:space="preserve">
     <value>This is Fiddler itself checking for updates.</value>
   </data>
-  <data name="Capture was" xml:space="preserve">
-    <value>Capture was</value>
-  </data>
-  <data name="Check for updates every" xml:space="preserve">
-    <value>Check for updates every</value>
-  </data>
-  <data name="Check IP Address" xml:space="preserve">
-    <value>Check IP Address</value>
-  </data>
-  <data name="Clear All Session Analysis" xml:space="preserve">
-    <value>Clear All Session Analysis</value>
-  </data>
-  <data name="Clear Selected Sessions" xml:space="preserve">
-    <value>Clear Selected Sessions</value>
-  </data>
-  <data name="Click the link below for update instructions" xml:space="preserve">
-    <value>Click the link below for update instructions</value>
-  </data>
-  <data name="Client Begin Request" xml:space="preserve">
-    <value>Client Begin Request</value>
-  </data>
-  <data name="Client Connected" xml:space="preserve">
-    <value>Client Connected</value>
-  </data>
-  <data name="Client Done Response" xml:space="preserve">
-    <value>Client Done Response</value>
-  </data>
-  <data name="Close" xml:space="preserve">
-    <value>Close</value>
-  </data>
-  <data name="Concerning" xml:space="preserve">
-    <value>Concerning</value>
-  </data>
-  <data name="Consolidated Analysis Report" xml:space="preserve">
-    <value>Consolidated Analysis Report</value>
-  </data>
-  <data name="ConsolidatedAnalysisReportNotAllSessionsHaveAnalysis" xml:space="preserve">
-    <value>sessions have not been analysed to be able to create the Consolidated Analysis Report. Would you like to analyse them now so the report can be generated?</value>
-  </data>
-  <data name="Copy Save Signing Certificate" xml:space="preserve">
-    <value>Copy and save the below text into a .cer file to view the signing certificate.</value>
-  </data>
-  <data name="Create Consolidated Analysis Report" xml:space="preserve">
-    <value>Create Consolidated Analysis Report</value>
-  </data>
   <data name="Day" xml:space="preserve">
     <value>day</value>
+    <comment>Always Run Calculate Session Age</comment>
   </data>
   <data name="Days" xml:space="preserve">
     <value>days</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="Disabled" xml:space="preserve">
-    <value>Disabled</value>
-  </data>
-  <data name="Dutch" xml:space="preserve">
-    <value>Dutch</value>
-  </data>
-  <data name="Elapsed Time" xml:space="preserve">
-    <value>Elapsed Time</value>
-  </data>
-  <data name="Enable" xml:space="preserve">
-    <value>Enable</value>
-  </data>
-  <data name="Enabled" xml:space="preserve">
-    <value>Enabled</value>
-  </data>
-  <data name="English" xml:space="preserve">
-    <value>English</value>
+    <comment>Always Run Calculate Session Age</comment>
   </data>
   <data name="Exchange Web Services" xml:space="preserve">
     <value>Exchange Web Services</value>
-  </data>
-  <data name="Extension DLL" xml:space="preserve">
-    <value>Extension DLL</value>
-  </data>
-  <data name="Extension Enabled" xml:space="preserve">
-    <value>Extension Enabled</value>
-  </data>
-  <data name="ExtensionOptions" xml:space="preserve">
-    <value>Extension Options</value>
-  </data>
-  <data name="ExtensionPath" xml:space="preserve">
-    <value>Extension Path</value>
+    <comment>Selectively Run Session Type</comment>
   </data>
   <data name="False Positive" xml:space="preserve">
     <value>False Positive</value>
-  </data>
-  <data name="Fiddler Begin Request" xml:space="preserve">
-    <value>Fiddler Begin Request</value>
-  </data>
-  <data name="For an explantion of session timers refer to" xml:space="preserve">
-    <value>For an explantion of session timers refer to:</value>
-  </data>
-  <data name="FreeBusy" xml:space="preserve">
-    <value>Free/Busy</value>
-  </data>
-  <data name="French" xml:space="preserve">
-    <value>French</value>
+    <comment>HTTP 502's</comment>
   </data>
   <data name="General Microsoft365" xml:space="preserve">
     <value>General Microsoft365</value>
-  </data>
-  <data name="General Session Data" xml:space="preserve">
-    <value>General Session Data</value>
-  </data>
-  <data name="German" xml:space="preserve">
-    <value>German</value>
-  </data>
-  <data name="Github Extension Version" xml:space="preserve">
-    <value>Github Extension Version</value>
-  </data>
-  <data name="Github Information" xml:space="preserve">
-    <value>Github Information</value>
-  </data>
-  <data name="Github Ruleset Version" xml:space="preserve">
-    <value>Github Ruleset Version</value>
-  </data>
-  <data name="Got Request Headers" xml:space="preserve">
-    <value>Got Request Headers</value>
-  </data>
-  <data name="Got Response Headers" xml:space="preserve">
-    <value>Got Response Headers</value>
-  </data>
-  <data name="Green" xml:space="preserve">
-    <value>Green</value>
-  </data>
-  <data name="Grey" xml:space="preserve">
-    <value>Grey</value>
-  </data>
-  <data name="Host IP" xml:space="preserve">
-    <value>Host IP</value>
+    <comment>Selectively Run Session Type</comment>
   </data>
   <data name="Hour" xml:space="preserve">
     <value>hour</value>
+    <comment>Always Run Calculate Session Age</comment>
   </data>
   <data name="Hours" xml:space="preserve">
     <value>hours</value>
+    <comment>Always Run Calculate Session Age</comment>
   </data>
   <data name="HTTP_0 Authentication" xml:space="preserve">
     <value>NO RESPONSE</value>
@@ -1267,44 +1125,9 @@
   <data name="HTTP_504_Gateway_Timeout_Internet_Access_Blocked_SessionType" xml:space="preserve">
     <value>!INTERNET BLOCKED!</value>
   </data>
-  <data name="Inspector" xml:space="preserve">
-    <value>Inspector</value>
-  </data>
-  <data name="Inspector_Session_Analysis" xml:space="preserve">
-    <value>&lt;p&gt;No session analysis available.&lt;/p&gt;&lt;p&gt;Click 'Analyse Selected Sessions' from the context menu for session analysis.&lt;/p&gt;</value>
-  </data>
   <data name="Insufficient data" xml:space="preserve">
     <value>Insufficient data</value>
-  </data>
-  <data name="Interesting Sessions" xml:space="preserve">
-    <value>Interesting Sessions</value>
-  </data>
-  <data name="IsMicrosoft365subnet" xml:space="preserve">
-    <value>is a public IP address within a Microsoft365 subnet</value>
-  </data>
-  <data name="IsPrivateSubnet" xml:space="preserve">
-    <value>is within a private subnet on a</value>
-  </data>
-  <data name="IsPublicIPAddress" xml:space="preserve">
-    <value>is a public IP address, which is not within a Microsoft365 subnet.</value>
-  </data>
-  <data name="Issuer" xml:space="preserve">
-    <value>Issuer</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="LoadOrImportSessions" xml:space="preserve">
-    <value>Load or import some sessions to analyse and create a Consolidationed Analysis Report.</value>
-  </data>
-  <data name="Local Extension Version" xml:space="preserve">
-    <value>Local Extension Version</value>
-  </data>
-  <data name="Local Ruleset Version" xml:space="preserve">
-    <value>Local Ruleset Version</value>
-  </data>
-  <data name="Locally Installed Information" xml:space="preserve">
-    <value>Locally Installed Information</value>
+    <comment>Always Run Server Think Time Transit Time &amp; Session Elapsed Time</comment>
   </data>
   <data name="LongRunningSessionsClientSlow_ResponseAlert" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:red'&gt;Long Running Client Session&lt;/span&gt;&lt;/b&gt;</value>
@@ -1335,150 +1158,87 @@
   </data>
   <data name="Microsoft365 Authentication" xml:space="preserve">
     <value>Microsoft365 Authentication</value>
+    <comment>Selectively Run Session Type</comment>
   </data>
   <data name="Milliseconds" xml:space="preserve">
     <value>ms</value>
+    <comment>Always Run Server Think Time Transit Time &amp; Session Elapsed Time</comment>
   </data>
   <data name="Minute Ago" xml:space="preserve">
     <value>minute ago</value>
-    <comment>In the context of "1 minute ago".</comment>
+    <comment>Always Run CalculateSessionAge</comment>
   </data>
   <data name="Minutes" xml:space="preserve">
     <value>Minutes</value>
+    <comment>Always Run CalculateSessionAge</comment>
   </data>
   <data name="Minutes Ago" xml:space="preserve">
     <value>minutes ago</value>
-    <comment>In the context of "10 minutes ago".</comment>
-  </data>
-  <data name="Name Identifier Format" xml:space="preserve">
-    <value>Name Identifier Format</value>
-  </data>
-  <data name="network" xml:space="preserve">
-    <value>network</value>
-  </data>
-  <data name="Next Update Check" xml:space="preserve">
-    <value>Next Update Check</value>
+    <comment>Always Run CalculateSessionAge</comment>
   </data>
   <data name="No Data" xml:space="preserve">
     <value>No Data</value>
-  </data>
-  <data name="No Session Analysis" xml:space="preserve">
-    <value>No session analysis. Use the 'Process All Sessions' option from the Office365 extension menu to get session analysis.</value>
-  </data>
-  <data name="Normal" xml:space="preserve">
-    <value>Normal</value>
-  </data>
-  <data name="Obscure Settings" xml:space="preserve">
-    <value>Obscure Settings</value>
-  </data>
-  <data name="Office 365" xml:space="preserve">
-    <value>Office 365</value>
-  </data>
-  <data name="Office 365 Fiddler Extension" xml:space="preserve">
-    <value>Office 365 Fiddler Extension</value>
-  </data>
-  <data name="On Live Trace" xml:space="preserve">
-    <value>On Live Trace</value>
-  </data>
-  <data name="On Load Saz" xml:space="preserve">
-    <value>On Load Saz</value>
-  </data>
-  <data name="OnDemand" xml:space="preserve">
-    <value>On Demand</value>
-  </data>
-  <data name="Orange" xml:space="preserve">
-    <value>Orange</value>
-  </data>
-  <data name="Overall Session Timers" xml:space="preserve">
-    <value>Overall Session Timers</value>
-  </data>
-  <data name="Portuguese" xml:space="preserve">
-    <value>Portuguese</value>
-  </data>
-  <data name="Process" xml:space="preserve">
-    <value>Process</value>
+    <comment>Always Run Elapsed Time</comment>
   </data>
   <data name="Process Name" xml:space="preserve">
     <value>Process Name</value>
-  </data>
-  <data name="Processes" xml:space="preserve">
-    <value>Processes</value>
-  </data>
-  <data name="Recalculate Selected Sessions" xml:space="preserve">
-    <value>Recalculate Selected Sessions</value>
-  </data>
-  <data name="Red" xml:space="preserve">
-    <value>Red</value>
+    <comment>Always Run Process Name</comment>
   </data>
   <data name="RedirectAddressNotFound" xml:space="preserve">
     <value>Redirect address not found by extension.</value>
-  </data>
-  <data name="Releases" xml:space="preserve">
-    <value>Releases</value>
-  </data>
-  <data name="Remote Capture" xml:space="preserve">
-    <value>The process is not recorded in the session, it is unknown which application this data was recorded from.</value>
-  </data>
-  <data name="Report Issues" xml:space="preserve">
-    <value>Report Issues</value>
+    <comment>HTTP 200's AutoDiscover</comment>
   </data>
   <data name="Response Body" xml:space="preserve">
     <value>Response Body:</value>
-  </data>
-  <data name="Response Code" xml:space="preserve">
-    <value>Response Code</value>
+    <comment>HTTP 200's Json</comment>
   </data>
   <data name="Response Comments No Known Issue" xml:space="preserve">
     <value>&lt;p&gt;No known issue with Microsoft365 and this type of session. If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: &lt;a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'&gt;https://github.com/jprknight/Office365FiddlerExtension&lt;/a&gt;.&lt;/p&gt;</value>
-    <comment>Don't translate anything with &lt; &gt;</comment>
-  </data>
-  <data name="Response Host" xml:space="preserve">
-    <value>Response Host</value>
-  </data>
-  <data name="Response Host Info" xml:space="preserve">
-    <value>Information on the host/server/device which responded to this request.</value>
-  </data>
-  <data name="Response Server" xml:space="preserve">
-    <value>Response Server</value>
+    <comment>Simple Session Analysis</comment>
   </data>
   <data name="ResponseServer_Unknown" xml:space="preserve">
     <value>Type Unknown</value>
-  </data>
-  <data name="SAML Response Parser" xml:space="preserve">
-    <value>SAML Response Parser</value>
+    <comment>Selectively Run Response Server</comment>
   </data>
   <data name="SamlToken_AttributeNameImmutibleID_Could_Not_Be_Determined" xml:space="preserve">
     <value>SAML AttributeNameImmutibleID could not be determined.</value>
+    <comment>Selectively Run Authentication</comment>
   </data>
   <data name="SamlToken_AttributeNameUPN_Could_Not_Be_Determined" xml:space="preserve">
     <value>SAML AttributeNameUPN could not be determined.</value>
+    <comment>Selectively Run Authentication</comment>
   </data>
   <data name="SamlToken_AttributeNameUPN_Data_Points_Not_Found" xml:space="preserve">
     <value>Data points not found for AttributeNameUPN</value>
+    <comment>Selectively Run Authentication</comment>
   </data>
   <data name="SamlToken_NameIdentifierFormat_Data_Points_Not_Found" xml:space="preserve">
     <value>Data points not found for NameIdentifierFormat</value>
+    <comment>Selectively Run Authentication</comment>
   </data>
   <data name="SamlToken_No_Data" xml:space="preserve">
     <value>No SAML Data in session</value>
+    <comment>Selectively Run Authentication</comment>
   </data>
   <data name="SamlToken_SigningCertificate_Could_Not_Be_Determined" xml:space="preserve">
     <value>SAML signing certificate could not be determined.</value>
+    <comment>Selectively Run Authentication</comment>
   </data>
   <data name="SamlToken_SigningCertificate_Data_Points_Not_Found" xml:space="preserve">
     <value>Data points not found for SigningCertificate.</value>
+    <comment>Selectively Run Authentication</comment>
   </data>
   <data name="SamlToken_TokenAttributeNameImmutibleID_Data_Points_Not_Found" xml:space="preserve">
     <value>Data points not found for TokenAttributeNameImmutibleID</value>
+    <comment>Selectively Run Authentication</comment>
   </data>
   <data name="SamlToken_TokenIssuer_Could_Not_Be_Determined" xml:space="preserve">
     <value>Issuer in SAML token could not be determined.</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
+    <comment>Selectively Run Authentication</comment>
   </data>
   <data name="Scenario" xml:space="preserve">
     <value>Scenario</value>
+    <comment>HTTP 200's 3S Suggestions</comment>
   </data>
   <data name="ScoreForSession" xml:space="preserve">
     <value>ScoreForSession</value>
@@ -1486,145 +1246,65 @@
   </data>
   <data name="Second" xml:space="preserve">
     <value>second</value>
+    <comment>Always Run Server Think Time Transit Time &amp; Session Elapsed Time</comment>
   </data>
   <data name="Seconds" xml:space="preserve">
     <value>seconds</value>
-  </data>
-  <data name="Server Begin Response" xml:space="preserve">
-    <value>Server Begin Response</value>
-  </data>
-  <data name="Server Done Response" xml:space="preserve">
-    <value>Server Done Response</value>
-  </data>
-  <data name="Server Got Request" xml:space="preserve">
-    <value>Server Got Request</value>
-  </data>
-  <data name="Server Think Time" xml:space="preserve">
-    <value>Server Think Time</value>
-  </data>
-  <data name="Server Timers" xml:space="preserve">
-    <value>Server Timers</value>
+    <comment>Always Run Server Think Time Transit Time &amp; Session Elapsed Time</comment>
   </data>
   <data name="Session" xml:space="preserve">
     <value>Session</value>
   </data>
-  <data name="Session Age" xml:space="preserve">
-    <value>Session Age</value>
-  </data>
-  <data name="Session Analysis" xml:space="preserve">
-    <value>Session Analysis</value>
-  </data>
-  <data name="Session Captured" xml:space="preserve">
-    <value>Session Captured</value>
-  </data>
   <data name="Session collected between 14 and 30 days ago" xml:space="preserve">
     <value>&lt;p&gt;&lt;b&gt;&lt;span style='color:red'&gt;Session collected between 14 and 30 days ago&lt;/span&gt;&lt;/b&gt;. Correlating with any backend server logs is &lt;b&gt;&lt;span style='color:red'&gt;likely impossible&lt;/span&gt;&lt;/b&gt;. Many systems don't keep logs this long.&lt;/p&gt;</value>
-    <comment>Don't translate anything with &lt; &gt;</comment>
+    <comment>Always Run CalculateSessionAge</comment>
   </data>
   <data name="Session collected more than 30 days ago" xml:space="preserve">
     <value>&lt;p&gt;&lt;b&gt;&lt;span style='color:red'&gt;Session collected more than 30 days ago&lt;/span&gt;&lt;/b&gt;. Correlating with any backend server logs is &lt;b&gt;&lt;span style='color:red'&gt;very likely impossible&lt;/span&gt;&lt;/b&gt;. Many systems don't keep logs this long.&lt;/p&gt;</value>
-    <comment>Don't translate anything with &lt; &gt;</comment>
+    <comment>Always Run CalculateSessionAge</comment>
   </data>
   <data name="Session collected within 14 days" xml:space="preserve">
     <value>&lt;p&gt;Session collected within 14 days, data freshness is good, &lt;b&gt;&lt;span style='color:orange'&gt;but not ideal&lt;/span&gt;&lt;/b&gt;. Depending on the backend system, &lt;b&gt;&lt;span style='color:orange'&gt; correlating this data to server logs might be possible&lt;/span&gt;&lt;/b&gt;.&lt;/p&gt;</value>
-    <comment>Don't translate anything with &lt; &gt;</comment>
+    <comment>Always Run CalculateSessionAge</comment>
   </data>
   <data name="Session collected within 7 days" xml:space="preserve">
     <value>Session collected within 7 days, data freshness is good. Best case scenario for correlating this data to backend server logs.</value>
+    <comment>Always Run CalculateSessionAge</comment>
   </data>
   <data name="Session Elapsed Time" xml:space="preserve">
     <value>Session Elapsed Time</value>
-  </data>
-  <data name="Session ID" xml:space="preserve">
-    <value>Session ID</value>
-  </data>
-  <data name="Session Type" xml:space="preserve">
-    <value>Session Type</value>
-  </data>
-  <data name="Sessionanalysisperformed" xml:space="preserve">
-    <value>Session analysis performed on:</value>
-  </data>
-  <data name="sessions" xml:space="preserve">
-    <value>sessions</value>
-  </data>
-  <data name="sessions in trace from" xml:space="preserve">
-    <value>sessions in trace from</value>
-  </data>
-  <data name="SessionTimersDescription" xml:space="preserve">
-    <value>&lt;p&gt;The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.&lt;/p&gt;&lt;p&gt;If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.&lt;/p&gt;&lt;p&gt;Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.&lt;p&gt;</value>
-    <comment>Don't translate anything with &lt; &gt;</comment>
+    <comment>Always Run Elapsed Time</comment>
   </data>
   <data name="SessionType_Unknown_ResponseComments" xml:space="preserve">
     <value>The Office 365 Fiddler Extension does not yet have a way to classify this session.&lt;p&gt;If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: &lt;a href='https://github.com/jprknight/Office365FiddlerExtension' target='_blank'&gt;https://github.com/jprknight/Office365FiddlerExtension&lt;/a&gt;.&lt;/p&gt;</value>
-  </data>
-  <data name="Session_Severity" xml:space="preserve">
-    <value>Session Severity</value>
-  </data>
-  <data name="Set Session Severity" xml:space="preserve">
-    <value>Set Session Severity</value>
-  </data>
-  <data name="Severe" xml:space="preserve">
-    <value>Severe</value>
-  </data>
-  <data name="Severity" xml:space="preserve">
-    <value>Severity</value>
+    <comment>Selectively Run Session Type</comment>
   </data>
   <data name="Simple Session Analysis" xml:space="preserve">
     <value>Simple Session Analysis</value>
+    <comment>Simple Session Analysis</comment>
   </data>
   <data name="Simple Session Analysis - Json Read Failure." xml:space="preserve">
     <value>Simple Session Analysis - Json Read Failure.</value>
-  </data>
-  <data name="Slow Running Session Threshold" xml:space="preserve">
-    <value>Slow Running Session Threshold</value>
-  </data>
-  <data name="Some Session Analysis" xml:space="preserve">
-    <value>Some Session Analysis</value>
-  </data>
-  <data name="Spanish" xml:space="preserve">
-    <value>Spanish</value>
-  </data>
-  <data name="Transit Time" xml:space="preserve">
-    <value>Transit Time</value>
+    <comment>Simple Session Analysis</comment>
   </data>
   <data name="Type" xml:space="preserve">
     <value>Type</value>
+    <comment>HTTP 200's 3S Suggestions</comment>
   </data>
   <data name="Types" xml:space="preserve">
     <value>Types</value>
+    <comment>HTTP 200's 3S Suggestions</comment>
   </data>
   <data name="Unclassified" xml:space="preserve">
     <value>Unclassified</value>
+    <comment>Selectively Run Session Type</comment>
   </data>
   <data name="Undefined" xml:space="preserve">
     <value>Undefined</value>
-  </data>
-  <data name="Uninteresting" xml:space="preserve">
-    <value>Uninteresting</value>
+    <comment>Unknown Response Code</comment>
   </data>
   <data name="Unknown" xml:space="preserve">
     <value>Unknown</value>
-  </data>
-  <data name="Up To Date" xml:space="preserve">
-    <value>Up To Date</value>
-  </data>
-  <data name="Update Available" xml:space="preserve">
-    <value>Update Available</value>
-  </data>
-  <data name="Warning" xml:space="preserve">
-    <value>Warning</value>
-  </data>
-  <data name="Warning Session Time Threshold" xml:space="preserve">
-    <value>Warning Session Time Threshold</value>
-  </data>
-  <data name="What are these two thresholds" xml:space="preserve">
-    <value>What are these two thresholds?</value>
-  </data>
-  <data name="What is ScoreForSession" xml:space="preserve">
-    <value>What is ScoreForSession?</value>
-    <comment>Don't translate the word ScoreForSession.</comment>
-  </data>
-  <data name="Wiki" xml:space="preserve">
-    <value>Wiki</value>
+    <comment>Always Run Process Name</comment>
   </data>
 </root>
