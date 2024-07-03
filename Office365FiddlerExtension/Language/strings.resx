@@ -137,6 +137,14 @@
     <value>Analysed</value>
     <comment>Consolidated Report Service</comment>
   </data>
+  <data name="Attribute Name Immutable ID" xml:space="preserve">
+    <value>Attribute Name Immutable ID</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Attribute Name UPN" xml:space="preserve">
+    <value>Attribute Name UPN</value>
+    <comment>Inspector</comment>
+  </data>
   <data name="Authentication" xml:space="preserve">
     <value>Authentication</value>
     <comment>Inspector &amp; ColumnUI</comment>

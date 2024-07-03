@@ -252,6 +252,12 @@
     <Compile Include="UI\Forms\CheckIP.Designer.cs">
       <DependentUpon>CheckIP.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Forms\Office365TabPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\Office365TabPage.Designer.cs">
+      <DependentUpon>Office365TabPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\MenuUI.cs" />
     <Compile Include="Services\Preferences.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -312,6 +318,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\Office365ResponseControl.resx">
       <DependentUpon>Office365ResponseControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\Office365TabPage.resx">
+      <DependentUpon>Office365TabPage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reflection;
 using Office365FiddlerExtension.UI;
 using System.Diagnostics;
+using System.Windows.Forms;
+using System.Drawing.Design;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -68,6 +70,12 @@ namespace Office365FiddlerExtension.Services
             FiddlerApplication.UI.lvSessions.EndUpdate();
         }
 
+        public string SimpleSazFileName(string sazFileName)
+        {
+            int i = sazFileName.LastIndexOf('\\');
+            return sazFileName.Substring(i + 1);
+        }
+
         /// <summary>
         /// Handle loading a SAZ file. If the sessions already have session analysis with all three 
         /// confidence levels set to 10, use stored analysis for faster load times.
@@ -85,6 +93,49 @@ namespace Office365FiddlerExtension.Services
             if (!SettingsJsonService.Instance.SessionAnalysisOnLoadSaz) {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz {e.sFilename}. SessionAnalysisOnLoadSaz not enabled, returning.");
                 return;
+            }
+
+            // Prompt the user to analyse sessions before doing it. Gives the user the option for fast loading any sessions which don't already have analysis saved in them.
+
+            int iEnchantedSessions = 0;
+            int iToBeAnalysedSessions = 0;
+
+            foreach (Session session in e.arrSessions)
+            {
+                this.session = session;
+
+                // If the session already has the Microsoft365FiddlerExtensionJson flag set with high confidence session classifications set,
+                // enhance the session based on prior / stored analysis.
+                if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10
+                    && SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionResponseServerConfidenceLevel == 10
+                    && SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+                {
+                    iEnchantedSessions++;
+                }
+                else
+                {
+                    iToBeAnalysedSessions++;
+                }
+            }
+
+            if (iToBeAnalysedSessions > 0)
+            {
+                string message = $"You have loaded {SimpleSazFileName(e.sFilename)} which contains a total of {e.arrSessions.Count()} sessions. " +
+                    $"The Office 365 Fiddler Extension has analysed {iEnchantedSessions} sessions, {iToBeAnalysedSessions} sessions haven't been analysed. " +
+                    $"Do you want to analyse and enhance these sessions with the extension now?";
+
+                string caption = $"{LangHelper.GetString("Office 365 Fiddler Extension")} - LoadSAZ - Analyse Sessions?";
+
+                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                DialogResult result;
+
+                //Display the MessageBox.
+                result = MessageBox.Show(message, caption, buttons, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+
+                if (result == DialogResult.No)
+                {
+                    return;
+                }
             }
 
             FiddlerApplication.UI.lvSessions.BeginUpdate();

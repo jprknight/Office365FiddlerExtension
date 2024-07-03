@@ -106,6 +106,24 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attribute Name Immutable ID.
+        /// </summary>
+        internal static string Attribute_Name_Immutable_ID {
+            get {
+                return ResourceManager.GetString("Attribute Name Immutable ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attribute Name UPN.
+        /// </summary>
+        internal static string Attribute_Name_UPN {
+            get {
+                return ResourceManager.GetString("Attribute Name UPN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Authentication.
         /// </summary>
         internal static string Authentication {
