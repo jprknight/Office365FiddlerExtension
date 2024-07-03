@@ -8,7 +8,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
     /// <summary>
     /// Found that 'this.session.utilFindInResponse' does not work for HTTP 503 finding 'FederatedSTSUnreachable'.
     /// Oddly it works for the ADAL Saml response searches, but I know doubt how robust it is.
-    /// REVIEW THIS - Checked March 2024 - Simplied search function, found this works in some places where symbols aren't in the search string.
+    /// 
+    /// Simplied search function, found this works in some places where symbols aren't in the search string.
     /// Leaving utilFindInResponse used where I don't have test data to validate a switch over.
     /// Instead this utility function serves as a way to search the session for keywords.
     /// </summary>

@@ -5,29 +5,6 @@ namespace Office365FiddlerExtension.Services
 {
     public class Preferences
     {
-        // Setting to store Json version information to run update checks against.
-        // The information stored in this application preference is not intended to be updated by the extension itself, it is only updated from Github.
-        /*
-        private static string _extensionVersion;
-
-        public static string ExtensionVersion
-        {
-            get => _extensionVersion = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.ExtensionVersion", null);
-            set { _extensionVersion = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionVersion", value); }
-        }
-        */
-
-        // Setting to store Json extension URLs. Update from remote.
-        /*
-        private static string _extensionURLs;
-
-        public static string ExtensionURLs
-        {
-            get => _extensionURLs = FiddlerApplication.Prefs.GetStringPref("extensions.Office365FiddlerExtension.ExtensionURLs", null);
-            set { _extensionURLs = value; FiddlerApplication.Prefs.SetStringPref("extensions.Office365FiddlerExtension.ExtensionURLs", value); }
-        }
-        */
-
         // Setting to store Json extension settings in. Updated within the extension only, no remote updates.
         private static string _extensionSettings;
 

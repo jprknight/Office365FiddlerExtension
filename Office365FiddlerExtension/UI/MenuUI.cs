@@ -161,8 +161,8 @@ namespace Office365FiddlerExtension
 
                     this.MiLanguage_FR.Enabled = false;
                     this.MiLanguage_DE.Enabled = false;
-                    //this.MiLanguage_PT.Enabled = false;
-                    //this.MiLanguage_ES.Enabled = false;
+                    this.MiLanguage_PT.Enabled = false;
+                    this.MiLanguage_ES.Enabled = false;
 
                     IsInitialized = true;
                 }

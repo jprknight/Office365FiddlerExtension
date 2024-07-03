@@ -25,8 +25,8 @@ namespace Office365FiddlerExtension.Services
         {
             if (!IsInitialized)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}):" +
-                    $" Starting v" +
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (ActivationService): " +
+                    $"Starting v" +
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Major}." +
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
@@ -38,6 +38,12 @@ namespace Office365FiddlerExtension.Services
                 VersionJsonService.Instance.CreateExtensionVersionFiddlerApplicationPreference();
                 SessionClassificationService.Instance.CreateSessionClassificationFiddlerApplicationPreference();
 
+                if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().DebugMode)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (ActivationService): " +
+                        $"Debug Mode set to true.");
+                }
+
                 // Set extension language based on preferred language.
                 LangHelper.ChangeLanguage(SettingsJsonService.Instance.GetDeserializedExtensionSettings().PreferredLanguage);
 
@@ -48,23 +54,25 @@ namespace Office365FiddlerExtension.Services
                                 
                 InitializeTelemetry();
 
-                // Update as needed. -- All web update calls live here.
+                // Update as needed. -- Web update calls live here.
                 UpdateService.Instance.Initialize();
+
+                // Notify user if updates are available. -- More web calls here.
+                VersionService.Instance.NotifyUserIfExtensionUpdateIsAvailable();
+                VersionService.Instance.NotifyUserIfRulesetUpdateIsAvailable();
 
                 // Add extension menu.
                 MenuUI.Instance.Initialize();
 
-                // Add context menu items.
+                // Add context menu.
                 ContextMenuUI.Instance.initialize();
 
                 // Add columns into session list in UI.
                 ColumnUI.Instance.Initialize();
 
+                // Register available Fiddler events.
                 FiddlerApplication.OnLoadSAZ += SazFileService.Instance.LoadSaz;
                 FiddlerApplication.OnSaveSAZ += SazFileService.Instance.SaveSaz;
-
-                VersionService.Instance.NotifyUserIfExtensionUpdateIsAvailable();
-                VersionService.Instance.NotifyUserIfRulesetUpdateIsAvailable();
 
                 IsInitialized = true;
             }

@@ -1051,6 +1051,78 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A new version is available.
+        /// </summary>
+        internal static string Update_Available___A_new_version {
+            get {
+                return ResourceManager.GetString("Update Available - A new version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are currently using extension.
+        /// </summary>
+        internal static string Update_Available___Currently_using {
+            get {
+                return ResourceManager.GetString("Update Available - Currently using", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extension Update Available.
+        /// </summary>
+        internal static string Update_Available___Extension_Update_Available {
+            get {
+                return ResourceManager.GetString("Update Available - Extension Update Available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to go to the update download page?.
+        /// </summary>
+        internal static string Update_Available___Go_to_download_page_ {
+            get {
+                return ResourceManager.GetString("Update Available - Go to download page?", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are currently using ruleset.
+        /// </summary>
+        internal static string Update_Available___Ruleset___Currently_Using {
+            get {
+                return ResourceManager.GetString("Update Available - Ruleset - Currently Using", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ruleset Update Available.
+        /// </summary>
+        internal static string Update_Available___Ruleset___Ruleset_Update {
+            get {
+                return ResourceManager.GetString("Update Available - Ruleset - Ruleset Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There&apos;s an update available for the Office 365 Fiddler Extension ruleset..
+        /// </summary>
+        internal static string Update_Available___Ruleset___Ruleset_Update_Available {
+            get {
+                return ResourceManager.GetString("Update Available - Ruleset - Ruleset Update Available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There&apos;s an update available for the Office 365 Fiddler Extension..
+        /// </summary>
+        internal static string Update_Available___There_is_an_update {
+            get {
+                return ResourceManager.GetString("Update Available - There is an update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Warning.
         /// </summary>
         internal static string Warning {

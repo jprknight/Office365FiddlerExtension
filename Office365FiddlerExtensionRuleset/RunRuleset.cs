@@ -4,7 +4,7 @@ using Office365FiddlerExtensionRuleset.Ruleset;
 
 namespace Office365FiddlerExtensionRuleset
 {
-    public class RunRuleSet
+    public class RunRuleset
     {
         internal Session session { get; set; }
 

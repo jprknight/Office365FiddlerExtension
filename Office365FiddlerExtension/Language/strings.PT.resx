@@ -557,6 +557,36 @@
     <value>Update Available</value>
     <comment>About</comment>
   </data>
+  <data name="Update Available - A new version" xml:space="preserve">
+    <value>A new version is available</value>
+    <comment>VersionService</comment>
+  </data>
+  <data name="Update Available - Currently using" xml:space="preserve">
+    <value>You are currently using extension</value>
+    <comment>VersionService</comment>
+  </data>
+  <data name="Update Available - Extension Update Available" xml:space="preserve">
+    <value>Extension Update Available</value>
+    <comment>VersionService</comment>
+  </data>
+  <data name="Update Available - Go to download page?" xml:space="preserve">
+    <value>Do you want to go to the update download page?</value>
+    <comment>VersionService</comment>
+  </data>
+  <data name="Update Available - Ruleset - Currently Using" xml:space="preserve">
+    <value>You are currently using ruleset</value>
+  </data>
+  <data name="Update Available - Ruleset - Ruleset Update" xml:space="preserve">
+    <value>Ruleset Update Available</value>
+  </data>
+  <data name="Update Available - Ruleset - Ruleset Update Available" xml:space="preserve">
+    <value>There's an update available for the Office 365 Fiddler Extension ruleset.</value>
+    <comment>VersionService</comment>
+  </data>
+  <data name="Update Available - There is an update" xml:space="preserve">
+    <value>There's an update available for the Office 365 Fiddler Extension.</value>
+    <comment>VersionService</comment>
+  </data>
   <data name="Warning" xml:space="preserve">
     <value>Warning</value>
     <comment>ContextMenu</comment>

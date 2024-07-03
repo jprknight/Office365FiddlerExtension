@@ -18,7 +18,8 @@ namespace Office365FiddlerExtension.UI
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             var extensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
-            this.Text = $"{LangHelper.GetString("About")}: {Assembly.GetExecutingAssembly().GetName().Name} v{extensionVersion.ExtensionMajor}.{extensionVersion.ExtensionMinor}.{extensionVersion.ExtensionBuild}";
+            this.Text = $"{LangHelper.GetString("About")}: {Assembly.GetExecutingAssembly().GetName().Name} v" +
+                $"{VersionService.Instance.GetExtensionDLLVersion()}";
 
             ///////////////////
             ///

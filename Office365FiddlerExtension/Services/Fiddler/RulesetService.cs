@@ -46,7 +46,7 @@ namespace Office365FiddlerExtension.Services
                 Assembly rulesetDDL = Assembly.LoadFile(file.FullName);
 
                 // type is Namespace.Class
-                var type = rulesetDDL.GetType("Office365FiddlerExtensionRuleset.RunRuleSet");
+                var type = rulesetDDL.GetType("Office365FiddlerExtensionRuleset.RunRuleset");
                 
                 var obj = Activator.CreateInstance(type);
 

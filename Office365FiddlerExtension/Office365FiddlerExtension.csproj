@@ -197,8 +197,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Language\strings.fr.Designer.cs">
-      <DependentUpon>strings.fr.resx</DependentUpon>
+    <Compile Include="Language\strings.pt.Designer.cs">
+      <DependentUpon>strings.pt.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -212,8 +212,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Language\strings.pt.Designer.cs">
-      <DependentUpon>strings.pt.resx</DependentUpon>
+    <Compile Include="Language\strings.fr.Designer.cs">
+      <DependentUpon>strings.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -275,9 +275,9 @@
     <Compile Include="UI\EnhanceSessionUX.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Language\strings.fr.resx">
+    <EmbeddedResource Include="Language\strings.pt.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>strings.fr.Designer.cs</LastGenOutput>
+      <LastGenOutput>strings.pt.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Language\strings.es.resx">
@@ -290,9 +290,9 @@
       <LastGenOutput>strings.de.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Language\strings.pt.resx">
+    <EmbeddedResource Include="Language\strings.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>strings.pt.Designer.cs</LastGenOutput>
+      <LastGenOutput>strings.fr.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Language\strings.resx">
