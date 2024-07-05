@@ -131,8 +131,8 @@ namespace Office365FiddlerExtension
                     this.MiAbout = new MenuItem($"{LangHelper.GetString("About")}", new System.EventHandler(this.MiAbout_Click));
 
                     // Add menu items to top level menu.
-                    this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { this.MiEnabled,
-                    new MenuItem("-"),
+                    this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { //this.MiEnabled,
+                    //new MenuItem("-"),
                     this.MiAnalyseAllSessions,
                     this.MiClearAllSessionAnalysis,
                     new MenuItem("-"),
@@ -248,6 +248,8 @@ namespace Office365FiddlerExtension
 
             // Set ExtensionEnabled according to menu item checked.
             SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(MiEnabled.Checked);
+
+            Office365TabPage.Instance.UpdateUIControls();
         }
 
         /// <summary>
@@ -326,6 +328,16 @@ namespace Office365FiddlerExtension
         {
             CheckIP checkIP = new CheckIP();
             checkIP.Show();
+        }
+
+        public void UpdateUIControls()
+        {
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            MiAnalyseAllSessions.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
+            MiClearAllSessionAnalysis.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
+            MiCreateConsolidatedAnalysisReport.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
+            MiCheckIP.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
         }
     }
 }

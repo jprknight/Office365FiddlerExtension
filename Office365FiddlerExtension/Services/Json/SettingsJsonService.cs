@@ -72,7 +72,8 @@ namespace Office365FiddlerExtension.Services
                 UpdateCheckFrequencyHours = 72,
                 InspectorScoreForSession = 100,
                 PreferredLanguage = "EN",
-                DebugMode = "False"
+                DebugMode = "False",
+                LatestConsolidatedAnalysisReport = ""
             };
 
             // Transform the object to a Json object.
@@ -492,5 +493,7 @@ namespace Office365FiddlerExtension.Services
         public string PreferredLanguage { get; set; }
 
         public bool DebugMode {  get; set; }
+
+        public string LatestConsolidatedAnalysisReport {  get; set; }
     }
 }

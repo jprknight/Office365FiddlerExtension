@@ -251,5 +251,15 @@ namespace Office365FiddlerExtension
         {
             CmiCreateConsolidatedAnalysisReport.Enabled = !CmiCreateConsolidatedAnalysisReport.Enabled;
         }
+
+        public void UpdateUIControls()
+        {
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            CmiAnalyseSelectedSessions.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
+            CmiClearAnalysisSelectedSessions.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
+            CmiSetSessionSeverity.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
+            CmiCreateConsolidatedAnalysisReport.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
+        }
     }
 }

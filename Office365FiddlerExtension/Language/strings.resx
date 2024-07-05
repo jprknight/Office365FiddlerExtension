@@ -157,6 +157,10 @@
     <value>Blue</value>
     <comment>ContextMenu</comment>
   </data>
+  <data name="Check" xml:space="preserve">
+    <value>Check</value>
+    <comment>Tab Page</comment>
+  </data>
   <data name="Check for updates every" xml:space="preserve">
     <value>Check for updates every</value>
     <comment>About</comment>
@@ -169,6 +173,14 @@
     <value>Check IP Address</value>
     <comment>Menu</comment>
   </data>
+  <data name="Check IP Address Placeholder Text" xml:space="preserve">
+    <value>Enter an IP Address to check what network it is on.</value>
+    <comment>Tab Page</comment>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+    <comment>Tab Page</comment>
+  </data>
   <data name="Clear All Session Analysis" xml:space="preserve">
     <value>Clear All Session Analysis</value>
     <comment>Menu</comment>
@@ -176,6 +188,10 @@
   <data name="Clear Selected Sessions" xml:space="preserve">
     <value>Clear Selected Sessions</value>
     <comment>ContextMenu</comment>
+  </data>
+  <data name="Clear Selected Sessions Anaysis" xml:space="preserve">
+    <value>Clear Selected Sessions Anaysis</value>
+    <comment>Tab Page</comment>
   </data>
   <data name="Click the link below for update instructions" xml:space="preserve">
     <value>Click the link below for update instructions</value>
@@ -245,6 +261,10 @@
     <value>English</value>
     <comment>Menu</comment>
   </data>
+  <data name="Extension" xml:space="preserve">
+    <value>Extension</value>
+    <comment>Tab Page</comment>
+  </data>
   <data name="Extension DLL" xml:space="preserve">
     <value>Extension DLL</value>
     <comment>About</comment>
@@ -260,6 +280,10 @@
   <data name="Extension Path" xml:space="preserve">
     <value>Extension Path</value>
     <comment>About</comment>
+  </data>
+  <data name="Extension Version Information" xml:space="preserve">
+    <value>Extension Version Information</value>
+    <comment>Tab Page</comment>
   </data>
   <data name="False Positive" xml:space="preserve">
     <value>False Positive</value>
@@ -347,7 +371,7 @@
   </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
-    <comment>Menu</comment>
+    <comment>Menu &amp; Tab Page</comment>
   </data>
   <data name="LoadOrImportSessions" xml:space="preserve">
     <value>Load or import some sessions to analyse and create a Consolidationed Analysis Report.</value>
@@ -405,6 +429,10 @@
     <value>On Load Saz</value>
     <comment>About</comment>
   </data>
+  <data name="Open Latest Consolidated Analysis Report" xml:space="preserve">
+    <value>Open Latest Consolidated Analysis Report</value>
+    <comment>Tab Page</comment>
+  </data>
   <data name="Orange" xml:space="preserve">
     <value>Orange</value>
     <comment>ContextMenu</comment>
@@ -452,6 +480,10 @@
   <data name="Response Server" xml:space="preserve">
     <value>Response Server</value>
     <comment>ColumnUI</comment>
+  </data>
+  <data name="Ruleset" xml:space="preserve">
+    <value>Ruleset</value>
+    <comment>Tab Page</comment>
   </data>
   <data name="SAML Response Parser" xml:space="preserve">
     <value>SAML Response Parser</value>

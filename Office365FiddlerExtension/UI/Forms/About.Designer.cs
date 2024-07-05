@@ -41,6 +41,8 @@
             this.ExtensionPathTextbox = new System.Windows.Forms.TextBox();
             this.ExtensionOptionsGroupbox = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.LanguageTextBox = new System.Windows.Forms.TextBox();
+            this.LanguageLabel = new System.Windows.Forms.Label();
             this.HoursLabel = new System.Windows.Forms.Label();
             this.NextUpdateCheckLabel = new System.Windows.Forms.Label();
             this.NextUpdateCheckTextbox = new System.Windows.Forms.TextBox();
@@ -73,8 +75,6 @@
             this.ScoreForSessionTextbox = new System.Windows.Forms.TextBox();
             this.ScoreForSessionLabel = new System.Windows.Forms.Label();
             this.SaveButton = new System.Windows.Forms.Button();
-            this.LanguageLabel = new System.Windows.Forms.Label();
-            this.LanguageTextBox = new System.Windows.Forms.TextBox();
             this.InfoGroupbox.SuspendLayout();
             this.ExtensionOptionsGroupbox.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -95,6 +95,7 @@
             this.InfoGroupbox.Controls.Add(this.ExtensionDLLTextbox);
             this.InfoGroupbox.Controls.Add(this.ExtensionPathLabel);
             this.InfoGroupbox.Controls.Add(this.ExtensionPathTextbox);
+            this.InfoGroupbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.InfoGroupbox.Location = new System.Drawing.Point(16, 14);
             this.InfoGroupbox.Margin = new System.Windows.Forms.Padding(4);
             this.InfoGroupbox.Name = "InfoGroupbox";
@@ -109,7 +110,7 @@
             this.LocalRulesetVersionUpdateMessageLabel.AutoSize = true;
             this.LocalRulesetVersionUpdateMessageLabel.Location = new System.Drawing.Point(345, 124);
             this.LocalRulesetVersionUpdateMessageLabel.Name = "LocalRulesetVersionUpdateMessageLabel";
-            this.LocalRulesetVersionUpdateMessageLabel.Size = new System.Drawing.Size(115, 17);
+            this.LocalRulesetVersionUpdateMessageLabel.Size = new System.Drawing.Size(88, 13);
             this.LocalRulesetVersionUpdateMessageLabel.TabIndex = 16;
             this.LocalRulesetVersionUpdateMessageLabel.Text = "Update Message";
             // 
@@ -118,7 +119,7 @@
             this.LocalExtensionVersionUpdateMessageLabel.AutoSize = true;
             this.LocalExtensionVersionUpdateMessageLabel.Location = new System.Drawing.Point(345, 92);
             this.LocalExtensionVersionUpdateMessageLabel.Name = "LocalExtensionVersionUpdateMessageLabel";
-            this.LocalExtensionVersionUpdateMessageLabel.Size = new System.Drawing.Size(115, 17);
+            this.LocalExtensionVersionUpdateMessageLabel.Size = new System.Drawing.Size(88, 13);
             this.LocalExtensionVersionUpdateMessageLabel.TabIndex = 15;
             this.LocalExtensionVersionUpdateMessageLabel.Text = "Update Message";
             // 
@@ -128,7 +129,7 @@
             this.LocalRulesetVersionLabel.Location = new System.Drawing.Point(8, 124);
             this.LocalRulesetVersionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LocalRulesetVersionLabel.Name = "LocalRulesetVersionLabel";
-            this.LocalRulesetVersionLabel.Size = new System.Drawing.Size(169, 17);
+            this.LocalRulesetVersionLabel.Size = new System.Drawing.Size(128, 13);
             this.LocalRulesetVersionLabel.TabIndex = 7;
             this.LocalRulesetVersionLabel.Text = "Local Ruleset Verison HC";
             // 
@@ -139,7 +140,7 @@
             this.LocalRulesetVersionTextbox.Margin = new System.Windows.Forms.Padding(4);
             this.LocalRulesetVersionTextbox.Name = "LocalRulesetVersionTextbox";
             this.LocalRulesetVersionTextbox.ReadOnly = true;
-            this.LocalRulesetVersionTextbox.Size = new System.Drawing.Size(151, 23);
+            this.LocalRulesetVersionTextbox.Size = new System.Drawing.Size(151, 20);
             this.LocalRulesetVersionTextbox.TabIndex = 6;
             // 
             // LocalExtensionVersionLabel
@@ -148,7 +149,7 @@
             this.LocalExtensionVersionLabel.Location = new System.Drawing.Point(8, 92);
             this.LocalExtensionVersionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LocalExtensionVersionLabel.Name = "LocalExtensionVersionLabel";
-            this.LocalExtensionVersionLabel.Size = new System.Drawing.Size(182, 17);
+            this.LocalExtensionVersionLabel.Size = new System.Drawing.Size(138, 13);
             this.LocalExtensionVersionLabel.TabIndex = 5;
             this.LocalExtensionVersionLabel.Text = "Local Extension Verison HC";
             // 
@@ -159,7 +160,7 @@
             this.LocalDLLVersionTextbox.Margin = new System.Windows.Forms.Padding(4);
             this.LocalDLLVersionTextbox.Name = "LocalDLLVersionTextbox";
             this.LocalDLLVersionTextbox.ReadOnly = true;
-            this.LocalDLLVersionTextbox.Size = new System.Drawing.Size(151, 23);
+            this.LocalDLLVersionTextbox.Size = new System.Drawing.Size(151, 20);
             this.LocalDLLVersionTextbox.TabIndex = 4;
             // 
             // ExtensionDLLLabel
@@ -168,7 +169,7 @@
             this.ExtensionDLLLabel.Location = new System.Drawing.Point(8, 60);
             this.ExtensionDLLLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.ExtensionDLLLabel.Name = "ExtensionDLLLabel";
-            this.ExtensionDLLLabel.Size = new System.Drawing.Size(122, 17);
+            this.ExtensionDLLLabel.Size = new System.Drawing.Size(94, 13);
             this.ExtensionDLLLabel.TabIndex = 3;
             this.ExtensionDLLLabel.Text = "Extension DLL HC";
             // 
@@ -179,7 +180,7 @@
             this.ExtensionDLLTextbox.Margin = new System.Windows.Forms.Padding(4);
             this.ExtensionDLLTextbox.Name = "ExtensionDLLTextbox";
             this.ExtensionDLLTextbox.ReadOnly = true;
-            this.ExtensionDLLTextbox.Size = new System.Drawing.Size(287, 23);
+            this.ExtensionDLLTextbox.Size = new System.Drawing.Size(287, 20);
             this.ExtensionDLLTextbox.TabIndex = 2;
             // 
             // ExtensionPathLabel
@@ -188,7 +189,7 @@
             this.ExtensionPathLabel.Location = new System.Drawing.Point(8, 28);
             this.ExtensionPathLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.ExtensionPathLabel.Name = "ExtensionPathLabel";
-            this.ExtensionPathLabel.Size = new System.Drawing.Size(125, 17);
+            this.ExtensionPathLabel.Size = new System.Drawing.Size(96, 13);
             this.ExtensionPathLabel.TabIndex = 1;
             this.ExtensionPathLabel.Text = "Extension Path HC";
             // 
@@ -199,12 +200,13 @@
             this.ExtensionPathTextbox.Margin = new System.Windows.Forms.Padding(4);
             this.ExtensionPathTextbox.Name = "ExtensionPathTextbox";
             this.ExtensionPathTextbox.ReadOnly = true;
-            this.ExtensionPathTextbox.Size = new System.Drawing.Size(287, 23);
+            this.ExtensionPathTextbox.Size = new System.Drawing.Size(287, 20);
             this.ExtensionPathTextbox.TabIndex = 0;
             // 
             // ExtensionOptionsGroupbox
             // 
             this.ExtensionOptionsGroupbox.Controls.Add(this.panel1);
+            this.ExtensionOptionsGroupbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ExtensionOptionsGroupbox.Location = new System.Drawing.Point(507, 14);
             this.ExtensionOptionsGroupbox.Margin = new System.Windows.Forms.Padding(4);
             this.ExtensionOptionsGroupbox.Name = "ExtensionOptionsGroupbox";
@@ -233,13 +235,30 @@
             this.panel1.Size = new System.Drawing.Size(568, 148);
             this.panel1.TabIndex = 5;
             // 
+            // LanguageTextBox
+            // 
+            this.LanguageTextBox.Location = new System.Drawing.Point(457, 115);
+            this.LanguageTextBox.Name = "LanguageTextBox";
+            this.LanguageTextBox.ReadOnly = true;
+            this.LanguageTextBox.Size = new System.Drawing.Size(100, 20);
+            this.LanguageTextBox.TabIndex = 20;
+            // 
+            // LanguageLabel
+            // 
+            this.LanguageLabel.AutoSize = true;
+            this.LanguageLabel.Location = new System.Drawing.Point(365, 118);
+            this.LanguageLabel.Name = "LanguageLabel";
+            this.LanguageLabel.Size = new System.Drawing.Size(55, 13);
+            this.LanguageLabel.TabIndex = 19;
+            this.LanguageLabel.Text = "Language";
+            // 
             // HoursLabel
             // 
             this.HoursLabel.AutoSize = true;
             this.HoursLabel.Location = new System.Drawing.Point(509, 36);
             this.HoursLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.HoursLabel.Name = "HoursLabel";
-            this.HoursLabel.Size = new System.Drawing.Size(71, 17);
+            this.HoursLabel.Size = new System.Drawing.Size(54, 13);
             this.HoursLabel.TabIndex = 18;
             this.HoursLabel.Text = "hours. HC";
             // 
@@ -249,7 +268,7 @@
             this.NextUpdateCheckLabel.Location = new System.Drawing.Point(292, 36);
             this.NextUpdateCheckLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.NextUpdateCheckLabel.Name = "NextUpdateCheckLabel";
-            this.NextUpdateCheckLabel.Size = new System.Drawing.Size(185, 17);
+            this.NextUpdateCheckLabel.Size = new System.Drawing.Size(141, 13);
             this.NextUpdateCheckLabel.TabIndex = 17;
             this.NextUpdateCheckLabel.Text = "Check for updates every HC";
             // 
@@ -258,7 +277,7 @@
             this.NextUpdateCheckTextbox.Location = new System.Drawing.Point(464, 32);
             this.NextUpdateCheckTextbox.Margin = new System.Windows.Forms.Padding(4);
             this.NextUpdateCheckTextbox.Name = "NextUpdateCheckTextbox";
-            this.NextUpdateCheckTextbox.Size = new System.Drawing.Size(36, 23);
+            this.NextUpdateCheckTextbox.Size = new System.Drawing.Size(36, 20);
             this.NextUpdateCheckTextbox.TabIndex = 16;
             // 
             // label1
@@ -267,7 +286,7 @@
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(0, 17);
+            this.label1.Size = new System.Drawing.Size(0, 13);
             this.label1.TabIndex = 13;
             // 
             // ExtensionEnabledCheckbox
@@ -276,7 +295,7 @@
             this.ExtensionEnabledCheckbox.Location = new System.Drawing.Point(5, 4);
             this.ExtensionEnabledCheckbox.Margin = new System.Windows.Forms.Padding(4);
             this.ExtensionEnabledCheckbox.Name = "ExtensionEnabledCheckbox";
-            this.ExtensionEnabledCheckbox.Size = new System.Drawing.Size(167, 21);
+            this.ExtensionEnabledCheckbox.Size = new System.Drawing.Size(132, 17);
             this.ExtensionEnabledCheckbox.TabIndex = 5;
             this.ExtensionEnabledCheckbox.Text = "Extension Enabled HC";
             this.ExtensionEnabledCheckbox.UseVisualStyleBackColor = true;
@@ -288,7 +307,7 @@
             this.SessionAnalysisOnLiveTraceCheckbox.Location = new System.Drawing.Point(28, 121);
             this.SessionAnalysisOnLiveTraceCheckbox.Margin = new System.Windows.Forms.Padding(4);
             this.SessionAnalysisOnLiveTraceCheckbox.Name = "SessionAnalysisOnLiveTraceCheckbox";
-            this.SessionAnalysisOnLiveTraceCheckbox.Size = new System.Drawing.Size(140, 21);
+            this.SessionAnalysisOnLiveTraceCheckbox.Size = new System.Drawing.Size(112, 17);
             this.SessionAnalysisOnLiveTraceCheckbox.TabIndex = 4;
             this.SessionAnalysisOnLiveTraceCheckbox.Text = "On Live Trace HC";
             this.SessionAnalysisOnLiveTraceCheckbox.UseVisualStyleBackColor = true;
@@ -300,7 +319,7 @@
             this.AllSessionAnalysisRadioButton.Location = new System.Drawing.Point(5, 34);
             this.AllSessionAnalysisRadioButton.Margin = new System.Windows.Forms.Padding(4);
             this.AllSessionAnalysisRadioButton.Name = "AllSessionAnalysisRadioButton";
-            this.AllSessionAnalysisRadioButton.Size = new System.Drawing.Size(174, 21);
+            this.AllSessionAnalysisRadioButton.Size = new System.Drawing.Size(135, 17);
             this.AllSessionAnalysisRadioButton.TabIndex = 0;
             this.AllSessionAnalysisRadioButton.TabStop = true;
             this.AllSessionAnalysisRadioButton.Text = "All Session Analysis HC";
@@ -313,7 +332,7 @@
             this.SessionAnalysisOnLoadSazCheckbox.Location = new System.Drawing.Point(28, 92);
             this.SessionAnalysisOnLoadSazCheckbox.Margin = new System.Windows.Forms.Padding(4);
             this.SessionAnalysisOnLoadSazCheckbox.Name = "SessionAnalysisOnLoadSazCheckbox";
-            this.SessionAnalysisOnLoadSazCheckbox.Size = new System.Drawing.Size(133, 21);
+            this.SessionAnalysisOnLoadSazCheckbox.Size = new System.Drawing.Size(106, 17);
             this.SessionAnalysisOnLoadSazCheckbox.TabIndex = 3;
             this.SessionAnalysisOnLoadSazCheckbox.Text = "On Load Saz HC";
             this.SessionAnalysisOnLoadSazCheckbox.UseVisualStyleBackColor = true;
@@ -325,7 +344,7 @@
             this.SomeSessionAnalysisRadioButton.Location = new System.Drawing.Point(5, 62);
             this.SomeSessionAnalysisRadioButton.Margin = new System.Windows.Forms.Padding(4);
             this.SomeSessionAnalysisRadioButton.Name = "SomeSessionAnalysisRadioButton";
-            this.SomeSessionAnalysisRadioButton.Size = new System.Drawing.Size(195, 21);
+            this.SomeSessionAnalysisRadioButton.Size = new System.Drawing.Size(151, 17);
             this.SomeSessionAnalysisRadioButton.TabIndex = 1;
             this.SomeSessionAnalysisRadioButton.TabStop = true;
             this.SomeSessionAnalysisRadioButton.Text = "Some Session Analysis HC";
@@ -338,7 +357,7 @@
             this.SessionTimeThresholdLinkLabel.Location = new System.Drawing.Point(7, 122);
             this.SessionTimeThresholdLinkLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.SessionTimeThresholdLinkLabel.Name = "SessionTimeThresholdLinkLabel";
-            this.SessionTimeThresholdLinkLabel.Size = new System.Drawing.Size(231, 17);
+            this.SessionTimeThresholdLinkLabel.Size = new System.Drawing.Size(175, 13);
             this.SessionTimeThresholdLinkLabel.TabIndex = 15;
             this.SessionTimeThresholdLinkLabel.TabStop = true;
             this.SessionTimeThresholdLinkLabel.Text = "What are these two thresholds? HC";
@@ -349,7 +368,7 @@
             this.SlowRunningSessionThresholdTextbox.Location = new System.Drawing.Point(232, 87);
             this.SlowRunningSessionThresholdTextbox.Margin = new System.Windows.Forms.Padding(4);
             this.SlowRunningSessionThresholdTextbox.Name = "SlowRunningSessionThresholdTextbox";
-            this.SlowRunningSessionThresholdTextbox.Size = new System.Drawing.Size(72, 23);
+            this.SlowRunningSessionThresholdTextbox.Size = new System.Drawing.Size(72, 20);
             this.SlowRunningSessionThresholdTextbox.TabIndex = 9;
             // 
             // SlowRunningSessionThresholdLabel
@@ -358,7 +377,7 @@
             this.SlowRunningSessionThresholdLabel.Location = new System.Drawing.Point(7, 92);
             this.SlowRunningSessionThresholdLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.SlowRunningSessionThresholdLabel.Name = "SlowRunningSessionThresholdLabel";
-            this.SlowRunningSessionThresholdLabel.Size = new System.Drawing.Size(239, 17);
+            this.SlowRunningSessionThresholdLabel.Size = new System.Drawing.Size(181, 13);
             this.SlowRunningSessionThresholdLabel.TabIndex = 8;
             this.SlowRunningSessionThresholdLabel.Text = "Slow Running Session Threshold HC";
             // 
@@ -368,7 +387,7 @@
             this.WarningSessionTimeThresholdLabel.Location = new System.Drawing.Point(7, 60);
             this.WarningSessionTimeThresholdLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.WarningSessionTimeThresholdLabel.Name = "WarningSessionTimeThresholdLabel";
-            this.WarningSessionTimeThresholdLabel.Size = new System.Drawing.Size(241, 17);
+            this.WarningSessionTimeThresholdLabel.Size = new System.Drawing.Size(181, 13);
             this.WarningSessionTimeThresholdLabel.TabIndex = 7;
             this.WarningSessionTimeThresholdLabel.Text = "Warning Session Time Threshold HC";
             // 
@@ -377,11 +396,12 @@
             this.WarningSessionTimeThresholdTextbox.Location = new System.Drawing.Point(232, 55);
             this.WarningSessionTimeThresholdTextbox.Margin = new System.Windows.Forms.Padding(4);
             this.WarningSessionTimeThresholdTextbox.Name = "WarningSessionTimeThresholdTextbox";
-            this.WarningSessionTimeThresholdTextbox.Size = new System.Drawing.Size(72, 23);
+            this.WarningSessionTimeThresholdTextbox.Size = new System.Drawing.Size(72, 20);
             this.WarningSessionTimeThresholdTextbox.TabIndex = 6;
             // 
             // CloseButton
             // 
+            this.CloseButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CloseButton.Location = new System.Drawing.Point(990, 388);
             this.CloseButton.Margin = new System.Windows.Forms.Padding(4);
             this.CloseButton.Name = "CloseButton";
@@ -403,6 +423,7 @@
             this.GithubInfoGroupbox.Controls.Add(this.GithubRulesetVersionTextbox);
             this.GithubInfoGroupbox.Controls.Add(this.GithubExtensionVersionLabel);
             this.GithubInfoGroupbox.Controls.Add(this.GithubDLLVersionTextbox);
+            this.GithubInfoGroupbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GithubInfoGroupbox.Location = new System.Drawing.Point(16, 185);
             this.GithubInfoGroupbox.Margin = new System.Windows.Forms.Padding(4);
             this.GithubInfoGroupbox.Name = "GithubInfoGroupbox";
@@ -418,7 +439,7 @@
             this.InstructionsLabel.Location = new System.Drawing.Point(8, 132);
             this.InstructionsLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.InstructionsLabel.Name = "InstructionsLabel";
-            this.InstructionsLabel.Size = new System.Drawing.Size(298, 17);
+            this.InstructionsLabel.Size = new System.Drawing.Size(226, 13);
             this.InstructionsLabel.TabIndex = 16;
             this.InstructionsLabel.Text = "Click the link below for update instructions. HC";
             // 
@@ -427,7 +448,7 @@
             this.UpdateLinkLabel.AutoSize = true;
             this.UpdateLinkLabel.Location = new System.Drawing.Point(8, 161);
             this.UpdateLinkLabel.Name = "UpdateLinkLabel";
-            this.UpdateLinkLabel.Size = new System.Drawing.Size(72, 17);
+            this.UpdateLinkLabel.Size = new System.Drawing.Size(55, 13);
             this.UpdateLinkLabel.TabIndex = 15;
             this.UpdateLinkLabel.TabStop = true;
             this.UpdateLinkLabel.Text = "linkLabel1";
@@ -438,7 +459,7 @@
             this.GithubRulesetVersionUpdateMessageLabel.AutoSize = true;
             this.GithubRulesetVersionUpdateMessageLabel.Location = new System.Drawing.Point(345, 60);
             this.GithubRulesetVersionUpdateMessageLabel.Name = "GithubRulesetVersionUpdateMessageLabel";
-            this.GithubRulesetVersionUpdateMessageLabel.Size = new System.Drawing.Size(115, 17);
+            this.GithubRulesetVersionUpdateMessageLabel.Size = new System.Drawing.Size(88, 13);
             this.GithubRulesetVersionUpdateMessageLabel.TabIndex = 14;
             this.GithubRulesetVersionUpdateMessageLabel.Text = "Update Message";
             // 
@@ -447,7 +468,7 @@
             this.GithubExtensionVersionUpdateMessageLabel.AutoSize = true;
             this.GithubExtensionVersionUpdateMessageLabel.Location = new System.Drawing.Point(345, 28);
             this.GithubExtensionVersionUpdateMessageLabel.Name = "GithubExtensionVersionUpdateMessageLabel";
-            this.GithubExtensionVersionUpdateMessageLabel.Size = new System.Drawing.Size(115, 17);
+            this.GithubExtensionVersionUpdateMessageLabel.Size = new System.Drawing.Size(88, 13);
             this.GithubExtensionVersionUpdateMessageLabel.TabIndex = 13;
             this.GithubExtensionVersionUpdateMessageLabel.Text = "Update Message";
             // 
@@ -457,7 +478,7 @@
             this.NextUpdateCheckTimestampLabel.Location = new System.Drawing.Point(8, 92);
             this.NextUpdateCheckTimestampLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.NextUpdateCheckTimestampLabel.Name = "NextUpdateCheckTimestampLabel";
-            this.NextUpdateCheckTimestampLabel.Size = new System.Drawing.Size(152, 17);
+            this.NextUpdateCheckTimestampLabel.Size = new System.Drawing.Size(119, 13);
             this.NextUpdateCheckTimestampLabel.TabIndex = 12;
             this.NextUpdateCheckTimestampLabel.Text = "Next Update Check HC";
             // 
@@ -468,7 +489,7 @@
             this.NextUpdateCheckTimestampTextbox.Margin = new System.Windows.Forms.Padding(4);
             this.NextUpdateCheckTimestampTextbox.Name = "NextUpdateCheckTimestampTextbox";
             this.NextUpdateCheckTimestampTextbox.ReadOnly = true;
-            this.NextUpdateCheckTimestampTextbox.Size = new System.Drawing.Size(151, 23);
+            this.NextUpdateCheckTimestampTextbox.Size = new System.Drawing.Size(151, 20);
             this.NextUpdateCheckTimestampTextbox.TabIndex = 11;
             // 
             // GithubRulesetVersionLabel
@@ -477,7 +498,7 @@
             this.GithubRulesetVersionLabel.Location = new System.Drawing.Point(8, 60);
             this.GithubRulesetVersionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.GithubRulesetVersionLabel.Name = "GithubRulesetVersionLabel";
-            this.GithubRulesetVersionLabel.Size = new System.Drawing.Size(177, 17);
+            this.GithubRulesetVersionLabel.Size = new System.Drawing.Size(133, 13);
             this.GithubRulesetVersionLabel.TabIndex = 10;
             this.GithubRulesetVersionLabel.Text = "Github Ruleset Version HC";
             // 
@@ -488,7 +509,7 @@
             this.GithubRulesetVersionTextbox.Margin = new System.Windows.Forms.Padding(4);
             this.GithubRulesetVersionTextbox.Name = "GithubRulesetVersionTextbox";
             this.GithubRulesetVersionTextbox.ReadOnly = true;
-            this.GithubRulesetVersionTextbox.Size = new System.Drawing.Size(151, 23);
+            this.GithubRulesetVersionTextbox.Size = new System.Drawing.Size(151, 20);
             this.GithubRulesetVersionTextbox.TabIndex = 9;
             // 
             // GithubExtensionVersionLabel
@@ -497,7 +518,7 @@
             this.GithubExtensionVersionLabel.Location = new System.Drawing.Point(8, 28);
             this.GithubExtensionVersionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.GithubExtensionVersionLabel.Name = "GithubExtensionVersionLabel";
-            this.GithubExtensionVersionLabel.Size = new System.Drawing.Size(190, 17);
+            this.GithubExtensionVersionLabel.Size = new System.Drawing.Size(143, 13);
             this.GithubExtensionVersionLabel.TabIndex = 8;
             this.GithubExtensionVersionLabel.Text = "Github Extension Version HC";
             // 
@@ -508,12 +529,13 @@
             this.GithubDLLVersionTextbox.Margin = new System.Windows.Forms.Padding(4);
             this.GithubDLLVersionTextbox.Name = "GithubDLLVersionTextbox";
             this.GithubDLLVersionTextbox.ReadOnly = true;
-            this.GithubDLLVersionTextbox.Size = new System.Drawing.Size(151, 23);
+            this.GithubDLLVersionTextbox.Size = new System.Drawing.Size(151, 20);
             this.GithubDLLVersionTextbox.TabIndex = 8;
             // 
             // ObscureSettingsGroupbox
             // 
             this.ObscureSettingsGroupbox.Controls.Add(this.panel2);
+            this.ObscureSettingsGroupbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ObscureSettingsGroupbox.Location = new System.Drawing.Point(507, 201);
             this.ObscureSettingsGroupbox.Margin = new System.Windows.Forms.Padding(4);
             this.ObscureSettingsGroupbox.Name = "ObscureSettingsGroupbox";
@@ -545,7 +567,7 @@
             this.WhatIsScoreForSessionLinkLabel.Location = new System.Drawing.Point(7, 32);
             this.WhatIsScoreForSessionLinkLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.WhatIsScoreForSessionLinkLabel.Name = "WhatIsScoreForSessionLinkLabel";
-            this.WhatIsScoreForSessionLinkLabel.Size = new System.Drawing.Size(198, 17);
+            this.WhatIsScoreForSessionLinkLabel.Size = new System.Drawing.Size(150, 13);
             this.WhatIsScoreForSessionLinkLabel.TabIndex = 13;
             this.WhatIsScoreForSessionLinkLabel.TabStop = true;
             this.WhatIsScoreForSessionLinkLabel.Text = "What is ScoreForSession? HC";
@@ -556,7 +578,7 @@
             this.ScoreForSessionTextbox.Location = new System.Drawing.Point(229, 4);
             this.ScoreForSessionTextbox.Margin = new System.Windows.Forms.Padding(4);
             this.ScoreForSessionTextbox.Name = "ScoreForSessionTextbox";
-            this.ScoreForSessionTextbox.Size = new System.Drawing.Size(72, 23);
+            this.ScoreForSessionTextbox.Size = new System.Drawing.Size(72, 20);
             this.ScoreForSessionTextbox.TabIndex = 17;
             // 
             // ScoreForSessionLabel
@@ -565,12 +587,13 @@
             this.ScoreForSessionLabel.Location = new System.Drawing.Point(4, 7);
             this.ScoreForSessionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.ScoreForSessionLabel.Name = "ScoreForSessionLabel";
-            this.ScoreForSessionLabel.Size = new System.Drawing.Size(139, 17);
+            this.ScoreForSessionLabel.Size = new System.Drawing.Size(105, 13);
             this.ScoreForSessionLabel.TabIndex = 16;
             this.ScoreForSessionLabel.Text = "ScoreForSession HC";
             // 
             // SaveButton
             // 
+            this.SaveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SaveButton.Location = new System.Drawing.Point(883, 388);
             this.SaveButton.Margin = new System.Windows.Forms.Padding(4);
             this.SaveButton.Name = "SaveButton";
@@ -579,23 +602,6 @@
             this.SaveButton.Text = "Save HC";
             this.SaveButton.UseVisualStyleBackColor = true;
             this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
-            // 
-            // LanguageLabel
-            // 
-            this.LanguageLabel.AutoSize = true;
-            this.LanguageLabel.Location = new System.Drawing.Point(365, 118);
-            this.LanguageLabel.Name = "LanguageLabel";
-            this.LanguageLabel.Size = new System.Drawing.Size(72, 17);
-            this.LanguageLabel.TabIndex = 19;
-            this.LanguageLabel.Text = "Language";
-            // 
-            // LanguageTextBox
-            // 
-            this.LanguageTextBox.Location = new System.Drawing.Point(457, 115);
-            this.LanguageTextBox.Name = "LanguageTextBox";
-            this.LanguageTextBox.ReadOnly = true;
-            this.LanguageTextBox.Size = new System.Drawing.Size(100, 23);
-            this.LanguageTextBox.TabIndex = 20;
             // 
             // About
             // 

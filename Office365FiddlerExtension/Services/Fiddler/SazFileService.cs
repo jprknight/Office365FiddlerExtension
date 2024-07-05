@@ -5,7 +5,6 @@ using System.Reflection;
 using Office365FiddlerExtension.UI;
 using System.Diagnostics;
 using System.Windows.Forms;
-using System.Drawing.Design;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -86,12 +85,12 @@ namespace Office365FiddlerExtension.Services
         {
             if (!SettingsJsonService.Instance.ExtensionSessionProcessingEnabled)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz {e.sFilename}. Extension not enabled, returning.");
-                return;
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz '{SimpleSazFileName(e.sFilename)}'. Extension not enabled, not allowing compute intensive tasks.");
+                //return;
             }
 
             if (!SettingsJsonService.Instance.SessionAnalysisOnLoadSaz) {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz {e.sFilename}. SessionAnalysisOnLoadSaz not enabled, returning.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz '{SimpleSazFileName(e.sFilename)}'. SessionAnalysisOnLoadSaz not enabled, returning.");
                 return;
             }
 
@@ -118,30 +117,36 @@ namespace Office365FiddlerExtension.Services
                 }
             }
 
-            if (iToBeAnalysedSessions > 0)
+            // REVIEW THIS -- Language.
+            if (SettingsJsonService.Instance.ExtensionSessionProcessingEnabled)
             {
-                string message = $"You have loaded {SimpleSazFileName(e.sFilename)} which contains a total of {e.arrSessions.Count()} sessions. " +
-                    $"The Office 365 Fiddler Extension has analysed {iEnchantedSessions} sessions, {iToBeAnalysedSessions} sessions haven't been analysed. " +
-                    $"Do you want to analyse and enhance these sessions with the extension now?";
-
-                string caption = $"{LangHelper.GetString("Office 365 Fiddler Extension")} - LoadSAZ - Analyse Sessions?";
-
-                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-                DialogResult result;
-
-                //Display the MessageBox.
-                result = MessageBox.Show(message, caption, buttons, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
-
-                if (result == DialogResult.No)
+                if (iToBeAnalysedSessions > 0)
                 {
-                    return;
+                    string message = $"You have loaded '{SimpleSazFileName(e.sFilename)}' which contains {e.arrSessions.Count()} sessions. " +
+                        Environment.NewLine +
+                        $"The Office 365 Fiddler Extension has analysed {iEnchantedSessions} sessions, {iToBeAnalysedSessions} sessions haven't been analysed. " +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        $"Do you want to analyse and enhance these sessions with the extension now?";
+
+                    string caption = $"{LangHelper.GetString("Office 365 Fiddler Extension")} - LoadSAZ - Analyse Sessions?";
+
+                    MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                    DialogResult result;
+
+                    //Display the MessageBox.
+                    result = MessageBox.Show(message, caption, buttons, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+
+                    if (result == DialogResult.No)
+                    {
+                        return;
+                    }
                 }
             }
 
-            FiddlerApplication.UI.lvSessions.BeginUpdate();
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz processing: '{SimpleSazFileName(e.sFilename)}'");
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz with Extension Enabled: {SettingsJsonService.Instance.ExtensionSessionProcessingEnabled}, {Assembly.GetExecutingAssembly().GetName().CodeBase.Substring(8)}.");
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz processing: {e.sFilename}");
+            FiddlerApplication.UI.lvSessions.BeginUpdate();
 
             var sw = Stopwatch.StartNew();
 
@@ -162,15 +167,19 @@ namespace Office365FiddlerExtension.Services
                 }
                 else
                 {
+                    // If the extension isn't enabled, don't allow LoadSAZ to do compute intensive tasks.
+                    if (!SettingsJsonService.Instance.ExtensionSessionProcessingEnabled)
+                    {
+                        continue;
+                    }
                     SessionService.Instance.OnPeekAtResponseHeaders(this.session);
                 }
             }
 
             sw.Stop();
-            //TimeSpan time = sw.Elapsed;
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
-                        $"LoadSaz processed {e.arrSessions.Count()} sessions in {sw.ElapsedMilliseconds}ms from {e.sFilename}.");
+                        $"LoadSaz processed {e.arrSessions.Count()} sessions in {sw.ElapsedMilliseconds}ms from '{SimpleSazFileName(e.sFilename)}'.");
 
             FiddlerApplication.UI.lvSessions.EndUpdate();
         }

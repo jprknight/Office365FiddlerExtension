@@ -151,6 +151,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check.
+        /// </summary>
+        internal static string Check {
+            get {
+                return ResourceManager.GetString("Check", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check for updates every.
         /// </summary>
         internal static string Check_for_updates_every {
@@ -178,6 +187,24 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter an IP Address to check what network it is on..
+        /// </summary>
+        internal static string Check_IP_Address_Placeholder_Text {
+            get {
+                return ResourceManager.GetString("Check IP Address Placeholder Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        internal static string Clear {
+            get {
+                return ResourceManager.GetString("Clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear All Session Analysis.
         /// </summary>
         internal static string Clear_All_Session_Analysis {
@@ -192,6 +219,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Clear_Selected_Sessions {
             get {
                 return ResourceManager.GetString("Clear Selected Sessions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Selected Sessions Anaysis.
+        /// </summary>
+        internal static string Clear_Selected_Sessions_Anaysis {
+            get {
+                return ResourceManager.GetString("Clear Selected Sessions Anaysis", resourceCulture);
             }
         }
         
@@ -349,6 +385,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extension.
+        /// </summary>
+        internal static string Extension {
+            get {
+                return ResourceManager.GetString("Extension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extension DLL.
         /// </summary>
         internal static string Extension_DLL {
@@ -381,6 +426,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Extension_Path {
             get {
                 return ResourceManager.GetString("Extension Path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extension Version Information.
+        /// </summary>
+        internal static string Extension_Version_Information {
+            get {
+                return ResourceManager.GetString("Extension Version Information", resourceCulture);
             }
         }
         
@@ -709,6 +763,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open Latest Consolidated Analysis Report.
+        /// </summary>
+        internal static string Open_Latest_Consolidated_Analysis_Report {
+            get {
+                return ResourceManager.GetString("Open Latest Consolidated Analysis Report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Orange.
         /// </summary>
         internal static string Orange {
@@ -813,6 +876,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Response_Server {
             get {
                 return ResourceManager.GetString("Response Server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ruleset.
+        /// </summary>
+        internal static string Ruleset {
+            get {
+                return ResourceManager.GetString("Ruleset", resourceCulture);
             }
         }
         
