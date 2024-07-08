@@ -44,6 +44,17 @@ namespace Office365FiddlerExtension.Services
                         $"Debug Mode set to true.");
                 }
 
+                // Control whether Fiddler captures sessions on startup. Useful as I only mostly review traces and data in Fiddler rather
+                // than capture from my own machine.
+                if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().CaptureTraffic)
+                {
+                    FiddlerApplication.UI.actAttachProxy();
+                }
+                else
+                {
+                    FiddlerApplication.UI.actDetachProxy();
+                }
+
                 // Set extension language based on preferred language.
                 LangHelper.ChangeLanguage(SettingsJsonService.Instance.GetDeserializedExtensionSettings().PreferredLanguage);
 

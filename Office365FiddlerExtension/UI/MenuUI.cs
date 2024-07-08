@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Office365FiddlerExtension.UI;
 using System.Reflection;
 using Office365FiddlerExtension.UI.Forms;
+using Newtonsoft.Json;
 
 namespace Office365FiddlerExtension
 {
@@ -138,8 +139,8 @@ namespace Office365FiddlerExtension
                     new MenuItem("-"),
                     this.MiCreateConsolidatedAnalysisReport,
                     new MenuItem ("-"),
-                    this.MiCheckIP,
-                    new MenuItem("-"),
+                    //this.MiCheckIP,
+                    //new MenuItem("-"),
                     this.MiReleasesDownloadWebpage,
                     this.MiWiki,
                     this.MiReportIssues,
@@ -225,6 +226,14 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void MiAbout_Click(object sender, EventArgs e)
         {
+            // Back door to enable debug mode from the extension frontend.
+            if (Control.ModifierKeys == Keys.Shift)
+            {
+                var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+                extensionSettings.DebugMode = !extensionSettings.DebugMode;
+                Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
+            }
+
             About about = new About();
             about.Show();
         }
@@ -248,8 +257,6 @@ namespace Office365FiddlerExtension
 
             // Set ExtensionEnabled according to menu item checked.
             SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(MiEnabled.Checked);
-
-            Office365TabPage.Instance.UpdateUIControls();
         }
 
         /// <summary>

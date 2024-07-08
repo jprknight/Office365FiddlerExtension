@@ -61,10 +61,13 @@ namespace Office365FiddlerExtension.Services
                 return false;
             }
 
+            /*
+            Check for updates every load, so the UI can display up to date information.
             if (!UpdateService.Instance.EligibleForUpdateCheck())
             {
                 return false;
             }
+            */
 
             var githubJsonVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
@@ -188,10 +191,13 @@ namespace Office365FiddlerExtension.Services
                 return false;
             }
 
+            /*
+            Check for updates every load, so the UI can display up to date information.
             if (!UpdateService.Instance.EligibleForUpdateCheck())
             {
                 return false;
             }
+            */
 
             var githubJsonVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
             var extensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();

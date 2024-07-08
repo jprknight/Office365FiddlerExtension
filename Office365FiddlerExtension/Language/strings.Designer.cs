@@ -151,6 +151,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Capture Traffic.
+        /// </summary>
+        internal static string Capture_Traffic {
+            get {
+                return ResourceManager.GetString("Capture Traffic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check.
         /// </summary>
         internal static string Check {
@@ -691,6 +700,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Never Web Call.
+        /// </summary>
+        internal static string Never_Web_Call {
+            get {
+                return ResourceManager.GetString("Never Web Call", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next Update Check.
         /// </summary>
         internal static string Next_Update_Check {
@@ -759,15 +777,6 @@ namespace Office365FiddlerExtension.Language {
         internal static string On_Load_Saz {
             get {
                 return ResourceManager.GetString("On Load Saz", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open Latest Consolidated Analysis Report.
-        /// </summary>
-        internal static string Open_Latest_Consolidated_Analysis_Report {
-            get {
-                return ResourceManager.GetString("Open Latest Consolidated Analysis Report", resourceCulture);
             }
         }
         

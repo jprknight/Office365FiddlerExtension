@@ -1,4 +1,5 @@
 ﻿using Fiddler;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -214,7 +215,7 @@ namespace Office365FiddlerExtension.Services
 
             ResultsString.AppendLine("</body>");
             ResultsString.AppendLine("</html>");
-
+            
             SaveFileDialog saveFileDialog1 = new SaveFileDialog
             {
                 Filter = "Web Page|*.html",

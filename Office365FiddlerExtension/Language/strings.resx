@@ -157,6 +157,10 @@
     <value>Blue</value>
     <comment>ContextMenu</comment>
   </data>
+  <data name="Capture Traffic" xml:space="preserve">
+    <value>Capture Traffic</value>
+    <comment>Tab Page</comment>
+  </data>
   <data name="Check" xml:space="preserve">
     <value>Check</value>
     <comment>Tab Page</comment>
@@ -397,6 +401,10 @@
     <value>network</value>
     <comment>Inspector</comment>
   </data>
+  <data name="Never Web Call" xml:space="preserve">
+    <value>Never Web Call</value>
+    <comment>Tab Page</comment>
+  </data>
   <data name="Next Update Check" xml:space="preserve">
     <value>Next Update Check</value>
     <comment>About</comment>
@@ -428,10 +436,6 @@
   <data name="On Load Saz" xml:space="preserve">
     <value>On Load Saz</value>
     <comment>About</comment>
-  </data>
-  <data name="Open Latest Consolidated Analysis Report" xml:space="preserve">
-    <value>Open Latest Consolidated Analysis Report</value>
-    <comment>Tab Page</comment>
   </data>
   <data name="Orange" xml:space="preserve">
     <value>Orange</value>

@@ -73,7 +73,7 @@ namespace Office365FiddlerExtension.Services
                 InspectorScoreForSession = 100,
                 PreferredLanguage = "EN",
                 DebugMode = "False",
-                LatestConsolidatedAnalysisReport = ""
+                CaptureTraffic = ""
             };
 
             // Transform the object to a Json object.
@@ -166,6 +166,42 @@ namespace Office365FiddlerExtension.Services
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): " +
                 $"Attempting to set NextUpdateCheck to {extensionSettings.NextUpdateCheck}");
+
+            // Serialize the object back into Json.
+            // Write the Json into the ExtensionSettings Fiddler setting.
+            Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
+        }
+
+        public void SetNeverWebCall(bool enabled)
+        {
+            // Pull & Deserialize Json from ExtensionSettings.
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            extensionSettings.NeverWebCall = enabled;
+
+            // Serialize the object back into Json.
+            // Write the Json into the ExtensionSettings Fiddler setting.
+            Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
+        }
+
+        public void SetDebugMode(bool enabled)
+        {
+            // Pull & Deserialize Json from ExtensionSettings.
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            extensionSettings.DebugMode = enabled;
+
+            // Serialize the object back into Json.
+            // Write the Json into the ExtensionSettings Fiddler setting.
+            Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
+        }
+
+        public void SetCaptureOnStartup(bool enabled)
+        {
+            // Pull & Deserialize Json from ExtensionSettings.
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            extensionSettings.CaptureTraffic = enabled;
 
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
@@ -494,6 +530,6 @@ namespace Office365FiddlerExtension.Services
 
         public bool DebugMode {  get; set; }
 
-        public string LatestConsolidatedAnalysisReport {  get; set; }
+        public bool CaptureTraffic { get; set; }
     }
 }
