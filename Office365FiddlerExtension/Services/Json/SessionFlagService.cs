@@ -140,7 +140,7 @@ namespace Office365FiddlerExtension.Services
             }
             
             sw.Stop();
-            TimeSpan time = sw.Elapsed;
+            //TimeSpan time = sw.Elapsed;
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
                         $"Analysed {Sessions.Count()} selected sessions in {sw.ElapsedMilliseconds}ms.");
@@ -177,7 +177,7 @@ namespace Office365FiddlerExtension.Services
             }
 
             sw.Stop();
-            TimeSpan time = sw.Elapsed;
+            //TimeSpan time = sw.Elapsed;
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
                         $"Analysed {Sessions.Count()} all visible sessions in {sw.ElapsedMilliseconds}ms.");

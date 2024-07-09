@@ -1,6 +1,6 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using System.Reflection;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
@@ -12,6 +12,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         private static ConnectTunnelTLSVersion _instance;
         public static ConnectTunnelTLSVersion Instance => _instance ?? (_instance = new ConnectTunnelTLSVersion());
 
+        /// <summary>
+        /// Determine if the current session is a connect tunnel, if so set the TLS version.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;
@@ -64,15 +68,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 TLS = "TLS Unknown";
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = LangHelper.GetString("Connect Tunnel TLS Version"),
+                SectionTitle = RulesetLangHelper.GetString("Connect Tunnel TLS Version"),
 
                 TLSVersion = TLS
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

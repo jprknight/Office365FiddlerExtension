@@ -1,12 +1,6 @@
 ﻿using Fiddler;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Management.Instrumentation;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Office365FiddlerExtension.Services;
 using Office365FiddlerExtension.UI;
 using System.Diagnostics;
 
@@ -24,7 +18,7 @@ namespace Office365FiddlerExtension.Services
         public static SazFileService Instance => _instance ?? (_instance = new SazFileService());
 
         /// <summary>
-        /// Function to handle saving a SAZ file.
+        /// Handle saving a SAZ file.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -73,8 +67,15 @@ namespace Office365FiddlerExtension.Services
             FiddlerApplication.UI.lvSessions.EndUpdate();
         }
 
+        public string SimpleSazFileName(string sazFileName)
+        {
+            int i = sazFileName.LastIndexOf('\\');
+            return sazFileName.Substring(i + 1);
+        }
+
         /// <summary>
-        /// Function to handle loading a SAZ file.
+        /// Handle loading a SAZ file. If the sessions already have session analysis with all three 
+        /// confidence levels set to 10, use stored analysis for faster load times.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -82,20 +83,53 @@ namespace Office365FiddlerExtension.Services
         {
             if (!SettingsJsonService.Instance.ExtensionSessionProcessingEnabled)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz {e.sFilename}. Extension not enabled, returning.");
-                return;
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz '{SimpleSazFileName(e.sFilename)}'. Extension not enabled, not allowing compute intensive tasks.");
+                //return;
             }
 
             if (!SettingsJsonService.Instance.SessionAnalysisOnLoadSaz) {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz {e.sFilename}. SessionAnalysisOnLoadSaz not enabled, returning.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz '{SimpleSazFileName(e.sFilename)}'. SessionAnalysisOnLoadSaz not enabled, returning.");
                 return;
             }
 
+            // Prompt the user to analyse sessions before doing it. Gives the user the option for fast loading any sessions which don't already have analysis saved in them.
+
+            int iEnhancedSessions = 0;
+            int iToBeAnalysedSessions = 0;
+
+            foreach (Session session in e.arrSessions)
+            {
+                this.session = session;
+
+                // If the session already has the Microsoft365FiddlerExtensionJson flag set with high confidence session classifications set,
+                // enhance the session based on prior / stored analysis.
+                if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionAuthenticationConfidenceLevel == 10
+                    && SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionResponseServerConfidenceLevel == 10
+                    && SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
+                {
+                    iEnhancedSessions++;
+                }
+                else
+                {
+                    iToBeAnalysedSessions++;
+                }
+            }
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz processing: '{SimpleSazFileName(e.sFilename)}'");
+
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz with Extension Enabled: {SettingsJsonService.Instance.ExtensionSessionProcessingEnabled}, {Assembly.GetExecutingAssembly().GetName().CodeBase.Substring(8)}.");
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz processing: {e.sFilename}");
+            bool bProcessSessions = true;
 
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            // If there are more sessions to analyse than the warning threshold, confirm with the user they want to continue.
+            if (e.arrSessions.Count() > extensionSettings.WarnBeforeAnalysing && iToBeAnalysedSessions > extensionSettings.WarnBeforeAnalysing)
+            {
+                bProcessSessions = SessionService.Instance.ConfirmLargeSessionAnalysis(e.arrSessions.Count());
+            }
+
+            // Start the stopwatch. This should be the last thing that happens before we start the foreach loop through sessions.
             var sw = Stopwatch.StartNew();
 
             foreach (Session session in e.arrSessions)
@@ -115,15 +149,32 @@ namespace Office365FiddlerExtension.Services
                 }
                 else
                 {
+                    // If the extension isn't enabled, don't allow LoadSAZ to do compute intensive tasks.
+                    if (!SettingsJsonService.Instance.ExtensionSessionProcessingEnabled)
+                    {
+                        continue;
+                    }
+
+                    // If the session doesn't have the LoadedFromSAZ flag set, ignore it.
+                    if (!this.session.isAnyFlagSet(SessionFlags.LoadedFromSAZ))
+                    {
+                        continue;
+                    }
+
+                    // Check ensures the user has confirmed they want to continue for large session analysis.
+                    if (!bProcessSessions)
+                    {
+                        continue;
+                    }
+
                     SessionService.Instance.OnPeekAtResponseHeaders(this.session);
                 }
             }
 
             sw.Stop();
-            TimeSpan time = sw.Elapsed;
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
-                        $"LoadSaz processed {e.arrSessions.Count()} sessions in {sw.ElapsedMilliseconds}ms from {e.sFilename}.");
+                        $"LoadSaz processed {e.arrSessions.Count()} sessions in {sw.ElapsedMilliseconds}ms from '{SimpleSazFileName(e.sFilename)}'.");
 
             FiddlerApplication.UI.lvSessions.EndUpdate();
         }

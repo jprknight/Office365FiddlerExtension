@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Office365FiddlerExtension.UI;
 using System.Reflection;
 using Office365FiddlerExtension.UI.Forms;
+using Newtonsoft.Json;
 
 namespace Office365FiddlerExtension
 {
@@ -23,11 +24,9 @@ namespace Office365FiddlerExtension
 
         public MenuItem MiEnabled { get; set; }
 
-        //public MenuItem MiLanguage { get; set; }
-        /*
-        public MenuItem MiLanguage_English_ENGB { get; set; }
-
-        public MenuItem MiLanguage_English_ENUS { get; set; }
+        public MenuItem MiLanguage { get; set; }
+        
+        public MenuItem MiLanguage_EN { get; set; }
 
         public MenuItem MiLanguage_FR { get; set; }
 
@@ -36,15 +35,12 @@ namespace Office365FiddlerExtension
         public MenuItem MiLanguage_PT { get; set; }
 
         public MenuItem MiLanguage_ES { get; set; }
-        */
 
         public MenuItem MiAnalyseAllSessions { get; set; }
 
         public MenuItem MiClearAllSessionAnalysis { get; set; }
 
         public MenuItem MiCreateConsolidatedAnalysisReport { get; set; }
-
-        public MenuItem MiCheckIP {  get; set; }
 
         public MenuItem MiReleasesDownloadWebpage { get; set; }
 
@@ -60,141 +56,127 @@ namespace Office365FiddlerExtension
 
         private bool IsInitialized { get; set; }
 
+        /// <summary>
+        /// Create and add menu into Fiddler UI.
+        /// </summary>
         public void Initialize()
         {
-            /// <remarks>
-            /// If this is the first time the extension has been run, make sure all extension options are enabled.
-            /// Beyond do nothing other than keep a running count of the number of extension executions.
-            /// </remarks>
-            /// 
             if (!IsInitialized)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Adding menu to UI.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add menu to Fiddler UI.");
 
-                this.ExtensionMenu = new MenuItem(SettingsJsonService.Instance.ExtensionSessionProcessingEnabled ? MenuEnabled : MenuDisabled);
-
-                this.MiEnabled = new MenuItem(LangHelper.GetString("Enable"), new EventHandler(this.MiEnabled_Click))
+                try
                 {
-                    Checked = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
-                };
-                /*
-                this.MiLanguage = new MenuItem(LangHelper.GetString("Language"));
+                    this.ExtensionMenu = new MenuItem(SettingsJsonService.Instance.ExtensionSessionProcessingEnabled ? MenuEnabled : MenuDisabled);
 
-                this.MiLanguage_English_ENGB = new MenuItem($"{LangHelper.GetString("English")} (en-GB)", new EventHandler(this.MiLanguageEnglishENGB_Click))
-                {
-                    Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-GB")
-                };
-            
+                    this.MiEnabled = new MenuItem(LangHelper.GetString("Enable"), new EventHandler(this.MiEnabled_Click))
+                    {
+                        Checked = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
+                    };
 
-                this.MiLanguage_English_ENUS = new MenuItem($"{LangHelper.GetString("English")} (en-US)", new EventHandler(this.MiLanguageEnglishENUS_Click))
-                {
-                    Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-US")
-                };
+                    this.MiLanguage = new MenuItem(LangHelper.GetString("Language"));
 
-                this.MiLanguage_FR = new MenuItem($"{LangHelper.GetString("French")}", new EventHandler(this.MiLanguage_FR_Click))
-                {
-                    Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("FR")
-                };
+                    this.MiLanguage_EN = new MenuItem($"{LangHelper.GetString("English")}", new EventHandler(this.MiLanguage_EN_Click))
+                    {
+                        Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("EN")
+                    };
 
-                this.MiLanguage_DE = new MenuItem($"{LangHelper.GetString("German")}", new EventHandler(this.MiLanguage_DE_Click))
-                {
-                    Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("DE")
-                };
+                    this.MiLanguage_FR = new MenuItem($"{LangHelper.GetString("French")}", new EventHandler(this.MiLanguage_FR_Click))
+                    {
+                        Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("FR")
+                    };
 
-                this.MiLanguage_PT = new MenuItem($"{LangHelper.GetString("Portuguese")}", new EventHandler(this.MiLanguage_PT_Click))
-                {
-                    Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("PT")
-                };
+                    this.MiLanguage_DE = new MenuItem($"{LangHelper.GetString("German")}", new EventHandler(this.MiLanguage_DE_Click))
+                    {
+                        Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("DE")
+                    };
 
-                this.MiLanguage_ES = new MenuItem($"{LangHelper.GetString("Spanish")}", new EventHandler(this.MiLanguage_ES_Click))
-                {
-                    Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("ES")
-                };
-                */
+                    this.MiLanguage_PT = new MenuItem($"{LangHelper.GetString("Portuguese")}", new EventHandler(this.MiLanguage_PT_Click))
+                    {
+                        Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("PT")
+                    };
 
-                this.MiAnalyseAllSessions = new MenuItem($"{LangHelper.GetString("Analyse All Sessions")}", new System.EventHandler(this.MiAnalyseAllSessions_Click))
-                {
-                    Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
-                };
+                    this.MiLanguage_ES = new MenuItem($"{LangHelper.GetString("Spanish")}", new EventHandler(this.MiLanguage_ES_Click))
+                    {
+                        Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("ES")
+                    };
 
-                this.MiClearAllSessionAnalysis = new MenuItem($"{LangHelper.GetString("Clear All Session Analysis")}", new System.EventHandler(this.MiClearAllSessionAnalysis_Click))
-                {
-                    Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
-                };
+                    this.MiAnalyseAllSessions = new MenuItem($"{LangHelper.GetString("Analyse All Sessions")}", new System.EventHandler(this.MiAnalyseAllSessions_Click))
+                    {
+                        Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
+                    };
 
-                this.MiCreateConsolidatedAnalysisReport = new MenuItem($"{LangHelper.GetString("Create Consolidated Analysis Report")}", new System.EventHandler(this.MiCreateConsolidatedAnalysisReport_Click))
-                {
-                    Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
-                };
+                    this.MiClearAllSessionAnalysis = new MenuItem($"{LangHelper.GetString("Clear All Session Analysis")}", new System.EventHandler(this.MiClearAllSessionAnalysis_Click))
+                    {
+                        Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
+                    };
 
-                this.MiCheckIP = new MenuItem($"{LangHelper.GetString("Check IP Address")}", new System.EventHandler(this.MiCheckIPAddress_Click))
-                {
-                    Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
-                };
+                    this.MiCreateConsolidatedAnalysisReport = new MenuItem($"{LangHelper.GetString("Create Consolidated Analysis Report")}", new System.EventHandler(this.MiCreateConsolidatedAnalysisReport_Click))
+                    {
+                        Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
+                    };
 
-                this.MiReleasesDownloadWebpage = new MenuItem($"{LangHelper.GetString("Releases")}", new System.EventHandler(this.MiReleasesDownloadWebpage_click));
+                    this.MiReleasesDownloadWebpage = new MenuItem($"{LangHelper.GetString("Releases")}", new System.EventHandler(this.MiReleasesDownloadWebpage_click));
 
-                this.MiWiki = new MenuItem($"{LangHelper.GetString("Wiki")}", new System.EventHandler(this.MiWiki_Click));
+                    this.MiWiki = new MenuItem($"{LangHelper.GetString("Wiki")}", new System.EventHandler(this.MiWiki_Click));
 
-                this.MiReportIssues = new MenuItem($"{LangHelper.GetString("Report Issues")}", new System.EventHandler(this.MiReportIssues_Click));
+                    this.MiReportIssues = new MenuItem($"{LangHelper.GetString("Report Issues")}", new System.EventHandler(this.MiReportIssues_Click));
 
-                this.MiAbout = new MenuItem($"{LangHelper.GetString("About")}", new System.EventHandler(this.MiAbout_Click));
+                    this.MiAbout = new MenuItem($"{LangHelper.GetString("About")}", new System.EventHandler(this.MiAbout_Click));
 
-                // Add menu items to top level menu.
-                this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { this.MiEnabled,
-                    new MenuItem("-"),
+                    // Add menu items to top level menu.
+                    this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { //this.MiEnabled,
+                    //new MenuItem("-"),
                     this.MiAnalyseAllSessions,
                     this.MiClearAllSessionAnalysis,
                     new MenuItem("-"),
                     this.MiCreateConsolidatedAnalysisReport,
                     new MenuItem ("-"),
-                    this.MiCheckIP,
-                    //this.MiLanguage,
-                    new MenuItem("-"),
                     this.MiReleasesDownloadWebpage,
                     this.MiWiki,
                     this.MiReportIssues,
                     new MenuItem("-"),
+                    this.MiLanguage,
+                    new MenuItem("-"),
                     this.MiAbout
                 });
 
-                /*
-                this.MiLanguage.MenuItems.AddRange(new MenuItem[] {
-                    this.MiLanguage_English_ENGB,
-                    this.MiLanguage_English_ENUS,
+                    this.MiLanguage.MenuItems.AddRange(new MenuItem[] {
+                    this.MiLanguage_EN,
                     this.MiLanguage_FR,
                     this.MiLanguage_DE,
                     this.MiLanguage_PT,
                     this.MiLanguage_ES
                 });
-                */
 
-                FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExtensionMenu);
-                IsInitialized = true;
+                    FiddlerApplication.UI.mnuMain.MenuItems.Add(this.ExtensionMenu);
+
+                    this.MiLanguage_FR.Enabled = false;
+                    this.MiLanguage_DE.Enabled = false;
+                    this.MiLanguage_PT.Enabled = false;
+                    this.MiLanguage_ES.Enabled = false;
+
+                    IsInitialized = true;
+                }
+                catch (Exception ex)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+                }
+                
             }
         }
-
-        /*
         private void CheckLanguageSelection()
         {
-            MiLanguage_English_ENUS.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-US");
-            MiLanguage_English_ENGB.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("en-GB");
+            MiLanguage_EN.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("EN");
             MiLanguage_FR.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("FR");
             MiLanguage_DE.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("DE");
             MiLanguage_PT.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("PT");
             MiLanguage_ES.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("ES");
         }
 
-        private void MiLanguageEnglishENUS_Click(object sender, EventArgs e)
+        private void MiLanguage_EN_Click(object sender, EventArgs e)
         {
-            LangHelper.ChangeLanguage("en-US");
-
-            CheckLanguageSelection();
-        }
-
-        private void MiLanguageEnglishENGB_Click(object sender, EventArgs e)
-        {
-            LangHelper.ChangeLanguage("en-GB");
+            LangHelper.ChangeLanguage("EN");
 
             CheckLanguageSelection();
         }
@@ -227,22 +209,31 @@ namespace Office365FiddlerExtension
 
             CheckLanguageSelection();
         }
-        */
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MiAbout_Click(object sender, EventArgs e)
         {
+            // Back door to enable debug mode from the extension frontend.
+            if (Control.ModifierKeys == Keys.Shift)
+            {
+                var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+                extensionSettings.DebugMode = !extensionSettings.DebugMode;
+                Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
+            }
+
             About about = new About();
             about.Show();
         }
 
-        /*
-        private void MiClearAllSessionProcessing_Click(object sender, EventArgs e)
-        {
-            SessionFlagService.Instance.ClearAnalysisSelectedSessions();
-        }
-        */
-
-        // Menu item event handlers.
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MiEnabled_Click(object sender, EventArgs e)
         {
             // Invert menu item checked.
@@ -259,6 +250,11 @@ namespace Office365FiddlerExtension
             SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(MiEnabled.Checked);
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MiWiki_Click(object sender, EventArgs e)
         {
             var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
@@ -267,6 +263,11 @@ namespace Office365FiddlerExtension
             System.Diagnostics.Process.Start(URLs.Wiki);
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MiReleasesDownloadWebpage_click(object sender, EventArgs e)
         {
             var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
@@ -274,6 +275,11 @@ namespace Office365FiddlerExtension
             System.Diagnostics.Process.Start(URLs.Installer);
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MiReportIssues_Click(object sender, EventArgs e)
         {
             var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
@@ -281,25 +287,43 @@ namespace Office365FiddlerExtension
             System.Diagnostics.Process.Start(URLs.ReportIssues);
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MiAnalyseAllSessions_Click(object sender, EventArgs e)
         {
             SessionFlagService.Instance.AnalyseAllSessions();
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MiClearAllSessionAnalysis_Click(object sender, EventArgs e)
         {
             SessionFlagService.Instance.ClearAnalysisAllSessions();
         }
 
+        /// <summary>
+        /// Action performed on menu item click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MiCreateConsolidatedAnalysisReport_Click(object sender, EventArgs e)
         {
             ConsolidatedAnalysisReportService.Instance.CreateCAR();
         }
 
-        private void MiCheckIPAddress_Click(object sender, EventArgs e)
+        public void UpdateUIControls()
         {
-            CheckIP checkIP = new CheckIP();
-            checkIP.Show();
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            MiAnalyseAllSessions.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
+            MiClearAllSessionAnalysis.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
+            MiCreateConsolidatedAnalysisReport.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
         }
     }
 }

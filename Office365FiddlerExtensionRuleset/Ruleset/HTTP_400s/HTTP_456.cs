@@ -1,5 +1,5 @@
 ﻿using System;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -14,6 +14,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_456 Instance => _instance ?? (_instance = new HTTP_456());
 
+        /// <summary>
+        /// Set session analysis values for a HTTP 456 response code.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;
@@ -51,7 +55,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_456s|HTTP_456_Multi_Factor_Required");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_456s|HTTP_456_Multi_Factor_Required");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -68,14 +72,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 60;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_456s",
 
-                SessionType = LangHelper.GetString("HTTP_456_Multi_Factor_Required_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_456_Multi_Factor_Required_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_456_Multi_Factor_Required_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_456_Multi_Factor_Required_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_456_Multi_Factor_Required_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_456_Multi_Factor_Required_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_456_Multi_Factor_Required_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_456_Multi_Factor_Required_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -84,7 +88,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         private void HTTP_456_OAuth_Not_Available(Session session)
@@ -105,7 +109,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_456s|HTTP_456_OAuth_Not_Available");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_456s|HTTP_456_OAuth_Not_Available");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -122,14 +126,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 60;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_456s",
 
-                SessionType = LangHelper.GetString("HTTP_456_OAuth_Not_Available_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_456_OAuth_Not_Available_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_456_OAuth_Not_Available_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_456_OAuth_Not_Available_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_456_OAuth_Not_Available_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_456_OAuth_Not_Available_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_456_OAuth_Not_Available_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_456_OAuth_Not_Available_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -138,7 +142,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         private void HTTP_456_Anything_Else(Session session)
@@ -154,7 +158,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_456s|HTTP_456_Anything_Else");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_456s|HTTP_456_Anything_Else");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -171,14 +175,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 60;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_456s",
 
-                SessionType = LangHelper.GetString("HTTP_456_Anything_Else_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_456_Anything_Else_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_456_Anything_Else_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_456_Anything_Else_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_456_Anything_Else_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_456_Anything_Else_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_456_Anything_Else_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_456_Anything_Else_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -187,7 +191,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

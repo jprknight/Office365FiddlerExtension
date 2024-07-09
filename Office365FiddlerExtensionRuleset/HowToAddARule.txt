@@ -6,9 +6,9 @@ Create the class using HTTP_200_Actually_OK.cs as a template.
 
 Don't forget 'this.session = session;' if you do the session will fall through the ruleset and have a pink background with no analysis.
 
-Create the Json section within Office365FiddlerExtension\SessionClassification.json, so that the color of the session can be changed via Github if it needs to change.
+Create the Json section within Office365FiddlerExtensionRuleset\SessionClassification.json, so that the color of the session can be changed via Github if it needs to change.
 
-Add any strings to Office365FiddlerExtension\Language\strings.resx
+Add any strings to Office365FiddlerExtensionRuleset\Language\strings.resx
 
 Finally add add a line to call the new function in Office365FiddlerExtensionRuleset\RunRuleset.cs 
 or the public Run function in a response code class.

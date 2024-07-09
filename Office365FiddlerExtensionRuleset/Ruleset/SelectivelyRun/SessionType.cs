@@ -1,4 +1,4 @@
-﻿using Office365FiddlerExtension.Services;
+﻿using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -13,6 +13,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static SessionType Instance => _instance ?? (_instance = new SessionType());
 
+        /// <summary>
+        /// Set the session type, run towards end of ruleset processing as a final catch all.
+        /// Used by the UI column and response inspector.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;
@@ -62,6 +67,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             SetSessionType_Unknown(this.session);
         }
 
+        /// <summary>
+        /// Set Session Type session flag to Microsoft 365 Exchange Web Services (EWS).
+        /// </summary>
+        /// <param name="session"></param>
         private void SetSessionType_Microsoft365_EWS(Session session)
         {
             this.session = session;
@@ -74,18 +83,22 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} Running SetSessionType_Microsoft365_EWS");
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "SessionType_Microsoft365_EWS",
 
-                SessionType = LangHelper.GetString("Exchange Web Services"),
+                SessionType = RulesetLangHelper.GetString("Exchange Web Services"),
                 SessionTypeConfidenceLevel = 10
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set Session Type session flag to any other Exchange Web Services (EWS).
+        /// </summary>
+        /// <param name="session"></param>
         private void SetSessionType_EWS(Session session)
         {
             this.session = session;
@@ -98,18 +111,22 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} Running SetSessionType_EWS");
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "SessionType_EWS",
 
-                SessionType = LangHelper.GetString("Exchange Web Services"),
+                SessionType = RulesetLangHelper.GetString("Exchange Web Services"),
                 SessionTypeConfidenceLevel = 10
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set Session Type session flag to Microsoft 365 Authentication.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetSessionType_Microsoft365_Authentication(Session session)
         {
             this.session = session;
@@ -120,19 +137,23 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name}" +
                     $" ({this.GetType().Name}): {this.session.id} Running SetSessionType_Microsoft365_Authentication");
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "SessionType_Microsoft365_Authentication",
 
-                    SessionType = LangHelper.GetString("Microsoft365 Authentication"),
+                    SessionType = RulesetLangHelper.GetString("Microsoft365 Authentication"),
                     SessionTypeConfidenceLevel = 10
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
 
+        /// <summary>
+        /// Set Session Type session flag to Active Directory Federation Services (ADFS) authentication.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetSessionType_ADFS_Authentication(Session session)
         {
             this.session = session;
@@ -145,18 +166,22 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} Running SetSessionType_ADFS_Authentication");
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "SessionType_ADFS_Authentication",
 
-                SessionType = LangHelper.GetString("ADFS Authentication"),
+                SessionType = RulesetLangHelper.GetString("ADFS Authentication"),
                 SessionTypeConfidenceLevel = 10
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set Session Type session flag to generalised Microsoft 365.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetSessionType_General_Microsoft365(Session session)
         {
             this.session = session;
@@ -174,18 +199,22 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} Running SetSessionType_General_Microsoft365");
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "SessionType_General_Microsoft365",
 
-                SessionType = LangHelper.GetString("General Microsoft365"),
+                SessionType = RulesetLangHelper.GetString("General Microsoft365"),
                 SessionTypeConfidenceLevel = 10
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
+        /// <summary>
+        /// Set Session Type session flag to the name of the process executible on the session.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetSessionType_Office_Applications(Session session)
         {
             this.session = session;
@@ -201,11 +230,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 || this.session.LocalProcess.Contains("onedrive")
                 || this.session.LocalProcess.Contains("lync")
                 || this.session.LocalProcess.Contains("w3wp"))
-                {
+            {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): {this.session.id} Running SetSessionType_Office_Applications");
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "SessionType_Office_Applications",
 
@@ -214,11 +243,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
 
             }
         }
 
+        /// <summary>
+        /// Set the Session Type session flag to the name of a browser process executible.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetSessionType_Internet_Browsers(Session session)
         {
             this.session = session;
@@ -227,13 +260,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 || this.session.LocalProcess.Contains("chrome")
                 || this.session.LocalProcess.Contains("firefox")
                 || this.session.LocalProcess.Contains("edge")
+                || this.session.LocalProcess.Contains("msedge")
                 || this.session.LocalProcess.Contains("safari")
-                || this.session.LocalProcess.Contains("brave"))
+                || this.session.LocalProcess.Contains("brave")
+                || this.session.LocalProcess.Contains("opera"))
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): {this.session.id} Running SetSessionType_Internet_Browsers");
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "SessionType_Internet_Browsers",
 
@@ -242,11 +277,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
 
             }
         }
-
+        
+        /// <summary>
+        /// Set Session Type session flag to unknown as a final fallback.
+        /// </summary>
+        /// <param name="session"></param>
         private void SetSessionType_Unknown(Session session)
         {
             
@@ -255,19 +294,19 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} Running SetSessionType_Unclassified");
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "SetSessionType",
 
                 SessionType = this.session["X-ProcessName"],
-                ResponseAlert = LangHelper.GetString("Unclassified"),
-                ResponseComments = LangHelper.GetString("SessionType_Unknown_ResponseComments"),
+                ResponseAlert = RulesetLangHelper.GetString("Unclassified"),
+                ResponseComments = RulesetLangHelper.GetString("SessionType_Unknown_ResponseComments"),
 
                 SessionTypeConfidenceLevel = 10
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

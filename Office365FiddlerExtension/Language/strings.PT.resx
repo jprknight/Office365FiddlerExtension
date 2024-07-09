@@ -1,0 +1,610 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+    <comment>Menu</comment>
+  </data>
+  <data name="All Session Analysis" xml:space="preserve">
+    <value>All Session Analysis</value>
+    <comment>Menu</comment>
+  </data>
+  <data name="Analyse All Sessions" xml:space="preserve">
+    <value>Analyse All Sessions</value>
+    <comment>Menu</comment>
+  </data>
+  <data name="Analyse Selected Sessions" xml:space="preserve">
+    <value>Analyse Selected Sessions</value>
+    <comment>Menu</comment>
+  </data>
+  <data name="Analysed" xml:space="preserve">
+    <value>Analysed</value>
+    <comment>Consolidated Report Service</comment>
+  </data>
+  <data name="Authentication" xml:space="preserve">
+    <value>Authentication</value>
+    <comment>Inspector &amp; ColumnUI</comment>
+  </data>
+  <data name="Black" xml:space="preserve">
+    <value>Black</value>
+    <comment>ContextMenu</comment>
+  </data>
+  <data name="Blue" xml:space="preserve">
+    <value>Blue</value>
+    <comment>ContextMenu</comment>
+  </data>
+  <data name="Check for updates every" xml:space="preserve">
+    <value>Check for updates every</value>
+    <comment>About</comment>
+  </data>
+  <data name="Check for updates every hours" xml:space="preserve">
+    <value>hours.</value>
+    <comment>About</comment>
+  </data>
+  <data name="Check IP Address" xml:space="preserve">
+    <value>Check IP Address</value>
+    <comment>Menu</comment>
+  </data>
+  <data name="Clear All Session Analysis" xml:space="preserve">
+    <value>Clear All Session Analysis</value>
+    <comment>Menu</comment>
+  </data>
+  <data name="Clear Selected Sessions" xml:space="preserve">
+    <value>Clear Selected Sessions</value>
+    <comment>ContextMenu</comment>
+  </data>
+  <data name="Click the link below for update instructions" xml:space="preserve">
+    <value>Click the link below for update instructions</value>
+    <comment>About</comment>
+  </data>
+  <data name="Client Begin Request" xml:space="preserve">
+    <value>Client Begin Request</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Client Connected" xml:space="preserve">
+    <value>Client Connected</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Client Done Response" xml:space="preserve">
+    <value>Client Done Response</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+    <comment>About</comment>
+  </data>
+  <data name="Concerning" xml:space="preserve">
+    <value>Concerning</value>
+    <comment>ContextMenu</comment>
+  </data>
+  <data name="Consolidated Analysis Report" xml:space="preserve">
+    <value>Consolidated Analysis Report</value>
+    <comment>Menu &amp; ContextMenu</comment>
+  </data>
+  <data name="ConsolidatedAnalysisReportNotAllSessionsHaveAnalysis" xml:space="preserve">
+    <value>sessions have not been analysed to be able to create the Consolidated Analysis Report. Would you like to analyse them now so the report can be generated?</value>
+    <comment>Menu &amp; ContextMenu</comment>
+  </data>
+  <data name="Copy Save Signing Certificate" xml:space="preserve">
+    <value>Copy and save the below text into a .cer file to view the signing certificate.</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Create Consolidated Analysis Report" xml:space="preserve">
+    <value>Create Consolidated Analysis Report</value>
+    <comment>Menu &amp; ContextMenu</comment>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Disabled" xml:space="preserve">
+    <value>Disabled</value>
+    <comment>Menu</comment>
+  </data>
+  <data name="Dutch" xml:space="preserve">
+    <value>Dutch</value>
+    <comment>Menu</comment>
+  </data>
+  <data name="Elapsed Time" xml:space="preserve">
+    <value>Elapsed Time</value>
+    <comment>Inspector &amp; ColumnUI</comment>
+  </data>
+  <data name="Enable" xml:space="preserve">
+    <value>Enable</value>
+    <comment>Menu</comment>
+  </data>
+  <data name="Enabled" xml:space="preserve">
+    <value>Enabled</value>
+    <comment>Menu</comment>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+    <comment>Menu</comment>
+  </data>
+  <data name="Extension DLL" xml:space="preserve">
+    <value>Extension DLL</value>
+    <comment>About</comment>
+  </data>
+  <data name="Extension Enabled" xml:space="preserve">
+    <value>Extension Enabled</value>
+    <comment>About</comment>
+  </data>
+  <data name="Extension Options" xml:space="preserve">
+    <value>Extension Options</value>
+    <comment>About</comment>
+  </data>
+  <data name="Extension Path" xml:space="preserve">
+    <value>Extension Path</value>
+    <comment>About</comment>
+  </data>
+  <data name="False Positive" xml:space="preserve">
+    <value>False Positive</value>
+    <comment>ContextMenu</comment>
+  </data>
+  <data name="Fiddler Begin Request" xml:space="preserve">
+    <value>Fiddler Begin Request</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="For an explantion of session timers refer to" xml:space="preserve">
+    <value>For an explantion of session timers refer to:</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="French" xml:space="preserve">
+    <value>French</value>
+    <comment>Menu</comment>
+  </data>
+  <data name="General Session Data" xml:space="preserve">
+    <value>General Session Data</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="German" xml:space="preserve">
+    <value>German</value>
+    <comment>Menu</comment>
+  </data>
+  <data name="Github Extension Version" xml:space="preserve">
+    <value>Github Extension Version</value>
+    <comment>About</comment>
+  </data>
+  <data name="Github Information" xml:space="preserve">
+    <value>Github Information</value>
+    <comment>About</comment>
+  </data>
+  <data name="Github Ruleset Version" xml:space="preserve">
+    <value>Github Ruleset Version</value>
+    <comment>About</comment>
+  </data>
+  <data name="Got Request Headers" xml:space="preserve">
+    <value>Got Request Headers</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Got Response Headers" xml:space="preserve">
+    <value>Got Response Headers</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Green" xml:space="preserve">
+    <value>Green</value>
+    <comment>ContextMenu</comment>
+  </data>
+  <data name="Grey" xml:space="preserve">
+    <value>Grey</value>
+    <comment>ContextMenu</comment>
+  </data>
+  <data name="Host IP" xml:space="preserve">
+    <value>Host IP</value>
+    <comment>ColumnUI</comment>
+  </data>
+  <data name="Inspector" xml:space="preserve">
+    <value>Inspector</value>
+    <comment>Extension</comment>
+  </data>
+  <data name="Inspector_Session_Analysis" xml:space="preserve">
+    <value>&lt;p&gt;No session analysis available.&lt;/p&gt;&lt;p&gt;Click 'Analyse Selected Sessions' from the context menu for session analysis.&lt;/p&gt;</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Interesting Sessions" xml:space="preserve">
+    <value>Interesting Sessions</value>
+    <comment>Consolidated Report Service</comment>
+  </data>
+  <data name="IsMicrosoft365subnet" xml:space="preserve">
+    <value>is a public IP address within a Microsoft365 subnet</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="IsPrivateSubnet" xml:space="preserve">
+    <value>is within a private subnet on a</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="IsPublicIPAddress" xml:space="preserve">
+    <value>is a public IP address, which is not within a Microsoft365 subnet.</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Issuer" xml:space="preserve">
+    <value>Issuer</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+    <comment>Menu</comment>
+  </data>
+  <data name="LoadOrImportSessions" xml:space="preserve">
+    <value>Load or import some sessions to analyse and create a Consolidationed Analysis Report.</value>
+    <comment>Menu &amp; ContextMenu</comment>
+  </data>
+  <data name="Local Extension Version" xml:space="preserve">
+    <value>Local Extension Version</value>
+    <comment>About</comment>
+  </data>
+  <data name="Local Ruleset Version" xml:space="preserve">
+    <value>Local Ruleset Version</value>
+    <comment>About</comment>
+  </data>
+  <data name="Locally Installed Information" xml:space="preserve">
+    <value>Locally Installed Information</value>
+    <comment>About</comment>
+  </data>
+  <data name="Name Identifier Format" xml:space="preserve">
+    <value>Name Identifier Format</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="network" xml:space="preserve">
+    <value>network</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Next Update Check" xml:space="preserve">
+    <value>Next Update Check</value>
+    <comment>About</comment>
+  </data>
+  <data name="No Session Analysis" xml:space="preserve">
+    <value>No session analysis. Use the 'Process All Sessions' option from the Office365 extension menu to get session analysis.</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Normal" xml:space="preserve">
+    <value>Normal</value>
+    <comment>ContextMenu</comment>
+  </data>
+  <data name="Obscure Settings" xml:space="preserve">
+    <value>Obscure Settings</value>
+    <comment>About</comment>
+  </data>
+  <data name="Office 365" xml:space="preserve">
+    <value>Office 365</value>
+    <comment>Menu &amp; Inspector</comment>
+  </data>
+  <data name="Office 365 Fiddler Extension" xml:space="preserve">
+    <value>Office 365 Fiddler Extension</value>
+    <comment>Inspector &amp; Consolidated Report Service</comment>
+  </data>
+  <data name="On Live Trace" xml:space="preserve">
+    <value>On Live Trace</value>
+    <comment>About</comment>
+  </data>
+  <data name="On Load Saz" xml:space="preserve">
+    <value>On Load Saz</value>
+    <comment>About</comment>
+  </data>
+  <data name="Orange" xml:space="preserve">
+    <value>Orange</value>
+    <comment>ContextMenu</comment>
+  </data>
+  <data name="Overall Session Timers" xml:space="preserve">
+    <value>Overall Session Timers</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Portuguese" xml:space="preserve">
+    <value>Portuguese</value>
+    <comment>Menu</comment>
+  </data>
+  <data name="Process" xml:space="preserve">
+    <value>Process</value>
+    <comment>Inspector &amp; Consolidated Report Service</comment>
+  </data>
+  <data name="Processes" xml:space="preserve">
+    <value>Processes</value>
+    <comment>Consolidated Report Service</comment>
+  </data>
+  <data name="Recalculate Selected Sessions" xml:space="preserve">
+    <value>Recalculate Selected Sessions</value>
+    <comment>ContextMenu</comment>
+  </data>
+  <data name="Red" xml:space="preserve">
+    <value>Red</value>
+    <comment>ContextMenu</comment>
+  </data>
+  <data name="RedirectAddressNotFound" xml:space="preserve">
+    <value>Redirect address not found by extension.</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Releases" xml:space="preserve">
+    <value>Releases</value>
+    <comment>MenuUI</comment>
+  </data>
+  <data name="Report Issues" xml:space="preserve">
+    <value>Report Issues</value>
+    <comment>MenuUI</comment>
+  </data>
+  <data name="Response Code" xml:space="preserve">
+    <value>Response Code</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Response Server" xml:space="preserve">
+    <value>Response Server</value>
+    <comment>ColumnUI</comment>
+  </data>
+  <data name="SAML Response Parser" xml:space="preserve">
+    <value>SAML Response Parser</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+    <comment>Inspector &amp; About</comment>
+  </data>
+  <data name="ScoreForSession" xml:space="preserve">
+    <value>ScoreForSession</value>
+    <comment>About -- Do not translate. This is an internal to Fiddler setting, context may be lost if translated.</comment>
+  </data>
+  <data name="Server Begin Response" xml:space="preserve">
+    <value>Server Begin Response</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Server Done Response" xml:space="preserve">
+    <value>Server Done Response</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Server Got Request" xml:space="preserve">
+    <value>Server Got Request</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Server Think Time" xml:space="preserve">
+    <value>Server Think Time</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Server Timers" xml:space="preserve">
+    <value>Server Timers</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Session" xml:space="preserve">
+    <value>Session</value>
+    <comment>Inspector &amp; Consolidated Report Service</comment>
+  </data>
+  <data name="Session Age" xml:space="preserve">
+    <value>Session Age</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Session Analysis" xml:space="preserve">
+    <value>Session Analysis</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Session Captured" xml:space="preserve">
+    <value>Session Captured</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Session ID" xml:space="preserve">
+    <value>Session ID</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Session Type" xml:space="preserve">
+    <value>Session Type</value>
+    <comment>Inspector &amp; ColumnUI</comment>
+  </data>
+  <data name="Sessionanalysisperformed" xml:space="preserve">
+    <value>Session analysis performed on:</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="sessions" xml:space="preserve">
+    <value>sessions</value>
+    <comment>Consolidated Report Service</comment>
+  </data>
+  <data name="sessions in trace from" xml:space="preserve">
+    <value>sessions in trace from</value>
+    <comment>Consolidated Report Service</comment>
+  </data>
+  <data name="Session_Severity" xml:space="preserve">
+    <value>Session Severity</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Set Session Severity" xml:space="preserve">
+    <value>Set Session Severity</value>
+    <comment>ContextMenu</comment>
+  </data>
+  <data name="Severe" xml:space="preserve">
+    <value>Severe</value>
+    <comment>ContextMenu</comment>
+  </data>
+  <data name="Severity" xml:space="preserve">
+    <value>Severity</value>
+    <comment>ContextMenu &amp; ColumnUI</comment>
+  </data>
+  <data name="Slow Running Session Threshold" xml:space="preserve">
+    <value>Slow Running Session Threshold</value>
+    <comment>About</comment>
+  </data>
+  <data name="Some Session analysis" xml:space="preserve">
+    <value>Some Session analysis</value>
+    <comment>About</comment>
+  </data>
+  <data name="Spanish" xml:space="preserve">
+    <value>Spanish</value>
+    <comment>Menu</comment>
+  </data>
+  <data name="Transit Time" xml:space="preserve">
+    <value>Transit Time</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Uninteresting" xml:space="preserve">
+    <value>Uninteresting</value>
+    <comment>ContextMenu</comment>
+  </data>
+  <data name="Up To Date" xml:space="preserve">
+    <value>Up To Date</value>
+    <comment>About</comment>
+  </data>
+  <data name="Update Available" xml:space="preserve">
+    <value>Update Available</value>
+    <comment>About</comment>
+  </data>
+  <data name="Update Available - A new version" xml:space="preserve">
+    <value>A new version is available</value>
+    <comment>VersionService</comment>
+  </data>
+  <data name="Update Available - Currently using" xml:space="preserve">
+    <value>You are currently using extension</value>
+    <comment>VersionService</comment>
+  </data>
+  <data name="Update Available - Extension Update Available" xml:space="preserve">
+    <value>Extension Update Available</value>
+    <comment>VersionService</comment>
+  </data>
+  <data name="Update Available - Go to download page?" xml:space="preserve">
+    <value>Do you want to go to the update download page?</value>
+    <comment>VersionService</comment>
+  </data>
+  <data name="Update Available - Ruleset - Currently Using" xml:space="preserve">
+    <value>You are currently using ruleset</value>
+  </data>
+  <data name="Update Available - Ruleset - Ruleset Update" xml:space="preserve">
+    <value>Ruleset Update Available</value>
+  </data>
+  <data name="Update Available - Ruleset - Ruleset Update Available" xml:space="preserve">
+    <value>There's an update available for the Office 365 Fiddler Extension ruleset.</value>
+    <comment>VersionService</comment>
+  </data>
+  <data name="Update Available - There is an update" xml:space="preserve">
+    <value>There's an update available for the Office 365 Fiddler Extension.</value>
+    <comment>VersionService</comment>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+    <comment>ContextMenu</comment>
+  </data>
+  <data name="Warning Session Time Threshold" xml:space="preserve">
+    <value>Warning Session Time Threshold</value>
+    <comment>About</comment>
+  </data>
+  <data name="What are these two thresholds" xml:space="preserve">
+    <value>What are these two thresholds?</value>
+    <comment>About</comment>
+  </data>
+  <data name="What is ScoreForSession" xml:space="preserve">
+    <value>What is ScoreForSession?</value>
+    <comment>About -- Do not translate. This is an internal to Fiddler setting, context may be lost if translated.</comment>
+  </data>
+  <data name="Wiki" xml:space="preserve">
+    <value>Wiki</value>
+    <comment>Menu</comment>
+  </data>
+</root>

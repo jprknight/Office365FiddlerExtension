@@ -1,6 +1,6 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using System;
 using System.Reflection;
 
@@ -51,7 +51,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
                 try
                 {
-                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Unified_Groups_Settings");
+                    var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Unified_Groups_Settings");
                     sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                     sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                     sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -68,14 +68,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                     sessionSeverity = 30;
                 }
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_200s",
 
-                    SessionType = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_SessionType"),
-                    ResponseCodeDescription = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_ResponseCodeDescription"),
-                    ResponseAlert = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_ResponseAlert"),
-                    ResponseComments = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_ResponseComments"),
+                    SessionType = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_SessionType"),
+                    ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_ResponseCodeDescription"),
+                    ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_ResponseAlert"),
+                    ResponseComments = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_ResponseComments"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -84,7 +84,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
             // User cannot create Office 365 groups. Not an error condition in and of itself.
             else if (this.session.utilFindInResponse("<GroupCreationEnabled>false</GroupCreationEnabled>", false) > 1)
@@ -98,7 +98,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
                 try
                 {
-                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups");
+                    var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups");
                     sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                     sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                     sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -115,14 +115,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                     sessionSeverity = 60;
                 }
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_200s",
 
-                    SessionType = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_SessionType"),
-                    ResponseCodeDescription = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseCodeDescription"),
-                    ResponseAlert = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseAlert"),
-                    ResponseComments = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseComments"),
+                    SessionType = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_SessionType"),
+                    ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseCodeDescription"),
+                    ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseAlert"),
+                    ResponseComments = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseComments"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -131,7 +131,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
             // Did not see the expected keyword in the response body. This is the error condition.
             else
@@ -145,7 +145,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
                 try
                 {
-                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Unified_Groups_Settings_Settings_Not_Found");
+                    var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Unified_Groups_Settings_Settings_Not_Found");
                     sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                     sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                     sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -162,14 +162,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                     sessionSeverity = 40;
                 }
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_200s",
 
-                    SessionType = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_SessionType"),
-                    ResponseCodeDescription = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseCodeDescription"),
-                    ResponseAlert = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseAlert"),
-                    ResponseComments = LangHelper.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseComments"),
+                    SessionType = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_SessionType"),
+                    ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseCodeDescription"),
+                    ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseAlert"),
+                    ResponseComments = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseComments"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -178,7 +178,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
     }

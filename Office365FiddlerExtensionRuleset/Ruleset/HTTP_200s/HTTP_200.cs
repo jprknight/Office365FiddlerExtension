@@ -11,19 +11,16 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_200 Instance => _instance ?? (_instance = new HTTP_200());
 
-        /*
-        
-        Main for sessions with a HTTP 200 response code.
-        Many types of sessions come back with a HTTP 200 "OK" response from the server,
-        but actually contain some error condition in the response.
-        The classes called here highlight HTTP 200 sessions which are not "OK" and
-        clears those that are.
-
-        This is intended to be the only class what pulls from the namespace ending 
-        in .HTTP_200s.
-
-        */
-
+        /// <summary>
+        /// Main for sessions with a HTTP 200 response code.
+        /// Many types of sessions come back with a HTTP 200 "OK" response from the server,
+        /// but actually contain some error condition in the response.
+        /// The classes called here highlight HTTP 200 sessions which are not "OK" and
+        /// clears those that are.
+        /// This is intended to be the only class what pulls from the namespace ending 
+        /// in .HTTP_200s.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;
@@ -86,6 +83,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             ///////////////////////////////
 
             HTTP_200_OWA.Instance.Run(this.session);
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
+            ///////////////////////////////
+
+            HTTP_200_OWA_Attachments.Instance.Run(this.session);
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;

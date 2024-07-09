@@ -1,6 +1,7 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using System;
 using System.Reflection;
 
@@ -14,6 +15,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static ApacheAutodiscover Instance => _instance ?? (_instance = new ApacheAutodiscover());
 
+        /// <summary>
+        /// Determine if the current session has an Apache server responding to an AutoDiscover call.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;
@@ -35,7 +40,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 try
                 {
-                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|ApacheAutodiscover");
+                    var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|ApacheAutodiscover");
 
                     sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                     sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
@@ -57,13 +62,13 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
-                    SectionTitle = LangHelper.GetString("Broad Logic Checks"),
+                    SectionTitle = RulesetLangHelper.GetString("Broad Logic Checks"),
 
-                    SessionType = LangHelper.GetString("BroadLogicChecks_APACHE AUTODISCOVER"),
-                    ResponseCodeDescription = LangHelper.GetString("BroadLogicChecks_200 OK - APACHE AUTODISCOVER"),
-                    ResponseServer = LangHelper.GetString("BroadLogicChecks_APACHE"),
-                    ResponseAlert = LangHelper.GetString("BroadLogicChecks_Apache is answering Autodiscover requests!"),
-                    ResponseComments = LangHelper.GetString("BroadLogicChecks_Apache AutoDiscover Response Comments"),                   
+                    SessionType = RulesetLangHelper.GetString("BroadLogicChecks_APACHE AUTODISCOVER"),
+                    ResponseCodeDescription = RulesetLangHelper.GetString("BroadLogicChecks_200 OK - APACHE AUTODISCOVER"),
+                    ResponseServer = RulesetLangHelper.GetString("BroadLogicChecks_APACHE"),
+                    ResponseAlert = RulesetLangHelper.GetString("BroadLogicChecks_Apache is answering Autodiscover requests!"),
+                    ResponseComments = RulesetLangHelper.GetString("BroadLogicChecks_Apache AutoDiscover Response Comments"),                   
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,

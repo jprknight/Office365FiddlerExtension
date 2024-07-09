@@ -48,12 +48,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Language\ruleset-strings.Designer.cs">
+      <DependentUpon>ruleset-strings.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\NetLogCaptureMockSession.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\ApacheAutodiscover.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\FiddlerUpdateSessions.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\LoopBackTunnel.cs" />
     <Compile Include="Ruleset\AlwaysRun\HostIP.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\ConnectTunnelTLSVersion.cs" />
-    <Compile Include="Ruleset\Default_UnknownResponseCode.cs" />
+    <Compile Include="Ruleset\HTTP_200s\HTTP_200_OWA_Attachments.cs" />
+    <Compile Include="Ruleset\UnknownResponseCode.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_3S_Suggestions.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200_Actually_OK.cs" />
@@ -105,10 +112,18 @@
     <Compile Include="Ruleset\SimpleSessionAnalysis.cs" />
     <Compile Include="RunRuleset.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RunRulesetResponseCodes.cs" />
+    <Compile Include="Services\RulesetLanguageService.cs" />
+    <Compile Include="Services\RulesetSessionClassificationService.cs" />
+    <Compile Include="Services\RulesetSessionFlagService.cs" />
+    <Compile Include="Services\RulesetSettingsJsonService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="SessionClassification.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Office365FiddlerExtension\Office365FiddlerExtension.csproj">
@@ -118,6 +133,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="HowToAddARule.txt" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Language\ruleset-strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ruleset-strings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

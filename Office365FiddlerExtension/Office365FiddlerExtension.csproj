@@ -158,6 +158,7 @@
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
+    <Reference Include="System.Messaging" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
@@ -197,12 +198,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Language\strings.pt.Designer.cs">
+      <DependentUpon>strings.pt.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Language\strings.es.Designer.cs">
+      <DependentUpon>strings.es.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Language\strings.de.Designer.cs">
+      <DependentUpon>strings.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Language\strings.fr.Designer.cs">
+      <DependentUpon>strings.fr.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Language\strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>strings.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\ConsolidatedAnalysisReportService.cs" />
+    <Compile Include="Services\Fiddler\ImportService.cs" />
     <Compile Include="Services\Json\JsonValidatorService.cs" />
     <Compile Include="Services\Json\SessionClassificationService.cs" />
     <Compile Include="Services\Json\URLsJsonService.cs" />
@@ -226,11 +248,11 @@
     <Compile Include="Services\Fiddler\SazFileService.cs" />
     <Compile Include="Services\Fiddler\SessionService.cs" />
     <Compile Include="Inspectors\Office365Inspector.cs" />
-    <Compile Include="UI\Forms\CheckIP.cs">
-      <SubType>Form</SubType>
+    <Compile Include="UI\Forms\Office365TabPage.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Forms\CheckIP.Designer.cs">
-      <DependentUpon>CheckIP.cs</DependentUpon>
+    <Compile Include="UI\Forms\Office365TabPage.Designer.cs">
+      <DependentUpon>Office365TabPage.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\MenuUI.cs" />
     <Compile Include="Services\Preferences.cs" />
@@ -255,6 +277,26 @@
     <Compile Include="UI\EnhanceSessionUX.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Language\strings.pt.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>strings.pt.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Language\strings.es.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>strings.es.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Language\strings.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>strings.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Language\strings.fr.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>strings.fr.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Language\strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>strings.Designer.cs</LastGenOutput>
@@ -267,11 +309,11 @@
     <EmbeddedResource Include="UI\Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Forms\CheckIP.resx">
-      <DependentUpon>CheckIP.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\Office365ResponseControl.resx">
       <DependentUpon>Office365ResponseControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\Office365TabPage.resx">
+      <DependentUpon>Office365TabPage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -287,9 +329,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="ExtensionVersion.json" />
-    <None Include="SessionClassification.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="update.xml" />
@@ -317,4 +356,25 @@ xcopy /y /s "$(TargetDir)*.*" "C:\Tools\Fiddler\Inspectors"</PostBuildEvent>
   <Import Project="..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.11.0\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.11.0\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets')" />
   <Import Project="..\packages\Microsoft.ApplicationInsights.WindowsServer.2.11.0\build\Microsoft.ApplicationInsights.WindowsServer.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.2.11.0\build\Microsoft.ApplicationInsights.WindowsServer.targets')" />
   <ProjectExtensions />
+  <PropertyGroup>
+    <PreBuildEvent>del C:\Tools\Fiddler\Scripts\Office365FiddlerExtension.dll
+del C:\Tools\Fiddler\Scripts\Office365FiddlerExtension.dll.config
+del C:\Tools\Fiddler\Scripts\Office365FiddlerExtension.pdb
+
+del C:\Tools\Fiddler\Scripts\Office365FiddlerExtensionRuleset.dll
+del C:\Tools\Fiddler\Scripts\Office365FiddlerExtensionRuleset.dll.config
+del C:\Tools\Fiddler\Scripts\Office365FiddlerExtensionRuleset.pdb
+
+del C:\Tools\Fiddler\Scripts\SessionClassification.json
+
+del C:\Tools\Fiddler\Inspectors\Office365FiddlerExtension.dll
+del C:\Tools\Fiddler\Inspectors\Office365FiddlerExtension.dll.config
+del C:\Tools\Fiddler\Inspectors\Office365FiddlerExtension.pdb
+
+del C:\Tools\Fiddler\Inspectors\Office365FiddlerExtensionRuleset.dll
+del C:\Tools\Fiddler\Inspectors\Office365FiddlerExtensionRuleset.dll.config
+del C:\Tools\Fiddler\Inspectors\Office365FiddlerExtensionRuleset.pdb
+
+del C:\Tools\Fiddler\Inspectors\SessionClassification.json</PreBuildEvent>
+  </PropertyGroup>
 </Project>

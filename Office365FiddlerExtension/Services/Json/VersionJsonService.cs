@@ -13,6 +13,10 @@ namespace Office365FiddlerExtension.Services
         private static VersionJsonService _instance;
         public static VersionJsonService Instance => _instance ?? (_instance = new VersionJsonService());
 
+        /// <summary>
+        /// Get Json deserialised extension version application preference.
+        /// </summary>
+        /// <returns></returns>
         public ExtensionVersionFlags GetDeserializedExtensionVersion()
         {
             var JsonSettings = new JsonSerializerSettings
@@ -33,12 +37,14 @@ namespace Office365FiddlerExtension.Services
             return null;
         }
 
-        public void CreateExtensionVersionFiddlerSetting()
+        /// <summary>
+        /// If it doesn't already exist, create extension version application preference.
+        /// </summary>
+        public void CreateExtensionVersionFiddlerApplicationPreference()
         {
             // If the ExtensionVersion Fiddler preference contains valid Json data, return.
             if (JsonValidatorService.Instance.IsValidJsonString(Preferences.ExtensionVersion))
             {
-
                 return;
             }
 

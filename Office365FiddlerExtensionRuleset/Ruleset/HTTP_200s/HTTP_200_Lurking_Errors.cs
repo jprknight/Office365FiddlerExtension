@@ -1,6 +1,6 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using System;
 using System.Reflection;
 
@@ -84,7 +84,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Lurking_Errors");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Lurking_Errors");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -101,18 +101,18 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 sessionSeverity = 50;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_200s_Lurking_Errors",
 
-                SessionType = LangHelper.GetString("HTTP_200_Lurking_Errors_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_200_Lurking_Errors_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_200_Lurking_Errors_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_200_Lurking_Errors_ResponseCommentsStart")
+                SessionType = RulesetLangHelper.GetString("HTTP_200_Lurking_Errors_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_Lurking_Errors_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Lurking_Errors_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_200_Lurking_Errors_ResponseCommentsStart")
                 + "<p>" + wordCountErrorText + "</p>"
                 + "<p>" + wordCountFailedText + "</p>"
                 + "<p>" + wordCountExceptionText + "</p>"
-                + LangHelper.GetString("HTTP_200_Lurking_Errors_ResponseCommentsEnd"),
+                + RulesetLangHelper.GetString("HTTP_200_Lurking_Errors_ResponseCommentsEnd"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -121,7 +121,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

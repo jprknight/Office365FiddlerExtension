@@ -70,20 +70,11 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ADFS Authentication.
+        ///   Looks up a localized string similar to Always.
         /// </summary>
-        internal static string ADFS_Authentication {
+        internal static string Always {
             get {
-                return ResourceManager.GetString("ADFS Authentication", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to All Session Analysis.
-        /// </summary>
-        internal static string All_Session_Analysis {
-            get {
-                return ResourceManager.GetString("All Session Analysis", resourceCulture);
+                return ResourceManager.GetString("Always", resourceCulture);
             }
         }
         
@@ -142,204 +133,6 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Third-party SAML response found. SAML response parser not running..
-        /// </summary>
-        internal static string Authentication_3rd_Party_Saml_Response_AuthenticationDescription {
-            get {
-                return ResourceManager.GetString("Authentication_3rd_Party_Saml_Response_AuthenticationDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Third-party SAMLResponseParser.
-        /// </summary>
-        internal static string Authentication_3rd_Party_Saml_Response_AuthenticationType {
-            get {
-                return ResourceManager.GetString("Authentication_3rd_Party_Saml_Response_AuthenticationType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Third-party SAML response found. SAML response parser not running..
-        /// </summary>
-        internal static string Authentication_3rd_Party_Saml_Response_ResponseComments {
-            get {
-                return ResourceManager.GetString("Authentication_3rd_Party_Saml_Response_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SAML token issued by third-party IDP. SAML response parser not running..
-        /// </summary>
-        internal static string Authentication_3rd_Party_Saml_Response_SamlParserNotRunning {
-            get {
-                return ResourceManager.GetString("Authentication_3rd_Party_Saml_Response_SamlParserNotRunning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 3rd-party SAMLResponseParser.
-        /// </summary>
-        internal static string Authentication_3rd_Party_Saml_Response_SessionType {
-            get {
-                return ResourceManager.GetString("Authentication_3rd_Party_Saml_Response_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Client Basic Auth Capable.
-        /// </summary>
-        internal static string Authentication_Basic_Auth_Capable_Client_Authentication {
-            get {
-                return ResourceManager.GetString("Authentication_Basic_Auth_Capable_Client_Authentication", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to is stating it is Basic Authentication capable. Whether it is used or not will depend on whether Basic Authentication is enabled in the Office 365 service.&lt;p&gt;If this is Outlook, in all likelihood this is an Outlook 2013 (updated prior to Modern Auth), Outlook 2010 or an older Outlook client, which does not support Modern Authentication.&lt;br /&gt;MutiFactor Authentication will not work as expected with Basic Authentication only capable Outlook clients&lt;/p&gt;.
-        /// </summary>
-        internal static string Authentication_Basic_Auth_Capable_Client_AuthenticationDescription {
-            get {
-                return ResourceManager.GetString("Authentication_Basic_Auth_Capable_Client_AuthenticationDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Client Basic Auth Token.
-        /// </summary>
-        internal static string Authentication_Basic_Auth_Client_Using_Token_Authentication {
-            get {
-                return ResourceManager.GetString("Authentication_Basic_Auth_Client_Using_Token_Authentication", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to accessing resources with a Basic Authentication security token.&lt;br /&gt;&lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;It&apos;s time to think about Modern Authentication!&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string Authentication_Basic_Auth_Client_Using_Token_AuthenticationDescription {
-            get {
-                return ResourceManager.GetString("Authentication_Basic_Auth_Client_Using_Token_AuthenticationDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Client Modern Auth Capable.
-        /// </summary>
-        internal static string Authentication_Modern_Auth_Capable_Client_Authentication {
-            get {
-                return ResourceManager.GetString("Authentication_Modern_Auth_Capable_Client_Authentication", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to is stating it is Modern Authentication capable. Whether it is used or not will depend on whether Modern Authentication is enabled in the Office 365 service..
-        /// </summary>
-        internal static string Authentication_Modern_Auth_Capable_Client_AuthenticationDescription {
-            get {
-                return ResourceManager.GetString("Authentication_Modern_Auth_Capable_Client_AuthenticationDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Modern Auth Token.
-        /// </summary>
-        internal static string Authentication_Modern_Auth_Client_Using_Token_Authentication {
-            get {
-                return ResourceManager.GetString("Authentication_Modern_Auth_Client_Using_Token_Authentication", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to accessing resources with a Modern Authentication security token..
-        /// </summary>
-        internal static string Authentication_Modern_Auth_Client_Using_Token_AuthenticationDescription {
-            get {
-                return ResourceManager.GetString("Authentication_Modern_Auth_Client_Using_Token_AuthenticationDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Modern Auth Disabled.
-        /// </summary>
-        internal static string Authentication_Modern_Auth_Disabled_Authentication {
-            get {
-                return ResourceManager.GetString("Authentication_Modern_Auth_Disabled_Authentication", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to it&apos;s highly unusual for this to be the case for Microsoft365.&lt;p&gt;MutiFactor Authentication will not work as expected while Modern Authentication is disabled in the Microsoft365 workload. For Exchange Online, the following is important for Outlook connectivity:&lt;/p&gt;&lt;p&gt;Outlook 2010 and older do not support Modern Authentication and by extension MutliFactor Authentication.&lt;/p&gt;&lt;p&gt;Outlook 2013 supports modern authentication with updates and the EnableADAL registry key set to 1.&lt;/p&gt;&lt;p&gt;See https://support.microsoft. [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string Authentication_Modern_Auth_Disabled_AuthenticationDescriptionEnd {
-            get {
-                return ResourceManager.GetString("Authentication_Modern_Auth_Disabled_AuthenticationDescriptionEnd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Session authentication has Modern Authentication disabled. At this point in.
-        /// </summary>
-        internal static string Authentication_Modern_Auth_Disabled_AuthenticationDescriptionStart {
-            get {
-                return ResourceManager.GetString("Authentication_Modern_Auth_Disabled_AuthenticationDescriptionStart", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No Auth Headers.
-        /// </summary>
-        internal static string Authentication_No_Auth_Headers {
-            get {
-                return ResourceManager.GetString("Authentication_No_Auth_Headers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SAMLResponseParser.
-        /// </summary>
-        internal static string Authentication_SAML_Response_Parser_Authentication {
-            get {
-                return ResourceManager.GetString("Authentication_SAML_Response_Parser_Authentication", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ADFS SAML response found. See below for SAML response parser..
-        /// </summary>
-        internal static string Authentication_SAML_Response_Parser_AuthenticationDescription {
-            get {
-                return ResourceManager.GetString("Authentication_SAML_Response_Parser_AuthenticationDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SAMLResponseParser.
-        /// </summary>
-        internal static string Authentication_SAML_Response_Parser_AuthenticationType {
-            get {
-                return ResourceManager.GetString("Authentication_SAML_Response_Parser_AuthenticationType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ADFS SAML response found. See below for SAML response parser..
-        /// </summary>
-        internal static string Authentication_SAML_Response_Parser_ResponseComments {
-            get {
-                return ResourceManager.GetString("Authentication_SAML_Response_Parser_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SAML Request/Response.
-        /// </summary>
-        internal static string Authentication_SAML_Response_Parser_SessionType {
-            get {
-                return ResourceManager.GetString("Authentication_SAML_Response_Parser_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Black.
         /// </summary>
         internal static string Black {
@@ -358,101 +151,20 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Broad Logic Checks.
+        ///   Looks up a localized string similar to Capture Traffic.
         /// </summary>
-        internal static string Broad_Logic_Checks {
+        internal static string Capture_Traffic {
             get {
-                return ResourceManager.GetString("Broad Logic Checks", resourceCulture);
+                return ResourceManager.GetString("Capture Traffic", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 200 OK - APACHE AUTODISCOVER.
+        ///   Looks up a localized string similar to Check.
         /// </summary>
-        internal static string BroadLogicChecks_200_OK___APACHE_AUTODISCOVER {
+        internal static string Check {
             get {
-                return ResourceManager.GetString("BroadLogicChecks_200 OK - APACHE AUTODISCOVER", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to APACHE.
-        /// </summary>
-        internal static string BroadLogicChecks_APACHE {
-            get {
-                return ResourceManager.GetString("BroadLogicChecks_APACHE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to APACHE AUTODISCOVER.
-        /// </summary>
-        internal static string BroadLogicChecks_APACHE_AUTODISCOVER {
-            get {
-                return ResourceManager.GetString("BroadLogicChecks_APACHE AUTODISCOVER", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;An Apache Web Server (Unix/Linux) is answering Autodiscover requests!&lt;/span&gt;&lt;/b&gt;&lt;p&gt;This should not be happening. Consider disabling Root Domain Autodiscover lookups.&lt;/p&gt;&lt;p&gt;See ExcludeHttpsRootDomain on &lt;/p&gt;&lt;p&gt;&lt;a href=&apos;https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under&apos; target=&apos;_blank&apos;&gt;https://support.microsoft.com/en-us/help/2212902/unexpected-autodiscover-behavior-when-you-have-registry-settings-under &lt;/a&gt;&lt;/p&gt;&lt;p [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string BroadLogicChecks_Apache_AutoDiscover_Response_Comments {
-            get {
-                return ResourceManager.GetString("BroadLogicChecks_Apache AutoDiscover Response Comments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Apache is answering Autodiscover requests!.
-        /// </summary>
-        internal static string BroadLogicChecks_Apache_is_answering_Autodiscover_requests_ {
-            get {
-                return ResourceManager.GetString("BroadLogicChecks_Apache is answering Autodiscover requests!", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fiddler Update Check.
-        /// </summary>
-        internal static string BroadLogicChecks_Fiddler_Update_Check {
-            get {
-                return ResourceManager.GetString("BroadLogicChecks_Fiddler Update Check", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Seeing many or few of these? Either way these aren&apos;t typical Microsoft365 traffic sessions. They may be an indication of a proxy client forcing traffic down a certain network path? If there&apos;s no Microsoft365 client traffic in this Fiddler trace and it&apos;s suspected this could be a factor, change your network, try a different machine without any proxy client / proxy configuration in place..
-        /// </summary>
-        internal static string BroadLogicChecks_Loopback_Tunnel_Response_Comments {
-            get {
-                return ResourceManager.GetString("BroadLogicChecks_Loopback Tunnel Response Comments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loopback Tunnel.
-        /// </summary>
-        internal static string BroadLogicChecks_LoopbackTunnel {
-            get {
-                return ResourceManager.GetString("BroadLogicChecks_LoopbackTunnel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This is Fiddler itself checking for updates..
-        /// </summary>
-        internal static string BroadLogicChecks_This_is_Fiddler_itself_checking_for_updates_ {
-            get {
-                return ResourceManager.GetString("BroadLogicChecks_This is Fiddler itself checking for updates.", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Capture was.
-        /// </summary>
-        internal static string Capture_was {
-            get {
-                return ResourceManager.GetString("Capture was", resourceCulture);
+                return ResourceManager.GetString("Check", resourceCulture);
             }
         }
         
@@ -466,11 +178,47 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to hours..
+        /// </summary>
+        internal static string Check_for_updates_every_hours {
+            get {
+                return ResourceManager.GetString("Check for updates every hours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check IP Address.
         /// </summary>
         internal static string Check_IP_Address {
             get {
                 return ResourceManager.GetString("Check IP Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter an IP Address to check what network it is on..
+        /// </summary>
+        internal static string Check_IP_Address_Placeholder_Text {
+            get {
+                return ResourceManager.GetString("Check IP Address Placeholder Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose When To Automatically Analyse Sessions.
+        /// </summary>
+        internal static string Choose_When_To_Analyse_Sessions {
+            get {
+                return ResourceManager.GetString("Choose When To Analyse Sessions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        internal static string Clear {
+            get {
+                return ResourceManager.GetString("Clear", resourceCulture);
             }
         }
         
@@ -489,6 +237,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Clear_Selected_Sessions {
             get {
                 return ResourceManager.GetString("Clear Selected Sessions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Selected Sessions Anaysis.
+        /// </summary>
+        internal static string Clear_Selected_Sessions_Anaysis {
+            get {
+                return ResourceManager.GetString("Clear Selected Sessions Anaysis", resourceCulture);
             }
         }
         
@@ -583,24 +340,6 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to day.
-        /// </summary>
-        internal static string Day {
-            get {
-                return ResourceManager.GetString("Day", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to days.
-        /// </summary>
-        internal static string Days {
-            get {
-                return ResourceManager.GetString("Days", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         internal static string Description {
@@ -664,11 +403,11 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exchange Web Services.
+        ///   Looks up a localized string similar to Extension.
         /// </summary>
-        internal static string Exchange_Web_Services {
+        internal static string Extension {
             get {
-                return ResourceManager.GetString("Exchange Web Services", resourceCulture);
+                return ResourceManager.GetString("Extension", resourceCulture);
             }
         }
         
@@ -693,18 +432,27 @@ namespace Office365FiddlerExtension.Language {
         /// <summary>
         ///   Looks up a localized string similar to Extension Options.
         /// </summary>
-        internal static string ExtensionOptions {
+        internal static string Extension_Options {
             get {
-                return ResourceManager.GetString("ExtensionOptions", resourceCulture);
+                return ResourceManager.GetString("Extension Options", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Extension Path.
         /// </summary>
-        internal static string ExtensionPath {
+        internal static string Extension_Path {
             get {
-                return ResourceManager.GetString("ExtensionPath", resourceCulture);
+                return ResourceManager.GetString("Extension Path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extension Version Information.
+        /// </summary>
+        internal static string Extension_Version_Information {
+            get {
+                return ResourceManager.GetString("Extension Version Information", resourceCulture);
             }
         }
         
@@ -736,29 +484,11 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Free/Busy.
-        /// </summary>
-        internal static string FreeBusy {
-            get {
-                return ResourceManager.GetString("FreeBusy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to French.
         /// </summary>
         internal static string French {
             get {
                 return ResourceManager.GetString("French", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to General Microsoft365.
-        /// </summary>
-        internal static string General_Microsoft365 {
-            get {
-                return ResourceManager.GetString("General Microsoft365", resourceCulture);
             }
         }
         
@@ -853,2542 +583,6 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to hour.
-        /// </summary>
-        internal static string Hour {
-            get {
-                return ResourceManager.GetString("Hour", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to hours.
-        /// </summary>
-        internal static string Hours {
-            get {
-                return ResourceManager.GetString("Hours", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to NO RESPONSE.
-        /// </summary>
-        internal static string HTTP_0_Authentication {
-            get {
-                return ResourceManager.GetString("HTTP_0 Authentication", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;No response for OWA Notification Channel - New emails won&apos;t show.&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_0_Outlook_Web_App_Notification_Channel_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_0_Outlook_Web_App_Notification_Channel_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 0 No Response OWA Notification Channel.
-        /// </summary>
-        internal static string HTTP_0_Outlook_Web_App_Notification_Channel_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_0_Outlook_Web_App_Notification_Channel_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;Notification Channel is used for OWA to display new mails.&lt;/p&gt;&lt;p&gt;&lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;No response for OWA Notification Channel - New emails won&apos;t show.&lt;/span&gt;&lt;/b&gt;&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_0_Outlook_Web_App_Notification_Channel_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_0_Outlook_Web_App_Notification_Channel_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !OWA NOTIFICATION CHANNELl!.
-        /// </summary>
-        internal static string HTTP_0_Outlook_Web_App_Notification_Channel_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_0_Outlook_Web_App_Notification_Channel_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to NO RESPONSE.
-        /// </summary>
-        internal static string HTTP_0_ResonseServer {
-            get {
-                return ResourceManager.GetString("HTTP_0 ResonseServer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 0 - No Response&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_0_Response_Alert {
-            get {
-                return ResourceManager.GetString("HTTP_0 Response Alert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 0 No Response.
-        /// </summary>
-        internal static string HTTP_0_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_0 ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The quantity of these types of server errors need to be considered in context with what you are troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern.&lt;p&gt;If you are not seeing expected client traffic, consider if network traces should be collected. Review if there is an underlying network issue such as congestion on routers, which could be causing issues. The Network Connection Status Indicator (NCSI) on the client c [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string HTTP_0_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_0 ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to NO RESPONSE.
-        /// </summary>
-        internal static string HTTP_0_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_0 SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 3S Suggestions.
-        /// </summary>
-        internal static string HTTP_200_3S_Suggestions {
-            get {
-                return ResourceManager.GetString("HTTP_200_3S_Suggestions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK 3S Suggestions.
-        /// </summary>
-        internal static string HTTP_200_3S_Suggestions_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_3S_Suggestions_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 200 Actually OK. No errors, failed, or exceptions found in response body..
-        /// </summary>
-        internal static string HTTP_200_Actually_OK_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Actually_OK ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 Actually OK.
-        /// </summary>
-        internal static string HTTP_200_Actually_OK_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Actually_OK ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 200 Actually OK. No errors, failed, or exceptions found in response body..
-        /// </summary>
-        internal static string HTTP_200_Actually_OK_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_Actually_OK ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 Actually OK.
-        /// </summary>
-        internal static string HTTP_200_Actually_OK_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_Actually_OK SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !CLIENT ACCESS RULE!.
-        /// </summary>
-        internal static string HTTP_200_Client_Access_Rule {
-            get {
-                return ResourceManager.GetString("HTTP_200_Client Access Rule", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;CLIENT ACCESS RULE&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_200_Client_Access_Rule_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Client Access Rule ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK Client Access Rule.
-        /// </summary>
-        internal static string HTTP_200_Client_Access_Rule_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Client Access Rule ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;A client access rule has blocked MAPI connectivity to the mailbox&lt;/span&gt;&lt;/b&gt;.&lt;p&gt;Check if the &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;client access rule includes OutlookAnywhere&lt;/span&gt;&lt;/b&gt;.&lt;/p&gt;&lt;p&gt;Per &lt;a href=&apos;https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules&apos; target=&apos;_blank&apos;&gt;https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/client-access-rules/client-access-rules&lt;/a&gt;, &lt;br /&gt;OutlookAnywhere includ [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string HTTP_200_Client_Access_Rule_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_Client Access Rule ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Connect Tunnel.
-        /// </summary>
-        internal static string HTTP_200_ConnectTunnel {
-            get {
-                return ResourceManager.GetString("HTTP_200_ConnectTunnel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This is an encrypted tunnel. If all or most of the sessions are connect tunnels the sessions collected did not have decryption enabled. Setup Fiddler to &apos;Decrypt HTTPS traffic&apos;, click Tools -&gt; Options -&gt; HTTPS tab.&lt;p&gt;If in any doubt see instructions at https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/DecryptHTTPS. &lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_200_ConnectTunnel_RepsonseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_ConnectTunnel_RepsonseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !Mailbox Culture not found!.
-        /// </summary>
-        internal static string HTTP_200_CultureNotFound_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_CultureNotFound_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK, MAILBOX CULTURE NOT FOUND!.
-        /// </summary>
-        internal static string HTTP_200_CultureNotFound_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_CultureNotFound_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Mailbox Culture is not found / has an invalid value. Try signing into OWA to set the mailbox language and / or locale to a valid selection such as en-US..
-        /// </summary>
-        internal static string HTTP_200_CultureNotFound_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_CultureNotFound_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !MBX CULTURE NOT FOUND!.
-        /// </summary>
-        internal static string HTTP_200_CultureNotFound_Session_Type {
-            get {
-                return ResourceManager.GetString("HTTP_200_CultureNotFound_Session_Type", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Free/Busy Error! Result set has too many calendar items..
-        /// </summary>
-        internal static string HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 200 OK - Free/Busy error!.
-        /// </summary>
-        internal static string HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 200 OK session response, but there is a Free/Busy error returned within the response body. The error suggests there are too many calendar items in the result set. Maybe there are too many meetings on the calendar within a period of time for the Free/Busy lookup to return. Another possibility is to look for meetings on the calendar in the target mailbox which have a large number of recurrences. Some ideal guidelines are to make weekly or monthly meetings for the current year only. Make daily meetings fo [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !FREE/BUSY ERROR!.
-        /// </summary>
-        internal static string HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 200 OK with Javascript..
-        /// </summary>
-        internal static string HTTP_200_Javascript_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Javascript_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK with Javascript..
-        /// </summary>
-        internal static string HTTP_200_Javascript_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Javascript_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;HTTP 200 OK response with javascript.&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_200_Javascript_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_Javascript_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK with Javascript.
-        /// </summary>
-        internal static string HTTP_200_Javascript_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_Javascript_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;Though the session has a content type of Json, there is an empty response body. Check the host, URL, and process on this session to determine if this is a point of interest for the issue you&apos;re troubleshooting.&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_200_Json_EmptyResponseBody {
-            get {
-                return ResourceManager.GetString("HTTP_200_Json_EmptyResponseBody", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !INVALID JSON!.
-        /// </summary>
-        internal static string HTTP_200_Json_Invalid_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Json_Invalid_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK with INVALID JSON.
-        /// </summary>
-        internal static string HTTP_200_Json_Invalid_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Json_Invalid_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;HTTP 200 OK response with invalid json in the response. This might indiciate an issue with the server or device which was transmitting the json data to the client computer. Look for partial Json below in the response body. If you see no Json at all, then this means the response has a content type which contains Json, but there was no actual Json in the response.&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_200_Json_Invalid_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_Json_Invalid_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !200 OK with INVALID JSON!.
-        /// </summary>
-        internal static string HTTP_200_Json_Invalid_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_Json_Invalid_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 200 OK with Json..
-        /// </summary>
-        internal static string HTTP_200_Json_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Json_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK with Json..
-        /// </summary>
-        internal static string HTTP_200_Json_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Json_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;HTTP 200 OK response with Json.&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_200_Json_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_Json_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK with Json.
-        /// </summary>
-        internal static string HTTP_200_Json_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_Json_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !200 OK NO JSON!.
-        /// </summary>
-        internal static string HTTP_200_Json_SessionType_EmptyResponseBody {
-            get {
-                return ResourceManager.GetString("HTTP_200_Json_SessionType_EmptyResponseBody", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Legacy Client Free/Busy.
-        /// </summary>
-        internal static string HTTP_200_Legacy_FreeBusy_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Legacy_FreeBusy_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 200 Legacy Client Free/Busy.
-        /// </summary>
-        internal static string HTTP_200_Legacy_FreeBusy_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Legacy_FreeBusy_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This is a legacy Free/Busy call in as much as it has URL patterns seen in older Outlook clients. Newer Outlook clients and OWA now make calls to Free/Busy in the Microsoft cloud using different URLs. This could also be a Free/Busy call to Exchange Server if the target mailbox isn&apos;t in the Microsoft cloud..
-        /// </summary>
-        internal static string HTTP_200_Legacy_FreeBusy_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_Legacy_FreeBusy_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Legacy Client Free/Busy.
-        /// </summary>
-        internal static string HTTP_200_Legacy_FreeBusy_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_Legacy_FreeBusy_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;&apos;error&apos;, &apos;failed&apos; or &apos;exception&apos; found in response body&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_200_Lurking_Errors_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Lurking_Errors_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK, but possibly bad..
-        /// </summary>
-        internal static string HTTP_200_Lurking_Errors_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Lurking_Errors_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;Check the content body of the response for any failures you recognise. You may find &lt;b&gt;false positives, if lots of Javascript or other web code&lt;/b&gt; is being loaded.&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_200_Lurking_Errors_ResponseCommentsEnd {
-            get {
-                return ResourceManager.GetString("HTTP_200_Lurking_Errors_ResponseCommentsEnd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;Session response body was scanned and errors or failures were found in response body. Check the Raw tab, click &apos;View in Notepad&apos; button bottom right, and search for error in the response to review.&lt;/p&gt;&lt;p&gt;After splitting all words in the response body the following were found:&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_200_Lurking_Errors_ResponseCommentsStart {
-            get {
-                return ResourceManager.GetString("HTTP_200_Lurking_Errors_ResponseCommentsStart", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !FAILURE LURKING!.
-        /// </summary>
-        internal static string HTTP_200_Lurking_Errors_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_Lurking_Errors_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !Exchange On-Premise Autodiscover redirect!.
-        /// </summary>
-        internal static string HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK, Incorrect Redirect Address!.
-        /// </summary>
-        internal static string HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;/p&gt;&lt;p&gt;If this is an Office 365 mailbox the &lt;b&gt;targetAddress from On-Premise is not sending Outlook to Office 365&lt;/b&gt;!&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseCommentsEnd {
-            get {
-                return ResourceManager.GetString("HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseCommentsEnd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange On-Premise Autodiscover redirect address found, which does not contain .onmicrosoft.com. &lt;p&gt;RedirectAddress:.
-        /// </summary>
-        internal static string HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseCommentsStart {
-            get {
-                return ResourceManager.GetString("HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseCommentsStart", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange Server.
-        /// </summary>
-        internal static string HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseServer {
-            get {
-                return ResourceManager.GetString("HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseServer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !AUTODISCOVER INCORRECT REDIRECT!.
-        /// </summary>
-        internal static string HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange On-Premise Autodiscover redirect..
-        /// </summary>
-        internal static string HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK Redirect Address.
-        /// </summary>
-        internal static string HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;/p&gt;&lt;p&gt;This is what we want to see, the mail.onmicrosoft.com redirect address (you may know this as the &lt;b&gt;target address&lt;/b&gt; or &lt;b&gt;remote routing address&lt;/b&gt;) from On-Premise sends Outlook (MSI / Perpetual license) to Office 365 / Exchange Online.&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_ResponseCommentsEnd {
-            get {
-                return ResourceManager.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_ResponseCommentsEnd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange On-Premise Autodiscover redirect address to Exchange Online found. &lt;p&gt;RedirectAddress:.
-        /// </summary>
-        internal static string HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_ResponseCommentsStart {
-            get {
-                return ResourceManager.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_ResponseCommentsStart", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange On-Premise AutoDiscover Redirect.
-        /// </summary>
-        internal static string HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Exchange On-Premise Autodiscover Redirect&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK, !Email address not found!.
-        /// </summary>
-        internal static string HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange On-Premise Autodiscover redirect address can&apos;t be found. Look for other On-Premise Autodiscover responses, we may have a valid Autodiscover targetAddress from On-Premise in another session in this trace. Seeing some redirects return a HTTP 500 from Exchange OnPremise have been seen in a normal, working Outlook client which can connect to the Exchange Online mailbox..
-        /// </summary>
-        internal static string HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange Server.
-        /// </summary>
-        internal static string HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_ResponseServer {
-            get {
-                return ResourceManager.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_ResponseServer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !NO AUTOD REDIRECT ADDR!.
-        /// </summary>
-        internal static string HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_AddressNotFound_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outlook for Windows M365 MAPI traffic.
-        /// </summary>
-        internal static string HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK Microsoft365 / Exchange Online MAPI.
-        /// </summary>
-        internal static string HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outlook Microsoft365 MAPI.
-        /// </summary>
-        internal static string HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Exchange_Online_Microsoft_365_Mapi_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outlook for Windows MAPI traffic.
-        /// </summary>
-        internal static string HTTP_200_Outlook_Exchange_OnPremise_Mapi_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Exchange_OnPremise_Mapi_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK Exchange MAPI.
-        /// </summary>
-        internal static string HTTP_200_Outlook_Exchange_OnPremise_Mapi_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Exchange_OnPremise_Mapi_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This is normal Outlook MAPI over HTTP traffic to an Exchange OnPremise mailbox..
-        /// </summary>
-        internal static string HTTP_200_Outlook_Exchange_OnPremise_Mapi_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Exchange_OnPremise_Mapi_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outlook Exchange Server MAPI.
-        /// </summary>
-        internal static string HTTP_200_Outlook_Exchange_OnPremise_Mapi_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Exchange_OnPremise_Mapi_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outlook for Windows Free/Busy.
-        /// </summary>
-        internal static string HTTP_200_Outlook_For_Windows_FreeBusy_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 200 Outlook for Windows Free/Busy.
-        /// </summary>
-        internal static string HTTP_200_Outlook_For_Windows_FreeBusy_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This is an Outlook for Windows Free/Busy call to the Microsoft Cloud..
-        /// </summary>
-        internal static string HTTP_200_Outlook_For_Windows_FreeBusy_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outlook for Windows Free/Busy.
-        /// </summary>
-        internal static string HTTP_200_Outlook_For_Windows_FreeBusy_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_For_Windows_FreeBusy_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Store Error Protocol Disabled&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK - &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;PROTOCOL DISABLED&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Store Error Protocol disabled found in response body.&lt;/span&gt;&lt;/b&gt; Expect user to &lt;b&gt;NOT be able to connect using connecting client application.&lt;/b&gt;..
-        /// </summary>
-        internal static string HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !PROTOCOL DISABLED!.
-        /// </summary>
-        internal static string HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outlook for Windows NSPI traffic.
-        /// </summary>
-        internal static string HTTP_200_Outlook_NSPI_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_NSPI_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK Outlook NSPI.
-        /// </summary>
-        internal static string HTTP_200_Outlook_NSPI_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_NSPI_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This is normal Outlook traffic to an Exchange On-Premise mailbox. Name Service Provider Interface (NSPI)..
-        /// </summary>
-        internal static string HTTP_200_Outlook_NSPI_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_NSPI_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outlook NSPI.
-        /// </summary>
-        internal static string HTTP_200_Outlook_NSPI_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_NSPI_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outlook for Windows RPC traffic.
-        /// </summary>
-        internal static string HTTP_200_Outlook_RPC_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_RPC_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK Outlook over RPC.
-        /// </summary>
-        internal static string HTTP_200_Outlook_RPC_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_RPC_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This is normal Outlook RPC over HTTP traffic to an Exchange Server mailbox..
-        /// </summary>
-        internal static string HTTP_200_Outlook_RPC_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_RPC_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outlook Exchange Server RPC.
-        /// </summary>
-        internal static string HTTP_200_Outlook_RPC_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_RPC_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Notification Channel is used for OWA to display new mails..
-        /// </summary>
-        internal static string HTTP_200_Outlook_Web_App_Notification_Channel_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Web_App_Notification_Channel_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK OWA Notification Channel.
-        /// </summary>
-        internal static string HTTP_200_Outlook_Web_App_Notification_Channel_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Web_App_Notification_Channel_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Notification Channel is used for OWA to display new mails..
-        /// </summary>
-        internal static string HTTP_200_Outlook_Web_App_Notification_Channel_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Web_App_Notification_Channel_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to OWA Notification Channel.
-        /// </summary>
-        internal static string HTTP_200_Outlook_Web_App_Notification_Channel_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Web_App_Notification_Channel_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outlook Web App.
-        /// </summary>
-        internal static string HTTP_200_Outlook_Web_App_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Web_App_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK Outlook Web App / OWA.
-        /// </summary>
-        internal static string HTTP_200_Outlook_Web_App_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Web_App_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This is normal Outlook Web App traffic to an Exchange mailbox..
-        /// </summary>
-        internal static string HTTP_200_Outlook_Web_App_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Web_App_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outlook Web App.
-        /// </summary>
-        internal static string HTTP_200_Outlook_Web_App_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_Outlook_Web_App_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to OWA Free/Busy.
-        /// </summary>
-        internal static string HTTP_200_OWA_FreeBusy_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_OWA_FreeBusy_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 200 OWA Free/Busy.
-        /// </summary>
-        internal static string HTTP_200_OWA_FreeBusy_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_OWA_FreeBusy_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This is an OWA Free/Busy call to the Microsoft Cloud..
-        /// </summary>
-        internal static string HTTP_200_OWA_FreeBusy_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_OWA_FreeBusy_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to OWA Free/Busy.
-        /// </summary>
-        internal static string HTTP_200_OWA_FreeBusy_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_OWA_FreeBusy_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to REST People.
-        /// </summary>
-        internal static string HTTP_200_REST_People_Request_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_REST_People_Request_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK REST People Request.
-        /// </summary>
-        internal static string HTTP_200_REST_People_Request_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_REST_People_Request_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to REST People.
-        /// </summary>
-        internal static string HTTP_200_REST_People_Request_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_REST_People_Request_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to GetUnifiedGroupsSettings EWS call..
-        /// </summary>
-        internal static string HTTP_200_Unified_Groups_Settings_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Unified_Groups_Settings_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK Get Unified Groups Settings.
-        /// </summary>
-        internal static string HTTP_200_Unified_Groups_Settings_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Unified_Groups_Settings_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;GroupCreationEnabled&gt;true&lt;/GroupCreationEnabled&gt; found in response body. Expect user to be able to create Office 365 groups in Outlook..
-        /// </summary>
-        internal static string HTTP_200_Unified_Groups_Settings_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_Unified_Groups_Settings_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to EWS GetUnifiedGroupsSettings.
-        /// </summary>
-        internal static string HTTP_200_Unified_Groups_Settings_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_Unified_Groups_Settings_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to GetUnifiedGroupsSettings EWS call.
-        /// </summary>
-        internal static string HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK, GetUnifiedGroupsSettings not found..
-        /// </summary>
-        internal static string HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Though GetUnifiedGroupsSettings scenario was detected neither &lt;GroupCreationEnabled&gt;true&lt;/GroupCreationEnabled&gt; nor &lt;GroupCreationEnabled&gt;false&lt;/GroupCreationEnabled&gt; was found in the response body. Check the Raw tab for more details..
-        /// </summary>
-        internal static string HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !EWS GetUnifiedGroupsSettings!.
-        /// </summary>
-        internal static string HTTP_200_Unified_Groups_Settings_Settings_Not_Found_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;GetUnifiedGroupsSettings EWS call&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK, User cannot create Unified Groups..
-        /// </summary>
-        internal static string HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseCodeDescriptio" +
-                        "n", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;GroupCreationEnabled&gt;false&lt;/GroupCreationEnabled&gt; found in response body. Expect user to &lt;b&gt;NOT be able to create Office 365 groups&lt;/b&gt; in Outlook..
-        /// </summary>
-        internal static string HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to EWS GetUnifiedGroupsSettings.
-        /// </summary>
-        internal static string HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Exchange Online / Outlook CTR Autodiscover - Unusual Autodiscover Response&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_200s_CTR_AutoDiscover_NotFound_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200s_CTR_AutoDiscover_NotFound_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK, Unexpected XML response!.
-        /// </summary>
-        internal static string HTTP_200s_CTR_AutoDiscover_NotFound_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200s_CTR_AutoDiscover_NotFound_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This session was detected as an Autodiscover response from Exchange Online. However the response did not contain the expected XML data. Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response..
-        /// </summary>
-        internal static string HTTP_200s_CTR_AutoDiscover_NotFound_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200s_CTR_AutoDiscover_NotFound_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outlook AutoDiscover XML NOT found!.
-        /// </summary>
-        internal static string HTTP_200s_CTR_AutoDiscover_NotFound_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200s_CTR_AutoDiscover_NotFound_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange Online / Outlook CTR AutoDiscover..
-        /// </summary>
-        internal static string HTTP_200s_CTR_AutoDiscover_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200s_CTR_AutoDiscover_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK EXO AutoDiscover.
-        /// </summary>
-        internal static string HTTP_200s_CTR_AutoDiscover_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200s_CTR_AutoDiscover_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to For AutoDiscover calls which go to outlook.office365.com this is likely an Outlook Click-To-Run (Downloaded or deployed from Office365) client being redirected from Exchange On-Premise to Exchange Online..
-        /// </summary>
-        internal static string HTTP_200s_CTR_AutoDiscover_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200s_CTR_AutoDiscover_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to EXO CTR Autodiscover.
-        /// </summary>
-        internal static string HTTP_200s_CTR_AutoDiscover_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200s_CTR_AutoDiscover_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange Online / Outlook MSI AutoDiscover..
-        /// </summary>
-        internal static string HTTP_200s_EXO_MSI_Autodiscover_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200s_EXO_MSI_Autodiscover_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK Outlook MSI AutoDiscover.
-        /// </summary>
-        internal static string HTTP_200s_EXO_MSI_Autodiscover_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200s_EXO_MSI_Autodiscover_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to For AutoDiscover calls which go to autodiscover-s.outlook.com this is likely an Outlook (MSI / perpetual license) client being redirected from Exchange On-Premise to Exchange Online..
-        /// </summary>
-        internal static string HTTP_200s_EXO_MSI_Autodiscover_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200s_EXO_MSI_Autodiscover_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to EXO MSI Autodiscover.
-        /// </summary>
-        internal static string HTTP_200s_EXO_MSI_Autodiscover_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200s_EXO_MSI_Autodiscover_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange Online / Microsoft365 Web Services (EWS) call..
-        /// </summary>
-        internal static string HTTP_200s_Microsoft365_Any_Other_EWS_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200s_Microsoft365_Any_Other_EWS_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK Microsoft365 Other EWS.
-        /// </summary>
-        internal static string HTTP_200s_Microsoft365_Any_Other_EWS_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200s_Microsoft365_Any_Other_EWS_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange Online / Microsoft365 Web Services (EWS) call..
-        /// </summary>
-        internal static string HTTP_200s_Microsoft365_Any_Other_EWS_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200s_Microsoft365_Any_Other_EWS_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange Online / Microsoft365 Web Services.
-        /// </summary>
-        internal static string HTTP_200s_Microsoft365_Any_Other_EWS_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200s_Microsoft365_Any_Other_EWS_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Exchange Online / Outlook MSI AutoDiscover - Unusual AutoDiscover Response&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_200s_MSI_AutoDiscover_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200s_MSI_AutoDiscover_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK, Unexpected AutoDiscover XML response..
-        /// </summary>
-        internal static string HTTP_200s_MSI_AutoDiscover_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200s_MSI_AutoDiscover_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This session was detected as an AutoDiscover response from Exchange Online. However the response did not contain the expected XML data. Check if a device in-between the perimeter of your network and the client computer can / has altered the data in the response..
-        /// </summary>
-        internal static string HTTP_200s_MSI_AutoDiscover_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200s_MSI_AutoDiscover_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !EXO MSI AutoDiscover!.
-        /// </summary>
-        internal static string HTTP_200s_MSI_AutoDiscover_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200s_MSI_AutoDiscover_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange OnPremise Web Services (EWS) call..
-        /// </summary>
-        internal static string HTTP_200s_OnPremise_Exchange_EWS_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_200s_OnPremise_Exchange_EWS_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 200 OK Exchange Web Services / EWS.
-        /// </summary>
-        internal static string HTTP_200s_OnPremise_Exchange_EWS_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_200s_OnPremise_Exchange_EWS_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange OnPremise Web Services (EWS) call..
-        /// </summary>
-        internal static string HTTP_200s_OnPremise_Exchange_EWS_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_200s_OnPremise_Exchange_EWS_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange OnPremise Web Services.
-        /// </summary>
-        internal static string HTTP_200s_OnPremise_Exchange_EWS_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_200s_OnPremise_Exchange_EWS_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:green&apos;&gt;Redirect.&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_302_Redirect_AllOthers_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_302_Redirect_AllOthers_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 302 Redirect / Found.
-        /// </summary>
-        internal static string HTTP_302_Redirect_AllOthers_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_302_Redirect_AllOthers_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Redirects within Office 365 client applications or servers are not unusual. The only potential downfall is too many of them. However if this happens you would normally see a too many redirects exception thrown as a server response..
-        /// </summary>
-        internal static string HTTP_302_Redirect_AllOthers_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_302_Redirect_AllOthers_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Redirect.
-        /// </summary>
-        internal static string HTTP_302_Redirect_AllOthers_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_302_Redirect_AllOthers_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:green&apos;&gt;Exchange Autodiscover redirect.&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_302_Redirect_AutoDiscover_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_302_Redirect_AutoDiscover_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 302 Redirect / Found.
-        /// </summary>
-        internal static string HTTP_302_Redirect_AutoDiscover_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_302_Redirect_AutoDiscover_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This type of traffic is typically an Autodiscover redirect response from Exchange On-Premise sending the Outlook client to connect to Exchange Online..
-        /// </summary>
-        internal static string HTTP_302_Redirect_AutoDiscover_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_302_Redirect_AutoDiscover_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Autodiscover Redirect.
-        /// </summary>
-        internal static string HTTP_302_Redirect_AutoDiscover_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_302_Redirect_AutoDiscover_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 307 Temporary Redirect.
-        /// </summary>
-        internal static string HTTP_307_All_Other_Redirects_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_307_All_Other_Redirects_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 307 Temporary Redirect.
-        /// </summary>
-        internal static string HTTP_307_All_Other_Redirects_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_307_All_Other_Redirects_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;Temporary Redirects might be an indication of an issue, but aren&apos;t in themselves a smoking gun.&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_307_All_Other_Redirects_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_307_All_Other_Redirects_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 307 Temporary Redirect.
-        /// </summary>
-        internal static string HTTP_307_All_Other_Redirects_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_307_All_Other_Redirects_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 307 Temporary Redirect&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_307_AutoDiscover_Temporary_Redirect_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_307_AutoDiscover_Temporary_Redirect_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !307 Temporary Redirect!.
-        /// </summary>
-        internal static string HTTP_307_AutoDiscover_Temporary_Redirect_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_307_AutoDiscover_Temporary_Redirect_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;Temporary Redirects have been seen to redirect Exchange Online Autodiscover calls back to On-Premise resources, breaking Outlook connectivity&lt;/b&gt;. Likely cause is a local networking device. Test outside of the LAN to confirm. &lt;p&gt;This session is an Autodiscover request for Exchange Online which has not been sent to &lt;a href=&apos;https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml&apos; target=&apos;_blank&apos;&gt;https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml&lt;/a&gt; as expected.&lt;/p&gt;&lt;p&gt;Check the Head [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string HTTP_307_AutoDiscover_Temporary_Redirect_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_307_AutoDiscover_Temporary_Redirect_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !UNEXPECTED LOCATION!.
-        /// </summary>
-        internal static string HTTP_307_AutoDiscover_Temporary_Redirect_ResponseServer {
-            get {
-                return ResourceManager.GetString("HTTP_307_AutoDiscover_Temporary_Redirect_ResponseServer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !UNEXPECTED LOCATION!.
-        /// </summary>
-        internal static string HTTP_307_AutoDiscover_Temporary_Redirect_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_307_AutoDiscover_Temporary_Redirect_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 307 Temporary Redirect.
-        /// </summary>
-        internal static string HTTP_307_Other_AutoDiscover_Redirects_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_307_Other_AutoDiscover_Redirects_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 307 Temporary Redirect.
-        /// </summary>
-        internal static string HTTP_307_Other_AutoDiscover_Redirects_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_307_Other_AutoDiscover_Redirects_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Temporary Redirects have been seen to redirect Exchange Online Autodiscover calls back to On-Premise resources, breaking Outlook connectivity. &lt;p&gt;Check the Headers or Raw tab and the Location to ensure the Autodiscover call is going to the correct place. &lt;/p&gt;&lt;p&gt;If this session is not for an Outlook process then the information above may not be relevant to the issue under investigation.&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_307_Other_AutoDiscover_Redirects_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_307_Other_AutoDiscover_Redirects_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 307 Temporary Redirect.
-        /// </summary>
-        internal static string HTTP_307_Other_AutoDiscover_Redirects_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_307_Other_AutoDiscover_Redirects_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 400 Bad Request&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_400s_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_400s_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 400 Bad Request.
-        /// </summary>
-        internal static string HTTP_400s_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_400s_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 400: Bad Request. Seeing small numbers of these may not be an issue. However, if many are seen this should be investigated further..
-        /// </summary>
-        internal static string HTTP_400s_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_400s_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 400 Bad Request.
-        /// </summary>
-        internal static string HTTP_400s_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_400s_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:orange&apos;&gt;Authentication Challenge&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_401_Everything_Else_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_401_Everything_Else_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 401 Unauthorized (RFC 7235).
-        /// </summary>
-        internal static string HTTP_401_Everything_Else_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_401_Everything_Else_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Authentication Challenge. &lt;b&gt;These are expected&lt;/b&gt; and are not an issue as long as a subsequent HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. &lt;p&gt;If you do not see HTTP 200&apos;s following HTTP 401&apos;s look for a wider authentication issue.&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_401_Everything_Else_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_401_Everything_Else_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 401 Unauthorized.
-        /// </summary>
-        internal static string HTTP_401_Everything_Else_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_401_Everything_Else_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange Web Services (EWS) call..
-        /// </summary>
-        internal static string HTTP_401_EWS_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_401_EWS_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 401 Exchange Web Services (EWS) call..
-        /// </summary>
-        internal static string HTTP_401_EWS_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_401_EWS_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange Web Services (EWS) call..
-        /// </summary>
-        internal static string HTTP_401_EWS_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_401_EWS_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange Web Services.
-        /// </summary>
-        internal static string HTTP_401_EWS_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_401_EWS_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:orange&apos;&gt;Autodiscover Authentication Challenge&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_401_Exchange_Online_AutoDiscover_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_401_Exchange_Online_AutoDiscover_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 401 Unauthorized (RFC 7235).
-        /// </summary>
-        internal static string HTTP_401_Exchange_Online_AutoDiscover_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_401_Exchange_Online_AutoDiscover_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Autodiscover Authentication Challenge. If the host for this session is autodiscover-s.outlook.com this is likely Outlook (MSI / perpetual license) being redirected from Exchange On-Premise.&lt;p&gt;&lt;b&gt;These are expected&lt;/b&gt; and are not an issue as long as a subsequent HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. &lt;p&gt;If you do not see HTTP 200&apos;s following HTTP 401&apos;s look for a wider authentication issue.&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_401_Exchange_Online_AutoDiscover_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_401_Exchange_Online_AutoDiscover_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange Online AutoDiscover.
-        /// </summary>
-        internal static string HTTP_401_Exchange_Online_AutoDiscover_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_401_Exchange_Online_AutoDiscover_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:orange&apos;&gt;Autodiscover Authentication Challenge&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_401_Exchange_Server_AutoDiscover_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_401_Exchange_Server_AutoDiscover_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 401 Unauthorized (RFC 7235).
-        /// </summary>
-        internal static string HTTP_401_Exchange_Server_AutoDiscover_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_401_Exchange_Server_AutoDiscover_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Autodiscover Authentication Challenge. &lt;p&gt;&lt;b&gt;These are expected&lt;/b&gt; and are not an issue as long as a subsequent HTTP 200 is seen for authentication to the server which issued the HTTP 401 unauthorized security challenge. &lt;p&gt;If you do not see HTTP 200&apos;s following HTTP 401&apos;s look for a wider authentication issue.&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_401_Exchange_Server_AutoDiscover_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_401_Exchange_Server_AutoDiscover_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exchange Server AutoDiscover.
-        /// </summary>
-        internal static string HTTP_401_Exchange_Server_AutoDiscover_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_401_Exchange_Server_AutoDiscover_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 403 Forbidden&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_403_Forbidden_Everything_Else_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_403_Forbidden_Everything_Else_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 403 Forbidden.
-        /// </summary>
-        internal static string HTTP_403_Forbidden_Everything_Else_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_403_Forbidden_Everything_Else_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to While HTTP 403&apos;s can be symptomatic of a proxy server blocking traffic, however the phrase &apos;Access Denied&apos; was not detected in the response body.&lt;p&gt;A small number of HTTP 403&apos;s can be seen in normal working scenarios. Check the Raw and WebView tabs to look for anything which looks suspect.&lt;/p&gt;&lt;p&gt;If you are troubleshooting Free/Busy (Meeting availability info) or setting Out of Office messages then you may be more interested in these.&lt;/p&gt;&lt;p&gt;See: &lt;a href=&apos;https://docs.microsoft.com/en-us/previous-versions/off [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string HTTP_403_Forbidden_Everything_Else_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_403_Forbidden_Everything_Else_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 403 FORBIDDEN.
-        /// </summary>
-        internal static string HTTP_403_Forbidden_Everything_Else_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_403_Forbidden_Everything_Else_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 403 Forbidden&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 403 EWS Forbidden.
-        /// </summary>
-        internal static string HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;If you are troubleshooting a 3rd party EWS application (using application impersonation) and the service account mailbox has been recently migrated into the cloud, ensure mailbox is licensed and to log into the service account mailbox for the first time using OWA at &lt;a href=&apos;https://outlook.office365.com&apos; target=&apos;_blank&apos;&gt;https://outlook.office365.com&lt;/a&gt; to set the mailbox language / culture.&lt;/p&gt;&lt;p&gt;Validate with: Get-Mailbox service-account@domain.com | FL Languages&lt;/p&gt;&lt;p&gt;Without the language set on the  [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 403 EWS FORBIDDEN.
-        /// </summary>
-        internal static string HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 403 Access Denied - WEB PROXY BLOCK!&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_403_Forbidden_Proxy_Block_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_403_Forbidden_Proxy_Block_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 403 Forbidden; !WEB PROXY BLOCK!.
-        /// </summary>
-        internal static string HTTP_403_Forbidden_Proxy_Block_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_403_Forbidden_Proxy_Block_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Is your firewall or web proxy blocking Outlook connectivity?&lt;/span&gt;&lt;/b&gt; &lt;p&gt;To fire this message a HTTP 403 response code was detected and &apos;&lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Access Denied&lt;/span&gt;&lt;/b&gt;&apos; was found in the response body.&lt;/p&gt;&lt;p&gt;Check the WebView tab, do you see anything which indicates traffic is blocked?&lt;p&gt;&lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Is there a message branded by or from your proxy device indiciating it blocked traffic?&lt;/span&gt;&lt;/b&gt; A common scenario when first deploying Office365 [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string HTTP_403_Forbidden_Proxy_Block_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_403_Forbidden_Proxy_Block_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !WEB PROXY BLOCK!.
-        /// </summary>
-        internal static string HTTP_403_Forbidden_Proxy_Block_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_403_Forbidden_Proxy_Block_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Free/Busy Forbidden Error&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 403 Free/Busy Forbidden Error.
-        /// </summary>
-        internal static string HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseCodeDescriptio" +
-                        "n", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A Free/Busy call was sent and the response contained a HTTP 403 Forbidden error..
-        /// </summary>
-        internal static string HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !Free/Busy Forbidden!.
-        /// </summary>
-        internal static string HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 404 Not Found&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_404s_ResponseAlerts {
-            get {
-                return ResourceManager.GetString("HTTP_404s_ResponseAlerts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 404 Not Found.
-        /// </summary>
-        internal static string HTTP_404s_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_404s_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The quantity of these types of server errors need to be considered in context with what you are troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern..
-        /// </summary>
-        internal static string HTTP_404s_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_404s_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 404 Not Found.
-        /// </summary>
-        internal static string HTTP_404s_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_404s_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 405: Method Not Allowed&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_405s_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_405s_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 405 Method Not Allowed.
-        /// </summary>
-        internal static string HTTP_405s_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_405s_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Was there a GET when only a POST is allowed or vice-versa, or was HTTP tried when HTTPS is required?.
-        /// </summary>
-        internal static string HTTP_405s_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_405s_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 405 Method Not Allowed.
-        /// </summary>
-        internal static string HTTP_405s_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_405s_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 407: Proxy Authentication Required&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_407s_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_407s_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 407 Proxy Authentication Required (RFC 7235).
-        /// </summary>
-        internal static string HTTP_407s_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_407s_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Proxy Authentication Required&lt;/span&gt;&lt;/b&gt;&lt;p&gt;Seeing these when investigating an Office 365 connectivity could be a &lt;b&gt;big indicator of an issue&lt;/b&gt;.&lt;/p&gt;&lt;p&gt;Look to engage the network or security team who is responsible for the proxy infrastructure and give them the information from these HTTP 407 sessions to troubleshoot with.&lt;/p&gt;&lt;p&gt;Office 365 application traffic should be exempt from proxy authentication or better yet follow Microsoft&apos;s recommendation to bypass the proxy for Office3 [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string HTTP_407s_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_407s_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 407 Proxy Auth Required.
-        /// </summary>
-        internal static string HTTP_407s_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_407s_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 456 Multi-Factor Authentication?&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_456_Anything_Else_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_456_Anything_Else_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 456 Multi-Factor Authentication?.
-        /// </summary>
-        internal static string HTTP_456_Anything_Else_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_456_Anything_Else_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to See details on Raw tab. Is Modern Authentication disabled?&lt;p&gt;This has been seen where users have &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;MFA enabled/enforced, but Modern Authentication is not enabled&lt;/span&gt;&lt;/b&gt; in the Office 365 workload being connected to.&lt;/p&gt;&lt;p&gt;See &lt;a href=&apos;https://social.technet.microsoft.com/wiki/contents/articles/36101.office-365-enable-modern-authentication.aspx&apos; target=&apos;_blank&apos;&gt;https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8 [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string HTTP_456_Anything_Else_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_456_Anything_Else_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Multi-Factor Auth?.
-        /// </summary>
-        internal static string HTTP_456_Anything_Else_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_456_Anything_Else_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 456 Multi-Factor Authentication&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_456_Multi_Factor_Required_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_456_Multi_Factor_Required_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 456 !Multi-Factor Auth!.
-        /// </summary>
-        internal static string HTTP_456_Multi_Factor_Required_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_456_Multi_Factor_Required_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to See details on Raw tab. Look for the presence of &apos;you must use multi-factor authentication&apos;.&lt;p&gt;This has been seen where users have &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;MFA enabled/enforced, but Modern Authentication is not enabled&lt;/span&gt;&lt;/b&gt; in the Office 365 workload being connected to&lt;/p&gt;&lt;p&gt;See &lt;a href=&apos;https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662&apos; target=&apos;_blank&apos;&gt;https://support.office.com/en-us/article/Enable-or-disable-mo [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string HTTP_456_Multi_Factor_Required_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_456_Multi_Factor_Required_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !Multi-Factor Auth!.
-        /// </summary>
-        internal static string HTTP_456_Multi_Factor_Required_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_456_Multi_Factor_Required_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 456 Multi-Factor Authentication&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_456_OAuth_Not_Available_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_456_OAuth_Not_Available_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HTTP 456 !Multi-Factor Auth!.
-        /// </summary>
-        internal static string HTTP_456_OAuth_Not_Available_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_456_OAuth_Not_Available_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to See details on Raw tab. Look for the presence of &apos;oauth_not_available&apos;.&lt;p&gt;This has been seen where users have &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;MFA enabled/enforced, but Modern Authentication&lt;/span&gt;&lt;/b&gt; is not enabled in the Office 365 workload being connected to&lt;/p&gt;&lt;p&gt;See &lt;a href=&apos;https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-in-Exchange-Online-58018196-f918-49cd-8238-56f57f38d662&apos; target=&apos;_blank&apos;&gt;https://support.office.com/en-us/article/Enable-or-disable-modern-authentication-i [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string HTTP_456_OAuth_Not_Available_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_456_OAuth_Not_Available_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !Multi-Factor Auth!.
-        /// </summary>
-        internal static string HTTP_456_OAuth_Not_Available_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_456_OAuth_Not_Available_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 500 Internal Server Error&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_500_Internal_Server_Error_All_Others_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_All_Others_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 500 Internal Server Error.
-        /// </summary>
-        internal static string HTTP_500_Internal_Server_Error_All_Others_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_All_Others_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Consider the server that issued this response, look at the IP address in the &apos;Host IP&apos; column and lookup where it is hosted to know who should be looking at the issue..
-        /// </summary>
-        internal static string HTTP_500_Internal_Server_Error_All_Others_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_All_Others_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !HTTP 500 Internal Server Error!.
-        /// </summary>
-        internal static string HTTP_500_Internal_Server_Error_All_Others_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_All_Others_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 500 Internal Server Error - EWS Impersonate User Denied&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 500 EWS Impersonate User Denied.
-        /// </summary>
-        internal static string HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;EWS Impersonate User Denied&lt;/span&gt;&lt;/b&gt; found in this session response. Check the service account in use has impersonation rights on the mailbox you are trying to work with. Are the impersonation permissions given directly on the service account or via a security group?&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_Impersonate_User_Denied_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !EWS Impersonate User Denied!.
-        /// </summary>
-        internal static string HTTP_500_Internal_Server_Error_Impersonate_User_Denied_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_Impersonate_User_Denied_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 500 Internal Server Error - OWA Something went wrong.&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 500 OWA Something went wrong.
-        /// </summary>
-        internal static string HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;OWA - Something went wrong&lt;/span&gt;&lt;/b&gt; found in this session response.&lt;p&gt;Check the response Raw and Webview tabs to see what further details can be pulled on the issue.&lt;/p&gt;&lt;p&gt;Does the issue reproduce with federated and non-federated (managed) domains?&lt;/p&gt;&lt;p&gt;Does the issue reproduce in different browsers?&lt;/p&gt;&lt;p&gt;Otherwise this might be an issue which needs to be raised to Microsoft support.&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !OWA SOMETHING WENT WRONG!.
-        /// </summary>
-        internal static string HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 500 Internal Server Error - Repeating redirects detected&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 500 Internal Server Error.
-        /// </summary>
-        internal static string HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Repeating redirects detected&lt;/span&gt;&lt;/b&gt; found in this session response. This response has been seen with OWA and federated domains. Is this issue seen with non-federated user accounts? If not this might suggest an issue with a federation service.&lt;p&gt;Alternatively does the impacted account have too many roles assigned? Too many roles on an account have been seen as a cause of this type of issue.&lt;/p&gt;&lt;p&gt;Otherwise this might be an issue which needs to be raised to Microsoft support.&lt;/p [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_Repeating_Redirects_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !REPEATING REDIRECTS DETECTED!.
-        /// </summary>
-        internal static string HTTP_500_Internal_Server_Error_Repeating_Redirects_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_500_Internal_Server_Error_Repeating_Redirects_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;AUTODISCOVER&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 502 Bad Gateway.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This AutoDiscover request was refused by the server it was sent to. Check the raw tab for further details..
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !AUTODISCOVER!.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 502 Bad Gateway&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_Anything_Else_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Anything_Else_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 502 Bad Gateway.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_Anything_Else_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Anything_Else_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Potential to cause the issue you are investigating. Do you see expected responses beyond this session in the trace? Is the Host IP for the device issuing this response with a subnet within your lan or something in a cloud provider&apos;s network?.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_Anything_Else_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Anything_Else_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !BAD GATEWAY!.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_Anything_Else_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Anything_Else_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Domain not detected.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_Domain_Not_Detected {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_Domain_Not_Detected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:green&apos;&gt;False Positive&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 502 Bad Gateway False Positive.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to on port 443. &lt;p&gt;Validate this message by confirming the Host IP (if shown) is an Office 365 Host/IP address and perform a telnet to it on port 80.&lt;/p&gt;&lt;p&gt;If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects requests on port 80 to &lt;a href=&apos;https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml&apos; target=&apos;_blank&apos;&gt;https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml&lt;/a&gt;&lt;p&gt;The reason for this is Microsoft does not [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCommentsEnd {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCommentsEnd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:green&apos;&gt;False Positive&lt;/span&gt;&lt;/b&gt;. By design Office 365 Autodiscover does not respond to.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCommentsStart {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCommentsStart", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to False Positive.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:green&apos;&gt;False Positive&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 502 Bad Gateway False Positive.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:green&apos;&gt;False positive on HTTP 502&lt;/span&gt;&lt;/b&gt;. By design, the host only accepts connections on port 25, port 443 is not available.&lt;p&gt;To validate this above lookup the record, confirm it is a MX record and attempt to connect to the MX host on ports 25 and 443.&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to False Positive.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:green&apos;&gt;False Positive&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 502 Bad Gateway False Positive.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Telemetry failing is unlikely the cause of significant Office 365 client issues..
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to False Positive.
-        /// </summary>
-        internal static string HTTP_502_Bad_Gateway_Telemetry_False_Positive_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 503 Service Unavailable&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_503_Service_Unavailable_Everything_Else_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Everything_Else_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 503 Service Unavailable.
-        /// </summary>
-        internal static string HTTP_503_Service_Unavailable_Everything_Else_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Everything_Else_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Server that was contacted in this session reports it is unavailable&lt;/span&gt;&lt;/b&gt;. Look at the server that issued this response, it is healthy? Contactable? Contactable consistently or intermittently? Consider other session server responses in the 500&apos;s (500, 502 or 503) in conjunction with this session..
-        /// </summary>
-        internal static string HTTP_503_Service_Unavailable_Everything_Else_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Everything_Else_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !SERVICE UNAVAILABLE!.
-        /// </summary>
-        internal static string HTTP_503_Service_Unavailable_Everything_Else_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Everything_Else_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;FederatedSTSUnreachable&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseAle" +
-                        "rt", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 503 Federation Service Unavailable.
-        /// </summary>
-        internal static string HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseCod" +
-                        "eDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;&lt;b&gt;Expected responses for ADFS&lt;/b&gt; (other federation services such as Ping, OKTA may vary)&lt;/p&gt;&lt;b&gt;AuthURL&lt;/b&gt;: Normally expected to show federation service logon page.&lt;br /&gt;&lt;b&gt;STSAuthURL&lt;/b&gt;: Normally expected to show HTTP 400.&lt;br /&gt;&lt;b&gt;MEXURL&lt;/b&gt;: Normally expected to show long stream of XML data.&lt;br /&gt;&lt;p&gt;If any of these show the HTTP 503 Service Unavailable this &lt;b&gt;confirms some kind of failure on the federation service&lt;/b&gt;.&lt;/p&gt;&lt;p&gt;If however you get the expected responses, this &lt;b&gt;does not neccessarily m [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseCommentsEnd {
-            get {
-                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseCom" +
-                        "mentsEnd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 503: FederatedSTSUnreachable&lt;/span&gt;&lt;/b&gt;.&lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;The fedeation service is unreachable or unavailable&lt;/span&gt;&lt;/b&gt;.&lt;p&gt;&lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Troubleshoot this issue first before doing anything else.&lt;/span&gt;&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check the Raw tab for additional details.&lt;/p&gt;&lt;p&gt;Check the realm page for the authenticating domain. Check the below links from the Realm page to see if the IDP gives the expected responses.&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseCommentsStart {
-            get {
-                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_ResponseCom" +
-                        "mentsStart", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !FederatedSTSUnreachable!.
-        /// </summary>
-        internal static string HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable_SessionType" +
-                        "", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 504 Gateway Timeout&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_504_Gateway_Timeout_Anything_Else_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_504_Gateway_Timeout_Anything_Else_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 504 Gateway Timeout.
-        /// </summary>
-        internal static string HTTP_504_Gateway_Timeout_Anything_Else_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_504_Gateway_Timeout_Anything_Else_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The quantity of these types of server errors need to be considered in context with what you are troubleshooting and whether these are relevant or not. A small number is probably not an issue, larger numbers of these could be cause for concern..
-        /// </summary>
-        internal static string HTTP_504_Gateway_Timeout_Anything_Else_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_504_Gateway_Timeout_Anything_Else_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Gateway Timeout.
-        /// </summary>
-        internal static string HTTP_504_Gateway_Timeout_Anything_Else_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_504_Gateway_Timeout_Anything_Else_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 504 Gateway Timeout -- Internet Access Blocked&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseAlert {
-            get {
-                return ResourceManager.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 504 Gateway Timeout - Internet Access Blocked.
-        /// </summary>
-        internal static string HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseCodeDescription {
-            get {
-                return ResourceManager.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseCodeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Detected the keywords &apos;internet&apos; and &apos;access&apos; and &apos;blocked&apos;. Potentially the computer this trace was collected from has been &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;quaratined for internet access by a LAN based network security device&lt;/span&gt;&lt;/b&gt;.&lt;p&gt;Validate this by checking the webview and raw tabs for more information.&lt;/p&gt;.
-        /// </summary>
-        internal static string HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseComments {
-            get {
-                return ResourceManager.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !INTERNET BLOCKED!.
-        /// </summary>
-        internal static string HTTP_504_Gateway_Timeout_Internet_Access_Blocked_SessionType {
-            get {
-                return ResourceManager.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Inspector.
         /// </summary>
         internal static string Inspector {
@@ -3403,15 +597,6 @@ namespace Office365FiddlerExtension.Language {
         internal static string Inspector_Session_Analysis {
             get {
                 return ResourceManager.GetString("Inspector_Session_Analysis", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Insufficient data.
-        /// </summary>
-        internal static string Insufficient_data {
-            get {
-                return ResourceManager.GetString("Insufficient data", resourceCulture);
             }
         }
         
@@ -3506,132 +691,6 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Long Running Client Session&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string LongRunningSessionsClientSlow_ResponseAlert {
-            get {
-                return ResourceManager.GetString("LongRunningSessionsClientSlow_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;&lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Long running session found&lt;/span&gt;&lt;/b&gt;. A small number of long running sessions in the &lt; 10 seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue.&lt;/p&gt;&lt;p&gt;If, however, you are troubleshooting an application performance issue, consider the number of sessions which have this warning. Investigate any proxy device or load balancer in your network, or any other device sitting between the client computer and access to the application ser [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string LongRunningSessionsClientSlow_ResponseComments {
-            get {
-                return ResourceManager.GetString("LongRunningSessionsClientSlow_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Long Running Client Session.
-        /// </summary>
-        internal static string LongRunningSessionsClientSlow_SessionType {
-            get {
-                return ResourceManager.GetString("LongRunningSessionsClientSlow_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Long Running Server Session&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string LongRunningSessionsServerSlow_ResponseAlert {
-            get {
-                return ResourceManager.GetString("LongRunningSessionsServerSlow_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Long running Server session found. A small number of long running sessions in the &lt; 10 seconds time frame have been seen on normal working scenarios. This does not necessary signify an issue.&lt;p&gt;If, however, you are troubleshooting an application performance issue, consider the number of sessions which have this warning alongany proxy device in your network, or any other device sitting between the client computer and access to the internet. Try the divide and conquer approach. What can you remove or bypass f [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string LongRunningSessionsServerSlow_ResponseComments {
-            get {
-                return ResourceManager.GetString("LongRunningSessionsServerSlow_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Long Running Server Session.
-        /// </summary>
-        internal static string LongRunningSessionsServerSlow_SessionType {
-            get {
-                return ResourceManager.GetString("LongRunningSessionsServerSlow_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:orange&apos;&gt;Roundtrip Time Warning&lt;/span&gt;&lt;/b&gt;.
-        /// </summary>
-        internal static string LongRunningSessionsWarning_ResponseAlert {
-            get {
-                return ResourceManager.GetString("LongRunningSessionsWarning_ResponseAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This session took more than 2.5 seconds to complete. A small number of sessions completing roundtrip in this timeframe is not necessary sign of an issue..
-        /// </summary>
-        internal static string LongRunningSessionsWarning_ResponseComments {
-            get {
-                return ResourceManager.GetString("LongRunningSessionsWarning_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Roundtrip Time Warning.
-        /// </summary>
-        internal static string LongRunningSessionsWarning_SessionType {
-            get {
-                return ResourceManager.GetString("LongRunningSessionsWarning_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Microsoft365 Authentication.
-        /// </summary>
-        internal static string Microsoft365_Authentication {
-            get {
-                return ResourceManager.GetString("Microsoft365 Authentication", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ms.
-        /// </summary>
-        internal static string Milliseconds {
-            get {
-                return ResourceManager.GetString("Milliseconds", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to minute ago.
-        /// </summary>
-        internal static string Minute_Ago {
-            get {
-                return ResourceManager.GetString("Minute Ago", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Minutes.
-        /// </summary>
-        internal static string Minutes {
-            get {
-                return ResourceManager.GetString("Minutes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to minutes ago.
-        /// </summary>
-        internal static string Minutes_Ago {
-            get {
-                return ResourceManager.GetString("Minutes Ago", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Name Identifier Format.
         /// </summary>
         internal static string Name_Identifier_Format {
@@ -3650,20 +709,29 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Never.
+        /// </summary>
+        internal static string Never {
+            get {
+                return ResourceManager.GetString("Never", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Never Web Call.
+        /// </summary>
+        internal static string Never_Web_Call {
+            get {
+                return ResourceManager.GetString("Never Web Call", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next Update Check.
         /// </summary>
         internal static string Next_Update_Check {
             get {
                 return ResourceManager.GetString("Next Update Check", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No Data.
-        /// </summary>
-        internal static string No_Data {
-            get {
-                return ResourceManager.GetString("No Data", resourceCulture);
             }
         }
         
@@ -3713,6 +781,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to On Import.
+        /// </summary>
+        internal static string On_Import {
+            get {
+                return ResourceManager.GetString("On Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to On Live Trace.
         /// </summary>
         internal static string On_Live_Trace {
@@ -3727,15 +804,6 @@ namespace Office365FiddlerExtension.Language {
         internal static string On_Load_Saz {
             get {
                 return ResourceManager.GetString("On Load Saz", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to On Demand.
-        /// </summary>
-        internal static string OnDemand {
-            get {
-                return ResourceManager.GetString("OnDemand", resourceCulture);
             }
         }
         
@@ -3772,15 +840,6 @@ namespace Office365FiddlerExtension.Language {
         internal static string Process {
             get {
                 return ResourceManager.GetString("Process", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Process Name.
-        /// </summary>
-        internal static string Process_Name {
-            get {
-                return ResourceManager.GetString("Process Name", resourceCulture);
             }
         }
         
@@ -3830,29 +889,11 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The process is not recorded in the session, it is unknown which application this data was recorded from..
-        /// </summary>
-        internal static string Remote_Capture {
-            get {
-                return ResourceManager.GetString("Remote Capture", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Report Issues.
         /// </summary>
         internal static string Report_Issues {
             get {
                 return ResourceManager.GetString("Report Issues", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Response Body:.
-        /// </summary>
-        internal static string Response_Body {
-            get {
-                return ResourceManager.GetString("Response Body", resourceCulture);
             }
         }
         
@@ -3866,33 +907,6 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;No known issue with Microsoft365 and this type of session. If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: &lt;a href=&apos;https://github.com/jprknight/Office365FiddlerExtension&apos; target=&apos;_blank&apos;&gt;https://github.com/jprknight/Office365FiddlerExtension&lt;/a&gt;.&lt;/p&gt;.
-        /// </summary>
-        internal static string Response_Comments_No_Known_Issue {
-            get {
-                return ResourceManager.GetString("Response Comments No Known Issue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Response Host.
-        /// </summary>
-        internal static string Response_Host {
-            get {
-                return ResourceManager.GetString("Response Host", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Information on the host/server/device which responded to this request..
-        /// </summary>
-        internal static string Response_Host_Info {
-            get {
-                return ResourceManager.GetString("Response Host Info", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Response Server.
         /// </summary>
         internal static string Response_Server {
@@ -3902,11 +916,20 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type Unknown.
+        ///   Looks up a localized string similar to Ruleset.
         /// </summary>
-        internal static string ResponseServer_Unknown {
+        internal static string Ruleset {
             get {
-                return ResourceManager.GetString("ResponseServer_Unknown", resourceCulture);
+                return ResourceManager.GetString("Ruleset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sessions.
+        /// </summary>
+        internal static string S_Capitalised_Sessions {
+            get {
+                return ResourceManager.GetString("S Capitalised Sessions", resourceCulture);
             }
         }
         
@@ -3920,101 +943,11 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SAML AttributeNameImmutibleID could not be determined..
-        /// </summary>
-        internal static string SamlToken_AttributeNameImmutibleID_Could_Not_Be_Determined {
-            get {
-                return ResourceManager.GetString("SamlToken_AttributeNameImmutibleID_Could_Not_Be_Determined", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SAML AttributeNameUPN could not be determined..
-        /// </summary>
-        internal static string SamlToken_AttributeNameUPN_Could_Not_Be_Determined {
-            get {
-                return ResourceManager.GetString("SamlToken_AttributeNameUPN_Could_Not_Be_Determined", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Data points not found for AttributeNameUPN.
-        /// </summary>
-        internal static string SamlToken_AttributeNameUPN_Data_Points_Not_Found {
-            get {
-                return ResourceManager.GetString("SamlToken_AttributeNameUPN_Data_Points_Not_Found", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Data points not found for NameIdentifierFormat.
-        /// </summary>
-        internal static string SamlToken_NameIdentifierFormat_Data_Points_Not_Found {
-            get {
-                return ResourceManager.GetString("SamlToken_NameIdentifierFormat_Data_Points_Not_Found", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No SAML Data in session.
-        /// </summary>
-        internal static string SamlToken_No_Data {
-            get {
-                return ResourceManager.GetString("SamlToken_No_Data", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SAML signing certificate could not be determined..
-        /// </summary>
-        internal static string SamlToken_SigningCertificate_Could_Not_Be_Determined {
-            get {
-                return ResourceManager.GetString("SamlToken_SigningCertificate_Could_Not_Be_Determined", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Data points not found for SigningCertificate..
-        /// </summary>
-        internal static string SamlToken_SigningCertificate_Data_Points_Not_Found {
-            get {
-                return ResourceManager.GetString("SamlToken_SigningCertificate_Data_Points_Not_Found", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Data points not found for TokenAttributeNameImmutibleID.
-        /// </summary>
-        internal static string SamlToken_TokenAttributeNameImmutibleID_Data_Points_Not_Found {
-            get {
-                return ResourceManager.GetString("SamlToken_TokenAttributeNameImmutibleID_Data_Points_Not_Found", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Issuer in SAML token could not be determined..
-        /// </summary>
-        internal static string SamlToken_TokenIssuer_Could_Not_Be_Determined {
-            get {
-                return ResourceManager.GetString("SamlToken_TokenIssuer_Could_Not_Be_Determined", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         internal static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Scenario.
-        /// </summary>
-        internal static string Scenario {
-            get {
-                return ResourceManager.GetString("Scenario", resourceCulture);
             }
         }
         
@@ -4028,20 +961,11 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to second.
+        ///   Looks up a localized string similar to Selective.
         /// </summary>
-        internal static string Second {
+        internal static string Selective {
             get {
-                return ResourceManager.GetString("Second", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to seconds.
-        /// </summary>
-        internal static string Seconds {
-            get {
-                return ResourceManager.GetString("Seconds", resourceCulture);
+                return ResourceManager.GetString("Selective", resourceCulture);
             }
         }
         
@@ -4127,51 +1051,6 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;&lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Session collected between 14 and 30 days ago&lt;/span&gt;&lt;/b&gt;. Correlating with any backend server logs is &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;likely impossible&lt;/span&gt;&lt;/b&gt;. Many systems don&apos;t keep logs this long.&lt;/p&gt;.
-        /// </summary>
-        internal static string Session_collected_between_14_and_30_days_ago {
-            get {
-                return ResourceManager.GetString("Session collected between 14 and 30 days ago", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;&lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Session collected more than 30 days ago&lt;/span&gt;&lt;/b&gt;. Correlating with any backend server logs is &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;very likely impossible&lt;/span&gt;&lt;/b&gt;. Many systems don&apos;t keep logs this long.&lt;/p&gt;.
-        /// </summary>
-        internal static string Session_collected_more_than_30_days_ago {
-            get {
-                return ResourceManager.GetString("Session collected more than 30 days ago", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;Session collected within 14 days, data freshness is good, &lt;b&gt;&lt;span style=&apos;color:orange&apos;&gt;but not ideal&lt;/span&gt;&lt;/b&gt;. Depending on the backend system, &lt;b&gt;&lt;span style=&apos;color:orange&apos;&gt; correlating this data to server logs might be possible&lt;/span&gt;&lt;/b&gt;.&lt;/p&gt;.
-        /// </summary>
-        internal static string Session_collected_within_14_days {
-            get {
-                return ResourceManager.GetString("Session collected within 14 days", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Session collected within 7 days, data freshness is good. Best case scenario for correlating this data to backend server logs..
-        /// </summary>
-        internal static string Session_collected_within_7_days {
-            get {
-                return ResourceManager.GetString("Session collected within 7 days", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Session Elapsed Time.
-        /// </summary>
-        internal static string Session_Elapsed_Time {
-            get {
-                return ResourceManager.GetString("Session Elapsed Time", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Session ID.
         /// </summary>
         internal static string Session_ID {
@@ -4226,24 +1105,6 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;The server think time for this session was less than 1/10th of the elapsed time. This indicates network latency in this session.&lt;/p&gt;&lt;p&gt;If you are troubleshooting application latency, the next step is to collect network traces (Wireshark, NetMon etc) and troubleshoot at the network layer.&lt;/p&gt;&lt;p&gt;Ideally collect concurrent network traces on the impacted client and a network perimeter device, to be analysed together by a member of your networking team.&lt;p&gt;.
-        /// </summary>
-        internal static string SessionTimersDescription {
-            get {
-                return ResourceManager.GetString("SessionTimersDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The Office 365 Fiddler Extension does not yet have a way to classify this session.&lt;p&gt;If you have a suggestion for an improvement, create an issue or better yet a pull request in the project Github repository: &lt;a href=&apos;https://github.com/jprknight/Office365FiddlerExtension&apos; target=&apos;_blank&apos;&gt;https://github.com/jprknight/Office365FiddlerExtension&lt;/a&gt;.&lt;/p&gt;.
-        /// </summary>
-        internal static string SessionType_Unknown_ResponseComments {
-            get {
-                return ResourceManager.GetString("SessionType_Unknown_ResponseComments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Set Session Severity.
         /// </summary>
         internal static string Set_Session_Severity {
@@ -4271,38 +1132,11 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Simple Session Analysis.
-        /// </summary>
-        internal static string Simple_Session_Analysis {
-            get {
-                return ResourceManager.GetString("Simple Session Analysis", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Simple Session Analysis - Json Read Failure..
-        /// </summary>
-        internal static string Simple_Session_Analysis___Json_Read_Failure_ {
-            get {
-                return ResourceManager.GetString("Simple Session Analysis - Json Read Failure.", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Slow Running Session Threshold.
         /// </summary>
         internal static string Slow_Running_Session_Threshold {
             get {
                 return ResourceManager.GetString("Slow Running Session Threshold", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Some Session Analysis.
-        /// </summary>
-        internal static string Some_Session_Analysis {
-            get {
-                return ResourceManager.GetString("Some Session Analysis", resourceCulture);
             }
         }
         
@@ -4325,56 +1159,11 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type.
-        /// </summary>
-        internal static string Type {
-            get {
-                return ResourceManager.GetString("Type", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Types.
-        /// </summary>
-        internal static string Types {
-            get {
-                return ResourceManager.GetString("Types", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unclassified.
-        /// </summary>
-        internal static string Unclassified {
-            get {
-                return ResourceManager.GetString("Unclassified", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Undefined.
-        /// </summary>
-        internal static string Undefined {
-            get {
-                return ResourceManager.GetString("Undefined", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Uninteresting.
         /// </summary>
         internal static string Uninteresting {
             get {
                 return ResourceManager.GetString("Uninteresting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unknown.
-        /// </summary>
-        internal static string Unknown {
-            get {
-                return ResourceManager.GetString("Unknown", resourceCulture);
             }
         }
         
@@ -4393,6 +1182,87 @@ namespace Office365FiddlerExtension.Language {
         internal static string Update_Available {
             get {
                 return ResourceManager.GetString("Update Available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new version is available.
+        /// </summary>
+        internal static string Update_Available___A_new_version {
+            get {
+                return ResourceManager.GetString("Update Available - A new version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are currently using extension.
+        /// </summary>
+        internal static string Update_Available___Currently_using {
+            get {
+                return ResourceManager.GetString("Update Available - Currently using", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extension Update Available.
+        /// </summary>
+        internal static string Update_Available___Extension_Update_Available {
+            get {
+                return ResourceManager.GetString("Update Available - Extension Update Available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to go to the update download page?.
+        /// </summary>
+        internal static string Update_Available___Go_to_download_page_ {
+            get {
+                return ResourceManager.GetString("Update Available - Go to download page?", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are currently using ruleset.
+        /// </summary>
+        internal static string Update_Available___Ruleset___Currently_Using {
+            get {
+                return ResourceManager.GetString("Update Available - Ruleset - Currently Using", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ruleset Update Available.
+        /// </summary>
+        internal static string Update_Available___Ruleset___Ruleset_Update {
+            get {
+                return ResourceManager.GetString("Update Available - Ruleset - Ruleset Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There&apos;s an update available for the Office 365 Fiddler Extension ruleset..
+        /// </summary>
+        internal static string Update_Available___Ruleset___Ruleset_Update_Available {
+            get {
+                return ResourceManager.GetString("Update Available - Ruleset - Ruleset Update Available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There&apos;s an update available for the Office 365 Fiddler Extension..
+        /// </summary>
+        internal static string Update_Available___There_is_an_update {
+            get {
+                return ResourceManager.GetString("Update Available - There is an update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warn Before Analysing.
+        /// </summary>
+        internal static string Warn_Before_Analysing {
+            get {
+                return ResourceManager.GetString("Warn Before Analysing", resourceCulture);
             }
         }
         

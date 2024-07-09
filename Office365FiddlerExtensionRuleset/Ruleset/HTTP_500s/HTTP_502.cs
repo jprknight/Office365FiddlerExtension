@@ -1,5 +1,5 @@
 ﻿using System;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -14,6 +14,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_502 Instance => _instance ?? (_instance = new HTTP_502());
 
+        /// <summary>
+        /// Set session analysis values for a HTTP 502 response code.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;
@@ -70,7 +74,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_502s|HTTP_502_Bad_Gateway_Telemetry_False_Positive");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_502s|HTTP_502_Bad_Gateway_Telemetry_False_Positive");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -87,14 +91,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 20;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_502s",
 
-                SessionType = LangHelper.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_Telemetry_False_Positive_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -103,7 +107,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);            
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);            
         }
 
         private void HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive(Session session)
@@ -136,7 +140,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_502s|HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_502s|HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -153,16 +157,16 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 20;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_502s",
 
-                SessionType = LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseComments"),
-                ResponseServer = LangHelper.GetString("False Positive"),
-                Authentication = LangHelper.GetString("False Positive"),
+                SessionType = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseComments"),
+                ResponseServer = RulesetLangHelper.GetString("False Positive"),
+                Authentication = RulesetLangHelper.GetString("False Positive"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -171,7 +175,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);            
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);            
         }
 
         private void HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive(Session session)
@@ -204,7 +208,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_502s|HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_502s|HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -232,23 +236,23 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
             else
             {
-                AutoDFalsePositiveDomain = $"<{LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_Domain_Not_Detected")}>";
+                AutoDFalsePositiveDomain = $"<{RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_Domain_Not_Detected")}>";
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_502s",
 
-                SessionType = LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCommentsStart")
+                SessionType = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCommentsStart")
                 + " "
                 + AutoDFalsePositiveDomain
                 + " "
-                + LangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCommentsEnd"),
-                ResponseServer = LangHelper.GetString("False Positive"),
-                Authentication = LangHelper.GetString("False Positive"),
+                + RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCommentsEnd"),
+                ResponseServer = RulesetLangHelper.GetString("False Positive"),
+                Authentication = RulesetLangHelper.GetString("False Positive"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -257,7 +261,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
         }
 
         private void HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover(Session session)
@@ -285,7 +289,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_502s|HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_502s|HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -302,14 +306,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 60;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover",
 
-                SessionType = LangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -318,7 +322,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);            
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);            
         }
 
         private void HTTP_502_Bad_Gateway_Anything_Else(Session session)
@@ -336,7 +340,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_502s|HTTP_502_Bad_Gateway_Anything_Else");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_502s|HTTP_502_Bad_Gateway_Anything_Else");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -353,14 +357,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 60;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_502s",
 
-                SessionType = LangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_502_Bad_Gateway_Anything_Else_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -369,7 +373,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

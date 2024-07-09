@@ -145,7 +145,7 @@ namespace Office365FiddlerExtension.Inspectors
         /// <param name="_session"></param>
         /// <returns></returns>
         // public async Task ParseHTTPResponse(Session Session)
-        // REVIEW THIS - AWAIT. Can this be done or would it break things.
+        // AWAIT. Can this be done or would it break things.
         // Tested with await task.run and it broke the inspector.
         public async Task ParseHTTPResponse(Session Session)
         {
@@ -286,8 +286,6 @@ namespace Office365FiddlerExtension.Inspectors
                 ResultsString.AppendLine("</td>");
                 ResultsString.AppendLine("</tr>");
 
-                // REVIEW THIS - Checked March 2024. Make un-calculable inspector Elapsed time 0 or something. Or make this logic check if integer. Multi-language could break this.
-                // Ignore this unless multi language support is implemented.
                 if (ExtensionSessionFlags.InspectorElapsedTime != "Insufficient data")
                 {
                     ResultsString.AppendLine("<tr>");
@@ -375,8 +373,6 @@ namespace Office365FiddlerExtension.Inspectors
 
                 // Authentication
                 #region Authentication
-                // REVIEW THIS - Checked March 2024 - Multi Language mess with this logic?
-                // Ignore this unless multi language support is implemented.
                 if (ExtensionSessionFlags.Authentication != "No Auth Headers")
                 {
                     ResultsString.AppendLine($"<h2>{LangHelper.GetString("Authentication")}</h2>");

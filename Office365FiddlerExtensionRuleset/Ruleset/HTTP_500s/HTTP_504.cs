@@ -1,5 +1,5 @@
 ﻿using System;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -14,6 +14,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_504 Instance => _instance ?? (_instance = new HTTP_504());
 
+        /// <summary>
+        /// Set session analysis values for a HTTP 504 response code.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;
@@ -56,7 +60,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_504s|HTTP_504_Gateway_Timeout_Internet_Access_Blocked");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_504s|HTTP_504_Gateway_Timeout_Internet_Access_Blocked");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -73,14 +77,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 60;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_504s",
 
-                SessionType = LangHelper.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_504_Gateway_Timeout_Internet_Access_Blocked_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -89,7 +93,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);            
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);            
         }
 
         private void HTTP_504_Gateway_Timeout_Anything_Else(Session session)
@@ -107,7 +111,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_504s|HTTP_504_Gateway_Timeout_Anything_Else");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_504s|HTTP_504_Gateway_Timeout_Anything_Else");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -124,14 +128,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 60;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_504s",
 
-                SessionType = LangHelper.GetString("HTTP_504_Gateway_Timeout_Anything_Else_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_504_Gateway_Timeout_Anything_Else_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_504_Gateway_Timeout_Anything_Else_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_504_Gateway_Timeout_Anything_Else_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_504_Gateway_Timeout_Anything_Else_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_504_Gateway_Timeout_Anything_Else_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_504_Gateway_Timeout_Anything_Else_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_504_Gateway_Timeout_Anything_Else_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -140,7 +144,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

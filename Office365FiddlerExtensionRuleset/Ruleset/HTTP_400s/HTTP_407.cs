@@ -1,5 +1,5 @@
 ﻿using System;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -14,7 +14,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_407 Instance => _instance ?? (_instance = new HTTP_407());
 
-        public void HTTP_407_Proxy_Auth_Required(Session session)
+        /// <summary>
+        /// Set session analysis values for a HTTP 407 response code.
+        /// </summary>
+        /// <param name="session"></param>
+        public void Run(Session session)
         {
             this.session = session;
 
@@ -27,7 +31,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_407s");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_407s");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -44,14 +48,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 60;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_407s",
 
-                SessionType = LangHelper.GetString("HTTP_407s_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_407s_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_407s_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_407s_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_407s_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_407s_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_407s_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_407s_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -60,7 +64,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

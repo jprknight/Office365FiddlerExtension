@@ -1,6 +1,6 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using System;
 using System.Reflection;
 
@@ -14,6 +14,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HostIP Instance => _instance ?? (_instance = new HostIP());
 
+        /// <summary>
+        /// Set the HostIP, handling whether NeverWebCall is true or false. Used in the UI column and the response inspector.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;
@@ -30,7 +34,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             string hostIP;
 
             // If NeverWebCall is false, return.
-            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            if (!RulesetSettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 return;
             }
@@ -56,21 +60,21 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 hostIP = "UNKNOWN";
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = LangHelper.GetString("HostIP"),
+                SectionTitle = RulesetLangHelper.GetString("HostIP"),
                 HostIP = hostIP
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);             
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);             
         }
 
         private void NeverWebCall_False_SetHostIP(Session session)
         {
             // If NeverWebCall is true, return;
 
-            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            if (RulesetSettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 return;
             }
@@ -94,7 +98,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             else if (this.session["X-HostIP"] != "")
             {
                 // Tuple -- tupleIsPrivateIPAddress (bool), matching subnet (string).
-                Tuple<bool, string> tupleIsPrivateIPAddress = NetworkingService.Instance.IsPrivateIPAddress(this.session);
+                Tuple<bool, string> tupleIsPrivateIPAddress = Office365FiddlerExtension.Services.NetworkingService.Instance.IsPrivateIPAddress(this.session);
 
                 if (tupleIsPrivateIPAddress.Item1)
                 {
@@ -103,7 +107,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 else
                 {
                     // Tuple -- IsMicrosoft365IP (bool), matching subnet (string).
-                    Tuple<bool, string> tupleIsMicrosoft365IPAddress = NetworkingService.Instance.IsMicrosoft365IPAddress(this.session);
+                    Tuple<bool, string> tupleIsMicrosoft365IPAddress = Office365FiddlerExtension.Services.NetworkingService.Instance.IsMicrosoft365IPAddress(this.session);
 
                     if (tupleIsMicrosoft365IPAddress.Item1)
                     {
@@ -120,14 +124,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 hostIP = "UNKNOWN";
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = LangHelper.GetString("HostIP"),
+                SectionTitle = RulesetLangHelper.GetString("HostIP"),
                 HostIP = hostIP
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

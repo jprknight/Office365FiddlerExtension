@@ -1,6 +1,6 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -38,7 +38,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_REST_People_Request");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_REST_People_Request");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -74,14 +74,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
             var requestId = this.session.ResponseHeaders.Where(x => x.Name.Equals("request-id")).FirstOrDefault();
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_200s",
 
-                SessionType = $"{LangHelper.GetString("HTTP_200_REST_People_Request_SessionType")} {sessionType}",
-                ResponseCodeDescription = LangHelper.GetString("HTTP_200_REST_People_Request_ResponseCodeDescription"),
-                ResponseAlert = $"{LangHelper.GetString("HTTP_200_REST_People_Request_ResponseAlert")} {sessionType}",
-                ResponseComments = $"{requestId} $search:{queryStrings["$search"]} $top:{queryStrings["$top"]} $skip:{queryStrings["$skip"]} $select:{queryStrings["$select"]} $filter:{queryStrings["$filter"]}",
+                SessionType = $"{RulesetLangHelper.GetString("HTTP_200_REST_People_Request_SessionType")} {sessionType}",
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_REST_People_Request_ResponseCodeDescription"),
+                ResponseAlert = $"{RulesetLangHelper.GetString("HTTP_200_REST_People_Request_ResponseAlert")} {sessionType}",
+                ResponseComments = $"{requestId} $search:{queryStrings["$search"]} $top:{queryStrings["$top"]} " +
+                    $"$skip:{queryStrings["$skip"]} $select:{queryStrings["$select"]} $filter:{queryStrings["$filter"]}",
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -90,7 +91,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

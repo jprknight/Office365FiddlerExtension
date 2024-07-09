@@ -1,6 +1,6 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using System;
 using System.Reflection;
 
@@ -14,6 +14,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static LoopBackTunnel Instance => _instance ?? (_instance = new LoopBackTunnel());
 
+        /// <summary>
+        /// Determine if the current session is a loopback tunnel.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;
@@ -33,7 +37,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|LoopBackTunnel");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("BroadLogicChecks|LoopBackTunnel");
 
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
@@ -53,16 +57,16 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 40;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
-                SectionTitle = LangHelper.GetString("Broad Logic Checks"),
+                SectionTitle = RulesetLangHelper.GetString("Broad Logic Checks"),
 
-                SessionType = LangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
-                ResponseServer = LangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
-                ResponseAlert = LangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
-                ResponseCodeDescription = LangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
-                ResponseComments = LangHelper.GetString("BroadLogicChecks_Loopback Tunnel Response Comments"),
-                Authentication = LangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
+                SessionType = RulesetLangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
+                ResponseServer = RulesetLangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
+                ResponseAlert = RulesetLangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
+                ResponseComments = RulesetLangHelper.GetString("BroadLogicChecks_Loopback Tunnel Response Comments"),
+                Authentication = RulesetLangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -71,7 +75,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using Office365FiddlerExtension.Services;
+using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -14,6 +14,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         public static HTTP_403 Instance => _instance ?? (_instance = new HTTP_403());
 
+        /// <summary>
+        /// Set session analysis values for a HTTP 403 response code.
+        /// </summary>
+        /// <param name="session"></param>
         public void Run(Session session)
         {
             this.session = session;
@@ -55,7 +59,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 try
                 {
-                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_403s|HTTP_403_Forbidden_Proxy_Block");
+                    var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_403s|HTTP_403_Forbidden_Proxy_Block");
                     sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                     sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                     sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -72,14 +76,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     sessionSeverity = 60;
                 }
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_403s",
 
-                    SessionType = LangHelper.GetString("HTTP_403_Forbidden_Proxy_Block_SessionType"),
-                    ResponseCodeDescription = LangHelper.GetString("HTTP_403_Forbidden_Proxy_Block_ResponseCodeDescription"),
-                    ResponseAlert = LangHelper.GetString("HTTP_403_Forbidden_Proxy_Block_ResponseAlert"),
-                    ResponseComments = LangHelper.GetString("HTTP_403_Forbidden_Proxy_Block_ResponseComments"),
+                    SessionType = RulesetLangHelper.GetString("HTTP_403_Forbidden_Proxy_Block_SessionType"),
+                    ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_403_Forbidden_Proxy_Block_ResponseCodeDescription"),
+                    ResponseAlert = RulesetLangHelper.GetString("HTTP_403_Forbidden_Proxy_Block_ResponseAlert"),
+                    ResponseComments = RulesetLangHelper.GetString("HTTP_403_Forbidden_Proxy_Block_ResponseComments"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -88,7 +92,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
 
@@ -109,7 +113,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 try
                 {
-                    var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_403s|HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set");
+                    var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_403s|HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set");
                     sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                     sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                     sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -126,14 +130,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     sessionSeverity = 60;
                 }
 
-                var sessionFlags_HTTP403_EWS = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags_HTTP403_EWS = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_403s_EWS_Mailbox_Language",
 
-                    SessionType = LangHelper.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_SessionType"),
-                    ResponseCodeDescription = LangHelper.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseCodeDescription"),
-                    ResponseAlert = LangHelper.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseAlert"),
-                    ResponseComments = LangHelper.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseComments"),
+                    SessionType = RulesetLangHelper.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_SessionType"),
+                    ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseCodeDescription"),
+                    ResponseAlert = RulesetLangHelper.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseAlert"),
+                    ResponseComments = RulesetLangHelper.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseComments"),
 
                     SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                     SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -141,7 +145,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     SessionSeverity = sessionSeverity
                 };
                 var sessionFlagsJson_HTTP403_EWS = JsonConvert.SerializeObject(sessionFlags_HTTP403_EWS);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson_HTTP403_EWS, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson_HTTP403_EWS, false);
             }
         }
 
@@ -180,7 +184,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_403s|HTTP_403_FreeBusy_Request_failed_with_http_code_Forbidden");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_403s|HTTP_403_FreeBusy_Request_failed_with_http_code_Forbidden");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -197,14 +201,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 60;
             }
 
-            var sessionFlags_HTTP403_FreeBusyForbidden = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags_HTTP403_FreeBusyForbidden = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden",
 
-                SessionType = LangHelper.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -212,7 +216,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 SessionSeverity = sessionSeverity
             };
             var sessionFlagsJson_HTTP403_FreeBusyForbidden = JsonConvert.SerializeObject(sessionFlags_HTTP403_FreeBusyForbidden);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson_HTTP403_FreeBusyForbidden, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson_HTTP403_FreeBusyForbidden, false);
         }
 
         private void HTTP_403_Forbidden_Everything_Else(Session session)
@@ -228,7 +232,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             try
             {
-                var sessionClassificationJson = SessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_403s|HTTP_403_Forbidden_Everything_Else");
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_403s|HTTP_403_Forbidden_Everything_Else");
                 sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
                 sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
                 sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
@@ -245,14 +249,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionSeverity = 60;
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_403s",
 
-                SessionType = LangHelper.GetString("HTTP_403_Forbidden_Everything_Else_SessionType"),
-                ResponseCodeDescription = LangHelper.GetString("HTTP_403_Forbidden_Everything_Else_ResponseCodeDescription"),
-                ResponseAlert = LangHelper.GetString("HTTP_403_Forbidden_Everything_Else_ResponseAlert"),
-                ResponseComments = LangHelper.GetString("HTTP_403_Forbidden_Everything_Else_ResponseComments"),
+                SessionType = RulesetLangHelper.GetString("HTTP_403_Forbidden_Everything_Else_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_403_Forbidden_Everything_Else_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_403_Forbidden_Everything_Else_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_403_Forbidden_Everything_Else_ResponseComments"),
 
                 SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
                 SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
@@ -260,7 +264,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 SessionSeverity = sessionSeverity
             };
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);          
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);          
         }
     }
 }

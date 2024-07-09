@@ -25,21 +25,38 @@ namespace Office365FiddlerExtension.Services
         {
             if (!IsInitialized)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}):" +
-                    $" Starting v" +
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (ActivationService): " +
+                    $"Starting v" +
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Major}." +
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Minor}." +
                     $"{Assembly.GetExecutingAssembly().GetName().Version.Build}");
 
-                // Not currently supporting language changing in the application.
-                // LangHelper.ChangeLanguage(SettingsJsonService.Instance.GetDeserializedExtensionSettings().PreferredLanguage);
-
                 // Ensure Fiddler settings (settings, URLs, & verison) for the extension have been created.
                 // Avoid null exceptions.
-                SettingsJsonService.Instance.CreateExtensionSettingsFiddlerSetting();
-                URLsJsonService.Instance.CreateExtensionURLFiddlerSetting();
-                VersionJsonService.Instance.CreateExtensionVersionFiddlerSetting();
-                SessionClassificationService.Instance.CreateSessionClassificationFiddlerSetting();
+                SettingsJsonService.Instance.CreateExtensionSettingsFiddlerApplicationPreference();
+                URLsJsonService.Instance.CreateExtensionURLFiddlerApplicationPreference();
+                VersionJsonService.Instance.CreateExtensionVersionFiddlerApplicationPreference();
+                SessionClassificationService.Instance.CreateSessionClassificationFiddlerApplicationPreference();
+
+                if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().DebugMode)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (ActivationService): " +
+                        $"Debug Mode set to true.");
+                }
+
+                // Control whether Fiddler captures sessions on startup. Useful as I only mostly review traces and data in Fiddler rather
+                // than capture from my own machine.
+                if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().CaptureTraffic)
+                {
+                    FiddlerApplication.UI.actAttachProxy();
+                }
+                else
+                {
+                    FiddlerApplication.UI.actDetachProxy();
+                }
+
+                // Set extension language based on preferred language.
+                LangHelper.ChangeLanguage(SettingsJsonService.Instance.GetDeserializedExtensionSettings().PreferredLanguage);
 
                 // Set Fiddler settings as needed.
                 SettingsJsonService.Instance.SetExtensionDLL();
@@ -48,23 +65,26 @@ namespace Office365FiddlerExtension.Services
                                 
                 InitializeTelemetry();
 
-                // Update as needed. -- All web update calls live here.
+                // Update as needed. -- Web update calls live here.
                 UpdateService.Instance.Initialize();
+
+                // Notify user if updates are available. -- More web calls here.
+                VersionService.Instance.NotifyUserIfExtensionUpdateIsAvailable();
+                VersionService.Instance.NotifyUserIfRulesetUpdateIsAvailable();
 
                 // Add extension menu.
                 MenuUI.Instance.Initialize();
 
-                // Add context menu items.
+                // Add context menu.
                 ContextMenuUI.Instance.initialize();
 
                 // Add columns into session list in UI.
                 ColumnUI.Instance.Initialize();
 
+                // Register available Fiddler events.
                 FiddlerApplication.OnLoadSAZ += SazFileService.Instance.LoadSaz;
                 FiddlerApplication.OnSaveSAZ += SazFileService.Instance.SaveSaz;
-
-                VersionService.Instance.NotifyUserIfExtensionUpdateIsAvailable();
-                VersionService.Instance.NotifyUserIfRulesetUpdateIsAvailable();
+                FiddlerApplication.UI.lvSessions.OnSessionsAdded += ImportService.Instance.ImportSessions;
 
                 IsInitialized = true;
             }

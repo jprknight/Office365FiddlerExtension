@@ -7,13 +7,17 @@ using System.Reflection;
 namespace Office365FiddlerExtension.Services
 {
     /// <summary>
-    /// Class to update Version and URL Json data from Github repo.
+    /// Class which is responsible for actually updating Version, URL, and Session Classification Json data from Github repo, 
+    /// and Microsoft 365 URLs and IPs.
     /// </summary>
     public class UpdateService
     {
         private static UpdateService _instance;
         public static UpdateService Instance => _instance ?? (_instance = new UpdateService());
 
+        /// <summary>
+        /// Check for updates for URLs, extension version, session classification data, and Microsoft 365 URLs web service data from the web.
+        /// </summary>
         public void Initialize()
         {
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
@@ -21,24 +25,50 @@ namespace Office365FiddlerExtension.Services
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): NeverWebCall enabled, returning.");
                 return;
             }
-            
-            /*
-            REVIEW THIS -- UNCOMMENT THIS CODE BEFORE GOING PRODUCTION.
-            This is what stops the extension checking every time Fiddler is opened or the extension is initialized.
-            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
-            if (DateTime.Now < extensionSettings.NextUpdateCheck)
-            {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Next update check timestamp not met ({extensionSettings.NextUpdateCheck}), returning.");
-                return;
-            }
-            */
 
+            if (!EligibleForUpdateCheck())
+            {
+                var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+                if (extensionSettings.DebugMode)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        $"NextUpdateCheck is {extensionSettings.NextUpdateCheck}, but checking for updates now anyway.");
+                }
+                else
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        $"Waiting until {extensionSettings.NextUpdateCheck} before checking for any updates.");
+                    return;
+                }
+            }
+            
             UpdateURLsJsonFromGithub();
             UpdateVersionJsonFromGithub();
             UpdateSessionClassificationJsonFromGithub();
             UpdateMicrosft365URLsIPsFromWeb();
         }
 
+        /// <summary>
+        /// Determine if enough time has passed between the last update check and now.
+        /// </summary>
+        /// <returns></returns>
+        public bool EligibleForUpdateCheck()
+        {
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            if (DateTime.Now > extensionSettings.NextUpdateCheck.ToLocalTime())
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"Next update check timestamp met ({extensionSettings.NextUpdateCheck}), allowing application to check for updates.");
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Update session classification Json from Github repo.
+        /// </summary>
         private async void UpdateSessionClassificationJsonFromGithub()
         {
             var extensionURLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
@@ -81,6 +111,9 @@ namespace Office365FiddlerExtension.Services
                     else
                     {
                         FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): SessionClassification Fiddler setting no update needed.");
+                        
+                        // Update the next update check timestamp.
+                        SettingsJsonService.Instance.SetNextUpdateTimestamp();
                     }
                 }
                 catch (Exception ex)
@@ -90,6 +123,9 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
+        /// <summary>
+        /// Update version Json from Github repo.
+        /// </summary>
         private async void UpdateVersionJsonFromGithub()
         {
             var extensionURLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
@@ -133,6 +169,9 @@ namespace Office365FiddlerExtension.Services
                     else
                     {
                         FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExtensionVersion Fiddler setting no update needed.");
+
+                        // Update the next update check timestamp.
+                        SettingsJsonService.Instance.SetNextUpdateTimestamp();
                     }
                 }
                 catch (Exception ex)
@@ -142,6 +181,9 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
+        /// <summary>
+        /// Update URLs Json from Github repo.
+        /// </summary>
         private async void UpdateURLsJsonFromGithub()
         {
             var extensionURLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
@@ -184,6 +226,9 @@ namespace Office365FiddlerExtension.Services
                     else
                     {
                         FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): ExtensionURLs Fiddler setting no update needed.");
+
+                        // Update the next update check timestamp.
+                        SettingsJsonService.Instance.SetNextUpdateTimestamp();
                     }
                 }
                 catch (Exception ex)
@@ -237,6 +282,9 @@ namespace Office365FiddlerExtension.Services
                     else
                     {
                         FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): MicrosoftURLsIPsWebService Fiddler setting no update needed.");
+
+                        // Update the next update check timestamp.
+                        SettingsJsonService.Instance.SetNextUpdateTimestamp();
                     }
                 }
                 catch (Exception ex)
