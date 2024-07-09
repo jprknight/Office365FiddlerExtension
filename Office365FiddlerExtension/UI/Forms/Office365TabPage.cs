@@ -1,12 +1,8 @@
 ﻿using Fiddler;
 using System;
-using System.Numerics;
-
 using System.Drawing;
 using System.Windows.Forms;
 using Office365FiddlerExtension.Services;
-using System.Reflection;
-using System.Linq;
 
 namespace Office365FiddlerExtension.UI.Forms
 {
@@ -15,7 +11,6 @@ namespace Office365FiddlerExtension.UI.Forms
         private static Office365TabPage _instance;
 
         public static Office365TabPage Instance => _instance ?? (_instance = new Office365TabPage());
-
 
         string strPlaceHolderText = LangHelper.GetString("Check IP Address Placeholder Text");
 
