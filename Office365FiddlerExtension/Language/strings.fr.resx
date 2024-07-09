@@ -121,9 +121,9 @@
     <value>About</value>
     <comment>Menu</comment>
   </data>
-  <data name="All Session Analysis" xml:space="preserve">
-    <value>All Session Analysis</value>
-    <comment>Menu</comment>
+  <data name="Always" xml:space="preserve">
+    <value>Always</value>
+    <comment>Tab Page</comment>
   </data>
   <data name="Analyse All Sessions" xml:space="preserve">
     <value>Analyse All Sessions</value>
@@ -137,6 +137,14 @@
     <value>Analysed</value>
     <comment>Consolidated Report Service</comment>
   </data>
+  <data name="Attribute Name Immutable ID" xml:space="preserve">
+    <value>Attribute Name Immutable ID</value>
+    <comment>Inspector</comment>
+  </data>
+  <data name="Attribute Name UPN" xml:space="preserve">
+    <value>Attribute Name UPN</value>
+    <comment>Inspector</comment>
+  </data>
   <data name="Authentication" xml:space="preserve">
     <value>Authentication</value>
     <comment>Inspector &amp; ColumnUI</comment>
@@ -148,6 +156,14 @@
   <data name="Blue" xml:space="preserve">
     <value>Blue</value>
     <comment>ContextMenu</comment>
+  </data>
+  <data name="Capture Traffic" xml:space="preserve">
+    <value>Capture Traffic</value>
+    <comment>Tab Page</comment>
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value>Check</value>
+    <comment>Tab Page</comment>
   </data>
   <data name="Check for updates every" xml:space="preserve">
     <value>Check for updates every</value>
@@ -161,6 +177,18 @@
     <value>Check IP Address</value>
     <comment>Menu</comment>
   </data>
+  <data name="Check IP Address Placeholder Text" xml:space="preserve">
+    <value>Enter an IP Address to check what network it is on.</value>
+    <comment>Tab Page</comment>
+  </data>
+  <data name="Choose When To Analyse Sessions" xml:space="preserve">
+    <value>Choose When To Automatically Analyse Sessions</value>
+    <comment>Tab Page</comment>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+    <comment>Tab Page</comment>
+  </data>
   <data name="Clear All Session Analysis" xml:space="preserve">
     <value>Clear All Session Analysis</value>
     <comment>Menu</comment>
@@ -168,6 +196,10 @@
   <data name="Clear Selected Sessions" xml:space="preserve">
     <value>Clear Selected Sessions</value>
     <comment>ContextMenu</comment>
+  </data>
+  <data name="Clear Selected Sessions Anaysis" xml:space="preserve">
+    <value>Clear Selected Sessions Anaysis</value>
+    <comment>Tab Page</comment>
   </data>
   <data name="Click the link below for update instructions" xml:space="preserve">
     <value>Click the link below for update instructions</value>
@@ -237,6 +269,10 @@
     <value>English</value>
     <comment>Menu</comment>
   </data>
+  <data name="Extension" xml:space="preserve">
+    <value>Extension</value>
+    <comment>Tab Page</comment>
+  </data>
   <data name="Extension DLL" xml:space="preserve">
     <value>Extension DLL</value>
     <comment>About</comment>
@@ -252,6 +288,10 @@
   <data name="Extension Path" xml:space="preserve">
     <value>Extension Path</value>
     <comment>About</comment>
+  </data>
+  <data name="Extension Version Information" xml:space="preserve">
+    <value>Extension Version Information</value>
+    <comment>Tab Page</comment>
   </data>
   <data name="False Positive" xml:space="preserve">
     <value>False Positive</value>
@@ -339,7 +379,7 @@
   </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
-    <comment>Menu</comment>
+    <comment>Menu &amp; Tab Page</comment>
   </data>
   <data name="LoadOrImportSessions" xml:space="preserve">
     <value>Load or import some sessions to analyse and create a Consolidationed Analysis Report.</value>
@@ -365,6 +405,14 @@
     <value>network</value>
     <comment>Inspector</comment>
   </data>
+  <data name="Never" xml:space="preserve">
+    <value>Never</value>
+    <comment>Tab Page</comment>
+  </data>
+  <data name="Never Web Call" xml:space="preserve">
+    <value>Never Web Call</value>
+    <comment>Tab Page</comment>
+  </data>
   <data name="Next Update Check" xml:space="preserve">
     <value>Next Update Check</value>
     <comment>About</comment>
@@ -388,6 +436,10 @@
   <data name="Office 365 Fiddler Extension" xml:space="preserve">
     <value>Office 365 Fiddler Extension</value>
     <comment>Inspector &amp; Consolidated Report Service</comment>
+  </data>
+  <data name="On Import" xml:space="preserve">
+    <value>On Import</value>
+    <comment>Tab Page</comment>
   </data>
   <data name="On Live Trace" xml:space="preserve">
     <value>On Live Trace</value>
@@ -445,6 +497,14 @@
     <value>Response Server</value>
     <comment>ColumnUI</comment>
   </data>
+  <data name="Ruleset" xml:space="preserve">
+    <value>Ruleset</value>
+    <comment>Tab Page</comment>
+  </data>
+  <data name="S Capitalised Sessions" xml:space="preserve">
+    <value>Sessions</value>
+    <comment>Tab Page -- Capitalised "Sessions"</comment>
+  </data>
   <data name="SAML Response Parser" xml:space="preserve">
     <value>SAML Response Parser</value>
     <comment>Inspector</comment>
@@ -456,6 +516,9 @@
   <data name="ScoreForSession" xml:space="preserve">
     <value>ScoreForSession</value>
     <comment>About -- Do not translate. This is an internal to Fiddler setting, context may be lost if translated.</comment>
+  </data>
+  <data name="Selective" xml:space="preserve">
+    <value>Selective</value>
   </data>
   <data name="Server Begin Response" xml:space="preserve">
     <value>Server Begin Response</value>
@@ -533,10 +596,6 @@
     <value>Slow Running Session Threshold</value>
     <comment>About</comment>
   </data>
-  <data name="Some Session analysis" xml:space="preserve">
-    <value>Some Session analysis</value>
-    <comment>About</comment>
-  </data>
   <data name="Spanish" xml:space="preserve">
     <value>Spanish</value>
     <comment>Menu</comment>
@@ -586,6 +645,10 @@
   <data name="Update Available - There is an update" xml:space="preserve">
     <value>There's an update available for the Office 365 Fiddler Extension.</value>
     <comment>VersionService</comment>
+  </data>
+  <data name="Warn Before Analysing" xml:space="preserve">
+    <value>Warn Before Analysing</value>
+    <comment>Tab Page</comment>
   </data>
   <data name="Warning" xml:space="preserve">
     <value>Warning</value>
