@@ -1,6 +1,8 @@
 ﻿using Fiddler;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtension.UI;
+using System;
+using System.Windows.Forms;
 
 namespace Office365FiddlerExtension
 {
@@ -28,6 +30,38 @@ namespace Office365FiddlerExtension
             RulesetService.Instance.CallRunRuleSet(this.session);
 
             EnhanceSessionUX.Instance.EnhanceSession(this.session);
+        }
+
+        public bool ConfirmLargeSessionAnalysis(int sessionsCount)
+        {
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            string message = $"The extension is about to analyse {sessionsCount} sessions, " +
+                $"which is more than the threshold set within the extension of {extensionSettings.WarnBeforeAnalysing}." +
+                Environment.NewLine +
+                Environment.NewLine +
+                $"If you proceed you may see Fiddler appear to freeze while all sessions are processed." +
+                Environment.NewLine +
+                Environment.NewLine +
+                $"Do you want to continue or cancel the operation?";
+
+            string caption = $"{LangHelper.GetString("Office 365 Fiddler Extension")}";
+
+            MessageBoxButtons buttons = MessageBoxButtons.OKCancel;
+
+            DialogResult dialogResult = MessageBox.Show(message, caption, buttons, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+            if (dialogResult == DialogResult.OK)
+            {
+                // User wants to continue with session analysis.
+                return true;
+            }
+            else if (dialogResult == DialogResult.Cancel)
+            {
+                // User doesn't want to continue with session analysis.
+                return false;
+            }
+
+            return false;
         }
     }
 }

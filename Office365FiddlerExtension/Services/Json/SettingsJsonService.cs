@@ -64,6 +64,7 @@ namespace Office365FiddlerExtension.Services
                 SessionAnalysisOnFiddlerLoad = "True",
                 SessionAnalysisOnLoadSaz = "True",
                 SessionAnalysisOnLiveTrace = "True",
+                SessionAnalysisOnImport = "True",
                 WarningSessionTimeThreshold = "2500",
                 SlowRunningSessionThreshold = "5000",
                 ExtensionPath = AssemblyDirectory,
@@ -73,7 +74,8 @@ namespace Office365FiddlerExtension.Services
                 InspectorScoreForSession = 100,
                 PreferredLanguage = "EN",
                 DebugMode = "False",
-                CaptureTraffic = ""
+                CaptureTraffic = "",
+                WarnBeforeAnalysing = "250"
             };
 
             // Transform the object to a Json object.
@@ -376,6 +378,54 @@ namespace Office365FiddlerExtension.Services
         }
 
         /// <summary>
+        /// Get Session analysis on import from extension settings Json application preference.
+        /// </summary>
+        public bool SessionAnalysisOnImport
+        {
+            get
+            {
+                return SettingsJsonService.Instance.GetDeserializedExtensionSettings().SessionAnalysisOnImport;
+            }
+        }
+
+        /// <summary>
+        /// Set session analysis on import in extension settings Json application preference.
+        /// </summary>
+        /// <param name="sessionAnalysisOnImport"></param>
+        public void SetSessionAnlysisOnImport(Boolean sessionAnalysisOnImport)
+        {
+            // Pull & Deserialize Json from ExtensionSettings.
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+            // Set the attribute.
+            extensionSettings.SessionAnalysisOnImport = sessionAnalysisOnImport;
+            // Serialize the object back into Json.
+            // Write the Json into the ExtensionSettings Fiddler setting.
+            Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
+        }
+
+        /// <summary>
+        /// Get WarnBeforeAnalysing from extension settings Json application preference.
+        /// </summary>
+        public int WarnBeforeAnalysing
+        {
+            get
+            {
+                return SettingsJsonService.Instance.GetDeserializedExtensionSettings().WarnBeforeAnalysing;
+            }
+        }
+
+        public void SetWarnBeforeAnalysing(int warnBeforeAnalysing)
+        {
+            // Pull & Deserialize Json from ExtensionSettings.
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+            // Set the attribute.
+            extensionSettings.WarnBeforeAnalysing = warnBeforeAnalysing;
+            // Serialize the object back into Json.
+            // Write the Json into the ExtensionSettings Fiddler setting.
+            Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
+        }
+
+        /// <summary>
         /// Get Warning session time threshold from extension settings Json application preference.
         /// </summary>
         /// <return>int</return>
@@ -512,6 +562,8 @@ namespace Office365FiddlerExtension.Services
 
         public bool SessionAnalysisOnLoadSaz { get; set; }
 
+        public bool SessionAnalysisOnImport { get; set; }
+
         public bool SessionAnalysisOnLiveTrace { get; set; }
 
         public int WarningSessionTimeThreshold { get; set; }
@@ -531,5 +583,7 @@ namespace Office365FiddlerExtension.Services
         public bool DebugMode {  get; set; }
 
         public bool CaptureTraffic { get; set; }
+
+        public int WarnBeforeAnalysing { get; set; }
     }
 }

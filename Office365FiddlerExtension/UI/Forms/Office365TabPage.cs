@@ -1,9 +1,12 @@
 ﻿using Fiddler;
 using System;
+using System.Numerics;
+
 using System.Drawing;
 using System.Windows.Forms;
 using Office365FiddlerExtension.Services;
 using System.Reflection;
+using System.Linq;
 
 namespace Office365FiddlerExtension.UI.Forms
 {
@@ -33,8 +36,6 @@ namespace Office365FiddlerExtension.UI.Forms
             ClearSelectedSessionAnalysisButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
 
             CreateConsolidatedAnalysisButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
-
-            //Office365FiddlerExtensionTabPage.Instance.UpdateTabPageUI();
         }
 
         private void Office365TabPage_Load(object sender, EventArgs e)
@@ -56,7 +57,7 @@ namespace Office365FiddlerExtension.UI.Forms
 
             if (extensionSettings.DebugMode)
             {
-                ExtensionOptionsGroupBox.Text = $"{LangHelper.GetString("Extension Options")} ({LangHelper.GetString("Debug Mode")})";
+                ExtensionOptionsGroupBox.Text = $"{LangHelper.GetString("Extension Options")} (Debug Mode)";
             }
             else
             {
@@ -64,12 +65,34 @@ namespace Office365FiddlerExtension.UI.Forms
             }
             
             ExtensionEnabledCheckBox.Text = LangHelper.GetString("Extension Enabled");
-            AllSessionAnalysisRadioButton.Text = LangHelper.GetString("All Session Analysis");
-            SomeSessionAnalysisRadioButton.Text = LangHelper.GetString("Some Session analysis");
+            AlwaysSessionAnalysisRadioButton.Text = LangHelper.GetString("Always");
+            SelectiveSessionAnalysisRadioButton.Text = LangHelper.GetString("Selective");
+            NeverRadioButton.Text = LangHelper.GetString("Never");
+
+            if (ExtensionEnabledCheckBox.Checked)
+            {
+                AlwaysSessionAnalysisRadioButton.Enabled = true;
+                SelectiveSessionAnalysisRadioButton.Enabled = true;
+                NeverRadioButton.Enabled = true;
+            }
+            else
+            {
+                AlwaysSessionAnalysisRadioButton.Enabled = false;
+                SelectiveSessionAnalysisRadioButton.Enabled = false;
+                NeverRadioButton.Enabled = false;
+            }
+
             SessionAnalysisOnLoadSazCheckBox.Text = LangHelper.GetString("On Load Saz");
             SessionAnalysisOnLiveTraceCheckBox.Text = LangHelper.GetString("On Live Trace");
-
+            SessionAnalysisOnImportCheckBox.Text = LangHelper.GetString("On Import");
+            
             CaptureTrafficCheckBox.Text = LangHelper.GetString("Capture Traffic");
+
+            WarnBeforeProcessingSessionsLabel.Text = LangHelper.GetString("S Capitalised Sessions");
+            WarnBeforeProcessingGroupBox.Text = LangHelper.GetString("Warn Before Analysing");
+            WarnBeforeAnalysingTextBox.Text = extensionSettings.WarnBeforeAnalysing.ToString();
+
+            WhenToAnalyseSessionsGroupBox.Text = LangHelper.GetString("Choose When To Analyse Sessions");
 
             SessionAnalysisGroupBox.Text = LangHelper.GetString("Session Analysis");
             AnalyseAllSessionsButton.Text = LangHelper.GetString("Analyse All Sessions");
@@ -116,21 +139,31 @@ namespace Office365FiddlerExtension.UI.Forms
             CreateConsolidatedAnalysisButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
 
             if (extensionSettings.SessionAnalysisOnLoadSaz == true &&
-                extensionSettings.SessionAnalysisOnLiveTrace == true)
+                extensionSettings.SessionAnalysisOnLiveTrace == true &&
+                extensionSettings.SessionAnalysisOnImport == true)
             {
-                AllSessionAnalysisRadioButton.Checked = true;
-                SomeSessionAnalysisRadioButton.Checked = false;
+                AlwaysSessionAnalysisRadioButton.Checked = true;
+                SelectiveSessionAnalysisRadioButton.Checked = false;
 
                 SessionAnalysisOnLoadSazCheckBox.Checked = true;
                 SessionAnalysisOnLoadSazCheckBox.Enabled = false;
 
                 SessionAnalysisOnLoadSazCheckBox.Checked = true;
                 SessionAnalysisOnLiveTraceCheckBox.Enabled = false;
+
+                SessionAnalysisOnImportCheckBox.Checked = true;
+                SessionAnalysisOnImportCheckBox.Enabled = false;
+            }
+            else if (extensionSettings.SessionAnalysisOnLoadSaz == false &&
+                extensionSettings.SessionAnalysisOnLiveTrace == false &&
+                extensionSettings.SessionAnalysisOnImport == false)
+            {
+                NeverRadioButton.Checked = true;
             }
             else
             {
-                AllSessionAnalysisRadioButton.Checked = false;
-                SomeSessionAnalysisRadioButton.Checked = true;
+                AlwaysSessionAnalysisRadioButton.Checked = false;
+                SelectiveSessionAnalysisRadioButton.Checked = true;
 
                 if (SettingsJsonService.Instance.SessionAnalysisOnLoadSaz)
                 {
@@ -149,18 +182,29 @@ namespace Office365FiddlerExtension.UI.Forms
                 {
                     SessionAnalysisOnLiveTraceCheckBox.Checked = false;
                 }
+
+                if (SettingsJsonService.Instance.SessionAnalysisOnImport)
+                {
+                    SessionAnalysisOnImportCheckBox.Checked = true;
+                }
+                else
+                {
+                    SessionAnalysisOnImportCheckBox.Checked = false;
+                }
             }
 
-            if (AllSessionAnalysisRadioButton.Checked)
+            if (AlwaysSessionAnalysisRadioButton.Checked)
             {
                 SessionAnalysisOnLiveTraceCheckBox.Enabled = false;
                 SessionAnalysisOnLoadSazCheckBox.Enabled = false;
+                SessionAnalysisOnImportCheckBox.Enabled = false;
             }
 
-            if (SomeSessionAnalysisRadioButton.Checked)
+            if (SelectiveSessionAnalysisRadioButton.Checked)
             {
                 SessionAnalysisOnLiveTraceCheckBox.Enabled = true;
                 SessionAnalysisOnLoadSazCheckBox.Enabled = true;
+                SessionAnalysisOnImportCheckBox.Enabled = true;
             }
 
             if (VersionService.Instance.IsExtensionDLLUpdateAvailable())
@@ -243,15 +287,17 @@ namespace Office365FiddlerExtension.UI.Forms
 
             if (ExtensionEnabledCheckBox.Checked)
             {
-                AllSessionAnalysisRadioButton.Enabled = true;
-                SomeSessionAnalysisRadioButton.Enabled = true;
+                AlwaysSessionAnalysisRadioButton.Enabled = true;
+                SelectiveSessionAnalysisRadioButton.Enabled = true;
+                NeverRadioButton.Enabled = true;
                 //SessionAnalysisOnLoadSazCheckBox.Enabled = SomeSessionAnalysisRadioButton.Checked;
                 //SessionAnalysisOnLiveTraceCheckBox.Enabled = SomeSessionAnalysisRadioButton.Checked;                
             }
             else
             {
-                AllSessionAnalysisRadioButton.Enabled = false;
-                SomeSessionAnalysisRadioButton.Enabled = false;
+                AlwaysSessionAnalysisRadioButton.Enabled = false;
+                SelectiveSessionAnalysisRadioButton.Enabled = false;
+                NeverRadioButton.Enabled = false;
                 //SessionAnalysisOnLoadSazCheckBox.Enabled = SomeSessionAnalysisRadioButton.Checked;
                 //SessionAnalysisOnLiveTraceCheckBox.Enabled = SomeSessionAnalysisRadioButton.Checked;
             }
@@ -263,22 +309,41 @@ namespace Office365FiddlerExtension.UI.Forms
 
         private void AllSessionAnalysisRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            if (AllSessionAnalysisRadioButton.Checked)
+            if (AlwaysSessionAnalysisRadioButton.Checked)
             {
                 SessionAnalysisOnLoadSazCheckBox.Enabled = false;
                 SessionAnalysisOnLoadSazCheckBox.Checked = true;
 
                 SessionAnalysisOnLiveTraceCheckBox.Enabled = false;
                 SessionAnalysisOnLiveTraceCheckBox.Checked = true;
+
+                SessionAnalysisOnImportCheckBox.Enabled = false;
+                SessionAnalysisOnImportCheckBox.Checked = true;
             }
         }
 
-        private void SomeSessionAnalysisRadioButton_CheckedChanged(object sender, EventArgs e)
+        private void SelectiveSessionAnalysisRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            if (SomeSessionAnalysisRadioButton.Checked)
+            if (SelectiveSessionAnalysisRadioButton.Checked)
             {
                 SessionAnalysisOnLoadSazCheckBox.Enabled = true;
                 SessionAnalysisOnLiveTraceCheckBox.Enabled = true;
+                SessionAnalysisOnImportCheckBox.Enabled = true;
+            }
+        }
+
+        private void NeverRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (NeverRadioButton.Checked)
+            {
+                SessionAnalysisOnLoadSazCheckBox.Enabled = false;
+                SessionAnalysisOnLoadSazCheckBox.Checked = false;
+
+                SessionAnalysisOnLiveTraceCheckBox.Enabled = false;
+                SessionAnalysisOnLiveTraceCheckBox.Checked = false;
+
+                SessionAnalysisOnImportCheckBox.Enabled = false;
+                SessionAnalysisOnImportCheckBox.Checked = false;
             }
         }
 
@@ -387,6 +452,24 @@ namespace Office365FiddlerExtension.UI.Forms
                 FiddlerApplication.UI.actDetachProxy();
             }
         }
+
+        private void SessionAnalysisOnImportCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsJsonService.Instance.SetSessionAnlysisOnImport(SessionAnalysisOnImportCheckBox.Checked);
+        }
+
+        private void WarnBeforeAnalysingTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(WarnBeforeAnalysingTextBox.Text, "[^0-9]"))
+            {
+                string message = "This textbox only accepts numbers.";
+
+                string caption = $"{LangHelper.GetString("Office 365 Fiddler Extension")}";
+
+                MessageBox.Show(message, caption);
+                WarnBeforeAnalysingTextBox.Text = WarnBeforeAnalysingTextBox.Text.Remove(WarnBeforeAnalysingTextBox.Text.Length - 1);
+            }   
+        }
     }
 
     public class Office365FiddlerExtensionTabPage : IFiddlerExtension
@@ -412,7 +495,6 @@ namespace Office365FiddlerExtension.UI.Forms
 
         public Office365FiddlerExtensionTabPage()
         {
-            // Add tab page to Fiddler.
             oPage = new TabPage($"{LangHelper.GetString("Office 365 Fiddler Extension")}");
             oPage.ImageIndex = (int)Fiddler.SessionIcons.HTML;
 

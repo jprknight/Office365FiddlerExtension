@@ -1,10 +1,8 @@
 ﻿using Fiddler;
-using System;
 using System.Linq;
 using System.Reflection;
 using Office365FiddlerExtension.UI;
 using System.Diagnostics;
-using System.Windows.Forms;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -96,7 +94,7 @@ namespace Office365FiddlerExtension.Services
 
             // Prompt the user to analyse sessions before doing it. Gives the user the option for fast loading any sessions which don't already have analysis saved in them.
 
-            int iEnchantedSessions = 0;
+            int iEnhancedSessions = 0;
             int iToBeAnalysedSessions = 0;
 
             foreach (Session session in e.arrSessions)
@@ -109,7 +107,7 @@ namespace Office365FiddlerExtension.Services
                     && SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionResponseServerConfidenceLevel == 10
                     && SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                 {
-                    iEnchantedSessions++;
+                    iEnhancedSessions++;
                 }
                 else
                 {
@@ -117,37 +115,21 @@ namespace Office365FiddlerExtension.Services
                 }
             }
 
-            // REVIEW THIS -- Language.
-            if (SettingsJsonService.Instance.ExtensionSessionProcessingEnabled)
-            {
-                if (iToBeAnalysedSessions > 0)
-                {
-                    string message = $"You have loaded '{SimpleSazFileName(e.sFilename)}' which contains {e.arrSessions.Count()} sessions. " +
-                        Environment.NewLine +
-                        $"The Office 365 Fiddler Extension has analysed {iEnchantedSessions} sessions, {iToBeAnalysedSessions} sessions haven't been analysed. " +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        $"Do you want to analyse and enhance these sessions with the extension now?";
-
-                    string caption = $"{LangHelper.GetString("Office 365 Fiddler Extension")} - LoadSAZ - Analyse Sessions?";
-
-                    MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-                    DialogResult result;
-
-                    //Display the MessageBox.
-                    result = MessageBox.Show(message, caption, buttons, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
-
-                    if (result == DialogResult.No)
-                    {
-                        return;
-                    }
-                }
-            }
-
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz processing: '{SimpleSazFileName(e.sFilename)}'");
 
             FiddlerApplication.UI.lvSessions.BeginUpdate();
 
+            bool bProcessSessions = true;
+
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            // If there are more sessions to analyse than the warning threshold, confirm with the user they want to continue.
+            if (e.arrSessions.Count() > extensionSettings.WarnBeforeAnalysing && iToBeAnalysedSessions > extensionSettings.WarnBeforeAnalysing)
+            {
+                bProcessSessions = SessionService.Instance.ConfirmLargeSessionAnalysis(e.arrSessions.Count());
+            }
+
+            // Start the stopwatch. This should be the last thing that happens before we start the foreach loop through sessions.
             var sw = Stopwatch.StartNew();
 
             foreach (Session session in e.arrSessions)
@@ -172,6 +154,19 @@ namespace Office365FiddlerExtension.Services
                     {
                         continue;
                     }
+
+                    // If the session doesn't have the LoadedFromSAZ flag set, ignore it.
+                    if (!this.session.isAnyFlagSet(SessionFlags.LoadedFromSAZ))
+                    {
+                        continue;
+                    }
+
+                    // Check ensures the user has confirmed they want to continue for large session analysis.
+                    if (!bProcessSessions)
+                    {
+                        continue;
+                    }
+
                     SessionService.Instance.OnPeekAtResponseHeaders(this.session);
                 }
             }

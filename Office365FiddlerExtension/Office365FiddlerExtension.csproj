@@ -224,6 +224,7 @@
       <DependentUpon>strings.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\ConsolidatedAnalysisReportService.cs" />
+    <Compile Include="Services\Fiddler\ImportService.cs" />
     <Compile Include="Services\Json\JsonValidatorService.cs" />
     <Compile Include="Services\Json\SessionClassificationService.cs" />
     <Compile Include="Services\Json\URLsJsonService.cs" />
@@ -247,12 +248,6 @@
     <Compile Include="Services\Fiddler\SazFileService.cs" />
     <Compile Include="Services\Fiddler\SessionService.cs" />
     <Compile Include="Inspectors\Office365Inspector.cs" />
-    <Compile Include="UI\Forms\CheckIP.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Forms\CheckIP.Designer.cs">
-      <DependentUpon>CheckIP.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Forms\Office365TabPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -313,9 +308,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Forms\CheckIP.resx">
-      <DependentUpon>CheckIP.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\Office365ResponseControl.resx">
       <DependentUpon>Office365ResponseControl.cs</DependentUpon>

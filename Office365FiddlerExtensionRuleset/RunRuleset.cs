@@ -34,6 +34,8 @@ namespace Office365FiddlerExtensionRuleset
             /// Always run these functions on every session (Broad Logic Checks).
             FiddlerUpdateSessions.Instance.Run(this.session);
 
+            NetLogCaptureMockSession.Instance.Run(this.session);
+
             ApacheAutodiscover.Instance.Run(this.session);
             
             ConnectTunnelTLSVersion.Instance.Run(this.session);

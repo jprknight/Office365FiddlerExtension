@@ -42,8 +42,6 @@ namespace Office365FiddlerExtension
 
         public MenuItem MiCreateConsolidatedAnalysisReport { get; set; }
 
-        public MenuItem MiCheckIP {  get; set; }
-
         public MenuItem MiReleasesDownloadWebpage { get; set; }
 
         public MenuItem MiWiki { get; set; }
@@ -118,11 +116,6 @@ namespace Office365FiddlerExtension
                         Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
                     };
 
-                    this.MiCheckIP = new MenuItem($"{LangHelper.GetString("Check IP Address")}", new System.EventHandler(this.MiCheckIPAddress_Click))
-                    {
-                        Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
-                    };
-
                     this.MiReleasesDownloadWebpage = new MenuItem($"{LangHelper.GetString("Releases")}", new System.EventHandler(this.MiReleasesDownloadWebpage_click));
 
                     this.MiWiki = new MenuItem($"{LangHelper.GetString("Wiki")}", new System.EventHandler(this.MiWiki_Click));
@@ -139,8 +132,6 @@ namespace Office365FiddlerExtension
                     new MenuItem("-"),
                     this.MiCreateConsolidatedAnalysisReport,
                     new MenuItem ("-"),
-                    //this.MiCheckIP,
-                    //new MenuItem("-"),
                     this.MiReleasesDownloadWebpage,
                     this.MiWiki,
                     this.MiReportIssues,
@@ -326,17 +317,6 @@ namespace Office365FiddlerExtension
             ConsolidatedAnalysisReportService.Instance.CreateCAR();
         }
 
-        /// <summary>
-        /// Action performed on menu item click.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MiCheckIPAddress_Click(object sender, EventArgs e)
-        {
-            CheckIP checkIP = new CheckIP();
-            checkIP.Show();
-        }
-
         public void UpdateUIControls()
         {
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
@@ -344,7 +324,6 @@ namespace Office365FiddlerExtension
             MiAnalyseAllSessions.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
             MiClearAllSessionAnalysis.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
             MiCreateConsolidatedAnalysisReport.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
-            MiCheckIP.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
         }
     }
 }

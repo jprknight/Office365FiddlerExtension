@@ -70,11 +70,11 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All Session Analysis.
+        ///   Looks up a localized string similar to Always.
         /// </summary>
-        internal static string All_Session_Analysis {
+        internal static string Always {
             get {
-                return ResourceManager.GetString("All Session Analysis", resourceCulture);
+                return ResourceManager.GetString("Always", resourceCulture);
             }
         }
         
@@ -201,6 +201,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Check_IP_Address_Placeholder_Text {
             get {
                 return ResourceManager.GetString("Check IP Address Placeholder Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose When To Automatically Analyse Sessions.
+        /// </summary>
+        internal static string Choose_When_To_Analyse_Sessions {
+            get {
+                return ResourceManager.GetString("Choose When To Analyse Sessions", resourceCulture);
             }
         }
         
@@ -700,6 +709,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Never.
+        /// </summary>
+        internal static string Never {
+            get {
+                return ResourceManager.GetString("Never", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Never Web Call.
         /// </summary>
         internal static string Never_Web_Call {
@@ -759,6 +777,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Office_365_Fiddler_Extension {
             get {
                 return ResourceManager.GetString("Office 365 Fiddler Extension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On Import.
+        /// </summary>
+        internal static string On_Import {
+            get {
+                return ResourceManager.GetString("On Import", resourceCulture);
             }
         }
         
@@ -898,6 +925,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sessions.
+        /// </summary>
+        internal static string S_Capitalised_Sessions {
+            get {
+                return ResourceManager.GetString("S Capitalised Sessions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SAML Response Parser.
         /// </summary>
         internal static string SAML_Response_Parser {
@@ -921,6 +957,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string ScoreForSession {
             get {
                 return ResourceManager.GetString("ScoreForSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selective.
+        /// </summary>
+        internal static string Selective {
+            get {
+                return ResourceManager.GetString("Selective", resourceCulture);
             }
         }
         
@@ -1096,15 +1141,6 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Some Session analysis.
-        /// </summary>
-        internal static string Some_Session_analysis {
-            get {
-                return ResourceManager.GetString("Some Session analysis", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Spanish.
         /// </summary>
         internal static string Spanish {
@@ -1218,6 +1254,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Update_Available___There_is_an_update {
             get {
                 return ResourceManager.GetString("Update Available - There is an update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warn Before Analysing.
+        /// </summary>
+        internal static string Warn_Before_Analysing {
+            get {
+                return ResourceManager.GetString("Warn Before Analysing", resourceCulture);
             }
         }
         

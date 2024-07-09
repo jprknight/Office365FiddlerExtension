@@ -218,6 +218,26 @@
   <data name="BroadLogicChecks_LoopbackTunnel" xml:space="preserve">
     <value>Loopback Tunnel</value>
   </data>
+  <data name="BroadLogicChecks_NetLogCaptureMockSession_ResponseAlert" xml:space="preserve">
+    <value>NetLog Capture 'Mock' Session</value>
+    <comment>Board Logic Checks</comment>
+  </data>
+  <data name="BroadLogicChecks_NetLogCaptureMockSession_ResponseCodeDescription" xml:space="preserve">
+    <value>NetLog Capture 'Mock' Session</value>
+    <comment>Board Logic Checks</comment>
+  </data>
+  <data name="BroadLogicChecks_NetLogCaptureMockSession_ResponseComments" xml:space="preserve">
+    <value>NetLog Capture 'Mock' Session</value>
+    <comment>Board Logic Checks</comment>
+  </data>
+  <data name="BroadLogicChecks_NetLogCaptureMockSession_ResponseServer" xml:space="preserve">
+    <value>NetLog Capture 'Mock' Session</value>
+    <comment>Board Logic Checks</comment>
+  </data>
+  <data name="BroadLogicChecks_NetLogCaptureMockSession_SessionType" xml:space="preserve">
+    <value>NetLog Mock</value>
+    <comment>Broad Logic Checks</comment>
+  </data>
   <data name="BroadLogicChecks_This is Fiddler itself checking for updates." xml:space="preserve">
     <value>This is Fiddler itself checking for updates.</value>
   </data>

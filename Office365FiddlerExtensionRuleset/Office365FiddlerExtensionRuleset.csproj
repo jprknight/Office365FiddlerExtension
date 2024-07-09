@@ -53,6 +53,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\NetLogCaptureMockSession.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\ApacheAutodiscover.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\FiddlerUpdateSessions.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\LoopBackTunnel.cs" />

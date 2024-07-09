@@ -34,6 +34,12 @@
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 10,
       "SessionSeverity": 40
+    },
+    "NetLogCaptureMockSession": {
+      "SessionAuthenticationConfidenceLevel": 10,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 10,
+      "SessionSeverity": 30
     }
   },
   "HTTP0s": {

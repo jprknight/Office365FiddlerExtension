@@ -349,6 +349,51 @@ namespace Office365FiddlerExtensionRuleset.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NetLog Capture &apos;Mock&apos; Session.
+        /// </summary>
+        internal static string BroadLogicChecks_NetLogCaptureMockSession_ResponseAlert {
+            get {
+                return ResourceManager.GetString("BroadLogicChecks_NetLogCaptureMockSession_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NetLog Capture &apos;Mock&apos; Session.
+        /// </summary>
+        internal static string BroadLogicChecks_NetLogCaptureMockSession_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("BroadLogicChecks_NetLogCaptureMockSession_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NetLog Capture &apos;Mock&apos; Session.
+        /// </summary>
+        internal static string BroadLogicChecks_NetLogCaptureMockSession_ResponseComments {
+            get {
+                return ResourceManager.GetString("BroadLogicChecks_NetLogCaptureMockSession_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NetLog Capture &apos;Mock&apos; Session.
+        /// </summary>
+        internal static string BroadLogicChecks_NetLogCaptureMockSession_ResponseServer {
+            get {
+                return ResourceManager.GetString("BroadLogicChecks_NetLogCaptureMockSession_ResponseServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NetLog Mock.
+        /// </summary>
+        internal static string BroadLogicChecks_NetLogCaptureMockSession_SessionType {
+            get {
+                return ResourceManager.GetString("BroadLogicChecks_NetLogCaptureMockSession_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This is Fiddler itself checking for updates..
         /// </summary>
         internal static string BroadLogicChecks_This_is_Fiddler_itself_checking_for_updates_ {

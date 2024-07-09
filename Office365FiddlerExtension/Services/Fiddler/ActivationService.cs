@@ -84,6 +84,7 @@ namespace Office365FiddlerExtension.Services
                 // Register available Fiddler events.
                 FiddlerApplication.OnLoadSAZ += SazFileService.Instance.LoadSaz;
                 FiddlerApplication.OnSaveSAZ += SazFileService.Instance.SaveSaz;
+                FiddlerApplication.UI.lvSessions.OnSessionsAdded += ImportService.Instance.ImportSessions;
 
                 IsInitialized = true;
             }
