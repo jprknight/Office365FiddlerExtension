@@ -25,53 +25,58 @@
 #   v1.3    Jeremy Knight   11/14/2022  Manually set deployment folder.
 #                                       Complete message.
 #   v1.4    Jeremy Knight   5/19/2024   v1.0.78 & v2.0.0.
-#
+#   v1.5    Jeremy Knight   7/10/2024   Minor fixes. Coincides with the release of v2.0.3.
 # 
-Function Download {
+############################################################
+#
+Function Download([string]$version) {
     # v1.0.78
     # Only download a new zip file if it doesn't already exist.
-    if (!(Test-Path "$($env:UserProfile)\Downloads\Office365FiddlerExtension-v1.0.78.zip" -ErrorAction SilentlyContinue)) {
-        $repo = "jprknight/Office365FiddlerExtension"
-        $releases = "https://api.github.com/repos/$repo/releases"
-        $tag = (Invoke-WebRequest $releases | ConvertFrom-Json)[0].tag_name
-        $ZipDownload = "https://github.com/$repo/releases/download/$tag/$Script:ZipFileName_v1078"
-        $Script:LocalZipFile_v1078 = "$($env:UserProfile)\Downloads\$Script:ZipFileName_v1078"
-
-        $Error.Clear()
-        try {
-            Invoke-WebRequest $ZipDownload -Out $Script:LocalZipFile_v1078
+    if ($version -eq "1.0.78") {
+        if (!(Test-Path "$($env:UserProfile)\Downloads\Office365FiddlerExtension-v1.0.78.zip" -ErrorAction SilentlyContinue)) {
+            $repo = "jprknight/Office365FiddlerExtension"
+            $releases = "https://api.github.com/repos/$repo/releases"
+            $tag = (Invoke-WebRequest $releases | ConvertFrom-Json)[0].tag_name
+            $ZipDownload = "https://github.com/$repo/releases/download/$tag/$Script:ZipFileName_v1078"
+            $Script:LocalZipFile_v1078 = "$($env:UserProfile)\Downloads\$Script:ZipFileName_v1078"
+    
+            $Error.Clear()
+            try {
+                Invoke-WebRequest $ZipDownload -Out $Script:LocalZipFile_v1078
+            }
+            catch {
+                Write-Host $_
+            }
+            if ($Error.Count -eq 0) {
+                Write-Host ""
+                Write-Host "Downloaded $Script:LocalZipFile_v1078." -ForegroundColor Green
+            }
+            $Error.Clear()
         }
-        catch {
-            Write-Host $_
-        }
-        if ($Error.Count -eq 0) {
-            Write-Host ""
-            Write-Host "Downloaded $Script:LocalZipFile_v1078." -ForegroundColor Green
-        }
-        $Error.Clear()
     }
+    else {
+        # v2.x.x 
+        # Only download a new zip file if it doesn't already exist.
+        if (!(Test-Path "$($env:UserProfile)\Downloads\$Script:ZipFileName_v2xx" -ErrorAction SilentlyContinue)) {
+            $repo = "jprknight/Office365FiddlerExtension"
+            $releases = "https://api.github.com/repos/$repo/releases"
+            $tag = (Invoke-WebRequest $releases | ConvertFrom-Json)[0].tag_name
+            $ZipDownload_2xx = "https://github.com/$repo/releases/download/$tag/$Script:ZipFileName_v2xx"
+            $Script:LocalZipFile_v2xx = "$($env:UserProfile)\Downloads\$Script:ZipFileName_v2xx"
 
-    # v2.x.x 
-    # Only download a new zip file if it doesn't already exist.
-    if (!(Test-Path "$($env:UserProfile)\Downloads\$Script:ZipFileName_v2xx" -ErrorAction SilentlyContinue)) {
-        $repo = "jprknight/Office365FiddlerExtension"
-        $releases = "https://api.github.com/repos/$repo/releases"
-        $tag = (Invoke-WebRequest $releases | ConvertFrom-Json)[0].tag_name
-        $ZipDownload_2xx = "https://github.com/$repo/releases/download/$tag/$Script:ZipFileName_v2xx"
-        $Script:LocalZipFile_v2xx = "$($env:UserProfile)\Downloads\$Script:ZipFileName_v2xx"
-
-        $Error.Clear()
-        try {
-            Invoke-WebRequest $ZipDownload_2xx -Out $Script:LocalZipFile_v2xx
+            $Error.Clear()
+            try {
+                Invoke-WebRequest $ZipDownload_2xx -Out $Script:LocalZipFile_v2xx
+            }
+            catch {
+                Write-Host $_
+            }
+            if ($Error.Count -eq 0) {
+                Write-Host ""
+                Write-Host "Downloaded $Script:ZipFileName_v2xx." -ForegroundColor Green
+            }
+            $Error.Clear()
         }
-        catch {
-            Write-Host $_
-        }
-        if ($Error.Count -eq 0) {
-            Write-Host ""
-            Write-Host "Downloaded $Script:ZipFileName_v2xx." -ForegroundColor Green
-        }
-        $Error.Clear()
     }
 }
 
@@ -97,7 +102,7 @@ Function Install_v1078 {
             $Error.Clear()
             try {
                 if (!($Script:bZipDownload_v1078)) {
-                    Download
+                    Download("1.0.78")
                 }
                 Expand-Archive -LiteralPath $Script:LocalZipFile_v1078 -DestinationPath $Script:FiddlerScriptsPath
                 Expand-Archive -LiteralPath $Script:LocalZipFile_v1078 -DestinationPath $Script:FiddlerInspectorsPath
@@ -109,6 +114,7 @@ Function Install_v1078 {
                 CleanDownloadFile
                 Write-Host ""
                 Write-Host "$Script:Operation complete, exiting." -ForegroundColor Green
+                Read-Host "Press any key to exit."
                 Exit
             }
         }
@@ -143,7 +149,7 @@ Function Install_v2xx {
             $Error.Clear()
             try {
                 if (!($Script:bZipDownload)) {
-                    Download
+                    Download(2.0.x)
                 }
                 Expand-Archive -LiteralPath $Script:LocalZipFile_v2xx -DestinationPath $Script:FiddlerScriptsPath
                 Expand-Archive -LiteralPath $Script:LocalZipFile_v2xx -DestinationPath $Script:FiddlerInspectorsPath
@@ -155,6 +161,7 @@ Function Install_v2xx {
                 CleanDownloadFile
                 Write-Host ""
                 Write-Host "$Script:Operation complete, exiting." -ForegroundColor Green
+                Read-Host "Press any key to exit."
                 Exit
             }
         }
@@ -322,6 +329,7 @@ Function SetGlobals {
     'Microsoft.ApplicationInsights.AspNetCore.dll',
     'Microsoft.ApplicationInsights.AspNetCore.xml',
     'Microsoft.ApplicationInsights.dll',
+    'Microsoft.ApplicationInsights.pdb',
     'Microsoft.ApplicationInsights.xml',
     'EXOFiddlerInspector.dll',
     'EXOFiddlerInspector.dll.config',
