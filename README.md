@@ -16,6 +16,8 @@ Don't want to use the aka.ms short link, or not working? Use this link instead, 
 
 `Invoke-Expression (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/Deploy-Office365FiddlerExtension.ps1')`
 
+The deployment script allows you to upgrade to v2.0.3, and just in case there's any issues you can downgrade to v1.0.78. Please report any issues you encounter: https://github.com/jprknight/Office365FiddlerExtension/issues.
+
 ### Manual Install
 
 Download the Office365FiddlerExtension.zip file and extract the contents into your \Fiddler\Inspectors and \Fiddler\Scripts installation folder. Fiddler will then load the extension the next time it loads.
@@ -64,19 +66,21 @@ Think traffic lights, with some extras.
 
 ### User Interface
 
+* **Office 365 Extension tab** - All controls for the extension live in this tab.
 * **Response Inspector Tab** - Look for Session Analysis, for helpful information on any given session.
 * **Office 365 Menu**
-  * Turn extension **off/on**.
   * **Analyse all sessions** -- Analyse all sessions in the view in Fiddler. This will also fill in any sessions which do not already have session analysis.
   * **Clear All Session Analysis** -- Clear all session analysis values on all sessions.
   * **Create Consolidated Analysis Report** -- Creates a HTML report, highlighting the most interesting sessions and other statistical information from the sessions in the view in Fiddler.
-  * **Check IP Address** -- Manually check if an IP address is in a private, public, or Microsoft 365 subnet.
 * **Context Menu** - Additional options for processing sessions.
   * **Analyse Selected Sessions** -- Analyse selected sessions in the view in Fiddler.
   * **Clear Selected Sessions** -- Clear session analysis values on selected sessions in the view in Fiddler.
   * **Set Session Severity** -- Manually set severity or recalculate session severity with extension, on selected sessions.
   * **Create Consolidated Analysis Report** -- Creates a HTML report, highlighting the most interesting sessions and other statistical information from the sessions in the view in Fiddler.
- 
+* **Automatically process / analyse sessions** when loaded from a Saz file, imported (HAR, Json, etc), or collected on a live trace.
+
+![O365FE-V2 0 03-Extension-Controls](https://github.com/jprknight/Office365FiddlerExtension/assets/40891654/f1645aac-c509-4982-ab8e-be218dec97b8)
+
 ### Session Columns
 
 Columns are added into the session view on the left side of Fiddler, scroll the view to the right if you don't immediately see them. Re-order the columns to your preferences.
