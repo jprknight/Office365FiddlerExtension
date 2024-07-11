@@ -36,6 +36,7 @@ namespace Office365FiddlerExtension.Services
 
             // Start out saying sessions haven't been loaded from SAZ file.
             bool bSessionsLoadedFromSAZ = false;
+            bool bSessionsResponseStreamed = false;
 
             // Inspect loaded sessions to determine if they have been loaded from SAZ file.
             // If any have been loaded from SAZ file, we'll have to make the assumption they all were,
@@ -48,6 +49,11 @@ namespace Office365FiddlerExtension.Services
                 if (bSessionsLoadedFromSAZ)
                 {
                     continue;
+                }
+
+                if (this.session.isAnyFlagSet(SessionFlags.RequestStreamed))
+                {
+                    bSessionsResponseStreamed = true;
                 }
 
                 // If the session have the LoadedFromSAZ flag set.
@@ -73,7 +79,11 @@ namespace Office365FiddlerExtension.Services
             // Also confirm the sessions added are not FromLoadSAZ, these should be processed within the SazFileService.
             if (Sessions.Length > extensionSettings.WarnBeforeAnalysing && !bSessionsLoadedFromSAZ)
             {
-                bConfirmLargeSessionAnalysis = SessionService.Instance.ConfirmLargeSessionAnalysis(Sessions.Length);
+                // If the sessions have the response streamed (live traced) session flag, don't do this.
+                if (!bSessionsResponseStreamed)
+                {
+                    bConfirmLargeSessionAnalysis = SessionService.Instance.ConfirmLargeSessionAnalysis(Sessions.Length);
+                }
             }
 
             // Start the stopwatch. This should be the last thing that happens before we start the foreach loop through sessions.
