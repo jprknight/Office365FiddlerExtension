@@ -46,14 +46,14 @@ namespace Office365FiddlerExtension.Services
             {
                 this.session = Session;
 
-                if (bSessionsLoadedFromSAZ)
-                {
-                    continue;
-                }
-
                 if (this.session.isAnyFlagSet(SessionFlags.RequestStreamed))
                 {
                     bSessionsResponseStreamed = true;
+                }
+
+                if (bSessionsLoadedFromSAZ)
+                {
+                    continue;
                 }
 
                 // If the session have the LoadedFromSAZ flag set.
