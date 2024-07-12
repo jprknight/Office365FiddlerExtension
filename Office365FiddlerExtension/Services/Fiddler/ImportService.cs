@@ -46,7 +46,7 @@ namespace Office365FiddlerExtension.Services
             {
                 this.session = Session;
 
-                if (this.session.isAnyFlagSet(SessionFlags.RequestStreamed))
+                if (this.session.isAnyFlagSet(SessionFlags.ResponseStreamed))
                 {
                     bSessionsResponseStreamed = true;
                 }
