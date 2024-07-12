@@ -26,18 +26,56 @@
 #                                       Complete message.
 #   v1.4    Jeremy Knight   5/19/2024   v1.0.78 & v2.0.0.
 #   v1.5    Jeremy Knight   7/10/2024   Minor fixes. Coincides with the release of v2.0.3.
+#   v1.6    Jeremy Knight   7/12/2024   Updated WebVersionCheck function to read Json data 
+#                                       from ExtensionVersion.json in Github repo.
 # 
 ############################################################
 #
+
+Function SetGlobals {
+
+    # Includes legacy EXO Fiddler Extension files, so these can be processed.
+    $Script:InstallFiles = @(
+    'Office365FiddlerExtension.dll',
+    'Office365FiddlerExtension.dll.config',
+    'Office365FiddlerExtension.pdb',
+    'Office365FiddlerExtensionRuleset.dll',
+    'Office365FiddlerExtensionRuleset.dll.config',
+    'Office365FiddlerExtensionRuleset.pdb',
+    'Office365FiddlerInspector.dll',
+    'Office365FiddlerInspector.dll.config',
+    'Office365FiddlerInspector.pdb',
+    'Microsoft.ApplicationInsights.AspNetCore.dll',
+    'Microsoft.ApplicationInsights.AspNetCore.xml',
+    'Microsoft.ApplicationInsights.dll',
+    'Microsoft.ApplicationInsights.pdb',
+    'Microsoft.ApplicationInsights.xml',
+    'EXOFiddlerInspector.dll',
+    'EXOFiddlerInspector.dll.config',
+    'EXOFiddlerInspector.pdb',
+    'SessionClassification.json')
+
+    $Script:DownloadPath = "$($env:UserProfile)\Downloads\"
+    $Script:ZipFileName_v1078 = "Office365FiddlerExtension-v1.0.78.zip"
+    $Script:ZipFileName_v2xx = "Office365FiddlerExtension.zip"
+
+    [bool]$Script:bZipDownload_v1078 = Test-Path "$Script:DownloadPath\$Script:ZipFileName_v1078" -ErrorAction SilentlyContinue
+    [bool]$Script:bZipDownload_v2xx = Test-Path "$Script:DownloadPath\$Script:ZipFileName_v2xx" -ErrorAction SilentlyContinue
+    
+    $Script:URL_JsonUpdate = "https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/ExtensionVersion.json"
+
+    $Script:URL_Repository = "jprknight/Office365FiddlerExtension"
+
+    $Script:URL_Releases = "https://api.github.com/repos/$Script:URL_Repository/releases"
+}
+
 Function Download([string]$version) {
     # v1.0.78
     # Only download a new zip file if it doesn't already exist.
     if ($version -eq "1.0.78") {
         if (!(Test-Path "$($env:UserProfile)\Downloads\Office365FiddlerExtension-v1.0.78.zip" -ErrorAction SilentlyContinue)) {
-            $repo = "jprknight/Office365FiddlerExtension"
-            $releases = "https://api.github.com/repos/$repo/releases"
-            $tag = (Invoke-WebRequest $releases | ConvertFrom-Json)[0].tag_name
-            $ZipDownload = "https://github.com/$repo/releases/download/$tag/$Script:ZipFileName_v1078"
+            $tag = (Invoke-WebRequest $Script:URL_Releases | ConvertFrom-Json)[0].tag_name
+            $ZipDownload = "https://github.com/$Script:URL_Repository/releases/download/$tag/$Script:ZipFileName_v1078"
             $Script:LocalZipFile_v1078 = "$($env:UserProfile)\Downloads\$Script:ZipFileName_v1078"
     
             $Error.Clear()
@@ -58,10 +96,8 @@ Function Download([string]$version) {
         # v2.x.x 
         # Only download a new zip file if it doesn't already exist.
         if (!(Test-Path "$($env:UserProfile)\Downloads\$Script:ZipFileName_v2xx" -ErrorAction SilentlyContinue)) {
-            $repo = "jprknight/Office365FiddlerExtension"
-            $releases = "https://api.github.com/repos/$repo/releases"
-            $tag = (Invoke-WebRequest $releases | ConvertFrom-Json)[0].tag_name
-            $ZipDownload_2xx = "https://github.com/$repo/releases/download/$tag/$Script:ZipFileName_v2xx"
+            $tag = (Invoke-WebRequest $Script:URL_Releases | ConvertFrom-Json)[0].tag_name
+            $ZipDownload_2xx = "https://github.com/$Script:URL_Repository/releases/download/$tag/$Script:ZipFileName_v2xx"
             $Script:LocalZipFile_v2xx = "$($env:UserProfile)\Downloads\$Script:ZipFileName_v2xx"
 
             $Error.Clear()
@@ -82,108 +118,98 @@ Function Download([string]$version) {
 
 Function Install_v1078 {
     Uninstall
-    $FileCount = 0
-    $Folders = @("$Script:FiddlerScriptsPath","$Script:FiddlerInspectorsPath")
-    $InstallFiles = $Script:InstallFiles
 
-    # Count any existing extension files in scripts/inspectors folders.
-    foreach ($Folder in $Folders) {
-        foreach ($File in $InstallFiles) {
-            if (Test-Path "$Folder\$File" -ErrorAction SilentlyContinue) {
-                Write-Host "$Folder\$File"
-                $FileCount++
-            }
-        }
+    if (!(Test-Path $Script:FiddlerScriptsPath -ErrorAction SilentlyContinue)) {
+        Write-Host "Fiddler folder $Script:FiddlerScriptsPath doesn't exist."
+        Return
+    }
+
+    if (!(Test-Path $Script:FiddlerInspectorsPath -ErrorAction SilentlyContinue)) {
+        Write-Host "Fiddler folder $Script:FiddlerInspectorsPath doesn't exist."
+        Return
     }
 
     # If no existing extension files are found, download the latest zip file from the repo, and install.
-    if ($FileCount -eq 0) {
-        if ((Test-Path $Script:FiddlerScriptsPath -ErrorAction SilentlyContinue) -AND (Test-Path $Script:FiddlerInspectorsPath -ErrorAction SilentlyContinue)) {
-            $Error.Clear()
-            try {
-                if (!($Script:bZipDownload_v1078)) {
-                    Download("1.0.78")
-                }
-                Expand-Archive -LiteralPath $Script:LocalZipFile_v1078 -DestinationPath $Script:FiddlerScriptsPath
-                Expand-Archive -LiteralPath $Script:LocalZipFile_v1078 -DestinationPath $Script:FiddlerInspectorsPath
-            }
-            catch {
-                Write-Host $_
-            }
-            if ($Erorr.count -eq 0) {
-                CleanDownloadFile
-                Write-Host ""
-                Write-Host "$Script:Operation complete, exiting." -ForegroundColor Green
-                Read-Host "Press any key to exit."
-                Exit
-            }
+    $Error.Clear()
+    try {
+        if (!($Script:bZipDownload_v1078)) {
+            Download("1.0.78")
         }
+        Expand-Archive -LiteralPath $Script:LocalZipFile_v1078 -DestinationPath $Script:FiddlerScriptsPath
+        Expand-Archive -LiteralPath $Script:LocalZipFile_v1078 -DestinationPath $Script:FiddlerInspectorsPath
     }
-    else {
-        # This is the only dead end in the script. 
-        # Didn't want to create the possibility of an infinite loop by calling install function from within itself here.
+    catch {
+        Write-Host $_
+    }
+    if ($Erorr.count -eq 0) {
+        CleanDownloadFile
         Write-Host ""
-        Write-Host "$Script:Operation detected $FileCount existing extension files, run the uninstall process first." -ForegroundColor Red
+        Write-Host "$Script:Operation complete, exiting." -ForegroundColor Green
+        Read-Host "Press any key to exit."
+        Exit
     }
+
 }
 
 Function Install_v2xx {
+    # Run the uninstall first to clear out old extension files.
     Uninstall
-    $FileCount = 0
-    $Folders = @("$Script:FiddlerScriptsPath","$Script:FiddlerInspectorsPath")
-    $InstallFiles = $Script:InstallFiles
 
-    # Count any existing extension files in scripts/inspectors folders.
-    foreach ($Folder in $Folders) {
-        foreach ($File in $InstallFiles) {
-            if (Test-Path "$Folder\$File" -ErrorAction SilentlyContinue) {
-                Write-Host "$Folder\$File"
-                $FileCount++
-            }
-        }
+    if (!(Test-Path $Script:FiddlerScriptsPath -ErrorAction SilentlyContinue)) {
+        Write-Host "Fiddler folder $Script:FiddlerScriptsPath doesn't exist."
+        Return
     }
 
-    # If no existing extension files are found, download the latest zip file from the repo, and install.
-    if ($FileCount -eq 0) {
-        if ((Test-Path $Script:FiddlerScriptsPath -ErrorAction SilentlyContinue) -AND (Test-Path $Script:FiddlerInspectorsPath -ErrorAction SilentlyContinue)) {
-            $Error.Clear()
-            try {
-                if (!($Script:bZipDownload)) {
-                    Download(2.0.x)
-                }
-                Expand-Archive -LiteralPath $Script:LocalZipFile_v2xx -DestinationPath $Script:FiddlerScriptsPath
-                Expand-Archive -LiteralPath $Script:LocalZipFile_v2xx -DestinationPath $Script:FiddlerInspectorsPath
-            }
-            catch {
-                Write-Host $_
-            }
-            if ($Erorr.count -eq 0) {
-                CleanDownloadFile
-                Write-Host ""
-                Write-Host "$Script:Operation complete, exiting." -ForegroundColor Green
-                Read-Host "Press any key to exit."
-                Exit
-            }
-        }
+    if (!(Test-Path $Script:FiddlerInspectorsPath -ErrorAction SilentlyContinue)) {
+        Write-Host "Fiddler folder $Script:FiddlerInspectorsPath doesn't exist."
+        Return
     }
-    else {
-        # This is the only dead end in the script. 
-        # Didn't want to create the possibility of an infinite loop by calling install function from within itself here.
+
+    # Download the latest zip file from the repo, and install.
+    $Error.Clear()
+    try {
+        if (!($Script:bZipDownload)) {
+            Download(2.0.x)
+        }
+        Expand-Archive -LiteralPath $Script:LocalZipFile_v2xx -DestinationPath $Script:FiddlerScriptsPath
+        Expand-Archive -LiteralPath $Script:LocalZipFile_v2xx -DestinationPath $Script:FiddlerInspectorsPath
+    }
+    catch {
+        Write-Host $_
+    }
+    if ($Erorr.count -eq 0) {
+        CleanDownloadFile
         Write-Host ""
-        Write-Host "$Script:Operation detected $FileCount existing extension files, run the uninstall process first." -ForegroundColor Red
+        Write-Host "$Script:Operation complete, exiting." -ForegroundColor Green
+        Read-Host "Press any key to exit."
+        Exit
     }
 }
 
 Function Uninstall {
+    if (!(Test-Path $Script:FiddlerScriptsPath -ErrorAction SilentlyContinue)) {
+        Write-Host "Fiddler folder $Script:FiddlerScriptsPath doesn't exist."
+        Return
+    }
+
+    if (!(Test-Path $Script:FiddlerInspectorsPath -ErrorAction SilentlyContinue)) {
+        Write-Host "Fiddler folder $Script:FiddlerInspectorsPath doesn't exist."
+        Return
+    }
+
     $RemovedFilesCount = 0
     $Folders = @("$Script:FiddlerScriptsPath", "$Script:FiddlerInspectorsPath")
+
+    Write-Host ""
+    Write-Host "Running uninstall."
+    Write-Host ""
 
     foreach ($Folder in $Folders) {
         foreach ($File in $Script:InstallFiles) {
             if (Test-Path "$Folder\$File" -ErrorAction SilentlyContinue) {
                 $Error.Clear()
                 try {
-                    Write-Host "$Folder\$File"
+                    Write-Host "Removing: $Folder\$File"
                     Remove-Item "$Folder\$File"
                 }
                 catch {
@@ -222,10 +248,10 @@ $Menu = {
     }
     
     if ($Script:LatestWebVersion -eq "Unknown") {
-        Write-Host " Latest Web Version:          $LatestWebVersion" -ForegroundColor Red
+        Write-Host " Latest Web Version:          $Script:LatestWebVersion" -ForegroundColor Red
     }
     else {
-        Write-Host " Latest Web Version:          $LatestWebVersion" -ForegroundColor Green
+        Write-Host " Latest Web Version:          $Script:LatestWebVersion" -ForegroundColor Green
     }
 
     if ($Script:FiddlerPath -eq "Path not found!") {
@@ -302,45 +328,21 @@ Function LocalVersionCheck {
 
 Function WebVersionCheck {
     try {
-        $xml = New-Object System.Xml.XmlDocument
-        $xml.Load("https://aka.ms/Office365FiddlerExtensionUpdateCheckUrl")
-        # Legacy XML name used EXOFiddlerInspector in XML file in the repo, as to not create errors for old extension versions.
-        $Script:LatestWebVersion = $($xml.EXOFiddlerInspector.version)
+        $JsonURL = $Script:URL_JsonUpdate
+        
+        $JsonWebString = Invoke-RestMethod -Uri $JsonURL
+
+        $Json = $JsonWebString | ConvertTo-Json | ConvertFrom-Json
+
+        $WebExtensionMajor = ($Json).ExtensionMajor
+        $WebExtensionMinor = ($Json).ExtensionMinor
+        $WebExtensionBuild = ($Json).ExtensionBuild
+
+        $Script:LatestWebVersion = "$WebExtensionMajor.$WebExtensionMinor.$WebExtensionBuild"
     }
     catch {
         $Script:LatestWebVersion = "Unknown"
     }
-    
-}
-
-Function SetGlobals {
-
-    # Includes legacy EXO Fiddler Extension files, so these can be processed.
-    $Script:InstallFiles = @(
-    'Office365FiddlerExtension.dll',
-    'Office365FiddlerExtension.dll.config',
-    'Office365FiddlerExtension.pdb',
-    'Office365FiddlerExtensionRuleset.dll',
-    'Office365FiddlerExtensionRuleset.dll.config',
-    'Office365FiddlerExtensionRuleset.pdb',
-    'Office365FiddlerInspector.dll',
-    'Office365FiddlerInspector.dll.config',
-    'Office365FiddlerInspector.pdb',
-    'Microsoft.ApplicationInsights.AspNetCore.dll',
-    'Microsoft.ApplicationInsights.AspNetCore.xml',
-    'Microsoft.ApplicationInsights.dll',
-    'Microsoft.ApplicationInsights.pdb',
-    'Microsoft.ApplicationInsights.xml',
-    'EXOFiddlerInspector.dll',
-    'EXOFiddlerInspector.dll.config',
-    'EXOFiddlerInspector.pdb',
-    'SessionClassification.json')
-
-    $Script:DownloadPath = "$($env:UserProfile)\Downloads\"
-    $Script:ZipFileName_v1078 = "Office365FiddlerExtension-v1.0.78.zip"
-    $Script:ZipFileName_v2xx = "Office365FiddlerExtension.zip"
-    [bool]$Script:bZipDownload_v1078 = Test-Path "$Script:DownloadPath\$Script:ZipFileName_v1078" -ErrorAction SilentlyContinue
-    [bool]$Script:bZipDownload_v2xx = Test-Path "$Script:DownloadPath\$Script:ZipFileName_v2xx" -ErrorAction SilentlyContinue
 }
 
 Function SetFiddlerPaths {
