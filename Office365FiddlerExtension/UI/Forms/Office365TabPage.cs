@@ -53,10 +53,12 @@ namespace Office365FiddlerExtension.UI.Forms
             if (extensionSettings.DebugMode)
             {
                 ExtensionOptionsGroupBox.Text = $"{LangHelper.GetString("Extension Options")} (Debug Mode)";
+                CaptureTrafficCheckBox.Visible = true;
             }
             else
             {
                 ExtensionOptionsGroupBox.Text = LangHelper.GetString("Extension Options");
+                CaptureTrafficCheckBox.Visible = false;
             }
             
             ExtensionEnabledCheckBox.Text = LangHelper.GetString("Extension Enabled");

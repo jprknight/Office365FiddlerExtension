@@ -201,23 +201,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Language\strings.pt.Designer.cs">
-      <DependentUpon>strings.pt.resx</DependentUpon>
+    <Compile Include="Language\strings.pt-br.Designer.cs">
+      <DependentUpon>strings.pt-br.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Language\strings.es.Designer.cs">
-      <DependentUpon>strings.es.resx</DependentUpon>
+    <Compile Include="Language\strings.es-us.Designer.cs">
+      <DependentUpon>strings.es-us.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Language\strings.de.Designer.cs">
-      <DependentUpon>strings.de.resx</DependentUpon>
+    <Compile Include="Language\strings.de-de.Designer.cs">
+      <DependentUpon>strings.de-de.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Language\strings.fr.Designer.cs">
-      <DependentUpon>strings.fr.resx</DependentUpon>
+    <Compile Include="Language\strings.fr-fr.Designer.cs">
+      <DependentUpon>strings.fr-fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -228,6 +228,8 @@
     </Compile>
     <Compile Include="Services\ConsolidatedAnalysisReportService.cs" />
     <Compile Include="Services\Fiddler\ImportService.cs" />
+    <Compile Include="Services\Fiddler\LiveTraceService.cs" />
+    <Compile Include="Services\Fiddler\OnSessionsAddedService.cs" />
     <Compile Include="Services\Json\JsonValidatorService.cs" />
     <Compile Include="Services\Json\SessionClassificationService.cs" />
     <Compile Include="Services\Json\URLsJsonService.cs" />
@@ -280,24 +282,24 @@
     <Compile Include="UI\EnhanceSessionUX.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Language\strings.pt.resx">
+    <EmbeddedResource Include="Language\strings.pt-br.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>strings.pt.Designer.cs</LastGenOutput>
+      <LastGenOutput>strings.pt-br.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Language\strings.es.resx">
+    <EmbeddedResource Include="Language\strings.es-us.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>strings.es.Designer.cs</LastGenOutput>
+      <LastGenOutput>strings.es-us.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Language\strings.de.resx">
+    <EmbeddedResource Include="Language\strings.de-de.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>strings.de.Designer.cs</LastGenOutput>
+      <LastGenOutput>strings.de-de.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Language\strings.fr.resx">
+    <EmbeddedResource Include="Language\strings.fr-fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>strings.fr.Designer.cs</LastGenOutput>
+      <LastGenOutput>strings.fr-fr.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Language\strings.resx">
