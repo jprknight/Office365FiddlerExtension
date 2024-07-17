@@ -1,4 +1,5 @@
 ﻿using Fiddler;
+using Office365FiddlerExtension.Services.Fiddler;
 using Office365FiddlerExtension.UI;
 using System;
 using System.Reflection;
@@ -84,7 +85,8 @@ namespace Office365FiddlerExtension.Services
                 // Register available Fiddler events.
                 FiddlerApplication.OnLoadSAZ += SazFileService.Instance.LoadSaz;
                 FiddlerApplication.OnSaveSAZ += SazFileService.Instance.SaveSaz;
-                FiddlerApplication.UI.lvSessions.OnSessionsAdded += ImportService.Instance.ImportSessions;
+                //FiddlerApplication.UI.lvSessions.OnSessionsAdded += ImportService.Instance.ImportSessions;
+                FiddlerApplication.UI.lvSessions.OnSessionsAdded += OnSessionsAddedService.Instance.ProcessSessions;
 
                 IsInitialized = true;
             }
@@ -118,25 +120,7 @@ namespace Office365FiddlerExtension.Services
         {
             this.session = session;
 
-            if (!SettingsJsonService.Instance.ExtensionSessionProcessingEnabled)
-            {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Extension not enabled, returning.");
-                return;
-            }
-
-            // If session analysis on live trace is enabled, run.
-            if (SettingsJsonService.Instance.SessionAnalysisOnLiveTrace)
-            {
-                try
-                {
-                    SessionService.Instance.OnPeekAtResponseHeaders(this.session);
-                    this.session.RefreshUI();
-                }
-                catch (Exception ex)
-                {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
-                }
-            }
+            LiveTraceService.Instance.ProcessStreamedSessions(this.session);
         }
 
         /// <summary>

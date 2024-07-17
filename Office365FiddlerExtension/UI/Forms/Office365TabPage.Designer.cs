@@ -324,6 +324,7 @@
             this.CaptureTrafficCheckBox.Text = "Capture Traffic HC";
             this.CaptureTrafficCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.CaptureTrafficCheckBox.UseVisualStyleBackColor = true;
+            this.CaptureTrafficCheckBox.Visible = false;
             this.CaptureTrafficCheckBox.CheckedChanged += new System.EventHandler(this.CaptureTrafficCheckBox_CheckedChanged);
             // 
             // ExtensionEnabledCheckBox
