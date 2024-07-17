@@ -122,7 +122,7 @@
     <comment>Menu</comment>
   </data>
   <data name="Always" xml:space="preserve">
-    <value>Always</value>
+    <value>Siempre</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Analyse All Sessions" xml:space="preserve">
