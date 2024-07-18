@@ -126,195 +126,195 @@
     <comment>Tab Page</comment>
   </data>
   <data name="Analyse All Sessions" xml:space="preserve">
-    <value>Analiza Todas Las Sesiones</value>
+    <value>Analizar Todas las Sesiones</value>
     <comment>Menu</comment>
   </data>
   <data name="Analyse Selected Sessions" xml:space="preserve">
-    <value>Analyse Selected Sessions</value>
+    <value>Analizar la Sesión Seleccionada</value>
     <comment>Menu</comment>
   </data>
   <data name="Analysed" xml:space="preserve">
-    <value>Analysed</value>
+    <value>Analizado</value>
     <comment>Consolidated Report Service</comment>
   </data>
   <data name="Attribute Name Immutable ID" xml:space="preserve">
-    <value>Attribute Name Immutable ID</value>
+    <value>Nombre de Atributo Immutable ID</value>
     <comment>Inspector</comment>
   </data>
   <data name="Attribute Name UPN" xml:space="preserve">
-    <value>Attribute Name UPN</value>
+    <value>Nombre de Atributo UPN</value>
     <comment>Inspector</comment>
   </data>
   <data name="Authentication" xml:space="preserve">
-    <value>Authentication</value>
+    <value>Autenticación</value>
     <comment>Inspector &amp; ColumnUI</comment>
   </data>
   <data name="Black" xml:space="preserve">
-    <value>Black</value>
+    <value>Negro</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Blue" xml:space="preserve">
-    <value>Blue</value>
+    <value>Azul</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Capture Traffic" xml:space="preserve">
-    <value>Capture Traffic</value>
+    <value>Captura de Tráfico</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Check" xml:space="preserve">
-    <value>Check</value>
+    <value>Comprobar</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Check for updates every" xml:space="preserve">
-    <value>Check for updates every</value>
+    <value>Buscar actualizaciones cada</value>
     <comment>About</comment>
   </data>
   <data name="Check for updates every hours" xml:space="preserve">
-    <value>hours.</value>
+    <value>horas.</value>
     <comment>About</comment>
   </data>
   <data name="Check IP Address" xml:space="preserve">
-    <value>Check IP Address</value>
+    <value>Revisar Dirección IP</value>
     <comment>Menu</comment>
   </data>
   <data name="Check IP Address Placeholder Text" xml:space="preserve">
-    <value>Enter an IP Address to check what network it is on.</value>
+    <value>Ingresa una Dirección IP para revisar en que red se encuentra.</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Choose When To Analyse Sessions" xml:space="preserve">
-    <value>Choose When To Automatically Analyse Sessions</value>
+    <value>Selecciona Cuando Analizar las Sesiones de manera Automática</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Clear" xml:space="preserve">
-    <value>Clear</value>
+    <value>Borrar</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Clear All Session Analysis" xml:space="preserve">
-    <value>Clear All Session Analysis</value>
+    <value>Borrar el Análisis de Toda la sesión</value>
     <comment>Menu</comment>
   </data>
   <data name="Clear Selected Sessions" xml:space="preserve">
-    <value>Clear Selected Sessions</value>
+    <value>Borrar las Sesiones Seleccionadas</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Clear Selected Sessions Anaysis" xml:space="preserve">
-    <value>Clear Selected Sessions Anaysis</value>
+    <value>Borrar Análisis de las Sesiones Seleccionadas</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Click the link below for update instructions" xml:space="preserve">
-    <value>Click the link below for update instructions</value>
+    <value>Haga Clic en el enlace a continuación para actualizar las instrucciones</value>
     <comment>About</comment>
   </data>
   <data name="Client Begin Request" xml:space="preserve">
-    <value>Client Begin Request</value>
+    <value>Solicitar Inicio del Cliente </value>
     <comment>Inspector</comment>
   </data>
   <data name="Client Connected" xml:space="preserve">
-    <value>Client Connected</value>
+    <value>Cliente Conectado</value>
     <comment>Inspector</comment>
   </data>
   <data name="Client Done Response" xml:space="preserve">
-    <value>Client Done Response</value>
+    <value>Respuesta del Cliente</value>
     <comment>Inspector</comment>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>Close</value>
+    <value>Cerrar</value>
     <comment>About</comment>
   </data>
   <data name="Concerning" xml:space="preserve">
-    <value>Concerning</value>
+    <value>Acerca de</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Consolidated Analysis Report" xml:space="preserve">
-    <value>Consolidated Analysis Report</value>
+    <value>Informe de Análisis Consolidado</value>
     <comment>Menu &amp; ContextMenu</comment>
   </data>
   <data name="ConsolidatedAnalysisReportNotAllSessionsHaveAnalysis" xml:space="preserve">
-    <value>sessions have not been analysed to be able to create the Consolidated Analysis Report. Would you like to analyse them now so the report can be generated?</value>
+    <value>Las sesiones no se han analizado para crear el Informe de Análisis Consolidado. Le gustaría analizar las sesiones para poder generar el Informe?</value>
     <comment>Menu &amp; ContextMenu</comment>
   </data>
   <data name="Copy Save Signing Certificate" xml:space="preserve">
-    <value>Copy and save the below text into a .cer file to view the signing certificate.</value>
+    <value>Copia y guarda el texto a continuación en archivo de tipo .cer para ver el certificado de firma</value>
     <comment>Inspector</comment>
   </data>
   <data name="Create Consolidated Analysis Report" xml:space="preserve">
-    <value>Create Consolidated Analysis Report</value>
+    <value>Crear Informe de Análisis Consolidado</value>
     <comment>Menu &amp; ContextMenu</comment>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>Description</value>
+    <value>Descripción</value>
     <comment>Inspector</comment>
   </data>
   <data name="Disabled" xml:space="preserve">
-    <value>Disabled</value>
+    <value>Deshabilitado</value>
     <comment>Menu</comment>
   </data>
   <data name="Dutch" xml:space="preserve">
-    <value>Dutch</value>
+    <value>Holandes</value>
     <comment>Menu</comment>
   </data>
   <data name="Elapsed Time" xml:space="preserve">
-    <value>Elapsed Time</value>
+    <value>Tiempo transcurrido</value>
     <comment>Inspector &amp; ColumnUI</comment>
   </data>
   <data name="Enable" xml:space="preserve">
-    <value>Enable</value>
+    <value>Habilitar</value>
     <comment>Menu</comment>
   </data>
   <data name="Enabled" xml:space="preserve">
-    <value>Enabled</value>
+    <value>Habilitado</value>
     <comment>Menu</comment>
   </data>
   <data name="English" xml:space="preserve">
-    <value>English</value>
+    <value>Ingles</value>
     <comment>Menu</comment>
   </data>
   <data name="Extension" xml:space="preserve">
-    <value>Extension</value>
+    <value>Extensión</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Extension DLL" xml:space="preserve">
-    <value>Extension DLL</value>
+    <value>Extensión DLL</value>
     <comment>About</comment>
   </data>
   <data name="Extension Enabled" xml:space="preserve">
-    <value>Extension Enabled</value>
+    <value>Extensión Habilitada</value>
     <comment>About</comment>
   </data>
   <data name="Extension Options" xml:space="preserve">
-    <value>Extension Options</value>
+    <value>Opciones de Extensión</value>
     <comment>About</comment>
   </data>
   <data name="Extension Path" xml:space="preserve">
-    <value>Extension Path</value>
+    <value>Ruta de Extensión</value>
     <comment>About</comment>
   </data>
   <data name="Extension Version Information" xml:space="preserve">
-    <value>Extension Version Information</value>
+    <value>Información de Versión de Extensión</value>
     <comment>Tab Page</comment>
   </data>
   <data name="False Positive" xml:space="preserve">
-    <value>False Positive</value>
+    <value>Positivo Falso</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Fiddler Begin Request" xml:space="preserve">
-    <value>Fiddler Begin Request</value>
+    <value>Solicita Inicio de Fiddler</value>
     <comment>Inspector</comment>
   </data>
   <data name="For an explantion of session timers refer to" xml:space="preserve">
-    <value>For an explantion of session timers refer to:</value>
+    <value>Para explicación de los tiempos de sesión diríjase a:</value>
     <comment>Inspector</comment>
   </data>
   <data name="French" xml:space="preserve">
-    <value>French</value>
+    <value>Frances</value>
     <comment>Menu</comment>
   </data>
   <data name="General Session Data" xml:space="preserve">
-    <value>General Session Data</value>
+    <value>Información General de la Sesión</value>
     <comment>Inspector</comment>
   </data>
   <data name="German" xml:space="preserve">
-    <value>German</value>
+    <value>Aleman</value>
     <comment>Menu</comment>
   </data>
   <data name="Github Extension Version" xml:space="preserve">
