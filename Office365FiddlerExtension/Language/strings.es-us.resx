@@ -122,231 +122,231 @@
     <comment>Menu</comment>
   </data>
   <data name="Always" xml:space="preserve">
-    <value>Always</value>
+    <value>Siempre</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Analyse All Sessions" xml:space="preserve">
-    <value>Analyse All Sessions</value>
+    <value>Analizar Todas las Sesiones</value>
     <comment>Menu</comment>
   </data>
   <data name="Analyse Selected Sessions" xml:space="preserve">
-    <value>Analyse Selected Sessions</value>
+    <value>Analizar las Sesiones Seleccionadas</value>
     <comment>Menu</comment>
   </data>
   <data name="Analysed" xml:space="preserve">
-    <value>Analysed</value>
+    <value>Analizado</value>
     <comment>Consolidated Report Service</comment>
   </data>
   <data name="Attribute Name Immutable ID" xml:space="preserve">
-    <value>Attribute Name Immutable ID</value>
+    <value>Nombre de Atributo Immutable ID</value>
     <comment>Inspector</comment>
   </data>
   <data name="Attribute Name UPN" xml:space="preserve">
-    <value>Attribute Name UPN</value>
+    <value>Nombre de Atributo UPN</value>
     <comment>Inspector</comment>
   </data>
   <data name="Authentication" xml:space="preserve">
-    <value>Authentication</value>
+    <value>Autenticación</value>
     <comment>Inspector &amp; ColumnUI</comment>
   </data>
   <data name="Black" xml:space="preserve">
-    <value>Black</value>
+    <value>Negro</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Blue" xml:space="preserve">
-    <value>Blue</value>
+    <value>Azul</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Capture Traffic" xml:space="preserve">
-    <value>Capture Traffic</value>
+    <value>Capturar Tráfico</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Check" xml:space="preserve">
-    <value>Check</value>
+    <value>Comprobar</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Check for updates every" xml:space="preserve">
-    <value>Check for updates every</value>
+    <value>Buscar actualizaciones cada</value>
     <comment>About</comment>
   </data>
   <data name="Check for updates every hours" xml:space="preserve">
-    <value>hours.</value>
+    <value>horas.</value>
     <comment>About</comment>
   </data>
   <data name="Check IP Address" xml:space="preserve">
-    <value>Check IP Address</value>
+    <value>Revisar Dirección IP</value>
     <comment>Menu</comment>
   </data>
   <data name="Check IP Address Placeholder Text" xml:space="preserve">
-    <value>Enter an IP Address to check what network it is on.</value>
+    <value>Ingresa una Dirección IP para revisar en que red se encuentra.</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Choose When To Analyse Sessions" xml:space="preserve">
-    <value>Choose When To Automatically Analyse Sessions</value>
+    <value>Selecciona Cuando Analizar las Sesiones de manera Automática</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Clear" xml:space="preserve">
-    <value>Clear</value>
+    <value>Borrar</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Clear All Session Analysis" xml:space="preserve">
-    <value>Clear All Session Analysis</value>
+    <value>Borrar Análisis de Toda la Sesión</value>
     <comment>Menu</comment>
   </data>
   <data name="Clear Selected Sessions" xml:space="preserve">
-    <value>Clear Selected Sessions</value>
+    <value>Borrar Sesiones Seleccionadas</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Clear Selected Sessions Anaysis" xml:space="preserve">
-    <value>Clear Selected Sessions Anaysis</value>
+    <value>Borrar Análisis de las Sesiones Seleccionadas</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Click the link below for update instructions" xml:space="preserve">
-    <value>Click the link below for update instructions</value>
+    <value>Haga clic en el enlace a continuación para actualizar instrucciones</value>
     <comment>About</comment>
   </data>
   <data name="Client Begin Request" xml:space="preserve">
-    <value>Client Begin Request</value>
+    <value>Solicitar Inicio del Cliente</value>
     <comment>Inspector</comment>
   </data>
   <data name="Client Connected" xml:space="preserve">
-    <value>Client Connected</value>
+    <value>Cliente Conectado</value>
     <comment>Inspector</comment>
   </data>
   <data name="Client Done Response" xml:space="preserve">
-    <value>Client Done Response</value>
+    <value>Respuesta del Cliente</value>
     <comment>Inspector</comment>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>Close</value>
+    <value>Cerrar</value>
     <comment>About</comment>
   </data>
   <data name="Concerning" xml:space="preserve">
-    <value>Concerning</value>
+    <value>Acerca de</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Consolidated Analysis Report" xml:space="preserve">
-    <value>Consolidated Analysis Report</value>
+    <value>Informe de Análisis Consolidado</value>
     <comment>Menu &amp; ContextMenu</comment>
   </data>
   <data name="ConsolidatedAnalysisReportNotAllSessionsHaveAnalysis" xml:space="preserve">
-    <value>sessions have not been analysed to be able to create the Consolidated Analysis Report. Would you like to analyse them now so the report can be generated?</value>
+    <value>Las sesiones no se han analizado para crear el Informe de Análisis Consolidado. Le gustaría analizar las sesiones para poder generar el Informe?</value>
     <comment>Menu &amp; ContextMenu</comment>
   </data>
   <data name="Copy Save Signing Certificate" xml:space="preserve">
-    <value>Copy and save the below text into a .cer file to view the signing certificate.</value>
+    <value>Copia y guarda el texto a continuación en archivo de tipo .cer para ver el certificado de firma</value>
     <comment>Inspector</comment>
   </data>
   <data name="Create Consolidated Analysis Report" xml:space="preserve">
-    <value>Create Consolidated Analysis Report</value>
+    <value>Crear Informe de Análisis Consolidado</value>
     <comment>Menu &amp; ContextMenu</comment>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>Description</value>
+    <value>Descripción</value>
     <comment>Inspector</comment>
   </data>
   <data name="Disabled" xml:space="preserve">
-    <value>Disabled</value>
+    <value>Deshabilitado</value>
     <comment>Menu</comment>
   </data>
   <data name="Dutch" xml:space="preserve">
-    <value>Dutch</value>
+    <value>Holandes</value>
     <comment>Menu</comment>
   </data>
   <data name="Elapsed Time" xml:space="preserve">
-    <value>Elapsed Time</value>
+    <value>Tiempo Transcurrido</value>
     <comment>Inspector &amp; ColumnUI</comment>
   </data>
   <data name="Enable" xml:space="preserve">
-    <value>Enable</value>
+    <value>Habilitar</value>
     <comment>Menu</comment>
   </data>
   <data name="Enabled" xml:space="preserve">
-    <value>Enabled</value>
+    <value>Habilitado</value>
     <comment>Menu</comment>
   </data>
   <data name="English" xml:space="preserve">
-    <value>English</value>
+    <value>Ingles</value>
     <comment>Menu</comment>
   </data>
   <data name="Extension" xml:space="preserve">
-    <value>Extension</value>
+    <value>Extensión</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Extension DLL" xml:space="preserve">
-    <value>Extension DLL</value>
+    <value>Extensión DLL</value>
     <comment>About</comment>
   </data>
   <data name="Extension Enabled" xml:space="preserve">
-    <value>Extension Enabled</value>
+    <value>Extensión Habilitada</value>
     <comment>About</comment>
   </data>
   <data name="Extension Options" xml:space="preserve">
-    <value>Extension Options</value>
+    <value>Opciones de Extensión</value>
     <comment>About</comment>
   </data>
   <data name="Extension Path" xml:space="preserve">
-    <value>Extension Path</value>
+    <value>Ruta de Extensión</value>
     <comment>About</comment>
   </data>
   <data name="Extension Version Information" xml:space="preserve">
-    <value>Extension Version Information</value>
+    <value>Información de Versión de Extensión</value>
     <comment>Tab Page</comment>
   </data>
   <data name="False Positive" xml:space="preserve">
-    <value>False Positive</value>
+    <value>Positivo Falso</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Fiddler Begin Request" xml:space="preserve">
-    <value>Fiddler Begin Request</value>
+    <value>Solicita Inicio de Fiddler</value>
     <comment>Inspector</comment>
   </data>
   <data name="For an explantion of session timers refer to" xml:space="preserve">
-    <value>For an explantion of session timers refer to:</value>
+    <value>Para explicación de los tiempos de sesión diríjase a:</value>
     <comment>Inspector</comment>
   </data>
   <data name="French" xml:space="preserve">
-    <value>French</value>
+    <value>Frances</value>
     <comment>Menu</comment>
   </data>
   <data name="General Session Data" xml:space="preserve">
-    <value>General Session Data</value>
+    <value>Información General de Sesión</value>
     <comment>Inspector</comment>
   </data>
   <data name="German" xml:space="preserve">
-    <value>German</value>
+    <value>Aleman</value>
     <comment>Menu</comment>
   </data>
   <data name="Github Extension Version" xml:space="preserve">
-    <value>Github Extension Version</value>
+    <value>Versión de Extensión de Github</value>
     <comment>About</comment>
   </data>
   <data name="Github Information" xml:space="preserve">
-    <value>Github Information</value>
+    <value>Información de Github</value>
     <comment>About</comment>
   </data>
   <data name="Github Ruleset Version" xml:space="preserve">
-    <value>Github Ruleset Version</value>
+    <value>Versión de Conjunto de Reglas de Github</value>
     <comment>About</comment>
   </data>
   <data name="Got Request Headers" xml:space="preserve">
-    <value>Got Request Headers</value>
+    <value>Encabezados Solicitados Obtenidos</value>
     <comment>Inspector</comment>
   </data>
   <data name="Got Response Headers" xml:space="preserve">
-    <value>Got Response Headers</value>
+    <value>Respuesta de Encabezados Obtenidos</value>
     <comment>Inspector</comment>
   </data>
   <data name="Green" xml:space="preserve">
-    <value>Green</value>
+    <value>Verde</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Grey" xml:space="preserve">
-    <value>Grey</value>
+    <value>Gris</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Host IP" xml:space="preserve">
-    <value>Host IP</value>
+    <value>IP del Host</value>
     <comment>ColumnUI</comment>
   </data>
   <data name="Inspector" xml:space="preserve">
@@ -354,71 +354,71 @@
     <comment>Extension</comment>
   </data>
   <data name="Inspector_Session_Analysis" xml:space="preserve">
-    <value>&lt;p&gt;No session analysis available.&lt;/p&gt;&lt;p&gt;Click 'Analyse Selected Sessions' from the context menu for session analysis.&lt;/p&gt;</value>
+    <value>&lt;p&gt;Análisis de Sesión no disponible.&lt;/p&gt;&lt;p&gt;Click 'Analyse Selected Sessions' from the context menu for session analysis.&lt;/p&gt;</value>
     <comment>Inspector</comment>
   </data>
   <data name="Interesting Sessions" xml:space="preserve">
-    <value>Interesting Sessions</value>
+    <value>Sesiones Interesantes</value>
     <comment>Consolidated Report Service</comment>
   </data>
   <data name="IsMicrosoft365subnet" xml:space="preserve">
-    <value>is a public IP address within a Microsoft365 subnet</value>
+    <value>es una dirección IP pública dentro de subred de Microsoft365</value>
     <comment>Inspector</comment>
   </data>
   <data name="IsPrivateSubnet" xml:space="preserve">
-    <value>is within a private subnet on a</value>
+    <value>esta dentro de una subred privada</value>
     <comment>Inspector</comment>
   </data>
   <data name="IsPublicIPAddress" xml:space="preserve">
-    <value>is a public IP address, which is not within a Microsoft365 subnet.</value>
+    <value>es una IP publica, que no esta en la subred de Microsoft.</value>
     <comment>Inspector</comment>
   </data>
   <data name="Issuer" xml:space="preserve">
-    <value>Issuer</value>
+    <value>Entidad</value>
     <comment>Inspector</comment>
   </data>
   <data name="Language" xml:space="preserve">
-    <value>Language</value>
+    <value>Idioma</value>
     <comment>Menu &amp; Tab Page</comment>
   </data>
   <data name="LoadOrImportSessions" xml:space="preserve">
-    <value>Load or import some sessions to analyse and create a Consolidationed Analysis Report.</value>
+    <value>Cargue o importe algunas sesiones para su análisis y crear reporte de análisis consolidado.</value>
     <comment>Menu &amp; ContextMenu</comment>
   </data>
   <data name="Local Extension Version" xml:space="preserve">
-    <value>Local Extension Version</value>
+    <value>Versión de Extensión Local</value>
     <comment>About</comment>
   </data>
   <data name="Local Ruleset Version" xml:space="preserve">
-    <value>Local Ruleset Version</value>
+    <value>Versión de Conjunto de Reglas Locales</value>
     <comment>About</comment>
   </data>
   <data name="Locally Installed Information" xml:space="preserve">
-    <value>Locally Installed Information</value>
+    <value>Información Instalada Localmente</value>
     <comment>About</comment>
   </data>
   <data name="Name Identifier Format" xml:space="preserve">
-    <value>Name Identifier Format</value>
+    <value>Formato Identificador de Nombre</value>
     <comment>Inspector</comment>
   </data>
   <data name="network" xml:space="preserve">
-    <value>network</value>
+    <value>red</value>
     <comment>Inspector</comment>
   </data>
   <data name="Never" xml:space="preserve">
-    <value>Never</value>
+    <value>Nunca</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Never Web Call" xml:space="preserve">
-    <value>Never Web Call</value>
+    <value>Nunca hacer Llamada Web</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Next Update Check" xml:space="preserve">
-    <value>Next Update Check</value>
+    <value>Próxima Actualización</value>
     <comment>About</comment>
   </data>
   <data name="No Session Analysis" xml:space="preserve">
-    <value>No session analysis. Use the 'Process All Sessions' option from the Office365 extension menu to get session analysis.</value>
+    <value>Sesión No Analizada. Use la opción 'Procesar Todas las Sesiones' del menú de Extensión Office365 para obtener Análisis de Sesión.</value>
     <comment>Inspector</comment>
   </data>
   <data name="Normal" xml:space="preserve">
@@ -426,7 +426,7 @@
     <comment>ContextMenu</comment>
   </data>
   <data name="Obscure Settings" xml:space="preserve">
-    <value>Obscure Settings</value>
+    <value>Configuraciones Oscuras</value>
     <comment>About</comment>
   </data>
   <data name="Office 365" xml:space="preserve">
@@ -434,83 +434,83 @@
     <comment>Menu &amp; Inspector</comment>
   </data>
   <data name="Office 365 Fiddler Extension" xml:space="preserve">
-    <value>Office 365 Fiddler Extension</value>
+    <value>Extension de Fiddler para Office365</value>
     <comment>Inspector &amp; Consolidated Report Service</comment>
   </data>
   <data name="On Import" xml:space="preserve">
-    <value>On Import</value>
+    <value>En Importar</value>
     <comment>Tab Page</comment>
   </data>
   <data name="On Live Trace" xml:space="preserve">
-    <value>On Live Trace</value>
+    <value>Traza en Vivo</value>
     <comment>About</comment>
   </data>
   <data name="On Load Saz" xml:space="preserve">
-    <value>On Load Saz</value>
+    <value>Saz en Carga</value>
     <comment>About</comment>
   </data>
   <data name="Orange" xml:space="preserve">
-    <value>Orange</value>
+    <value>Naranja</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Overall Session Timers" xml:space="preserve">
-    <value>Overall Session Timers</value>
+    <value>Temporizadores Generales de Sesiones</value>
     <comment>Inspector</comment>
   </data>
   <data name="Portuguese" xml:space="preserve">
-    <value>Portuguese</value>
+    <value>Portugués</value>
     <comment>Menu</comment>
   </data>
   <data name="Process" xml:space="preserve">
-    <value>Process</value>
+    <value>Proceso</value>
     <comment>Inspector &amp; Consolidated Report Service</comment>
   </data>
   <data name="Processes" xml:space="preserve">
-    <value>Processes</value>
+    <value>Procesos</value>
     <comment>Consolidated Report Service</comment>
   </data>
   <data name="Recalculate Selected Sessions" xml:space="preserve">
-    <value>Recalculate Selected Sessions</value>
+    <value>Recalcular Sesiones Seleccionadas</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Red" xml:space="preserve">
-    <value>Red</value>
+    <value>Rojo</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="RedirectAddressNotFound" xml:space="preserve">
-    <value>Redirect address not found by extension.</value>
+    <value>Dirección de redirección no encontrada por la extensión.</value>
     <comment>Inspector</comment>
   </data>
   <data name="Releases" xml:space="preserve">
-    <value>Releases</value>
+    <value>Versiones</value>
     <comment>MenuUI</comment>
   </data>
   <data name="Report Issues" xml:space="preserve">
-    <value>Report Issues</value>
+    <value>Reportar Errores</value>
     <comment>MenuUI</comment>
   </data>
   <data name="Response Code" xml:space="preserve">
-    <value>Response Code</value>
+    <value>Codigo de Respuesta</value>
     <comment>Inspector</comment>
   </data>
   <data name="Response Server" xml:space="preserve">
-    <value>Response Server</value>
+    <value>Servidor de Respuesta</value>
     <comment>ColumnUI</comment>
   </data>
   <data name="Ruleset" xml:space="preserve">
-    <value>Ruleset</value>
+    <value>Conjunto de Relas</value>
     <comment>Tab Page</comment>
   </data>
   <data name="S Capitalised Sessions" xml:space="preserve">
-    <value>Sessions</value>
+    <value>Sesiones</value>
     <comment>Tab Page -- Capitalised "Sessions"</comment>
   </data>
   <data name="SAML Response Parser" xml:space="preserve">
-    <value>SAML Response Parser</value>
+    <value>Analizador de Respuesta SAML</value>
     <comment>Inspector</comment>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Save</value>
+    <value>Guardar</value>
     <comment>Inspector &amp; About</comment>
   </data>
   <data name="ScoreForSession" xml:space="preserve">
@@ -518,152 +518,153 @@
     <comment>About -- Do not translate. This is an internal to Fiddler setting, context may be lost if translated.</comment>
   </data>
   <data name="Selective" xml:space="preserve">
-    <value>Selective</value>
+    <value>Selectivo</value>
   </data>
   <data name="Server Begin Response" xml:space="preserve">
-    <value>Server Begin Response</value>
+    <value>Respuesta de Servidor Iniciada</value>
     <comment>Inspector</comment>
   </data>
   <data name="Server Done Response" xml:space="preserve">
-    <value>Server Done Response</value>
+    <value>Respuesta de Servidor Completada</value>
     <comment>Inspector</comment>
   </data>
   <data name="Server Got Request" xml:space="preserve">
-    <value>Server Got Request</value>
+    <value>El Servidor Recibió la Solicitud</value>
     <comment>Inspector</comment>
   </data>
   <data name="Server Think Time" xml:space="preserve">
-    <value>Server Think Time</value>
+    <value>Tiempo de Procesamiento del Servidor</value>
     <comment>Inspector</comment>
   </data>
   <data name="Server Timers" xml:space="preserve">
-    <value>Server Timers</value>
+    <value>Temporizadores del Servidor</value>
     <comment>Inspector</comment>
   </data>
   <data name="Session" xml:space="preserve">
-    <value>Session</value>
+    <value>Sesión</value>
     <comment>Inspector &amp; Consolidated Report Service</comment>
   </data>
   <data name="Session Age" xml:space="preserve">
-    <value>Session Age</value>
+    <value>Antiguedad de Sesión</value>
     <comment>Inspector</comment>
   </data>
   <data name="Session Analysis" xml:space="preserve">
-    <value>Session Analysis</value>
+    <value>Análisis de Sesión</value>
     <comment>Inspector</comment>
   </data>
   <data name="Session Captured" xml:space="preserve">
-    <value>Session Captured</value>
+    <value>Sesión Capturada</value>
     <comment>Inspector</comment>
   </data>
   <data name="Session ID" xml:space="preserve">
-    <value>Session ID</value>
+    <value>ID de Sesión</value>
     <comment>Inspector</comment>
   </data>
   <data name="Session Type" xml:space="preserve">
-    <value>Session Type</value>
+    <value>Tipo de Sesión</value>
     <comment>Inspector &amp; ColumnUI</comment>
   </data>
   <data name="Sessionanalysisperformed" xml:space="preserve">
-    <value>Session analysis performed on:</value>
+    <value>Análisis de Sesión realizado en:</value>
     <comment>Inspector</comment>
   </data>
   <data name="sessions" xml:space="preserve">
-    <value>sessions</value>
+    <value>sesiones</value>
     <comment>Consolidated Report Service</comment>
   </data>
   <data name="sessions in trace from" xml:space="preserve">
-    <value>sessions in trace from</value>
+    <value>sesiones en la traza desde</value>
     <comment>Consolidated Report Service</comment>
   </data>
   <data name="Session_Severity" xml:space="preserve">
-    <value>Session Severity</value>
+    <value>Severidad de Sesión</value>
     <comment>Inspector</comment>
   </data>
   <data name="Set Session Severity" xml:space="preserve">
-    <value>Set Session Severity</value>
+    <value>Conjunto de Severidad de Sesiones</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Severe" xml:space="preserve">
-    <value>Severe</value>
+    <value>Severa</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Severity" xml:space="preserve">
-    <value>Severity</value>
+    <value>Severidad</value>
     <comment>ContextMenu &amp; ColumnUI</comment>
   </data>
   <data name="Slow Running Session Threshold" xml:space="preserve">
-    <value>Slow Running Session Threshold</value>
+    <value>Umbral de Ejecución Lenta de Sesión</value>
     <comment>About</comment>
   </data>
   <data name="Spanish" xml:space="preserve">
-    <value>Spanish</value>
+    <value>Español</value>
     <comment>Menu</comment>
   </data>
   <data name="Transit Time" xml:space="preserve">
-    <value>Transit Time</value>
+    <value>Tiempo de Tránsito</value>
     <comment>Inspector</comment>
   </data>
   <data name="Uninteresting" xml:space="preserve">
-    <value>Uninteresting</value>
+    <value>Poco Interesante</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Up To Date" xml:space="preserve">
-    <value>Up To Date</value>
+    <value>Actualizado</value>
     <comment>About</comment>
   </data>
   <data name="Update Available" xml:space="preserve">
-    <value>Update Available</value>
+    <value>Actualización Disponible</value>
     <comment>About</comment>
   </data>
   <data name="Update Available - A new version" xml:space="preserve">
-    <value>A new version is available</value>
+    <value>Una nueva versión está disponible</value>
     <comment>VersionService</comment>
   </data>
   <data name="Update Available - Currently using" xml:space="preserve">
-    <value>You are currently using extension</value>
+    <value>Estás usando extensión</value>
     <comment>VersionService</comment>
   </data>
   <data name="Update Available - Extension Update Available" xml:space="preserve">
-    <value>Extension Update Available</value>
+    <value>Actualización de Extensión Disponible</value>
     <comment>VersionService</comment>
   </data>
   <data name="Update Available - Go to download page?" xml:space="preserve">
-    <value>Do you want to go to the update download page?</value>
+    <value>Quieres ir a la página de descarga de actualización?</value>
     <comment>VersionService</comment>
   </data>
   <data name="Update Available - Ruleset - Currently Using" xml:space="preserve">
-    <value>You are currently using ruleset</value>
+    <value>Ya estas usando conjunto de Reglas</value>
   </data>
   <data name="Update Available - Ruleset - Ruleset Update" xml:space="preserve">
-    <value>Ruleset Update Available</value>
+    <value>Actualización del Conjunto de Reglas Disponible
+sponible</value>
   </data>
   <data name="Update Available - Ruleset - Ruleset Update Available" xml:space="preserve">
-    <value>There's an update available for the Office 365 Fiddler Extension ruleset.</value>
+    <value>Hay una actualización disponible para el conjunto de reglas de la extensión de Fiddler para Office365</value>
     <comment>VersionService</comment>
   </data>
   <data name="Update Available - There is an update" xml:space="preserve">
-    <value>There's an update available for the Office 365 Fiddler Extension.</value>
+    <value>Hay una actualización disponible para  extensión de Fiddler para Office365</value>
     <comment>VersionService</comment>
   </data>
   <data name="Warn Before Analysing" xml:space="preserve">
-    <value>Warn Before Analysing</value>
+    <value>Advertir Antes de Analizar</value>
     <comment>Tab Page</comment>
   </data>
   <data name="Warning" xml:space="preserve">
-    <value>Warning</value>
+    <value>Advertencia</value>
     <comment>ContextMenu</comment>
   </data>
   <data name="Warning Session Time Threshold" xml:space="preserve">
-    <value>Warning Session Time Threshold</value>
+    <value>Advertencia de Umbral de Tiempo de Sesión</value>
     <comment>About</comment>
   </data>
   <data name="What are these two thresholds" xml:space="preserve">
-    <value>What are these two thresholds?</value>
+    <value>¿Cuáles son estos dos umbrales?</value>
     <comment>About</comment>
   </data>
   <data name="What is ScoreForSession" xml:space="preserve">
-    <value>What is ScoreForSession?</value>
+    <value>¿Cuál es el Puntaje de la Sesión?</value>
     <comment>About -- Do not translate. This is an internal to Fiddler setting, context may be lost if translated.</comment>
   </data>
   <data name="Wiki" xml:space="preserve">
