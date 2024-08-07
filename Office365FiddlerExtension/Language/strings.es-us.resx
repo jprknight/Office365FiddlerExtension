@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>About</value>
+    <value>Acerca de</value>
     <comment>Menu</comment>
   </data>
   <data name="Always" xml:space="preserve">
@@ -250,7 +250,7 @@
     <comment>Menu</comment>
   </data>
   <data name="Dutch" xml:space="preserve">
-    <value>Holandes</value>
+    <value>Holandés</value>
     <comment>Menu</comment>
   </data>
   <data name="Elapsed Time" xml:space="preserve">
@@ -314,7 +314,7 @@
     <comment>Inspector</comment>
   </data>
   <data name="German" xml:space="preserve">
-    <value>Aleman</value>
+    <value>Alemán</value>
     <comment>Menu</comment>
   </data>
   <data name="Github Extension Version" xml:space="preserve">
@@ -354,7 +354,7 @@
     <comment>Extension</comment>
   </data>
   <data name="Inspector_Session_Analysis" xml:space="preserve">
-    <value>&lt;p&gt;Análisis de Sesión no disponible.&lt;/p&gt;&lt;p&gt;Click 'Analyse Selected Sessions' from the context menu for session analysis.&lt;/p&gt;</value>
+    <value>&lt;p&gt;Análisis de Sesión no disponible.&lt;/p&gt;&lt;p&gt;Click 'Analyza las Sesiones Seleccionadas' desde el menú contextual de análisis de sesiones./p&gt;</value>
     <comment>Inspector</comment>
   </data>
   <data name="Interesting Sessions" xml:space="preserve">
@@ -434,15 +434,15 @@
     <comment>Menu &amp; Inspector</comment>
   </data>
   <data name="Office 365 Fiddler Extension" xml:space="preserve">
-    <value>Extension de Fiddler para Office365</value>
+    <value>Extensión de Fiddler para Office365</value>
     <comment>Inspector &amp; Consolidated Report Service</comment>
   </data>
   <data name="On Import" xml:space="preserve">
-    <value>En Importar</value>
+    <value>En la importación</value>
     <comment>Tab Page</comment>
   </data>
   <data name="On Live Trace" xml:space="preserve">
-    <value>Traza en Vivo</value>
+    <value>En la traza en Vivo</value>
     <comment>About</comment>
   </data>
   <data name="On Load Saz" xml:space="preserve">
@@ -490,7 +490,7 @@
     <comment>MenuUI</comment>
   </data>
   <data name="Response Code" xml:space="preserve">
-    <value>Codigo de Respuesta</value>
+    <value>Código de Respuesta</value>
     <comment>Inspector</comment>
   </data>
   <data name="Response Server" xml:space="preserve">
@@ -498,7 +498,7 @@
     <comment>ColumnUI</comment>
   </data>
   <data name="Ruleset" xml:space="preserve">
-    <value>Conjunto de Relas</value>
+    <value>Conjunto de Reglas</value>
     <comment>Tab Page</comment>
   </data>
   <data name="S Capitalised Sessions" xml:space="preserve">
@@ -514,7 +514,7 @@
     <comment>Inspector &amp; About</comment>
   </data>
   <data name="ScoreForSession" xml:space="preserve">
-    <value>ScoreForSession</value>
+    <value>PuntuaciónParaLaSesion</value>
     <comment>About -- Do not translate. This is an internal to Fiddler setting, context may be lost if translated.</comment>
   </data>
   <data name="Selective" xml:space="preserve">
@@ -545,7 +545,7 @@
     <comment>Inspector &amp; Consolidated Report Service</comment>
   </data>
   <data name="Session Age" xml:space="preserve">
-    <value>Antiguedad de Sesión</value>
+    <value>Antigüedad de Sesión</value>
     <comment>Inspector</comment>
   </data>
   <data name="Session Analysis" xml:space="preserve">
@@ -644,7 +644,7 @@ sponible</value>
     <comment>VersionService</comment>
   </data>
   <data name="Update Available - There is an update" xml:space="preserve">
-    <value>Hay una actualización disponible para  extensión de Fiddler para Office365</value>
+    <value>Hay una actualización disponible para  extensión de Fiddler para Office365 </value>
     <comment>VersionService</comment>
   </data>
   <data name="Warn Before Analysing" xml:space="preserve">
