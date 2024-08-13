@@ -2024,6 +2024,42 @@ namespace Office365FiddlerExtensionRuleset.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 400 Bad Request - Cloud Authentication&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_400_Cloud_Authentication_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_400_Cloud_Authentication_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 400 Bad Request.
+        /// </summary>
+        internal static string HTTP_400_Cloud_Authentication_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_400_Cloud_Authentication_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 400: Bad Request in Cloud Authentication. If you&apos;re troubleshooting a Microsoft 365 client which is unable to connect start here. Check the raw response inspector for more details..
+        /// </summary>
+        internal static string HTTP_400_Cloud_Authentication_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_400_Cloud_Authentication_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to !CLOUD AUTHENTICATION! .
+        /// </summary>
+        internal static string HTTP_400_Cloud_Authentication_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_400_Cloud_Authentication_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 400 Bad Request&lt;/span&gt;&lt;/b&gt;.
         /// </summary>
         internal static string HTTP_400s_ResponseAlert {
@@ -2727,7 +2763,7 @@ namespace Office365FiddlerExtensionRuleset.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This AutoDiscover request was refused by the server it was sent to. Check the raw tab for further details..
+        ///   Looks up a localized string similar to The AutoDiscover request was refused by the server it was sent to. If this a Microsoft cloud endpoint, it&apos;s quite possible this request is expected to fail. Check the raw tab for further details..
         /// </summary>
         internal static string HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseComments {
             get {
@@ -2781,6 +2817,45 @@ namespace Office365FiddlerExtensionRuleset.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 502 Bad Gateway False Positive.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_AutoDiscover_Cloud_Vanity_Domain_False_Positive_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_AutoDiscover_Cloud_Vanity_Domain_False_Positive_ResponseCode" +
+                        "Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to on port 443, which by design Office 365 Autodiscover does not respond to.&lt;p&gt;If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects requests on port 80 to &lt;a href=&apos;https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml&apos; target=&apos;_blank&apos;&gt;https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml&lt;/a&gt;&lt;p&gt;The reason for this is Microsoft does not maintain SSL certificates for every tenant domain name registered on the .on [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_AutoDiscover_Cloud_Vanity_Domain_False_Positive_ResponseCommentsEnd {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_AutoDiscover_Cloud_Vanity_Domain_False_Positive_ResponseComm" +
+                        "entsEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:green&apos;&gt;False Positive&lt;/span&gt;&lt;/b&gt;. An AutoDiscover call was sent to.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_AutoDiscover_Cloud_Vanity_Domain_False_Positive_ResponseCommentsStart {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_AutoDiscover_Cloud_Vanity_Domain_False_Positive_ResponseComm" +
+                        "entsStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to False Positive.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_AutoDiscover_Cloud_Vanity_Domain_False_Positive_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_AutoDiscover_Cloud_Vanity_Domain_False_Positive_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Domain not detected.
         /// </summary>
         internal static string HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_Domain_Not_Detected {
@@ -2795,6 +2870,15 @@ namespace Office365FiddlerExtensionRuleset.Language {
         internal static string HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseAlert {
             get {
                 return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:green&apos;&gt;False Positive&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseAlert1 {
+            get {
+                return ResourceManager.GetString("HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseAlert1", resourceCulture);
             }
         }
         

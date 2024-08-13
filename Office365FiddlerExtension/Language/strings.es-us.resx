@@ -640,11 +640,11 @@
 sponible</value>
   </data>
   <data name="Update Available - Ruleset - Ruleset Update Available" xml:space="preserve">
-    <value>Hay una actualización disponible para el conjunto de reglas de la extensión de Fiddler para Office365</value>
+    <value>Hay una actualización disponible para el conjunto de reglas de la extensión de Fiddler para Office365.</value>
     <comment>VersionService</comment>
   </data>
   <data name="Update Available - There is an update" xml:space="preserve">
-    <value>Hay una actualización disponible para  extensión de Fiddler para Office365 </value>
+    <value>Hay una actualización disponible para  extensión de Fiddler para Office365.</value>
     <comment>VersionService</comment>
   </data>
   <data name="Warn Before Analysing" xml:space="preserve">

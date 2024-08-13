@@ -318,7 +318,7 @@ namespace Office365FiddlerExtension.Services
         }
 
         /// <summary>
-        /// Tuple which takes in session, and returns if the HostIP associated with the session is within
+        /// Tuple which takes in a string for ipAddress, and returns if the HostIP associated with the session is within
         /// a Microsoft365 subnet or not.
         /// </summary>
         /// <param name="string"></param>
