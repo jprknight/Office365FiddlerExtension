@@ -16,7 +16,7 @@ Don't want to use the aka.ms short link, or not working? Use this link instead, 
 
 `Invoke-Expression (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/jprknight/Office365FiddlerExtension/master/Office365FiddlerExtension/Deploy-Office365FiddlerExtension.ps1')`
 
-The deployment script allows you to upgrade to v2.0.3, and just in case there's any issues you can downgrade to v1.0.78. Please report any issues you encounter: https://github.com/jprknight/Office365FiddlerExtension/issues.
+The deployment script allows you to upgrade to the latest available version, and just in case there's any issues you can downgrade to v1.0.78. Please report any issues you encounter: https://github.com/jprknight/Office365FiddlerExtension/issues.
 
 ### Manual Install
 
