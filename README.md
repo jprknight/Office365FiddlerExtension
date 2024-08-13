@@ -41,8 +41,8 @@ You're expecting to extract these files to both of the folders above for the ext
 
 NOTE: You don't need the extension installed on the computer where the issue is seen.
 * Use Fiddler Classic, FiddlerCap, or FiddlerAnywhere to collect a **SAZ file** trace with <a href="https://docs.telerik.com/fiddler/configure-fiddler/tasks/decrypthttps">decrypt HTTPS traffic</a> enabled.
-* Use F12 Developer tools and save a **HAR file** from a browser session.
-* Use **JSON Network Log Export** (edge://net-export/ in Edge browser). Note, with this option you'll need the <a href="https://github.com/ericlaw1979/FiddlerImportNetlog/releases/latest">Fiddler Import Netlog</a> plugin, to have the "NetLog JSON" import option in Fiddler.
+* Or use F12 Developer tools and save a **HAR file** from a browser session.
+* Or use **JSON Network Log Export** (edge://net-export/ in Edge browser). Note, with this option you'll need the <a href="https://github.com/ericlaw1979/FiddlerImportNetlog/releases/latest">Fiddler Import Netlog</a> plugin, to have the "NetLog JSON" import option in Fiddler.
 
 2. **Review the result** on your own computer by installing Fiddler Classic, installing the extension, and...
 * Opening or double clicking the **SAZ file**. As Fiddler loads the SAZ filem the sessions are automatically analysed.
