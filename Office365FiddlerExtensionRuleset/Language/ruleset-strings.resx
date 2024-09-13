@@ -1358,4 +1358,16 @@
     <value>Unknown</value>
     <comment>Always Run Process Name</comment>
   </data>
+  <data name="HTTP_503_Service_Unavailable_OWA_CreateAttachment_SessionType" xml:space="preserve">
+    <value>OWA is unable to perform the action CreateAttachment!</value>
+  </data>
+  <data name="HTTP_503_Service_Unavailable_OWA_CreateAttachment_ResponseCodeDescription" xml:space="preserve">
+    <value>503 Service Unavailable OWA CreateAttachment</value>
+  </data>
+  <data name="HTTP_503_Service_Unavailable_OWA_CreateAttachment_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 503 Service Unavailable&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_503_Service_Unavailable_OWA_CreateAttachment_ResponseComments" xml:space="preserve">
+    <value>OWA was unable to perform or complete the CreateAttachment action. Check the Raw and WebView response tabs to check for any details of why this is happening. Consider internet proxies and the security stance these devices could be taking in classifying the website being accessed.</value>
+  </data>
 </root>

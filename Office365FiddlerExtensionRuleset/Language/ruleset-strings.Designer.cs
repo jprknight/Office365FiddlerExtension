@@ -3077,6 +3077,42 @@ namespace Office365FiddlerExtensionRuleset.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 503 Service Unavailable&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string HTTP_503_Service_Unavailable_OWA_CreateAttachment_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_503_Service_Unavailable_OWA_CreateAttachment_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 503 Service Unavailable OWA CreateAttachment.
+        /// </summary>
+        internal static string HTTP_503_Service_Unavailable_OWA_CreateAttachment_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_503_Service_Unavailable_OWA_CreateAttachment_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OWA was unable to perform or complete the CreateAttachment action. Check the Raw and WebView response tabs to check for any details of why this is happening. Consider internet proxies and the security stance these devices could be taking in classifying the website being accessed..
+        /// </summary>
+        internal static string HTTP_503_Service_Unavailable_OWA_CreateAttachment_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_503_Service_Unavailable_OWA_CreateAttachment_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OWA is unable to perform the action CreateAttachment!.
+        /// </summary>
+        internal static string HTTP_503_Service_Unavailable_OWA_CreateAttachment_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_503_Service_Unavailable_OWA_CreateAttachment_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;HTTP 504 Gateway Timeout&lt;/span&gt;&lt;/b&gt;.
         /// </summary>
         internal static string HTTP_504_Gateway_Timeout_Anything_Else_ResponseAlert {
