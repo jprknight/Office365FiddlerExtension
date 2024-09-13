@@ -1359,7 +1359,7 @@
     <comment>Always Run Process Name</comment>
   </data>
   <data name="HTTP_503_Service_Unavailable_OWA_CreateAttachment_SessionType" xml:space="preserve">
-    <value>OWA is unable to perform the action CreateAttachment!</value>
+    <value>503 OWA unable to CreateAttachment!</value>
   </data>
   <data name="HTTP_503_Service_Unavailable_OWA_CreateAttachment_ResponseCodeDescription" xml:space="preserve">
     <value>503 Service Unavailable OWA CreateAttachment</value>

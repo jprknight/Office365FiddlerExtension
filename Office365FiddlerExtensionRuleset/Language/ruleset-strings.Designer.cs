@@ -3104,7 +3104,7 @@ namespace Office365FiddlerExtensionRuleset.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OWA is unable to perform the action CreateAttachment!.
+        ///   Looks up a localized string similar to 503 OWA unable to CreateAttachment!.
         /// </summary>
         internal static string HTTP_503_Service_Unavailable_OWA_CreateAttachment_SessionType {
             get {

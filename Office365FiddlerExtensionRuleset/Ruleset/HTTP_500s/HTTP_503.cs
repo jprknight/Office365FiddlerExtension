@@ -27,6 +27,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 return;
             }
+            HTTP_503_Service_Unavailable_OWA_CreateAttachment(this.session);
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
             HTTP_503_Service_Unavailable_Everything_Else(this.session);
         }
 
