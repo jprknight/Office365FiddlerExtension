@@ -383,7 +383,7 @@ namespace Office365FiddlerExtension.UI.Forms
         {
             if (!NetworkingService.Instance.IsValidIPAddress(EnterIPAddressTextBox.Text))
             {
-                CheckIPAddressResultTextBox.Text = $"{EnterIPAddressTextBox.Text} is not a valid IP address.";
+                CheckIPAddressResultTextBox.Text = $"{EnterIPAddressTextBox.Text} {LangHelper.GetString("IsNotAValidIPAddress")}";
                 EnterIPAddressTextBox.Text = "";
                 SetPlaceHolderText();
                 return;
@@ -411,6 +411,8 @@ namespace Office365FiddlerExtension.UI.Forms
                 {
                     CheckIPAddressResultTextBox.Text = $"{EnterIPAddressTextBox.Text} is a public IP address not within a Microsoft 365 subnet.";
                 }
+
+                CheckIPAddressResultTextBox.Text += $" {LangHelper.GetString("TheOwningOrganisation")} {NetworkingService.Instance.getWhoisOrganizationName(EnterIPAddressTextBox.Text)}";
             }
         }
 

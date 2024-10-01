@@ -670,4 +670,13 @@
     <value>Wiki</value>
     <comment>Menu</comment>
   </data>
+  <data name="IsNotAValidIPAddress" xml:space="preserve">
+    <value>is not a valid IP address.</value>
+  </data>
+  <data name="ErrorOnWhoisLookup" xml:space="preserve">
+    <value>Error on Whois lookup.</value>
+  </data>
+  <data name="TheOwningOrganisation" xml:space="preserve">
+    <value>The owning organisation is</value>
+  </data>
 </root>

@@ -403,6 +403,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error on Whois lookup..
+        /// </summary>
+        internal static string ErrorOnWhoisLookup {
+            get {
+                return ResourceManager.GetString("ErrorOnWhoisLookup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extension.
         /// </summary>
         internal static string Extension {
@@ -615,6 +624,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string IsMicrosoft365subnet {
             get {
                 return ResourceManager.GetString("IsMicrosoft365subnet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is not a valid IP address..
+        /// </summary>
+        internal static string IsNotAValidIPAddress {
+            get {
+                return ResourceManager.GetString("IsNotAValidIPAddress", resourceCulture);
             }
         }
         
@@ -1146,6 +1164,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Spanish {
             get {
                 return ResourceManager.GetString("Spanish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The owning organisation is.
+        /// </summary>
+        internal static string TheOwningOrganisation {
+            get {
+                return ResourceManager.GetString("TheOwningOrganisation", resourceCulture);
             }
         }
         

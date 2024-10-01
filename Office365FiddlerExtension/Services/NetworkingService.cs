@@ -7,6 +7,7 @@ using System.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Fiddler;
+using Whois.NET;
 
 namespace Office365FiddlerExtension.Services
 {
@@ -382,6 +383,20 @@ namespace Office365FiddlerExtension.Services
             }
 
             return Tuple.Create(isMicrosoft365IP, matchingSubnet);
+        }
+
+        public string getWhoisOrganizationName(string IPAddress)
+        {
+            try
+            {
+                var result = WhoisClient.Query(IPAddress);
+                return result.OrganizationName;
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+                return LangHelper.GetString("ErrorOnWhoisLookup");
+            }
         }
 
         public class EndPointJson
