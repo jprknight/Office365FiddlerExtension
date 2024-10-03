@@ -35,6 +35,7 @@
             this.AnalyseSelectedSessionsButton = new System.Windows.Forms.Button();
             this.ClearAllSessionAnalysisButton = new System.Windows.Forms.Button();
             this.CheckIPAddressGroupBox = new System.Windows.Forms.GroupBox();
+            this.WhoisCheckBox = new System.Windows.Forms.CheckBox();
             this.CheckIPAddressClearButton = new System.Windows.Forms.Button();
             this.CheckIPAddressResultTextBox = new System.Windows.Forms.TextBox();
             this.CheckIPAddressButton = new System.Windows.Forms.Button();
@@ -140,6 +141,7 @@
             // 
             // CheckIPAddressGroupBox
             // 
+            this.CheckIPAddressGroupBox.Controls.Add(this.WhoisCheckBox);
             this.CheckIPAddressGroupBox.Controls.Add(this.CheckIPAddressClearButton);
             this.CheckIPAddressGroupBox.Controls.Add(this.CheckIPAddressResultTextBox);
             this.CheckIPAddressGroupBox.Controls.Add(this.CheckIPAddressButton);
@@ -150,6 +152,17 @@
             this.CheckIPAddressGroupBox.TabIndex = 3;
             this.CheckIPAddressGroupBox.TabStop = false;
             this.CheckIPAddressGroupBox.Text = "Check IP Address HC";
+            // 
+            // WhoisCheckBox
+            // 
+            this.WhoisCheckBox.AutoSize = true;
+            this.WhoisCheckBox.Location = new System.Drawing.Point(324, 78);
+            this.WhoisCheckBox.Name = "WhoisCheckBox";
+            this.WhoisCheckBox.Size = new System.Drawing.Size(56, 17);
+            this.WhoisCheckBox.TabIndex = 4;
+            this.WhoisCheckBox.Text = "Whois";
+            this.WhoisCheckBox.UseVisualStyleBackColor = true;
+            this.WhoisCheckBox.CheckedChanged += new System.EventHandler(this.WhoisCheckBox_CheckedChanged);
             // 
             // CheckIPAddressClearButton
             // 
@@ -358,10 +371,10 @@
             // LanguageTextBox
             // 
             this.LanguageTextBox.BackColor = System.Drawing.Color.White;
-            this.LanguageTextBox.Location = new System.Drawing.Point(363, 69);
+            this.LanguageTextBox.Location = new System.Drawing.Point(357, 69);
             this.LanguageTextBox.Name = "LanguageTextBox";
             this.LanguageTextBox.ReadOnly = true;
-            this.LanguageTextBox.Size = new System.Drawing.Size(35, 20);
+            this.LanguageTextBox.Size = new System.Drawing.Size(41, 20);
             this.LanguageTextBox.TabIndex = 5;
             // 
             // label2
@@ -392,7 +405,7 @@
             // LanguageLabel
             // 
             this.LanguageLabel.AutoSize = true;
-            this.LanguageLabel.Location = new System.Drawing.Point(302, 72);
+            this.LanguageLabel.Location = new System.Drawing.Point(296, 72);
             this.LanguageLabel.Name = "LanguageLabel";
             this.LanguageLabel.Size = new System.Drawing.Size(55, 13);
             this.LanguageLabel.TabIndex = 6;
@@ -541,5 +554,6 @@
         private System.Windows.Forms.GroupBox WarnBeforeProcessingGroupBox;
         private System.Windows.Forms.Label WarnBeforeProcessingSessionsLabel;
         private System.Windows.Forms.TextBox WarnBeforeAnalysingTextBox;
+        private System.Windows.Forms.CheckBox WhoisCheckBox;
     }
 }

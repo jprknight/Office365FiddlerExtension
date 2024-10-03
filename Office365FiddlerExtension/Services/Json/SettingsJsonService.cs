@@ -75,7 +75,8 @@ namespace Office365FiddlerExtension.Services
                 PreferredLanguage = "EN",
                 DebugMode = "False",
                 CaptureTraffic = "",
-                WarnBeforeAnalysing = "250"
+                WarnBeforeAnalysing = "250",
+                Whois = "True"
             };
 
             // Transform the object to a Json object.
@@ -144,6 +145,18 @@ namespace Office365FiddlerExtension.Services
                     $"{ex}");
             }
             return false;
+        }
+
+        public void SetWhois(bool whois)
+        {
+            // Pull & Deserialize Json from ExtensionSettings.
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            extensionSettings.Whois = whois;
+
+            // Serialize the object back into Json.
+            // Write the Json into the ExtensionSettings Fiddler setting.
+            Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
         }
 
         /// <summary>
@@ -585,5 +598,7 @@ namespace Office365FiddlerExtension.Services
         public bool CaptureTraffic { get; set; }
 
         public int WarnBeforeAnalysing { get; set; }
+
+        public bool Whois { get; set; }
     }
 }

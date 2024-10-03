@@ -745,6 +745,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Never Web Call is enabled. This feature is disabled..
+        /// </summary>
+        internal static string NeverWebCall_FeatureDisabled {
+            get {
+                return ResourceManager.GetString("NeverWebCall_FeatureDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next Update Check.
         /// </summary>
         internal static string Next_Update_Check {

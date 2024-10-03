@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Office365FiddlerExtension.Services;
+using System.Diagnostics.Tracing;
 
 namespace Office365FiddlerExtension.UI.Forms
 {
@@ -33,15 +34,38 @@ namespace Office365FiddlerExtension.UI.Forms
             CreateConsolidatedAnalysisButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
         }
 
+        public void RedrawForm(Object sender, EventArgs e)
+        {
+            string message = "You did not enter a server name. Cancel this operation?";
+            string caption = "Error Detected in Input";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result;
+            Office365TabPage_Load(sender,e);
+        }
+
         private void Office365TabPage_Load(object sender, EventArgs e)
         {
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
+            if (extensionSettings.NeverWebCall)
+            {
+                CheckIPAddressGroupBox.Enabled = false;
+                EnterIPAddressTextBox.Text = LangHelper.GetString("NeverWebCall_FeatureDisabled");
+                CheckIPAddressResultTextBox.Text = LangHelper.GetString("NeverWebCall_FeatureDisabled");
+            }
+            else
+            {
+                CheckIPAddressGroupBox.Enabled = true;
+                EnterIPAddressTextBox.Text = "";
+                CheckIPAddressResultTextBox.Text = "";
+                // Make sure the text box has placeholder text on load since it'll be empty.
+                SetPlaceHolderText();
+            }
+
             EnterIPAddressTextBox.GotFocus += RemovePlaceholderText;
             EnterIPAddressTextBox.LostFocus += AddPlaceholderText;
 
-            // Make sure the text box has placeholder text on load since it'll be empty.
-            SetPlaceHolderText();
+            
 
             LanguageTextBox.Text = extensionSettings.PreferredLanguage;
 
@@ -66,17 +90,19 @@ namespace Office365FiddlerExtension.UI.Forms
             SelectiveSessionAnalysisRadioButton.Text = LangHelper.GetString("Selective");
             NeverRadioButton.Text = LangHelper.GetString("Never");
 
-            if (ExtensionEnabledCheckBox.Checked)
+            if (extensionSettings.ExtensionSessionProcessingEnabled)
             {
                 AlwaysSessionAnalysisRadioButton.Enabled = true;
                 SelectiveSessionAnalysisRadioButton.Enabled = true;
                 NeverRadioButton.Enabled = true;
+                WarnBeforeProcessingGroupBox.Enabled = true;
             }
             else
             {
                 AlwaysSessionAnalysisRadioButton.Enabled = false;
                 SelectiveSessionAnalysisRadioButton.Enabled = false;
                 NeverRadioButton.Enabled = false;
+                WarnBeforeProcessingGroupBox.Enabled = false;
             }
 
             SessionAnalysisOnLoadSazCheckBox.Text = LangHelper.GetString("On Load Saz");
@@ -102,6 +128,7 @@ namespace Office365FiddlerExtension.UI.Forms
             CheckIPAddressGroupBox.Text = LangHelper.GetString("Check IP Address");
             CheckIPAddressButton.Text = LangHelper.GetString("Check");
             CheckIPAddressClearButton.Text = LangHelper.GetString("Clear");
+            WhoisCheckBox.Checked = extensionSettings.Whois;
 
             ExtensionVersionInformationGroupBox.Text = LangHelper.GetString("Extension Version Information");
 
@@ -204,52 +231,48 @@ namespace Office365FiddlerExtension.UI.Forms
                 SessionAnalysisOnImportCheckBox.Enabled = true;
             }
 
-            if (VersionService.Instance.IsExtensionDLLUpdateAvailable())
-            {
-                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")} v" +
-                    $"{VersionService.Instance.GetExtensionDLLVersion()} - " +
-                    LangHelper.GetString("Update Available");
-                ExtensionVersionLabel.ForeColor = System.Drawing.Color.Red;
-            }
-            else
-            {
-                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")} v" +
-                    $"{VersionService.Instance.GetExtensionDLLVersion()} - " + 
-                    LangHelper.GetString("Up To Date");
-                ExtensionVersionLabel.ForeColor = System.Drawing.Color.Green;
-            }
-
-            if (VersionService.Instance.IsRulesetDLLUpdateAvailable())
-            {
-                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")} v" +
-                    $"{VersionService.Instance.GetExtensionRulesetDLLVersion()} - " +
-                    LangHelper.GetString("Update Available");
-                RulesetVersionLabel.ForeColor = System.Drawing.Color.Red;
-            }
-            else
-            {
-                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")} v" +
-                    $"{VersionService.Instance.GetExtensionRulesetDLLVersion()} - " +
-                    LangHelper.GetString("Up To Date");
-                RulesetVersionLabel.ForeColor = System.Drawing.Color.Green;
-            }
-
-            // Follow up the above with overrides if never web call is true.
+            UpdateLinkLabel.Text = URLsJsonService.Instance.GetDeserializedExtensionURLs().Installer;
 
             if (extensionSettings.NeverWebCall)
             {
-                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")} v" +
-                    $"{VersionService.Instance.GetExtensionDLLVersion()} - " +
-                    LangHelper.GetString("Never Web Call");
+                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v{VersionService.Instance.GetExtensionDLLVersion()}";
                 ExtensionVersionLabel.ForeColor = System.Drawing.Color.Black;
 
-                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")} v" +
-                    $"{VersionService.Instance.GetExtensionRulesetDLLVersion()} - " +
-                    LangHelper.GetString("Never Web Call");
+                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v{VersionService.Instance.GetExtensionRulesetDLLVersion()}";
                 RulesetVersionLabel.ForeColor = System.Drawing.Color.Black;
             }
+            else
+            {
+                if (VersionService.Instance.IsExtensionDLLUpdateAvailable())
+                {
+                    ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
+                        $"{VersionService.Instance.GetExtensionDLLVersion()} - " +
+                        LangHelper.GetString("Update Available");
+                    ExtensionVersionLabel.ForeColor = System.Drawing.Color.Red;
+                }
+                else
+                {
+                    ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
+                        $"{VersionService.Instance.GetExtensionDLLVersion()} - " +
+                        LangHelper.GetString("Up To Date");
+                    ExtensionVersionLabel.ForeColor = System.Drawing.Color.Green;
+                }
 
-            UpdateLinkLabel.Text = URLsJsonService.Instance.GetDeserializedExtensionURLs().Installer;
+                if (VersionService.Instance.IsRulesetDLLUpdateAvailable())
+                {
+                    RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v" +
+                        $"{VersionService.Instance.GetExtensionRulesetDLLVersion()} - " +
+                        LangHelper.GetString("Update Available");
+                    RulesetVersionLabel.ForeColor = System.Drawing.Color.Red;
+                }
+                else
+                {
+                    RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v" +
+                        $"{VersionService.Instance.GetExtensionRulesetDLLVersion()} - " +
+                        LangHelper.GetString("Up To Date");
+                    RulesetVersionLabel.ForeColor = System.Drawing.Color.Green;
+                }
+            }
         }
 
         public void AddPlaceholderText(object sender, EventArgs e)
@@ -282,22 +305,13 @@ namespace Office365FiddlerExtension.UI.Forms
         {
             SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(ExtensionEnabledCheckBox.Checked);
 
-            if (ExtensionEnabledCheckBox.Checked)
-            {
-                AlwaysSessionAnalysisRadioButton.Enabled = true;
-                SelectiveSessionAnalysisRadioButton.Enabled = true;
-                NeverRadioButton.Enabled = true;
-                //SessionAnalysisOnLoadSazCheckBox.Enabled = SomeSessionAnalysisRadioButton.Checked;
-                //SessionAnalysisOnLiveTraceCheckBox.Enabled = SomeSessionAnalysisRadioButton.Checked;                
-            }
-            else
-            {
-                AlwaysSessionAnalysisRadioButton.Enabled = false;
-                SelectiveSessionAnalysisRadioButton.Enabled = false;
-                NeverRadioButton.Enabled = false;
-                //SessionAnalysisOnLoadSazCheckBox.Enabled = SomeSessionAnalysisRadioButton.Checked;
-                //SessionAnalysisOnLiveTraceCheckBox.Enabled = SomeSessionAnalysisRadioButton.Checked;
-            }
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            // Enable / Disable these controls according to whether the extension is enabled or not.
+            AlwaysSessionAnalysisRadioButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
+            SelectiveSessionAnalysisRadioButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
+            NeverRadioButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
+            WarnBeforeProcessingGroupBox.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
 
             this.UpdateUIControls();
             MenuUI.Instance.UpdateUIControls();
@@ -412,7 +426,13 @@ namespace Office365FiddlerExtension.UI.Forms
                     CheckIPAddressResultTextBox.Text = $"{EnterIPAddressTextBox.Text} is a public IP address not within a Microsoft 365 subnet.";
                 }
 
-                CheckIPAddressResultTextBox.Text += $" {LangHelper.GetString("TheOwningOrganisation")} {NetworkingService.Instance.getWhoisOrganizationName(EnterIPAddressTextBox.Text)}";
+                var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+                // If Whois lookups are enabled, go find out the organization name who owns this IP address.
+                if (extensionSettings.Whois)
+                {
+                    CheckIPAddressResultTextBox.Text += $" {LangHelper.GetString("TheOwningOrganisation")} {NetworkingService.Instance.GetWhoisOrganizationName(EnterIPAddressTextBox.Text)}";
+                }
             }
         }
 
@@ -431,6 +451,7 @@ namespace Office365FiddlerExtension.UI.Forms
         private void NeverWebCallCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             SettingsJsonService.Instance.SetNeverWebCall(NeverWebCallCheckBox.Checked);
+            Office365TabPage_Load(sender, e);
         }
 
         private void DebugModeCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -468,6 +489,11 @@ namespace Office365FiddlerExtension.UI.Forms
                 MessageBox.Show(message, caption);
                 WarnBeforeAnalysingTextBox.Text = WarnBeforeAnalysingTextBox.Text.Remove(WarnBeforeAnalysingTextBox.Text.Length - 1);
             }   
+        }
+
+        private void WhoisCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsJsonService.Instance.SetWhois(WhoisCheckBox.Checked);
         }
     }
 

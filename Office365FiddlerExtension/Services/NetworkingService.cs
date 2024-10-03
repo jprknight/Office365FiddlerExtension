@@ -385,7 +385,7 @@ namespace Office365FiddlerExtension.Services
             return Tuple.Create(isMicrosoft365IP, matchingSubnet);
         }
 
-        public string getWhoisOrganizationName(string IPAddress)
+        public string GetWhoisOrganizationName(string IPAddress)
         {
             try
             {

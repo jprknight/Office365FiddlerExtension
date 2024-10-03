@@ -50,6 +50,7 @@
             this.GithubRulesetVersionTextbox = new System.Windows.Forms.TextBox();
             this.GithubExtensionVersionLabel = new System.Windows.Forms.Label();
             this.GithubDLLVersionTextbox = new System.Windows.Forms.TextBox();
+            this.DebugModeLabel = new System.Windows.Forms.Label();
             this.InfoGroupbox.SuspendLayout();
             this.GithubInfoGroupbox.SuspendLayout();
             this.SuspendLayout();
@@ -176,6 +177,7 @@
             // 
             // GithubInfoGroupbox
             // 
+            this.GithubInfoGroupbox.Controls.Add(this.DebugModeLabel);
             this.GithubInfoGroupbox.Controls.Add(this.InstructionsLabel);
             this.GithubInfoGroupbox.Controls.Add(this.UpdateLinkLabel);
             this.GithubInfoGroupbox.Controls.Add(this.GithubRulesetVersionUpdateMessageLabel);
@@ -295,6 +297,15 @@
             this.GithubDLLVersionTextbox.Size = new System.Drawing.Size(151, 20);
             this.GithubDLLVersionTextbox.TabIndex = 8;
             // 
+            // DebugModeLabel
+            // 
+            this.DebugModeLabel.AutoSize = true;
+            this.DebugModeLabel.Location = new System.Drawing.Point(345, 84);
+            this.DebugModeLabel.Name = "DebugModeLabel";
+            this.DebugModeLabel.Size = new System.Drawing.Size(69, 13);
+            this.DebugModeLabel.TabIndex = 17;
+            this.DebugModeLabel.Text = "Debug Mode";
+            // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -339,5 +350,6 @@
         private System.Windows.Forms.Label LocalExtensionVersionUpdateMessageLabel;
         private System.Windows.Forms.LinkLabel UpdateLinkLabel;
         private System.Windows.Forms.Label InstructionsLabel;
+        private System.Windows.Forms.Label DebugModeLabel;
     }
 }
