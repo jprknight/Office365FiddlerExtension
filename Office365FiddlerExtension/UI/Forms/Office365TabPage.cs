@@ -3,7 +3,9 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Office365FiddlerExtension.Services;
-using System.Diagnostics.Tracing;
+using System.Collections;
+using static System.Windows.Forms.TabControl;
+using System.Runtime.Remoting.Channels;
 
 namespace Office365FiddlerExtension.UI.Forms
 {
@@ -20,6 +22,32 @@ namespace Office365FiddlerExtension.UI.Forms
             InitializeComponent();
         }
 
+        // REVIEW THIS.
+        //
+        // Attempting to get the Enable/Disable menu item to effect the Tab Page.
+        //
+        // Some testing at runtime shows the application recognises the checked value has changed. The UI doesn't show it through.
+        public void InvertExtensionEnabledCheckbox()
+        {
+            string message = $"You hit the InvertExtensionEnabledCheckbox function. {ExtensionEnabledCheckBox.Checked}";
+            string caption = "Refresh";
+            MessageBoxButtons buttons = MessageBoxButtons.OK;
+            DialogResult result;
+
+            // Displays the MessageBox.
+            result = MessageBox.Show(message, caption, buttons);
+
+            this.ExtensionEnabledCheckBox.Checked = !this.ExtensionEnabledCheckBox.Checked;
+
+            string message2 = $"You finished the InvertExtensionEnabledCheckbox function. {ExtensionEnabledCheckBox.Checked}";
+            string caption2 = "Refresh";
+            MessageBoxButtons buttons2 = MessageBoxButtons.OK;
+            DialogResult result2;
+
+            // Displays the MessageBox.
+            result2 = MessageBox.Show(message2, caption2, buttons2);
+        }
+
         public void UpdateUIControls()
         {
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
@@ -32,15 +60,6 @@ namespace Office365FiddlerExtension.UI.Forms
             ClearSelectedSessionAnalysisButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
 
             CreateConsolidatedAnalysisButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
-        }
-
-        public void RedrawForm(Object sender, EventArgs e)
-        {
-            string message = "You did not enter a server name. Cancel this operation?";
-            string caption = "Error Detected in Input";
-            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-            DialogResult result;
-            Office365TabPage_Load(sender,e);
         }
 
         private void Office365TabPage_Load(object sender, EventArgs e)
@@ -512,6 +531,57 @@ namespace Office365FiddlerExtension.UI.Forms
             // Load the UI.
             FiddlerApplication.UI.tabsViews.TabPages.Add(oPage);
         }
+
+
+        // REVIEW THIS.
+        //
+        // Attempting to get the Enable/Disable menu item to effect the Tab Page.
+        public void Refresh()
+        {
+            
+            
+            TabPageCollection tabPages = FiddlerApplication.UI.tabsViews.TabPages;
+
+            foreach (TabPage tabpage in tabPages)
+            {
+                if (tabpage.Text.Equals(LangHelper.GetString("Office 365 Fiddler Extension")))
+                {
+
+                    string message = $"You hit the refresh function. {tabpage.Text}";
+                    string caption = "Refresh";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    DialogResult result;
+
+                    // Displays the MessageBox.
+                    result = MessageBox.Show(message, caption, buttons);
+
+                    // This code gets into the tabpage, but none of these things can trigger a UI
+                    // update of the enabled / disabled checkbox.
+                    // The only thing I've successfully been able to do is trigger a dispose event
+                    // which removes the tab page from the application.
+
+                    //tabpage.Dispose();
+
+                    //Office365TabPage.Instance.UpdateUIControls();
+
+                    //Office365TabPage.Instance.InvertExtensionEnabledCheckbox();
+
+                    //tabpage.Invalidate();
+                    //tabpage.Update();
+
+                    //tabpage.Controls.Clear();
+                    //tabpage.Controls.Add(oView);
+                    //tabpage.Controls.update
+
+                    //tabpage.Invalidate();
+                    //tabpage.Refresh();
+
+                    
+
+                }
+            }            
+        }
+
 
         public void OnBeforeUnload()
         {
