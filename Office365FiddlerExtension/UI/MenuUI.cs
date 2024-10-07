@@ -165,6 +165,12 @@ namespace Office365FiddlerExtension
                 
             }
         }
+
+        public void RemoveMenu()
+        {
+            FiddlerApplication.UI.mnuMain.MenuItems.Remove(this.ExtensionMenu);
+        }
+
         private void CheckLanguageSelection()
         {
             MiLanguage_EN.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("EN-GB");
@@ -246,7 +252,7 @@ namespace Office365FiddlerExtension
             ContextMenuUI.Instance.InvertCmiSetSessionSeverity();
             ContextMenuUI.Instance.InvertCmiCreateConsolidatedReportEnabled();
 
-            Office365TabPage.Instance.RedrawForm(sender, e);
+            Office365FiddlerExtensionTabPage.Instance.Refresh();
 
             // Set ExtensionEnabled according to menu item checked.
             SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(MiEnabled.Checked);

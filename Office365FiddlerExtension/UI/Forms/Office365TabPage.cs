@@ -3,9 +3,8 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Office365FiddlerExtension.Services;
-using System.Collections;
 using static System.Windows.Forms.TabControl;
-using System.Runtime.Remoting.Channels;
+using Office365FiddlerExtension.Inspectors;
 
 namespace Office365FiddlerExtension.UI.Forms
 {
@@ -84,9 +83,9 @@ namespace Office365FiddlerExtension.UI.Forms
             EnterIPAddressTextBox.GotFocus += RemovePlaceholderText;
             EnterIPAddressTextBox.LostFocus += AddPlaceholderText;
 
-            
-
-            LanguageTextBox.Text = extensionSettings.PreferredLanguage;
+            DebugModeLanguageTextBox.Text = extensionSettings.PreferredLanguage;
+            DebugModeExtensionEnabledTextbox.Text = extensionSettings.ExtensionSessionProcessingEnabled.ToString();
+            DebugModeExtensionPathTextbox.Text = extensionSettings.ExtensionPath;
 
             ///////////////////
             ///
@@ -164,7 +163,7 @@ namespace Office365FiddlerExtension.UI.Forms
 
             CaptureTrafficCheckBox.Checked = extensionSettings.CaptureTraffic;
 
-            NeverWebCallCheckBox.Checked = extensionSettings.NeverWebCall;
+            DebugModeNeverWebCallCheckBox.Checked = extensionSettings.NeverWebCall;
 
             DebugModeCheckBox.Checked = extensionSettings.DebugMode;
 
@@ -176,8 +175,8 @@ namespace Office365FiddlerExtension.UI.Forms
                 DebugGroupBox.Visible = false;
             }
 
-            ExecutionCountTextBox.Text = extensionSettings.ExecutionCount.ToString();
-            NextUpdateCheckTextBox.Text = extensionSettings.NextUpdateCheck.ToString();
+            DebugModeExecutionCountTextBox.Text = extensionSettings.ExecutionCount.ToString();
+            DebugModeNextUpdateCheckTextBox.Text = extensionSettings.NextUpdateCheck.ToString();
 
             CreateConsolidatedAnalysisButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
 
@@ -469,7 +468,7 @@ namespace Office365FiddlerExtension.UI.Forms
 
         private void NeverWebCallCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsJsonService.Instance.SetNeverWebCall(NeverWebCallCheckBox.Checked);
+            SettingsJsonService.Instance.SetNeverWebCall(DebugModeNeverWebCallCheckBox.Checked);
             Office365TabPage_Load(sender, e);
         }
 
@@ -513,6 +512,27 @@ namespace Office365FiddlerExtension.UI.Forms
         private void WhoisCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             SettingsJsonService.Instance.SetWhois(WhoisCheckBox.Checked);
+        }
+
+        private void DebugModeUpdateButton_Click(object sender, EventArgs e)
+        {
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+            
+            ExtensionEnabledCheckBox.Checked = extensionSettings.ExtensionSessionProcessingEnabled;
+            DebugModeExtensionEnabledTextbox.Text = extensionSettings.ExtensionSessionProcessingEnabled.ToString();
+        }
+
+        private void DebugModeUpgradeCheck_Click(object sender, EventArgs e)
+        {
+            // Dispose of the Tab Page.
+            Office365FiddlerExtensionTabPage.Instance.OnBeforeUnload();
+
+            // Dispose of the MenuUI.
+            MenuUI.Instance.RemoveMenu();
+
+            //Office365Inspector.RemoveInspectorTab();
+
+            UpgradeService.Instance.Run();
         }
     }
 
@@ -582,10 +602,18 @@ namespace Office365FiddlerExtension.UI.Forms
             }            
         }
 
-
         public void OnBeforeUnload()
         {
-            oPage.Dispose();
+            TabPageCollection tabPages = FiddlerApplication.UI.tabsViews.TabPages;
+
+            foreach (TabPage tabpage in tabPages)
+            {
+                if (tabpage.Text.Equals(LangHelper.GetString("Office 365 Fiddler Extension")))
+                {
+                    tabpage.Dispose();
+                }
+                
+            }
         }
 
         public Office365FiddlerExtensionTabPage()

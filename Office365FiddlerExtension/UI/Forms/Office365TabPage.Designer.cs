@@ -54,18 +54,24 @@
             this.CaptureTrafficCheckBox = new System.Windows.Forms.CheckBox();
             this.ExtensionEnabledCheckBox = new System.Windows.Forms.CheckBox();
             this.DebugGroupBox = new System.Windows.Forms.GroupBox();
-            this.LanguageTextBox = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.NextUpdateCheckTextBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.LanguageLabel = new System.Windows.Forms.Label();
-            this.NeverWebCallCheckBox = new System.Windows.Forms.CheckBox();
+            this.DebugModeUpdateButton = new System.Windows.Forms.Button();
+            this.DebugModeExtensionPathLabel = new System.Windows.Forms.Label();
+            this.DebugModeExtensionPathTextbox = new System.Windows.Forms.TextBox();
+            this.DebugModeExtensionEnabledLabel = new System.Windows.Forms.Label();
+            this.DebugModeExtensionEnabledTextbox = new System.Windows.Forms.TextBox();
+            this.DebugModeLanguageTextBox = new System.Windows.Forms.TextBox();
+            this.DebugModeNextUpdateCheckLabel = new System.Windows.Forms.Label();
+            this.DebugModeNextUpdateCheckTextBox = new System.Windows.Forms.TextBox();
+            this.DebugModeExecutionCountLabel = new System.Windows.Forms.Label();
+            this.DebugModeLanguageLabel = new System.Windows.Forms.Label();
+            this.DebugModeNeverWebCallCheckBox = new System.Windows.Forms.CheckBox();
             this.DebugModeCheckBox = new System.Windows.Forms.CheckBox();
-            this.ExecutionCountTextBox = new System.Windows.Forms.TextBox();
+            this.DebugModeExecutionCountTextBox = new System.Windows.Forms.TextBox();
             this.ExtensionVersionInformationGroupBox = new System.Windows.Forms.GroupBox();
             this.UpdateLinkLabel = new System.Windows.Forms.LinkLabel();
             this.RulesetVersionLabel = new System.Windows.Forms.Label();
             this.ExtensionVersionLabel = new System.Windows.Forms.Label();
+            this.DebugModeUpgradeCheck = new System.Windows.Forms.Button();
             this.SessionAnalysisGroupBox.SuspendLayout();
             this.CheckIPAddressGroupBox.SuspendLayout();
             this.ExtensionOptionsGroupBox.SuspendLayout();
@@ -353,77 +359,125 @@
             // 
             // DebugGroupBox
             // 
-            this.DebugGroupBox.Controls.Add(this.LanguageTextBox);
-            this.DebugGroupBox.Controls.Add(this.label2);
-            this.DebugGroupBox.Controls.Add(this.NextUpdateCheckTextBox);
-            this.DebugGroupBox.Controls.Add(this.label1);
-            this.DebugGroupBox.Controls.Add(this.LanguageLabel);
-            this.DebugGroupBox.Controls.Add(this.NeverWebCallCheckBox);
+            this.DebugGroupBox.Controls.Add(this.DebugModeUpgradeCheck);
+            this.DebugGroupBox.Controls.Add(this.DebugModeUpdateButton);
+            this.DebugGroupBox.Controls.Add(this.DebugModeExtensionPathLabel);
+            this.DebugGroupBox.Controls.Add(this.DebugModeExtensionPathTextbox);
+            this.DebugGroupBox.Controls.Add(this.DebugModeExtensionEnabledLabel);
+            this.DebugGroupBox.Controls.Add(this.DebugModeExtensionEnabledTextbox);
+            this.DebugGroupBox.Controls.Add(this.DebugModeLanguageTextBox);
+            this.DebugGroupBox.Controls.Add(this.DebugModeNextUpdateCheckLabel);
+            this.DebugGroupBox.Controls.Add(this.DebugModeNextUpdateCheckTextBox);
+            this.DebugGroupBox.Controls.Add(this.DebugModeExecutionCountLabel);
+            this.DebugGroupBox.Controls.Add(this.DebugModeLanguageLabel);
+            this.DebugGroupBox.Controls.Add(this.DebugModeNeverWebCallCheckBox);
             this.DebugGroupBox.Controls.Add(this.DebugModeCheckBox);
-            this.DebugGroupBox.Controls.Add(this.ExecutionCountTextBox);
+            this.DebugGroupBox.Controls.Add(this.DebugModeExecutionCountTextBox);
             this.DebugGroupBox.Location = new System.Drawing.Point(3, 538);
             this.DebugGroupBox.Name = "DebugGroupBox";
-            this.DebugGroupBox.Size = new System.Drawing.Size(409, 102);
+            this.DebugGroupBox.Size = new System.Drawing.Size(409, 183);
             this.DebugGroupBox.TabIndex = 6;
             this.DebugGroupBox.TabStop = false;
             this.DebugGroupBox.Text = "Debug";
             // 
-            // LanguageTextBox
+            // DebugModeUpdateButton
             // 
-            this.LanguageTextBox.BackColor = System.Drawing.Color.White;
-            this.LanguageTextBox.Location = new System.Drawing.Point(357, 69);
-            this.LanguageTextBox.Name = "LanguageTextBox";
-            this.LanguageTextBox.ReadOnly = true;
-            this.LanguageTextBox.Size = new System.Drawing.Size(41, 20);
-            this.LanguageTextBox.TabIndex = 5;
+            this.DebugModeUpdateButton.Location = new System.Drawing.Point(263, 148);
+            this.DebugModeUpdateButton.Name = "DebugModeUpdateButton";
+            this.DebugModeUpdateButton.Size = new System.Drawing.Size(135, 23);
+            this.DebugModeUpdateButton.TabIndex = 17;
+            this.DebugModeUpdateButton.Text = "Update Debug Page";
+            this.DebugModeUpdateButton.UseVisualStyleBackColor = true;
+            this.DebugModeUpdateButton.Click += new System.EventHandler(this.DebugModeUpdateButton_Click);
             // 
-            // label2
+            // DebugModeExtensionPathLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(125, 47);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(101, 13);
-            this.label2.TabIndex = 12;
-            this.label2.Text = "Next Update Check";
+            this.DebugModeExtensionPathLabel.AutoSize = true;
+            this.DebugModeExtensionPathLabel.Location = new System.Drawing.Point(6, 125);
+            this.DebugModeExtensionPathLabel.Name = "DebugModeExtensionPathLabel";
+            this.DebugModeExtensionPathLabel.Size = new System.Drawing.Size(78, 13);
+            this.DebugModeExtensionPathLabel.TabIndex = 16;
+            this.DebugModeExtensionPathLabel.Text = "Extension Path";
             // 
-            // NextUpdateCheckTextBox
+            // DebugModeExtensionPathTextbox
             // 
-            this.NextUpdateCheckTextBox.Location = new System.Drawing.Point(232, 43);
-            this.NextUpdateCheckTextBox.Name = "NextUpdateCheckTextBox";
-            this.NextUpdateCheckTextBox.Size = new System.Drawing.Size(166, 20);
-            this.NextUpdateCheckTextBox.TabIndex = 11;
+            this.DebugModeExtensionPathTextbox.Location = new System.Drawing.Point(145, 122);
+            this.DebugModeExtensionPathTextbox.Name = "DebugModeExtensionPathTextbox";
+            this.DebugModeExtensionPathTextbox.Size = new System.Drawing.Size(253, 20);
+            this.DebugModeExtensionPathTextbox.TabIndex = 15;
             // 
-            // label1
+            // DebugModeExtensionEnabledLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(142, 21);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(85, 13);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Execution Count";
+            this.DebugModeExtensionEnabledLabel.AutoSize = true;
+            this.DebugModeExtensionEnabledLabel.Location = new System.Drawing.Point(6, 99);
+            this.DebugModeExtensionEnabledLabel.Name = "DebugModeExtensionEnabledLabel";
+            this.DebugModeExtensionEnabledLabel.Size = new System.Drawing.Size(95, 13);
+            this.DebugModeExtensionEnabledLabel.TabIndex = 14;
+            this.DebugModeExtensionEnabledLabel.Text = "Extension Enabled";
             // 
-            // LanguageLabel
+            // DebugModeExtensionEnabledTextbox
             // 
-            this.LanguageLabel.AutoSize = true;
-            this.LanguageLabel.Location = new System.Drawing.Point(296, 72);
-            this.LanguageLabel.Name = "LanguageLabel";
-            this.LanguageLabel.Size = new System.Drawing.Size(55, 13);
-            this.LanguageLabel.TabIndex = 6;
-            this.LanguageLabel.Text = "Language";
-            this.LanguageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.DebugModeExtensionEnabledTextbox.Location = new System.Drawing.Point(298, 96);
+            this.DebugModeExtensionEnabledTextbox.Name = "DebugModeExtensionEnabledTextbox";
+            this.DebugModeExtensionEnabledTextbox.Size = new System.Drawing.Size(100, 20);
+            this.DebugModeExtensionEnabledTextbox.TabIndex = 13;
             // 
-            // NeverWebCallCheckBox
+            // DebugModeLanguageTextBox
             // 
-            this.NeverWebCallCheckBox.AutoSize = true;
-            this.NeverWebCallCheckBox.Location = new System.Drawing.Point(7, 46);
-            this.NeverWebCallCheckBox.Name = "NeverWebCallCheckBox";
-            this.NeverWebCallCheckBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.NeverWebCallCheckBox.Size = new System.Drawing.Size(101, 17);
-            this.NeverWebCallCheckBox.TabIndex = 7;
-            this.NeverWebCallCheckBox.Text = "Never Web Call";
-            this.NeverWebCallCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.NeverWebCallCheckBox.UseVisualStyleBackColor = true;
-            this.NeverWebCallCheckBox.CheckedChanged += new System.EventHandler(this.NeverWebCallCheckBox_CheckedChanged);
+            this.DebugModeLanguageTextBox.BackColor = System.Drawing.Color.White;
+            this.DebugModeLanguageTextBox.Location = new System.Drawing.Point(298, 69);
+            this.DebugModeLanguageTextBox.Name = "DebugModeLanguageTextBox";
+            this.DebugModeLanguageTextBox.ReadOnly = true;
+            this.DebugModeLanguageTextBox.Size = new System.Drawing.Size(100, 20);
+            this.DebugModeLanguageTextBox.TabIndex = 5;
+            // 
+            // DebugModeNextUpdateCheckLabel
+            // 
+            this.DebugModeNextUpdateCheckLabel.AutoSize = true;
+            this.DebugModeNextUpdateCheckLabel.Location = new System.Drawing.Point(125, 47);
+            this.DebugModeNextUpdateCheckLabel.Name = "DebugModeNextUpdateCheckLabel";
+            this.DebugModeNextUpdateCheckLabel.Size = new System.Drawing.Size(101, 13);
+            this.DebugModeNextUpdateCheckLabel.TabIndex = 12;
+            this.DebugModeNextUpdateCheckLabel.Text = "Next Update Check";
+            // 
+            // DebugModeNextUpdateCheckTextBox
+            // 
+            this.DebugModeNextUpdateCheckTextBox.Location = new System.Drawing.Point(232, 43);
+            this.DebugModeNextUpdateCheckTextBox.Name = "DebugModeNextUpdateCheckTextBox";
+            this.DebugModeNextUpdateCheckTextBox.Size = new System.Drawing.Size(166, 20);
+            this.DebugModeNextUpdateCheckTextBox.TabIndex = 11;
+            // 
+            // DebugModeExecutionCountLabel
+            // 
+            this.DebugModeExecutionCountLabel.AutoSize = true;
+            this.DebugModeExecutionCountLabel.Location = new System.Drawing.Point(142, 21);
+            this.DebugModeExecutionCountLabel.Name = "DebugModeExecutionCountLabel";
+            this.DebugModeExecutionCountLabel.Size = new System.Drawing.Size(85, 13);
+            this.DebugModeExecutionCountLabel.TabIndex = 10;
+            this.DebugModeExecutionCountLabel.Text = "Execution Count";
+            // 
+            // DebugModeLanguageLabel
+            // 
+            this.DebugModeLanguageLabel.AutoSize = true;
+            this.DebugModeLanguageLabel.Location = new System.Drawing.Point(6, 72);
+            this.DebugModeLanguageLabel.Name = "DebugModeLanguageLabel";
+            this.DebugModeLanguageLabel.Size = new System.Drawing.Size(101, 13);
+            this.DebugModeLanguageLabel.TabIndex = 6;
+            this.DebugModeLanguageLabel.Text = "Preferred Language";
+            this.DebugModeLanguageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // DebugModeNeverWebCallCheckBox
+            // 
+            this.DebugModeNeverWebCallCheckBox.AutoSize = true;
+            this.DebugModeNeverWebCallCheckBox.Location = new System.Drawing.Point(7, 46);
+            this.DebugModeNeverWebCallCheckBox.Name = "DebugModeNeverWebCallCheckBox";
+            this.DebugModeNeverWebCallCheckBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.DebugModeNeverWebCallCheckBox.Size = new System.Drawing.Size(101, 17);
+            this.DebugModeNeverWebCallCheckBox.TabIndex = 7;
+            this.DebugModeNeverWebCallCheckBox.Text = "Never Web Call";
+            this.DebugModeNeverWebCallCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.DebugModeNeverWebCallCheckBox.UseVisualStyleBackColor = true;
+            this.DebugModeNeverWebCallCheckBox.CheckedChanged += new System.EventHandler(this.NeverWebCallCheckBox_CheckedChanged);
             // 
             // DebugModeCheckBox
             // 
@@ -438,12 +492,12 @@
             this.DebugModeCheckBox.UseVisualStyleBackColor = true;
             this.DebugModeCheckBox.CheckedChanged += new System.EventHandler(this.DebugModeCheckBox_CheckedChanged);
             // 
-            // ExecutionCountTextBox
+            // DebugModeExecutionCountTextBox
             // 
-            this.ExecutionCountTextBox.Location = new System.Drawing.Point(233, 17);
-            this.ExecutionCountTextBox.Name = "ExecutionCountTextBox";
-            this.ExecutionCountTextBox.Size = new System.Drawing.Size(166, 20);
-            this.ExecutionCountTextBox.TabIndex = 9;
+            this.DebugModeExecutionCountTextBox.Location = new System.Drawing.Point(233, 17);
+            this.DebugModeExecutionCountTextBox.Name = "DebugModeExecutionCountTextBox";
+            this.DebugModeExecutionCountTextBox.Size = new System.Drawing.Size(166, 20);
+            this.DebugModeExecutionCountTextBox.TabIndex = 9;
             // 
             // ExtensionVersionInformationGroupBox
             // 
@@ -485,6 +539,16 @@
             this.ExtensionVersionLabel.Size = new System.Drawing.Size(109, 13);
             this.ExtensionVersionLabel.TabIndex = 0;
             this.ExtensionVersionLabel.Text = "Extension Version HC";
+            // 
+            // DebugModeUpgradeCheck
+            // 
+            this.DebugModeUpgradeCheck.Location = new System.Drawing.Point(99, 148);
+            this.DebugModeUpgradeCheck.Name = "DebugModeUpgradeCheck";
+            this.DebugModeUpgradeCheck.Size = new System.Drawing.Size(158, 23);
+            this.DebugModeUpgradeCheck.TabIndex = 18;
+            this.DebugModeUpgradeCheck.Text = "Extension Upgrade Check";
+            this.DebugModeUpgradeCheck.UseVisualStyleBackColor = true;
+            this.DebugModeUpgradeCheck.Click += new System.EventHandler(this.DebugModeUpgradeCheck_Click);
             // 
             // Office365TabPage
             // 
@@ -533,21 +597,21 @@
         private System.Windows.Forms.CheckBox SessionAnalysisOnLoadSazCheckBox;
         private System.Windows.Forms.RadioButton SelectiveSessionAnalysisRadioButton;
         private System.Windows.Forms.RadioButton AlwaysSessionAnalysisRadioButton;
-        private System.Windows.Forms.Label LanguageLabel;
-        private System.Windows.Forms.TextBox LanguageTextBox;
+        private System.Windows.Forms.Label DebugModeLanguageLabel;
+        private System.Windows.Forms.TextBox DebugModeLanguageTextBox;
         private System.Windows.Forms.Button CheckIPAddressClearButton;
         private System.Windows.Forms.GroupBox ExtensionVersionInformationGroupBox;
         private System.Windows.Forms.Label ExtensionVersionLabel;
         private System.Windows.Forms.Label RulesetVersionLabel;
         private System.Windows.Forms.LinkLabel UpdateLinkLabel;
-        private System.Windows.Forms.CheckBox NeverWebCallCheckBox;
+        private System.Windows.Forms.CheckBox DebugModeNeverWebCallCheckBox;
         private System.Windows.Forms.CheckBox DebugModeCheckBox;
         private System.Windows.Forms.CheckBox CaptureTrafficCheckBox;
         private System.Windows.Forms.GroupBox DebugGroupBox;
-        private System.Windows.Forms.TextBox ExecutionCountTextBox;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox NextUpdateCheckTextBox;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox DebugModeExecutionCountTextBox;
+        private System.Windows.Forms.Label DebugModeExecutionCountLabel;
+        private System.Windows.Forms.TextBox DebugModeNextUpdateCheckTextBox;
+        private System.Windows.Forms.Label DebugModeNextUpdateCheckLabel;
         private System.Windows.Forms.GroupBox WhenToAnalyseSessionsGroupBox;
         private System.Windows.Forms.CheckBox SessionAnalysisOnImportCheckBox;
         private System.Windows.Forms.RadioButton NeverRadioButton;
@@ -555,5 +619,11 @@
         private System.Windows.Forms.Label WarnBeforeProcessingSessionsLabel;
         private System.Windows.Forms.TextBox WarnBeforeAnalysingTextBox;
         private System.Windows.Forms.CheckBox WhoisCheckBox;
+        private System.Windows.Forms.Label DebugModeExtensionEnabledLabel;
+        private System.Windows.Forms.TextBox DebugModeExtensionEnabledTextbox;
+        private System.Windows.Forms.Label DebugModeExtensionPathLabel;
+        private System.Windows.Forms.TextBox DebugModeExtensionPathTextbox;
+        private System.Windows.Forms.Button DebugModeUpdateButton;
+        private System.Windows.Forms.Button DebugModeUpgradeCheck;
     }
 }
