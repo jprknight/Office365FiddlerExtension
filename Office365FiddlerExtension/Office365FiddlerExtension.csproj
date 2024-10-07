@@ -246,7 +246,6 @@
     <Compile Include="Services\LanguageService.cs" />
     <Compile Include="Services\NetworkingService.cs" />
     <Compile Include="Services\Update\UpdateService.cs" />
-    <Compile Include="Services\Update\UpgradeService.cs" />
     <Compile Include="Services\Update\VersionService.cs" />
     <Compile Include="UI\Forms\About.cs">
       <SubType>Form</SubType>

@@ -532,7 +532,7 @@ namespace Office365FiddlerExtension.UI.Forms
 
             //Office365Inspector.RemoveInspectorTab();
 
-            UpgradeService.Instance.Run();
+            //UpgradeService.Instance.Run();
         }
     }
 
