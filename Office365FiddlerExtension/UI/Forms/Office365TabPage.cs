@@ -21,33 +21,7 @@ namespace Office365FiddlerExtension.UI.Forms
             InitializeComponent();
         }
 
-        // REVIEW THIS.
-        //
-        // Attempting to get the Enable/Disable menu item to effect the Tab Page.
-        //
-        // Some testing at runtime shows the application recognises the checked value has changed. The UI doesn't show it through.
-        public void InvertExtensionEnabledCheckbox()
-        {
-            string message = $"You hit the InvertExtensionEnabledCheckbox function. {ExtensionEnabledCheckBox.Checked}";
-            string caption = "Refresh";
-            MessageBoxButtons buttons = MessageBoxButtons.OK;
-            DialogResult result;
-
-            // Displays the MessageBox.
-            result = MessageBox.Show(message, caption, buttons);
-
-            this.ExtensionEnabledCheckBox.Checked = !this.ExtensionEnabledCheckBox.Checked;
-
-            string message2 = $"You finished the InvertExtensionEnabledCheckbox function. {ExtensionEnabledCheckBox.Checked}";
-            string caption2 = "Refresh";
-            MessageBoxButtons buttons2 = MessageBoxButtons.OK;
-            DialogResult result2;
-
-            // Displays the MessageBox.
-            result2 = MessageBox.Show(message2, caption2, buttons2);
-        }
-
-        public void UpdateUIControls()
+    public void UpdateUIControls()
         {
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
@@ -104,6 +78,27 @@ namespace Office365FiddlerExtension.UI.Forms
             }
             
             ExtensionEnabledCheckBox.Text = LangHelper.GetString("Extension Enabled");
+
+            ColumnsUIGroupbox.Text = LangHelper.GetString("Columns Enabled");
+
+            ElapsedTimeCheckbox.Text = LangHelper.GetString("Elapsed Time");
+            ElapsedTimeCheckbox.Checked = extensionSettings.ElapsedTimeColumnEnabled;
+
+            SeverityCheckbox.Text = LangHelper.GetString("Severity");
+            SeverityCheckbox.Checked = extensionSettings.SeverityColumnEnabled;
+
+            SessionTypeCheckbox.Text = LangHelper.GetString("Session Type");
+            SessionTypeCheckbox.Checked = extensionSettings.SessionTypeColumnEnabled;
+
+            AuthenticationCheckbox.Text = LangHelper.GetString("Authentication");
+            AuthenticationCheckbox.Checked = extensionSettings.AuthenticationColumnEnabled;
+
+            ResponseServerCheckbox.Text = LangHelper.GetString("Response Server");
+            ResponseServerCheckbox.Checked = extensionSettings.ResponseServerColumnEnabled;
+
+            HostIPCheckbox.Text = LangHelper.GetString("Host IP");
+            HostIPCheckbox.Checked = extensionSettings.HostIPColumnEnabled;
+
             AlwaysSessionAnalysisRadioButton.Text = LangHelper.GetString("Always");
             SelectiveSessionAnalysisRadioButton.Text = LangHelper.GetString("Selective");
             NeverRadioButton.Text = LangHelper.GetString("Never");
@@ -534,6 +529,60 @@ namespace Office365FiddlerExtension.UI.Forms
 
             //UpgradeService.Instance.Run();
         }
+
+        private void ElapsedTimeCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsJsonService.Instance.SetElapsedColumnEnabled(ElapsedTimeCheckbox.Checked);
+            if (ElapsedTimeCheckbox.Checked)
+            {
+                ColumnUI.Instance.AddElapsedTimeColumn();
+            }
+        }
+
+        private void SeverityCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsJsonService.Instance.SetSeverityColumnEnabled(SeverityCheckbox.Checked);
+            if (SeverityCheckbox.Checked)
+            {
+                ColumnUI.Instance.AddSeverityColumn();
+            }
+        }
+
+        private void SessionTypeCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsJsonService.Instance.SetSessionTypeColumnEnabled(SessionTypeCheckbox.Checked);
+            if (SessionTypeCheckbox.Checked)
+            {
+                ColumnUI.Instance.AddSessionTypeColumn();
+            }
+        }
+
+        private void ResponseServerCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsJsonService.Instance.SetResponseServerColumnEnabled(ResponseServerCheckbox.Checked);
+            if (ResponseServerCheckbox.Checked)
+            {
+                ColumnUI.Instance.AddResponseServerColumn();
+            }
+        }
+
+        private void AuthenticationCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsJsonService.Instance.SetAuthenticationColumnEnabled(AuthenticationCheckbox.Checked);
+            if (AuthenticationCheckbox.Checked)
+            {
+                ColumnUI.Instance.AddAuthenticationColumn();
+            }
+        }
+
+        private void HostIPCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsJsonService.Instance.SetHostIPColumnEnabled(HostIPCheckbox.Checked);
+            if (HostIPCheckbox.Checked)
+            {
+                ColumnUI.Instance.AddHostIPColumn();
+            }
+        }
     }
 
     public class Office365FiddlerExtensionTabPage : IFiddlerExtension
@@ -567,13 +616,13 @@ namespace Office365FiddlerExtension.UI.Forms
                 if (tabpage.Text.Equals(LangHelper.GetString("Office 365 Fiddler Extension")))
                 {
 
-                    string message = $"You hit the refresh function. {tabpage.Text}";
-                    string caption = "Refresh";
-                    MessageBoxButtons buttons = MessageBoxButtons.OK;
-                    DialogResult result;
+                    //string message = $"You hit the refresh function. {tabpage.Text}";
+                    //string caption = "Refresh";
+                    //MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    //DialogResult result;
 
                     // Displays the MessageBox.
-                    result = MessageBox.Show(message, caption, buttons);
+                    //result = MessageBox.Show(message, caption, buttons);
 
                     // This code gets into the tabpage, but none of these things can trigger a UI
                     // update of the enabled / disabled checkbox.

@@ -295,6 +295,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Columns Enabled.
+        /// </summary>
+        internal static string Columns_Enabled {
+            get {
+                return ResourceManager.GetString("Columns Enabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Concerning.
         /// </summary>
         internal static string Concerning {

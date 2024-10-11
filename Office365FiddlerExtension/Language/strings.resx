@@ -682,4 +682,7 @@
   <data name="NeverWebCall_FeatureDisabled" xml:space="preserve">
     <value>Never Web Call is enabled. This feature is disabled.</value>
   </data>
+  <data name="Columns Enabled" xml:space="preserve">
+    <value>Columns Enabled</value>
+  </data>
 </root>
