@@ -38,31 +38,33 @@ namespace Office365FiddlerExtension.UI
         {
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
-            if (extensionSettings.ElapsedTimeColumnEnabled)
+            if (!extensionSettings.ElapsedTimeColumnEnabled)
             {
-                try
-                {
-                    string strElapsedTime;
+                return;
+            }
 
-                    if (LangHelper.GetString("Elapsed Time") == "")
-                    {
-                        strElapsedTime = "Elapsed Time (ms)";
-                    }
-                    else
-                    {
-                        strElapsedTime = $"{LangHelper.GetString("Elapsed Time")} (ms)";
-                    }
+            try
+            {
+                string strElapsedTime;
 
-                    if (!FiddlerApplication.UI.lvSessions.Columns.ContainsKey(strElapsedTime))
-                    {
-                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add Elapsed Time column to Fiddler UI.");
-                        FiddlerApplication.UI.lvSessions.AddBoundColumn(strElapsedTime, -1, 110, true, GetElapsedTime);
-                    }
-                }
-                catch (Exception ex)
+                if (LangHelper.GetString("Elapsed Time") == "")
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+                    strElapsedTime = "Elapsed Time (ms)";
                 }
+                else
+                {
+                    strElapsedTime = $"{LangHelper.GetString("Elapsed Time")} (ms)";
+                }
+
+                if (!FiddlerApplication.UI.lvSessions.Columns.ContainsKey(strElapsedTime))
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add Elapsed Time column to Fiddler UI.");
+                    FiddlerApplication.UI.lvSessions.AddBoundColumn(strElapsedTime, -1, 110, true, GetElapsedTime);
+                }
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
         }
 
@@ -70,31 +72,33 @@ namespace Office365FiddlerExtension.UI
         {
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
-            if (extensionSettings.SeverityColumnEnabled)
+            if (!extensionSettings.SeverityColumnEnabled)
             {
-                try
-                {
-                    string strSeverity;
+                return;
+            }
 
-                    if (LangHelper.GetString("Severity") == "")
-                    {
-                        strSeverity = "Severity";
-                    }
-                    else
-                    {
-                        strSeverity = LangHelper.GetString("Severity");
-                    }
-                    if (!FiddlerApplication.UI.lvSessions.Columns.ContainsKey(strSeverity))
-                    {
-                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add Severity column to Fiddler UI.");
-                        FiddlerApplication.UI.lvSessions.AddBoundColumn(strSeverity, -1, 60, true, GetSessionSeverity);
-                    }
-                        
-                }
-                catch (Exception ex)
+            try
+            {
+                string strSeverity;
+
+                if (LangHelper.GetString("Severity") == "")
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+                    strSeverity = "Severity";
                 }
+                else
+                {
+                    strSeverity = LangHelper.GetString("Severity");
+                }
+                if (!FiddlerApplication.UI.lvSessions.Columns.ContainsKey(strSeverity))
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add Severity column to Fiddler UI.");
+                    FiddlerApplication.UI.lvSessions.AddBoundColumn(strSeverity, -1, 60, true, GetSessionSeverity);
+                }
+                        
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
         }
 
@@ -102,8 +106,10 @@ namespace Office365FiddlerExtension.UI
         {
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
-            if (extensionSettings.SessionTypeColumnEnabled)
+            if (!extensionSettings.SessionTypeColumnEnabled)
             {
+                return;
+            }
                 try
                 {
                     string strSessionType;
@@ -128,7 +134,7 @@ namespace Office365FiddlerExtension.UI
                 {
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
                 }
-            }
+            
         }
 
         public void AddAuthenticationColumn()

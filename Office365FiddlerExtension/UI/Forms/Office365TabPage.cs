@@ -99,28 +99,25 @@ namespace Office365FiddlerExtension.UI.Forms
             HostIPCheckbox.Text = LangHelper.GetString("Host IP");
             HostIPCheckbox.Checked = extensionSettings.HostIPColumnEnabled;
 
-            AlwaysSessionAnalysisRadioButton.Text = LangHelper.GetString("Always");
-            SelectiveSessionAnalysisRadioButton.Text = LangHelper.GetString("Selective");
-            NeverRadioButton.Text = LangHelper.GetString("Never");
-
             if (extensionSettings.ExtensionSessionProcessingEnabled)
             {
-                AlwaysSessionAnalysisRadioButton.Enabled = true;
-                SelectiveSessionAnalysisRadioButton.Enabled = true;
-                NeverRadioButton.Enabled = true;
                 WarnBeforeProcessingGroupBox.Enabled = true;
+                WhenToAnalyseSessionsGroupBox.Enabled = true;
             }
             else
             {
-                AlwaysSessionAnalysisRadioButton.Enabled = false;
-                SelectiveSessionAnalysisRadioButton.Enabled = false;
-                NeverRadioButton.Enabled = false;
                 WarnBeforeProcessingGroupBox.Enabled = false;
+                WhenToAnalyseSessionsGroupBox.Enabled = false;
             }
 
             SessionAnalysisOnLoadSazCheckBox.Text = LangHelper.GetString("On Load Saz");
+            SessionAnalysisOnLoadSazCheckBox.Checked = extensionSettings.SessionAnalysisOnLoadSaz;
+
             SessionAnalysisOnLiveTraceCheckBox.Text = LangHelper.GetString("On Live Trace");
+            SessionAnalysisOnLiveTraceCheckBox.Checked = extensionSettings.SessionAnalysisOnLiveTrace;
+
             SessionAnalysisOnImportCheckBox.Text = LangHelper.GetString("On Import");
+            SessionAnalysisOnImportCheckBox.Checked = extensionSettings.SessionAnalysisOnImport;
             
             CaptureTrafficCheckBox.Text = LangHelper.GetString("Capture Traffic");
 
@@ -174,75 +171,6 @@ namespace Office365FiddlerExtension.UI.Forms
             DebugModeNextUpdateCheckTextBox.Text = extensionSettings.NextUpdateCheck.ToString();
 
             CreateConsolidatedAnalysisButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
-
-            if (extensionSettings.SessionAnalysisOnLoadSaz == true &&
-                extensionSettings.SessionAnalysisOnLiveTrace == true &&
-                extensionSettings.SessionAnalysisOnImport == true)
-            {
-                AlwaysSessionAnalysisRadioButton.Checked = true;
-                SelectiveSessionAnalysisRadioButton.Checked = false;
-
-                SessionAnalysisOnLoadSazCheckBox.Checked = true;
-                SessionAnalysisOnLoadSazCheckBox.Enabled = false;
-
-                SessionAnalysisOnLoadSazCheckBox.Checked = true;
-                SessionAnalysisOnLiveTraceCheckBox.Enabled = false;
-
-                SessionAnalysisOnImportCheckBox.Checked = true;
-                SessionAnalysisOnImportCheckBox.Enabled = false;
-            }
-            else if (extensionSettings.SessionAnalysisOnLoadSaz == false &&
-                extensionSettings.SessionAnalysisOnLiveTrace == false &&
-                extensionSettings.SessionAnalysisOnImport == false)
-            {
-                NeverRadioButton.Checked = true;
-            }
-            else
-            {
-                AlwaysSessionAnalysisRadioButton.Checked = false;
-                SelectiveSessionAnalysisRadioButton.Checked = true;
-
-                if (SettingsJsonService.Instance.SessionAnalysisOnLoadSaz)
-                {
-                    SessionAnalysisOnLoadSazCheckBox.Checked = true;
-                }
-                else
-                {
-                    SessionAnalysisOnLoadSazCheckBox.Checked = false;
-                }
-
-                if (SettingsJsonService.Instance.SessionAnalysisOnLiveTrace)
-                {
-                    SessionAnalysisOnLiveTraceCheckBox.Checked = true;
-                }
-                else
-                {
-                    SessionAnalysisOnLiveTraceCheckBox.Checked = false;
-                }
-
-                if (SettingsJsonService.Instance.SessionAnalysisOnImport)
-                {
-                    SessionAnalysisOnImportCheckBox.Checked = true;
-                }
-                else
-                {
-                    SessionAnalysisOnImportCheckBox.Checked = false;
-                }
-            }
-
-            if (AlwaysSessionAnalysisRadioButton.Checked)
-            {
-                SessionAnalysisOnLiveTraceCheckBox.Enabled = false;
-                SessionAnalysisOnLoadSazCheckBox.Enabled = false;
-                SessionAnalysisOnImportCheckBox.Enabled = false;
-            }
-
-            if (SelectiveSessionAnalysisRadioButton.Checked)
-            {
-                SessionAnalysisOnLiveTraceCheckBox.Enabled = true;
-                SessionAnalysisOnLoadSazCheckBox.Enabled = true;
-                SessionAnalysisOnImportCheckBox.Enabled = true;
-            }
 
             UpdateLinkLabel.Text = URLsJsonService.Instance.GetDeserializedExtensionURLs().Installer;
 
@@ -321,54 +249,12 @@ namespace Office365FiddlerExtension.UI.Forms
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
             // Enable / Disable these controls according to whether the extension is enabled or not.
-            AlwaysSessionAnalysisRadioButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
-            SelectiveSessionAnalysisRadioButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
-            NeverRadioButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
             WarnBeforeProcessingGroupBox.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
+            WhenToAnalyseSessionsGroupBox.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
 
             this.UpdateUIControls();
             MenuUI.Instance.UpdateUIControls();
             ContextMenuUI.Instance.UpdateUIControls();
-        }
-
-        private void AllSessionAnalysisRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            if (AlwaysSessionAnalysisRadioButton.Checked)
-            {
-                SessionAnalysisOnLoadSazCheckBox.Enabled = false;
-                SessionAnalysisOnLoadSazCheckBox.Checked = true;
-
-                SessionAnalysisOnLiveTraceCheckBox.Enabled = false;
-                SessionAnalysisOnLiveTraceCheckBox.Checked = true;
-
-                SessionAnalysisOnImportCheckBox.Enabled = false;
-                SessionAnalysisOnImportCheckBox.Checked = true;
-            }
-        }
-
-        private void SelectiveSessionAnalysisRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            if (SelectiveSessionAnalysisRadioButton.Checked)
-            {
-                SessionAnalysisOnLoadSazCheckBox.Enabled = true;
-                SessionAnalysisOnLiveTraceCheckBox.Enabled = true;
-                SessionAnalysisOnImportCheckBox.Enabled = true;
-            }
-        }
-
-        private void NeverRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            if (NeverRadioButton.Checked)
-            {
-                SessionAnalysisOnLoadSazCheckBox.Enabled = false;
-                SessionAnalysisOnLoadSazCheckBox.Checked = false;
-
-                SessionAnalysisOnLiveTraceCheckBox.Enabled = false;
-                SessionAnalysisOnLiveTraceCheckBox.Checked = false;
-
-                SessionAnalysisOnImportCheckBox.Enabled = false;
-                SessionAnalysisOnImportCheckBox.Checked = false;
-            }
         }
 
         private void SessionAnalysisOnLoadSazCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -501,7 +387,11 @@ namespace Office365FiddlerExtension.UI.Forms
 
                 MessageBox.Show(message, caption);
                 WarnBeforeAnalysingTextBox.Text = WarnBeforeAnalysingTextBox.Text.Remove(WarnBeforeAnalysingTextBox.Text.Length - 1);
-            }   
+            }
+            else
+            {
+                SettingsJsonService.Instance.SetWarnBeforeAnalysing(int.Parse(WarnBeforeAnalysingTextBox.Text));
+            }
         }
 
         private void WhoisCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -515,6 +405,8 @@ namespace Office365FiddlerExtension.UI.Forms
             
             ExtensionEnabledCheckBox.Checked = extensionSettings.ExtensionSessionProcessingEnabled;
             DebugModeExtensionEnabledTextbox.Text = extensionSettings.ExtensionSessionProcessingEnabled.ToString();
+
+            ExtensionSettingsTextbox.Text = Preferences.ExtensionSettings;
         }
 
         private void DebugModeUpgradeCheck_Click(object sender, EventArgs e)

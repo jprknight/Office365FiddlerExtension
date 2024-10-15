@@ -52,15 +52,13 @@
             this.WarnBeforeProcessingSessionsLabel = new System.Windows.Forms.Label();
             this.WarnBeforeAnalysingTextBox = new System.Windows.Forms.TextBox();
             this.WhenToAnalyseSessionsGroupBox = new System.Windows.Forms.GroupBox();
-            this.NeverRadioButton = new System.Windows.Forms.RadioButton();
             this.SessionAnalysisOnImportCheckBox = new System.Windows.Forms.CheckBox();
-            this.AlwaysSessionAnalysisRadioButton = new System.Windows.Forms.RadioButton();
             this.SessionAnalysisOnLiveTraceCheckBox = new System.Windows.Forms.CheckBox();
-            this.SelectiveSessionAnalysisRadioButton = new System.Windows.Forms.RadioButton();
             this.SessionAnalysisOnLoadSazCheckBox = new System.Windows.Forms.CheckBox();
             this.CaptureTrafficCheckBox = new System.Windows.Forms.CheckBox();
             this.ExtensionEnabledCheckBox = new System.Windows.Forms.CheckBox();
             this.DebugGroupBox = new System.Windows.Forms.GroupBox();
+            this.ExtensionSettingsTextbox = new System.Windows.Forms.TextBox();
             this.DebugModeUpgradeCheck = new System.Windows.Forms.Button();
             this.DebugModeUpdateButton = new System.Windows.Forms.Button();
             this.DebugModeExtensionPathLabel = new System.Windows.Forms.Label();
@@ -79,6 +77,7 @@
             this.UpdateLinkLabel = new System.Windows.Forms.LinkLabel();
             this.RulesetVersionLabel = new System.Windows.Forms.Label();
             this.ExtensionVersionLabel = new System.Windows.Forms.Label();
+            this.ExtensionSettingsLabel = new System.Windows.Forms.Label();
             this.SessionAnalysisGroupBox.SuspendLayout();
             this.CheckIPAddressGroupBox.SuspendLayout();
             this.ExtensionOptionsGroupBox.SuspendLayout();
@@ -106,7 +105,7 @@
             this.SessionAnalysisGroupBox.Controls.Add(this.AnalyseSelectedSessionsButton);
             this.SessionAnalysisGroupBox.Controls.Add(this.ClearAllSessionAnalysisButton);
             this.SessionAnalysisGroupBox.Controls.Add(this.AnalyseAllSessionsButton);
-            this.SessionAnalysisGroupBox.Location = new System.Drawing.Point(3, 289);
+            this.SessionAnalysisGroupBox.Location = new System.Drawing.Point(3, 244);
             this.SessionAnalysisGroupBox.Name = "SessionAnalysisGroupBox";
             this.SessionAnalysisGroupBox.Size = new System.Drawing.Size(409, 112);
             this.SessionAnalysisGroupBox.TabIndex = 1;
@@ -160,7 +159,7 @@
             this.CheckIPAddressGroupBox.Controls.Add(this.CheckIPAddressResultTextBox);
             this.CheckIPAddressGroupBox.Controls.Add(this.CheckIPAddressButton);
             this.CheckIPAddressGroupBox.Controls.Add(this.EnterIPAddressTextBox);
-            this.CheckIPAddressGroupBox.Location = new System.Drawing.Point(3, 407);
+            this.CheckIPAddressGroupBox.Location = new System.Drawing.Point(3, 362);
             this.CheckIPAddressGroupBox.Name = "CheckIPAddressGroupBox";
             this.CheckIPAddressGroupBox.Size = new System.Drawing.Size(409, 115);
             this.CheckIPAddressGroupBox.TabIndex = 3;
@@ -224,7 +223,7 @@
             this.ExtensionOptionsGroupBox.Controls.Add(this.ExtensionEnabledCheckBox);
             this.ExtensionOptionsGroupBox.Location = new System.Drawing.Point(3, 3);
             this.ExtensionOptionsGroupBox.Name = "ExtensionOptionsGroupBox";
-            this.ExtensionOptionsGroupBox.Size = new System.Drawing.Size(409, 280);
+            this.ExtensionOptionsGroupBox.Size = new System.Drawing.Size(409, 235);
             this.ExtensionOptionsGroupBox.TabIndex = 4;
             this.ExtensionOptionsGroupBox.TabStop = false;
             this.ExtensionOptionsGroupBox.Text = "Extension Options HC";
@@ -242,7 +241,7 @@
             this.ColumnsUIGroupbox.Size = new System.Drawing.Size(391, 70);
             this.ColumnsUIGroupbox.TabIndex = 11;
             this.ColumnsUIGroupbox.TabStop = false;
-            this.ColumnsUIGroupbox.Text = "Columns Enabled";
+            this.ColumnsUIGroupbox.Text = "Columns Enabled HC";
             // 
             // ElapsedTimeCheckbox
             // 
@@ -280,7 +279,7 @@
             // AuthenticationCheckbox
             // 
             this.AuthenticationCheckbox.AutoSize = true;
-            this.AuthenticationCheckbox.Location = new System.Drawing.Point(277, 20);
+            this.AuthenticationCheckbox.Location = new System.Drawing.Point(277, 19);
             this.AuthenticationCheckbox.Name = "AuthenticationCheckbox";
             this.AuthenticationCheckbox.Size = new System.Drawing.Size(112, 17);
             this.AuthenticationCheckbox.TabIndex = 2;
@@ -291,7 +290,7 @@
             // SessionTypeCheckbox
             // 
             this.SessionTypeCheckbox.AutoSize = true;
-            this.SessionTypeCheckbox.Location = new System.Drawing.Point(136, 20);
+            this.SessionTypeCheckbox.Location = new System.Drawing.Point(138, 19);
             this.SessionTypeCheckbox.Name = "SessionTypeCheckbox";
             this.SessionTypeCheckbox.Size = new System.Drawing.Size(108, 17);
             this.SessionTypeCheckbox.TabIndex = 1;
@@ -314,7 +313,7 @@
             // 
             this.WarnBeforeProcessingGroupBox.Controls.Add(this.WarnBeforeProcessingSessionsLabel);
             this.WarnBeforeProcessingGroupBox.Controls.Add(this.WarnBeforeAnalysingTextBox);
-            this.WarnBeforeProcessingGroupBox.Location = new System.Drawing.Point(7, 216);
+            this.WarnBeforeProcessingGroupBox.Location = new System.Drawing.Point(7, 171);
             this.WarnBeforeProcessingGroupBox.Name = "WarnBeforeProcessingGroupBox";
             this.WarnBeforeProcessingGroupBox.Size = new System.Drawing.Size(391, 52);
             this.WarnBeforeProcessingGroupBox.TabIndex = 10;
@@ -340,35 +339,20 @@
             // 
             // WhenToAnalyseSessionsGroupBox
             // 
-            this.WhenToAnalyseSessionsGroupBox.Controls.Add(this.NeverRadioButton);
             this.WhenToAnalyseSessionsGroupBox.Controls.Add(this.SessionAnalysisOnImportCheckBox);
-            this.WhenToAnalyseSessionsGroupBox.Controls.Add(this.AlwaysSessionAnalysisRadioButton);
             this.WhenToAnalyseSessionsGroupBox.Controls.Add(this.SessionAnalysisOnLiveTraceCheckBox);
-            this.WhenToAnalyseSessionsGroupBox.Controls.Add(this.SelectiveSessionAnalysisRadioButton);
             this.WhenToAnalyseSessionsGroupBox.Controls.Add(this.SessionAnalysisOnLoadSazCheckBox);
             this.WhenToAnalyseSessionsGroupBox.Location = new System.Drawing.Point(7, 118);
             this.WhenToAnalyseSessionsGroupBox.Name = "WhenToAnalyseSessionsGroupBox";
-            this.WhenToAnalyseSessionsGroupBox.Size = new System.Drawing.Size(391, 92);
+            this.WhenToAnalyseSessionsGroupBox.Size = new System.Drawing.Size(391, 47);
             this.WhenToAnalyseSessionsGroupBox.TabIndex = 7;
             this.WhenToAnalyseSessionsGroupBox.TabStop = false;
             this.WhenToAnalyseSessionsGroupBox.Text = "Choose When To Analyse Sessions HC";
             // 
-            // NeverRadioButton
-            // 
-            this.NeverRadioButton.AutoSize = true;
-            this.NeverRadioButton.Location = new System.Drawing.Point(11, 65);
-            this.NeverRadioButton.Name = "NeverRadioButton";
-            this.NeverRadioButton.Size = new System.Drawing.Size(72, 17);
-            this.NeverRadioButton.TabIndex = 6;
-            this.NeverRadioButton.TabStop = true;
-            this.NeverRadioButton.Text = "Never HC";
-            this.NeverRadioButton.UseVisualStyleBackColor = true;
-            this.NeverRadioButton.CheckedChanged += new System.EventHandler(this.NeverRadioButton_CheckedChanged);
-            // 
             // SessionAnalysisOnImportCheckBox
             // 
             this.SessionAnalysisOnImportCheckBox.AutoSize = true;
-            this.SessionAnalysisOnImportCheckBox.Location = new System.Drawing.Point(138, 66);
+            this.SessionAnalysisOnImportCheckBox.Location = new System.Drawing.Point(277, 20);
             this.SessionAnalysisOnImportCheckBox.Name = "SessionAnalysisOnImportCheckBox";
             this.SessionAnalysisOnImportCheckBox.Size = new System.Drawing.Size(90, 17);
             this.SessionAnalysisOnImportCheckBox.TabIndex = 5;
@@ -376,40 +360,16 @@
             this.SessionAnalysisOnImportCheckBox.UseVisualStyleBackColor = true;
             this.SessionAnalysisOnImportCheckBox.CheckedChanged += new System.EventHandler(this.SessionAnalysisOnImportCheckBox_CheckedChanged);
             // 
-            // AlwaysSessionAnalysisRadioButton
-            // 
-            this.AlwaysSessionAnalysisRadioButton.AutoSize = true;
-            this.AlwaysSessionAnalysisRadioButton.Location = new System.Drawing.Point(11, 19);
-            this.AlwaysSessionAnalysisRadioButton.Name = "AlwaysSessionAnalysisRadioButton";
-            this.AlwaysSessionAnalysisRadioButton.Size = new System.Drawing.Size(76, 17);
-            this.AlwaysSessionAnalysisRadioButton.TabIndex = 1;
-            this.AlwaysSessionAnalysisRadioButton.TabStop = true;
-            this.AlwaysSessionAnalysisRadioButton.Text = "Always HC";
-            this.AlwaysSessionAnalysisRadioButton.UseVisualStyleBackColor = true;
-            this.AlwaysSessionAnalysisRadioButton.CheckedChanged += new System.EventHandler(this.AllSessionAnalysisRadioButton_CheckedChanged);
-            // 
             // SessionAnalysisOnLiveTraceCheckBox
             // 
             this.SessionAnalysisOnLiveTraceCheckBox.AutoSize = true;
-            this.SessionAnalysisOnLiveTraceCheckBox.Location = new System.Drawing.Point(138, 43);
+            this.SessionAnalysisOnLiveTraceCheckBox.Location = new System.Drawing.Point(11, 20);
             this.SessionAnalysisOnLiveTraceCheckBox.Name = "SessionAnalysisOnLiveTraceCheckBox";
             this.SessionAnalysisOnLiveTraceCheckBox.Size = new System.Drawing.Size(112, 17);
             this.SessionAnalysisOnLiveTraceCheckBox.TabIndex = 4;
             this.SessionAnalysisOnLiveTraceCheckBox.Text = "On Live Trace HC";
             this.SessionAnalysisOnLiveTraceCheckBox.UseVisualStyleBackColor = true;
             this.SessionAnalysisOnLiveTraceCheckBox.CheckedChanged += new System.EventHandler(this.SessionAnalysisOnLiveTraceCheckBox_CheckedChanged);
-            // 
-            // SelectiveSessionAnalysisRadioButton
-            // 
-            this.SelectiveSessionAnalysisRadioButton.AutoSize = true;
-            this.SelectiveSessionAnalysisRadioButton.Location = new System.Drawing.Point(11, 42);
-            this.SelectiveSessionAnalysisRadioButton.Name = "SelectiveSessionAnalysisRadioButton";
-            this.SelectiveSessionAnalysisRadioButton.Size = new System.Drawing.Size(87, 17);
-            this.SelectiveSessionAnalysisRadioButton.TabIndex = 2;
-            this.SelectiveSessionAnalysisRadioButton.TabStop = true;
-            this.SelectiveSessionAnalysisRadioButton.Text = "Selective HC";
-            this.SelectiveSessionAnalysisRadioButton.UseVisualStyleBackColor = true;
-            this.SelectiveSessionAnalysisRadioButton.CheckedChanged += new System.EventHandler(this.SelectiveSessionAnalysisRadioButton_CheckedChanged);
             // 
             // SessionAnalysisOnLoadSazCheckBox
             // 
@@ -449,6 +409,8 @@
             // 
             // DebugGroupBox
             // 
+            this.DebugGroupBox.Controls.Add(this.ExtensionSettingsLabel);
+            this.DebugGroupBox.Controls.Add(this.ExtensionSettingsTextbox);
             this.DebugGroupBox.Controls.Add(this.DebugModeUpgradeCheck);
             this.DebugGroupBox.Controls.Add(this.DebugModeUpdateButton);
             this.DebugGroupBox.Controls.Add(this.DebugModeExtensionPathLabel);
@@ -463,16 +425,25 @@
             this.DebugGroupBox.Controls.Add(this.DebugModeNeverWebCallCheckBox);
             this.DebugGroupBox.Controls.Add(this.DebugModeCheckBox);
             this.DebugGroupBox.Controls.Add(this.DebugModeExecutionCountTextBox);
-            this.DebugGroupBox.Location = new System.Drawing.Point(3, 612);
+            this.DebugGroupBox.Location = new System.Drawing.Point(3, 567);
             this.DebugGroupBox.Name = "DebugGroupBox";
-            this.DebugGroupBox.Size = new System.Drawing.Size(409, 183);
+            this.DebugGroupBox.Size = new System.Drawing.Size(409, 335);
             this.DebugGroupBox.TabIndex = 6;
             this.DebugGroupBox.TabStop = false;
             this.DebugGroupBox.Text = "Debug";
             // 
+            // ExtensionSettingsTextbox
+            // 
+            this.ExtensionSettingsTextbox.Location = new System.Drawing.Point(7, 170);
+            this.ExtensionSettingsTextbox.Multiline = true;
+            this.ExtensionSettingsTextbox.Name = "ExtensionSettingsTextbox";
+            this.ExtensionSettingsTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.ExtensionSettingsTextbox.Size = new System.Drawing.Size(389, 123);
+            this.ExtensionSettingsTextbox.TabIndex = 19;
+            // 
             // DebugModeUpgradeCheck
             // 
-            this.DebugModeUpgradeCheck.Location = new System.Drawing.Point(99, 148);
+            this.DebugModeUpgradeCheck.Location = new System.Drawing.Point(97, 299);
             this.DebugModeUpgradeCheck.Name = "DebugModeUpgradeCheck";
             this.DebugModeUpgradeCheck.Size = new System.Drawing.Size(158, 23);
             this.DebugModeUpgradeCheck.TabIndex = 18;
@@ -482,7 +453,7 @@
             // 
             // DebugModeUpdateButton
             // 
-            this.DebugModeUpdateButton.Location = new System.Drawing.Point(263, 148);
+            this.DebugModeUpdateButton.Location = new System.Drawing.Point(261, 299);
             this.DebugModeUpdateButton.Name = "DebugModeUpdateButton";
             this.DebugModeUpdateButton.Size = new System.Drawing.Size(135, 23);
             this.DebugModeUpdateButton.TabIndex = 17;
@@ -604,7 +575,7 @@
             this.ExtensionVersionInformationGroupBox.Controls.Add(this.UpdateLinkLabel);
             this.ExtensionVersionInformationGroupBox.Controls.Add(this.RulesetVersionLabel);
             this.ExtensionVersionInformationGroupBox.Controls.Add(this.ExtensionVersionLabel);
-            this.ExtensionVersionInformationGroupBox.Location = new System.Drawing.Point(3, 528);
+            this.ExtensionVersionInformationGroupBox.Location = new System.Drawing.Point(3, 483);
             this.ExtensionVersionInformationGroupBox.Name = "ExtensionVersionInformationGroupBox";
             this.ExtensionVersionInformationGroupBox.Size = new System.Drawing.Size(409, 78);
             this.ExtensionVersionInformationGroupBox.TabIndex = 5;
@@ -640,6 +611,15 @@
             this.ExtensionVersionLabel.TabIndex = 0;
             this.ExtensionVersionLabel.Text = "Extension Version HC";
             // 
+            // ExtensionSettingsLabel
+            // 
+            this.ExtensionSettingsLabel.AutoSize = true;
+            this.ExtensionSettingsLabel.Location = new System.Drawing.Point(6, 149);
+            this.ExtensionSettingsLabel.Name = "ExtensionSettingsLabel";
+            this.ExtensionSettingsLabel.Size = new System.Drawing.Size(94, 13);
+            this.ExtensionSettingsLabel.TabIndex = 20;
+            this.ExtensionSettingsLabel.Text = "Extension Settings";
+            // 
             // Office365TabPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -650,7 +630,7 @@
             this.Controls.Add(this.CheckIPAddressGroupBox);
             this.Controls.Add(this.SessionAnalysisGroupBox);
             this.Name = "Office365TabPage";
-            this.Size = new System.Drawing.Size(696, 968);
+            this.Size = new System.Drawing.Size(425, 914);
             this.Load += new System.EventHandler(this.Office365TabPage_Load);
             this.SessionAnalysisGroupBox.ResumeLayout(false);
             this.CheckIPAddressGroupBox.ResumeLayout(false);
@@ -687,8 +667,6 @@
         private System.Windows.Forms.CheckBox ExtensionEnabledCheckBox;
         private System.Windows.Forms.CheckBox SessionAnalysisOnLiveTraceCheckBox;
         private System.Windows.Forms.CheckBox SessionAnalysisOnLoadSazCheckBox;
-        private System.Windows.Forms.RadioButton SelectiveSessionAnalysisRadioButton;
-        private System.Windows.Forms.RadioButton AlwaysSessionAnalysisRadioButton;
         private System.Windows.Forms.Label DebugModeLanguageLabel;
         private System.Windows.Forms.TextBox DebugModeLanguageTextBox;
         private System.Windows.Forms.Button CheckIPAddressClearButton;
@@ -706,7 +684,6 @@
         private System.Windows.Forms.Label DebugModeNextUpdateCheckLabel;
         private System.Windows.Forms.GroupBox WhenToAnalyseSessionsGroupBox;
         private System.Windows.Forms.CheckBox SessionAnalysisOnImportCheckBox;
-        private System.Windows.Forms.RadioButton NeverRadioButton;
         private System.Windows.Forms.GroupBox WarnBeforeProcessingGroupBox;
         private System.Windows.Forms.Label WarnBeforeProcessingSessionsLabel;
         private System.Windows.Forms.TextBox WarnBeforeAnalysingTextBox;
@@ -724,5 +701,7 @@
         private System.Windows.Forms.CheckBox ResponseServerCheckbox;
         private System.Windows.Forms.CheckBox AuthenticationCheckbox;
         private System.Windows.Forms.CheckBox ElapsedTimeCheckbox;
+        private System.Windows.Forms.TextBox ExtensionSettingsTextbox;
+        private System.Windows.Forms.Label ExtensionSettingsLabel;
     }
 }

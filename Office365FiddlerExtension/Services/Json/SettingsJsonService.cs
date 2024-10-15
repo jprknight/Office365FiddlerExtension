@@ -423,17 +423,6 @@ namespace Office365FiddlerExtension.Services
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
         }
 
-        /// <summary>
-        /// Get WarnBeforeAnalysing from extension settings Json application preference.
-        /// </summary>
-        public int WarnBeforeAnalysing
-        {
-            get
-            {
-                return SettingsJsonService.Instance.GetDeserializedExtensionSettings().WarnBeforeAnalysing;
-            }
-        }
-
         public void SetWarnBeforeAnalysing(int warnBeforeAnalysing)
         {
             // Pull & Deserialize Json from ExtensionSettings.
@@ -443,18 +432,6 @@ namespace Office365FiddlerExtension.Services
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
-        }
-
-        /// <summary>
-        /// Get Warning session time threshold from extension settings Json application preference.
-        /// </summary>
-        /// <return>int</return>
-        public int WarningSessionTimeThreshold
-        {
-            get
-            {
-                return SettingsJsonService.Instance.GetDeserializedExtensionSettings().WarningSessionTimeThreshold;
-            }
         }
 
         /// <summary>
