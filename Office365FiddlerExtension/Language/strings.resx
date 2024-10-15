@@ -685,4 +685,7 @@
   <data name="Columns Enabled" xml:space="preserve">
     <value>Columns Enabled</value>
   </data>
+  <data name="Capture was" xml:space="preserve">
+    <value>Capture was</value>
+  </data>
 </root>

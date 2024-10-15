@@ -160,6 +160,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Capture was.
+        /// </summary>
+        internal static string Capture_was {
+            get {
+                return ResourceManager.GetString("Capture was", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check.
         /// </summary>
         internal static string Check {

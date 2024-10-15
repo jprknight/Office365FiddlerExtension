@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using Office365FiddlerExtension.Services;
 using static System.Windows.Forms.TabControl;
-using Office365FiddlerExtension.Inspectors;
 
 namespace Office365FiddlerExtension.UI.Forms
 {
@@ -57,10 +56,6 @@ namespace Office365FiddlerExtension.UI.Forms
             EnterIPAddressTextBox.GotFocus += RemovePlaceholderText;
             EnterIPAddressTextBox.LostFocus += AddPlaceholderText;
 
-            DebugModeLanguageTextBox.Text = extensionSettings.PreferredLanguage;
-            DebugModeExtensionEnabledTextbox.Text = extensionSettings.ExtensionSessionProcessingEnabled.ToString();
-            DebugModeExtensionPathTextbox.Text = extensionSettings.ExtensionPath;
-
             ///////////////////
             ///
             /// Set labels and text according to preferred language set.
@@ -69,12 +64,15 @@ namespace Office365FiddlerExtension.UI.Forms
             if (extensionSettings.DebugMode)
             {
                 ExtensionOptionsGroupBox.Text = $"{LangHelper.GetString("Extension Options")} (Debug Mode)";
-                CaptureTrafficCheckBox.Visible = true;
+                DebugModeCheckBox.Visible = true;
+                NeverWebCallCheckBox.Visible = true;
+                ExtensionSettingsTextbox.Text = Preferences.ExtensionSettings;
             }
             else
             {
                 ExtensionOptionsGroupBox.Text = LangHelper.GetString("Extension Options");
-                CaptureTrafficCheckBox.Visible = false;
+                DebugModeCheckBox.Visible = false;
+                NeverWebCallCheckBox.Visible = false;
             }
             
             ExtensionEnabledCheckBox.Text = LangHelper.GetString("Extension Enabled");
@@ -118,8 +116,6 @@ namespace Office365FiddlerExtension.UI.Forms
 
             SessionAnalysisOnImportCheckBox.Text = LangHelper.GetString("On Import");
             SessionAnalysisOnImportCheckBox.Checked = extensionSettings.SessionAnalysisOnImport;
-            
-            CaptureTrafficCheckBox.Text = LangHelper.GetString("Capture Traffic");
 
             WarnBeforeProcessingSessionsLabel.Text = LangHelper.GetString("S Capitalised Sessions");
             WarnBeforeProcessingGroupBox.Text = LangHelper.GetString("Warn Before Analysing");
@@ -153,9 +149,7 @@ namespace Office365FiddlerExtension.UI.Forms
             ClearAllSessionAnalysisButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
             ClearSelectedSessionAnalysisButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
 
-            CaptureTrafficCheckBox.Checked = extensionSettings.CaptureTraffic;
-
-            DebugModeNeverWebCallCheckBox.Checked = extensionSettings.NeverWebCall;
+            NeverWebCallCheckBox.Checked = extensionSettings.NeverWebCall;
 
             DebugModeCheckBox.Checked = extensionSettings.DebugMode;
 
@@ -166,9 +160,6 @@ namespace Office365FiddlerExtension.UI.Forms
             else {
                 DebugGroupBox.Visible = false;
             }
-
-            DebugModeExecutionCountTextBox.Text = extensionSettings.ExecutionCount.ToString();
-            DebugModeNextUpdateCheckTextBox.Text = extensionSettings.NextUpdateCheck.ToString();
 
             CreateConsolidatedAnalysisButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
 
@@ -349,7 +340,7 @@ namespace Office365FiddlerExtension.UI.Forms
 
         private void NeverWebCallCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsJsonService.Instance.SetNeverWebCall(DebugModeNeverWebCallCheckBox.Checked);
+            SettingsJsonService.Instance.SetNeverWebCall(NeverWebCallCheckBox.Checked);
             Office365TabPage_Load(sender, e);
         }
 
@@ -360,8 +351,6 @@ namespace Office365FiddlerExtension.UI.Forms
 
         private void CaptureTrafficCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsJsonService.Instance.SetCaptureOnStartup(CaptureTrafficCheckBox.Checked);
-
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().CaptureTraffic)
             {
                 FiddlerApplication.UI.actAttachProxy();
@@ -404,7 +393,6 @@ namespace Office365FiddlerExtension.UI.Forms
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             
             ExtensionEnabledCheckBox.Checked = extensionSettings.ExtensionSessionProcessingEnabled;
-            DebugModeExtensionEnabledTextbox.Text = extensionSettings.ExtensionSessionProcessingEnabled.ToString();
 
             ExtensionSettingsTextbox.Text = Preferences.ExtensionSettings;
         }
