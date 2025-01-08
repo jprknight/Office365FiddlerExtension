@@ -325,6 +325,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                 ResultsString.AppendLine("</table>");
 
+                // If NeverWebCall is disabled, show some expanded information on the host IP which responded on the session.
                 if ((this.session["X-HostIP"] != null) && (this.session["X-HostIP"] != ""))
                 {
                     // Tuple -- tupleIsPrivateIPAddress (bool), matching subnet (string).
@@ -337,11 +338,7 @@ namespace Office365FiddlerExtension.Inspectors
                     }
                     else
                     {
-                        if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
-                        {
-                            ResultsString.AppendLine($"<p>{this.session["X-HostIP"]}</p>");
-                        }
-                        else
+                        if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
                         {
                             // Tuple -- IsMicrosoft365IP (bool), matching subnet (string).
                             Tuple<bool, string> tupleIsMicrosoft365IPAddress = NetworkingService.Instance.IsMicrosoft365IPAddress(this.session);
