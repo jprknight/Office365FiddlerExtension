@@ -160,6 +160,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Capture was.
+        /// </summary>
+        internal static string Capture_was {
+            get {
+                return ResourceManager.GetString("Capture was", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check.
         /// </summary>
         internal static string Check {
@@ -295,6 +304,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Columns Enabled.
+        /// </summary>
+        internal static string Columns_Enabled {
+            get {
+                return ResourceManager.GetString("Columns Enabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Concerning.
         /// </summary>
         internal static string Concerning {
@@ -399,6 +417,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string English {
             get {
                 return ResourceManager.GetString("English", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error on Whois lookup..
+        /// </summary>
+        internal static string ErrorOnWhoisLookup {
+            get {
+                return ResourceManager.GetString("ErrorOnWhoisLookup", resourceCulture);
             }
         }
         
@@ -619,6 +646,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to is not a valid IP address..
+        /// </summary>
+        internal static string IsNotAValidIPAddress {
+            get {
+                return ResourceManager.GetString("IsNotAValidIPAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to is within a private subnet on a.
         /// </summary>
         internal static string IsPrivateSubnet {
@@ -723,6 +759,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Never_Web_Call {
             get {
                 return ResourceManager.GetString("Never Web Call", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Never Web Call is enabled. This feature is disabled..
+        /// </summary>
+        internal static string NeverWebCall_FeatureDisabled {
+            get {
+                return ResourceManager.GetString("NeverWebCall_FeatureDisabled", resourceCulture);
             }
         }
         
@@ -1146,6 +1191,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Spanish {
             get {
                 return ResourceManager.GetString("Spanish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The owning organisation is.
+        /// </summary>
+        internal static string TheOwningOrganisation {
+            get {
+                return ResourceManager.GetString("TheOwningOrganisation", resourceCulture);
             }
         }
         

@@ -211,16 +211,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Language\strings.de-de.Designer.cs">
-      <DependentUpon>strings.de-de.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Language\strings.fr-fr.Designer.cs">
-      <DependentUpon>strings.fr-fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Language\strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -290,16 +280,6 @@
     <EmbeddedResource Include="Language\strings.es-us.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>strings.es-us.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Language\strings.de-de.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>strings.de-de.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Language\strings.fr-fr.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>strings.fr-fr.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Language\strings.resx">
