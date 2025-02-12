@@ -349,20 +349,6 @@ namespace Office365FiddlerExtension.UI.Forms
             SettingsJsonService.Instance.SetDebugMode(DebugModeCheckBox.Checked);
         }
 
-        private void CaptureTrafficCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            SettingsJsonService.Instance.SetCaptureOnStartup(CaptureTrafficCheckBox.Checked);
-
-            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().CaptureTraffic)
-            {
-                FiddlerApplication.UI.actAttachProxy();
-            }
-            else
-            {
-                FiddlerApplication.UI.actDetachProxy();
-            }
-        }
-
         private void SessionAnalysisOnImportCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             SettingsJsonService.Instance.SetSessionAnlysisOnImport(SessionAnalysisOnImportCheckBox.Checked);
@@ -380,7 +366,7 @@ namespace Office365FiddlerExtension.UI.Forms
                 WarnBeforeAnalysingTextBox.Text = WarnBeforeAnalysingTextBox.Text.Remove(WarnBeforeAnalysingTextBox.Text.Length - 1);
             }   
         }
-    }
+    
 
         private void WhoisCheckBox_CheckedChanged(object sender, EventArgs e)
         {
