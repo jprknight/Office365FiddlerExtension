@@ -812,6 +812,22 @@
   <data name="HTTP_400s_SessionType" xml:space="preserve">
     <value>400 Bad Request</value>
   </data>
+  <data name="HTTP_400_Cloud_Authentication_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 400 Bad Request - Cloud Authentication&lt;/span&gt;&lt;/b&gt;</value>
+    <comment>HTTP 400 Cloud Authentication</comment>
+  </data>
+  <data name="HTTP_400_Cloud_Authentication_ResponseCodeDescription" xml:space="preserve">
+    <value>400 Bad Request</value>
+    <comment>HTTP 400 Cloud Authentication</comment>
+  </data>
+  <data name="HTTP_400_Cloud_Authentication_ResponseComments" xml:space="preserve">
+    <value>HTTP 400: Bad Request in Cloud Authentication. If you're troubleshooting a Microsoft 365 client which is unable to connect start here. Check the raw response inspector for more details.</value>
+    <comment>HTTP 400 Cloud Authentication</comment>
+  </data>
+  <data name="HTTP_400_Cloud_Authentication_SessionType" xml:space="preserve">
+    <value>!CLOUD AUTHENTICATION! </value>
+    <comment>HTTP 400 Cloud Authentication</comment>
+  </data>
   <data name="HTTP_401_Everything_Else_ResponseAlert" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:orange'&gt;Authentication Challenge&lt;/span&gt;&lt;/b&gt;</value>
   </data>
@@ -1035,7 +1051,7 @@
     <value>502 Bad Gateway</value>
   </data>
   <data name="HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_ResponseComments" xml:space="preserve">
-    <value>This AutoDiscover request was refused by the server it was sent to. Check the raw tab for further details.</value>
+    <value>The AutoDiscover request was refused by the server it was sent to. If this a Microsoft cloud endpoint, it's quite possible this request is expected to fail. Check the raw tab for further details.</value>
   </data>
   <data name="HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover_SessionType" xml:space="preserve">
     <value>!AUTODISCOVER!</value>
@@ -1052,10 +1068,25 @@
   <data name="HTTP_502_Bad_Gateway_Anything_Else_SessionType" xml:space="preserve">
     <value>!BAD GATEWAY!</value>
   </data>
+  <data name="HTTP_502_Bad_Gateway_AutoDiscover_Cloud_Vanity_Domain_False_Positive_ResponseCodeDescription" xml:space="preserve">
+    <value>502 Bad Gateway False Positive</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_AutoDiscover_Cloud_Vanity_Domain_False_Positive_ResponseCommentsEnd" xml:space="preserve">
+    <value>on port 443, which by design Office 365 Autodiscover does not respond to.&lt;p&gt;If you get a response on port 80 and no response on port 443, this is more than likely an Autodiscover VIP which by design redirects requests on port 80 to &lt;a href='https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml' target='_blank'&gt;https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml&lt;/a&gt;&lt;p&gt;The reason for this is Microsoft does not maintain SSL certificates for every tenant domain name registered on the .onmicrosoft.com domain. AutoDiscover redirects to autodiscover-s.outlook.com which does accept connections on 443 and Microsoft does maintain SSL certificates for this endpoint.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_AutoDiscover_Cloud_Vanity_Domain_False_Positive_ResponseCommentsStart" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:green'&gt;False Positive&lt;/span&gt;&lt;/b&gt;. An AutoDiscover call was sent to</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_AutoDiscover_Cloud_Vanity_Domain_False_Positive_SessionType" xml:space="preserve">
+    <value>False Positive</value>
+  </data>
   <data name="HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_Domain_Not_Detected" xml:space="preserve">
     <value>Domain not detected</value>
   </data>
   <data name="HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:green'&gt;False Positive&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseAlert1" xml:space="preserve">
     <value>&lt;b&gt;&lt;span style='color:green'&gt;False Positive&lt;/span&gt;&lt;/b&gt;</value>
   </data>
   <data name="HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive_ResponseCodeDescription" xml:space="preserve">
@@ -1326,5 +1357,17 @@
   <data name="Unknown" xml:space="preserve">
     <value>Unknown</value>
     <comment>Always Run Process Name</comment>
+  </data>
+  <data name="HTTP_503_Service_Unavailable_OWA_CreateAttachment_SessionType" xml:space="preserve">
+    <value>503 OWA unable to CreateAttachment!</value>
+  </data>
+  <data name="HTTP_503_Service_Unavailable_OWA_CreateAttachment_ResponseCodeDescription" xml:space="preserve">
+    <value>503 Service Unavailable OWA CreateAttachment</value>
+  </data>
+  <data name="HTTP_503_Service_Unavailable_OWA_CreateAttachment_ResponseAlert" xml:space="preserve">
+    <value>&lt;b&gt;&lt;span style='color:red'&gt;HTTP 503 Service Unavailable&lt;/span&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="HTTP_503_Service_Unavailable_OWA_CreateAttachment_ResponseComments" xml:space="preserve">
+    <value>OWA was unable to perform or complete the CreateAttachment action. Check the Raw and WebView response tabs to check for any details of why this is happening. Consider internet proxies and the security stance these devices could be taking in classifying the website being accessed.</value>
   </data>
 </root>

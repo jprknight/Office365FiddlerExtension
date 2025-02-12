@@ -31,8 +31,8 @@ namespace Office365FiddlerExtension.Services
 
             // OnSessionsAdded doesn't appear to have any overloads for the sessions which were just added.
             // For this reason the extension has to make this assumption:
-            // Session(s) just added are all of the same source LoadSaz, Import, or Live Trace.
-            // These three types are mutually exclusive, the event OnImportSession could / should clarify recently added events against others.
+            // Session(s) just added are all of the same source LoadSaz, Import, or Streamed (Live Trace).
+            // These three types should be mutually exclusive, the event OnImportSession could / should clarify recently added events against others.
             // As of now (2024) this event doesn't exist in Fiddler.
 
             // This is where the 'cumbersome' kicks in: https://feedback.telerik.com/fiddler/1657770-fiddler-classic-should-expose-onimportsessions-event
@@ -42,24 +42,28 @@ namespace Office365FiddlerExtension.Services
             // ignoring any which the extension has already analysed along the way.
 
             // If session(s) were loaded from a Saz file, stop processing. Expecting the SazFileService will pick up here instead.
-            if (SessionsLoadedFromSaz())
+            if (SessionsImportedFromOtherToolCount() != 0)
             {
-                return;
+                ImportService.Instance.ProcessImportedSessions();
             }
 
             // If session(s) were ResponseStreamed 'Live Trace', stop processing. Expecting the AutoTamperResponseAfter() in ActivationService will pick up here instead.
             if (SessionsStreamed())
             {
-                return;
+                // Do nothing here, SazFileService will pick up these sessions.
             }
 
-            // Call Import Service to process session(s).
-            if (SessionsImportedFromOtherTool())
+            else if (SessionsStreamedCount() != 0)
             {
-                ImportService.Instance.ProcessImportedSessions();
+                // Do nothing here, LiveTraceService will pick up these sessions.
             }
 
+            else
+            {
+                // Do nothing here.
+            }
         }
+
 
         private int SessionsLoadedFromSazCount()
         {

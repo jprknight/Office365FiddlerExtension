@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Office365FiddlerExtension.UI;
 using System.Reflection;
 using Newtonsoft.Json;
+using Office365FiddlerExtension.UI.Forms;
 
 namespace Office365FiddlerExtension
 {
@@ -24,7 +25,7 @@ namespace Office365FiddlerExtension
         public MenuItem MiEnabled { get; set; }
 
         public MenuItem MiLanguage { get; set; }
-        
+
         public MenuItem MiLanguage_EN { get; set; }
 
         public MenuItem MiLanguage_FR { get; set; }
@@ -124,8 +125,8 @@ namespace Office365FiddlerExtension
                     this.MiAbout = new MenuItem($"{LangHelper.GetString("About")}", new System.EventHandler(this.MiAbout_Click));
 
                     // Add menu items to top level menu.
-                    this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { //this.MiEnabled,
-                    //new MenuItem("-"),
+                    this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { this.MiEnabled,
+                    new MenuItem("-"),
                     this.MiAnalyseAllSessions,
                     this.MiClearAllSessionAnalysis,
                     new MenuItem("-"),
@@ -161,9 +162,15 @@ namespace Office365FiddlerExtension
                 {
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
                 }
-                
+
             }
         }
+
+        public void RemoveMenu()
+        {
+            FiddlerApplication.UI.mnuMain.MenuItems.Remove(this.ExtensionMenu);
+        }
+
         private void CheckLanguageSelection()
         {
             MiLanguage_EN.Checked = SettingsJsonService.Instance.GetPreferredLanguageBool("EN-GB");
@@ -244,6 +251,8 @@ namespace Office365FiddlerExtension
             ContextMenuUI.Instance.InvertCmiClearAnalysisSelectedSessions();
             ContextMenuUI.Instance.InvertCmiSetSessionSeverity();
             ContextMenuUI.Instance.InvertCmiCreateConsolidatedReportEnabled();
+
+            Office365FiddlerExtensionTabPage.Instance.Refresh();
 
             // Set ExtensionEnabled according to menu item checked.
             SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(MiEnabled.Checked);

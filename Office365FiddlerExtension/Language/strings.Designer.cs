@@ -871,6 +871,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Owned by.
+        /// </summary>
+        internal static string OwnedBy {
+            get {
+                return ResourceManager.GetString("OwnedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Portuguese.
         /// </summary>
         internal static string Portuguese {
@@ -1191,15 +1200,6 @@ namespace Office365FiddlerExtension.Language {
         internal static string Spanish {
             get {
                 return ResourceManager.GetString("Spanish", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The owning organisation is.
-        /// </summary>
-        internal static string TheOwningOrganisation {
-            get {
-                return ResourceManager.GetString("TheOwningOrganisation", resourceCulture);
             }
         }
         

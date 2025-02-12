@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Office365FiddlerExtension.Services;
+using static System.Windows.Forms.TabControl;
 
 namespace Office365FiddlerExtension.UI.Forms
 {
@@ -37,13 +38,23 @@ namespace Office365FiddlerExtension.UI.Forms
         {
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
+            if (extensionSettings.NeverWebCall)
+            {
+                CheckIPAddressGroupBox.Enabled = false;
+                EnterIPAddressTextBox.Text = LangHelper.GetString("NeverWebCall_FeatureDisabled");
+                CheckIPAddressResultTextBox.Text = LangHelper.GetString("NeverWebCall_FeatureDisabled");
+            }
+            else
+            {
+                CheckIPAddressGroupBox.Enabled = true;
+                EnterIPAddressTextBox.Text = "";
+                CheckIPAddressResultTextBox.Text = "";
+                // Make sure the text box has placeholder text on load since it'll be empty.
+                SetPlaceHolderText();
+            }
+
             EnterIPAddressTextBox.GotFocus += RemovePlaceholderText;
             EnterIPAddressTextBox.LostFocus += AddPlaceholderText;
-
-            // Make sure the text box has placeholder text on load since it'll be empty.
-            SetPlaceHolderText();
-
-            LanguageTextBox.Text = extensionSettings.PreferredLanguage;
 
             ///////////////////
             ///
@@ -53,37 +64,58 @@ namespace Office365FiddlerExtension.UI.Forms
             if (extensionSettings.DebugMode)
             {
                 ExtensionOptionsGroupBox.Text = $"{LangHelper.GetString("Extension Options")} (Debug Mode)";
-                CaptureTrafficCheckBox.Visible = true;
+                DebugModeCheckBox.Visible = true;
+                NeverWebCallCheckBox.Visible = true;
+                ExtensionSettingsTextbox.Text = Preferences.ExtensionSettings;
             }
             else
             {
                 ExtensionOptionsGroupBox.Text = LangHelper.GetString("Extension Options");
-                CaptureTrafficCheckBox.Visible = false;
+                DebugModeCheckBox.Visible = false;
+                NeverWebCallCheckBox.Visible = false;
             }
-            
-            ExtensionEnabledCheckBox.Text = LangHelper.GetString("Extension Enabled");
-            AlwaysSessionAnalysisRadioButton.Text = LangHelper.GetString("Always");
-            SelectiveSessionAnalysisRadioButton.Text = LangHelper.GetString("Selective");
-            NeverRadioButton.Text = LangHelper.GetString("Never");
 
-            if (ExtensionEnabledCheckBox.Checked)
+            ExtensionEnabledCheckBox.Text = LangHelper.GetString("Extension Enabled");
+
+            ColumnsUIGroupbox.Text = LangHelper.GetString("Columns Enabled");
+
+            ElapsedTimeCheckbox.Text = LangHelper.GetString("Elapsed Time");
+            ElapsedTimeCheckbox.Checked = extensionSettings.ElapsedTimeColumnEnabled;
+
+            SeverityCheckbox.Text = LangHelper.GetString("Severity");
+            SeverityCheckbox.Checked = extensionSettings.SeverityColumnEnabled;
+
+            SessionTypeCheckbox.Text = LangHelper.GetString("Session Type");
+            SessionTypeCheckbox.Checked = extensionSettings.SessionTypeColumnEnabled;
+
+            AuthenticationCheckbox.Text = LangHelper.GetString("Authentication");
+            AuthenticationCheckbox.Checked = extensionSettings.AuthenticationColumnEnabled;
+
+            ResponseServerCheckbox.Text = LangHelper.GetString("Response Server");
+            ResponseServerCheckbox.Checked = extensionSettings.ResponseServerColumnEnabled;
+
+            HostIPCheckbox.Text = LangHelper.GetString("Host IP");
+            HostIPCheckbox.Checked = extensionSettings.HostIPColumnEnabled;
+
+            if (extensionSettings.ExtensionSessionProcessingEnabled)
             {
-                AlwaysSessionAnalysisRadioButton.Enabled = true;
-                SelectiveSessionAnalysisRadioButton.Enabled = true;
-                NeverRadioButton.Enabled = true;
+                WarnBeforeProcessingGroupBox.Enabled = true;
+                WhenToAnalyseSessionsGroupBox.Enabled = true;
             }
             else
             {
-                AlwaysSessionAnalysisRadioButton.Enabled = false;
-                SelectiveSessionAnalysisRadioButton.Enabled = false;
-                NeverRadioButton.Enabled = false;
+                WarnBeforeProcessingGroupBox.Enabled = false;
+                WhenToAnalyseSessionsGroupBox.Enabled = false;
             }
 
             SessionAnalysisOnLoadSazCheckBox.Text = LangHelper.GetString("On Load Saz");
+            SessionAnalysisOnLoadSazCheckBox.Checked = extensionSettings.SessionAnalysisOnLoadSaz;
+
             SessionAnalysisOnLiveTraceCheckBox.Text = LangHelper.GetString("On Live Trace");
+            SessionAnalysisOnLiveTraceCheckBox.Checked = extensionSettings.SessionAnalysisOnLiveTrace;
+
             SessionAnalysisOnImportCheckBox.Text = LangHelper.GetString("On Import");
-            
-            CaptureTrafficCheckBox.Text = LangHelper.GetString("Capture Traffic");
+            SessionAnalysisOnImportCheckBox.Checked = extensionSettings.SessionAnalysisOnImport;
 
             WarnBeforeProcessingSessionsLabel.Text = LangHelper.GetString("S Capitalised Sessions");
             WarnBeforeProcessingGroupBox.Text = LangHelper.GetString("Warn Before Analysing");
@@ -102,6 +134,7 @@ namespace Office365FiddlerExtension.UI.Forms
             CheckIPAddressGroupBox.Text = LangHelper.GetString("Check IP Address");
             CheckIPAddressButton.Text = LangHelper.GetString("Check");
             CheckIPAddressClearButton.Text = LangHelper.GetString("Clear");
+            WhoisCheckBox.Checked = extensionSettings.Whois;
 
             ExtensionVersionInformationGroupBox.Text = LangHelper.GetString("Extension Version Information");
 
@@ -116,8 +149,6 @@ namespace Office365FiddlerExtension.UI.Forms
             ClearAllSessionAnalysisButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
             ClearSelectedSessionAnalysisButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
 
-            CaptureTrafficCheckBox.Checked = extensionSettings.CaptureTraffic;
-
             NeverWebCallCheckBox.Checked = extensionSettings.NeverWebCall;
 
             DebugModeCheckBox.Checked = extensionSettings.DebugMode;
@@ -126,130 +157,55 @@ namespace Office365FiddlerExtension.UI.Forms
             {
                 DebugGroupBox.Visible = true;
             }
-            else {
+            else
+            {
                 DebugGroupBox.Visible = false;
             }
 
-            ExecutionCountTextBox.Text = extensionSettings.ExecutionCount.ToString();
-            NextUpdateCheckTextBox.Text = extensionSettings.NextUpdateCheck.ToString();
-
             CreateConsolidatedAnalysisButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
 
-            if (extensionSettings.SessionAnalysisOnLoadSaz == true &&
-                extensionSettings.SessionAnalysisOnLiveTrace == true &&
-                extensionSettings.SessionAnalysisOnImport == true)
-            {
-                AlwaysSessionAnalysisRadioButton.Checked = true;
-                SelectiveSessionAnalysisRadioButton.Checked = false;
-
-                SessionAnalysisOnLoadSazCheckBox.Checked = true;
-                SessionAnalysisOnLoadSazCheckBox.Enabled = false;
-
-                SessionAnalysisOnLoadSazCheckBox.Checked = true;
-                SessionAnalysisOnLiveTraceCheckBox.Enabled = false;
-
-                SessionAnalysisOnImportCheckBox.Checked = true;
-                SessionAnalysisOnImportCheckBox.Enabled = false;
-            }
-            else if (extensionSettings.SessionAnalysisOnLoadSaz == false &&
-                extensionSettings.SessionAnalysisOnLiveTrace == false &&
-                extensionSettings.SessionAnalysisOnImport == false)
-            {
-                NeverRadioButton.Checked = true;
-            }
-            else
-            {
-                AlwaysSessionAnalysisRadioButton.Checked = false;
-                SelectiveSessionAnalysisRadioButton.Checked = true;
-
-                if (SettingsJsonService.Instance.SessionAnalysisOnLoadSaz)
-                {
-                    SessionAnalysisOnLoadSazCheckBox.Checked = true;
-                }
-                else
-                {
-                    SessionAnalysisOnLoadSazCheckBox.Checked = false;
-                }
-
-                if (SettingsJsonService.Instance.SessionAnalysisOnLiveTrace)
-                {
-                    SessionAnalysisOnLiveTraceCheckBox.Checked = true;
-                }
-                else
-                {
-                    SessionAnalysisOnLiveTraceCheckBox.Checked = false;
-                }
-
-                if (SettingsJsonService.Instance.SessionAnalysisOnImport)
-                {
-                    SessionAnalysisOnImportCheckBox.Checked = true;
-                }
-                else
-                {
-                    SessionAnalysisOnImportCheckBox.Checked = false;
-                }
-            }
-
-            if (AlwaysSessionAnalysisRadioButton.Checked)
-            {
-                SessionAnalysisOnLiveTraceCheckBox.Enabled = false;
-                SessionAnalysisOnLoadSazCheckBox.Enabled = false;
-                SessionAnalysisOnImportCheckBox.Enabled = false;
-            }
-
-            if (SelectiveSessionAnalysisRadioButton.Checked)
-            {
-                SessionAnalysisOnLiveTraceCheckBox.Enabled = true;
-                SessionAnalysisOnLoadSazCheckBox.Enabled = true;
-                SessionAnalysisOnImportCheckBox.Enabled = true;
-            }
-
-            if (VersionService.Instance.IsExtensionDLLUpdateAvailable())
-            {
-                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")} v" +
-                    $"{VersionService.Instance.GetExtensionDLLVersion()} - " +
-                    LangHelper.GetString("Update Available");
-                ExtensionVersionLabel.ForeColor = System.Drawing.Color.Red;
-            }
-            else
-            {
-                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")} v" +
-                    $"{VersionService.Instance.GetExtensionDLLVersion()} - " + 
-                    LangHelper.GetString("Up To Date");
-                ExtensionVersionLabel.ForeColor = System.Drawing.Color.Green;
-            }
-
-            if (VersionService.Instance.IsRulesetDLLUpdateAvailable())
-            {
-                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")} v" +
-                    $"{VersionService.Instance.GetExtensionRulesetDLLVersion()} - " +
-                    LangHelper.GetString("Update Available");
-                RulesetVersionLabel.ForeColor = System.Drawing.Color.Red;
-            }
-            else
-            {
-                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")} v" +
-                    $"{VersionService.Instance.GetExtensionRulesetDLLVersion()} - " +
-                    LangHelper.GetString("Up To Date");
-                RulesetVersionLabel.ForeColor = System.Drawing.Color.Green;
-            }
-
-            // Follow up the above with overrides if never web call is true.
+            UpdateLinkLabel.Text = URLsJsonService.Instance.GetDeserializedExtensionURLs().Installer;
 
             if (extensionSettings.NeverWebCall)
             {
-                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")} v" +
-                    $"{VersionService.Instance.GetExtensionDLLVersion()} - " +
-                    LangHelper.GetString("Never Web Call");
+                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v{VersionService.Instance.GetExtensionDLLVersion()}";
                 ExtensionVersionLabel.ForeColor = System.Drawing.Color.Black;
 
-                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")} v" +
-                    $"{VersionService.Instance.GetExtensionRulesetDLLVersion()} - " +
-                    LangHelper.GetString("Never Web Call");
+                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v{VersionService.Instance.GetExtensionRulesetDLLVersion()}";
                 RulesetVersionLabel.ForeColor = System.Drawing.Color.Black;
             }
+            else
+            {
+                if (VersionService.Instance.IsExtensionDLLUpdateAvailable())
+                {
+                    ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
+                        $"{VersionService.Instance.GetExtensionDLLVersion()} - " +
+                        LangHelper.GetString("Update Available");
+                    ExtensionVersionLabel.ForeColor = System.Drawing.Color.Red;
+                }
+                else
+                {
+                    ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
+                        $"{VersionService.Instance.GetExtensionDLLVersion()} - " +
+                        LangHelper.GetString("Up To Date");
+                    ExtensionVersionLabel.ForeColor = System.Drawing.Color.Green;
+                }
 
-            UpdateLinkLabel.Text = URLsJsonService.Instance.GetDeserializedExtensionURLs().Installer;
+                if (VersionService.Instance.IsRulesetDLLUpdateAvailable())
+                {
+                    RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v" +
+                        $"{VersionService.Instance.GetExtensionRulesetDLLVersion()} - " +
+                        LangHelper.GetString("Update Available");
+                    RulesetVersionLabel.ForeColor = System.Drawing.Color.Red;
+                }
+                else
+                {
+                    RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v" +
+                        $"{VersionService.Instance.GetExtensionRulesetDLLVersion()} - " +
+                        LangHelper.GetString("Up To Date");
+                    RulesetVersionLabel.ForeColor = System.Drawing.Color.Green;
+                }
+            }
         }
 
         public void AddPlaceholderText(object sender, EventArgs e)
@@ -282,66 +238,15 @@ namespace Office365FiddlerExtension.UI.Forms
         {
             SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(ExtensionEnabledCheckBox.Checked);
 
-            if (ExtensionEnabledCheckBox.Checked)
-            {
-                AlwaysSessionAnalysisRadioButton.Enabled = true;
-                SelectiveSessionAnalysisRadioButton.Enabled = true;
-                NeverRadioButton.Enabled = true;
-                //SessionAnalysisOnLoadSazCheckBox.Enabled = SomeSessionAnalysisRadioButton.Checked;
-                //SessionAnalysisOnLiveTraceCheckBox.Enabled = SomeSessionAnalysisRadioButton.Checked;                
-            }
-            else
-            {
-                AlwaysSessionAnalysisRadioButton.Enabled = false;
-                SelectiveSessionAnalysisRadioButton.Enabled = false;
-                NeverRadioButton.Enabled = false;
-                //SessionAnalysisOnLoadSazCheckBox.Enabled = SomeSessionAnalysisRadioButton.Checked;
-                //SessionAnalysisOnLiveTraceCheckBox.Enabled = SomeSessionAnalysisRadioButton.Checked;
-            }
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            // Enable / Disable these controls according to whether the extension is enabled or not.
+            WarnBeforeProcessingGroupBox.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
+            WhenToAnalyseSessionsGroupBox.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
 
             this.UpdateUIControls();
             MenuUI.Instance.UpdateUIControls();
             ContextMenuUI.Instance.UpdateUIControls();
-        }
-
-        private void AllSessionAnalysisRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            if (AlwaysSessionAnalysisRadioButton.Checked)
-            {
-                SessionAnalysisOnLoadSazCheckBox.Enabled = false;
-                SessionAnalysisOnLoadSazCheckBox.Checked = true;
-
-                SessionAnalysisOnLiveTraceCheckBox.Enabled = false;
-                SessionAnalysisOnLiveTraceCheckBox.Checked = true;
-
-                SessionAnalysisOnImportCheckBox.Enabled = false;
-                SessionAnalysisOnImportCheckBox.Checked = true;
-            }
-        }
-
-        private void SelectiveSessionAnalysisRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            if (SelectiveSessionAnalysisRadioButton.Checked)
-            {
-                SessionAnalysisOnLoadSazCheckBox.Enabled = true;
-                SessionAnalysisOnLiveTraceCheckBox.Enabled = true;
-                SessionAnalysisOnImportCheckBox.Enabled = true;
-            }
-        }
-
-        private void NeverRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            if (NeverRadioButton.Checked)
-            {
-                SessionAnalysisOnLoadSazCheckBox.Enabled = false;
-                SessionAnalysisOnLoadSazCheckBox.Checked = false;
-
-                SessionAnalysisOnLiveTraceCheckBox.Enabled = false;
-                SessionAnalysisOnLiveTraceCheckBox.Checked = false;
-
-                SessionAnalysisOnImportCheckBox.Enabled = false;
-                SessionAnalysisOnImportCheckBox.Checked = false;
-            }
         }
 
         private void SessionAnalysisOnLoadSazCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -383,7 +288,7 @@ namespace Office365FiddlerExtension.UI.Forms
         {
             if (!NetworkingService.Instance.IsValidIPAddress(EnterIPAddressTextBox.Text))
             {
-                CheckIPAddressResultTextBox.Text = $"{EnterIPAddressTextBox.Text} is not a valid IP address.";
+                CheckIPAddressResultTextBox.Text = $"{EnterIPAddressTextBox.Text} {LangHelper.GetString("IsNotAValidIPAddress")}";
                 EnterIPAddressTextBox.Text = "";
                 SetPlaceHolderText();
                 return;
@@ -411,6 +316,14 @@ namespace Office365FiddlerExtension.UI.Forms
                 {
                     CheckIPAddressResultTextBox.Text = $"{EnterIPAddressTextBox.Text} is a public IP address not within a Microsoft 365 subnet.";
                 }
+
+                var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+                // If Whois lookups are enabled, go find out the organization name who owns this IP address.
+                if (extensionSettings.Whois)
+                {
+                    CheckIPAddressResultTextBox.Text += $" {LangHelper.GetString("OwnedBy")} {NetworkingService.Instance.GetWhoisOrganizationName(EnterIPAddressTextBox.Text)}";
+                }
             }
         }
 
@@ -429,6 +342,7 @@ namespace Office365FiddlerExtension.UI.Forms
         private void NeverWebCallCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             SettingsJsonService.Instance.SetNeverWebCall(NeverWebCallCheckBox.Checked);
+            Office365TabPage_Load(sender, e);
         }
 
         private void DebugModeCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -438,8 +352,6 @@ namespace Office365FiddlerExtension.UI.Forms
 
         private void CaptureTrafficCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsJsonService.Instance.SetCaptureOnStartup(CaptureTrafficCheckBox.Checked);
-
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().CaptureTraffic)
             {
                 FiddlerApplication.UI.actAttachProxy();
@@ -465,7 +377,92 @@ namespace Office365FiddlerExtension.UI.Forms
 
                 MessageBox.Show(message, caption);
                 WarnBeforeAnalysingTextBox.Text = WarnBeforeAnalysingTextBox.Text.Remove(WarnBeforeAnalysingTextBox.Text.Length - 1);
-            }   
+            }
+            else
+            {
+                SettingsJsonService.Instance.SetWarnBeforeAnalysing(int.Parse(WarnBeforeAnalysingTextBox.Text));
+            }
+        }
+
+        private void WhoisCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsJsonService.Instance.SetWhois(WhoisCheckBox.Checked);
+        }
+
+        private void DebugModeUpdateButton_Click(object sender, EventArgs e)
+        {
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            ExtensionEnabledCheckBox.Checked = extensionSettings.ExtensionSessionProcessingEnabled;
+
+            ExtensionSettingsTextbox.Text = Preferences.ExtensionSettings;
+        }
+
+        private void DebugModeUpgradeCheck_Click(object sender, EventArgs e)
+        {
+            // Dispose of the Tab Page.
+            Office365FiddlerExtensionTabPage.Instance.OnBeforeUnload();
+
+            // Dispose of the MenuUI.
+            MenuUI.Instance.RemoveMenu();
+
+            //Office365Inspector.RemoveInspectorTab();
+
+            //UpgradeService.Instance.Run();
+        }
+
+        private void ElapsedTimeCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsJsonService.Instance.SetElapsedColumnEnabled(ElapsedTimeCheckbox.Checked);
+            if (ElapsedTimeCheckbox.Checked)
+            {
+                ColumnUI.Instance.AddElapsedTimeColumn();
+            }
+        }
+
+        private void SeverityCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsJsonService.Instance.SetSeverityColumnEnabled(SeverityCheckbox.Checked);
+            if (SeverityCheckbox.Checked)
+            {
+                ColumnUI.Instance.AddSeverityColumn();
+            }
+        }
+
+        private void SessionTypeCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsJsonService.Instance.SetSessionTypeColumnEnabled(SessionTypeCheckbox.Checked);
+            if (SessionTypeCheckbox.Checked)
+            {
+                ColumnUI.Instance.AddSessionTypeColumn();
+            }
+        }
+
+        private void ResponseServerCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsJsonService.Instance.SetResponseServerColumnEnabled(ResponseServerCheckbox.Checked);
+            if (ResponseServerCheckbox.Checked)
+            {
+                ColumnUI.Instance.AddResponseServerColumn();
+            }
+        }
+
+        private void AuthenticationCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsJsonService.Instance.SetAuthenticationColumnEnabled(AuthenticationCheckbox.Checked);
+            if (AuthenticationCheckbox.Checked)
+            {
+                ColumnUI.Instance.AddAuthenticationColumn();
+            }
+        }
+
+        private void HostIPCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsJsonService.Instance.SetHostIPColumnEnabled(HostIPCheckbox.Checked);
+            if (HostIPCheckbox.Checked)
+            {
+                ColumnUI.Instance.AddHostIPColumn();
+            }
         }
     }
 
@@ -485,9 +482,68 @@ namespace Office365FiddlerExtension.UI.Forms
             FiddlerApplication.UI.tabsViews.TabPages.Add(oPage);
         }
 
+
+        // REVIEW THIS.
+        //
+        // Attempting to get the Enable/Disable menu item to effect the Tab Page.
+        public void Refresh()
+        {
+
+
+            TabPageCollection tabPages = FiddlerApplication.UI.tabsViews.TabPages;
+
+            foreach (TabPage tabpage in tabPages)
+            {
+                if (tabpage.Text.Equals(LangHelper.GetString("Office 365 Fiddler Extension")))
+                {
+
+                    //string message = $"You hit the refresh function. {tabpage.Text}";
+                    //string caption = "Refresh";
+                    //MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    //DialogResult result;
+
+                    // Displays the MessageBox.
+                    //result = MessageBox.Show(message, caption, buttons);
+
+                    // This code gets into the tabpage, but none of these things can trigger a UI
+                    // update of the enabled / disabled checkbox.
+                    // The only thing I've successfully been able to do is trigger a dispose event
+                    // which removes the tab page from the application.
+
+                    //tabpage.Dispose();
+
+                    //Office365TabPage.Instance.UpdateUIControls();
+
+                    //Office365TabPage.Instance.InvertExtensionEnabledCheckbox();
+
+                    //tabpage.Invalidate();
+                    //tabpage.Update();
+
+                    //tabpage.Controls.Clear();
+                    //tabpage.Controls.Add(oView);
+                    //tabpage.Controls.update
+
+                    //tabpage.Invalidate();
+                    //tabpage.Refresh();
+
+
+
+                }
+            }
+        }
+
         public void OnBeforeUnload()
         {
-            oPage.Dispose();
+            TabPageCollection tabPages = FiddlerApplication.UI.tabsViews.TabPages;
+
+            foreach (TabPage tabpage in tabPages)
+            {
+                if (tabpage.Text.Equals(LangHelper.GetString("Office 365 Fiddler Extension")))
+                {
+                    tabpage.Dispose();
+                }
+
+            }
         }
 
         public Office365FiddlerExtensionTabPage()

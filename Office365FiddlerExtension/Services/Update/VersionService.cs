@@ -56,7 +56,7 @@ namespace Office365FiddlerExtension.Services
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"({this.GetType().Name}) " +
+                    $"({this.GetType().Name}): " +
                     $"Never Web Call stopping extension update check.");
                 return false;
             }
@@ -112,7 +112,7 @@ namespace Office365FiddlerExtension.Services
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"({this.GetType().Name})" +
+                    $"({this.GetType().Name}): " +
                     "Never Web Call preventing update checking.");
                 return;
             }
@@ -186,7 +186,7 @@ namespace Office365FiddlerExtension.Services
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"({this.GetType().Name}) " +
+                    $"({this.GetType().Name}): " +
                     $"Never Web Call stopping ruleset update check.");
                 return false;
             }
@@ -294,7 +294,7 @@ namespace Office365FiddlerExtension.Services
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"({this.GetType().Name})" +
+                    $"({this.GetType().Name}): " +
                     "Never Web Call preventing update checking.");
                 return;
             }

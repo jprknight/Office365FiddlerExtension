@@ -337,12 +337,8 @@ namespace Office365FiddlerExtension.Inspectors
                     }
                     else
                     {
-                        if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
-                        {
-                            ResultsString.AppendLine($"<p>{this.session["X-HostIP"]}</p>");
-                        }
-                        else
-                        {
+                        if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+						{
                             // Tuple -- IsMicrosoft365IP (bool), matching subnet (string).
                             Tuple<bool, string> tupleIsMicrosoft365IPAddress = NetworkingService.Instance.IsMicrosoft365IPAddress(this.session);
 

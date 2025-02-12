@@ -27,6 +27,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 return;
             }
+            HTTP_503_Service_Unavailable_OWA_CreateAttachment(this.session);
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
             HTTP_503_Service_Unavailable_Everything_Else(this.session);
         }
 
@@ -65,7 +70,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 sessionResponseServerConfidenceLevel = 5;
                 sessionSeverity = 60;
             }
-            
+
             string RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=" + this.session.oRequest["X-User-Identity"] + "&xml=1";
 
             var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
@@ -86,7 +91,64 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);           
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+        }
+
+        private void HTTP_503_Service_Unavailable_OWA_CreateAttachment(Session session)
+        {
+            this.session = session;
+
+            // If this HTTP 503 session isn't from an OWA CreateAttachment action, return.
+            if (!this.session.uriContains("outlook.office.com/owa/service.svc/CreateAttachment"))
+            {
+                return;
+            }
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 503 Service Unavailable. OWA CreatAttachment!");
+
+            int sessionAuthenticationConfidenceLevel;
+            int sessionTypeConfidenceLevel;
+            int sessionResponseServerConfidenceLevel;
+            int sessionSeverity;
+
+            try
+            {
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_503s|HTTP_503_Service_Unavailable_OWA_CreateAttachment");
+                sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                sessionSeverity = sessionClassificationJson.SessionSeverity;
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
+
+                sessionAuthenticationConfidenceLevel = 5;
+                sessionTypeConfidenceLevel = 10;
+                sessionResponseServerConfidenceLevel = 5;
+                sessionSeverity = 60;
+            }
+
+            string RealmURL = "https://login.microsoftonline.com/GetUserRealm.srf?Login=" + this.session.oRequest["X-User-Identity"] + "&xml=1";
+
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+            {
+                SectionTitle = "HTTP_503s",
+
+                SessionType = RulesetLangHelper.GetString("HTTP_503_Service_Unavailable_OWA_CreateAttachment_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_503_Service_Unavailable_OWA_CreateAttachment_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_503_Service_Unavailable_OWA_CreateAttachment_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_503_Service_Unavailable_OWA_CreateAttachment_ResponseComments"),
+
+                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
+                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
+                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
+                SessionSeverity = sessionSeverity
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         private void HTTP_503_Service_Unavailable_Everything_Else(Session session)
