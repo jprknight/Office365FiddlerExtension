@@ -20,7 +20,7 @@ namespace Office365FiddlerExtension.UI.Forms
             InitializeComponent();
         }
 
-        public void UpdateUIControls()
+    public void UpdateUIControls()
         {
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
@@ -342,7 +342,6 @@ namespace Office365FiddlerExtension.UI.Forms
         private void NeverWebCallCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             SettingsJsonService.Instance.SetNeverWebCall(NeverWebCallCheckBox.Checked);
-            Office365TabPage_Load(sender, e);
         }
 
         private void DebugModeCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -352,6 +351,8 @@ namespace Office365FiddlerExtension.UI.Forms
 
         private void CaptureTrafficCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            SettingsJsonService.Instance.SetCaptureOnStartup(CaptureTrafficCheckBox.Checked);
+
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().CaptureTraffic)
             {
                 FiddlerApplication.UI.actAttachProxy();
@@ -377,12 +378,9 @@ namespace Office365FiddlerExtension.UI.Forms
 
                 MessageBox.Show(message, caption);
                 WarnBeforeAnalysingTextBox.Text = WarnBeforeAnalysingTextBox.Text.Remove(WarnBeforeAnalysingTextBox.Text.Length - 1);
-            }
-            else
-            {
-                SettingsJsonService.Instance.SetWarnBeforeAnalysing(int.Parse(WarnBeforeAnalysingTextBox.Text));
-            }
+            }   
         }
+    }
 
         private void WhoisCheckBox_CheckedChanged(object sender, EventArgs e)
         {

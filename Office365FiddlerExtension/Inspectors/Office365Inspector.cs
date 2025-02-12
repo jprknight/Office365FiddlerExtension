@@ -325,6 +325,7 @@ namespace Office365FiddlerExtension.Inspectors
 
                 ResultsString.AppendLine("</table>");
 
+                // If NeverWebCall is disabled, show some expanded information on the host IP which responded on the session.
                 if ((this.session["X-HostIP"] != null) && (this.session["X-HostIP"] != ""))
                 {
                     // Tuple -- tupleIsPrivateIPAddress (bool), matching subnet (string).

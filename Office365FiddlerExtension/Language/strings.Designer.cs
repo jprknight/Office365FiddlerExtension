@@ -1204,6 +1204,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The owning organisation is.
+        /// </summary>
+        internal static string TheOwningOrganisation {
+            get {
+                return ResourceManager.GetString("TheOwningOrganisation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transit Time.
         /// </summary>
         internal static string Transit_Time {
