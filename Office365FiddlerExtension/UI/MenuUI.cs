@@ -25,7 +25,7 @@ namespace Office365FiddlerExtension
         public MenuItem MiEnabled { get; set; }
 
         public MenuItem MiLanguage { get; set; }
-        
+
         public MenuItem MiLanguage_EN { get; set; }
 
         public MenuItem MiLanguage_FR { get; set; }
@@ -162,7 +162,7 @@ namespace Office365FiddlerExtension
                 {
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
                 }
-                
+
             }
         }
 

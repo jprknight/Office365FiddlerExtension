@@ -34,7 +34,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 return;
             }
-            
+
             HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive(this.session);
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
@@ -114,7 +114,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);            
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
         }
 
         private void HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive(Session session)
@@ -182,7 +182,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);            
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
         }
 
         private void HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive(Session session)
@@ -322,7 +322,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 tupleIsMicrosoftIPAddress = NetworkingService.Instance.IsMicrosoft365IPAddress(ResponseBodyIPAddress);
             }
-            
+
             // IP address is a Microsoft 365 IP address.
             if (tupleIsMicrosoftIPAddress.Item1)
             {
@@ -441,7 +441,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);            
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         private void HTTP_502_Bad_Gateway_Anything_Else(Session session)

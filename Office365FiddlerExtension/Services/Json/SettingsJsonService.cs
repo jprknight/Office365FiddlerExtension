@@ -1,7 +1,6 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
 using System;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Reflection;
 
@@ -422,6 +421,7 @@ namespace Office365FiddlerExtension.Services
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
         }
+
 
         public void SetWarnBeforeAnalysing(int warnBeforeAnalysing)
         {

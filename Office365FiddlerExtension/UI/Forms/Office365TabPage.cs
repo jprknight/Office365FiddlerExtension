@@ -74,7 +74,7 @@ namespace Office365FiddlerExtension.UI.Forms
                 DebugModeCheckBox.Visible = false;
                 NeverWebCallCheckBox.Visible = false;
             }
-            
+
             ExtensionEnabledCheckBox.Text = LangHelper.GetString("Extension Enabled");
 
             ColumnsUIGroupbox.Text = LangHelper.GetString("Columns Enabled");
@@ -157,7 +157,8 @@ namespace Office365FiddlerExtension.UI.Forms
             {
                 DebugGroupBox.Visible = true;
             }
-            else {
+            else
+            {
                 DebugGroupBox.Visible = false;
             }
 
@@ -321,7 +322,7 @@ namespace Office365FiddlerExtension.UI.Forms
                 // If Whois lookups are enabled, go find out the organization name who owns this IP address.
                 if (extensionSettings.Whois)
                 {
-                    CheckIPAddressResultTextBox.Text += $" {LangHelper.GetString("TheOwningOrganisation")} {NetworkingService.Instance.GetWhoisOrganizationName(EnterIPAddressTextBox.Text)}";
+                    CheckIPAddressResultTextBox.Text += $" {LangHelper.GetString("OwnedBy")} {NetworkingService.Instance.GetWhoisOrganizationName(EnterIPAddressTextBox.Text)}";
                 }
             }
         }
@@ -341,7 +342,6 @@ namespace Office365FiddlerExtension.UI.Forms
         private void NeverWebCallCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             SettingsJsonService.Instance.SetNeverWebCall(NeverWebCallCheckBox.Checked);
-            Office365TabPage_Load(sender, e);
         }
 
         private void DebugModeCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -351,6 +351,8 @@ namespace Office365FiddlerExtension.UI.Forms
 
         private void CaptureTrafficCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            SettingsJsonService.Instance.SetCaptureOnStartup(CaptureTrafficCheckBox.Checked);
+
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().CaptureTraffic)
             {
                 FiddlerApplication.UI.actAttachProxy();
@@ -376,12 +378,9 @@ namespace Office365FiddlerExtension.UI.Forms
 
                 MessageBox.Show(message, caption);
                 WarnBeforeAnalysingTextBox.Text = WarnBeforeAnalysingTextBox.Text.Remove(WarnBeforeAnalysingTextBox.Text.Length - 1);
-            }
-            else
-            {
-                SettingsJsonService.Instance.SetWarnBeforeAnalysing(int.Parse(WarnBeforeAnalysingTextBox.Text));
-            }
+            }   
         }
+    }
 
         private void WhoisCheckBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -391,7 +390,7 @@ namespace Office365FiddlerExtension.UI.Forms
         private void DebugModeUpdateButton_Click(object sender, EventArgs e)
         {
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
-            
+
             ExtensionEnabledCheckBox.Checked = extensionSettings.ExtensionSessionProcessingEnabled;
 
             ExtensionSettingsTextbox.Text = Preferences.ExtensionSettings;
@@ -487,8 +486,8 @@ namespace Office365FiddlerExtension.UI.Forms
         // Attempting to get the Enable/Disable menu item to effect the Tab Page.
         public void Refresh()
         {
-            
-            
+
+
             TabPageCollection tabPages = FiddlerApplication.UI.tabsViews.TabPages;
 
             foreach (TabPage tabpage in tabPages)
@@ -525,10 +524,10 @@ namespace Office365FiddlerExtension.UI.Forms
                     //tabpage.Invalidate();
                     //tabpage.Refresh();
 
-                    
+
 
                 }
-            }            
+            }
         }
 
         public void OnBeforeUnload()
@@ -541,7 +540,7 @@ namespace Office365FiddlerExtension.UI.Forms
                 {
                     tabpage.Dispose();
                 }
-                
+
             }
         }
 

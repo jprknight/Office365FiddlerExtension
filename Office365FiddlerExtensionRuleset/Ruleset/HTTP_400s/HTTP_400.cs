@@ -84,7 +84,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
-        public void HTTP_400_Everything_Else (Session session)
+        public void HTTP_400_Everything_Else(Session session)
         {
             this.session = session;
 

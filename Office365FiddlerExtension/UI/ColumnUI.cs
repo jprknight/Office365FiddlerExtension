@@ -7,7 +7,7 @@ namespace Office365FiddlerExtension.UI
 {
     /// <summary>
     /// Add columns into Fiddler application UI and populate with data.
-    /// The Fiddler UI is "additive", there are methods to add to the UI, not the remove from it.
+    /// The Fiddler UI is "additive", there are methods to add to the UI, not to remove from it.
     /// </summary>
     public class ColumnUI
     {
@@ -25,10 +25,9 @@ namespace Office365FiddlerExtension.UI
                 AddElapsedTimeColumn();
                 AddSeverityColumn();
                 AddSessionTypeColumn();
-                AddSessionTypeColumn();
                 AddResponseServerColumn();
                 AddAuthenticationColumn();
-                AddHostIPColumn();                
+                AddHostIPColumn();
 
                 IsInitialized = true;
             }
@@ -94,7 +93,7 @@ namespace Office365FiddlerExtension.UI
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add Severity column to Fiddler UI.");
                     FiddlerApplication.UI.lvSessions.AddBoundColumn(strSeverity, -1, 60, true, GetSessionSeverity);
                 }
-                        
+
             }
             catch (Exception ex)
             {
@@ -110,31 +109,31 @@ namespace Office365FiddlerExtension.UI
             {
                 return;
             }
-                try
-                {
-                    string strSessionType;
+            try
+            {
+                string strSessionType;
 
-                    if (LangHelper.GetString("Session Type") == "")
-                    {
-                        strSessionType = "Session Type";
-                    }
-                    else
-                    {
-                        strSessionType = LangHelper.GetString("Session Type");
-                    }
-
-                    if (!FiddlerApplication.UI.lvSessions.Columns.ContainsKey(strSessionType))
-                    {
-                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add Session Type column to Fiddler UI.");
-                        FiddlerApplication.UI.lvSessions.AddBoundColumn(strSessionType, 150, GetSessionType);
-                    }
-                        
-                }
-                catch (Exception ex)
+                if (LangHelper.GetString("Session Type") == "")
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+                    strSessionType = "Session Type";
                 }
-            
+                else
+                {
+                    strSessionType = LangHelper.GetString("Session Type");
+                }
+
+                if (!FiddlerApplication.UI.lvSessions.Columns.ContainsKey(strSessionType))
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add Session Type column to Fiddler UI.");
+                    FiddlerApplication.UI.lvSessions.AddBoundColumn(strSessionType, 150, GetSessionType);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+            }
+
         }
 
         public void AddAuthenticationColumn()
@@ -161,7 +160,7 @@ namespace Office365FiddlerExtension.UI
                         FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add Authentication column to Fiddler UI.");
                         FiddlerApplication.UI.lvSessions.AddBoundColumn(strAuthentication, 140, GetAuthentication);
                     }
-                        
+
                 }
                 catch (Exception ex)
                 {
@@ -194,7 +193,7 @@ namespace Office365FiddlerExtension.UI
                         FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add Response Server column to Fiddler UI.");
                         FiddlerApplication.UI.lvSessions.AddBoundColumn(strResponseServer, 130, GetResponseServer);
                     }
-                        
+
                 }
                 catch (Exception ex)
                 {
@@ -227,7 +226,7 @@ namespace Office365FiddlerExtension.UI
                         FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add Host IP column to Fiddler UI.");
                         FiddlerApplication.UI.lvSessions.AddBoundColumn(strHostIP, 110, GetHostIP);
                     }
-                        
+
                 }
                 catch (Exception ex)
                 {

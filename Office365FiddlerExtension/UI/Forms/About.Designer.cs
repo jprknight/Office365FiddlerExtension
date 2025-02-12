@@ -305,7 +305,7 @@
             this.DebugModeLabel.Size = new System.Drawing.Size(69, 13);
             this.DebugModeLabel.TabIndex = 17;
             this.DebugModeLabel.Text = "Debug Mode";
-            // 
+            //
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
