@@ -670,8 +670,6 @@
     <value>Wiki</value>
     <comment>Menu</comment>
   </data>
-<<<<<<< Updated upstream
-=======
   <data name="IsNotAValidIPAddress" xml:space="preserve">
     <value>is not a valid IP address.</value>
   </data>
@@ -690,5 +688,4 @@
   <data name="Capture was" xml:space="preserve">
     <value>Capture was</value>
   </data>
->>>>>>> Stashed changes
 </root>
