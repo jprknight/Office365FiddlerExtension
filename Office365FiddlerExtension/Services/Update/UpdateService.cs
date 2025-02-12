@@ -63,6 +63,7 @@ namespace Office365FiddlerExtension.Services
                     $"Next update check timestamp met ({extensionSettings.NextUpdateCheck}), allowing application to check for updates.");
                 return true;
             }
+
             return false;
         }
 

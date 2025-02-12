@@ -61,13 +61,16 @@ namespace Office365FiddlerExtension.Services
                 return false;
             }
 
-            /*
-            Check for updates every load, so the UI can display up to date information.
-            if (!UpdateService.Instance.EligibleForUpdateCheck())
+            var extensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
+
+            string extensionMajor = extensionVersion.ExtensionMajor.ToString();
+
+            if (extensionMajor == "1776")
             {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"RulesetMajor is 1776, this is the first run of the extension after installation.");
                 return false;
             }
-            */
 
             var githubJsonVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
@@ -191,16 +194,18 @@ namespace Office365FiddlerExtension.Services
                 return false;
             }
 
-            /*
-            Check for updates every load, so the UI can display up to date information.
-            if (!UpdateService.Instance.EligibleForUpdateCheck())
+            var extensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
+
+            string rulesetMajor = extensionVersion.RulesetMajor.ToString();
+
+            if (rulesetMajor == "1776")
             {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"RulesetMajor is 1776, this is the first run of the extension after installation.");
                 return false;
             }
-            */
 
             var githubJsonVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
-            var extensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
             var dirInfo = new DirectoryInfo(SettingsJsonService.AssemblyDirectory);
             string pattern = extensionVersion.RulesetDLLPattern;
