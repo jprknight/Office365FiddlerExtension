@@ -25,7 +25,6 @@ namespace Office365FiddlerExtension.UI
                 AddElapsedTimeColumn();
                 AddSeverityColumn();
                 AddSessionTypeColumn();
-                AddSessionTypeColumn();
                 AddResponseServerColumn();
                 AddAuthenticationColumn();
                 AddHostIPColumn();
