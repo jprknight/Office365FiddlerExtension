@@ -7,7 +7,7 @@ namespace Office365FiddlerExtension.UI
 {
     /// <summary>
     /// Add columns into Fiddler application UI and populate with data.
-    /// The Fiddler UI is "additive", there are methods to add to the UI, not the remove from it.
+    /// The Fiddler UI is "additive", there are methods to add to the UI, not to remove from it.
     /// </summary>
     public class ColumnUI
     {
