@@ -640,11 +640,11 @@
 sponible</value>
   </data>
   <data name="Update Available - Ruleset - Ruleset Update Available" xml:space="preserve">
-    <value>Hay una actualización disponible para el conjunto de reglas de la extensión de Fiddler para Office365</value>
+    <value>Hay una actualización disponible para el conjunto de reglas de la extensión de Fiddler para Office365.</value>
     <comment>VersionService</comment>
   </data>
   <data name="Update Available - There is an update" xml:space="preserve">
-    <value>Hay una actualización disponible para  extensión de Fiddler para Office365 </value>
+    <value>Hay una actualización disponible para  extensión de Fiddler para Office365.</value>
     <comment>VersionService</comment>
   </data>
   <data name="Warn Before Analysing" xml:space="preserve">
@@ -670,5 +670,23 @@ sponible</value>
   <data name="Wiki" xml:space="preserve">
     <value>Wiki</value>
     <comment>Menu</comment>
+  </data>
+  <data name="IsNotAValidIPAddress" xml:space="preserve">
+    <value>is not a valid IP address.</value>
+  </data>
+  <data name="ErrorOnWhoisLookup" xml:space="preserve">
+    <value>Error on Whois lookup.</value>
+  </data>
+  <data name="OwnedBy" xml:space="preserve">
+    <value>Owned by</value>
+  </data>
+  <data name="NeverWebCall_FeatureDisabled" xml:space="preserve">
+    <value>Never Web Call is enabled. This feature is disabled.</value>
+  </data>
+  <data name="Columns Enabled" xml:space="preserve">
+    <value>Columns Enabled</value>
+  </data>
+  <data name="Capture was" xml:space="preserve">
+    <value>Capture was</value>
   </data>
 </root>

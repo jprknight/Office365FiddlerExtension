@@ -39,14 +39,49 @@ namespace Office365FiddlerExtension.UI
             this.InstructionsLabel.Text = LangHelper.GetString("Click the link below for update instructions");
             this.UpdateLinkLabel.Text = URLsJsonService.Instance.GetDeserializedExtensionURLs().Installer;
 
-            ///////////////////
-            /// Extension Information
-
             ExtensionPathTextbox.Text = extensionSettings.ExtensionPath;
 
             ExtensionDLLTextbox.Text = extensionSettings.ExtensionDLL;
 
             LocalDLLVersionTextbox.Text = VersionService.Instance.GetExtensionDLLVersion();
+
+            LocalRulesetVersionTextbox.Text = VersionService.Instance.GetExtensionRulesetDLLVersion();
+
+            if (extensionSettings.DebugMode)
+            {
+                DebugModeLabel.Text = $"DebugMode: {extensionSettings.DebugMode}";
+            }
+            else
+            {
+                DebugModeLabel.Text = "";
+            }
+
+            ///////////////////
+            /// Extension Update Information
+
+            if (extensionSettings.NeverWebCall)
+            {
+                LocalExtensionVersionUpdateMessageLabel.Text = "";
+                LocalRulesetVersionUpdateMessageLabel.Text = "";
+                GithubExtensionVersionUpdateMessageLabel.Text = "";
+                GithubRulesetVersionUpdateMessageLabel.Text = "";
+
+                GithubExtensionVersionLabel.Enabled = false;
+                GithubDLLVersionTextbox.Enabled = false;
+
+                GithubRulesetVersionLabel.Enabled = false;
+                GithubRulesetVersionTextbox.Enabled = false;
+
+                NextUpdateCheckTimestampLabel.Enabled = false;
+                NextUpdateCheckTimestampTextbox.Enabled = false;
+
+                GithubInfoGroupbox.Text += $" ({LangHelper.GetString("NeverWebCall_FeatureDisabled")})";
+
+                return;
+            }
+
+            ///////////////////
+            /// Extension Update Information.
 
             if (VersionService.Instance.IsExtensionDLLUpdateAvailable())
             {
@@ -70,10 +105,8 @@ namespace Office365FiddlerExtension.UI
                 LocalRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Green;
             }
 
-            LocalRulesetVersionTextbox.Text = VersionService.Instance.GetExtensionRulesetDLLVersion();
-
             ///////////////////
-            /// Github Information.
+            /// Ruleset Update Information.
 
             GithubDLLVersionTextbox.Text = $"{extensionVersion.ExtensionMajor}.{extensionVersion.ExtensionMinor}.{extensionVersion.ExtensionBuild}";
 

@@ -356,7 +356,7 @@ Function SetFiddlerPaths {
         }
     }
     if ($PathCount -eq 0) {
-        $Script:FiddlerPath = "Path not found!"
+        $Script:FiddlerPath = "Path not found! Reboot if you've just installed Fiddler."
     }
     if ($PathCount -gt 1) {
         $Script:FiddlerPath = "More than one path found! Reboot?"

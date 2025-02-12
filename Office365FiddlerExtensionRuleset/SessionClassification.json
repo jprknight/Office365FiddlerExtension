@@ -1,5 +1,5 @@
 {
-  "LastUpdated": "2024-07-09",
+  "LastUpdated": "2025-02-12",
   "LastUpdatedDateFormat": "YYYY-MM-DD",
   "DataStructureHelper": {
     "About": "This helper isn't used in code, it's just here to describe the data.",
@@ -457,10 +457,18 @@
     "SessionSeverity": 10
   },
   "HTTP_400s": {
-    "SessionAuthenticationConfidenceLevel": 5,
-    "SessionTypeConfidenceLevel": 10,
-    "SessionResponseServerConfidenceLevel": 5,
-    "SessionSeverity": 10
+    "HTTP_400_Cloud_Authentication": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_400_Everything_Else": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 10
+    }
   },
   "HTTP_401s": {
     "HTTP_401_Exchange_Online_AutoDiscover": {
@@ -939,6 +947,12 @@
       "SessionResponseServerConfidenceLevel": 5,
       "SessionSeverity": 20
     },
+    "HTTP_502_Bad_Gateway_AutoDiscover_Cloud_Vanity_Domain_False_Positive": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 20
+    },
     "HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover": {
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 10,
@@ -954,6 +968,12 @@
   },
   "HTTP_503s": {
     "HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 60
+    },
+    "HTTP_503_Service_Unavailable_OWA_CreateAttachment": {
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 5,
