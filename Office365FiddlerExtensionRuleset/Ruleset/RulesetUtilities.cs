@@ -136,8 +136,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         }
 
         /// <summary>
-        /// If the value has not been changed from zero something is wrong.
-        ///  Fall back to fixing it here.
+        /// Function to ensure session classification has a value in the event the data cannot be read from the SessionClassification.json external file.
+        /// If the first int provided value is zero (due to external file read failure), return the value from the second int provided (hardcoded fallback value).
         ///  Two potential scenarios:
         ///  - The call out to the session classification json file fails, throwing an exception. Possibility the file is missing.
         /// - The call out to the session classification json file succeeds, but no data is returned. Possibility of human error in code.
@@ -161,11 +161,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         }
 
         /// <summary>
-        ///  If the value has not been changed from zero something is wrong.
-        ///  Fall back to fixing it here.
-        ///  Two potential scenarios:
+        /// Function to ensure session classification has a value in the event the data cannot be read from the SessionClassification.json external file.
+        /// If the first int provided value is zero (due to external file read failure), return the value from the second int provided (hardcoded fallback value).
+        /// Two potential scenarios:
         ///  - The call out to the session classification json file fails, throwing an exception. Possibility the file is missing.
-        ///  - The call out to the session classification json file succeeds, but no data is returned. Possibility of human error in code.
+        /// - The call out to the session classification json file succeeds, but no data is returned. Possibility of human error in code.
         /// </summary>
         /// <param name="sessionTypeConfidenceLevel"></param>
         /// <param name="sessionTypeConfidenceLevelFallback"></param>
@@ -186,11 +186,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         }
 
         /// <summary>
-        /// If the value has not been changed from zero something is wrong.
-        ///  Fall back to fixing it here.
+        /// Function to ensure session classification has a value in the event the data cannot be read from the SessionClassification.json external file.
+        /// If the first int provided value is zero (due to external file read failure), return the value from the second int provided (hardcoded fallback value).
         ///  Two potential scenarios:
         ///  - The call out to the session classification json file fails, throwing an exception. Possibility the file is missing.
-        ///  - The call out to the session classification json file succeeds, but no data is returned. Possibility of human error in code.
+        /// - The call out to the session classification json file succeeds, but no data is returned. Possibility of human error in code.
         /// </summary>
         /// <param name="sessionResponseServerConfidenceLevel"></param>
         /// <param name="sessionResponseServerConfidenceLevelFallback"></param>
@@ -211,11 +211,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         }
 
         /// <summary>
-        /// If the value has not been changed from zero something is wrong.
-        ///  Fall back to fixing it here.
+        /// Function to ensure session classification has a value in the event the data cannot be read from the SessionClassification.json external file.
+        /// If the first int provided value is zero (due to external file read failure), return the value from the second int provided (hardcoded fallback value).
         ///  Two potential scenarios:
         ///  - The call out to the session classification json file fails, throwing an exception. Possibility the file is missing.
-        ///  - The call out to the session classification json file succeeds, but no data is returned. Possibility of human error in code.
+        /// - The call out to the session classification json file succeeds, but no data is returned. Possibility of human error in code.
         /// </summary>
         /// <param name="sessionSeverity"></param>
         /// <param name="sessionSeverityFallback"></param>
