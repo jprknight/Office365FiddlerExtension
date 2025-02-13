@@ -2,6 +2,7 @@
 using Office365FiddlerExtension.Services;
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -132,6 +133,106 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             // Session Analysis is NOT completed.
             return false;
+        }
+
+        /// <summary>
+        /// If the value has not been changed from zero something is wrong.
+        ///  Fall back to fixing it here.
+        ///  Two potential scenarios:
+        ///  - The call out to the session classification json file fails, throwing an exception. Possibility the file is missing.
+        /// - The call out to the session classification json file succeeds, but no data is returned. Possibility of human error in code.
+        /// </summary>
+        /// <param name="sessionAuthenticationConfidenceLevel"></param>
+        /// <param name="sessionAuthenticationConfidenceLevelFallback"></param>
+        /// <returns></returns>
+        public int ValidateSessionAuthenticationConfidenceLevel(int sessionAuthenticationConfidenceLevel, int sessionAuthenticationConfidenceLevelFallback)
+        {
+            if (sessionAuthenticationConfidenceLevel == 0)
+            {
+                sessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevelFallback;
+
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"{this.session.id} ZERO VALUE CATCH: " +
+                    $"Session authentication confidence level set with fallback value " +
+                    $"{sessionAuthenticationConfidenceLevelFallback}");
+            }
+
+            return sessionAuthenticationConfidenceLevel;
+        }
+
+        /// <summary>
+        ///  If the value has not been changed from zero something is wrong.
+        ///  Fall back to fixing it here.
+        ///  Two potential scenarios:
+        ///  - The call out to the session classification json file fails, throwing an exception. Possibility the file is missing.
+        ///  - The call out to the session classification json file succeeds, but no data is returned. Possibility of human error in code.
+        /// </summary>
+        /// <param name="sessionTypeConfidenceLevel"></param>
+        /// <param name="sessionTypeConfidenceLevelFallback"></param>
+        /// <returns></returns>
+        public int ValidateSessionTypeConfidenceLevel(int sessionTypeConfidenceLevel, int sessionTypeConfidenceLevelFallback)
+        {
+            if (sessionTypeConfidenceLevel == 0)
+            {
+                sessionTypeConfidenceLevel = sessionTypeConfidenceLevelFallback;
+
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"{this.session.id} ZERO VALUE CATCH: " +
+                    $"Session type confidence level set with fallback value " +
+                    $"{sessionTypeConfidenceLevelFallback}");
+            }
+
+            return sessionTypeConfidenceLevel;
+        }
+
+        /// <summary>
+        /// If the value has not been changed from zero something is wrong.
+        ///  Fall back to fixing it here.
+        ///  Two potential scenarios:
+        ///  - The call out to the session classification json file fails, throwing an exception. Possibility the file is missing.
+        ///  - The call out to the session classification json file succeeds, but no data is returned. Possibility of human error in code.
+        /// </summary>
+        /// <param name="sessionResponseServerConfidenceLevel"></param>
+        /// <param name="sessionResponseServerConfidenceLevelFallback"></param>
+        /// <returns></returns>
+        public int ValidateSessionResponseServerConfidenceLevel(int sessionResponseServerConfidenceLevel, int sessionResponseServerConfidenceLevelFallback)
+        {
+            if (sessionResponseServerConfidenceLevel == 0)
+            {
+                sessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevelFallback;
+
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"{this.session.id} ZERO VALUE CATCH: " +
+                    $"Session response server confidence level set with fallback value " +
+                    $"{sessionResponseServerConfidenceLevelFallback}");
+            }
+
+            return sessionResponseServerConfidenceLevel;
+        }
+
+        /// <summary>
+        /// If the value has not been changed from zero something is wrong.
+        ///  Fall back to fixing it here.
+        ///  Two potential scenarios:
+        ///  - The call out to the session classification json file fails, throwing an exception. Possibility the file is missing.
+        ///  - The call out to the session classification json file succeeds, but no data is returned. Possibility of human error in code.
+        /// </summary>
+        /// <param name="sessionSeverity"></param>
+        /// <param name="sessionSeverityFallback"></param>
+        /// <returns></returns>
+        public int ValidateSessionSeverity(int sessionSeverity, int sessionSeverityFallback)
+        {
+            if (sessionSeverity == 0)
+            {
+                sessionSeverity = sessionSeverityFallback;
+
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"{this.session.id} ZERO VALUE CATCH: " +
+                    $"Session severity set with fallback value " +
+                    $"{sessionSeverityFallback}");
+            }
+
+            return sessionSeverity;
         }
     }
 }
