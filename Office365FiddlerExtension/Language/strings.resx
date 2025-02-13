@@ -688,4 +688,7 @@
   <data name="Capture was" xml:space="preserve">
     <value>Capture was</value>
   </data>
+  <data name="Simple Session Analysis" xml:space="preserve">
+    <value>Simple Session Analysis</value>
+  </data>
 </root>

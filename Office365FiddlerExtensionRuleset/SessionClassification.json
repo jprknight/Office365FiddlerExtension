@@ -6,7 +6,7 @@
     "WebUpdates": "Session classification numbers are in this Json file to enable the extension to pull updates from this file and utilise them within the ruleset for session processing.",
     "SessionAuthenticationConfidenceLevel": "Runs from 0 - 10, 10 being absolutely certain the correct authentication has been determined for the session.",
     "SessionTypeConfidenceLevel": "Runs from 0 - 10, 10 being absolutely certain the correct type has been determined for the session.",
-    "SessionSeverity": "Runs on a scale of 0 - 60 and determines the colours of sessions used by the extension.",
+    "SessionSeverity": "Runs on a scale of 10 - 60 and determines the colours of sessions used by the extension.",
     "SessionColours": "According to session severity",
     "-=-=-=-=-=-": "-=-=-=-=-=-",
     "SessionSeverityTen": "10 Grey (Uninteresting) - For sessions which don't contain any information which could ientify an issue.",

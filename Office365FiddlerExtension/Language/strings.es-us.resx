@@ -689,4 +689,7 @@ sponible</value>
   <data name="Capture was" xml:space="preserve">
     <value>Capture was</value>
   </data>
+  <data name="Simple Session Analysis" xml:space="preserve">
+    <value />
+  </data>
 </root>

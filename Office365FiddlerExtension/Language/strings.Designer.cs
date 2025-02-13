@@ -1186,6 +1186,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simple Session Analysis.
+        /// </summary>
+        internal static string Simple_Session_Analysis {
+            get {
+                return ResourceManager.GetString("Simple Session Analysis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Slow Running Session Threshold.
         /// </summary>
         internal static string Slow_Running_Session_Threshold {
@@ -1200,15 +1209,6 @@ namespace Office365FiddlerExtension.Language {
         internal static string Spanish {
             get {
                 return ResourceManager.GetString("Spanish", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The owning organisation is.
-        /// </summary>
-        internal static string TheOwningOrganisation {
-            get {
-                return ResourceManager.GetString("TheOwningOrganisation", resourceCulture);
             }
         }
         
