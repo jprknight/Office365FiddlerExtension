@@ -52,10 +52,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 403 Forbidden; Phrase 'Access Denied' found in response body. Web Proxy blocking traffic?");
 
-                int sessionAuthenticationConfidenceLevel;
-                int sessionTypeConfidenceLevel;
-                int sessionResponseServerConfidenceLevel;
-                int sessionSeverity;
+                int sessionAuthenticationConfidenceLevel = 0;
+                int sessionTypeConfidenceLevel = 0;
+                int sessionResponseServerConfidenceLevel = 0;
+                int sessionSeverity = 0;
+
+                int sessionAuthenticationConfidenceLevelFallback = 5;
+                int sessionTypeConfidenceLevelFallback = 10;
+                int sessionResponseServerConfidenceLevelFallback = 5;
+                int sessionSeverityFallback = 60;
 
                 try
                 {
@@ -67,13 +72,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
-
-                    sessionAuthenticationConfidenceLevel = 5;
-                    sessionTypeConfidenceLevel = 10;
-                    sessionResponseServerConfidenceLevel = 5;
-                    sessionSeverity = 60;
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
                 }
 
                 var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
@@ -85,10 +85,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     ResponseAlert = RulesetLangHelper.GetString("HTTP_403_Forbidden_Proxy_Block_ResponseAlert"),
                     ResponseComments = RulesetLangHelper.GetString("HTTP_403_Forbidden_Proxy_Block_ResponseComments"),
 
-                    SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                    SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                    SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                    SessionSeverity = sessionSeverity
+                    SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                    sessionAuthenticationConfidenceLevelFallback),
+
+                    SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                    sessionTypeConfidenceLevelFallback),
+
+                    SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                    sessionResponseServerConfidenceLevelFallback),
+
+                    SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                    sessionSeverityFallback)
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -106,10 +113,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 403 Forbidden. EWS Language not set on mailbox.");
 
-                int sessionAuthenticationConfidenceLevel;
-                int sessionTypeConfidenceLevel;
-                int sessionResponseServerConfidenceLevel;
-                int sessionSeverity;
+                int sessionAuthenticationConfidenceLevel = 0;
+                int sessionTypeConfidenceLevel = 0;
+                int sessionResponseServerConfidenceLevel = 0;
+                int sessionSeverity = 0;
+
+                int sessionAuthenticationConfidenceLevelFallback = 5;
+                int sessionTypeConfidenceLevelFallback = 10;
+                int sessionResponseServerConfidenceLevelFallback = 5;
+                int sessionSeverityFallback = 60;
 
                 try
                 {
@@ -121,13 +133,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
-
-                    sessionAuthenticationConfidenceLevel = 5;
-                    sessionTypeConfidenceLevel = 10;
-                    sessionResponseServerConfidenceLevel = 5;
-                    sessionSeverity = 60;
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
                 }
 
                 var sessionFlags_HTTP403_EWS = new RulesetSessionFlagService.ExtensionSessionFlags()
@@ -139,10 +146,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     ResponseAlert = RulesetLangHelper.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseAlert"),
                     ResponseComments = RulesetLangHelper.GetString("HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set_ResponseComments"),
 
-                    SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                    SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                    SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                    SessionSeverity = sessionSeverity
+                    SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                        sessionAuthenticationConfidenceLevelFallback),
+
+                    SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                        sessionTypeConfidenceLevelFallback),
+
+                    SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                        sessionResponseServerConfidenceLevelFallback),
+
+                    SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                        sessionSeverityFallback)
                 };
                 var sessionFlagsJson_HTTP403_EWS = JsonConvert.SerializeObject(sessionFlags_HTTP403_EWS);
                 RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson_HTTP403_EWS, false);
@@ -177,10 +191,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 403 Forbidden. Free/Busy Request failed with http code Forbidden.");
 
-            int sessionAuthenticationConfidenceLevel;
-            int sessionTypeConfidenceLevel;
-            int sessionResponseServerConfidenceLevel;
-            int sessionSeverity;
+            int sessionAuthenticationConfidenceLevel = 0;
+            int sessionTypeConfidenceLevel = 0;
+            int sessionResponseServerConfidenceLevel = 0;
+            int sessionSeverity = 0;
+
+            int sessionAuthenticationConfidenceLevelFallback = 5;
+            int sessionTypeConfidenceLevelFallback = 10;
+            int sessionResponseServerConfidenceLevelFallback = 5;
+            int sessionSeverityFallback = 60;
 
             try
             {
@@ -192,13 +211,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
-
-                sessionAuthenticationConfidenceLevel = 5;
-                sessionTypeConfidenceLevel = 10;
-                sessionResponseServerConfidenceLevel = 5;
-                sessionSeverity = 60;
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }
 
             var sessionFlags_HTTP403_FreeBusyForbidden = new RulesetSessionFlagService.ExtensionSessionFlags()
@@ -210,10 +224,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseAlert = RulesetLangHelper.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseAlert"),
                 ResponseComments = RulesetLangHelper.GetString("HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden_ResponseComments"),
 
-                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                SessionSeverity = sessionSeverity
+                SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                    sessionAuthenticationConfidenceLevelFallback),
+
+                SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                    sessionTypeConfidenceLevelFallback),
+
+                SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                    sessionResponseServerConfidenceLevelFallback),
+
+                SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                    sessionSeverityFallback)
             };
             var sessionFlagsJson_HTTP403_FreeBusyForbidden = JsonConvert.SerializeObject(sessionFlags_HTTP403_FreeBusyForbidden);
             RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson_HTTP403_FreeBusyForbidden, false);
@@ -225,10 +246,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 403 Forbidden.");
 
-            int sessionAuthenticationConfidenceLevel;
-            int sessionTypeConfidenceLevel;
-            int sessionResponseServerConfidenceLevel;
-            int sessionSeverity;
+            int sessionAuthenticationConfidenceLevel = 0;
+            int sessionTypeConfidenceLevel = 0;
+            int sessionResponseServerConfidenceLevel = 0;
+            int sessionSeverity = 0;
+
+            int sessionAuthenticationConfidenceLevelFallback = 5;
+            int sessionTypeConfidenceLevelFallback = 10;
+            int sessionResponseServerConfidenceLevelFallback = 5;
+            int sessionSeverityFallback = 60;
 
             try
             {
@@ -240,13 +266,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
-
-                sessionAuthenticationConfidenceLevel = 5;
-                sessionTypeConfidenceLevel = 10;
-                sessionResponseServerConfidenceLevel = 5;
-                sessionSeverity = 60;
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }
 
             var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
@@ -258,10 +279,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseAlert = RulesetLangHelper.GetString("HTTP_403_Forbidden_Everything_Else_ResponseAlert"),
                 ResponseComments = RulesetLangHelper.GetString("HTTP_403_Forbidden_Everything_Else_ResponseComments"),
 
-                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                SessionSeverity = sessionSeverity
+                SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                    sessionAuthenticationConfidenceLevelFallback),
+
+                SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                    sessionTypeConfidenceLevelFallback),
+
+                SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                    sessionResponseServerConfidenceLevelFallback),
+
+                SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                    sessionSeverityFallback)
             };
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);          

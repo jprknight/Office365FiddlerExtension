@@ -451,9 +451,6 @@
   <data name="HTTP_200_Javascript_SessionType" xml:space="preserve">
     <value>200 OK with Javascript</value>
   </data>
-  <data name="HTTP_200_Json_EmptyResponseBody" xml:space="preserve">
-    <value>&lt;p&gt;Though the session has a content type of Json, there is an empty response body. Check the host, URL, and process on this session to determine if this is a point of interest for the issue you're troubleshooting.&lt;/p&gt;</value>
-  </data>
   <data name="HTTP_200_Json_Invalid_ResponseAlert" xml:space="preserve">
     <value>!INVALID JSON!</value>
   </data>
@@ -477,9 +474,6 @@
   </data>
   <data name="HTTP_200_Json_SessionType" xml:space="preserve">
     <value>200 OK with Json</value>
-  </data>
-  <data name="HTTP_200_Json_SessionType_EmptyResponseBody" xml:space="preserve">
-    <value>!200 OK NO JSON!</value>
   </data>
   <data name="HTTP_200_Legacy_FreeBusy_ResponseAlert" xml:space="preserve">
     <value>Legacy Client Free/Busy</value>
@@ -1369,5 +1363,20 @@
   </data>
   <data name="HTTP_503_Service_Unavailable_OWA_CreateAttachment_ResponseComments" xml:space="preserve">
     <value>OWA was unable to perform or complete the CreateAttachment action. Check the Raw and WebView response tabs to check for any details of why this is happening. Consider internet proxies and the security stance these devices could be taking in classifying the website being accessed.</value>
+  </data>
+  <data name="HTTP_200_Json_Invalid_ResponseBody" xml:space="preserve">
+    <value>&lt;p&gt;Though the session has a content type of Json, there is an invalid Json response body. Check the host, URL, and process on this session to determine if this is a point of interest for the issue you're troubleshooting.&lt;/p&gt;</value>
+  </data>
+  <data name="HTTP_200_Json_EmptyResponseBody_SessionType" xml:space="preserve">
+    <value>200 OK No Json</value>
+  </data>
+  <data name="HTTP_200_Json_EmptyResponseBody_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK with no Json</value>
+  </data>
+  <data name="HTTP_200_Json_EmptyResponseBody_ResponseAlert" xml:space="preserve">
+    <value>No Json in response body as expected.</value>
+  </data>
+  <data name="HTTP_200_Json_EmptyResponseBody_ResponseComments" xml:space="preserve">
+    <value>&lt;p&gt;Though the session has a content type of Json, there is an empty response body. Check the host, URL, and process on this session to determine if this is a point of interest for the issue you're troubleshooting.&lt;/p&gt;</value>
   </data>
 </root>

@@ -28,10 +28,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
-            int sessionAuthenticationConfidenceLevel;
-            int sessionTypeConfidenceLevel;
-            int sessionResponseServerConfidenceLevel;
-            int sessionSeverity;
+            int sessionAuthenticationConfidenceLevel = 0;
+            int sessionTypeConfidenceLevel = 0;
+            int sessionResponseServerConfidenceLevel = 0;
+            int sessionSeverity = 0;
+
+            int sessionAuthenticationConfidenceLevelFallback = 5;
+            int sessionTypeConfidenceLevelFallback = 10;
+            int sessionResponseServerConfidenceLevelFallback = 5;
+            int sessionSeverityFallback = 30;
 
             try
             {
@@ -44,15 +49,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"({this.GetType().Name}): {this.session.id} {ex}");
-
-                sessionAuthenticationConfidenceLevel = 5;
-                sessionTypeConfidenceLevel = 10;
-                sessionResponseServerConfidenceLevel = 5;
-                sessionSeverity = 30;
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }
 
             var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
@@ -63,12 +61,19 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseCodeDescription = RulesetLangHelper.GetString("BroadLogicChecks_NetLogCaptureMockSession_ResponseCodeDescription"),
                 ResponseServer = RulesetLangHelper.GetString("BroadLogicChecks_NetLogCaptureMockSession_ResponseServer"),
                 ResponseAlert = RulesetLangHelper.GetString("BroadLogicChecks_NetLogCaptureMockSession_ResponseAlert"),
-                ResponseComments = RulesetLangHelper.GetString("BroadLogicChecks_NetLogCaptureMockSession_ResponseComments"),                   
+                ResponseComments = RulesetLangHelper.GetString("BroadLogicChecks_NetLogCaptureMockSession_ResponseComments"),
 
-                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                SessionSeverity = sessionSeverity
+                SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                    sessionAuthenticationConfidenceLevelFallback),
+
+                SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                    sessionTypeConfidenceLevelFallback),
+
+                SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                    sessionResponseServerConfidenceLevelFallback),
+
+                SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                    sessionSeverityFallback)
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

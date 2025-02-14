@@ -48,10 +48,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 456 Multi-Factor Required!");
 
-            int sessionAuthenticationConfidenceLevel;
-            int sessionTypeConfidenceLevel;
-            int sessionResponseServerConfidenceLevel;
-            int sessionSeverity;
+            int sessionAuthenticationConfidenceLevel = 0;
+            int sessionTypeConfidenceLevel = 0;
+            int sessionResponseServerConfidenceLevel = 0;
+            int sessionSeverity = 0;
+
+            int sessionAuthenticationConfidenceLevelFallback = 5;
+            int sessionTypeConfidenceLevelFallback = 10;
+            int sessionResponseServerConfidenceLevelFallback = 10;
+            int sessionSeverityFallback = 60;
 
             try
             {
@@ -63,13 +68,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
-
-                sessionAuthenticationConfidenceLevel = 5;
-                sessionTypeConfidenceLevel = 10;
-                sessionResponseServerConfidenceLevel = 10;
-                sessionSeverity = 60;
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }
 
             var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
@@ -81,10 +81,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseAlert = RulesetLangHelper.GetString("HTTP_456_Multi_Factor_Required_ResponseAlert"),
                 ResponseComments = RulesetLangHelper.GetString("HTTP_456_Multi_Factor_Required_ResponseComments"),
 
-                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                SessionSeverity = sessionSeverity
+                SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                    sessionAuthenticationConfidenceLevelFallback),
+
+                SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                    sessionTypeConfidenceLevelFallback),
+
+                SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                    sessionResponseServerConfidenceLevelFallback),
+
+                SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                    sessionSeverityFallback)
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -102,10 +109,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 456 Multi-Factor Required!");
 
-            int sessionAuthenticationConfidenceLevel;
-            int sessionTypeConfidenceLevel;
-            int sessionResponseServerConfidenceLevel;
-            int sessionSeverity;
+            int sessionAuthenticationConfidenceLevel = 0;
+            int sessionTypeConfidenceLevel = 0;
+            int sessionResponseServerConfidenceLevel = 0;
+            int sessionSeverity = 0;
+
+            int sessionAuthenticationConfidenceLevelFallback = 5;
+            int sessionTypeConfidenceLevelFallback = 10;
+            int sessionResponseServerConfidenceLevelFallback = 5;
+            int sessionSeverityFallback = 60;
 
             try
             {
@@ -117,13 +129,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
-
-                sessionAuthenticationConfidenceLevel = 5;
-                sessionTypeConfidenceLevel = 10;
-                sessionResponseServerConfidenceLevel = 5;
-                sessionSeverity = 60;
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }
 
             var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
@@ -135,10 +142,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseAlert = RulesetLangHelper.GetString("HTTP_456_OAuth_Not_Available_ResponseAlert"),
                 ResponseComments = RulesetLangHelper.GetString("HTTP_456_OAuth_Not_Available_ResponseComments"),
 
-                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                SessionSeverity = sessionSeverity
+                SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                    sessionAuthenticationConfidenceLevelFallback),
+
+                SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                    sessionTypeConfidenceLevelFallback),
+
+                SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                    sessionResponseServerConfidenceLevelFallback),
+
+                SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                    sessionSeverityFallback)
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -151,10 +165,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 456 Multi-Factor Required.");
 
-            int sessionAuthenticationConfidenceLevel;
-            int sessionTypeConfidenceLevel;
-            int sessionResponseServerConfidenceLevel;
-            int sessionSeverity;
+            int sessionAuthenticationConfidenceLevel = 0;
+            int sessionTypeConfidenceLevel = 0;
+            int sessionResponseServerConfidenceLevel = 0;
+            int sessionSeverity = 0;
+
+            int sessionAuthenticationConfidenceLevelFallback = 5;
+            int sessionTypeConfidenceLevelFallback = 10;
+            int sessionResponseServerConfidenceLevelFallback = 5;
+            int sessionSeverityFallback = 60;
 
             try
             {
@@ -166,13 +185,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
-
-                sessionAuthenticationConfidenceLevel = 5;
-                sessionTypeConfidenceLevel = 10;
-                sessionResponseServerConfidenceLevel = 5;
-                sessionSeverity = 60;
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }
 
             var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
@@ -184,10 +198,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseAlert = RulesetLangHelper.GetString("HTTP_456_Anything_Else_ResponseAlert"),
                 ResponseComments = RulesetLangHelper.GetString("HTTP_456_Anything_Else_ResponseComments"),
 
-                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                SessionSeverity = sessionSeverity
+                SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                    sessionAuthenticationConfidenceLevelFallback),
+
+                SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                    sessionTypeConfidenceLevelFallback),
+
+                SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                    sessionResponseServerConfidenceLevelFallback),
+
+                SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                    sessionSeverityFallback)
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

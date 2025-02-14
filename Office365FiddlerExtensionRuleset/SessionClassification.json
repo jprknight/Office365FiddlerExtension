@@ -250,6 +250,12 @@
       "SessionResponseServerConfidenceLevel": 5,
       "SessionSeverity": 30
     },
+    "HTTP_200_Json_Empty": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 40
+    },
     "HTTP_200_Json_Invalid": {
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 10,
@@ -538,6 +544,9 @@
     "SessionSeverity": 40
   },
   "HTTP_405s": {
+    "SectionTitle": "HTTP_405s",
+    "SessionType": "405 Method not allowed",
+    "ResponseAlert": "HTTP 405 Method not allowed.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
@@ -553,6 +562,9 @@
     "SessionSeverity": 10
   },
   "HTTP_407s": {
+    "SectionTitle": "HTTP_407s",
+    "SessionType": "407 Proxy Authentication Required",
+    "ResponseAlert": "HTTP 407 Proxy Authentication Required.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,

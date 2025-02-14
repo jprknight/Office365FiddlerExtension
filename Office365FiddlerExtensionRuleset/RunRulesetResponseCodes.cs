@@ -113,13 +113,13 @@ namespace Office365FiddlerExtensionRuleset
                     HTTP_404.Instance.Run(this.session);
                     break;
                 case 405:
-                    HTTP_405.Instance.Run(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_405s");
                     break;
                 case 406:
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_406s");
                     break;
                 case 407:
-                    HTTP_407.Instance.Run(this.session);
+                    SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_407s");
                     break;
                 case 408:
                     SimpleSessionAnalysis.Instance.Run(this.session, "HTTP_408s");

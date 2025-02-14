@@ -28,10 +28,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Json");
 
-                int sessionAuthenticationConfidenceLevel;
-                int sessionTypeConfidenceLevel;
-                int sessionResponseServerConfidenceLevel;
-                int sessionSeverity;
+                int sessionAuthenticationConfidenceLevel = 0;
+                int sessionTypeConfidenceLevel = 0;
+                int sessionResponseServerConfidenceLevel = 0;
+                int sessionSeverity = 0;
+
+                int sessionAuthenticationConfidenceLevelFallback = 5;
+                int sessionTypeConfidenceLevelFallback = 10;
+                int sessionResponseServerConfidenceLevelFallback = 5;
+                int sessionSeverityFallback = 30;
 
                 try
                 {
@@ -44,13 +49,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
-
-                    sessionAuthenticationConfidenceLevel = 5;
-                    sessionTypeConfidenceLevel = 10;
-                    sessionResponseServerConfidenceLevel = 5;
-                    sessionSeverity = 30;
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
                 }
 
                 var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
@@ -62,10 +62,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                     ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Json_ResponseAlert"),
                     ResponseComments = RulesetLangHelper.GetString("HTTP_200_Json_ResponseComments"),
 
-                    SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                    SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                    SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                    SessionSeverity = sessionSeverity
+                    SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                        sessionAuthenticationConfidenceLevelFallback),
+
+                    SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                        sessionTypeConfidenceLevelFallback),
+
+                    SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                        sessionResponseServerConfidenceLevelFallback),
+
+                    SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                        sessionSeverityFallback)
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -77,58 +84,96 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             // Invalid Json in response.
             else
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Invalid Json");
-
-                int sessionAuthenticationConfidenceLevel;
-                int sessionTypeConfidenceLevel;
-                int sessionResponseServerConfidenceLevel;
-                int sessionSeverity;
-
-                try
-                {
-                    var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Json_Invalid");
-                    sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
-                    sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
-                    sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
-                    sessionSeverity = sessionClassificationJson.SessionSeverity;
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
-                        $"{this.session.id} {sessionClassificationJson.SessionSeverity}");
-                }
-                catch (Exception ex)
-                {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
-
-                    sessionAuthenticationConfidenceLevel = 5;
-                    sessionTypeConfidenceLevel = 10;
-                    sessionResponseServerConfidenceLevel = 5;
-                    sessionSeverity = 50;
-                }
-
                 // Empty response body.
                 if (this.session.GetResponseBodyAsString() == null || this.session.GetResponseBodyAsString() == "")
                 {
+
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 No Json");
+
+                    int sessionAuthenticationConfidenceLevel = 0;
+                    int sessionTypeConfidenceLevel = 0;
+                    int sessionResponseServerConfidenceLevel = 0;
+                    int sessionSeverity = 0;
+
+                    int sessionAuthenticationConfidenceLevelFallback = 5;
+                    int sessionTypeConfidenceLevelFallback = 10;
+                    int sessionResponseServerConfidenceLevelFallback = 5;
+                    int sessionSeverityFallback = 40;
+
+                    try
+                    {
+                        var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Json_Empty");
+                        sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                        sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                        sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                        sessionSeverity = sessionClassificationJson.SessionSeverity;
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                            $"{this.session.id} {sessionClassificationJson.SessionSeverity}");
+                    }
+                    catch (Exception ex)
+                    {
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                            $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
+                    }
+
+
                     var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "HTTP_200s",
 
-                        SessionType = RulesetLangHelper.GetString("HTTP_200_Json_SessionType_EmptyResponseBody"),
-                        ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_Json_Invalid_ResponseCodeDescription"),
-                        ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Json_Invalid_ResponseAlert"),
-                        ResponseComments = $"{RulesetLangHelper.GetString("HTTP_200_Json_EmptyResponseBody")}",
+                        SessionType = RulesetLangHelper.GetString("HTTP_200_Json_EmptyResponseBody_SessionType"),
+                        ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_Json_EmptyResponseBody_ResponseCodeDescription"),
+                        ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Json_EmptyResponseBody_ResponseAlert"),
+                        ResponseComments = $"{RulesetLangHelper.GetString("HTTP_200_Json_EmptyResponseBody_ResponseComments")}",
 
-                        SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                        SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                        SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                        SessionSeverity = sessionSeverity
+                        SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                            sessionAuthenticationConfidenceLevelFallback),
+
+                        SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                            sessionTypeConfidenceLevelFallback),
+
+                        SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                            sessionResponseServerConfidenceLevelFallback),
+
+                        SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                            sessionSeverityFallback)
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
                     RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                 }
-                // Something in the response body.
+                // Non-empty invalid Json response body.
                 else
                 {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 Invalid Json");
+
+                    int sessionAuthenticationConfidenceLevel = 0;
+                    int sessionTypeConfidenceLevel = 0;
+                    int sessionResponseServerConfidenceLevel = 0;
+                    int sessionSeverity = 0;
+
+                    int sessionAuthenticationConfidenceLevelFallback = 5;
+                    int sessionTypeConfidenceLevelFallback = 10;
+                    int sessionResponseServerConfidenceLevelFallback = 5;
+                    int sessionSeverityFallback = 50;
+
+                    try
+                    {
+                        var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_Json_Invalid");
+                        sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                        sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                        sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                        sessionSeverity = sessionClassificationJson.SessionSeverity;
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                            $"{this.session.id} {sessionClassificationJson.SessionSeverity}");
+                    }
+                    catch (Exception ex)
+                    {
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                            $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
+                    }
+
+
                     var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "HTTP_200s",
@@ -136,21 +181,24 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                         SessionType = RulesetLangHelper.GetString("HTTP_200_Json_Invalid_SessionType"),
                         ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_Json_Invalid_ResponseCodeDescription"),
                         ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Json_Invalid_ResponseAlert"),
-                        ResponseComments = $"{RulesetLangHelper.GetString("HTTP_200_Json_Invalid_ResponseComments")} <p>" +
-                            $"{RulesetLangHelper.GetString("Response Body")}</p>{this.session.GetResponseBodyAsString()}",
+                        ResponseComments = $"{RulesetLangHelper.GetString("HTTP_200_Json_Invalid_ResponseComments")}",
 
-                        SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                        SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                        SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                        SessionSeverity = sessionSeverity
+                        SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                            sessionAuthenticationConfidenceLevelFallback),
+
+                        SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                            sessionTypeConfidenceLevelFallback),
+
+                        SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                            sessionResponseServerConfidenceLevelFallback),
+
+                        SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                            sessionSeverityFallback)
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
                     RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                 }
-
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
-                    $"{this.session.id} HTTP 200 invalid Json; severity: {RulesetSessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionSeverity}");
             }
         }
     }
