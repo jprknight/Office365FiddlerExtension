@@ -176,19 +176,26 @@ namespace Office365FiddlerExtension.UI.Forms
             }
             else
             {
-                if (VersionService.Instance.IsExtensionDLLUpdateAvailable())
+                if (VersionService.Instance.IsExtensionDLLUpdateAvailable().Equals("UpdateAvailable"))
                 {
                     ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
                         $"{VersionService.Instance.GetExtensionDLLVersion()} - " +
                         LangHelper.GetString("Update Available");
                     ExtensionVersionLabel.ForeColor = System.Drawing.Color.Red;
                 }
-                else
+                else if (VersionService.Instance.IsExtensionDLLUpdateAvailable().Equals("UpToDate"))
                 {
                     ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
                         $"{VersionService.Instance.GetExtensionDLLVersion()} - " +
                         LangHelper.GetString("Up To Date");
                     ExtensionVersionLabel.ForeColor = System.Drawing.Color.Green;
+                }
+                else if(VersionService.Instance.IsExtensionDLLUpdateAvailable().Equals("FutureVersion"))
+                {
+                    ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
+                        $"{VersionService.Instance.GetExtensionDLLVersion()} - " +
+                        LangHelper.GetString("Future Version");
+                    ExtensionVersionLabel.ForeColor = System.Drawing.Color.Blue;
                 }
 
                 if (VersionService.Instance.IsRulesetDLLUpdateAvailable())

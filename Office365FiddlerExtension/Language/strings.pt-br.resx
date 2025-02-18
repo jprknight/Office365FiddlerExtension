@@ -679,10 +679,13 @@
   <data name="NeverWebCall_FeatureDisabled" xml:space="preserve">
     <value>Never Web Call is enabled. This feature is disabled.</value>
   </data>
+  <data name="Simple Session Analysis" xml:space="preserve">
+    <value />
+  </data>
   <data name="TheOwningOrganisation" xml:space="preserve">
     <value>The owning organisation is</value>
   </data>
-  <data name="Simple Session Analysis" xml:space="preserve">
+  <data name="Future Version" xml:space="preserve">
     <value />
   </data>
 </root>

@@ -16,6 +16,8 @@ namespace Office365FiddlerExtension.Services
         private static VersionService _instance;
         public static VersionService Instance => _instance ?? (_instance = new VersionService());
 
+        private bool ExtensionUpdateChecked;
+
         /// <summary>
         /// Extension DLL / Assembly.
         /// </summary>
@@ -51,14 +53,22 @@ namespace Office365FiddlerExtension.Services
         /// Determines if an extension update is available.
         /// </summary>
         /// <returns>bool</returns>
-        public Boolean IsExtensionDLLUpdateAvailable()
+        public string IsExtensionDLLUpdateAvailable()
         {
+            if (ExtensionUpdateChecked)
+            {
+                return "";
+            }
+
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): " +
                     $"Never Web Call stopping extension update check.");
-                return false;
+
+                ExtensionUpdateChecked = true;
+
+                return "";
             }
 
             var extensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
@@ -69,26 +79,57 @@ namespace Office365FiddlerExtension.Services
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
                     $"RulesetMajor is 1776, this is the first run of the extension after installation.");
-                return false;
+
+                ExtensionUpdateChecked = true;
+
+                return "";
             }
 
             var githubJsonVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
-            if (VersionService.Instance.LocalExtensionDLLVerison("Major") >= githubJsonVersion.ExtensionMajor
-                && VersionService.Instance.LocalExtensionDLLVerison("Minor") >= githubJsonVersion.ExtensionMinor
-                && VersionService.Instance.LocalExtensionDLLVerison("Build") >= githubJsonVersion.ExtensionBuild)
+            int LocalVersion = ConcatinateThreeIntegers(VersionService.Instance.LocalExtensionDLLVerison("Major"),
+                VersionService.Instance.LocalExtensionDLLVerison("Minor"),
+                VersionService.Instance.LocalExtensionDLLVerison("Build"));
+
+            int GithubVersion = ConcatinateThreeIntegers(githubJsonVersion.ExtensionMajor,
+                githubJsonVersion.ExtensionMinor,
+                githubJsonVersion.ExtensionBuild);
+
+            // Extension running is up to date.
+            if (LocalVersion == GithubVersion)
             {
                 // Update not available.
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): " +
-                    $"Extension DLL up to date or newer; " +
+                    $"Extension DLL up to date; " +
+                    $"Local Version: v{VersionService.Instance.LocalExtensionDLLVerison("Major")}." +
+                    $"{VersionService.Instance.LocalExtensionDLLVerison("Minor")}." +
+                    $"{VersionService.Instance.LocalExtensionDLLVerison("Build")}. " +
+                    $"Github Version: {githubJsonVersion.ExtensionMajor}." +
+                    $"{githubJsonVersion.ExtensionMinor}." +
+                    $"{githubJsonVersion.ExtensionBuild}.");
+
+                ExtensionUpdateChecked = true;
+
+                return "UpToDate";
+            }
+            // Extension running is newer than Github version; future version.
+            else if (LocalVersion >= GithubVersion)
+            {
+                // Update not available.
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): " +
+                    $"Extension DLL running future version; " +
                     $"Local Version: v{VersionService.Instance.LocalExtensionDLLVerison("Major")}." +
                     $"{VersionService.Instance.LocalExtensionDLLVerison("Minor")}." +
                     $"{VersionService.Instance.LocalExtensionDLLVerison("Build")}. " +
                     $"Github Version: {githubJsonVersion.ExtensionMajor}." +
                     $"{githubJsonVersion.ExtensionMinor}." + 
                     $"{githubJsonVersion.ExtensionBuild}.");
-                return false;
+
+                ExtensionUpdateChecked = true;
+
+                return "FutureVersion";
             }
             // One of the local major, minor, or build are less than the Github versions, return true.
             // There is an update available.
@@ -103,7 +144,10 @@ namespace Office365FiddlerExtension.Services
                     $"Github Version: {githubJsonVersion.ExtensionMajor}." +
                     $"{githubJsonVersion.ExtensionMinor}." +
                     $"{githubJsonVersion.ExtensionBuild}.");
-                return true;
+
+                ExtensionUpdateChecked = true;
+
+                return "UpdateAvailable";
             }
         }
 
@@ -120,7 +164,7 @@ namespace Office365FiddlerExtension.Services
                 return;
             }
 
-            if (!VersionService.Instance.IsExtensionDLLUpdateAvailable())
+            if (!VersionService.Instance.IsExtensionDLLUpdateAvailable().Equals("UpdateAvailable"))
             {
                 //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): No extension update available.");
                 return; 
@@ -336,6 +380,11 @@ namespace Office365FiddlerExtension.Services
             {
                 System.Diagnostics.Process.Start(URLsJsonService.Instance.GetDeserializedExtensionURLs().Installer);
             }
+        }
+
+        public int ConcatinateThreeIntegers(int a, int b, int c)
+        {
+            return int.Parse(a.ToString() + b.ToString() + c.ToString());
         }
     }
 }

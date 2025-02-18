@@ -520,6 +520,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Future Version.
+        /// </summary>
+        internal static string Future_Version {
+            get {
+                return ResourceManager.GetString("Future Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General Session Data.
         /// </summary>
         internal static string General_Session_Data {
