@@ -339,13 +339,13 @@ namespace Office365FiddlerExtension.Services
         /// <returns>bool</returns>
         public string IsExtensionDLLUpdateAvailable()
         {
-            if (ExtensionUpdateMessageLogged)
-            {
-                return "";
-            }
-
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
+                if (ExtensionUpdateMessageLogged)
+                {
+                    return "";
+                }
+
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): " +
                     $"Never Web Call stopping extension update check.");
@@ -370,6 +370,11 @@ namespace Office365FiddlerExtension.Services
             // Extension running is up to date.
             if (LocalExtensionVersion == GithubExtensionVersion)
             {
+                if (ExtensionUpdateMessageLogged)
+                {
+                    return "UpToDate";
+                }
+
                 // Update not available.
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): " +
@@ -388,6 +393,11 @@ namespace Office365FiddlerExtension.Services
             // Extension running is newer than Github version; future version.
             else if (LocalExtensionVersion >= GithubExtensionVersion)
             {
+                if (ExtensionUpdateMessageLogged)
+                {
+                    return "FutureVersion";
+                }
+
                 // Update not available.
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): " +
@@ -407,6 +417,11 @@ namespace Office365FiddlerExtension.Services
             // There is an update available.
             else
             {
+                if (ExtensionUpdateMessageLogged)
+                {
+                    return "UpdateAvailable";
+                }
+
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): " +
                     $"Extension DLL update available; " +
@@ -502,13 +517,13 @@ namespace Office365FiddlerExtension.Services
         /// <returns></returns>
         public string IsRulesetDLLUpdateAvailable()
         {
-            if (RulesetUpdateMessageLogged)
-            {
-                return "";
-            }
-
             if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
+                if (RulesetUpdateMessageLogged)
+                {
+                    return "";
+                }
+
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): " +
                     $"Never Web Call stopping ruleset update check.");
@@ -521,6 +536,11 @@ namespace Office365FiddlerExtension.Services
 
             if (rulesetMajor == "1776")
             {
+                if (RulesetUpdateMessageLogged)
+                {
+                    return "";
+                }
+
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
                     $"RulesetMajor is 1776, this is the first run of the extension after installation.");
                 return "";
@@ -549,6 +569,11 @@ namespace Office365FiddlerExtension.Services
                 // There is no update available.
                 if (LocalRulesetVersion == GithubRulesetVersion)
                 {
+                    if (RulesetUpdateMessageLogged)
+                    {
+                        return "UpToDate";
+                    }
+
                     // Update not available.
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                         $"({this.GetType().Name}): " +
@@ -568,6 +593,11 @@ namespace Office365FiddlerExtension.Services
                 // There is no update available.
                 else if (LocalRulesetVersion >= GithubRulesetVersion)
                 {
+                    if (RulesetUpdateMessageLogged)
+                    {
+                        return "FutureVersion";
+                    }
+
                     // Update not available.
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                         $"({this.GetType().Name}): " +
@@ -587,6 +617,11 @@ namespace Office365FiddlerExtension.Services
                 // There is an update available.
                 else
                 {
+                    if (RulesetUpdateMessageLogged)
+                    {
+                        return "UpdateAvailable";
+                    }
+
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                         $"({this.GetType().Name}): " +
                         $"Ruleset DLL update available; " +
