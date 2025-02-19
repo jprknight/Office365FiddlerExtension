@@ -168,50 +168,57 @@ namespace Office365FiddlerExtension.UI.Forms
 
             if (extensionSettings.NeverWebCall)
             {
-                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v{VersionService.Instance.GetExtensionDLLVersion()}";
+                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v{UpdateService.Instance.GetExtensionDLLVersion()}";
                 ExtensionVersionLabel.ForeColor = System.Drawing.Color.Black;
 
-                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v{VersionService.Instance.GetExtensionRulesetDLLVersion()}";
+                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v{UpdateService.Instance.GetExtensionRulesetDLLVersion()}";
                 RulesetVersionLabel.ForeColor = System.Drawing.Color.Black;
+
+                return;
+            }
+            
+            if (UpdateService.Instance.IsExtensionDLLUpdateAvailable().Equals("UpdateAvailable"))
+            {
+                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
+                    $"{UpdateService.Instance.GetExtensionDLLVersion()} - " +
+                    LangHelper.GetString("Update Available");
+                ExtensionVersionLabel.ForeColor = System.Drawing.Color.Red;
+            }
+            else if (UpdateService.Instance.IsExtensionDLLUpdateAvailable().Equals("UpToDate"))
+            {
+                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
+                    $"{UpdateService.Instance.GetExtensionDLLVersion()} - " +
+                    LangHelper.GetString("Up To Date");
+                ExtensionVersionLabel.ForeColor = System.Drawing.Color.Green;
+            }
+            else if(UpdateService.Instance.IsExtensionDLLUpdateAvailable().Equals("FutureVersion"))
+            {
+                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
+                    $"{UpdateService.Instance.GetExtensionDLLVersion()} - " +
+                    LangHelper.GetString("Future Version");
+                ExtensionVersionLabel.ForeColor = System.Drawing.Color.DarkOliveGreen;
+            }
+
+            if (UpdateService.Instance.IsRulesetDLLUpdateAvailable().Equals("UpdateAvailable"))
+            {
+                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v" +
+                    $"{UpdateService.Instance.GetExtensionRulesetDLLVersion()} - " +
+                    LangHelper.GetString("Update Available");
+                RulesetVersionLabel.ForeColor = System.Drawing.Color.Red;
+            }
+            else if (UpdateService.Instance.IsRulesetDLLUpdateAvailable().Equals("FutureVersion"))
+            {
+                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v" +
+                    $"{UpdateService.Instance.GetExtensionRulesetDLLVersion()} - " +
+                    LangHelper.GetString("Future Version");
+                RulesetVersionLabel.ForeColor = System.Drawing.Color.DarkOliveGreen;
             }
             else
             {
-                if (VersionService.Instance.IsExtensionDLLUpdateAvailable().Equals("UpdateAvailable"))
-                {
-                    ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
-                        $"{VersionService.Instance.GetExtensionDLLVersion()} - " +
-                        LangHelper.GetString("Update Available");
-                    ExtensionVersionLabel.ForeColor = System.Drawing.Color.Red;
-                }
-                else if (VersionService.Instance.IsExtensionDLLUpdateAvailable().Equals("UpToDate"))
-                {
-                    ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
-                        $"{VersionService.Instance.GetExtensionDLLVersion()} - " +
-                        LangHelper.GetString("Up To Date");
-                    ExtensionVersionLabel.ForeColor = System.Drawing.Color.Green;
-                }
-                else if(VersionService.Instance.IsExtensionDLLUpdateAvailable().Equals("FutureVersion"))
-                {
-                    ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
-                        $"{VersionService.Instance.GetExtensionDLLVersion()} - " +
-                        LangHelper.GetString("Future Version");
-                    ExtensionVersionLabel.ForeColor = System.Drawing.Color.Blue;
-                }
-
-                if (VersionService.Instance.IsRulesetDLLUpdateAvailable())
-                {
-                    RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v" +
-                        $"{VersionService.Instance.GetExtensionRulesetDLLVersion()} - " +
-                        LangHelper.GetString("Update Available");
-                    RulesetVersionLabel.ForeColor = System.Drawing.Color.Red;
-                }
-                else
-                {
-                    RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v" +
-                        $"{VersionService.Instance.GetExtensionRulesetDLLVersion()} - " +
-                        LangHelper.GetString("Up To Date");
-                    RulesetVersionLabel.ForeColor = System.Drawing.Color.Green;
-                }
+                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v" +
+                    $"{UpdateService.Instance.GetExtensionRulesetDLLVersion()} - " +
+                    LangHelper.GetString("Up To Date");
+                RulesetVersionLabel.ForeColor = System.Drawing.Color.Green;
             }
         }
 

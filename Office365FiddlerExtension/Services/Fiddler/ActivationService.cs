@@ -70,8 +70,8 @@ namespace Office365FiddlerExtension.Services
                 UpdateService.Instance.Initialize();
 
                 // Notify user if updates are available. -- More web calls here.
-                VersionService.Instance.NotifyUserIfExtensionUpdateIsAvailable();
-                VersionService.Instance.NotifyUserIfRulesetUpdateIsAvailable();
+                UpdateService.Instance.NotifyUserIfExtensionUpdateIsAvailable();
+                UpdateService.Instance.NotifyUserIfRulesetUpdateIsAvailable();
 
                 // Add extension menu.
                 MenuUI.Instance.Initialize();
