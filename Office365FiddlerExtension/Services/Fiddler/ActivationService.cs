@@ -173,7 +173,8 @@ namespace Office365FiddlerExtension.Services
             // Update the context menu UI when the preference changes.
             ContextMenuUI.Instance.UpdateUIControls();
 
-            // REVIEW THIS 2.20.2025: The below doesn't work. Currently sitting in Office365TabPage.ExtensionEnabledCheckBox_CheckedChanged 
+            // REVIEW THIS 2.20.2025: The below doesn't work. Only a direct interaction with the tabpage updates it.
+            // Currently sitting in Office365TabPage.ExtensionEnabledCheckBox_CheckedChanged 
             // to make it work.
             //Office365TabPage.Instance.UpdateUIControls();
             //Office365FiddlerExtensionTabPage.Instance.UpdateOPage();
