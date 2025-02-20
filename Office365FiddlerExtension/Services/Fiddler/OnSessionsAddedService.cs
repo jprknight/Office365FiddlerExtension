@@ -52,12 +52,10 @@ namespace Office365FiddlerExtension.Services
             {
                 // Do nothing here, SazFileService will pick up these sessions.
             }
-
             else if (SessionsStreamedCount() != 0)
             {
                 // Do nothing here, LiveTraceService will pick up these sessions.
             }
-
             else
             {
                 // Do nothing here.

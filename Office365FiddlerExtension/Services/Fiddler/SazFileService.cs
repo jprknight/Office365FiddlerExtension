@@ -169,9 +169,15 @@ namespace Office365FiddlerExtension.Services
 
                     SessionService.Instance.OnPeekAtResponseHeaders(this.session);
                 }
+
+                // Update status bar with load saz progress.
+                StatusBar.Instance.UpdateStatusBarOnSessionProgression(this.session.id, e.arrSessions.Count());
             }
 
             sw.Stop();
+
+            // Update status bar once completed.
+            StatusBar.Instance.UpdateStatusBarOnSessionProcessComplete(sw, e.arrSessions.Count(),e.sFilename);
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
                         $"LoadSaz processed {e.arrSessions.Count()} sessions in {sw.ElapsedMilliseconds}ms from '{SimpleSazFileName(e.sFilename)}'.");

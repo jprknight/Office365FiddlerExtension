@@ -91,7 +91,7 @@ namespace Office365FiddlerExtension.UI
             else if (UpdateService.Instance.IsExtensionDLLUpdateAvailable().Equals("FutureVersion"))
             {
                 LocalExtensionVersionUpdateMessageLabel.Text = LangHelper.GetString("Future Version");
-                LocalExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.DarkOliveGreen;
+                LocalExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Black;
             }
             else if (UpdateService.Instance.IsExtensionDLLUpdateAvailable().Equals("UpToDate"))
             {
@@ -113,7 +113,7 @@ namespace Office365FiddlerExtension.UI
             else if (UpdateService.Instance.IsRulesetDLLUpdateAvailable().Equals("FutureVersion"))
             {
                 LocalRulesetVersionUpdateMessageLabel.Text = LangHelper.GetString("Future Version");
-                LocalRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.DarkOliveGreen;
+                LocalRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Black;
             }
             else if (UpdateService.Instance.IsRulesetDLLUpdateAvailable().Equals("UpToDate"))
             {
@@ -145,7 +145,7 @@ namespace Office365FiddlerExtension.UI
             else if (UpdateService.Instance.IsExtensionDLLUpdateAvailable().Equals("FutureVersion"))
             {
                 GithubExtensionVersionUpdateMessageLabel.Text = LangHelper.GetString("Future Version");
-                GithubExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.DarkOliveGreen;
+                GithubExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Black;
             }
             else
             {
@@ -163,7 +163,7 @@ namespace Office365FiddlerExtension.UI
             else if (UpdateService.Instance.IsRulesetDLLUpdateAvailable().Equals("FutureVersion"))
             {
                 GithubRulesetVersionUpdateMessageLabel.Text = LangHelper.GetString("Future Version");
-                GithubRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.DarkOliveGreen;
+                GithubRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Black;
             }
             else if (UpdateService.Instance.IsRulesetDLLUpdateAvailable().Equals("UpToDate"))
             {

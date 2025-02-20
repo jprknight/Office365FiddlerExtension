@@ -1,7 +1,7 @@
 ﻿using Fiddler;
 using Office365FiddlerExtension.Services.Fiddler;
 using Office365FiddlerExtension.UI;
-using System;
+using Office365FiddlerExtension.UI.Forms;
 using System.Reflection;
 
 namespace Office365FiddlerExtension.Services
@@ -11,6 +11,8 @@ namespace Office365FiddlerExtension.Services
     /// </summary>
     public abstract class ActivationService : IAutoTamper
     {
+        private PreferenceBag.PrefWatcher oWatcher;
+
         internal Session session { get; set; }
 
         private bool IsInitialized { get; set; }
@@ -88,6 +90,10 @@ namespace Office365FiddlerExtension.Services
                 //FiddlerApplication.UI.lvSessions.OnSessionsAdded += ImportService.Instance.ImportSessions;
                 FiddlerApplication.UI.lvSessions.OnSessionsAdded += OnSessionsAddedService.Instance.ProcessSessions;
 
+                string sPrefixToMatch = "extensions.Office365FiddlerExtension.ExtensionSettings";
+
+                oWatcher = FiddlerApplication.Prefs.AddWatcher(sPrefixToMatch, ExtensionPreferenceChangeNotification);
+
                 IsInitialized = true;
             }
         }
@@ -97,6 +103,9 @@ namespace Office365FiddlerExtension.Services
         /// </summary>
         public void OnBeforeUnload()
         {
+            // Remove the preference change watcher.
+            FiddlerApplication.Prefs.RemoveWatcher(oWatcher);
+            // Shutdown telemetery.
             ShutdownTelemetry();
         }
 
@@ -149,6 +158,25 @@ namespace Office365FiddlerExtension.Services
         private async void ShutdownTelemetry()
         {
             await TelemetryService.FlushClientAsync();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExtensionPreferenceChangeNotification(object sender, PrefChangeEventArgs e)
+        {
+            // Update the menu UI when the preference changes.
+            MenuUI.Instance.UpdateUIControls();
+
+            // Update the context menu UI when the preference changes.
+            ContextMenuUI.Instance.UpdateUIControls();
+
+            // REVIEW THIS 2.20.2025: The below doesn't work. Currently sitting in Office365TabPage.ExtensionEnabledCheckBox_CheckedChanged 
+            // to make it work.
+            //Office365TabPage.Instance.UpdateUIControls();
+            //Office365FiddlerExtensionTabPage.Instance.UpdateOPage();
         }
     }
 }

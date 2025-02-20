@@ -61,6 +61,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to in.
+        /// </summary>
+        internal static string _in {
+            get {
+                return ResourceManager.GetString("in", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         internal static string About {
@@ -916,11 +925,29 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Processed.
+        /// </summary>
+        internal static string Processed {
+            get {
+                return ResourceManager.GetString("Processed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Processes.
         /// </summary>
         internal static string Processes {
             get {
                 return ResourceManager.GetString("Processes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Processing.
+        /// </summary>
+        internal static string Processing {
+            get {
+                return ResourceManager.GetString("Processing", resourceCulture);
             }
         }
         
