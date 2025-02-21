@@ -31,10 +31,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} 200 REST - People Request.");
 
-            int sessionAuthenticationConfidenceLevel;
-            int sessionTypeConfidenceLevel;
-            int sessionResponseServerConfidenceLevel;
-            int sessionSeverity;
+            int sessionAuthenticationConfidenceLevel = 0;
+            int sessionTypeConfidenceLevel = 0;
+            int sessionResponseServerConfidenceLevel = 0;
+            int sessionSeverity = 0;
+
+            int sessionAuthenticationConfidenceLevelFallback = 5;
+            int sessionTypeConfidenceLevelFallback = 5;
+            int sessionResponseServerConfidenceLevelFallback = 5;
+            int sessionSeverityFallback = 30;
 
             try
             {
@@ -46,13 +51,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
-
-                sessionAuthenticationConfidenceLevel = 5;
-                sessionTypeConfidenceLevel = 5;
-                sessionResponseServerConfidenceLevel = 5;
-                sessionSeverity = 30;
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }
 
             Uri uri = new Uri(this.session.fullUrl);
@@ -84,10 +84,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 ResponseComments = $"{requestId} $search:{queryStrings["$search"]} $top:{queryStrings["$top"]} " +
                     $"$skip:{queryStrings["$skip"]} $select:{queryStrings["$select"]} $filter:{queryStrings["$filter"]}",
 
-                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                SessionSeverity = sessionSeverity
+                SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                    sessionAuthenticationConfidenceLevelFallback),
+
+                SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                    sessionTypeConfidenceLevelFallback),
+
+                SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                    sessionResponseServerConfidenceLevelFallback),
+
+                SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                    sessionSeverityFallback)
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

@@ -44,10 +44,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 GetUnifiedGroupsSettings EWS call. User can create O365 Groups in Outlook.");
 
-                int sessionAuthenticationConfidenceLevel;
-                int sessionTypeConfidenceLevel;
-                int sessionResponseServerConfidenceLevel;
-                int sessionSeverity;
+                int sessionAuthenticationConfidenceLevel = 0;
+                int sessionTypeConfidenceLevel = 0;
+                int sessionResponseServerConfidenceLevel = 0;
+                int sessionSeverity = 0;
+
+                int sessionAuthenticationConfidenceLevelFallback = 5;
+                int sessionTypeConfidenceLevelFallback = 10;
+                int sessionResponseServerConfidenceLevelFallback = 5;
+                int sessionSeverityFallback = 30;
 
                 try
                 {
@@ -59,13 +64,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
-
-                    sessionAuthenticationConfidenceLevel = 5;
-                    sessionTypeConfidenceLevel = 10;
-                    sessionResponseServerConfidenceLevel = 5;
-                    sessionSeverity = 30;
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
                 }
 
                 var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
@@ -77,10 +77,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                     ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_ResponseAlert"),
                     ResponseComments = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_ResponseComments"),
 
-                    SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                    SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                    SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                    SessionSeverity = sessionSeverity
+                    SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                        sessionAuthenticationConfidenceLevelFallback),
+
+                    SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                        sessionTypeConfidenceLevelFallback),
+
+                    SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                        sessionResponseServerConfidenceLevelFallback),
+
+                    SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                        sessionSeverityFallback)
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -91,10 +98,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 GetUnifiedGroupsSettings EWS call. User cannot create O365 Groups in Outlook.");
 
-                int sessionAuthenticationConfidenceLevel;
-                int sessionTypeConfidenceLevel;
-                int sessionResponseServerConfidenceLevel;
-                int sessionSeverity;
+                int sessionAuthenticationConfidenceLevel = 0;
+                int sessionTypeConfidenceLevel = 0;
+                int sessionResponseServerConfidenceLevel = 0;
+                int sessionSeverity = 0;
+
+                int sessionAuthenticationConfidenceLevelFallback = 5;
+                int sessionTypeConfidenceLevelFallback = 10;
+                int sessionResponseServerConfidenceLevelFallback = 5;
+                int sessionSeverityFallback = 60;
 
                 try
                 {
@@ -106,13 +118,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
-
-                    sessionAuthenticationConfidenceLevel = 5;
-                    sessionTypeConfidenceLevel = 10;
-                    sessionResponseServerConfidenceLevel = 5;
-                    sessionSeverity = 60;
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
                 }
 
                 var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
@@ -124,10 +131,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                     ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseAlert"),
                     ResponseComments = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_User_Cannot_Create_Groups_ResponseComments"),
 
-                    SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                    SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                    SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                    SessionSeverity = sessionSeverity
+                    SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                        sessionAuthenticationConfidenceLevelFallback),
+
+                    SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                        sessionTypeConfidenceLevelFallback),
+
+                    SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                        sessionResponseServerConfidenceLevelFallback),
+
+                    SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                        sessionSeverityFallback)
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -138,10 +152,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 GetUnifiedGroupsSettings!");
 
-                int sessionAuthenticationConfidenceLevel;
-                int sessionTypeConfidenceLevel;
-                int sessionResponseServerConfidenceLevel;
-                int sessionSeverity;
+                int sessionAuthenticationConfidenceLevel = 0;
+                int sessionTypeConfidenceLevel = 0;
+                int sessionResponseServerConfidenceLevel = 0;
+                int sessionSeverity = 0;
+
+                int sessionAuthenticationConfidenceLevelFallback = 5;
+                int sessionTypeConfidenceLevelFallback = 10;
+                int sessionResponseServerConfidenceLevelFallback = 5;
+                int sessionSeverityFallback = 40;
 
                 try
                 {
@@ -153,13 +172,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
-
-                    sessionAuthenticationConfidenceLevel = 5;
-                    sessionTypeConfidenceLevel = 10;
-                    sessionResponseServerConfidenceLevel = 5;
-                    sessionSeverity = 40;
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
                 }
 
                 var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
@@ -171,10 +185,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                     ResponseAlert = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseAlert"),
                     ResponseComments = RulesetLangHelper.GetString("HTTP_200_Unified_Groups_Settings_Settings_Not_Found_ResponseComments"),
 
-                    SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                    SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                    SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                    SessionSeverity = sessionSeverity
+                    SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                        sessionAuthenticationConfidenceLevelFallback),
+
+                    SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                        sessionTypeConfidenceLevelFallback),
+
+                    SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                        sessionResponseServerConfidenceLevelFallback),
+
+                    SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                        sessionSeverityFallback)
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

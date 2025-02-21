@@ -221,37 +221,8 @@ namespace Office365FiddlerExtension
         }
 
         /// <summary>
-        /// Invert Analyse Selected Sessions menu item enabled property.
+        /// Function to update the Conext Menu UI controls.
         /// </summary>
-        public void InvertCmiAnalyseSelectedSessionsEnabled()
-        {
-            CmiAnalyseSelectedSessions.Enabled = !CmiAnalyseSelectedSessions.Enabled;
-        }
-
-        /// <summary>
-        /// Invert Set Sessions Severity menu item enabled property.
-        /// </summary>
-        public void InvertCmiSetSessionSeverity()
-        {
-            CmiSetSessionSeverity.Enabled = !CmiSetSessionSeverity.Enabled;
-        }
-
-        /// <summary>
-        /// Invert Clear Analysis Selected Sessions menu item enabled property.
-        /// </summary>
-        public void InvertCmiClearAnalysisSelectedSessions()
-        {
-            CmiClearAnalysisSelectedSessions.Enabled = !CmiClearAnalysisSelectedSessions.Enabled;
-        }
-
-        /// <summary>
-        /// Invert Create Consolidated Report menu item enabled property.
-        /// </summary>
-        public void InvertCmiCreateConsolidatedReportEnabled()
-        {
-            CmiCreateConsolidatedAnalysisReport.Enabled = !CmiCreateConsolidatedAnalysisReport.Enabled;
-        }
-
         public void UpdateUIControls()
         {
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();

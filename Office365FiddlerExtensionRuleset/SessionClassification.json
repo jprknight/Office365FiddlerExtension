@@ -1,12 +1,12 @@
 {
-  "LastUpdated": "2025-02-12",
+  "LastUpdated": "2025-02-14",
   "LastUpdatedDateFormat": "YYYY-MM-DD",
   "DataStructureHelper": {
     "About": "This helper isn't used in code, it's just here to describe the data.",
     "WebUpdates": "Session classification numbers are in this Json file to enable the extension to pull updates from this file and utilise them within the ruleset for session processing.",
     "SessionAuthenticationConfidenceLevel": "Runs from 0 - 10, 10 being absolutely certain the correct authentication has been determined for the session.",
     "SessionTypeConfidenceLevel": "Runs from 0 - 10, 10 being absolutely certain the correct type has been determined for the session.",
-    "SessionSeverity": "Runs on a scale of 0 - 60 and determines the colours of sessions used by the extension.",
+    "SessionSeverity": "Runs on a scale of 10 - 60 and determines the colours of sessions used by the extension.",
     "SessionColours": "According to session severity",
     "-=-=-=-=-=-": "-=-=-=-=-=-",
     "SessionSeverityTen": "10 Grey (Uninteresting) - For sessions which don't contain any information which could ientify an issue.",
@@ -249,6 +249,12 @@
       "SessionTypeConfidenceLevel": 10,
       "SessionResponseServerConfidenceLevel": 5,
       "SessionSeverity": 30
+    },
+    "HTTP_200_Json_Empty": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 40
     },
     "HTTP_200_Json_Invalid": {
       "SessionAuthenticationConfidenceLevel": 5,
@@ -538,6 +544,9 @@
     "SessionSeverity": 40
   },
   "HTTP_405s": {
+    "SectionTitle": "HTTP_405s",
+    "SessionType": "405 Method not allowed",
+    "ResponseAlert": "HTTP 405 Method not allowed.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,
@@ -553,6 +562,9 @@
     "SessionSeverity": 10
   },
   "HTTP_407s": {
+    "SectionTitle": "HTTP_407s",
+    "SessionType": "407 Proxy Authentication Required",
+    "ResponseAlert": "HTTP 407 Proxy Authentication Required.",
     "SessionAuthenticationConfidenceLevel": 5,
     "SessionTypeConfidenceLevel": 10,
     "SessionResponseServerConfidenceLevel": 5,

@@ -20,7 +20,12 @@ namespace Office365FiddlerExtension.UI.Forms
             InitializeComponent();
         }
 
-    public void UpdateUIControls()
+        public bool GetExtensionEnabledCheckbox()
+        {
+            return ExtensionEnabledCheckBox.Checked;
+        }
+
+        public void UpdateUIControls()
         {
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
@@ -134,7 +139,6 @@ namespace Office365FiddlerExtension.UI.Forms
             CheckIPAddressGroupBox.Text = LangHelper.GetString("Check IP Address");
             CheckIPAddressButton.Text = LangHelper.GetString("Check");
             CheckIPAddressClearButton.Text = LangHelper.GetString("Clear");
-            WhoisCheckBox.Checked = extensionSettings.Whois;
 
             ExtensionVersionInformationGroupBox.Text = LangHelper.GetString("Extension Version Information");
 
@@ -168,43 +172,57 @@ namespace Office365FiddlerExtension.UI.Forms
 
             if (extensionSettings.NeverWebCall)
             {
-                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v{VersionService.Instance.GetExtensionDLLVersion()}";
+                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v{UpdateService.Instance.GetExtensionDLLVersion()}";
                 ExtensionVersionLabel.ForeColor = System.Drawing.Color.Black;
 
-                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v{VersionService.Instance.GetExtensionRulesetDLLVersion()}";
+                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v{UpdateService.Instance.GetExtensionRulesetDLLVersion()}";
+                RulesetVersionLabel.ForeColor = System.Drawing.Color.Black;
+
+                return;
+            }
+            
+            if (UpdateService.Instance.IsExtensionDLLUpdateAvailable().Equals("UpdateAvailable"))
+            {
+                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
+                    $"{UpdateService.Instance.GetExtensionDLLVersion()} - " +
+                    LangHelper.GetString("Update Available");
+                ExtensionVersionLabel.ForeColor = System.Drawing.Color.Red;
+            }
+            else if (UpdateService.Instance.IsExtensionDLLUpdateAvailable().Equals("UpToDate"))
+            {
+                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
+                    $"{UpdateService.Instance.GetExtensionDLLVersion()} - " +
+                    LangHelper.GetString("Up To Date");
+                ExtensionVersionLabel.ForeColor = System.Drawing.Color.Green;
+            }
+            else if(UpdateService.Instance.IsExtensionDLLUpdateAvailable().Equals("FutureVersion"))
+            {
+                ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
+                    $"{UpdateService.Instance.GetExtensionDLLVersion()} - " +
+                    LangHelper.GetString("Future Version");
+                ExtensionVersionLabel.ForeColor = System.Drawing.Color.Black;
+            }
+
+            if (UpdateService.Instance.IsRulesetDLLUpdateAvailable().Equals("UpdateAvailable"))
+            {
+                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v" +
+                    $"{UpdateService.Instance.GetExtensionRulesetDLLVersion()} - " +
+                    LangHelper.GetString("Update Available");
+                RulesetVersionLabel.ForeColor = System.Drawing.Color.Red;
+            }
+            else if (UpdateService.Instance.IsRulesetDLLUpdateAvailable().Equals("FutureVersion"))
+            {
+                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v" +
+                    $"{UpdateService.Instance.GetExtensionRulesetDLLVersion()} - " +
+                    LangHelper.GetString("Future Version");
                 RulesetVersionLabel.ForeColor = System.Drawing.Color.Black;
             }
             else
             {
-                if (VersionService.Instance.IsExtensionDLLUpdateAvailable())
-                {
-                    ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
-                        $"{VersionService.Instance.GetExtensionDLLVersion()} - " +
-                        LangHelper.GetString("Update Available");
-                    ExtensionVersionLabel.ForeColor = System.Drawing.Color.Red;
-                }
-                else
-                {
-                    ExtensionVersionLabel.Text = $"{LangHelper.GetString("Extension")}: v" +
-                        $"{VersionService.Instance.GetExtensionDLLVersion()} - " +
-                        LangHelper.GetString("Up To Date");
-                    ExtensionVersionLabel.ForeColor = System.Drawing.Color.Green;
-                }
-
-                if (VersionService.Instance.IsRulesetDLLUpdateAvailable())
-                {
-                    RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v" +
-                        $"{VersionService.Instance.GetExtensionRulesetDLLVersion()} - " +
-                        LangHelper.GetString("Update Available");
-                    RulesetVersionLabel.ForeColor = System.Drawing.Color.Red;
-                }
-                else
-                {
-                    RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v" +
-                        $"{VersionService.Instance.GetExtensionRulesetDLLVersion()} - " +
-                        LangHelper.GetString("Up To Date");
-                    RulesetVersionLabel.ForeColor = System.Drawing.Color.Green;
-                }
+                RulesetVersionLabel.Text = $"{LangHelper.GetString("Ruleset")}: v" +
+                    $"{UpdateService.Instance.GetExtensionRulesetDLLVersion()} - " +
+                    LangHelper.GetString("Up To Date");
+                RulesetVersionLabel.ForeColor = System.Drawing.Color.Green;
             }
         }
 
@@ -244,9 +262,10 @@ namespace Office365FiddlerExtension.UI.Forms
             WarnBeforeProcessingGroupBox.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
             WhenToAnalyseSessionsGroupBox.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
 
+            // REVIEW THIS 2.20.2025: Unable to update the tabpage controls outside of a direct interaction with the tabpage.
             this.UpdateUIControls();
-            MenuUI.Instance.UpdateUIControls();
-            ContextMenuUI.Instance.UpdateUIControls();
+            //MenuUI.Instance.UpdateUIControls();
+            //ContextMenuUI.Instance.UpdateUIControls();
         }
 
         private void SessionAnalysisOnLoadSazCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -316,14 +335,6 @@ namespace Office365FiddlerExtension.UI.Forms
                 {
                     CheckIPAddressResultTextBox.Text = $"{EnterIPAddressTextBox.Text} is a public IP address not within a Microsoft 365 subnet.";
                 }
-
-                var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
-
-                // If Whois lookups are enabled, go find out the organization name who owns this IP address.
-                if (extensionSettings.Whois)
-                {
-                    CheckIPAddressResultTextBox.Text += $" {LangHelper.GetString("OwnedBy")} {NetworkingService.Instance.GetWhoisOrganizationName(EnterIPAddressTextBox.Text)}";
-                }
             }
         }
 
@@ -366,12 +377,6 @@ namespace Office365FiddlerExtension.UI.Forms
                 WarnBeforeAnalysingTextBox.Text = WarnBeforeAnalysingTextBox.Text.Remove(WarnBeforeAnalysingTextBox.Text.Length - 1);
             }   
         }
-    
-
-        private void WhoisCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            SettingsJsonService.Instance.SetWhois(WhoisCheckBox.Checked);
-        }
 
         private void DebugModeUpdateButton_Click(object sender, EventArgs e)
         {
@@ -380,19 +385,6 @@ namespace Office365FiddlerExtension.UI.Forms
             ExtensionEnabledCheckBox.Checked = extensionSettings.ExtensionSessionProcessingEnabled;
 
             ExtensionSettingsTextbox.Text = Preferences.ExtensionSettings;
-        }
-
-        private void DebugModeUpgradeCheck_Click(object sender, EventArgs e)
-        {
-            // Dispose of the Tab Page.
-            Office365FiddlerExtensionTabPage.Instance.OnBeforeUnload();
-
-            // Dispose of the MenuUI.
-            MenuUI.Instance.RemoveMenu();
-
-            //Office365Inspector.RemoveInspectorTab();
-
-            //UpgradeService.Instance.Run();
         }
 
         private void ElapsedTimeCheckbox_CheckedChanged(object sender, EventArgs e)
@@ -466,13 +458,12 @@ namespace Office365FiddlerExtension.UI.Forms
             FiddlerApplication.UI.tabsViews.TabPages.Add(oPage);
         }
 
-
         // REVIEW THIS.
         //
         // Attempting to get the Enable/Disable menu item to effect the Tab Page.
         public void Refresh()
         {
-
+            
 
             TabPageCollection tabPages = FiddlerApplication.UI.tabsViews.TabPages;
 
@@ -480,6 +471,15 @@ namespace Office365FiddlerExtension.UI.Forms
             {
                 if (tabpage.Text.Equals(LangHelper.GetString("Office 365 Fiddler Extension")))
                 {
+
+                    //tabpage.Invalidate();
+                    //tabpage.Dispose();
+                    //tabpage.Update();
+                    //tabpage.Refresh();
+
+                    //tabpage.Select();
+
+                    
 
                     //string message = $"You hit the refresh function. {tabpage.Text}";
                     //string caption = "Refresh";
@@ -505,13 +505,55 @@ namespace Office365FiddlerExtension.UI.Forms
 
                     //tabpage.Controls.Clear();
                     //tabpage.Controls.Add(oView);
-                    //tabpage.Controls.update
+                    //tabpage.Controls.update();
 
                     //tabpage.Invalidate();
                     //tabpage.Refresh();
 
+                }
+            }
+        }
 
+        /// <summary>
+        /// Throwing the kitchen sink at trying to get the tab control to update from outside of a direct click on the tab control.
+        /// With the below the UI switches to the tab page, the value of the extension enabled checkbox is changing from start to
+        /// finish, just that the UI does not update the checkbox to complete the process.
+        /// </summary>
+        public void UpdateOPage()
+        {
+            TabPageCollection tabPages = FiddlerApplication.UI.tabsViews.TabPages;
 
+            foreach (TabPage tabpage in tabPages)
+            {
+                if (tabpage.Text.Equals(LangHelper.GetString("Office 365 Fiddler Extension")))
+                {
+                    FiddlerObject.prompt($"Updating: {tabpage.Text}: {Office365TabPage.Instance.GetExtensionEnabledCheckbox()}");
+
+                    tabpage.Show();
+                    tabpage.BringToFront();
+                    tabpage.Select();
+                    tabpage.Focus();
+                    //tabpage.Invalidate();
+                    tabpage.Refresh();
+                    tabpage.Update();
+                    
+                    //oView.Invalidate();
+                    oView.Focus();
+                    oView.Select();
+                    oView.Refresh();
+                    oView.Update();
+
+                    //oPage.Invalidate();
+                    oPage.Focus();
+                    oPage.Select();
+                    oPage.Refresh();
+                    oPage.Update();
+
+                    oPage.Controls.Add(oView);
+
+                    Office365TabPage.Instance.UpdateUIControls();
+                    
+                    FiddlerObject.prompt($"Updated: {tabpage.Text}: {Office365TabPage.Instance.GetExtensionEnabledCheckbox()}");
                 }
             }
         }

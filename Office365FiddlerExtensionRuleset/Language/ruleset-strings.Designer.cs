@@ -772,11 +772,38 @@ namespace Office365FiddlerExtensionRuleset.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Json in response body as expected..
+        /// </summary>
+        internal static string HTTP_200_Json_EmptyResponseBody_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_EmptyResponseBody_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 OK with no Json.
+        /// </summary>
+        internal static string HTTP_200_Json_EmptyResponseBody_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_EmptyResponseBody_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;p&gt;Though the session has a content type of Json, there is an empty response body. Check the host, URL, and process on this session to determine if this is a point of interest for the issue you&apos;re troubleshooting.&lt;/p&gt;.
         /// </summary>
-        internal static string HTTP_200_Json_EmptyResponseBody {
+        internal static string HTTP_200_Json_EmptyResponseBody_ResponseComments {
             get {
-                return ResourceManager.GetString("HTTP_200_Json_EmptyResponseBody", resourceCulture);
+                return ResourceManager.GetString("HTTP_200_Json_EmptyResponseBody_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 OK No Json.
+        /// </summary>
+        internal static string HTTP_200_Json_EmptyResponseBody_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_EmptyResponseBody_SessionType", resourceCulture);
             }
         }
         
@@ -786,6 +813,15 @@ namespace Office365FiddlerExtensionRuleset.Language {
         internal static string HTTP_200_Json_Invalid_ResponseAlert {
             get {
                 return ResourceManager.GetString("HTTP_200_Json_Invalid_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;Though the session has a content type of Json, there is an invalid Json response body. Check the host, URL, and process on this session to determine if this is a point of interest for the issue you&apos;re troubleshooting.&lt;/p&gt;.
+        /// </summary>
+        internal static string HTTP_200_Json_Invalid_ResponseBody {
+            get {
+                return ResourceManager.GetString("HTTP_200_Json_Invalid_ResponseBody", resourceCulture);
             }
         }
         
@@ -849,15 +885,6 @@ namespace Office365FiddlerExtensionRuleset.Language {
         internal static string HTTP_200_Json_SessionType {
             get {
                 return ResourceManager.GetString("HTTP_200_Json_SessionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to !200 OK NO JSON!.
-        /// </summary>
-        internal static string HTTP_200_Json_SessionType_EmptyResponseBody {
-            get {
-                return ResourceManager.GetString("HTTP_200_Json_SessionType_EmptyResponseBody", resourceCulture);
             }
         }
         

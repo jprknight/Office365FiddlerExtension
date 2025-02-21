@@ -30,10 +30,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} Loopback Tunnel.");
 
-            int sessionAuthenticationConfidenceLevel;
-            int sessionTypeConfidenceLevel;
-            int sessionResponseServerConfidenceLevel;
-            int sessionSeverity;
+            int sessionAuthenticationConfidenceLevel = 0;
+            int sessionTypeConfidenceLevel = 0;
+            int sessionResponseServerConfidenceLevel = 0;
+            int sessionSeverity = 0;
+
+            int sessionAuthenticationConfidenceLevelFallback = 10;
+            int sessionTypeConfidenceLevelFallback = 10;
+            int sessionResponseServerConfidenceLevelFallback = 10;
+            int sessionSeverityFallback = 40;
 
             try
             {
@@ -46,15 +51,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
             catch (Exception ex)
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"({this.GetType().Name}): {this.session.id} {ex}");
-
-                sessionAuthenticationConfidenceLevel = 10;
-                sessionTypeConfidenceLevel = 10;
-                sessionResponseServerConfidenceLevel = 10;
-                sessionSeverity = 40;
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }
 
             var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
@@ -68,10 +66,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ResponseComments = RulesetLangHelper.GetString("BroadLogicChecks_Loopback Tunnel Response Comments"),
                 Authentication = RulesetLangHelper.GetString("BroadLogicChecks_LoopbackTunnel"),
 
-                SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                SessionSeverity = sessionSeverity
+                SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                    sessionAuthenticationConfidenceLevelFallback),
+
+                SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                    sessionTypeConfidenceLevelFallback),
+
+                SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                    sessionResponseServerConfidenceLevelFallback),
+
+                SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                    sessionSeverityFallback)
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

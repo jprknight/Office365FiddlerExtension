@@ -19,7 +19,7 @@ namespace Office365FiddlerExtension.UI
             var extensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
             this.Text = $"{LangHelper.GetString("About")}: {Assembly.GetExecutingAssembly().GetName().Name} v" +
-                $"{VersionService.Instance.GetExtensionDLLVersion()}";
+                $"{UpdateService.Instance.GetExtensionDLLVersion()}";
 
             ///////////////////
             ///
@@ -43,9 +43,9 @@ namespace Office365FiddlerExtension.UI
 
             ExtensionDLLTextbox.Text = extensionSettings.ExtensionDLL;
 
-            LocalDLLVersionTextbox.Text = VersionService.Instance.GetExtensionDLLVersion();
+            LocalDLLVersionTextbox.Text = UpdateService.Instance.GetExtensionDLLVersion();
 
-            LocalRulesetVersionTextbox.Text = VersionService.Instance.GetExtensionRulesetDLLVersion();
+            LocalRulesetVersionTextbox.Text = UpdateService.Instance.GetExtensionRulesetDLLVersion();
 
             if (extensionSettings.DebugMode)
             {
@@ -81,57 +81,99 @@ namespace Office365FiddlerExtension.UI
             }
 
             ///////////////////
-            /// Extension Update Information.
+            /// Local Update Information.
 
-            if (VersionService.Instance.IsExtensionDLLUpdateAvailable())
+            if (UpdateService.Instance.IsExtensionDLLUpdateAvailable().Equals("UpdateAvailable"))
             {
                 LocalExtensionVersionUpdateMessageLabel.Text = LangHelper.GetString("Update Available");
                 LocalExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Red;
             }
-            else
+            else if (UpdateService.Instance.IsExtensionDLLUpdateAvailable().Equals("FutureVersion"))
+            {
+                LocalExtensionVersionUpdateMessageLabel.Text = LangHelper.GetString("Future Version");
+                LocalExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Black;
+            }
+            else if (UpdateService.Instance.IsExtensionDLLUpdateAvailable().Equals("UpToDate"))
             {
                 LocalExtensionVersionUpdateMessageLabel.Text = LangHelper.GetString("Up To Date");
                 LocalExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Green;
             }
+            else
+            {
+                LocalExtensionVersionUpdateMessageLabel.Text = $"{LangHelper.GetString("Error")}: " +
+                    $"{UpdateService.Instance.IsExtensionDLLUpdateAvailable()}";
+                LocalExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Red;
+            }
 
-            if (VersionService.Instance.IsRulesetDLLUpdateAvailable())
+            if (UpdateService.Instance.IsRulesetDLLUpdateAvailable().Equals("UpdateAvailable"))
             {
                 LocalRulesetVersionUpdateMessageLabel.Text = LangHelper.GetString("Update Available");
                 LocalRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Red;
             }
-            else
+            else if (UpdateService.Instance.IsRulesetDLLUpdateAvailable().Equals("FutureVersion"))
+            {
+                LocalRulesetVersionUpdateMessageLabel.Text = LangHelper.GetString("Future Version");
+                LocalRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Black;
+            }
+            else if (UpdateService.Instance.IsRulesetDLLUpdateAvailable().Equals("UpToDate"))
             {
                 LocalRulesetVersionUpdateMessageLabel.Text = LangHelper.GetString("Up To Date");
                 LocalRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Green;
             }
+            else
+            {
+                LocalRulesetVersionUpdateMessageLabel.Text = $"{LangHelper.GetString("Error")}: " +
+                    $"{UpdateService.Instance.IsRulesetDLLUpdateAvailable()}";
+                LocalRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Red;
+            }
 
             ///////////////////
-            /// Ruleset Update Information.
+            /// Github Update Information.
 
             GithubDLLVersionTextbox.Text = $"{extensionVersion.ExtensionMajor}.{extensionVersion.ExtensionMinor}.{extensionVersion.ExtensionBuild}";
 
-            if (VersionService.Instance.IsExtensionDLLUpdateAvailable())
+            if (UpdateService.Instance.IsExtensionDLLUpdateAvailable().Equals("UpdateAvailable"))
             {
                 GithubExtensionVersionUpdateMessageLabel.Text = LangHelper.GetString("Update Available");
                 GithubExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Red;
             }
-            else
+            else if (UpdateService.Instance.IsExtensionDLLUpdateAvailable().Equals("UpToDate"))
             {
                 GithubExtensionVersionUpdateMessageLabel.Text = LangHelper.GetString("Up To Date");
                 GithubExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Green;
             }
+            else if (UpdateService.Instance.IsExtensionDLLUpdateAvailable().Equals("FutureVersion"))
+            {
+                GithubExtensionVersionUpdateMessageLabel.Text = LangHelper.GetString("Future Version");
+                GithubExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Black;
+            }
+            else
+            {
+                GithubExtensionVersionUpdateMessageLabel.Text = LangHelper.GetString("Error");
+                GithubExtensionVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Red;
+            }
 
-            GithubRulesetVersionTextbox.Text = $"{extensionVersion.RulesetMajor}.{extensionVersion.RulesetMinor}.{extensionVersion.RulesetBuild}";
+                GithubRulesetVersionTextbox.Text = $"{extensionVersion.RulesetMajor}.{extensionVersion.RulesetMinor}.{extensionVersion.RulesetBuild}";
 
-            if (VersionService.Instance.IsRulesetDLLUpdateAvailable())
+            if (UpdateService.Instance.IsRulesetDLLUpdateAvailable().Equals("UpdateAvailable"))
             {
                 GithubRulesetVersionUpdateMessageLabel.Text = LangHelper.GetString("Update Available");
                 GithubRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Red;
             }
-            else
+            else if (UpdateService.Instance.IsRulesetDLLUpdateAvailable().Equals("FutureVersion"))
+            {
+                GithubRulesetVersionUpdateMessageLabel.Text = LangHelper.GetString("Future Version");
+                GithubRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Black;
+            }
+            else if (UpdateService.Instance.IsRulesetDLLUpdateAvailable().Equals("UpToDate"))
             {
                 GithubRulesetVersionUpdateMessageLabel.Text = LangHelper.GetString("Up To Date");
                 GithubRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Green;
+            }
+            else
+            {
+                GithubRulesetVersionUpdateMessageLabel.Text = LangHelper.GetString("Error");
+                GithubRulesetVersionUpdateMessageLabel.ForeColor = System.Drawing.Color.Red;
             }
 
             NextUpdateCheckTimestampTextbox.Text = extensionSettings.NextUpdateCheck.ToString();

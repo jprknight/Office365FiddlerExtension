@@ -92,9 +92,7 @@
     <Compile Include="Ruleset\HTTP_400s\HTTP_401.cs" />
     <Compile Include="Ruleset\HTTP_400s\HTTP_403.cs" />
     <Compile Include="Ruleset\HTTP_400s\HTTP_404.cs" />
-    <Compile Include="Ruleset\HTTP_400s\HTTP_407.cs" />
     <Compile Include="Ruleset\HTTP_400s\HTTP_456.cs" />
-    <Compile Include="Ruleset\HTTP_400s\HTTP_405.cs" />
     <Compile Include="Ruleset\HTTP_500s\HTTP_500.cs" />
     <Compile Include="Ruleset\HTTP_500s\HTTP_502.cs" />
     <Compile Include="Ruleset\HTTP_500s\HTTP_503.cs" />

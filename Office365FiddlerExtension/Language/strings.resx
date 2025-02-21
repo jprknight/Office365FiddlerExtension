@@ -688,4 +688,22 @@
   <data name="Capture was" xml:space="preserve">
     <value>Capture was</value>
   </data>
+  <data name="Simple Session Analysis" xml:space="preserve">
+    <value>Simple Session Analysis</value>
+  </data>
+  <data name="Future Version" xml:space="preserve">
+    <value>Future Version</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="Processed" xml:space="preserve">
+    <value>Processed</value>
+  </data>
+  <data name="in" xml:space="preserve">
+    <value>in</value>
+  </data>
 </root>

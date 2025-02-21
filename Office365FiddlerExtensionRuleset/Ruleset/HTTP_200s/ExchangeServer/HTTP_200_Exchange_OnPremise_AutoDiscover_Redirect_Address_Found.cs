@@ -67,10 +67,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             {
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " + this.session.id + " Exchange OnPremise Autodiscover redirect to Exchange Online / Microsoft365.");
 
-                int sessionAuthenticationConfidenceLevel;
-                int sessionTypeConfidenceLevel;
-                int sessionResponseServerConfidenceLevel;
-                int sessionSeverity;
+                int sessionAuthenticationConfidenceLevel = 0;
+                int sessionTypeConfidenceLevel = 0;
+                int sessionResponseServerConfidenceLevel = 0;
+                int sessionSeverity = 0;
+
+                int sessionAuthenticationConfidenceLevelFallback = 5;
+                int sessionTypeConfidenceLevelFallback = 10;
+                int sessionResponseServerConfidenceLevelFallback = 5;
+                int sessionSeverityFallback = 30;
 
                 try
                 {
@@ -82,13 +87,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
-
-                    sessionAuthenticationConfidenceLevel = 5;
-                    sessionTypeConfidenceLevel = 10;
-                    sessionResponseServerConfidenceLevel = 5;
-                    sessionSeverity = 30;
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
                 }
 
                 var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
@@ -103,10 +103,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                     + RedirectAddress
                     + RulesetLangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_Redirect_Address_Found_ResponseCommentsEnd"),
 
-                    SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                    SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                    SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                    SessionSeverity = sessionSeverity
+                    SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                    sessionAuthenticationConfidenceLevelFallback),
+
+                    SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                    sessionTypeConfidenceLevelFallback),
+
+                    SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                    sessionResponseServerConfidenceLevelFallback),
+
+                    SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                    sessionSeverityFallback)
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
@@ -119,10 +126,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " + this.session.id + " HTTP 200 Exchange On-Premise AUTOD INCORRECT REDIRECT ADDR! : " + RedirectAddress);
 
-                int sessionAuthenticationConfidenceLevel;
-                int sessionTypeConfidenceLevel;
-                int sessionResponseServerConfidenceLevel;
-                int sessionSeverity;
+                int sessionAuthenticationConfidenceLevel = 0;
+                int sessionTypeConfidenceLevel = 0;
+                int sessionResponseServerConfidenceLevel = 0;
+                int sessionSeverity = 0;
+
+                int sessionAuthenticationConfidenceLevelFallback = 5;
+                int sessionTypeConfidenceLevelFallback = 10;
+                int sessionResponseServerConfidenceLevelFallback = 5;
+                int sessionSeverityFallback = 60;
 
                 try
                 {
@@ -134,13 +146,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 }
                 catch (Exception ex)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} USING HARDCODED SESSION CLASSIFICATION VALUES.");
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} {ex}");
-
-                    sessionAuthenticationConfidenceLevel = 5;
-                    sessionTypeConfidenceLevel = 10;
-                    sessionResponseServerConfidenceLevel = 5;
-                    sessionSeverity = 60;
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                        $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
                 }
 
                 var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
@@ -156,10 +163,17 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                     + RedirectAddress
                     + RulesetLangHelper.GetString("HTTP_200_OnPremise_AutoDiscover_IncorrectRedirect_ResponseCommentsEnd"),
 
-                    SessionAuthenticationConfidenceLevel = sessionAuthenticationConfidenceLevel,
-                    SessionTypeConfidenceLevel = sessionTypeConfidenceLevel,
-                    SessionResponseServerConfidenceLevel = sessionResponseServerConfidenceLevel,
-                    SessionSeverity = sessionSeverity
+                    SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                        sessionAuthenticationConfidenceLevelFallback),
+
+                    SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                        sessionTypeConfidenceLevelFallback),
+
+                    SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                        sessionResponseServerConfidenceLevelFallback),
+
+                    SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                        sessionSeverityFallback)
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);

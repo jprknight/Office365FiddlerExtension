@@ -18,23 +18,43 @@ namespace Office365FiddlerExtension.UI
 
         private bool IsInitialized { get; set; }
 
+        private bool ElapsedTimeColumnAdded { get; set; }
+
+        private bool SeverityColumnAdded { get; set; }
+
+        private bool SessionTypeColumnAdded { get; set; }
+
+        private bool ResponseServerColumnAdded { get; set; }
+
+        private bool AuthenticationColumnAdded { get; set; }
+
+        private bool HostIPColumnAdded { get; set; }
+
         public void Initialize()
         {
-            if (!IsInitialized)
+            if (IsInitialized)
             {
-                AddElapsedTimeColumn();
-                AddSeverityColumn();
-                AddSessionTypeColumn();
-                AddResponseServerColumn();
-                AddAuthenticationColumn();
-                AddHostIPColumn();
-
-                IsInitialized = true;
+                return;
             }
+
+            AddElapsedTimeColumn();
+            AddSeverityColumn();
+            AddSessionTypeColumn();
+            AddResponseServerColumn();
+            AddAuthenticationColumn();
+            AddHostIPColumn();
+
+            IsInitialized = true;
         }
 
         public void AddElapsedTimeColumn()
         {
+
+            if (ElapsedTimeColumnAdded)
+            {
+                return;
+            }
+
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
             if (!extensionSettings.ElapsedTimeColumnEnabled)
@@ -60,6 +80,8 @@ namespace Office365FiddlerExtension.UI
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to add Elapsed Time column to Fiddler UI.");
                     FiddlerApplication.UI.lvSessions.AddBoundColumn(strElapsedTime, -1, 110, true, GetElapsedTime);
                 }
+
+                ElapsedTimeColumnAdded = true;
             }
             catch (Exception ex)
             {
@@ -69,6 +91,11 @@ namespace Office365FiddlerExtension.UI
 
         public void AddSeverityColumn()
         {
+            if (SeverityColumnAdded)
+            {
+                return;
+            }
+
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
             if (!extensionSettings.SeverityColumnEnabled)
@@ -94,6 +121,7 @@ namespace Office365FiddlerExtension.UI
                     FiddlerApplication.UI.lvSessions.AddBoundColumn(strSeverity, -1, 60, true, GetSessionSeverity);
                 }
 
+                SeverityColumnAdded = true;
             }
             catch (Exception ex)
             {
@@ -103,6 +131,11 @@ namespace Office365FiddlerExtension.UI
 
         public void AddSessionTypeColumn()
         {
+            if (SessionTypeColumnAdded)
+            {
+                return;
+            }
+
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
             if (!extensionSettings.SessionTypeColumnEnabled)
@@ -128,6 +161,7 @@ namespace Office365FiddlerExtension.UI
                     FiddlerApplication.UI.lvSessions.AddBoundColumn(strSessionType, 150, GetSessionType);
                 }
 
+                SessionTypeColumnAdded = true;
             }
             catch (Exception ex)
             {
@@ -138,6 +172,11 @@ namespace Office365FiddlerExtension.UI
 
         public void AddAuthenticationColumn()
         {
+            if (AuthenticationColumnAdded)
+            {
+                return;
+            }
+
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
             if (extensionSettings.AuthenticationColumnEnabled)
@@ -161,6 +200,8 @@ namespace Office365FiddlerExtension.UI
                         FiddlerApplication.UI.lvSessions.AddBoundColumn(strAuthentication, 140, GetAuthentication);
                     }
 
+                    AuthenticationColumnAdded = true;
+
                 }
                 catch (Exception ex)
                 {
@@ -171,6 +212,11 @@ namespace Office365FiddlerExtension.UI
 
         public void AddResponseServerColumn()
         {
+            if (ResponseServerColumnAdded)
+            {
+                return;
+            }
+
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
             if (extensionSettings.ResponseServerColumnEnabled)
@@ -194,6 +240,7 @@ namespace Office365FiddlerExtension.UI
                         FiddlerApplication.UI.lvSessions.AddBoundColumn(strResponseServer, 130, GetResponseServer);
                     }
 
+                    ResponseServerColumnAdded = true;
                 }
                 catch (Exception ex)
                 {
@@ -204,6 +251,11 @@ namespace Office365FiddlerExtension.UI
 
         public void AddHostIPColumn()
         {
+            if (HostIPColumnAdded)
+            {
+                return;
+            }
+
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
             if (extensionSettings.HostIPColumnEnabled)
@@ -227,6 +279,7 @@ namespace Office365FiddlerExtension.UI
                         FiddlerApplication.UI.lvSessions.AddBoundColumn(strHostIP, 110, GetHostIP);
                     }
 
+                    HostIPColumnAdded = true;
                 }
                 catch (Exception ex)
                 {

@@ -125,8 +125,8 @@ namespace Office365FiddlerExtension
                     this.MiAbout = new MenuItem($"{LangHelper.GetString("About")}", new System.EventHandler(this.MiAbout_Click));
 
                     // Add menu items to top level menu.
-                    this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { this.MiEnabled,
-                    new MenuItem("-"),
+                    this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { //this.MiEnabled,
+                    //new MenuItem("-"),
                     this.MiAnalyseAllSessions,
                     this.MiClearAllSessionAnalysis,
                     new MenuItem("-"),
@@ -242,20 +242,14 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void MiEnabled_Click(object sender, EventArgs e)
         {
-            // Invert menu item checked.
+            // Invert the menu item checked.
             MiEnabled.Checked = !MiEnabled.Checked;
-            MiAnalyseAllSessions.Enabled = !MiAnalyseAllSessions.Enabled;
-            MiClearAllSessionAnalysis.Enabled = !MiClearAllSessionAnalysis.Enabled;
-            MiCreateConsolidatedAnalysisReport.Enabled = !MiCreateConsolidatedAnalysisReport.Enabled;
-            ContextMenuUI.Instance.InvertCmiAnalyseSelectedSessionsEnabled();
-            ContextMenuUI.Instance.InvertCmiClearAnalysisSelectedSessions();
-            ContextMenuUI.Instance.InvertCmiSetSessionSeverity();
-            ContextMenuUI.Instance.InvertCmiCreateConsolidatedReportEnabled();
-
-            Office365FiddlerExtensionTabPage.Instance.Refresh();
 
             // Set ExtensionEnabled according to menu item checked.
             SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(MiEnabled.Checked);
+
+            MenuUI.Instance.UpdateUIControls();
+            ContextMenuUI.Instance.UpdateUIControls();
         }
 
         /// <summary>
@@ -325,9 +319,14 @@ namespace Office365FiddlerExtension
             ConsolidatedAnalysisReportService.Instance.CreateCAR();
         }
 
+        /// <summary>
+        /// Function to update Menu UI controls.
+        /// </summary>
         public void UpdateUIControls()
         {
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            MiEnabled.Checked = extensionSettings.ExtensionSessionProcessingEnabled;
 
             MiAnalyseAllSessions.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
             MiClearAllSessionAnalysis.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;

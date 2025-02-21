@@ -1,6 +1,7 @@
 ﻿using Fiddler;
 using Office365FiddlerExtension.UI;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 
 namespace Office365FiddlerExtension.Services
@@ -68,9 +69,15 @@ namespace Office365FiddlerExtension.Services
                         SessionService.Instance.OnPeekAtResponseHeaders(this.session);
                     }
                 }
+
+                // Update status bar with import progress.
+                StatusBar.Instance.UpdateStatusBarOnSessionProgression(this.session.id, Sessions.Count());
             }
 
             sw.Stop();
+
+            // Update status bar once completed.
+            StatusBar.Instance.UpdateStatusBarOnSessionProcessComplete(sw, Sessions.Count());
 
             FiddlerApplication.UI.lvSessions.EndUpdate();
         }

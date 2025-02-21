@@ -61,6 +61,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to in.
+        /// </summary>
+        internal static string _in {
+            get {
+                return ResourceManager.GetString("in", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         internal static string About {
@@ -421,6 +430,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error on Whois lookup..
         /// </summary>
         internal static string ErrorOnWhoisLookup {
@@ -516,6 +534,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string French {
             get {
                 return ResourceManager.GetString("French", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Future Version.
+        /// </summary>
+        internal static string Future_Version {
+            get {
+                return ResourceManager.GetString("Future Version", resourceCulture);
             }
         }
         
@@ -898,11 +925,29 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Processed.
+        /// </summary>
+        internal static string Processed {
+            get {
+                return ResourceManager.GetString("Processed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Processes.
         /// </summary>
         internal static string Processes {
             get {
                 return ResourceManager.GetString("Processes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Processing.
+        /// </summary>
+        internal static string Processing {
+            get {
+                return ResourceManager.GetString("Processing", resourceCulture);
             }
         }
         
@@ -1186,6 +1231,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simple Session Analysis.
+        /// </summary>
+        internal static string Simple_Session_Analysis {
+            get {
+                return ResourceManager.GetString("Simple Session Analysis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Slow Running Session Threshold.
         /// </summary>
         internal static string Slow_Running_Session_Threshold {
@@ -1200,15 +1254,6 @@ namespace Office365FiddlerExtension.Language {
         internal static string Spanish {
             get {
                 return ResourceManager.GetString("Spanish", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The owning organisation is.
-        /// </summary>
-        internal static string TheOwningOrganisation {
-            get {
-                return ResourceManager.GetString("TheOwningOrganisation", resourceCulture);
             }
         }
         
