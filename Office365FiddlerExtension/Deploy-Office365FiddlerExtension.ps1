@@ -47,6 +47,7 @@ Function SetGlobals {
     'Office365FiddlerInspector.dll',
     'Office365FiddlerInspector.dll.config',
     'Office365FiddlerInspector.pdb',
+    'ApplicationInsights.config',
     'Microsoft.ApplicationInsights.AspNetCore.dll',
     'Microsoft.ApplicationInsights.AspNetCore.xml',
     'Microsoft.ApplicationInsights.dll',
@@ -131,7 +132,7 @@ Function Download([string]$version) {
     
             $Error.Clear()
             try {
-                Invoke-WebRequest $ZipDownload -Out $Script:ZipFileName_Ruleset
+                Invoke-WebRequest $ZipDownload -Out $Script:LocalZipFile_Ruleset
             }
             catch {
                 Write-Host $_
@@ -215,6 +216,11 @@ Function Install_v2xx {
 }
 
 Function InstallRulesetFiles {
+    
+    if ($Script:ExtensionVersion = "1.0.78") {
+        return
+    }
+
     # Remove the existing ruleset files first.
     RemoveRulesetFiles
 
@@ -342,12 +348,23 @@ Function RemoveRulesetFiles {
 Function LocalVersionCheck {
     # Extension Version
     $ExtensionFileName = "Office365FiddlerExtension.dll"
+    
     $ExtScriptsFile = "$Script:FiddlerScriptsPath\$ExtensionFileName"
     $ExtInspectorsFile = "$Script:FiddlerInspectorsPath\$ExtensionFileName"
+
+    $ExtensionLegacyFileName = "Office365FiddlerInspector.dll"
+
+    $ExtLegacyScriptsFile = "$Script:FiddlerScriptsPath\$ExtensionLegacyFileName"
+    $ExtLegacyInspectorsFile = "$Script:FiddlerInspectorsPath\$ExtensionLegacyFileName"
 
     # Check for the main dll file in both scripts and inspectors folders to get version number.
     if ((Test-Path $ExtScriptsFile -ErrorAction SilentlyContinue) -AND (Test-Path $ExtInspectorsFile -ErrorAction SilentlyContinue)) {
         $dll = Get-Item "$Script:FiddlerScriptsPath\$ExtensionFileName"
+        $Script:ExtensionVersion = $("$($dll.VersionInfo.FileMajorPart).$($dll.VersionInfo.FileMinorPart).$($dll.VersionInfo.FileBuildPart)")
+        [bool]$Script:bExtInstalled = 1
+    }
+    elseif ((Test-Path $ExtLegacyScriptsFile -ErrorAction SilentlyContinue) -AND (Test-Path $ExtLegacyInspectorsFile -ErrorAction SilentlyContinue)) {
+        $dll = Get-Item "$Script:FiddlerScriptsPath\$ExtensionLegacyFileName"
         $Script:ExtensionVersion = $("$($dll.VersionInfo.FileMajorPart).$($dll.VersionInfo.FileMinorPart).$($dll.VersionInfo.FileBuildPart)")
         [bool]$Script:bExtInstalled = 1
     }
@@ -521,6 +538,7 @@ $Menu = {
         Write-Host " Ruleset Installed version:     $Script:RulesetVersion" -ForegroundColor Red
     }
 
+
     if ($Script:LatestWebRulesetVersion -eq "Unknown") {
         Write-Host " Ruleset Latest Web Version:    $Script:LatestWebRulesetVersion" -ForegroundColor Red
     }
@@ -577,7 +595,7 @@ Do {
     Switch ($Selection) {
         1 {
             $Script:Operation = "Install_v2xx"
-            Install_v2xx    
+            Install_v2xx
         }
         2 {
             $Script:Operation = "Install_v1078"
@@ -587,13 +605,10 @@ Do {
             $Script:Operation = "Upgrade"
             Uninstall
             Install_v2xx
-            CleanDownloadFile
         }
         4 {
             $Script:Operation = "Update Ruleset"
-            RemoveRulesetFiles
             InstallRulesetFiles
-            CleanDownloadFile
         }
         5 {
             $Script:Operation = "Uninstall"
