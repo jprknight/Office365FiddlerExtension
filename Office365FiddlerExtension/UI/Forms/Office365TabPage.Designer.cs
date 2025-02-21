@@ -35,7 +35,6 @@
             this.AnalyseSelectedSessionsButton = new System.Windows.Forms.Button();
             this.ClearAllSessionAnalysisButton = new System.Windows.Forms.Button();
             this.CheckIPAddressGroupBox = new System.Windows.Forms.GroupBox();
-            this.WhoisCheckBox = new System.Windows.Forms.CheckBox();
             this.CheckIPAddressClearButton = new System.Windows.Forms.Button();
             this.CheckIPAddressResultTextBox = new System.Windows.Forms.TextBox();
             this.CheckIPAddressButton = new System.Windows.Forms.Button();
@@ -141,7 +140,6 @@
             // 
             // CheckIPAddressGroupBox
             // 
-            this.CheckIPAddressGroupBox.Controls.Add(this.WhoisCheckBox);
             this.CheckIPAddressGroupBox.Controls.Add(this.CheckIPAddressClearButton);
             this.CheckIPAddressGroupBox.Controls.Add(this.CheckIPAddressResultTextBox);
             this.CheckIPAddressGroupBox.Controls.Add(this.CheckIPAddressButton);
@@ -152,17 +150,6 @@
             this.CheckIPAddressGroupBox.TabIndex = 3;
             this.CheckIPAddressGroupBox.TabStop = false;
             this.CheckIPAddressGroupBox.Text = "Check IP Address HC";
-            // 
-            // WhoisCheckBox
-            // 
-            this.WhoisCheckBox.AutoSize = true;
-            this.WhoisCheckBox.Location = new System.Drawing.Point(324, 78);
-            this.WhoisCheckBox.Name = "WhoisCheckBox";
-            this.WhoisCheckBox.Size = new System.Drawing.Size(56, 17);
-            this.WhoisCheckBox.TabIndex = 4;
-            this.WhoisCheckBox.Text = "Whois";
-            this.WhoisCheckBox.UseVisualStyleBackColor = true;
-            this.WhoisCheckBox.CheckedChanged += new System.EventHandler(this.WhoisCheckBox_CheckedChanged);
             // 
             // CheckIPAddressClearButton
             // 
@@ -538,7 +525,6 @@
         private System.Windows.Forms.GroupBox WarnBeforeProcessingGroupBox;
         private System.Windows.Forms.Label WarnBeforeProcessingSessionsLabel;
         private System.Windows.Forms.TextBox WarnBeforeAnalysingTextBox;
-        private System.Windows.Forms.CheckBox WhoisCheckBox;
         private System.Windows.Forms.Button DebugModeUpdateButton;
         private System.Windows.Forms.GroupBox ColumnsUIGroupbox;
         private System.Windows.Forms.CheckBox SessionTypeCheckbox;

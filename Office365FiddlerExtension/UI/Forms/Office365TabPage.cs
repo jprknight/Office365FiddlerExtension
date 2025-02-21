@@ -139,7 +139,6 @@ namespace Office365FiddlerExtension.UI.Forms
             CheckIPAddressGroupBox.Text = LangHelper.GetString("Check IP Address");
             CheckIPAddressButton.Text = LangHelper.GetString("Check");
             CheckIPAddressClearButton.Text = LangHelper.GetString("Clear");
-            WhoisCheckBox.Checked = extensionSettings.Whois;
 
             ExtensionVersionInformationGroupBox.Text = LangHelper.GetString("Extension Version Information");
 
@@ -336,14 +335,6 @@ namespace Office365FiddlerExtension.UI.Forms
                 {
                     CheckIPAddressResultTextBox.Text = $"{EnterIPAddressTextBox.Text} is a public IP address not within a Microsoft 365 subnet.";
                 }
-
-                var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
-
-                // If Whois lookups are enabled, go find out the organization name who owns this IP address.
-                if (extensionSettings.Whois)
-                {
-                    CheckIPAddressResultTextBox.Text += $" {LangHelper.GetString("OwnedBy")} {NetworkingService.Instance.GetWhoisOrganizationName(EnterIPAddressTextBox.Text)}";
-                }
             }
         }
 
@@ -385,12 +376,6 @@ namespace Office365FiddlerExtension.UI.Forms
                 MessageBox.Show(message, caption);
                 WarnBeforeAnalysingTextBox.Text = WarnBeforeAnalysingTextBox.Text.Remove(WarnBeforeAnalysingTextBox.Text.Length - 1);
             }   
-        }
-    
-
-        private void WhoisCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            SettingsJsonService.Instance.SetWhois(WhoisCheckBox.Checked);
         }
 
         private void DebugModeUpdateButton_Click(object sender, EventArgs e)

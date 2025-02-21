@@ -125,8 +125,8 @@ namespace Office365FiddlerExtension
                     this.MiAbout = new MenuItem($"{LangHelper.GetString("About")}", new System.EventHandler(this.MiAbout_Click));
 
                     // Add menu items to top level menu.
-                    this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { this.MiEnabled,
-                    new MenuItem("-"),
+                    this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { //this.MiEnabled,
+                    //new MenuItem("-"),
                     this.MiAnalyseAllSessions,
                     this.MiClearAllSessionAnalysis,
                     new MenuItem("-"),

@@ -153,18 +153,6 @@ namespace Office365FiddlerExtension.Services
             return false;
         }
 
-        public void SetWhois(bool whois)
-        {
-            // Pull & Deserialize Json from ExtensionSettings.
-            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
-
-            extensionSettings.Whois = whois;
-
-            // Serialize the object back into Json.
-            // Write the Json into the ExtensionSettings Fiddler setting.
-            Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
-        }
-
         /// <summary>
         /// Set next update timestamp.
         /// </summary>
@@ -648,8 +636,6 @@ namespace Office365FiddlerExtension.Services
         public bool CaptureTraffic { get; set; }
 
         public int WarnBeforeAnalysing { get; set; }
-
-        public bool Whois { get; set; }
 
         public bool ElapsedTimeColumnEnabled { get; set; }
 
