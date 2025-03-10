@@ -230,6 +230,8 @@ namespace Office365FiddlerExtension.Services
                 this.session["UI-BACKCOLOR"] = null;
                 this.session["UI-COLOR"] = null;
 
+                SetUIColourSet(false);
+
                 this.session.RefreshUI();
             }
         }
@@ -252,6 +254,8 @@ namespace Office365FiddlerExtension.Services
 
                 this.session["UI-BACKCOLOR"] = null;
                 this.session["UI-COLOR"] = null;
+
+                SetUIColourSet(false);
 
                 this.session.RefreshUI();
             }
@@ -287,6 +291,21 @@ namespace Office365FiddlerExtension.Services
             }
 
             return Tuple.Create(false,sessionsWithNoAnalysis);
+        }
+
+        /// <summary>
+        /// Function to set UIColoursSet session flag true/false. Trying to determine when this.session[ui-color] is null, not null, doesn't
+        /// have the right value was too cumbersome. This function is called when the UI colors on sessions are set or cleared.
+        /// </summary>
+        /// <param name="_value"></param>
+        public void SetUIColourSet(bool _value)
+        {
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            {
+                UIColoursSet = _value
+            };
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
         }
 
         /// <summary>
@@ -514,12 +533,7 @@ namespace Office365FiddlerExtension.Services
             {
                 updatedSessionFlagsJson.SessionResponseServerConfidenceLevel = existingSessionFlagsJson.SessionResponseServerConfidenceLevel;
             }
-
-            if (updatedSessionFlagsJson.UIColoursSet != existingSessionFlagsJson.UIColoursSet)
-            {
-                updatedSessionFlagsJson.UIColoursSet = existingSessionFlagsJson.UIColoursSet;
-            }
-
+            
             // Session Severity.
 
             // If the severity is being set and unconditional is false peform the logic check before allowing it to be updated.
@@ -552,8 +566,6 @@ namespace Office365FiddlerExtension.Services
         public class ExtensionSessionFlags
         {
             public string SectionTitle { get; set; }
-
-            public bool UITextBold { get; set; }
 
             public string SessionType { get; set; }
 
