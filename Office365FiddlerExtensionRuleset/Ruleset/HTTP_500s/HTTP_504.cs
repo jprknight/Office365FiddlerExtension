@@ -3,6 +3,8 @@ using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
+using Office365FiddlerExtension.Services;
+using System.Diagnostics;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -22,12 +24,36 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sw_HTTP_504_Gateway_Timeout_Internet_Access_Blocked = Stopwatch.StartNew();
+
             HTTP_504_Gateway_Timeout_Internet_Access_Blocked(this.session);
+
+            sw_HTTP_504_Gateway_Timeout_Internet_Access_Blocked.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_504_Gateway_Timeout_Internet_Access_Blocked");
+                TelemetryService.CustomTrackMetric("RS_HTTP_504_Gateway_Timeout_Internet_Access_Blocked", sw_HTTP_504_Gateway_Timeout_Internet_Access_Blocked.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_HTTP_504_Gateway_Timeout_Anything_Else = Stopwatch.StartNew();
+
             HTTP_504_Gateway_Timeout_Anything_Else(this.session);
+
+            sw_HTTP_504_Gateway_Timeout_Anything_Else.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_504_Gateway_Timeout_Anything_Else");
+                TelemetryService.CustomTrackMetric("RS_HTTP_504_Gateway_Timeout_Anything_Else", sw_HTTP_504_Gateway_Timeout_Anything_Else.ElapsedMilliseconds);
+            }
         }
 
         private void HTTP_504_Gateway_Timeout_Internet_Access_Blocked(Session session)

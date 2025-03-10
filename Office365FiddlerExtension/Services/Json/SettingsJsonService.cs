@@ -205,18 +205,6 @@ namespace Office365FiddlerExtension.Services
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
         }
 
-        public void SetCaptureOnStartup(bool enabled)
-        {
-            // Pull & Deserialize Json from ExtensionSettings.
-            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
-
-            extensionSettings.CaptureTraffic = enabled;
-
-            // Serialize the object back into Json.
-            // Write the Json into the ExtensionSettings Fiddler setting.
-            Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
-        }
-
         /// <summary>
         /// Set the update check frequency hours.
         /// </summary>
@@ -632,8 +620,6 @@ namespace Office365FiddlerExtension.Services
         public string PreferredLanguage { get; set; }
 
         public bool DebugMode { get; set; }
-
-        public bool CaptureTraffic { get; set; }
 
         public int WarnBeforeAnalysing { get; set; }
 

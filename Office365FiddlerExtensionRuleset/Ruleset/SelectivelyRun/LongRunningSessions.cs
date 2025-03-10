@@ -3,6 +3,8 @@ using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Diagnostics;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -30,19 +32,55 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
+            var sw_LongRunningSessionsWarning = Stopwatch.StartNew();
+
             LongRunningSessionsWarning(this.session);
+
+            sw_LongRunningSessionsWarning.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_LongRunningSessionsWarning");
+                TelemetryService.CustomTrackMetric("RS_LongRunningSessionsWarning", sw_LongRunningSessionsWarning.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_LongRunningSessionsClientSlow = Stopwatch.StartNew();
 
             LongRunningSessionsClientSlow(this.session);
+
+            sw_LongRunningSessionsClientSlow.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_LongRunningSessionsClientSlow");
+                TelemetryService.CustomTrackMetric("RS_LongRunningSessionsClientSlow", sw_LongRunningSessionsClientSlow.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+            
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
+            var sw_LongRunningSessionsServerSlow = Stopwatch.StartNew();
+
             LongRunningSessionsServerSlow(this.session);
+
+            sw_LongRunningSessionsServerSlow.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_LongRunningSessionsServerSlow");
+                TelemetryService.CustomTrackMetric("RS_LongRunningSessionsServerSlow", sw_LongRunningSessionsServerSlow.ElapsedMilliseconds);
+            }
         }
 
         /// <summary>

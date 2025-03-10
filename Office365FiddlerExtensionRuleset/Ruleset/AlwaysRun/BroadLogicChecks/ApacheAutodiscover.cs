@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtensionRuleset.Services;
 using System;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
@@ -30,6 +31,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             //
             if ((this.session.url.Contains("autodiscover") && (this.session.oResponse["server"].Contains("Apache"))))
             {
+                var sw = Stopwatch.StartNew();
+
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): {this.session.id} Apache is answering Autodiscover requests! Investigate this first!.");
 
@@ -83,6 +86,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
                 SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+
+                sw.Stop();
+
+                if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+                {
+                    TelemetryService.CustomTrackEvent("RS_ApacheAutodiscover");
+                    TelemetryService.CustomTrackMetric("RS_ApacheAutodiscover", sw.ElapsedMilliseconds);
+                }
             }
         }
     }

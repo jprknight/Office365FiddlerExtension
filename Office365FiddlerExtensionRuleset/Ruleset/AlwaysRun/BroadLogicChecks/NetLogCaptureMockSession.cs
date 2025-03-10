@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtensionRuleset.Services;
 using System;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
@@ -27,6 +28,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 return;
             }
+
+            var sw = Stopwatch.StartNew();
 
             int sessionAuthenticationConfidenceLevel = 0;
             int sessionTypeConfidenceLevel = 0;
@@ -78,6 +81,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+
+            sw.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_NetLogCaptureMockSession");
+                TelemetryService.CustomTrackMetric("RS_NetLogCaptureMockSession", sw.ElapsedMilliseconds);
+            }
         }
     }
 }

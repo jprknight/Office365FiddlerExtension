@@ -2,6 +2,8 @@
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Diagnostics;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -22,43 +24,131 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sw_SetResponseServer_Server = Stopwatch.StartNew();
+
             SetResponseServer_Server(this.session);
+
+            sw_SetResponseServer_Server.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetResponseServer_Server");
+                TelemetryService.CustomTrackMetric("RS_SetResponseServer_Server", sw_SetResponseServer_Server.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionResponseServerConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_SetResponseServer_Host = Stopwatch.StartNew();
 
             SetResponseServer_Host(this.session);
+
+            sw_SetResponseServer_Host.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetResponseServer_Host");
+                TelemetryService.CustomTrackMetric("RS_SetResponseServer_Host", sw_SetResponseServer_Host.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionResponseServerConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_SetResponseServer_PoweredBy = Stopwatch.StartNew();
 
             SetResponseServer_PoweredBy(this.session);
+
+            sw_SetResponseServer_PoweredBy.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetResponseServer_PoweredBy");
+                TelemetryService.CustomTrackMetric("RS_SetResponseServer_PoweredBy", sw_SetResponseServer_PoweredBy.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionResponseServerConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_SetResponseServer_ServedBy = Stopwatch.StartNew();
 
             SetResponseServer_ServedBy(this.session);
+
+            sw_SetResponseServer_ServedBy.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetResponseServer_ServedBy");
+                TelemetryService.CustomTrackMetric("RS_SetResponseServer_ServedBy", sw_SetResponseServer_ServedBy.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionResponseServerConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_SetResponseServer_ServerName = Stopwatch.StartNew();
 
             SetResponseServer_ServerName(this.session);
+
+            sw_SetResponseServer_ServerName.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetResponseServer_ServerName");
+                TelemetryService.CustomTrackMetric("RS_SetResponseServer_ServerName", sw_SetResponseServer_ServerName.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionResponseServerConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_SetResponseServer_CDN = Stopwatch.StartNew();
 
             SetResponseServer_CDN(this.session);
+
+            sw_SetResponseServer_CDN.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetResponseServer_CDN");
+                TelemetryService.CustomTrackMetric("RS_SetResponseServer_CDN", sw_SetResponseServer_CDN.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionResponseServerConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
+            var sw_SetResponseServer_Unknown = Stopwatch.StartNew();
+
             SetResponseServer_Unknown(this.session);
+
+            sw_SetResponseServer_Unknown.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetResponseServer_Unknown");
+                TelemetryService.CustomTrackMetric("RS_SetResponseServer_Unknown", sw_SetResponseServer_Unknown.ElapsedMilliseconds);
+            }
         }
 
         /// <summary>

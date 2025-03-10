@@ -3,6 +3,8 @@ using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Diagnostics;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -22,28 +24,73 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sw_HTTP_500_Internal_Server_Error_Repeating_Redirects = Stopwatch.StartNew();
+
             HTTP_500_Internal_Server_Error_Repeating_Redirects(this.session);
+
+            sw_HTTP_500_Internal_Server_Error_Repeating_Redirects.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_500_Internal_Server_Error_Repeating_Redirects");
+                TelemetryService.CustomTrackMetric("RS_HTTP_500_Internal_Server_Error_Repeating_Redirects", sw_HTTP_500_Internal_Server_Error_Repeating_Redirects.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_HTTP_500_Internal_Server_Error_Impersonate_User_Denied = Stopwatch.StartNew();
 
             HTTP_500_Internal_Server_Error_Impersonate_User_Denied(this.session);
+
+            sw_HTTP_500_Internal_Server_Error_Impersonate_User_Denied.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_500_Internal_Server_Error_Impersonate_User_Denied");
+                TelemetryService.CustomTrackMetric("RS_HTTP_500_Internal_Server_Error_Impersonate_User_Denied", sw_HTTP_500_Internal_Server_Error_Impersonate_User_Denied.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong = Stopwatch.StartNew();
 
             HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong(this.session);
+
+            sw_HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong");
+                TelemetryService.CustomTrackMetric("RS_HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong", sw_HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
+            var sw_HTTP_500_Internal_Server_Error_All_Others = Stopwatch.StartNew();
+
             HTTP_500_Internal_Server_Error_All_Others(this.session);
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+
+            sw_HTTP_500_Internal_Server_Error_All_Others.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
-                return;
+                TelemetryService.CustomTrackEvent("RS_HTTP_500_Internal_Server_Error_All_Others");
+                TelemetryService.CustomTrackMetric("RS_HTTP_500_Internal_Server_Error_All_Others", sw_HTTP_500_Internal_Server_Error_All_Others.ElapsedMilliseconds);
             }
         }
 

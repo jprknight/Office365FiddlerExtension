@@ -3,6 +3,8 @@ using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Diagnostics;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -22,12 +24,36 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sw_HTTP_302_Redirect_AutoDiscover = Stopwatch.StartNew();
+
             HTTP_302_Redirect_AutoDiscover(this.session);
+
+            sw_HTTP_302_Redirect_AutoDiscover.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_302_Redirect_AutoDiscover");
+                TelemetryService.CustomTrackMetric("RS_HTTP_302_Redirect_AutoDiscover", sw_HTTP_302_Redirect_AutoDiscover.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_HTTP_302_Redirect_AllOthers = Stopwatch.StartNew();
+
             HTTP_302_Redirect_AllOthers(this.session);
+
+            sw_HTTP_302_Redirect_AllOthers.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_302_Redirect_AllOthers");
+                TelemetryService.CustomTrackMetric("RS_HTTP_302_Redirect_AllOthers", sw_HTTP_302_Redirect_AllOthers.ElapsedMilliseconds);
+            }
         }
 
         private void HTTP_302_Redirect_AutoDiscover(Session session)

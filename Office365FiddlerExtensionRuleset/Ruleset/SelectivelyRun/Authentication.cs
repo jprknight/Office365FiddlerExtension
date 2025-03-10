@@ -3,6 +3,8 @@ using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Diagnostics;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -22,46 +24,130 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sw_SetAuthentication_NoAuthHeaders = Stopwatch.StartNew();
+
             SetAuthentication_NoAuthHeaders(this.session);
+
+            sw_SetAuthentication_NoAuthHeaders.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetAuthentication_NoAuthHeaders");
+                TelemetryService.CustomTrackMetric("RS_SetAuthentication_NoAuthHeaders", sw_SetAuthentication_NoAuthHeaders.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+            
             if (RulesetUtilities.Instance.StopProcessing_SessionAuthenticationConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_SetAuthentication_SAML_Parser = Stopwatch.StartNew();
 
             SetAuthentication_SAML_Parser(this.session);
+
+            sw_SetAuthentication_SAML_Parser.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetAuthentication_SAML_Parser");
+                TelemetryService.CustomTrackMetric("RS_SetAuthentication_SAML_Parser", sw_SetAuthentication_SAML_Parser.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+            
             if (RulesetUtilities.Instance.StopProcessing_SessionAuthenticationConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_SetAuthentication_Basic_Modern_Auth_Disabled = Stopwatch.StartNew();
 
             SetAuthentication_Basic_Modern_Auth_Disabled(this.session);
+
+            sw_SetAuthentication_Basic_Modern_Auth_Disabled.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetAuthentication_Basic_Modern_Auth_Disabled");
+                TelemetryService.CustomTrackMetric("RS_SetAuthentication_Basic_Modern_Auth_Disabled", sw_SetAuthentication_Basic_Modern_Auth_Disabled.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+            
             if (RulesetUtilities.Instance.StopProcessing_SessionAuthenticationConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_SetAuthentication_Modern_Auth_Capable_Client = Stopwatch.StartNew();
 
             SetAuthentication_Modern_Auth_Capable_Client(this.session);
+
+            sw_SetAuthentication_Modern_Auth_Capable_Client.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetAuthentication_Modern_Auth_Capable_Client");
+                TelemetryService.CustomTrackMetric("RS_SetAuthentication_Modern_Auth_Capable_Client", sw_SetAuthentication_Modern_Auth_Capable_Client.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionAuthenticationConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_SetAuthentication_Modern_Auth_Client_Using_Token = Stopwatch.StartNew();
 
             SetAuthentication_Modern_Auth_Client_Using_Token(this.session);
+
+            sw_SetAuthentication_Modern_Auth_Client_Using_Token.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetAuthentication_Modern_Auth_Client_Using_Token");
+                TelemetryService.CustomTrackMetric("RS_SetAuthentication_Modern_Auth_Client_Using_Token", sw_SetAuthentication_Modern_Auth_Client_Using_Token.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionAuthenticationConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_SetAuthentication_Basic_Auth_Capable_Client = Stopwatch.StartNew();
 
             SetAuthentication_Basic_Auth_Capable_Client(this.session);
+
+            sw_SetAuthentication_Basic_Auth_Capable_Client.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetAuthentication_Basic_Auth_Capable_Client");
+                TelemetryService.CustomTrackMetric("RS_SetAuthentication_Basic_Auth_Capable_Client", sw_SetAuthentication_Basic_Auth_Capable_Client.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionAuthenticationConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
+            var sw_SetAuthentication_Basic_Auth_Client_Using_Token = Stopwatch.StartNew();
+
             SetAuthentication_Basic_Auth_Client_Using_Token(this.session);
-            if (RulesetUtilities.Instance.StopProcessing_SessionAuthenticationConfidenceLevel_Ten(this.session))
+
+            sw_SetAuthentication_Basic_Auth_Client_Using_Token.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
-                return;
+                TelemetryService.CustomTrackEvent("RS_SetAuthentication_Basic_Auth_Client_Using_Token");
+                TelemetryService.CustomTrackMetric("RS_SetAuthentication_Basic_Auth_Client_Using_Token", sw_SetAuthentication_Basic_Auth_Client_Using_Token.ElapsedMilliseconds);
             }
         }
 

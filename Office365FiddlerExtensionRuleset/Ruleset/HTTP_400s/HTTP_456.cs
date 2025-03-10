@@ -3,6 +3,8 @@ using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Diagnostics;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -22,19 +24,55 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sw_HTTP_456_Multi_Factor_Required = Stopwatch.StartNew();
+
             HTTP_456_Multi_Factor_Required(this.session);
+
+            sw_HTTP_456_Multi_Factor_Required.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_456_Multi_Factor_Required");
+                TelemetryService.CustomTrackMetric("RS_HTTP_456_Multi_Factor_Required", sw_HTTP_456_Multi_Factor_Required.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_456_OAuth_Not_Available = Stopwatch.StartNew();
 
             HTTP_456_OAuth_Not_Available(this.session);
+
+            sw_456_OAuth_Not_Available.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_456_OAuth_Not_Available");
+                TelemetryService.CustomTrackMetric("RS_HTTP_456_OAuth_Not_Available", sw_456_OAuth_Not_Available.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
+            var sw_HTTP_456_Anything_Else = Stopwatch.StartNew();
+
             HTTP_456_Anything_Else(this.session);
+
+            sw_HTTP_456_Anything_Else.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_456_Anything_Else");
+                TelemetryService.CustomTrackMetric("RS_HTTP_456_Anything_Else", sw_HTTP_456_Anything_Else.ElapsedMilliseconds);
+            }
         }
 
         private void HTTP_456_Multi_Factor_Required(Session session)

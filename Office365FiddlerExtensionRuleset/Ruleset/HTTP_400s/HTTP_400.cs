@@ -3,6 +3,8 @@ using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Diagnostics;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -22,12 +24,36 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sw_HTTP_400_Cloud_Authentication = Stopwatch.StartNew();
+
             HTTP_400_Cloud_Authentication(this.session);
+
+            sw_HTTP_400_Cloud_Authentication.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_400_Cloud_Authentication");
+                TelemetryService.CustomTrackMetric("RS_HTTP_400_Cloud_Authentication", sw_HTTP_400_Cloud_Authentication.ElapsedMilliseconds);
+            }
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            ///////////////////////////////
+
+            var sw_HTTP_400_Everything_Else = Stopwatch.StartNew();
+
             HTTP_400_Everything_Else(this.session);
+
+            sw_HTTP_400_Everything_Else.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_400_Everything_Else");
+                TelemetryService.CustomTrackMetric("RS_HTTP_400_Everything_Else", sw_HTTP_400_Everything_Else.ElapsedMilliseconds);
+            }
         }
 
         public void HTTP_400_Cloud_Authentication(Session session)

@@ -68,6 +68,20 @@ namespace Office365FiddlerExtension.Services
             Preferences.ExtensionVersion = jsonData;
         }
 
+        public string GetExtensionVersion()
+        {
+            var ExtensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
+
+            return $"{ExtensionVersion.ExtensionMajor}.{ExtensionVersion.ExtensionMinor}.{ExtensionVersion.ExtensionBuild}";             
+        }
+
+        public string GetRulesetVersion()
+        {
+            var ExtensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
+
+            return $"{ExtensionVersion.RulesetMajor}.{ExtensionVersion.RulesetMinor}.{ExtensionVersion.RulesetBuild}";
+        }
+
         public class ExtensionVersionFlags
         {
             public int ExtensionMajor { get; set; }

@@ -1,19 +1,20 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Fiddler;
 using Microsoft.ApplicationInsights;
-using System.Management;
-using System.Text;
-using Fiddler;
-using System.Linq;
-using System.Reflection;
+using Microsoft.ApplicationInsights.Extensibility;
+using System;
 using System.Diagnostics;
+using System.Linq;
+using System.Management;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Office365FiddlerExtension.Services
 {
     /// <summary>
     /// Class to initialize and run telemetry.
     /// </summary>
-    
+
     public partial class TelemetryService
     {
 
@@ -23,10 +24,10 @@ namespace Office365FiddlerExtension.Services
         /// <summary>
         /// Instrumentation Key used to communicate with Azure Application Insights.
         /// </summary>
-        
+
         // Pull telemetry instrumentation key from Json.
         private static readonly string iKey = URLsJsonService.Instance.GetDeserializedExtensionURLs().TelemetryInstrumentationKey;
-        
+
         /// <summary>
         /// Azure Application Insights Telemetry client.
         /// </summary>
@@ -35,7 +36,11 @@ namespace Office365FiddlerExtension.Services
         /// <summary>
         /// Property to hold a static reference of the unique user ID.
         /// </summary>
-        private static string UUID { get; set; }
+        //private static string UUID { get; set; }
+
+        private static string SessionID = Guid.NewGuid().ToString();
+
+        private static string OS = Environment.OSVersion.ToString();
 
         /// <summary>
         /// Property to track whether or not the client has been initialized.
@@ -71,23 +76,7 @@ namespace Office365FiddlerExtension.Services
                 {
                     ExceptionCounter = 0;
 
-                    //Client = new TelemetryClient();
-                    Client = new TelemetryClient
-                    {
-                        InstrumentationKey = iKey
-                    };
-
-                    UUID = await GetComputerUUID();
-
-                    Client.Context.User.Id = UUID;
-
-                    Client.Context.Session.Id = Guid.NewGuid().ToString();
-
-                    Client.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
-
-                    Client.Context.Component.Version = AppVersion;
-
-                    TrackEvent("UserSession");
+                    CustomTrackEvent("FiddlerApplicationStart");
 
                     IsInitialized = true;
                 }
@@ -98,12 +87,74 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
+        public async static void CustomTrackMetric(string _string, long _value)
+        {
+            try
+            {
+                Client = new TelemetryClient
+                {
+                    InstrumentationKey = iKey
+                };
+
+                //UUID = await GetComputerUUID();
+
+                //Client.Context.User.Id = UUID;
+
+                Client.Context.Session.Id = SessionID;
+
+                Client.Context.Device.OperatingSystem = OS;
+
+                Client.Context.Component.Version = $"{VersionJsonService.Instance.GetExtensionVersion()} / " +
+                    $"{VersionJsonService.Instance.GetRulesetVersion()}";
+
+                Client.TrackMetric(_string, _value);
+
+                //await FlushClientAsync();
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (TelemetryService): {ex}");
+            }
+        }
+
+        public async static void CustomTrackEvent(string _value)
+        {
+            try
+            {
+                Client = new TelemetryClient
+                {
+                    InstrumentationKey = iKey
+                };
+
+                //UUID = await GetComputerUUID();
+
+                //Client.Context.User.Id = UUID;
+
+                Client.Context.Session.Id = SessionID;
+
+                Client.Context.Device.OperatingSystem = OS;
+
+                Client.Context.Component.Version = $"{VersionJsonService.Instance.GetExtensionVersion()} / " +
+                    $"{VersionJsonService.Instance.GetRulesetVersion()}";
+
+                Client.TrackEvent(_value);
+
+                // Leaving this commented. It is run multiple times, so is detrimental to performance.
+                // await FlushClientAsync();
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (TelemetryService): {ex}");
+                ExceptionCounter++;
+            }            
+        }
+
         /// <summary>
         /// Method to call and track events from other portions of the application.
         /// </summary>
         /// <param name="EventName">Name of the event you want to track. This is required.</param>
         /// <returns>Task Completion Event.</returns>
-        public async static void TrackEvent(string _value)
+        public async static void dfsTrackEvent(string _value)
         {
             try
             {
@@ -120,16 +171,10 @@ namespace Office365FiddlerExtension.Services
                 ExceptionCounter++;
             }
         }
+        
 
         public async static Task FlushClientAsync()
         {
-            var ExtensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
-
-            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
-            {
-                return;
-            }
-
             try
             {
                 Client.Flush();
@@ -180,7 +225,8 @@ namespace Office365FiddlerExtension.Services
             }
             catch
             {
-                userName = CreateMD5(Environment.UserName + Environment.MachineName);
+                userName = CreateMD5(Environment.MachineName);
+                //userName = CreateMD5(Environment.UserName + Environment.MachineName);
                 // TODO add exception logic.
             }
             return Task.FromResult(userName);

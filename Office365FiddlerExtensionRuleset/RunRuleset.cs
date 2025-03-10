@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Fiddler;
+using Office365FiddlerExtension.Services;
 using Office365FiddlerExtensionRuleset.Ruleset;
 
 namespace Office365FiddlerExtensionRuleset

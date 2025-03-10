@@ -3,6 +3,8 @@ using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Diagnostics;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -22,24 +24,74 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sw_HTTP_403_Forbidden_Proxy_Block = Stopwatch.StartNew();
+
             HTTP_403_Forbidden_Proxy_Block(this.session);
+
+            sw_HTTP_403_Forbidden_Proxy_Block.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_403_Forbidden_Proxy_Block");
+                TelemetryService.CustomTrackMetric("RS_HTTP_403_Forbidden_Proxy_Block", sw_HTTP_403_Forbidden_Proxy_Block.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set = Stopwatch.StartNew();
 
             HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set(this.session);
+
+            sw_HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set");
+                TelemetryService.CustomTrackMetric("RS_HTTP_403_ForbiHTTP_403_Forbidden_EWS_Mailbox_Language_Not_Setdden_Proxy_Block", sw_HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
+            var sw_HTTP_403_FreeBusy_Request_Failed_Forbidden = Stopwatch.StartNew();
+
             HTTP_403_FreeBusy_Request_Failed_Forbidden(this.session);
+
+            sw_HTTP_403_FreeBusy_Request_Failed_Forbidden.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_403_FreeBusy_Request_Failed_Forbidden");
+                TelemetryService.CustomTrackMetric("RS_HTTP_403_FreeBusy_Request_Failed_Forbidden", sw_HTTP_403_FreeBusy_Request_Failed_Forbidden.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_HTTP_403_Forbidden_Everything_Else = Stopwatch.StartNew();
+
             HTTP_403_Forbidden_Everything_Else(this.session);
+
+            sw_HTTP_403_Forbidden_Everything_Else.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_403_Forbidden_Everything_Else");
+                TelemetryService.CustomTrackMetric("RS_HTTP_403_Forbidden_Everything_Else", sw_HTTP_403_Forbidden_Everything_Else.ElapsedMilliseconds);
+            }
         }
 
         private void HTTP_403_Forbidden_Proxy_Block(Session session)

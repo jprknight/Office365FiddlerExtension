@@ -2,6 +2,8 @@
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Diagnostics;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -27,49 +29,151 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 return;
             }
+
+            var sw_SetSessionType_Microsoft365_EWS = Stopwatch.StartNew();
+
             SetSessionType_Microsoft365_EWS(this.session);
+
+            sw_SetSessionType_Microsoft365_EWS.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetSessionType_Microsoft365_EWS");
+                TelemetryService.CustomTrackMetric("RS_SetSessionType_Microsoft365_EWS", sw_SetSessionType_Microsoft365_EWS.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_SetSessionType_EWS = Stopwatch.StartNew();
 
             SetSessionType_EWS(this.session);
+
+            sw_SetSessionType_EWS.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetSessionType_EWS");
+                TelemetryService.CustomTrackMetric("RS_SetSessionType_EWS", sw_SetSessionType_EWS.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_SetSessionType_Microsoft365_Authentication = Stopwatch.StartNew();
 
             SetSessionType_Microsoft365_Authentication(this.session);
+
+            sw_SetSessionType_Microsoft365_Authentication.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetSessionType_Microsoft365_Authentication");
+                TelemetryService.CustomTrackMetric("RS_SetSessionType_Microsoft365_Authentication", sw_SetSessionType_Microsoft365_Authentication.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_SetSessionType_ADFS_Authentication = Stopwatch.StartNew();
 
             SetSessionType_ADFS_Authentication(this.session);
+
+            sw_SetSessionType_ADFS_Authentication.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetSessionType_ADFS_Authentication");
+                TelemetryService.CustomTrackMetric("RS_SetSessionType_ADFS_Authentication", sw_SetSessionType_ADFS_Authentication.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_SetSessionType_General_Microsoft365 = Stopwatch.StartNew();
 
             SetSessionType_General_Microsoft365(this.session);
+
+            sw_SetSessionType_General_Microsoft365.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetSessionType_General_Microsoft365");
+                TelemetryService.CustomTrackMetric("RS_SetSessionType_General_Microsoft365", sw_SetSessionType_General_Microsoft365.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_SetSessionType_Office_Applications = Stopwatch.StartNew();
 
             SetSessionType_Office_Applications(this.session);
+
+            sw_SetSessionType_Office_Applications.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetSessionType_Office_Applications");
+                TelemetryService.CustomTrackMetric("RS_SetSessionType_Office_Applications", sw_SetSessionType_Office_Applications.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_SetSessionType_Internet_Browsers = Stopwatch.StartNew();
 
             SetSessionType_Internet_Browsers(this.session);
+
+            sw_SetSessionType_Internet_Browsers.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetSessionType_Internet_Browsers");
+                TelemetryService.CustomTrackMetric("RS_SetSessionType_Internet_Browsers", sw_SetSessionType_Internet_Browsers.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
+            var sw_SetSessionType_Unknown = Stopwatch.StartNew();
+
             SetSessionType_Unknown(this.session);
+
+            sw_SetSessionType_Unknown.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetSessionType_Unknown");
+                TelemetryService.CustomTrackMetric("RS_SetSessionType_Unknown", sw_SetSessionType_Unknown.ElapsedMilliseconds);
+            }
         }
 
         /// <summary>

@@ -3,6 +3,8 @@ using Newtonsoft.Json;
 using System.Reflection;
 using Office365FiddlerExtensionRuleset.Services;
 using System;
+using System.Diagnostics;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -22,12 +24,22 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sw = Stopwatch.StartNew();
+            
             HTTP_0_NoSessionResponse(this.session);
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
             HTTP_0_OWA_Notification_Channel(this.session);
+
+            sw.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_0");
+                TelemetryService.CustomTrackMetric("RS_HTTP_0", sw.ElapsedMilliseconds);
+            }
         }
 
         private void HTTP_0_NoSessionResponse(Session session)

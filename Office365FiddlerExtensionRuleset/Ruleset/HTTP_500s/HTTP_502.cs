@@ -4,6 +4,7 @@ using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
 using Office365FiddlerExtension.Services;
+using System.Diagnostics;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -23,37 +24,112 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sw_HTTP_502_Bad_Gateway_Telemetry_False_Positive = Stopwatch.StartNew();
+
             HTTP_502_Bad_Gateway_Telemetry_False_Positive(this.session);
+
+            sw_HTTP_502_Bad_Gateway_Telemetry_False_Positive.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_502_Bad_Gateway_Telemetry_False_Positive");
+                TelemetryService.CustomTrackMetric("RS_HTTP_502_Bad_Gateway_Telemetry_False_Positive", sw_HTTP_502_Bad_Gateway_Telemetry_False_Positive.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive = Stopwatch.StartNew();
 
             HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive(this.session);
+
+            sw_HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive");
+                TelemetryService.CustomTrackMetric("RS_HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive", sw_HTTP_502_Bad_Gateway_EXO_DNS_Lookup_False_Positive.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive = Stopwatch.StartNew();
 
             HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive(this.session);
+
+            sw_HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive");
+                TelemetryService.CustomTrackMetric("RS_HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive", sw_HTTP_502_Bad_Gateway_EXO_AutoDiscover_False_Positive.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_HTTP_502_Bad_Gateway_AutoDiscover_Refused_By_EXO_Vanity_Domain = Stopwatch.StartNew();
 
             HTTP_502_Bad_Gateway_AutoDiscover_Refused_By_EXO_Vanity_Domain(this.session);
+
+            sw_HTTP_502_Bad_Gateway_AutoDiscover_Refused_By_EXO_Vanity_Domain.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_502_Bad_Gateway_AutoDiscover_Refused_By_EXO_Vanity_Domain");
+                TelemetryService.CustomTrackMetric("RS_HTTP_502_Bad_Gateway_AutoDiscover_Refused_By_EXO_Vanity_Domain", sw_HTTP_502_Bad_Gateway_AutoDiscover_Refused_By_EXO_Vanity_Domain.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover = Stopwatch.StartNew();
 
             HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover(this.session);
+
+            sw_HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover");
+                TelemetryService.CustomTrackMetric("RS_HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover", sw_HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
+            var sw_HTTP_502_Bad_Gateway_Anything_Else = Stopwatch.StartNew();
+
             HTTP_502_Bad_Gateway_Anything_Else(this.session);
+
+            sw_HTTP_502_Bad_Gateway_Anything_Else.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_502_Bad_Gateway_Anything_Else");
+                TelemetryService.CustomTrackMetric("RS_HTTP_502_Bad_Gateway_Anything_Else", sw_HTTP_502_Bad_Gateway_Anything_Else.ElapsedMilliseconds);
+            }
         }
 
         private void HTTP_502_Bad_Gateway_Telemetry_False_Positive(Session session)

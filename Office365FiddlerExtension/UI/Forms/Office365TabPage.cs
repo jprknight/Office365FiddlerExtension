@@ -3,7 +3,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Office365FiddlerExtension.Services;
-using static System.Windows.Forms.TabControl;
+using System.Runtime.CompilerServices;
 
 namespace Office365FiddlerExtension.UI.Forms
 {
@@ -14,6 +14,7 @@ namespace Office365FiddlerExtension.UI.Forms
         public static Office365TabPage Instance => _instance ?? (_instance = new Office365TabPage());
 
         string strPlaceHolderText = LangHelper.GetString("Check IP Address Placeholder Text");
+
 
         public Office365TabPage()
         {
@@ -28,7 +29,7 @@ namespace Office365FiddlerExtension.UI.Forms
         public void UpdateUIControls()
         {
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
-
+            
             ExtensionEnabledCheckBox.Checked = extensionSettings.ExtensionSessionProcessingEnabled;
 
             AnalyseAllSessionsButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
@@ -39,27 +40,11 @@ namespace Office365FiddlerExtension.UI.Forms
             CreateConsolidatedAnalysisButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
         }
 
+
+
         private void Office365TabPage_Load(object sender, EventArgs e)
         {
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
-
-            if (extensionSettings.NeverWebCall)
-            {
-                CheckIPAddressGroupBox.Enabled = false;
-                EnterIPAddressTextBox.Text = LangHelper.GetString("NeverWebCall_FeatureDisabled");
-                CheckIPAddressResultTextBox.Text = LangHelper.GetString("NeverWebCall_FeatureDisabled");
-            }
-            else
-            {
-                CheckIPAddressGroupBox.Enabled = true;
-                EnterIPAddressTextBox.Text = "";
-                CheckIPAddressResultTextBox.Text = "";
-                // Make sure the text box has placeholder text on load since it'll be empty.
-                SetPlaceHolderText();
-            }
-
-            EnterIPAddressTextBox.GotFocus += RemovePlaceholderText;
-            EnterIPAddressTextBox.LostFocus += AddPlaceholderText;
 
             ///////////////////
             ///
@@ -135,10 +120,6 @@ namespace Office365FiddlerExtension.UI.Forms
             ClearSelectedSessionAnalysisButton.Text = LangHelper.GetString("Clear Selected Sessions Anaysis");
 
             CreateConsolidatedAnalysisButton.Text = LangHelper.GetString("Create Consolidated Analysis Report");
-
-            CheckIPAddressGroupBox.Text = LangHelper.GetString("Check IP Address");
-            CheckIPAddressButton.Text = LangHelper.GetString("Check");
-            CheckIPAddressClearButton.Text = LangHelper.GetString("Clear");
 
             ExtensionVersionInformationGroupBox.Text = LangHelper.GetString("Extension Version Information");
 
@@ -226,32 +207,6 @@ namespace Office365FiddlerExtension.UI.Forms
             }
         }
 
-        public void AddPlaceholderText(object sender, EventArgs e)
-        {
-            SetPlaceHolderText();
-        }
-
-        public void RemovePlaceholderText(object sender, EventArgs e)
-        {
-            SetPlaceHolderText();
-        }
-
-        public void SetPlaceHolderText()
-        {
-            if (String.IsNullOrWhiteSpace(EnterIPAddressTextBox.Text))
-            {
-                EnterIPAddressTextBox.ForeColor = Color.Gray;
-                EnterIPAddressTextBox.Font = new Font(EnterIPAddressTextBox.Font, FontStyle.Italic);
-                EnterIPAddressTextBox.Text = strPlaceHolderText;
-            }
-            else if (EnterIPAddressTextBox.Text == strPlaceHolderText)
-            {
-                EnterIPAddressTextBox.ForeColor = Color.Black;
-                EnterIPAddressTextBox.Font = new Font(EnterIPAddressTextBox.Font, FontStyle.Regular);
-                EnterIPAddressTextBox.Text = "";
-            }
-        }
-
         private void ExtensionEnabledCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(ExtensionEnabledCheckBox.Checked);
@@ -301,48 +256,6 @@ namespace Office365FiddlerExtension.UI.Forms
         private void CreateConsolidatedAnalysisButton_Click(object sender, EventArgs e)
         {
             ConsolidatedAnalysisReportService.Instance.CreateCAR();
-        }
-
-        private void CheckIPAddressButton_Click(object sender, EventArgs e)
-        {
-            if (!NetworkingService.Instance.IsValidIPAddress(EnterIPAddressTextBox.Text))
-            {
-                CheckIPAddressResultTextBox.Text = $"{EnterIPAddressTextBox.Text} {LangHelper.GetString("IsNotAValidIPAddress")}";
-                EnterIPAddressTextBox.Text = "";
-                SetPlaceHolderText();
-                return;
-            }
-
-            Tuple<bool, string> tupleIsPrivateIPAddress = NetworkingService.Instance.IsPrivateIPAddress(EnterIPAddressTextBox.Text);
-
-            // IP address is in a private subnet.
-            if (tupleIsPrivateIPAddress.Item1)
-            {
-                CheckIPAddressResultTextBox.Text = $"{EnterIPAddressTextBox.Text} is within a private {tupleIsPrivateIPAddress.Item2} network";
-            }
-            // IP address is not in a private subnet.
-            else
-            {
-                Tuple<bool, string> tupleIsMicrosoftIPAddress = NetworkingService.Instance.IsMicrosoft365IPAddress(EnterIPAddressTextBox.Text);
-
-                // IP address is a Microsoft 365 IP address.
-                if (tupleIsMicrosoftIPAddress.Item1)
-                {
-                    CheckIPAddressResultTextBox.Text = $"{EnterIPAddressTextBox.Text} is within the Microsoft 365 subnet {tupleIsMicrosoftIPAddress.Item2}";
-                }
-                // IP address is not a Microsoft 365 IP address.
-                else
-                {
-                    CheckIPAddressResultTextBox.Text = $"{EnterIPAddressTextBox.Text} is a public IP address not within a Microsoft 365 subnet.";
-                }
-            }
-        }
-
-        private void CheckIPAddressClearButton_Click(object sender, EventArgs e)
-        {
-            EnterIPAddressTextBox.Text = "";
-            SetPlaceHolderText();
-            CheckIPAddressResultTextBox.Text = "";
         }
 
         private void UpdateLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -458,118 +371,15 @@ namespace Office365FiddlerExtension.UI.Forms
             FiddlerApplication.UI.tabsViews.TabPages.Add(oPage);
         }
 
-        // REVIEW THIS.
-        //
-        // Attempting to get the Enable/Disable menu item to effect the Tab Page.
-        public void Refresh()
-        {
-            
-
-            TabPageCollection tabPages = FiddlerApplication.UI.tabsViews.TabPages;
-
-            foreach (TabPage tabpage in tabPages)
-            {
-                if (tabpage.Text.Equals(LangHelper.GetString("Office 365 Fiddler Extension")))
-                {
-
-                    //tabpage.Invalidate();
-                    //tabpage.Dispose();
-                    //tabpage.Update();
-                    //tabpage.Refresh();
-
-                    //tabpage.Select();
-
-                    
-
-                    //string message = $"You hit the refresh function. {tabpage.Text}";
-                    //string caption = "Refresh";
-                    //MessageBoxButtons buttons = MessageBoxButtons.OK;
-                    //DialogResult result;
-
-                    // Displays the MessageBox.
-                    //result = MessageBox.Show(message, caption, buttons);
-
-                    // This code gets into the tabpage, but none of these things can trigger a UI
-                    // update of the enabled / disabled checkbox.
-                    // The only thing I've successfully been able to do is trigger a dispose event
-                    // which removes the tab page from the application.
-
-                    //tabpage.Dispose();
-
-                    //Office365TabPage.Instance.UpdateUIControls();
-
-                    //Office365TabPage.Instance.InvertExtensionEnabledCheckbox();
-
-                    //tabpage.Invalidate();
-                    //tabpage.Update();
-
-                    //tabpage.Controls.Clear();
-                    //tabpage.Controls.Add(oView);
-                    //tabpage.Controls.update();
-
-                    //tabpage.Invalidate();
-                    //tabpage.Refresh();
-
-                }
-            }
-        }
-
         /// <summary>
         /// Throwing the kitchen sink at trying to get the tab control to update from outside of a direct click on the tab control.
         /// With the below the UI switches to the tab page, the value of the extension enabled checkbox is changing from start to
         /// finish, just that the UI does not update the checkbox to complete the process.
         /// </summary>
-        public void UpdateOPage()
-        {
-            TabPageCollection tabPages = FiddlerApplication.UI.tabsViews.TabPages;
-
-            foreach (TabPage tabpage in tabPages)
-            {
-                if (tabpage.Text.Equals(LangHelper.GetString("Office 365 Fiddler Extension")))
-                {
-                    FiddlerObject.prompt($"Updating: {tabpage.Text}: {Office365TabPage.Instance.GetExtensionEnabledCheckbox()}");
-
-                    tabpage.Show();
-                    tabpage.BringToFront();
-                    tabpage.Select();
-                    tabpage.Focus();
-                    //tabpage.Invalidate();
-                    tabpage.Refresh();
-                    tabpage.Update();
-                    
-                    //oView.Invalidate();
-                    oView.Focus();
-                    oView.Select();
-                    oView.Refresh();
-                    oView.Update();
-
-                    //oPage.Invalidate();
-                    oPage.Focus();
-                    oPage.Select();
-                    oPage.Refresh();
-                    oPage.Update();
-
-                    oPage.Controls.Add(oView);
-
-                    Office365TabPage.Instance.UpdateUIControls();
-                    
-                    FiddlerObject.prompt($"Updated: {tabpage.Text}: {Office365TabPage.Instance.GetExtensionEnabledCheckbox()}");
-                }
-            }
-        }
 
         public void OnBeforeUnload()
         {
-            TabPageCollection tabPages = FiddlerApplication.UI.tabsViews.TabPages;
-
-            foreach (TabPage tabpage in tabPages)
-            {
-                if (tabpage.Text.Equals(LangHelper.GetString("Office 365 Fiddler Extension")))
-                {
-                    tabpage.Dispose();
-                }
-
-            }
+            oPage.Dispose();
         }
 
         public Office365FiddlerExtensionTabPage()
@@ -580,6 +390,43 @@ namespace Office365FiddlerExtension.UI.Forms
             oView.Dock = DockStyle.Fill;
 
             oPage.Controls.Add(oView);
+        }
+
+        public static void UIInvoke()
+        {
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            //FiddlerObject.prompt($"{extensionSettings.ExtensionSessionProcessingEnabled}");
+
+            TabPageUIInvoke(Office365TabPage.Instance.UpdateUIControls);
+
+            var extensionSettings2 = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            //FiddlerObject.prompt($"{extensionSettings2.ExtensionSessionProcessingEnabled}");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="target"></param>
+        public static void TabPageUIInvoke(MethodInvoker target)
+        {
+            if (FiddlerApplication.isClosing)
+            {
+                return;
+            }
+
+            if (FiddlerApplication.UI.InvokeRequired)
+            {
+                //FiddlerObject.prompt($"Invoke REQUIRED; invoking.");
+                FiddlerApplication.UI.Invoke(target);
+                FiddlerApplication.UI.BeginInvoke(target);
+            }
+            else
+            {
+                target.Invoke();
+                //FiddlerObject.prompt($"Invoke NOT REQUIRED; invoking.");
+            }
         }
     }
 }

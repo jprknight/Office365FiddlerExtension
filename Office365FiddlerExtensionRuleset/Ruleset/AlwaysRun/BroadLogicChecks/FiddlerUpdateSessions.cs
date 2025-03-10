@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtensionRuleset.Services;
 using System;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
@@ -25,6 +26,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             if (this.session.hostname == "www.fiddler2.com" && this.session.uriContains("UpdateCheck.aspx"))
             {
+                var sw = Stopwatch.StartNew();
+
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): {this.session.id} Fiddler Updates.");
 
@@ -79,6 +82,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
                 SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+
+                sw.Stop();
+
+                if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+                {
+                    TelemetryService.CustomTrackEvent("RS_FiddlerUpdateSessions");
+                    TelemetryService.CustomTrackMetric("RS_FiddlerUpdateSessions", sw.ElapsedMilliseconds);
+                }
             }
         }
     }

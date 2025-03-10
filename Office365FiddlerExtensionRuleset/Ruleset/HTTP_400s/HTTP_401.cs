@@ -3,6 +3,8 @@ using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Diagnostics;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -22,25 +24,74 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sw_HTTP_401_Exchange_Online_AutoDiscover = Stopwatch.StartNew();
+
             HTTP_401_Exchange_Online_AutoDiscover(this.session);
+
+            sw_HTTP_401_Exchange_Online_AutoDiscover.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_401_Exchange_Online_AutoDiscover");
+                TelemetryService.CustomTrackMetric("RS_HTTP_401_Exchange_Online_AutoDiscover", sw_HTTP_401_Exchange_Online_AutoDiscover.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_HTTP_401_Exchange_OnPremise_AutoDiscover = Stopwatch.StartNew();
 
             HTTP_401_Exchange_OnPremise_AutoDiscover(this.session);
+
+            sw_HTTP_401_Exchange_OnPremise_AutoDiscover.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_401_Exchange_OnPremise_AutoDiscover");
+                TelemetryService.CustomTrackMetric("RS_HTTP_401_Exchange_OnPremise_AutoDiscover", sw_HTTP_401_Exchange_OnPremise_AutoDiscover.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_HTTP_401_EWS = Stopwatch.StartNew();
 
             HTTP_401_EWS(this.session);
+
+            sw_HTTP_401_EWS.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_401_EWS");
+                TelemetryService.CustomTrackMetric("RS_HTTP_401_EWS", sw_HTTP_401_EWS.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
+            var sw_HTTP_401_Everything_Else = Stopwatch.StartNew();
+
             HTTP_401_Everything_Else(this.session);
+
+            sw_HTTP_401_Everything_Else.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("HTTP_401_Everything_Else");
+                TelemetryService.CustomTrackMetric("HTTP_401_Everything_Else", sw_HTTP_401_Everything_Else.ElapsedMilliseconds);
+            }
         }
 
         private void HTTP_401_Exchange_Online_AutoDiscover(Session session)

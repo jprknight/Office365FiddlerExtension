@@ -3,6 +3,8 @@ using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Diagnostics;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -21,6 +23,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         public void Run(Session session)
         {
             this.session = session;
+
+            var sw = Stopwatch.StartNew();
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} Running CalculateSessionAge.");
@@ -116,6 +120,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
                 RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            }
+
+            sw.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_CalculateSessionAge");
+                TelemetryService.CustomTrackMetric("RS_CalculateSessionAge", sw.ElapsedMilliseconds);
             }
         }
     }

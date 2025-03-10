@@ -3,6 +3,8 @@ using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Diagnostics;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -22,19 +24,55 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sw_HTTP_307_AutoDiscover_Temporary_Redirect = Stopwatch.StartNew();
+
             HTTP_307_AutoDiscover_Temporary_Redirect(this.session);
+
+            sw_HTTP_307_AutoDiscover_Temporary_Redirect.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_307_AutoDiscover_Temporary_Redirect");
+                TelemetryService.CustomTrackMetric("RS_HTTP_307_AutoDiscover_Temporary_Redirect", sw_HTTP_307_AutoDiscover_Temporary_Redirect.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
+
+            var sw_HTTP_307_Other_AutoDiscover_Redirects = Stopwatch.StartNew();
 
             HTTP_307_Other_AutoDiscover_Redirects(this.session);
+
+            sw_HTTP_307_Other_AutoDiscover_Redirects.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_307_Other_AutoDiscover_Redirects");
+                TelemetryService.CustomTrackMetric("RS_HTTP_307_Other_AutoDiscover_Redirects", sw_HTTP_307_Other_AutoDiscover_Redirects.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
 
+            var sw_HTTP_307_All_Other_Redirects = Stopwatch.StartNew();
+
             HTTP_307_All_Other_Redirects(this.session);
+
+            sw_HTTP_307_All_Other_Redirects.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_307_All_Other_Redirects");
+                TelemetryService.CustomTrackMetric("RS_HTTP_307_All_Other_Redirects", sw_HTTP_307_All_Other_Redirects.ElapsedMilliseconds);
+            }
         }
 
         public void HTTP_307_AutoDiscover_Temporary_Redirect(Session session)

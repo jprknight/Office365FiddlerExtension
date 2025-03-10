@@ -34,11 +34,6 @@
             this.ClearSelectedSessionAnalysisButton = new System.Windows.Forms.Button();
             this.AnalyseSelectedSessionsButton = new System.Windows.Forms.Button();
             this.ClearAllSessionAnalysisButton = new System.Windows.Forms.Button();
-            this.CheckIPAddressGroupBox = new System.Windows.Forms.GroupBox();
-            this.CheckIPAddressClearButton = new System.Windows.Forms.Button();
-            this.CheckIPAddressResultTextBox = new System.Windows.Forms.TextBox();
-            this.CheckIPAddressButton = new System.Windows.Forms.Button();
-            this.EnterIPAddressTextBox = new System.Windows.Forms.TextBox();
             this.ExtensionOptionsGroupBox = new System.Windows.Forms.GroupBox();
             this.ColumnsUIGroupbox = new System.Windows.Forms.GroupBox();
             this.ElapsedTimeCheckbox = new System.Windows.Forms.CheckBox();
@@ -65,7 +60,6 @@
             this.RulesetVersionLabel = new System.Windows.Forms.Label();
             this.ExtensionVersionLabel = new System.Windows.Forms.Label();
             this.SessionAnalysisGroupBox.SuspendLayout();
-            this.CheckIPAddressGroupBox.SuspendLayout();
             this.ExtensionOptionsGroupBox.SuspendLayout();
             this.ColumnsUIGroupbox.SuspendLayout();
             this.WarnBeforeProcessingGroupBox.SuspendLayout();
@@ -137,56 +131,6 @@
             this.ClearAllSessionAnalysisButton.Text = "Clear All Session Analysis HC";
             this.ClearAllSessionAnalysisButton.UseVisualStyleBackColor = true;
             this.ClearAllSessionAnalysisButton.Click += new System.EventHandler(this.ClearAllSessionAnalysisButton_Click);
-            // 
-            // CheckIPAddressGroupBox
-            // 
-            this.CheckIPAddressGroupBox.Controls.Add(this.CheckIPAddressClearButton);
-            this.CheckIPAddressGroupBox.Controls.Add(this.CheckIPAddressResultTextBox);
-            this.CheckIPAddressGroupBox.Controls.Add(this.CheckIPAddressButton);
-            this.CheckIPAddressGroupBox.Controls.Add(this.EnterIPAddressTextBox);
-            this.CheckIPAddressGroupBox.Location = new System.Drawing.Point(3, 362);
-            this.CheckIPAddressGroupBox.Name = "CheckIPAddressGroupBox";
-            this.CheckIPAddressGroupBox.Size = new System.Drawing.Size(409, 115);
-            this.CheckIPAddressGroupBox.TabIndex = 3;
-            this.CheckIPAddressGroupBox.TabStop = false;
-            this.CheckIPAddressGroupBox.Text = "Check IP Address HC";
-            // 
-            // CheckIPAddressClearButton
-            // 
-            this.CheckIPAddressClearButton.Location = new System.Drawing.Point(323, 48);
-            this.CheckIPAddressClearButton.Name = "CheckIPAddressClearButton";
-            this.CheckIPAddressClearButton.Size = new System.Drawing.Size(75, 23);
-            this.CheckIPAddressClearButton.TabIndex = 3;
-            this.CheckIPAddressClearButton.Text = "Clear HC";
-            this.CheckIPAddressClearButton.UseVisualStyleBackColor = true;
-            this.CheckIPAddressClearButton.Click += new System.EventHandler(this.CheckIPAddressClearButton_Click);
-            // 
-            // CheckIPAddressResultTextBox
-            // 
-            this.CheckIPAddressResultTextBox.BackColor = System.Drawing.Color.White;
-            this.CheckIPAddressResultTextBox.Location = new System.Drawing.Point(6, 50);
-            this.CheckIPAddressResultTextBox.Multiline = true;
-            this.CheckIPAddressResultTextBox.Name = "CheckIPAddressResultTextBox";
-            this.CheckIPAddressResultTextBox.ReadOnly = true;
-            this.CheckIPAddressResultTextBox.Size = new System.Drawing.Size(311, 50);
-            this.CheckIPAddressResultTextBox.TabIndex = 2;
-            // 
-            // CheckIPAddressButton
-            // 
-            this.CheckIPAddressButton.Location = new System.Drawing.Point(323, 19);
-            this.CheckIPAddressButton.Name = "CheckIPAddressButton";
-            this.CheckIPAddressButton.Size = new System.Drawing.Size(75, 23);
-            this.CheckIPAddressButton.TabIndex = 1;
-            this.CheckIPAddressButton.Text = "Check HC";
-            this.CheckIPAddressButton.UseVisualStyleBackColor = true;
-            this.CheckIPAddressButton.Click += new System.EventHandler(this.CheckIPAddressButton_Click);
-            // 
-            // EnterIPAddressTextBox
-            // 
-            this.EnterIPAddressTextBox.Location = new System.Drawing.Point(6, 21);
-            this.EnterIPAddressTextBox.Name = "EnterIPAddressTextBox";
-            this.EnterIPAddressTextBox.Size = new System.Drawing.Size(311, 20);
-            this.EnterIPAddressTextBox.TabIndex = 0;
             // 
             // ExtensionOptionsGroupBox
             // 
@@ -398,7 +342,7 @@
             // 
             this.DebugGroupBox.Controls.Add(this.ExtensionSettingsTextbox);
             this.DebugGroupBox.Controls.Add(this.DebugModeUpdateButton);
-            this.DebugGroupBox.Location = new System.Drawing.Point(3, 567);
+            this.DebugGroupBox.Location = new System.Drawing.Point(3, 446);
             this.DebugGroupBox.Name = "DebugGroupBox";
             this.DebugGroupBox.Size = new System.Drawing.Size(409, 185);
             this.DebugGroupBox.TabIndex = 6;
@@ -429,7 +373,7 @@
             this.ExtensionVersionInformationGroupBox.Controls.Add(this.UpdateLinkLabel);
             this.ExtensionVersionInformationGroupBox.Controls.Add(this.RulesetVersionLabel);
             this.ExtensionVersionInformationGroupBox.Controls.Add(this.ExtensionVersionLabel);
-            this.ExtensionVersionInformationGroupBox.Location = new System.Drawing.Point(3, 483);
+            this.ExtensionVersionInformationGroupBox.Location = new System.Drawing.Point(3, 362);
             this.ExtensionVersionInformationGroupBox.Name = "ExtensionVersionInformationGroupBox";
             this.ExtensionVersionInformationGroupBox.Size = new System.Drawing.Size(409, 78);
             this.ExtensionVersionInformationGroupBox.TabIndex = 5;
@@ -472,14 +416,11 @@
             this.Controls.Add(this.DebugGroupBox);
             this.Controls.Add(this.ExtensionVersionInformationGroupBox);
             this.Controls.Add(this.ExtensionOptionsGroupBox);
-            this.Controls.Add(this.CheckIPAddressGroupBox);
             this.Controls.Add(this.SessionAnalysisGroupBox);
             this.Name = "Office365TabPage";
-            this.Size = new System.Drawing.Size(425, 768);
+            this.Size = new System.Drawing.Size(425, 643);
             this.Load += new System.EventHandler(this.Office365TabPage_Load);
             this.SessionAnalysisGroupBox.ResumeLayout(false);
-            this.CheckIPAddressGroupBox.ResumeLayout(false);
-            this.CheckIPAddressGroupBox.PerformLayout();
             this.ExtensionOptionsGroupBox.ResumeLayout(false);
             this.ExtensionOptionsGroupBox.PerformLayout();
             this.ColumnsUIGroupbox.ResumeLayout(false);
@@ -504,15 +445,10 @@
         private System.Windows.Forms.Button ClearAllSessionAnalysisButton;
         private System.Windows.Forms.Button ClearSelectedSessionAnalysisButton;
         private System.Windows.Forms.Button CreateConsolidatedAnalysisButton;
-        private System.Windows.Forms.GroupBox CheckIPAddressGroupBox;
-        private System.Windows.Forms.TextBox CheckIPAddressResultTextBox;
-        private System.Windows.Forms.Button CheckIPAddressButton;
-        private System.Windows.Forms.TextBox EnterIPAddressTextBox;
         private System.Windows.Forms.GroupBox ExtensionOptionsGroupBox;
         private System.Windows.Forms.CheckBox ExtensionEnabledCheckBox;
         private System.Windows.Forms.CheckBox SessionAnalysisOnLiveTraceCheckBox;
         private System.Windows.Forms.CheckBox SessionAnalysisOnLoadSazCheckBox;
-        private System.Windows.Forms.Button CheckIPAddressClearButton;
         private System.Windows.Forms.GroupBox ExtensionVersionInformationGroupBox;
         private System.Windows.Forms.Label ExtensionVersionLabel;
         private System.Windows.Forms.Label RulesetVersionLabel;

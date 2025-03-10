@@ -3,6 +3,8 @@ using Office365FiddlerExtensionRuleset.Services;
 using Fiddler;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Diagnostics;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -22,8 +24,18 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            var sw = Stopwatch.StartNew();
+
             SetElapsedTime(this.session);
             SetInspectorElapsedTime(this.session);
+
+            sw.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SessionElapsedTime");
+                TelemetryService.CustomTrackMetric("RS_SessionElapsedTime", sw.ElapsedMilliseconds);
+            }
         }
 
         /// <summary>
