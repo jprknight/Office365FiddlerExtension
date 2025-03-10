@@ -1,6 +1,8 @@
 ﻿using Fiddler;
 using Newtonsoft.Json;
+using Office365FiddlerExtension.Services;
 using Office365FiddlerExtensionRuleset.Services;
+using System.Diagnostics;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -21,6 +23,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             // Not setting colours on sessions not recognised.
 
+            var sw = Stopwatch.StartNew();
+
             var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = RulesetLangHelper.GetString("Undefined"),
@@ -38,6 +42,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+
+            sw.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_UnknownResponseCode");
+                TelemetryService.CustomTrackMetric("RS_UnknownResponseCode", sw.ElapsedMilliseconds);
+            }
         }
     }
 }

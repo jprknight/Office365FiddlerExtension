@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtensionRuleset.Services;
 using System;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
@@ -24,6 +25,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         public void Run(Session session, String ResponseCodeSection)
         {
             this.session = session;
+
+            var sw = Stopwatch.StartNew();
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} {LangHelper.GetString("Simple Session Analysis")}");
@@ -60,6 +63,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
             catch (Exception ex)
             {
+                TelemetryService.CustomTrackException(ex);
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
                     $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
 
@@ -92,6 +96,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+
+            sw.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent($"RS_SimpleSessionAnalysis_{this.session.responseCode}");
+                TelemetryService.CustomTrackMetric($"RS_SimpleSessionAnalysis_{this.session.responseCode}", sw.ElapsedMilliseconds);
+            }
         }
     }
 }

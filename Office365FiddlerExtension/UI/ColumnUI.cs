@@ -82,6 +82,8 @@ namespace Office365FiddlerExtension.UI
                 }
 
                 ElapsedTimeColumnAdded = true;
+
+                TelemetryService.CustomTrackEvent("UI_ColumnUI_ElapsedTimeColumnAdded");
             }
             catch (Exception ex)
             {
@@ -123,6 +125,8 @@ namespace Office365FiddlerExtension.UI
                 }
 
                 SeverityColumnAdded = true;
+
+                TelemetryService.CustomTrackEvent("UI_ColumnUI_SeverityColumnAdded");
             }
             catch (Exception ex)
             {
@@ -164,6 +168,8 @@ namespace Office365FiddlerExtension.UI
                 }
 
                 SessionTypeColumnAdded = true;
+
+                TelemetryService.CustomTrackEvent("UI_ColumnUI_SessionTypeColumnAdded");
             }
             catch (Exception ex)
             {
@@ -205,6 +211,7 @@ namespace Office365FiddlerExtension.UI
 
                     AuthenticationColumnAdded = true;
 
+                    TelemetryService.CustomTrackEvent("UI_ColumnUI_AuthenticationColumnAdded");
                 }
                 catch (Exception ex)
                 {
@@ -245,6 +252,8 @@ namespace Office365FiddlerExtension.UI
                     }
 
                     ResponseServerColumnAdded = true;
+
+                    TelemetryService.CustomTrackEvent("UI_ColumnUI_ResponseServerColumnAdded");
                 }
                 catch (Exception ex)
                 {
@@ -285,6 +294,8 @@ namespace Office365FiddlerExtension.UI
                     }
 
                     HostIPColumnAdded = true;
+
+                    TelemetryService.CustomTrackEvent("UI_ColumnUI_HostIPColumnAdded");
                 }
                 catch (Exception ex)
                 {

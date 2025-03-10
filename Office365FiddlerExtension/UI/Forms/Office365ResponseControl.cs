@@ -23,6 +23,8 @@ namespace Office365FiddlerExtension.UI
 
         private void Save_Click(object sender, System.EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_Inspector_Save_Click");
+
             if (webBrowserControl.DocumentText.Length == 0)
             {
                 MessageBox.Show("Nothing to save.");

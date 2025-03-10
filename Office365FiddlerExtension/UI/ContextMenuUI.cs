@@ -128,6 +128,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void CmiRecalculateAnalysisSelectedSessions_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_ContextMenuUI_CmiRecalculateAnalysisSelectedSessions_Click");
+
             SessionFlagService.Instance.CmiRecalculateAnalysisSelectedSessions();
         }
 
@@ -138,6 +140,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void CmiSessionSeverityTen_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_ContextMenuUI_CmiSessionSeverityTen_Click");
+
             EnhanceSessionUX.Instance.SetSessionUninteresting();
         }
 
@@ -148,6 +152,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void CmiSessionSeverityTwenty_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_ContextMenuUI_CmiSessionSeverityTwenty_Click");
+
             EnhanceSessionUX.Instance.SetSessionFalsePositive();
         }
 
@@ -158,6 +164,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void CmiSessionSeverityThirty_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_ContextMenuUI_CmiSessionSeverityThirty_Click");
+
             EnhanceSessionUX.Instance.SetSessionNormal();
         }
 
@@ -168,6 +176,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void CmiSessionSeverityFourty_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_ContextMenuUI_CmiSessionSeverityFourty_Click");
+
             EnhanceSessionUX.Instance.SetSessionWarning();
         }
 
@@ -178,6 +188,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void CmiSessionSeverityFifty_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_ContextMenuUI_CmiSessionSeverityFifty_Click");
+
             EnhanceSessionUX.Instance.SetSessionConcerning();
         }
 
@@ -188,6 +200,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void CmiSessionSeveritySixty_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_ContextMenuUI_CmiSessionSeveritySixty_Click");
+
             EnhanceSessionUX.Instance.SetSessionSevere();
         }
 
@@ -198,6 +212,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void CmiClearAnalysisSelectedSessions_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_ContextMenuUI_CmiClearAnalysisSelectedSessions_Click");
+
             SessionFlagService.Instance.ClearAnalysisSelectedSessions();
         }
 
@@ -208,6 +224,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void CmiAnalyseSelectedSessions_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_ContextMenuUI_CmiAnalyseSelectedSessions_Click");
+
             SessionFlagService.Instance.AnalyseSelectedSessions();
         }
 
@@ -218,6 +236,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void CmiCreateConsolidatedAnalysisReport_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_ContextMenuUI_CmiCreateConsolidatedAnalysisReport_Click");
+
             ConsolidatedAnalysisReportService.Instance.CreateCAR();
         }
 

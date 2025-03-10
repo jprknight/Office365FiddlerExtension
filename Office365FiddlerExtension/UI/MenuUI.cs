@@ -67,7 +67,10 @@ namespace Office365FiddlerExtension
 
                 try
                 {
-                    this.ExtensionMenu = new MenuItem(SettingsJsonService.Instance.ExtensionSessionProcessingEnabled ? MenuEnabled : MenuDisabled);
+                    //this.ExtensionMenu = new MenuItem(SettingsJsonService.Instance.ExtensionSessionProcessingEnabled ? MenuEnabled : MenuDisabled);
+                    this.ExtensionMenu = new MenuItem((SettingsJsonService.Instance.ExtensionSessionProcessingEnabled ? MenuEnabled : MenuDisabled), new EventHandler(this.MiMenu_Click)) {
+
+                    };
 
                     this.MiEnabled = new MenuItem(LangHelper.GetString("Enable"), new EventHandler(this.MiEnabled_Click))
                     {
@@ -167,9 +170,14 @@ namespace Office365FiddlerExtension
             }
         }
 
-        public void RemoveMenu()
+        private void RemoveMenu()
         {
             FiddlerApplication.UI.mnuMain.MenuItems.Remove(this.ExtensionMenu);
+        }
+
+        private void MiMenu_Click(object sender, EventArgs e)
+        {
+            TelemetryService.CustomTrackEvent("UI_MenuUI_MiMenu_Click");
         }
 
         private void CheckLanguageSelection()
@@ -183,6 +191,8 @@ namespace Office365FiddlerExtension
 
         private void MiLanguage_EN_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_MenuUI_MiLanguage_EN_Click");
+
             LangHelper.ChangeLanguage("EN-GB");
 
             CheckLanguageSelection();
@@ -191,6 +201,8 @@ namespace Office365FiddlerExtension
 
         private void MiLanguage_FR_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_MenuUI_MiLanguage_FR_Click");
+
             LangHelper.ChangeLanguage("FR-FR");
 
             CheckLanguageSelection();
@@ -198,6 +210,8 @@ namespace Office365FiddlerExtension
 
         private void MiLanguage_DE_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_MenuUI_MiLanguage_DE_Click");
+
             LangHelper.ChangeLanguage("DE-DE");
 
             CheckLanguageSelection();
@@ -205,6 +219,8 @@ namespace Office365FiddlerExtension
 
         private void MiLanguage_PT_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_MenuUI_MiLanguage_PT_Click");
+
             LangHelper.ChangeLanguage("PT-BR");
 
             CheckLanguageSelection();
@@ -212,6 +228,8 @@ namespace Office365FiddlerExtension
 
         private void MiLanguage_ES_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_MenuUI_MiLanguage_ES_Click");
+
             LangHelper.ChangeLanguage("ES-US");
 
             CheckLanguageSelection();
@@ -224,6 +242,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void MiAbout_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_MenuUI_MiAbout_Click");
+
             // Back door to enable debug mode from the extension frontend.
             if (Control.ModifierKeys == Keys.Shift)
             {
@@ -243,6 +263,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void MiEnabled_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_MenuUI_MiEnabled_Click");
+
             // Invert the menu item checked.
             MiEnabled.Checked = !MiEnabled.Checked;
 
@@ -260,6 +282,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void MiWiki_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_MenuUI_MiWiki_Click");
+
             var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
 
             // Fire up a web browser to the project Wiki URL.
@@ -273,6 +297,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void MiReleasesDownloadWebpage_click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_MenuUI_MiReleasesDownloadWebpage_click");
+
             var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
             // Fire up a web browser to the project Wiki URL.
             System.Diagnostics.Process.Start(URLs.Installer);
@@ -285,6 +311,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void MiReportIssues_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_MenuUI_MiReportIssues_Click");
+
             var URLs = URLsJsonService.Instance.GetDeserializedExtensionURLs();
             // Fire up a web browser to the project issues URL.
             System.Diagnostics.Process.Start(URLs.ReportIssues);
@@ -297,6 +325,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void MiAnalyseAllSessions_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_MenuUI_MiAnalyseAllSessions_Click");
+
             SessionFlagService.Instance.AnalyseAllSessions();
         }
 
@@ -307,6 +337,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void MiClearAllSessionAnalysis_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_MenuUI_MiClearAllSessionAnalysis_Click");
+
             SessionFlagService.Instance.ClearAnalysisAllSessions();
         }
 
@@ -317,6 +349,8 @@ namespace Office365FiddlerExtension
         /// <param name="e"></param>
         private void MiCreateConsolidatedAnalysisReport_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_MenuUI_MiCreateConsolidatedAnalysisReport_Click");
+
             ConsolidatedAnalysisReportService.Instance.CreateCAR();
         }
 

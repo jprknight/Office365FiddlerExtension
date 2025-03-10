@@ -225,61 +225,74 @@ namespace Office365FiddlerExtension.UI.Forms
 
         private void SessionAnalysisOnLoadSazCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_SessionAnalysisOnLoadSazCheckBox_CheckedChanged");
             SettingsJsonService.Instance.SetSessionAnalysisOnLoadSaz(SessionAnalysisOnLoadSazCheckBox.Checked);
         }
 
         private void SessionAnalysisOnLiveTraceCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_SessionAnalysisOnLiveTraceCheckBox_CheckedChanged");
             SettingsJsonService.Instance.SetSessionAnalysisOnLiveTrace(SessionAnalysisOnLiveTraceCheckBox.Checked);
         }
 
         private void AnalyseAllSessionsButton_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_AnalyseAllSessionsButton_Click");
             SessionFlagService.Instance.AnalyseAllSessions();
         }
 
         private void ClearAllSessionAnalysisButton_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_ClearAllSessionAnalysisButton_Click");
             SessionFlagService.Instance.ClearAnalysisAllSessions();
         }
 
         private void AnalyseSelectedSessionsButton_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_AnalyseSelectedSessionsButton_Click");
             SessionFlagService.Instance.AnalyseSelectedSessions();
         }
 
         private void ClearSelectedSessionAnalysisButton_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_ClearSelectedSessionAnalysisButton_Click");
             SessionFlagService.Instance.ClearAnalysisSelectedSessions();
         }
 
         private void CreateConsolidatedAnalysisButton_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_CreateConsolidatedAnalysisButton_Click");
             ConsolidatedAnalysisReportService.Instance.CreateCAR();
         }
 
         private void UpdateLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_UpdateLinkLabel_LinkClicked");
             System.Diagnostics.Process.Start(URLsJsonService.Instance.GetDeserializedExtensionURLs().Installer);
         }
 
         private void NeverWebCallCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_NeverWebCallCheckBox_CheckedChanged");
             SettingsJsonService.Instance.SetNeverWebCall(NeverWebCallCheckBox.Checked);
         }
 
         private void DebugModeCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_DebugModeCheckBox_CheckedChanged");
             SettingsJsonService.Instance.SetDebugMode(DebugModeCheckBox.Checked);
         }
 
         private void SessionAnalysisOnImportCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_SessionAnalysisOnImportCheckBox_CheckedChanged");
             SettingsJsonService.Instance.SetSessionAnlysisOnImport(SessionAnalysisOnImportCheckBox.Checked);
         }
 
         private void WarnBeforeAnalysingTextBox_TextChanged(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_WarnBeforeAnalysingTextBox_TextChanged");
+
             if (System.Text.RegularExpressions.Regex.IsMatch(WarnBeforeAnalysingTextBox.Text, "[^0-9]"))
             {
                 string message = "This textbox only accepts numbers.";
@@ -293,6 +306,8 @@ namespace Office365FiddlerExtension.UI.Forms
 
         private void DebugModeUpdateButton_Click(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_DebugModeUpdateButton_Click");
+
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
             ExtensionEnabledCheckBox.Checked = extensionSettings.ExtensionSessionProcessingEnabled;
@@ -302,6 +317,8 @@ namespace Office365FiddlerExtension.UI.Forms
 
         private void ElapsedTimeCheckbox_CheckedChanged(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_ElapsedTimeCheckbox_CheckedChanged");
+
             SettingsJsonService.Instance.SetElapsedColumnEnabled(ElapsedTimeCheckbox.Checked);
             if (ElapsedTimeCheckbox.Checked)
             {
@@ -311,6 +328,8 @@ namespace Office365FiddlerExtension.UI.Forms
 
         private void SeverityCheckbox_CheckedChanged(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_SeverityCheckbox_CheckedChanged");
+
             SettingsJsonService.Instance.SetSeverityColumnEnabled(SeverityCheckbox.Checked);
             if (SeverityCheckbox.Checked)
             {
@@ -320,6 +339,8 @@ namespace Office365FiddlerExtension.UI.Forms
 
         private void SessionTypeCheckbox_CheckedChanged(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_SessionTypeCheckbox_CheckedChanged");
+
             SettingsJsonService.Instance.SetSessionTypeColumnEnabled(SessionTypeCheckbox.Checked);
             if (SessionTypeCheckbox.Checked)
             {
@@ -329,6 +350,8 @@ namespace Office365FiddlerExtension.UI.Forms
 
         private void ResponseServerCheckbox_CheckedChanged(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_ResponseServerCheckbox_CheckedChanged");
+
             SettingsJsonService.Instance.SetResponseServerColumnEnabled(ResponseServerCheckbox.Checked);
             if (ResponseServerCheckbox.Checked)
             {
@@ -338,6 +361,8 @@ namespace Office365FiddlerExtension.UI.Forms
 
         private void AuthenticationCheckbox_CheckedChanged(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_AuthenticationCheckbox_CheckedChanged");
+
             SettingsJsonService.Instance.SetAuthenticationColumnEnabled(AuthenticationCheckbox.Checked);
             if (AuthenticationCheckbox.Checked)
             {
@@ -347,6 +372,8 @@ namespace Office365FiddlerExtension.UI.Forms
 
         private void HostIPCheckbox_CheckedChanged(object sender, EventArgs e)
         {
+            TelemetryService.CustomTrackEvent("UI_TabPage_HostIPCheckbox_CheckedChanged");
+
             SettingsJsonService.Instance.SetHostIPColumnEnabled(HostIPCheckbox.Checked);
             if (HostIPCheckbox.Checked)
             {
@@ -370,12 +397,6 @@ namespace Office365FiddlerExtension.UI.Forms
             // Load the UI.
             FiddlerApplication.UI.tabsViews.TabPages.Add(oPage);
         }
-
-        /// <summary>
-        /// Throwing the kitchen sink at trying to get the tab control to update from outside of a direct click on the tab control.
-        /// With the below the UI switches to the tab page, the value of the extension enabled checkbox is changing from start to
-        /// finish, just that the UI does not update the checkbox to complete the process.
-        /// </summary>
 
         public void OnBeforeUnload()
         {

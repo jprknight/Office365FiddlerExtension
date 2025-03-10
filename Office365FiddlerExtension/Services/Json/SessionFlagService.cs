@@ -138,10 +138,15 @@ namespace Office365FiddlerExtension.Services
                 {
                     SessionService.Instance.OnPeekAtResponseHeaders(this.session);
                 }
+
+                // Update status bar with load saz progress.
+                StatusBar.Instance.UpdateStatusBarOnSessionProgression(this.session.id, Sessions.Count());
             }
             
             sw.Stop();
-            //TimeSpan time = sw.Elapsed;
+
+            // Update status bar once completed.
+            StatusBar.Instance.UpdateStatusBarOnSessionProcessComplete(sw, Sessions.Count());
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
                         $"Analysed {Sessions.Count()} selected sessions in {sw.ElapsedMilliseconds}ms.");
@@ -175,10 +180,15 @@ namespace Office365FiddlerExtension.Services
                 {
                     SessionService.Instance.OnPeekAtResponseHeaders(this.session);
                 }
+
+                // Update status bar with load saz progress.
+                StatusBar.Instance.UpdateStatusBarOnSessionProgression(this.session.id, Sessions.Count());
             }
 
             sw.Stop();
-            //TimeSpan time = sw.Elapsed;
+
+            // Update status bar once completed.
+            StatusBar.Instance.UpdateStatusBarOnSessionProcessComplete(sw, Sessions.Count());
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
                         $"Analysed {Sessions.Count()} all visible sessions in {sw.ElapsedMilliseconds}ms.");
