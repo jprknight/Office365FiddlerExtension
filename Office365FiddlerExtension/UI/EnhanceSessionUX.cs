@@ -42,8 +42,29 @@ namespace Office365FiddlerExtension.UI
         {
             this.session = session;
 
+            // If the color session flags are not set, session analysis has already been performed.
+            // Return so we can save time on this session.
+            // This will stop repeated runs if 'Analyse All Sessions' is pressed repeatedly on the same sessions.
+            if (this.session["UI-BACKCOLOR"] != null && this.session["UI-COLOR"] != null)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"Session analysis for {this.session.id} has previously completed, skipping.");
+                return;
+            }
+
+            // If the session flags have been set, return so we can save time on this session.
+            if (SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).UIColoursSet)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"Session analysis for {this.session.id} has previously completed, skipping.");
+                return;
+            }
+
             try
             {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"Enhancing {this.session.id} based on existing session flags.");
+
                 var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
 
                 // Set session background colour. Default to grey if undefined.
@@ -82,6 +103,14 @@ namespace Office365FiddlerExtension.UI
                         this.session["UI-COLOR"] = "#000000";
                         break;
                 }
+
+                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                {
+                    UIColoursSet = true
+                };
+                var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
+
                 this.session.RefreshUI();
             }
             catch (Exception ex)

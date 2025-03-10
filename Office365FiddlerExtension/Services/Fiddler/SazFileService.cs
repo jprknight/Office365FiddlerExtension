@@ -35,8 +35,8 @@ namespace Office365FiddlerExtension.Services
 
             foreach (var session in e.arrSessions)
             {
-                session.oFlags.Remove("UI-BACKCOLOR");
-                session.oFlags.Remove("UI-COLOR");
+                //session.oFlags.Remove("UI-BACKCOLOR");
+                //session.oFlags.Remove("UI-COLOR");
                 session.oFlags.Remove("X-SESSIONTYPE");
                 session.oFlags.Remove("X-ATTRIBUTENAMEIMMUTABLEID");
                 session.oFlags.Remove("X-ATTRIBUTENAMEUPN");
@@ -142,9 +142,6 @@ namespace Office365FiddlerExtension.Services
                     && SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionResponseServerConfidenceLevel == 10
                     && SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
-                        $"Enhancing {this.session.id} based on existing session flags ({SessionFlagService.Instance.GetDeserializedSessionFlags(this.session).SessionType}).");
-
                     EnhanceSessionUX.Instance.EnhanceSession(this.session);
                 }
                 else
@@ -180,7 +177,7 @@ namespace Office365FiddlerExtension.Services
             StatusBar.Instance.UpdateStatusBarOnSessionProcessComplete(sw, e.arrSessions.Count(),e.sFilename);
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
-                        $"LoadSaz processed {e.arrSessions.Count()} sessions in {sw.ElapsedMilliseconds}ms from '{SimpleSazFileName(e.sFilename)}'.");
+                $"LoadSaz processed {e.arrSessions.Count()} sessions in {sw.ElapsedMilliseconds}ms from '{SimpleSazFileName(e.sFilename)}'.");
 
             FiddlerApplication.UI.lvSessions.EndUpdate();
         }

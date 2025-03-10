@@ -344,7 +344,7 @@
             this.DebugGroupBox.Controls.Add(this.DebugModeUpdateButton);
             this.DebugGroupBox.Location = new System.Drawing.Point(3, 446);
             this.DebugGroupBox.Name = "DebugGroupBox";
-            this.DebugGroupBox.Size = new System.Drawing.Size(409, 185);
+            this.DebugGroupBox.Size = new System.Drawing.Size(409, 290);
             this.DebugGroupBox.TabIndex = 6;
             this.DebugGroupBox.TabStop = false;
             this.DebugGroupBox.Text = "Debug";
@@ -355,12 +355,12 @@
             this.ExtensionSettingsTextbox.Multiline = true;
             this.ExtensionSettingsTextbox.Name = "ExtensionSettingsTextbox";
             this.ExtensionSettingsTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.ExtensionSettingsTextbox.Size = new System.Drawing.Size(389, 123);
+            this.ExtensionSettingsTextbox.Size = new System.Drawing.Size(389, 226);
             this.ExtensionSettingsTextbox.TabIndex = 19;
             // 
             // DebugModeUpdateButton
             // 
-            this.DebugModeUpdateButton.Location = new System.Drawing.Point(261, 148);
+            this.DebugModeUpdateButton.Location = new System.Drawing.Point(261, 251);
             this.DebugModeUpdateButton.Name = "DebugModeUpdateButton";
             this.DebugModeUpdateButton.Size = new System.Drawing.Size(135, 23);
             this.DebugModeUpdateButton.TabIndex = 17;
@@ -418,7 +418,7 @@
             this.Controls.Add(this.ExtensionOptionsGroupBox);
             this.Controls.Add(this.SessionAnalysisGroupBox);
             this.Name = "Office365TabPage";
-            this.Size = new System.Drawing.Size(425, 643);
+            this.Size = new System.Drawing.Size(425, 753);
             this.Load += new System.EventHandler(this.Office365TabPage_Load);
             this.SessionAnalysisGroupBox.ResumeLayout(false);
             this.ExtensionOptionsGroupBox.ResumeLayout(false);

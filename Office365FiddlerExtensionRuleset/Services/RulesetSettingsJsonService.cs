@@ -109,6 +109,7 @@ namespace Office365FiddlerExtensionRuleset.Services
             }
             catch (Exception ex)
             {
+                TelemetryService.CustomTrackException(ex);
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): PreferredLanguage cannot be determined");
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +

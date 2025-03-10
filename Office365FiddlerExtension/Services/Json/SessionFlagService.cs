@@ -100,7 +100,8 @@ namespace Office365FiddlerExtension.Services
                 SessionTypeConfidenceLevel = "0",
                 SessionResponseServerConfidenceLevel = "0",
                 SessionSeverity = "0",
-                TLSVersion = ""
+                TLSVersion = "",
+                UIColoursSet = false
             };
 
             // Transform the object to a Json object.
@@ -117,6 +118,17 @@ namespace Office365FiddlerExtension.Services
         {
             var Sessions = FiddlerApplication.UI.GetSelectedSessions();
 
+            // Start out by checking user is happy to perform large session analysis.
+            bool bConfirmLargeSessionAnalysis;
+
+            bConfirmLargeSessionAnalysis = SessionService.Instance.ConfirmLargeSessionAnalysis(Sessions.Length);
+
+            // Return if the user cancels large session analysis.
+            if (!bConfirmLargeSessionAnalysis)
+            {
+                return;
+            }
+
             var sw = Stopwatch.StartNew();
 
             foreach (var Session in Sessions)
@@ -129,9 +141,6 @@ namespace Office365FiddlerExtension.Services
                     && GetDeserializedSessionFlags(this.session).SessionResponseServerConfidenceLevel == 10
                     && GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
-                        $"Enhancing {this.session.id} based on existing session flags ({GetDeserializedSessionFlags(this.session).SessionType}).");
-
                     EnhanceSessionUX.Instance.EnhanceSession(this.session);
                 }
                 else
@@ -159,6 +168,17 @@ namespace Office365FiddlerExtension.Services
         {
             var Sessions = FiddlerApplication.UI.GetAllSessions();
 
+            // Start out by checking user is happy to perform large session analysis.
+            bool bConfirmLargeSessionAnalysis;
+
+            bConfirmLargeSessionAnalysis = SessionService.Instance.ConfirmLargeSessionAnalysis(Sessions.Length);
+
+            // Return if the user cancels large session analysis.
+            if (!bConfirmLargeSessionAnalysis)
+            {
+                return;
+            }
+
             var sw = Stopwatch.StartNew();
 
             foreach (var Session in Sessions)
@@ -171,9 +191,6 @@ namespace Office365FiddlerExtension.Services
                     && GetDeserializedSessionFlags(this.session).SessionResponseServerConfidenceLevel == 10
                     && GetDeserializedSessionFlags(this.session).SessionTypeConfidenceLevel == 10)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
-                        $"Enhancing {this.session.id} based on existing session flags ({GetDeserializedSessionFlags(this.session).SessionType}).");
-
                     EnhanceSessionUX.Instance.EnhanceSession(this.session);
                 }
                 else
@@ -210,6 +227,9 @@ namespace Office365FiddlerExtension.Services
 
                 this.session["Microsoft365FiddlerExtensionJson"] = null;
 
+                this.session["UI-BACKCOLOR"] = null;
+                this.session["UI-COLOR"] = null;
+
                 this.session.RefreshUI();
             }
         }
@@ -229,6 +249,9 @@ namespace Office365FiddlerExtension.Services
                 EnhanceSessionUX.Instance.NormaliseSession(this.session);
 
                 this.session["Microsoft365FiddlerExtensionJson"] = null;
+
+                this.session["UI-BACKCOLOR"] = null;
+                this.session["UI-COLOR"] = null;
 
                 this.session.RefreshUI();
             }
@@ -492,6 +515,11 @@ namespace Office365FiddlerExtension.Services
                 updatedSessionFlagsJson.SessionResponseServerConfidenceLevel = existingSessionFlagsJson.SessionResponseServerConfidenceLevel;
             }
 
+            if (updatedSessionFlagsJson.UIColoursSet != existingSessionFlagsJson.UIColoursSet)
+            {
+                updatedSessionFlagsJson.UIColoursSet = existingSessionFlagsJson.UIColoursSet;
+            }
+
             // Session Severity.
 
             // If the severity is being set and unconditional is false peform the logic check before allowing it to be updated.
@@ -584,6 +612,8 @@ namespace Office365FiddlerExtension.Services
             public int SessionSeverity { get; set; }
 
             public string TLSVersion { get; set; }
+
+            public bool UIColoursSet { get; set; }
         }
     }
 }

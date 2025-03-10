@@ -30,10 +30,13 @@ namespace Office365FiddlerExtension.Services
 
             var Sessions = FiddlerApplication.UI.GetAllSessions();
 
-            // Start out by saying user is happy to perform large session analysis.
+            // Start out by checking user is happy to perform large session analysis.
             bool bConfirmLargeSessionAnalysis;
 
             bConfirmLargeSessionAnalysis = SessionService.Instance.ConfirmLargeSessionAnalysis(Sessions.Length);
+
+            // Don't return here. bConfirmLargeSessionAnalysis is used below to stop any new ruleset processing
+            // with OnPeekAtResponseHeaders.
 
             // Start the stopwatch. This should be the last thing that happens before we start the foreach loop through sessions.
             var sw = Stopwatch.StartNew();
@@ -56,9 +59,6 @@ namespace Office365FiddlerExtension.Services
                     && ExtensionSessionFlags.SessionResponseServerConfidenceLevel == 10
                     && ExtensionSessionFlags.SessionTypeConfidenceLevel == 10)
                 {
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
-                        $"Enhancing {this.session.id} based on existing session flags ({ExtensionSessionFlags.SessionType}).");
-
                     EnhanceSessionUX.Instance.EnhanceSession(this.session);
                 }
                 else

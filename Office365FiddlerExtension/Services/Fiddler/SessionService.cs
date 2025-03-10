@@ -36,38 +36,45 @@ namespace Office365FiddlerExtension
         {
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
-            // The number of sessions added into the Fiddler UI is larger than the 'warn before analysing' threshold.
-            // Prompt the user on whether they want to perform session analysis, giving the user a choice to accept some delay.
-            if (sessionsCount >= extensionSettings.WarnBeforeAnalysing)
+            // The number of sessions added into the Fiddler UI is smaller than the 'warn before analysing' threshold.
+            // Return true so the session analysis happens without a prompt to confirm.
+            if (sessionsCount <= extensionSettings.WarnBeforeAnalysing)
             {
-                string message = $"The extension is about to analyse {sessionsCount} sessions, " +
-                    $"which is more than the threshold set within the extension of {extensionSettings.WarnBeforeAnalysing}." +
-                    Environment.NewLine +
-                    Environment.NewLine +
-                    $"If you proceed you may see Fiddler appear to freeze while all sessions are processed." +
-                    Environment.NewLine +
-                    Environment.NewLine +
-                    $"Do you want to continue or cancel the operation?";
-
-                string caption = $"{LangHelper.GetString("Office 365 Fiddler Extension")}";
-
-                MessageBoxButtons buttons = MessageBoxButtons.OKCancel;
-
-                DialogResult dialogResult = MessageBox.Show(message, caption, buttons, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
-                if (dialogResult == DialogResult.OK)
-                {
-                    // User wants to continue with session analysis.
-                    return true;
-                }
-                else if (dialogResult == DialogResult.Cancel)
-                {
-                    // User doesn't want to continue with session analysis.
-                    return false;
-                }
+                return true;
             }
 
-            // The number of sessions added into the Fiddler UI is smaller than the 'warn before analysing' threshold.
-            // Just analyse the sessions.
+            // REVIEW THIS - LangHelper this message box.
+
+            // The number of sessions added into the Fiddler UI is larger than the 'warn before analysing' threshold.
+            // Prompt the user on whether they want to perform session analysis, giving the user a choice to accept some delay.
+            string message = $"The extension is about to analyse " +
+                $"{sessionsCount} " +
+                $"sessions, " +
+                $"which is more than the threshold set within the extension of " +
+                $"{extensionSettings.WarnBeforeAnalysing}." +
+                Environment.NewLine +
+                Environment.NewLine +
+                $"If you proceed Fiddler may take some time to process all these sessions." +
+                Environment.NewLine +
+                Environment.NewLine +
+                $"Do you want to continue or cancel the operation?";
+
+            string caption = $"{LangHelper.GetString("Office 365 Fiddler Extension")}";
+
+            MessageBoxButtons buttons = MessageBoxButtons.OKCancel;
+
+            DialogResult dialogResult = MessageBox.Show(message, caption, buttons, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+            if (dialogResult == DialogResult.OK)
+            {
+                // User wants to continue with session analysis.
+                return true;
+            }
+            else if (dialogResult == DialogResult.Cancel)
+            {
+                // User doesn't want to continue with session analysis.
+                return false;
+            }
+            
             return true;
         }
     }

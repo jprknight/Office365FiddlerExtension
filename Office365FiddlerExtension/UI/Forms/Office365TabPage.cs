@@ -301,7 +301,11 @@ namespace Office365FiddlerExtension.UI.Forms
 
                 MessageBox.Show(message, caption);
                 WarnBeforeAnalysingTextBox.Text = WarnBeforeAnalysingTextBox.Text.Remove(WarnBeforeAnalysingTextBox.Text.Length - 1);
-            }   
+            }
+            else
+            {
+                SettingsJsonService.Instance.SetWarnBeforeAnalysing(int.Parse(WarnBeforeAnalysingTextBox.Text));
+            }
         }
 
         private void DebugModeUpdateButton_Click(object sender, EventArgs e)
