@@ -149,7 +149,7 @@ namespace Office365FiddlerExtension.Services
             StatusBar.Instance.UpdateStatusBarOnSessionProcessComplete(sw, Sessions.Count());
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
-                        $"Analysed {Sessions.Count()} selected sessions in {sw.ElapsedMilliseconds}ms.");
+                $"Analysed {Sessions.Count()} selected sessions in {sw.ElapsedMilliseconds}ms.");
         }
 
         /// <summary>

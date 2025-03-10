@@ -340,7 +340,6 @@
     <None Include="ExtensionVersion.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />
     <Content Include="update.xml" />
   </ItemGroup>
   <ItemGroup>
