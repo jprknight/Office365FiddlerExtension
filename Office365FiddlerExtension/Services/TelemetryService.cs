@@ -1,6 +1,7 @@
 ﻿using Fiddler;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -84,6 +85,36 @@ namespace Office365FiddlerExtension.Services
                 {
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (TelemetryService): {ex}");
                 }
+            }
+        }
+
+        public async static void CustomTrackException(Exception _ex)
+        {
+            try
+            {
+                Client = new TelemetryClient
+                {
+                    InstrumentationKey = iKey
+                };
+
+                //UUID = await GetComputerUUID();
+
+                //Client.Context.User.Id = UUID;
+
+                Client.Context.Session.Id = SessionID;
+
+                Client.Context.Device.OperatingSystem = OS;
+
+                Client.Context.Component.Version = $"{VersionJsonService.Instance.GetExtensionVersion()} / " +
+                    $"{VersionJsonService.Instance.GetRulesetVersion()}";
+
+                Client.TrackException(_ex);
+
+                //await FlushClientAsync();
+            }
+            catch (Exception ex)
+            {
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} (TelemetryService): {ex}");
             }
         }
 

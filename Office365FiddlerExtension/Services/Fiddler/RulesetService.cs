@@ -56,6 +56,7 @@ namespace Office365FiddlerExtension.Services
             }
             catch (Exception ex)
             {
+                TelemetryService.CustomTrackException(ex);
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} FATAL ERROR: CANNOT LOAD RULESET DLL!");
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} {ex}");
             }

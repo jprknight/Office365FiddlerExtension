@@ -147,8 +147,9 @@ namespace Office365FiddlerExtension.Services
                     sessionProcesses.Add(ExtensionSessionFlags.ProcessName, 1);
                 }
                 // Use the exception, already exists, to increment the value for the proess name.
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    TelemetryService.CustomTrackException(ex);
                     int oldvalue = sessionProcesses[ExtensionSessionFlags.ProcessName];
                     sessionProcesses[ExtensionSessionFlags.ProcessName] = oldvalue + 1;
                 }

@@ -117,6 +117,7 @@ namespace Office365FiddlerExtension.Services
                 } 
                 catch (Exception ex)
                 {
+                    TelemetryService.CustomTrackException(ex);
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                         $"({this.GetType().Name}): ExtensionSessionProcessingEnabled cannot be determined");
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
@@ -143,6 +144,7 @@ namespace Office365FiddlerExtension.Services
             }
             catch (Exception ex)
             {
+                TelemetryService.CustomTrackException(ex);
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): " +
                     $"PreferredLanguage cannot be determined");
@@ -573,6 +575,7 @@ namespace Office365FiddlerExtension.Services
             }
             catch (Exception ex)
             {
+                TelemetryService.CustomTrackException(ex);
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                     $"({this.GetType().Name}): Error running GetDeserializedExtensionSettings.");
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +

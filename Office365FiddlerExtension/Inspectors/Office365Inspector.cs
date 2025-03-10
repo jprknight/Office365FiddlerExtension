@@ -587,6 +587,7 @@ namespace Office365FiddlerExtension.Inspectors
             }
             catch (Exception ex)
             {
+                TelemetryService.CustomTrackException(ex);
                 ResultsString.AppendLine();
                 ResultsString.AppendLine(ex.Message);
                 ResultsString.AppendLine();

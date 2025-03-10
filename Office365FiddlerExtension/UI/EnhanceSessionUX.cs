@@ -28,6 +28,7 @@ namespace Office365FiddlerExtension.UI
             }
             catch (Exception ex)
             {
+                TelemetryService.CustomTrackException(ex);
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
             
@@ -85,6 +86,7 @@ namespace Office365FiddlerExtension.UI
             }
             catch (Exception ex)
             {
+                TelemetryService.CustomTrackException(ex);
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
         }
@@ -115,6 +117,7 @@ namespace Office365FiddlerExtension.UI
                 }
                 catch (Exception ex)
                 {
+                    TelemetryService.CustomTrackException(ex);
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
                 }
             }
@@ -146,6 +149,7 @@ namespace Office365FiddlerExtension.UI
                 }
                 catch (Exception ex)
                 {
+                    TelemetryService.CustomTrackException(ex);
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
                 }
             }
@@ -177,6 +181,7 @@ namespace Office365FiddlerExtension.UI
                 }
                 catch (Exception ex)
                 {
+                    TelemetryService.CustomTrackException(ex);
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
                 }
             }
@@ -208,6 +213,7 @@ namespace Office365FiddlerExtension.UI
                 }
                 catch (Exception ex)
                 {
+                    TelemetryService.CustomTrackException(ex);
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
                 }
             }
@@ -239,6 +245,7 @@ namespace Office365FiddlerExtension.UI
                 }
                 catch (Exception ex)
                 {
+                    TelemetryService.CustomTrackException(ex);
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
                 }
             }
@@ -270,6 +277,7 @@ namespace Office365FiddlerExtension.UI
                 }
                 catch (Exception ex)
                 {
+                    TelemetryService.CustomTrackException(ex);
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
                 }
             }

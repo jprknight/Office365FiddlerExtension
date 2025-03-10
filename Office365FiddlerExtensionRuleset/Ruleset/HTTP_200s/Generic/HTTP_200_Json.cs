@@ -3,6 +3,7 @@ using System;
 using System.Reflection;
 using Office365FiddlerExtensionRuleset.Services;
 using Newtonsoft.Json;
+using Office365FiddlerExtension.Services;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 {
@@ -49,6 +50,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 }
                 catch (Exception ex)
                 {
+                    TelemetryService.CustomTrackException(ex);
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
                         $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
                 }

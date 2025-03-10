@@ -89,8 +89,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
-                TelemetryService.CustomTrackEvent("HTTP_401_Everything_Else");
-                TelemetryService.CustomTrackMetric("HTTP_401_Everything_Else", sw_HTTP_401_Everything_Else.ElapsedMilliseconds);
+                TelemetryService.CustomTrackEvent("RS_HTTP_401_Everything_Else");
+                TelemetryService.CustomTrackMetric("RS_HTTP_401_Everything_Else", sw_HTTP_401_Everything_Else.ElapsedMilliseconds);
             }
         }
 
@@ -134,6 +134,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
             catch (Exception ex)
             {
+                TelemetryService.CustomTrackException(ex);
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
                     $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }

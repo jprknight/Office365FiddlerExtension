@@ -1,4 +1,5 @@
 ﻿using Fiddler;
+using System;
 using System.Diagnostics;
 
 namespace Office365FiddlerExtension.Services
@@ -15,14 +16,23 @@ namespace Office365FiddlerExtension.Services
         /// <param name="TotalSessions"></param>
         public void UpdateStatusBarOnSessionProgression(int CurrentSession, int TotalSessions)
         {
-            double PercentageProgress = (double)CurrentSession / TotalSessions * 100;
+            try
+            {
+                double PercentageProgress = (double)CurrentSession / TotalSessions * 100;
 
-            FiddlerObject.StatusText = $"{LangHelper.GetString("Office 365 Fiddler Extension")}: " +
-                $"{LangHelper.GetString("Processing")} " +
-                $"{LangHelper.GetString("sessions")} " +
-                $"{CurrentSession} / " +
-                $"{TotalSessions} " +
-                $"({PercentageProgress.ToString("0.##")}%)";
+                FiddlerObject.StatusText = $"{LangHelper.GetString("Office 365 Fiddler Extension")}: " +
+                    $"{LangHelper.GetString("Processing")} " +
+                    $"{LangHelper.GetString("sessions")} " +
+                    $"{CurrentSession} / " +
+                    $"{TotalSessions} " +
+                    $"({PercentageProgress.ToString("0.##")}%)";
+            }
+            catch (Exception ex)
+            {
+                TelemetryService.CustomTrackException(ex);
+            }
+
+            
         }
 
         /// <summary>
@@ -33,23 +43,30 @@ namespace Office365FiddlerExtension.Services
         /// <param name="SessionsProcessed"></param>
         public void UpdateStatusBarOnSessionProcessComplete(Stopwatch sw, int SessionsProcessed)
         {
-            if (sw.ElapsedMilliseconds < 1000)
+            try
             {
-                FiddlerObject.StatusText = $"{LangHelper.GetString("Office 365 Fiddler Extension")}: " +
-                    $"{LangHelper.GetString("Processed")} " +
-                    $"{SessionsProcessed} " +
-                    $"{LangHelper.GetString("sessions")} " +
-                    $"{LangHelper.GetString("in")} " +
-                    $"{sw.Elapsed.TotalMilliseconds.ToString("0.##")}ms.";
+                if (sw.ElapsedMilliseconds < 1000)
+                {
+                    FiddlerObject.StatusText = $"{LangHelper.GetString("Office 365 Fiddler Extension")}: " +
+                        $"{LangHelper.GetString("Processed")} " +
+                        $"{SessionsProcessed} " +
+                        $"{LangHelper.GetString("sessions")} " +
+                        $"{LangHelper.GetString("in")} " +
+                        $"{sw.Elapsed.TotalMilliseconds.ToString("0.##")}ms.";
+                }
+                else
+                {
+                    FiddlerObject.StatusText = $"{LangHelper.GetString("Office 365 Fiddler Extension")}: " +
+                        $"{LangHelper.GetString("Processed")} " +
+                        $"{SessionsProcessed} " +
+                        $"{LangHelper.GetString("sessions")} " +
+                        $"{LangHelper.GetString("in")} " +
+                        $"{sw.Elapsed.TotalSeconds.ToString("0.##")} seconds.";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                FiddlerObject.StatusText = $"{LangHelper.GetString("Office 365 Fiddler Extension")}: " +
-                    $"{LangHelper.GetString("Processed")} " +
-                    $"{SessionsProcessed} " +
-                    $"{LangHelper.GetString("sessions")} " +
-                    $"{LangHelper.GetString("in")} " +
-                    $"{sw.Elapsed.TotalSeconds.ToString("0.##")} seconds.";
+                TelemetryService.CustomTrackException(ex);
             }
         }
 
@@ -62,27 +79,34 @@ namespace Office365FiddlerExtension.Services
         /// <param name="Filename"></param>
         public void UpdateStatusBarOnSessionProcessComplete(Stopwatch sw, int SessionsProcessed, string Filename)
         {
-            if (sw.ElapsedMilliseconds < 1000)
+            try
             {
-                FiddlerObject.StatusText = $"{LangHelper.GetString("Office 365 Fiddler Extension")}: " +
-                    $"{LangHelper.GetString("Processed")} " +
-                    $"{SessionsProcessed} " +
-                    $"{LangHelper.GetString("sessions")} " +
-                    $"{LangHelper.GetString("in")} " +
-                    $"{sw.Elapsed.TotalMilliseconds.ToString("0.##")}ms " +
-                    $"from " +
-                    $"{Filename}";
+                if (sw.ElapsedMilliseconds < 1000)
+                {
+                    FiddlerObject.StatusText = $"{LangHelper.GetString("Office 365 Fiddler Extension")}: " +
+                        $"{LangHelper.GetString("Processed")} " +
+                        $"{SessionsProcessed} " +
+                        $"{LangHelper.GetString("sessions")} " +
+                        $"{LangHelper.GetString("in")} " +
+                        $"{sw.Elapsed.TotalMilliseconds.ToString("0.##")}ms " +
+                        $"from " +
+                        $"{Filename}";
+                }
+                else
+                {
+                    FiddlerObject.StatusText = $"{LangHelper.GetString("Office 365 Fiddler Extension")}: " +
+                        $"{LangHelper.GetString("Processed")} " +
+                        $"{SessionsProcessed} " +
+                        $"{LangHelper.GetString("sessions")} " +
+                        $"{LangHelper.GetString("in")} " +
+                        $"{sw.Elapsed.TotalSeconds.ToString("0.##")} seconds " +
+                        $"from " +
+                        $"{Filename}";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                FiddlerObject.StatusText = $"{LangHelper.GetString("Office 365 Fiddler Extension")}: " +
-                    $"{LangHelper.GetString("Processed")} " +
-                    $"{SessionsProcessed} " +
-                    $"{LangHelper.GetString("sessions")} " +
-                    $"{LangHelper.GetString("in")} " +
-                    $"{sw.Elapsed.TotalSeconds.ToString("0.##")} seconds " +
-                    $"from " +
-                    $"{Filename}";
+                TelemetryService.CustomTrackException(ex);
             }
         }
     }

@@ -499,10 +499,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 }
 
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                TelemetryService.CustomTrackException(ex);
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"({this.GetType().Name}): {this.session.id} SAML token issuer could not be determined. {e}");
+                    $"({this.GetType().Name}): {this.session.id} SAML token issuer could not be determined. {ex}");
 
                 Issuer = RulesetLangHelper.GetString("TokenIssuer_Could_Not_Be_Determined");
             }
@@ -561,10 +562,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 }
 
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                TelemetryService.CustomTrackException(ex);
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"({this.GetType().Name}): {this.session.id} SAML signing certificate could not be determined. {e}");
+                    $"({this.GetType().Name}): {this.session.id} SAML signing certificate could not be determined. {ex}");
 
                 x509SigningCertificate = RulesetLangHelper.GetString("SamlToken_SigningCertificate_Could_Not_Be_Determined");
             }
@@ -644,10 +646,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 }
 
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                TelemetryService.CustomTrackException(ex);
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"({this.GetType().Name}): {this.session.id} SAML AttributeNameUPN could not be determined. {e}");
+                    $"({this.GetType().Name}): {this.session.id} SAML AttributeNameUPN could not be determined. {ex}");
                 AttributeNameUPN = RulesetLangHelper.GetString("SamlToken_AttributeNameUPN_Could_Not_Be_Determined");
             }
 
@@ -706,10 +709,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     NameIdentifierFormat = RulesetLangHelper.GetString("SamlToken_NameIdentifierFormat_Data_Points_Not_Found");
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                TelemetryService.CustomTrackException(ex);
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"({this.GetType().Name}): {this.session.id} SAML NameIdentifierFormat could not be determined. {e}");
+                    $"({this.GetType().Name}): {this.session.id} SAML NameIdentifierFormat could not be determined. {ex}");
                 NameIdentifierFormat = RulesetLangHelper.GetString("SamlToken_NameIdentifierFormat_Data_Points_Not_Found");
             }
 
@@ -793,10 +797,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     AttributeNameImmutibleID = RulesetLangHelper.GetString("SamlToken_AttributeNameImmutibleID_Could_Not_Be_Determined");
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                TelemetryService.CustomTrackException(ex);
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
-                    $"({this.GetType().Name}): {this.session.id} SAML AttributeNameImmutibleID could not be determined. {e}");
+                    $"({this.GetType().Name}): {this.session.id} SAML AttributeNameImmutibleID could not be determined. {ex}");
                 AttributeNameImmutibleID = RulesetLangHelper.GetString("SamlToken_AttributeNameImmutibleID_Could_Not_Be_Determined");
             }
 

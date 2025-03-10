@@ -34,6 +34,7 @@ namespace Office365FiddlerExtension.Services.Fiddler
                 }
                 catch (Exception ex)
                 {
+                    TelemetryService.CustomTrackException(ex);
                     FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
                 }
             }
