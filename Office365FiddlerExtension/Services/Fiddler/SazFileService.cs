@@ -132,6 +132,10 @@ namespace Office365FiddlerExtension.Services
             // Start the stopwatch. This should be the last thing that happens before we start the foreach loop through sessions.
             var sw = Stopwatch.StartNew();
 
+            // Get the sessions already loaded in the Fiddler UI. Add the count of this to the count just loaded in e.arrSessions
+            // to get accurate numbers and percentages when multiple SAZ files are loaded. Prevent percentages going over 100%.
+            var PreviouslyLoadedSessions = FiddlerApplication.UI.GetAllSessions();
+
             foreach (Session session in e.arrSessions)
             {
                 this.session = session;
@@ -167,17 +171,22 @@ namespace Office365FiddlerExtension.Services
                     SessionService.Instance.OnPeekAtResponseHeaders(this.session);
                 }
 
-                // Update status bar with load saz progress.
-                StatusBar.Instance.UpdateStatusBarOnSessionProgression(this.session.id, e.arrSessions.Count());
-            }
 
+                
+                // Update status bar with load saz progress.
+                StatusBar.Instance.UpdateStatusBarOnSessionProgression(this.session.id, e.arrSessions.Count() + PreviouslyLoadedSessions.Count());
+            }
+            
             sw.Stop();
 
+
+
             // Update status bar once completed.
-            StatusBar.Instance.UpdateStatusBarOnSessionProcessComplete(sw, e.arrSessions.Count(),e.sFilename);
+            StatusBar.Instance.UpdateStatusBarOnSessionProcessComplete(sw, e.arrSessions.Count() + PreviouslyLoadedSessions.Count(), e.sFilename);
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
-                $"LoadSaz processed {e.arrSessions.Count()} sessions in {sw.ElapsedMilliseconds}ms from '{SimpleSazFileName(e.sFilename)}'.");
+                $"LoadSaz processed {e.arrSessions.Count() + PreviouslyLoadedSessions.Count()} " +
+                $"sessions in {sw.ElapsedMilliseconds}ms from '{SimpleSazFileName(e.sFilename)}'.");
 
             FiddlerApplication.UI.lvSessions.EndUpdate();
         }
