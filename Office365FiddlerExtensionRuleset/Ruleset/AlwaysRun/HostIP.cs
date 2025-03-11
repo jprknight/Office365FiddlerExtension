@@ -62,14 +62,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 hostIP = "UNKNOWN";
             }
 
-            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = RulesetLangHelper.GetString("HostIP"),
                 HostIP = hostIP
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);             
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);             
         }
 
         private void NeverWebCall_False_SetHostIP(Session session)
@@ -128,14 +128,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 hostIP = "UNKNOWN";
             }
 
-            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = RulesetLangHelper.GetString("HostIP"),
                 HostIP = hostIP
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
 
             sw.Stop();
 

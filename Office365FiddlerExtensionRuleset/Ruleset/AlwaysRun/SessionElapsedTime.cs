@@ -53,25 +53,25 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
 
-                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = RulesetLangHelper.GetString("Session Elapsed Time"),
                     ElapsedTime = Milliseconds.ToString()
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
             else
             {
-                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "SessionElapsedTime_NoData",
                     ElapsedTime = RulesetLangHelper.GetString("No data")
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
 
@@ -95,19 +95,19 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 // If the roundtrip time is less than 1 second show the result in milliseconds.
                 if (ClientMilliseconds < 1000)
                 {
-                    var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "InspectorElapsedTime_LessThanOneSecond",
                         InspectorElapsedTime = $"{ClientMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}"
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                 }
                 // If the roundtrip is over warning and under slow running thresholds; orange.
                 else if (ClientMilliseconds > RulesetSettingsJsonService.Instance.WarningSessionTimeThreshold && ClientMilliseconds < RulesetSettingsJsonService.Instance.SlowRunningSessionThreshold)
                 {
-                    var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "InspectorElapsedTime_Warning",
                         InspectorElapsedTime = $"<b><span style='color:orange'>"
@@ -115,12 +115,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                 }
                 // If roundtrip is over slow running threshold; red.
                 else if (ClientMilliseconds > RulesetSettingsJsonService.Instance.SlowRunningSessionThreshold)
                 {
-                    var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "InspectorElapsedTime_Slow",
                         InspectorElapsedTime = $"<b><span style='color:red'>"
@@ -128,38 +128,38 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                 }
                 // If the roundtrip time is more than 1 second show the result in seconds.
                 else
                 {
                     if (ClientSeconds == 1)
                     {
-                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
                             SectionTitle = "InspectorElapsedTime_MoreThanOneSecond",
                             InspectorElapsedTime = $"{ClientSeconds} {RulesetLangHelper.GetString("Second")} ({ClientMilliseconds}{RulesetLangHelper.GetString("Milliseconds")})."
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else
                     {
-                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
                             SectionTitle = "InspectorElapsedTime_Else",
                             InspectorElapsedTime = $"{ClientSeconds} {RulesetLangHelper.GetString("Seconds")} ({ClientMilliseconds}{RulesetLangHelper.GetString("Milliseconds")})."
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                 }
             }
             else
             {
-                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "InspectorElapsedTime_Insufficient_Data",
 
@@ -167,7 +167,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
         }
     }

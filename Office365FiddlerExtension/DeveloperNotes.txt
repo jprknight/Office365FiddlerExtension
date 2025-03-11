@@ -1,0 +1,36 @@
+﻿CHASING NULL REFERENCE EXCEPTIONS
+---------------------------------
+
+"System.NullReferenceException: Object reference not set to an instance of an object."
+
+Look for any function which deals with Sessions, but is missing: this.session = session;
+
+I have spent so much time troubleshooting when I was missing these.
+
+THE 3 LAWS OF WRITING READABLE CODE
+-----------------------------------
+
+https://www.youtube.com/watch?v=-AzSRHiV9Cc
+
+1) Never Nest.
+
+if (!SomeLogic) {
+	return;
+}
+
+2) Avoid Code Duplication.
+
+Throw it in a function and call it multiple times.
+
+3) Use understandable naming conventions.
+
+not p, instead product.
+
+MORE RULES I LIVE BY
+--------------------
+
+Always use brackets for conditionals. Apple's 'gotofail' bug, https://www.codecentric.de/en/knowledge-hub/blog/curly-braces.
+
+Comments where necessary, not everywhere.
+
+Writing easy to understand code.

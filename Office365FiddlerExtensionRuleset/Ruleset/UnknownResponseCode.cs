@@ -21,11 +21,13 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         /// <param name="session"></param>
         public void Run(Session session)
         {
+            this.session = session;
+
             // Not setting colours on sessions not recognised.
 
             var sw = Stopwatch.StartNew();
 
-            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = RulesetLangHelper.GetString("Undefined"),
 
@@ -41,7 +43,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
 
             sw.Stop();
 

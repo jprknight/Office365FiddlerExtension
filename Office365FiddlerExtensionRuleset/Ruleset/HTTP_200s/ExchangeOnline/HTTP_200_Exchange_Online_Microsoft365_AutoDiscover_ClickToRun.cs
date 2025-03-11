@@ -64,7 +64,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                             $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
                     }
 
-                    var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "HTTP_200s",
 
@@ -87,7 +87,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                 }
                 else
                 {
@@ -118,7 +118,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                             $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
                     }
 
-                    var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "HTTP_200s",
 
@@ -141,7 +141,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                 }
             }
         }

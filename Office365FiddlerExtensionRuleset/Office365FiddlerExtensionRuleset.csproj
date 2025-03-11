@@ -114,7 +114,6 @@
     <Compile Include="RunRulesetResponseCodes.cs" />
     <Compile Include="Services\RulesetLanguageService.cs" />
     <Compile Include="Services\RulesetSessionClassificationService.cs" />
-    <Compile Include="Services\RulesetSessionFlagService.cs" />
     <Compile Include="Services\RulesetSettingsJsonService.cs" />
   </ItemGroup>
   <ItemGroup>

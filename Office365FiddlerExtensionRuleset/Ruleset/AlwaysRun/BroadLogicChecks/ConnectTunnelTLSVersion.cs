@@ -72,7 +72,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 TLS = "TLS Unknown";
             }
 
-            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = RulesetLangHelper.GetString("Connect Tunnel TLS Version"),
 
@@ -80,7 +80,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
 
             sw.Stop();
 

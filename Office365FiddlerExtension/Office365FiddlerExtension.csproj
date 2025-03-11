@@ -340,6 +340,7 @@
     <None Include="ExtensionVersion.json" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DeveloperNotes.txt" />
     <Content Include="update.xml" />
   </ItemGroup>
   <ItemGroup>

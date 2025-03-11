@@ -54,150 +54,150 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 // If 1/10th of the session elapsed time is more than the server think time, network roundtrip loses.
                 if (ElapsedMilliseconds / 10 > ServerMilliseconds && ElapsedMilliseconds > RulesetSettingsJsonService.Instance.SlowRunningSessionThreshold)
                 {
-                    var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                     {
                         SessionTimersDescription = RulesetLangHelper.GetString("SessionTimersDescription")
                     };
 
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
 
                     // Highlight server think time in green.
                     if (ServerMilliseconds < 1000)
                     {
-                        sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                        sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
                             ServerThinkTime = $"<b><span style='color:green'>{ServerMilliseconds}ms.</span></b>"
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
                     {
-                        sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                        sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
                             ServerThinkTime = $"<b><span style='color:green'>"
                                 + $"{ServerSeconds} {RulesetLangHelper.GetString("Second")} ({ServerMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}).</span></b>"
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else
                     {
-                        sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                        sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
                             ServerThinkTime = $"<b><span style='color:green'>"
                                 + $"{ServerSeconds} {RulesetLangHelper.GetString("Seconds")} ({ServerMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}).</span></b>"
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
 
                     // Highlight transit time in red.
                     if (dTransitTimeMilliseconds < 1000)
                     {
-                        sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                        sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
                             TransitTime = $"<b><span style='color:red'>{dTransitTimeMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}.</span></b>"
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
                     {
-                        sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                        sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
                             TransitTime = $"<b><span style='color:red'>"
                                 + $"{iTransitTimeSeconds} {RulesetLangHelper.GetString("Second")} ({dTransitTimeMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}).</span></b>"
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else
                     {
-                        sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                        sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
                             TransitTime = $"<b><span style='color:red'>"
                                 + $"{iTransitTimeSeconds} {RulesetLangHelper.GetString("Seconds")} ({dTransitTimeMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}).</span></b>"
                         };
 
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                 }
                 else
                 {
                     if (ServerMilliseconds < 1000)
                     {
-                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
                             ServerThinkTime = $"{ServerMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}"
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
                     {
-                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
                             ServerThinkTime = $"{ServerSeconds} {RulesetLangHelper.GetString("Second")} ({ServerMilliseconds}{RulesetLangHelper.GetString("Milliseconds")})."
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else
                     {
-                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
                             ServerThinkTime = $"{ServerSeconds} {RulesetLangHelper.GetString("Seconds")} ({ServerMilliseconds}{RulesetLangHelper.GetString("Milliseconds")})."
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
 
                     if (dTransitTimeMilliseconds < 1000)
                     {
-                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
                             TransitTime = $"{dTransitTimeMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}"
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
                     {
-                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
                             TransitTime = $"{iTransitTimeSeconds} {RulesetLangHelper.GetString("Second")} ({dTransitTimeMilliseconds}{RulesetLangHelper.GetString("Milliseconds")})."
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                     else
                     {
-                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                         {
                             TransitTime = $"{iTransitTimeSeconds} {RulesetLangHelper.GetString("Seconds")} ({dTransitTimeMilliseconds}{RulesetLangHelper.GetString("Milliseconds")})."
                         };
 
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
                     }
                 }
             }
             else
             {
-                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     ServerThinkTime = RulesetLangHelper.GetString("Insufficient data"),
                     TransitTime = RulesetLangHelper.GetString("Insufficient data"),
@@ -205,7 +205,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 };
 
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
 
             sw.Stop();

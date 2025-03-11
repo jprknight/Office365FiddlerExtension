@@ -69,57 +69,57 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             String DataAge = TimeSpanDaysText + TimeSpanHoursText + TimeSpanMinutesText;
 
-            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
             {
                 DateDataCollected = SessionDateTime.ToString("dddd, MMMM dd, yyyy h:mm tt")
             };
 
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
 
             if (TimeSpanDays <= 7)
             {
-                sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     DataAge = $"<b><span style='color:green'>{DataAge}</span></b>",
                     CalculatedSessionAge = $"<p>{RulesetLangHelper.GetString("Session collected within 7 days")}</p>"
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
             else if (TimeSpanDays > 7 && TimeSpanDays < 14)
             {
-                sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     DataAge = $"<b><span style='color:orange'>{DataAge}</span></b>",
                     CalculatedSessionAge = RulesetLangHelper.GetString("Session collected within 14 days")
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
             else if (TimeSpanDays >= 14 && TimeSpanDays < 30)
             {
-                sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     DataAge = $"<b><span style='color:orange'>{DataAge}</span></b>",
                     CalculatedSessionAge = RulesetLangHelper.GetString("Session collected between 14 and 30 days ago")
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
             else
             {
-                sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
+                sessionFlags = new SessionFlagService.ExtensionSessionFlags()
                 {
                     DataAge = $"<b><span style='color:red'>{DataAge}</span></b>",
                     CalculatedSessionAge = RulesetLangHelper.GetString("Session collected more than 30 days ago")
                 };
 
                 sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
             }
 
             sw.Stop();

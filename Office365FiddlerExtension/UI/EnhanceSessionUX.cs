@@ -91,11 +91,10 @@ namespace Office365FiddlerExtension.UI
 
                         this.session["UI-BACKCOLOR"] = "#FFB6C1";
                         this.session["UI-COLOR"] = "#000000";
+
                         break;
                 }
-
                 SessionFlagService.Instance.SetUIColourSet(true);
-
                 this.session.RefreshUI();
             }
             catch (Exception ex)

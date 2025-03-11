@@ -34,6 +34,9 @@ namespace Office365FiddlerExtension.Services
                 return;
             }
 
+            // Attempt to create the extension Json session flag before calling in the ruleset.
+            SessionFlagService.Instance.CreateExtensionSessionFlag(this.session);
+
             var ExtensionVersion = VersionJsonService.Instance.GetDeserializedExtensionVersion();
 
             string pattern = ExtensionVersion.RulesetDLLPattern;
@@ -57,6 +60,10 @@ namespace Office365FiddlerExtension.Services
             catch (Exception ex)
             {
                 TelemetryService.CustomTrackException(ex);
+                
+                // Many null object exceptions can lead to this point. It's not just an issue with loading the ruleset dll, even though I seem to be
+                // pointing to that as a primary cause of issues. Look for missing this.session = session; lines in the ruleset if you're here.
+                // Start with the rule you may have recently authored.
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} FATAL ERROR: CANNOT LOAD RULESET DLL USING {pattern}.");
                 FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} {ex}");
             }
