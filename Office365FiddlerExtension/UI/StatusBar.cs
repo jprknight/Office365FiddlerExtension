@@ -31,8 +31,6 @@ namespace Office365FiddlerExtension.Services
             {
                 TelemetryService.CustomTrackException(ex);
             }
-
-            
         }
 
         /// <summary>

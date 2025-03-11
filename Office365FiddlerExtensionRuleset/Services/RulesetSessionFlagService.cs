@@ -83,7 +83,8 @@ namespace Office365FiddlerExtensionRuleset.Services
                 SessionTypeConfidenceLevel = "0",
                 SessionResponseServerConfidenceLevel = "0",
                 SessionSeverity = "0",
-                TLSVersion = ""
+                TLSVersion = "",
+                UIColoursSet = false
             };
 
             // Transform the object to a Json object.
