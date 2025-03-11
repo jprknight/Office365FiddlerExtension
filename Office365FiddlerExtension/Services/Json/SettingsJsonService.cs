@@ -439,6 +439,18 @@ namespace Office365FiddlerExtension.Services
         }
 
         /// <summary>
+        /// Get Warning session time threshold from extension settings Json application preference.
+        /// </summary>
+        /// <return>int</return>
+        public int WarningSessionTimeThreshold
+        {
+            get
+            {
+                return SettingsJsonService.Instance.GetDeserializedExtensionSettings().WarningSessionTimeThreshold;
+            }
+        }
+
+        /// <summary>
         /// Get slow running session threshold from extension settings Json application preference.
         /// </summary>
         /// <return>int</return>

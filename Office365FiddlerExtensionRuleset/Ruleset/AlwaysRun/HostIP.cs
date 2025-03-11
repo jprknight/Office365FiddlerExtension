@@ -36,7 +36,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             string hostIP;
 
             // If NeverWebCall is false, return.
-            if (!RulesetSettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 return;
             }
@@ -74,9 +74,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
         private void NeverWebCall_False_SetHostIP(Session session)
         {
-            // If NeverWebCall is true, return;
-
-            if (RulesetSettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 return;
             }
