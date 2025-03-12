@@ -24,7 +24,7 @@ Throw it in a function and call it multiple times.
 
 3) Use understandable naming conventions.
 
-not p, instead product.
+instead of p, use product.
 
 MORE RULES I LIVE BY
 --------------------

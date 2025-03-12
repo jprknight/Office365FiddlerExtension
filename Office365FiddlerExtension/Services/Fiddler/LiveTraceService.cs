@@ -22,6 +22,12 @@ namespace Office365FiddlerExtension.Services.Fiddler
                 return;
             }
 
+            // If the session has the imported session flag on it, presedence is given to the ImportService class.
+            if (SessionService.Instance.IsSessionImported(this.session))
+            {
+                return;
+            }
+
             // If session analysis on live trace is enabled, run.
             if (SettingsJsonService.Instance.SessionAnalysisOnLiveTrace)
             {

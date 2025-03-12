@@ -124,7 +124,9 @@ namespace Office365FiddlerExtension.Services
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
             // If there are more sessions to analyse than the warning threshold, confirm with the user they want to continue.
-            if (e.arrSessions.Count() > extensionSettings.WarnBeforeAnalysing && iToBeAnalysedSessions > extensionSettings.WarnBeforeAnalysing)
+            //if (e.arrSessions.Count() > extensionSettings.WarnBeforeAnalysing && iToBeAnalysedSessions > extensionSettings.WarnBeforeAnalysing)
+            if (iToBeAnalysedSessions > extensionSettings.WarnBeforeAnalysing
+                && !extensionSettings.LargeSessionAnalysisApproval)
             {
                 bProcessSessions = SessionService.Instance.ConfirmLargeSessionAnalysis(e.arrSessions.Count());
             }
@@ -171,7 +173,8 @@ namespace Office365FiddlerExtension.Services
                     SessionService.Instance.OnPeekAtResponseHeaders(this.session);
                 }
 
-
+                // Reset the LargeSessionAnalysisApproval to false, so the user is prompted on any subsequent SAZ loads.
+                SettingsJsonService.Instance.SetLargeSessionAnalysisApproval(false);
                 
                 // Update status bar with load saz progress.
                 StatusBar.Instance.UpdateStatusBarOnSessionProgression(this.session.id, e.arrSessions.Count() + PreviouslyLoadedSessions.Count());

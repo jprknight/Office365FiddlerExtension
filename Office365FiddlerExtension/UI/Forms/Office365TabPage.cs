@@ -1,9 +1,7 @@
 ﻿using Fiddler;
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 using Office365FiddlerExtension.Services;
-using System.Runtime.CompilerServices;
 
 namespace Office365FiddlerExtension.UI.Forms
 {
@@ -39,8 +37,6 @@ namespace Office365FiddlerExtension.UI.Forms
 
             CreateConsolidatedAnalysisButton.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
         }
-
-
 
         private void Office365TabPage_Load(object sender, EventArgs e)
         {

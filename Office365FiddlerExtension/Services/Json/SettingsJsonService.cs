@@ -82,7 +82,8 @@ namespace Office365FiddlerExtension.Services
                 SessionTypeColumnEnabled = "True",
                 AuthenticationColumnEnabled = "True",
                 ResponseServerColumnEnabled = "True",
-                HostIPColumnEnabled = "True"
+                HostIPColumnEnabled = "True",
+                LargeSessionAnalysisApproval = "False"
             };
 
             // Transform the object to a Json object.
@@ -330,12 +331,12 @@ namespace Office365FiddlerExtension.Services
         /// Set session analysis on load saz in extension settings Json preference.
         /// </summary>
         /// <param name="sessionAnalysisOnLoadSaz"></param>
-        public void SetSessionAnalysisOnLoadSaz(Boolean sessionAnalysisOnLoadSaz)
+        public void SetSessionAnalysisOnLoadSaz(Boolean _value)
         {
             // Pull & Deserialize Json from ExtensionSettings.
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             // Set the attribute.
-            extensionSettings.SessionAnalysisOnLoadSaz = sessionAnalysisOnLoadSaz;
+            extensionSettings.SessionAnalysisOnLoadSaz = _value;
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
@@ -360,12 +361,12 @@ namespace Office365FiddlerExtension.Services
         /// Set session analysis on live trace in extension settings Json application preference.
         /// </summary>
         /// <param name="sessionAnalysisOnLiveTrace"></param>
-        public void SetSessionAnalysisOnLiveTrace(Boolean sessionAnalysisOnLiveTrace)
+        public void SetSessionAnalysisOnLiveTrace(Boolean _value)
         {
             // Pull & Deserialize Json from ExtensionSettings.
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             // Set the attribute.
-            extensionSettings.SessionAnalysisOnLiveTrace = sessionAnalysisOnLiveTrace;
+            extensionSettings.SessionAnalysisOnLiveTrace = _value;
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
@@ -389,24 +390,24 @@ namespace Office365FiddlerExtension.Services
         /// Set session analysis on import in extension settings Json application preference.
         /// </summary>
         /// <param name="sessionAnalysisOnImport"></param>
-        public void SetSessionAnlysisOnImport(Boolean sessionAnalysisOnImport)
+        public void SetSessionAnlysisOnImport(Boolean _value)
         {
             // Pull & Deserialize Json from ExtensionSettings.
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             // Set the attribute.
-            extensionSettings.SessionAnalysisOnImport = sessionAnalysisOnImport;
+            extensionSettings.SessionAnalysisOnImport = _value;
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
         }
 
 
-        public void SetWarnBeforeAnalysing(int warnBeforeAnalysing)
+        public void SetWarnBeforeAnalysing(int _value)
         {
             // Pull & Deserialize Json from ExtensionSettings.
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             // Set the attribute.
-            extensionSettings.WarnBeforeAnalysing = warnBeforeAnalysing;
+            extensionSettings.WarnBeforeAnalysing = _value;
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
@@ -416,10 +417,10 @@ namespace Office365FiddlerExtension.Services
         /// Set warning session time threshold in extension settings Json application preference.
         /// </summary>
         /// <param name="warningSessionTimeThreshold"></param>
-        public void SetWarningSessionTimeThreshold(string warningSessionTimeThreshold)
+        public void SetWarningSessionTimeThreshold(string _value)
         {
             // Validate input is int and only act if it is.
-            var isNumberic = int.TryParse(warningSessionTimeThreshold, out int iWarningSessionTimeThreshold);
+            var isNumberic = int.TryParse(_value, out int iWarningSessionTimeThreshold);
 
             if (isNumberic)
             {
@@ -466,10 +467,10 @@ namespace Office365FiddlerExtension.Services
         /// Set slow running session threshold in extension settings Json application preference.
         /// </summary>
         /// <param name="slowRunningSessionThreshold"></param>
-        public void SetSlowRunningSessionThreshold(string slowRunningSessionThreshold)
+        public void SetSlowRunningSessionThreshold(string _value)
         {
             // Validate input is int and only act if it is.
-            var isNumberic = int.TryParse(slowRunningSessionThreshold, out int iSlowRunningSessionThreshold);
+            var isNumberic = int.TryParse(_value, out int iSlowRunningSessionThreshold);
 
             if (isNumberic)
             {
@@ -488,67 +489,83 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
-        public void SetElapsedColumnEnabled(bool enabled)
+        public void SetElapsedColumnEnabled(bool _value)
         {
             // Pull & Deserialize Json from ExtensionSettings.
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             // Set the attribute.
-            extensionSettings.ElapsedTimeColumnEnabled = enabled;
+            extensionSettings.ElapsedTimeColumnEnabled = _value;
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
         }
 
-        public void SetSeverityColumnEnabled(bool enabled)
+        public void SetSeverityColumnEnabled(bool _value)
         {
             // Pull & Deserialize Json from ExtensionSettings.
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             // Set the attribute.
-            extensionSettings.SeverityColumnEnabled = enabled;
+            extensionSettings.SeverityColumnEnabled = _value;
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
         }
 
-        public void SetSessionTypeColumnEnabled(bool enabled)
+        public void SetSessionTypeColumnEnabled(bool _value)
         {
             // Pull & Deserialize Json from ExtensionSettings.
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             // Set the attribute.
-            extensionSettings.SessionTypeColumnEnabled = enabled;
+            extensionSettings.SessionTypeColumnEnabled = _value;
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
         }
 
-        public void SetResponseServerColumnEnabled(bool enabled)
+        public void SetResponseServerColumnEnabled(bool _value)
         {
             // Pull & Deserialize Json from ExtensionSettings.
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             // Set the attribute.
-            extensionSettings.ResponseServerColumnEnabled = enabled;
+            extensionSettings.ResponseServerColumnEnabled = _value;
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
         }
 
-        public void SetAuthenticationColumnEnabled(bool enabled)
+        public void SetAuthenticationColumnEnabled(bool _value)
         {
             // Pull & Deserialize Json from ExtensionSettings.
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             // Set the attribute.
-            extensionSettings.AuthenticationColumnEnabled = enabled;
+            extensionSettings.AuthenticationColumnEnabled = _value;
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
         }
 
-        public void SetHostIPColumnEnabled(bool enabled)
+        public void SetHostIPColumnEnabled(bool _value)
         {
             // Pull & Deserialize Json from ExtensionSettings.
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
             // Set the attribute.
-            extensionSettings.HostIPColumnEnabled = enabled;
+            extensionSettings.HostIPColumnEnabled = _value;
+            // Serialize the object back into Json.
+            // Write the Json into the ExtensionSettings Fiddler setting.
+            Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
+        }
+
+        /// <summary>
+        /// Sets the value to either prompt or not prompt the user for large session analysis. 
+        /// The intention is this is normally set to false, and temporarily set to true to make sure the user is only prompted once per large analysis run.
+        /// </summary>
+        /// <param name="_value"></param>
+        public void SetLargeSessionAnalysisApproval(bool _value)
+        {
+            // Pull & Deserialize Json from ExtensionSettings.
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+            // Set the attribute.
+            extensionSettings.LargeSessionAnalysisApproval = _value;
             // Serialize the object back into Json.
             // Write the Json into the ExtensionSettings Fiddler setting.
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
@@ -649,5 +666,7 @@ namespace Office365FiddlerExtension.Services
         public bool ResponseServerColumnEnabled { get; set; }
 
         public bool HostIPColumnEnabled { get; set; }
+
+        public bool LargeSessionAnalysisApproval {  get; set; }
     }
 }

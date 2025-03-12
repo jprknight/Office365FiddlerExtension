@@ -2,6 +2,7 @@
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtension.UI;
 using System;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace Office365FiddlerExtension
@@ -24,8 +25,27 @@ namespace Office365FiddlerExtension
         {
             this.session = Session;
 
-            this.session.utilDecodeRequest(true);
-            this.session.utilDecodeResponse(true);
+            try
+            {
+                this.session.utilDecodeRequest(true);
+            }
+            catch (Exception ex) 
+            {
+                TelemetryService.CustomTrackException(ex);
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error decoding session request.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+            }
+
+            try
+            {
+                this.session.utilDecodeResponse(true);
+            }
+            catch (Exception ex)
+            {
+                TelemetryService.CustomTrackException(ex);
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Error decoding session response.");
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
+            }
 
             RulesetService.Instance.CallRunRuleSet(this.session);
 
@@ -66,16 +86,30 @@ namespace Office365FiddlerExtension
             DialogResult dialogResult = MessageBox.Show(message, caption, buttons, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
             if (dialogResult == DialogResult.OK)
             {
+                SettingsJsonService.Instance.SetLargeSessionAnalysisApproval(true);
                 // User wants to continue with session analysis.
                 return true;
+                
             }
             else if (dialogResult == DialogResult.Cancel)
             {
+                SettingsJsonService.Instance.SetLargeSessionAnalysisApproval(false);
                 // User doesn't want to continue with session analysis.
                 return false;
             }
             
             return true;
+        }
+
+        public bool IsSessionImported(Session session)
+        {
+            this.session = session;
+
+            if (this.session.isAnyFlagSet(SessionFlags.ImportedFromOtherTool))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

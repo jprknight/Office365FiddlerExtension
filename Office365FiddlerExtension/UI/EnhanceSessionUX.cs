@@ -52,8 +52,8 @@ namespace Office365FiddlerExtension.UI
 
             try
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
-                    $"Enhancing {this.session.id} based on existing session flags.");
+                //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                //    $"Enhancing {this.session.id} based on existing session flags.");
 
                 var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
 

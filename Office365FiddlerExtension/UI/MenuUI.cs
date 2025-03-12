@@ -271,8 +271,11 @@ namespace Office365FiddlerExtension
             // Set ExtensionEnabled according to menu item checked.
             SettingsJsonService.Instance.SetExtensionSessionProcessingEnabled(MiEnabled.Checked);
 
-            MenuUI.Instance.UpdateUIControls();
-            ContextMenuUI.Instance.UpdateUIControls();
+            // These aren't necessary anymore since the watcher was implemented.
+            // ActivationService ExtensionPreferenceChangeNotification fires and does these things.
+            //MenuUI.Instance.UpdateUIControls();
+            //ContextMenuUI.Instance.UpdateUIControls();
+
         }
 
         /// <summary>

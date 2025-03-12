@@ -25,7 +25,10 @@ namespace Office365FiddlerExtension.Services
                     $"{LangHelper.GetString("sessions")} " +
                     $"{CurrentSession} / " +
                     $"{TotalSessions} " +
-                    $"({PercentageProgress.ToString("0.##")}%)";
+                    $"({PercentageProgress.ToString("0")}%)";
+                    // Percentage with two decimal places. Keeping this in case it's needed in the future.
+                    // 3.12.2025 Changing this to just show round numbers.
+                    //$"({PercentageProgress.ToString("0.##")}%)";
             }
             catch (Exception ex)
             {
