@@ -13,7 +13,6 @@ namespace Office365FiddlerExtension.UI.Forms
 
         string strPlaceHolderText = LangHelper.GetString("Check IP Address Placeholder Text");
 
-
         public Office365TabPage()
         {
             InitializeComponent();
@@ -52,7 +51,7 @@ namespace Office365FiddlerExtension.UI.Forms
                 ExtensionOptionsGroupBox.Text = $"{LangHelper.GetString("Extension Options")} (Debug Mode)";
                 DebugModeCheckBox.Visible = true;
                 NeverWebCallCheckBox.Visible = true;
-                ExtensionSettingsTextbox.Text = Preferences.ExtensionSettings;
+                ExtensionSettingsTextbox.Text = GetFormattedExtensionSettings();
             }
             else
             {
@@ -312,7 +311,7 @@ namespace Office365FiddlerExtension.UI.Forms
 
             ExtensionEnabledCheckBox.Checked = extensionSettings.ExtensionSessionProcessingEnabled;
 
-            ExtensionSettingsTextbox.Text = Preferences.ExtensionSettings;
+            ExtensionSettingsTextbox.Text = GetFormattedExtensionSettings();
         }
 
         private void ElapsedTimeCheckbox_CheckedChanged(object sender, EventArgs e)
@@ -379,6 +378,18 @@ namespace Office365FiddlerExtension.UI.Forms
             {
                 ColumnUI.Instance.AddHostIPColumn();
             }
+        }
+
+        private string GetFormattedExtensionSettings()
+        {
+            string _value = Preferences.ExtensionSettings;
+
+            _value = _value.Replace(",", "\r\n");
+            _value = _value.Replace("{", "");
+            _value = _value.Replace("}", "");
+            _value = _value.Replace("\"", " ");
+
+            return _value;
         }
     }
 

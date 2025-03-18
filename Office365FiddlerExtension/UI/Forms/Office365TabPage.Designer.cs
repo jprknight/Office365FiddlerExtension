@@ -344,23 +344,24 @@
             this.DebugGroupBox.Controls.Add(this.DebugModeUpdateButton);
             this.DebugGroupBox.Location = new System.Drawing.Point(3, 446);
             this.DebugGroupBox.Name = "DebugGroupBox";
-            this.DebugGroupBox.Size = new System.Drawing.Size(409, 290);
+            this.DebugGroupBox.Size = new System.Drawing.Size(409, 433);
             this.DebugGroupBox.TabIndex = 6;
             this.DebugGroupBox.TabStop = false;
             this.DebugGroupBox.Text = "Debug";
             // 
             // ExtensionSettingsTextbox
             // 
+            this.ExtensionSettingsTextbox.AcceptsReturn = true;
             this.ExtensionSettingsTextbox.Location = new System.Drawing.Point(7, 19);
             this.ExtensionSettingsTextbox.Multiline = true;
             this.ExtensionSettingsTextbox.Name = "ExtensionSettingsTextbox";
             this.ExtensionSettingsTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.ExtensionSettingsTextbox.Size = new System.Drawing.Size(389, 226);
+            this.ExtensionSettingsTextbox.Size = new System.Drawing.Size(389, 371);
             this.ExtensionSettingsTextbox.TabIndex = 19;
             // 
             // DebugModeUpdateButton
             // 
-            this.DebugModeUpdateButton.Location = new System.Drawing.Point(261, 251);
+            this.DebugModeUpdateButton.Location = new System.Drawing.Point(263, 396);
             this.DebugModeUpdateButton.Name = "DebugModeUpdateButton";
             this.DebugModeUpdateButton.Size = new System.Drawing.Size(135, 23);
             this.DebugModeUpdateButton.TabIndex = 17;
@@ -418,7 +419,7 @@
             this.Controls.Add(this.ExtensionOptionsGroupBox);
             this.Controls.Add(this.SessionAnalysisGroupBox);
             this.Name = "Office365TabPage";
-            this.Size = new System.Drawing.Size(425, 753);
+            this.Size = new System.Drawing.Size(576, 970);
             this.Load += new System.EventHandler(this.Office365TabPage_Load);
             this.SessionAnalysisGroupBox.ResumeLayout(false);
             this.ExtensionOptionsGroupBox.ResumeLayout(false);
