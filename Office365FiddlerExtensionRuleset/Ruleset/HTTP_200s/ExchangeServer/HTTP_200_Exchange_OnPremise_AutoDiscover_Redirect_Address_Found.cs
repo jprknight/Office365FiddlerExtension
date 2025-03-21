@@ -23,6 +23,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
         {
             this.session = session;
 
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             // if this session does not have redirectAddr in the response body, return.
             if (!(this.session.utilFindInResponse("<Action>redirectAddr</Action>", false) > 1))
             {

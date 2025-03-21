@@ -19,6 +19,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
         {
             this.session = session;
 
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             if (!this.session.ResponseHeaders["Content-Type"].Contains("json"))
             {
                 return;

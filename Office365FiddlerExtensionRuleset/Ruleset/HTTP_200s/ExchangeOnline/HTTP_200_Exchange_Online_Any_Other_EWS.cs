@@ -25,7 +25,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} HTTP 200 EXO / M365 EWS call.");
 
-            // If this isn't an EWS call, return.
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             if (!this.session.uriContains("ews/exchange.asmx"))
             {
                 return;

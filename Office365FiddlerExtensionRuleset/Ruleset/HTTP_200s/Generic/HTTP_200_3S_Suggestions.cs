@@ -25,6 +25,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
         {
             this.session = session;
 
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             // If this isn't a 3G Suggestions call, return.
             if (!this.session.uriContains("search/api/v1/suggestions"))
             {

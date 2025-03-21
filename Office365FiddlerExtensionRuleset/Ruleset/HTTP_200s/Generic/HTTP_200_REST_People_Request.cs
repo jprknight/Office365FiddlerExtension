@@ -24,6 +24,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
         {
             this.session = session;
 
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             // if the session Uri isn't for People, return;
             if (!this.session.uriContains("people"))
             {

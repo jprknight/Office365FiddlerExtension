@@ -1379,4 +1379,16 @@
   <data name="HTTP_200_Json_EmptyResponseBody_ResponseComments" xml:space="preserve">
     <value>&lt;p&gt;Though the session has a content type of Json, there is an empty response body. Check the host, URL, and process on this session to determine if this is a point of interest for the issue you're troubleshooting.&lt;/p&gt;</value>
   </data>
+  <data name="HTTP_200_FreeBusy_Proxy_Web_Request_Failed_SessionType" xml:space="preserve">
+    <value>!Free/Busy Failure!</value>
+  </data>
+  <data name="HTTP_200_FreeBusy_Proxy_Web_Request_Failed_ResponseCodeDescription" xml:space="preserve">
+    <value>HTTP 200 Free/Busy Response Failure</value>
+  </data>
+  <data name="HTTP_200_FreeBusy_Proxy_Web_Request_Failed_ResponseAlert" xml:space="preserve">
+    <value>HTTP 200 Free/Busy Failure.</value>
+  </data>
+  <data name="HTTP_200_FreeBusy_Proxy_Web_Request_Failed_ResponseComments" xml:space="preserve">
+    <value>&lt;p&gt;HTTP 200 OK response for Free/Busy, but there is a Proxy Web Request Failed error in the response.&lt;/p&gt;</value>
+  </data>
 </root>

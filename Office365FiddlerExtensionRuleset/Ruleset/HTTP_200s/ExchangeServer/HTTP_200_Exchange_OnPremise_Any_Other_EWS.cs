@@ -24,7 +24,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             // Note: There are some organizations who have vanity domains for Office 365. They are the outliers for this scenario.
 
             this.session = session;
-            
+
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             // If this isn't an EWS call, return.
             if (!this.session.uriContains("ews/exchange.asmx"))
             {

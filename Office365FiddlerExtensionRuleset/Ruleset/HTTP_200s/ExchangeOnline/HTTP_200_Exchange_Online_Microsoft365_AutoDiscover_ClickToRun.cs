@@ -23,6 +23,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
         {
             this.session = session;
 
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             // If this session isn't a Autodiscover session, return; 
             if (!this.session.uriContains("autodiscover.xml"))
             {

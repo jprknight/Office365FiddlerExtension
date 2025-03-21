@@ -700,6 +700,42 @@ namespace Office365FiddlerExtensionRuleset.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 Free/Busy Failure..
+        /// </summary>
+        internal static string HTTP_200_FreeBusy_Proxy_Web_Request_Failed_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_FreeBusy_Proxy_Web_Request_Failed_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 Free/Busy Response Failure.
+        /// </summary>
+        internal static string HTTP_200_FreeBusy_Proxy_Web_Request_Failed_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_FreeBusy_Proxy_Web_Request_Failed_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;HTTP 200 OK response for Free/Busy, but there is a Proxy Web Request Failed error in the response.&lt;/p&gt;.
+        /// </summary>
+        internal static string HTTP_200_FreeBusy_Proxy_Web_Request_Failed_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_FreeBusy_Proxy_Web_Request_Failed_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to !Free/Busy Failure!.
+        /// </summary>
+        internal static string HTTP_200_FreeBusy_Proxy_Web_Request_Failed_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_FreeBusy_Proxy_Web_Request_Failed_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Free/Busy Error! Result set has too many calendar items..
         /// </summary>
         internal static string HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseAlert {

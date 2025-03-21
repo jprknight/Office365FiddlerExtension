@@ -43,11 +43,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             ///////////////////////////////
 
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
-
             var sw_HTTP_200_ClientAccessRule = Stopwatch.StartNew();
 
             HTTP_200_ClientAccessRule.Instance.Run(this.session);
@@ -61,11 +56,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
 
             ///////////////////////////////
-
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
 
             var sw_HTTP_200_Culture_Not_Found = Stopwatch.StartNew();
 
@@ -82,11 +72,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             ///////////////////////////////
 
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
-
             var sw_HTTP_200_Outlook_MAPI_Protocol_Disabled = Stopwatch.StartNew();
 
             HTTP_200_Outlook_MAPI_Protocol_Disabled.Instance.Run(this.session);
@@ -100,11 +85,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
 
             ///////////////////////////////
-
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
 
             var sw_HTTP_200_Outlook_MAPI_Exchange_Online = Stopwatch.StartNew();
 
@@ -120,11 +100,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             ///////////////////////////////
 
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
-
             var sw_HTTP_200_Outlook_MAPI_Exchange_OnPremise = Stopwatch.StartNew();
 
             HTTP_200_Outlook_MAPI_Exchange_OnPremise.Instance.Run(this.session);
@@ -138,68 +113,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
 
             ///////////////////////////////
-
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
-
-            var sw_HTTP_200_OWA_Notification_Channel = Stopwatch.StartNew();
-
-            HTTP_200_OWA_Notification_Channel.Instance.Run(this.session);
-
-            sw_HTTP_200_OWA_Notification_Channel.Stop();
-
-            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
-            {
-                TelemetryService.CustomTrackEvent("RS_HTTP_200_OWA_Notification_Channel");
-                TelemetryService.CustomTrackMetric("RS_HTTP_200_OWA_Notification_Channel", sw_HTTP_200_OWA_Notification_Channel.ElapsedMilliseconds);
-            }
-
-            ///////////////////////////////
-
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
-
-            var sw_HTTP_200_OWA = Stopwatch.StartNew();
-
-            HTTP_200_OWA.Instance.Run(this.session);
-
-            sw_HTTP_200_OWA.Stop();
-
-            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
-            {
-                TelemetryService.CustomTrackEvent("RS_HTTP_200_OWA");
-                TelemetryService.CustomTrackMetric("RS_HTTP_200_OWA", sw_HTTP_200_OWA.ElapsedMilliseconds);
-            }
-
-            ///////////////////////////////
-
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
-
-            var sw_HTTP_200_OWA_Attachments = Stopwatch.StartNew();
-
-            HTTP_200_OWA_Attachments.Instance.Run(this.session);
-
-            sw_HTTP_200_OWA_Attachments.Stop();
-
-            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
-            {
-                TelemetryService.CustomTrackEvent("RS_HTTP_200_OWA_Attachments");
-                TelemetryService.CustomTrackMetric("RS_HTTP_200_OWA_Attachments", sw_HTTP_200_OWA_Attachments.ElapsedMilliseconds);
-            }
-
-            ///////////////////////////////
-
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
 
             var sw_HTTP_200_Outlook_RPC = Stopwatch.StartNew();
 
@@ -215,12 +128,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             ///////////////////////////////
 
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-
-            {
-                return;
-            }
-
             var sw_HTTP_200_Outlook_NSPI = Stopwatch.StartNew();
 
             HTTP_200_Outlook_NSPI.Instance.Run(this.session);
@@ -234,11 +141,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
 
             ///////////////////////////////
-
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
 
             var sw_HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found = Stopwatch.StartNew();
 
@@ -254,11 +156,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             ///////////////////////////////
 
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
-
             var sw_HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_AddressNotFound = Stopwatch.StartNew();
 
             HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_AddressNotFound.Instance.Run(this.session);
@@ -272,11 +169,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
 
             ///////////////////////////////
-
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
 
             var sw_HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_MSI_Non_ClickToRun = Stopwatch.StartNew();
 
@@ -292,11 +184,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             ///////////////////////////////
 
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
-
             var sw_HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun = Stopwatch.StartNew();
 
             HTTP_200_Exchange_Online_Microsoft365_AutoDiscover_ClickToRun.Instance.Run(this.session);
@@ -310,11 +197,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
 
             ///////////////////////////////
-
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
 
             var sw_HTTP_200_Unified_Groups_Settings = Stopwatch.StartNew();
 
@@ -330,11 +212,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             ///////////////////////////////
 
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
-
             var sw_HTTP_200_3S_Suggestions = Stopwatch.StartNew();
 
             HTTP_200_3S_Suggestions.Instance.Run(this.session);
@@ -348,11 +225,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
 
             ///////////////////////////////
-
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
 
             var sw_HTTP_200_REST_People_Request = Stopwatch.StartNew();
 
@@ -368,11 +240,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             ///////////////////////////////
 
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
-            
             var sw_HTTP_200_Exchange_OnPremise_Any_Other_EWS = Stopwatch.StartNew();
 
             HTTP_200_Exchange_OnPremise_Any_Other_EWS.Instance.Run(this.session);
@@ -386,11 +253,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
 
             ///////////////////////////////
-
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
 
             var sw_HTTP_200_Exchange_Online_Any_Other_EWS = Stopwatch.StartNew();
 
@@ -406,11 +268,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             ///////////////////////////////
 
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
-
             var sw_HTTP_200_FreeBusy = Stopwatch.StartNew();
 
             HTTP_200_FreeBusy.Instance.Run(this.session);
@@ -424,11 +281,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
 
             ///////////////////////////////
-
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
 
             var sw_HTTP_200_Json = Stopwatch.StartNew();
 
@@ -444,11 +296,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             ///////////////////////////////
 
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
-
             var sw_HTTP_200_Javascript = Stopwatch.StartNew();
 
             HTTP_200_Javascript.Instance.Run(this.session);
@@ -463,10 +310,47 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             ///////////////////////////////
 
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            var sw_HTTP_200_OWA_Notification_Channel = Stopwatch.StartNew();
+
+            HTTP_200_OWA_Notification_Channel.Instance.Run(this.session);
+
+            sw_HTTP_200_OWA_Notification_Channel.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
-                return;
+                TelemetryService.CustomTrackEvent("RS_HTTP_200_OWA_Notification_Channel");
+                TelemetryService.CustomTrackMetric("RS_HTTP_200_OWA_Notification_Channel", sw_HTTP_200_OWA_Notification_Channel.ElapsedMilliseconds);
             }
+
+            ///////////////////////////////
+
+            var sw_HTTP_200_OWA = Stopwatch.StartNew();
+
+            HTTP_200_OWA.Instance.Run(this.session);
+
+            sw_HTTP_200_OWA.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_200_OWA");
+                TelemetryService.CustomTrackMetric("RS_HTTP_200_OWA", sw_HTTP_200_OWA.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
+            var sw_HTTP_200_OWA_Attachments = Stopwatch.StartNew();
+
+            HTTP_200_OWA_Attachments.Instance.Run(this.session);
+
+            sw_HTTP_200_OWA_Attachments.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_200_OWA_Attachments");
+                TelemetryService.CustomTrackMetric("RS_HTTP_200_OWA_Attachments", sw_HTTP_200_OWA_Attachments.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
 
             var sw_HTTP_200_Lurking_Errors = Stopwatch.StartNew();
 
@@ -481,11 +365,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
 
             ///////////////////////////////
-
-            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
-            {
-                return;
-            }
 
             var sw_HTTP_200_Actually_OK = Stopwatch.StartNew();
 
