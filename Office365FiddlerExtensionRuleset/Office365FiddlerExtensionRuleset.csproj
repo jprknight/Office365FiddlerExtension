@@ -74,7 +74,7 @@
     <Compile Include="Ruleset\HTTP_200s\ExchangeServer\HTTP_200_Exchange_OnPremise_Any_Other_EWS.cs" />
     <Compile Include="Ruleset\HTTP_200s\ExchangeServer\HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_AddressNotFound.cs" />
     <Compile Include="Ruleset\HTTP_200s\ExchangeServer\HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found.cs" />
-    <Compile Include="Ruleset\HTTP_200s\ExchangeOnline\HTTP_200_FreeBusy.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Generic\HTTP_200_FreeBusy.cs" />
     <Compile Include="Ruleset\HTTP_200s\Generic\HTTP_200_Javascript.cs" />
     <Compile Include="Ruleset\HTTP_200s\Generic\HTTP_200_Json.cs" />
     <Compile Include="Ruleset\HTTP_200s\SuccessFailure\HTTP_200_Lurking_Errors.cs" />

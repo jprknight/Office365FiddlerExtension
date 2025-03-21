@@ -22,6 +22,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             if (!this.session.isTunnel)
             {
                 return;

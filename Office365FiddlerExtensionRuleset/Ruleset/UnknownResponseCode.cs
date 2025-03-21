@@ -23,6 +23,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             // Not setting colours on sessions not recognised.
 
             var sw = Stopwatch.StartNew();

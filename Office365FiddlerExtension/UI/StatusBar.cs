@@ -53,7 +53,10 @@ namespace Office365FiddlerExtension.Services
                         $"{SessionsProcessed} " +
                         $"{LangHelper.GetString("sessions")} " +
                         $"{LangHelper.GetString("in")} " +
-                        $"{sw.Elapsed.TotalMilliseconds.ToString("0.##")}ms.";
+                        $"{sw.Elapsed.TotalMilliseconds.ToString("0")}ms.";
+                        // Percentage with two decimal places. Keeping this in case it's needed in the future.
+                        // 3.21.2025 Changing this to just show round numbers.
+                        // $"{sw.Elapsed.TotalMilliseconds.ToString("0.##")}ms.";
                 }
                 else
                 {
@@ -62,7 +65,10 @@ namespace Office365FiddlerExtension.Services
                         $"{SessionsProcessed} " +
                         $"{LangHelper.GetString("sessions")} " +
                         $"{LangHelper.GetString("in")} " +
-                        $"{sw.Elapsed.TotalSeconds.ToString("0.##")} seconds.";
+                        $"{sw.Elapsed.TotalSeconds.ToString("0")} seconds.";
+                        // Percentage with two decimal places. Keeping this in case it's needed in the future.
+                        // 3.21.2025 Changing this to just show round numbers.
+                        //$"{sw.Elapsed.TotalSeconds.ToString("0.##")} seconds.";
                 }
             }
             catch (Exception ex)
@@ -89,7 +95,10 @@ namespace Office365FiddlerExtension.Services
                         $"{SessionsProcessed} " +
                         $"{LangHelper.GetString("sessions")} " +
                         $"{LangHelper.GetString("in")} " +
-                        $"{sw.Elapsed.TotalMilliseconds.ToString("0.##")}ms " +
+                        $"{sw.Elapsed.TotalMilliseconds.ToString("0")}ms " +
+                        // Percentage with two decimal places. Keeping this in case it's needed in the future.
+                        // 3.21.2025 Changing this to just show round numbers.
+                        // $"{sw.Elapsed.TotalMilliseconds.ToString("0.##")}ms " +
                         $"from " +
                         $"{Filename}";
                 }
@@ -100,7 +109,10 @@ namespace Office365FiddlerExtension.Services
                         $"{SessionsProcessed} " +
                         $"{LangHelper.GetString("sessions")} " +
                         $"{LangHelper.GetString("in")} " +
-                        $"{sw.Elapsed.TotalSeconds.ToString("0.##")} seconds " +
+                        $"{sw.Elapsed.TotalMilliseconds.ToString("0")}ms " +
+                        // Percentage with two decimal places. Keeping this in case it's needed in the future.
+                        // 3.21.2025 Changing this to just show round numbers.
+                        // $"{sw.Elapsed.TotalMilliseconds.ToString("0.##")}ms " +
                         $"from " +
                         $"{Filename}";
                 }

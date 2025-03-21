@@ -24,6 +24,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             /////////////////////////////
             //
             // From a scenario where Apache Web Server found to be answering Autodiscover calls and throwing HTTP 301 & 405 responses.

@@ -745,7 +745,7 @@ namespace Office365FiddlerExtensionRuleset.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HTTP 200 OK - Free/Busy error!.
+        ///   Looks up a localized string similar to HTTP 200 OK - Free/Busy Error!.
         /// </summary>
         internal static string HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_ResponseCodeDescription {
             get {
@@ -768,6 +768,42 @@ namespace Office365FiddlerExtensionRuleset.Language {
         internal static string HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_SessionType {
             get {
                 return ResourceManager.GetString("HTTP_200_FreeBusy_Result_Set_Too_Many_Calendar_Items_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free/Busy Failure The Operation Was Cancelled.
+        /// </summary>
+        internal static string HTTP_200_FreeBusy_The_Operation_Was_Cancelled_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_FreeBusy_The_Operation_Was_Cancelled_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 OK - Free/Busy Error!.
+        /// </summary>
+        internal static string HTTP_200_FreeBusy_The_Operation_Was_Cancelled_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_FreeBusy_The_Operation_Was_Cancelled_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;HTTP 200 OK response for Free/Busy, but there is a The Operation Was Cancelled error!&lt;/p&gt;.
+        /// </summary>
+        internal static string HTTP_200_FreeBusy_The_Operation_Was_Cancelled_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_FreeBusy_The_Operation_Was_Cancelled_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to !Free/Busy Failure!.
+        /// </summary>
+        internal static string HTTP_200_FreeBusy_The_Operation_Was_Cancelled_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_FreeBusy_The_Operation_Was_Cancelled_SessionType", resourceCulture);
             }
         }
         

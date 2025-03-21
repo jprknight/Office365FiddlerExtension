@@ -24,6 +24,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            if (RulesetUtilities.Instance.StopProcessing_SessionResponseServerConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             var sw_SetResponseServer_Server = Stopwatch.StartNew();
 
             SetResponseServer_Server(this.session);

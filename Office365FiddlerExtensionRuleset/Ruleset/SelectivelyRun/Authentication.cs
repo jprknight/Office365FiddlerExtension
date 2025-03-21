@@ -24,6 +24,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            if (RulesetUtilities.Instance.StopProcessing_SessionAuthenticationConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             var sw_SetAuthentication_NoAuthHeaders = Stopwatch.StartNew();
 
             SetAuthentication_NoAuthHeaders(this.session);

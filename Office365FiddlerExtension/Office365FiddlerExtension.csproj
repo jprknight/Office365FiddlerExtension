@@ -341,6 +341,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DeveloperNotes.txt" />
+    <Content Include="HowToIncrementVersion.txt" />
     <Content Include="update.xml" />
   </ItemGroup>
   <ItemGroup>

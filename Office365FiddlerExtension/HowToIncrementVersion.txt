@@ -1,0 +1,8 @@
+﻿Increment the assembly version in the extension product.
+Increment the assembly version in the ruleset product.
+
+Update the extension and ruleset version in ./Office365FiddlerExtension/ExtensionVersion.json.
+
+Update the extension version in for Legacy EXOFiddlerInspector: ../EXOFiddlerInspector/update.xml.
+Update the extension version in forLegacy Office365FiddlerInspector: ../Office365FiddlerInspector/update.xml.
+Update the extension version in forLegacy Office365FiddlerExention: ./Office365FiddlerExtension/update.xml.

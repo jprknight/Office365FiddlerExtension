@@ -24,7 +24,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             {
                 return;
             }
+
             FreeBusy_ProxyWebRequestFailed(this.session);
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
+            FreeBusy_The_Operation_Was_Cancelled(this.session);
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
@@ -49,6 +56,75 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
             }
 
             OWA_FreeBusy(this.session);
+        }
+
+        private void FreeBusy_The_Operation_Was_Cancelled(Session session)
+        {
+            this.session = session;
+
+            if (!RulesetUtilities.Instance.SearchForPhrase(this.session, "The operation was canceled"))
+            {
+                return;
+            }
+
+            if (!RulesetUtilities.Instance.SearchForPhrase(this.session, "availabilityView"))
+            {
+                return;
+            }
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Running FreeBusy The operation was canceled.");
+
+            int sessionAuthenticationConfidenceLevel = 0;
+            int sessionTypeConfidenceLevel = 0;
+            int sessionResponseServerConfidenceLevel = 0;
+            int sessionSeverity = 0;
+
+            int sessionAuthenticationConfidenceLevelFallback = 5;
+            int sessionTypeConfidenceLevelFallback = 10;
+            int sessionResponseServerConfidenceLevelFallback = 5;
+            int sessionSeverityFallback = 60;
+
+            try
+            {
+                var sessionClassificationJson = RulesetSessionClassificationService.Instance.GetSessionClassificationJsonSection("HTTP_200s|HTTP_200_FreeBusy_The_Operation_Was_Cancelled");
+
+                sessionAuthenticationConfidenceLevel = sessionClassificationJson.SessionAuthenticationConfidenceLevel;
+                sessionTypeConfidenceLevel = sessionClassificationJson.SessionTypeConfidenceLevel;
+                sessionResponseServerConfidenceLevel = sessionClassificationJson.SessionResponseServerConfidenceLevel;
+                sessionSeverity = sessionClassificationJson.SessionSeverity;
+            }
+            catch (Exception ex)
+            {
+                TelemetryService.CustomTrackException(ex);
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
+            }
+
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            {
+                SectionTitle = "Free/Busy_The_Operation_Was_Cancelled",
+
+                SessionType = RulesetLangHelper.GetString("HTTP_200_FreeBusy_The_Operation_Was_Cancelled_SessionType"),
+                ResponseCodeDescription = RulesetLangHelper.GetString("HTTP_200_FreeBusy_The_Operation_Was_Cancelled_ResponseCodeDescription"),
+                ResponseAlert = RulesetLangHelper.GetString("HTTP_200_FreeBusy_The_Operation_Was_Cancelled_ResponseAlert"),
+                ResponseComments = RulesetLangHelper.GetString("HTTP_200_FreeBusy_The_Operation_Was_Cancelled_ResponseComments"),
+
+                SessionAuthenticationConfidenceLevel = RulesetUtilities.Instance.ValidateSessionAuthenticationConfidenceLevel(sessionAuthenticationConfidenceLevel,
+                    sessionAuthenticationConfidenceLevelFallback),
+
+                SessionTypeConfidenceLevel = RulesetUtilities.Instance.ValidateSessionTypeConfidenceLevel(sessionTypeConfidenceLevel,
+                    sessionTypeConfidenceLevelFallback),
+
+                SessionResponseServerConfidenceLevel = RulesetUtilities.Instance.ValidateSessionResponseServerConfidenceLevel(sessionResponseServerConfidenceLevel,
+                    sessionResponseServerConfidenceLevelFallback),
+
+                SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
+                    sessionSeverityFallback)
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         private void FreeBusy_ProxyWebRequestFailed(Session session)

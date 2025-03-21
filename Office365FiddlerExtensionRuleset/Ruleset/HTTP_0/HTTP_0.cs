@@ -30,12 +30,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 return;
             }
-            HTTP_0_NoSessionResponse(this.session);
+            HTTP_0_OWA_Notification_Channel(this.session);
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
-            HTTP_0_OWA_Notification_Channel(this.session);
+            HTTP_0_NoSessionResponse(this.session);
 
             sw.Stop();
 
