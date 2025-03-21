@@ -24,6 +24,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             var sw_HTTP_456_Multi_Factor_Required = Stopwatch.StartNew();
 
             HTTP_456_Multi_Factor_Required(this.session);

@@ -24,6 +24,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             var sw_HTTP_500_Internal_Server_Error_Repeating_Redirects = Stopwatch.StartNew();
 
             HTTP_500_Internal_Server_Error_Repeating_Redirects(this.session);

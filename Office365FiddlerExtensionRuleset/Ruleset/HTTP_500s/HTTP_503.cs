@@ -24,6 +24,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             var sw_HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable = Stopwatch.StartNew();
 
             HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable(this.session);

@@ -24,6 +24,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             var sw_HTTP_504_Gateway_Timeout_Internet_Access_Blocked = Stopwatch.StartNew();
 
             HTTP_504_Gateway_Timeout_Internet_Access_Blocked(this.session);

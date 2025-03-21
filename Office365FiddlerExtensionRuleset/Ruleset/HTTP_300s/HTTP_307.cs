@@ -24,6 +24,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             var sw_HTTP_307_AutoDiscover_Temporary_Redirect = Stopwatch.StartNew();
 
             HTTP_307_AutoDiscover_Temporary_Redirect(this.session);

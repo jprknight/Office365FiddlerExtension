@@ -24,6 +24,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             var sw_HTTP_403_Forbidden_Proxy_Block = Stopwatch.StartNew();
 
             HTTP_403_Forbidden_Proxy_Block(this.session);

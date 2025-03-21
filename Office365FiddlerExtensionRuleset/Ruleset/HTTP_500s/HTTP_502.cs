@@ -24,6 +24,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         {
             this.session = session;
 
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             var sw_HTTP_502_Bad_Gateway_Telemetry_False_Positive = Stopwatch.StartNew();
 
             HTTP_502_Bad_Gateway_Telemetry_False_Positive(this.session);

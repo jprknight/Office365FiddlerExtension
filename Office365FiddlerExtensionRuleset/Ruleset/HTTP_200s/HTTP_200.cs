@@ -86,62 +86,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             ///////////////////////////////
 
-            var sw_HTTP_200_Outlook_MAPI_Exchange_Online = Stopwatch.StartNew();
-
-            HTTP_200_Outlook_MAPI_Exchange_Online.Instance.Run(this.session);
-
-            sw_HTTP_200_Outlook_MAPI_Exchange_Online.Stop();
-
-            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
-            {
-                TelemetryService.CustomTrackEvent("RS_HTTP_200_Outlook_MAPI_Exchange_Online");
-                TelemetryService.CustomTrackMetric("RS_HTTP_200_Outlook_MAPI_Exchange_Online", sw_HTTP_200_Outlook_MAPI_Exchange_Online.ElapsedMilliseconds);
-            }
-
-            ///////////////////////////////
-
-            var sw_HTTP_200_Outlook_MAPI_Exchange_OnPremise = Stopwatch.StartNew();
-
-            HTTP_200_Outlook_MAPI_Exchange_OnPremise.Instance.Run(this.session);
-
-            sw_HTTP_200_Outlook_MAPI_Exchange_OnPremise.Stop();
-
-            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
-            {
-                TelemetryService.CustomTrackEvent("RS_HTTP_200_Outlook_MAPI_Exchange_OnPremise");
-                TelemetryService.CustomTrackMetric("RS_HTTP_200_Outlook_MAPI_Exchange_OnPremise", sw_HTTP_200_Outlook_MAPI_Exchange_OnPremise.ElapsedMilliseconds);
-            }
-
-            ///////////////////////////////
-
-            var sw_HTTP_200_Outlook_RPC = Stopwatch.StartNew();
-
-            HTTP_200_Outlook_RPC.Instance.Run(this.session);
-
-            sw_HTTP_200_Outlook_RPC.Stop();
-
-            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
-            {
-                TelemetryService.CustomTrackEvent("RS_HTTP_200_Outlook_RPC");
-                TelemetryService.CustomTrackMetric("RS_HTTP_200_Outlook_RPC", sw_HTTP_200_Outlook_RPC.ElapsedMilliseconds);
-            }
-
-            ///////////////////////////////
-
-            var sw_HTTP_200_Outlook_NSPI = Stopwatch.StartNew();
-
-            HTTP_200_Outlook_NSPI.Instance.Run(this.session);
-
-            sw_HTTP_200_Outlook_NSPI.Stop();
-
-            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
-            {
-                TelemetryService.CustomTrackEvent("RS_HTTP_200_Outlook_NSPI");
-                TelemetryService.CustomTrackMetric("RS_HTTP_200_Outlook_NSPI", sw_HTTP_200_Outlook_NSPI.ElapsedMilliseconds);
-            }
-
-            ///////////////////////////////
-
             var sw_HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found = Stopwatch.StartNew();
 
             HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found.Instance.Run(this.session);
@@ -306,6 +250,62 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_200_Javascript");
                 TelemetryService.CustomTrackMetric("RS_HTTP_200_Javascript", sw_HTTP_200_Javascript.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
+            var sw_HTTP_200_Outlook_MAPI_Exchange_Online = Stopwatch.StartNew();
+
+            HTTP_200_Outlook_MAPI_Exchange_Online.Instance.Run(this.session);
+
+            sw_HTTP_200_Outlook_MAPI_Exchange_Online.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_200_Outlook_MAPI_Exchange_Online");
+                TelemetryService.CustomTrackMetric("RS_HTTP_200_Outlook_MAPI_Exchange_Online", sw_HTTP_200_Outlook_MAPI_Exchange_Online.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
+            var sw_HTTP_200_Outlook_MAPI_Exchange_OnPremise = Stopwatch.StartNew();
+
+            HTTP_200_Outlook_MAPI_Exchange_OnPremise.Instance.Run(this.session);
+
+            sw_HTTP_200_Outlook_MAPI_Exchange_OnPremise.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_200_Outlook_MAPI_Exchange_OnPremise");
+                TelemetryService.CustomTrackMetric("RS_HTTP_200_Outlook_MAPI_Exchange_OnPremise", sw_HTTP_200_Outlook_MAPI_Exchange_OnPremise.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
+            var sw_HTTP_200_Outlook_RPC = Stopwatch.StartNew();
+
+            HTTP_200_Outlook_RPC.Instance.Run(this.session);
+
+            sw_HTTP_200_Outlook_RPC.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_200_Outlook_RPC");
+                TelemetryService.CustomTrackMetric("RS_HTTP_200_Outlook_RPC", sw_HTTP_200_Outlook_RPC.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
+            var sw_HTTP_200_Outlook_NSPI = Stopwatch.StartNew();
+
+            HTTP_200_Outlook_NSPI.Instance.Run(this.session);
+
+            sw_HTTP_200_Outlook_NSPI.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_200_Outlook_NSPI");
+                TelemetryService.CustomTrackMetric("RS_HTTP_200_Outlook_NSPI", sw_HTTP_200_Outlook_NSPI.ElapsedMilliseconds);
             }
 
             ///////////////////////////////

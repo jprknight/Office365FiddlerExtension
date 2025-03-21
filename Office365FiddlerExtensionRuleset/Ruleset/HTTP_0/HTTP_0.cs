@@ -25,7 +25,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             this.session = session;
 
             var sw = Stopwatch.StartNew();
-            
+
+            if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
             HTTP_0_NoSessionResponse(this.session);
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
