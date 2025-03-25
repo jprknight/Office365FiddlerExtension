@@ -700,6 +700,42 @@ namespace Office365FiddlerExtensionRuleset.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 Free/Busy..
+        /// </summary>
+        internal static string HTTP_200_FreeBusy_Other_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_FreeBusy_Other_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP 200 Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_FreeBusy_Other_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_FreeBusy_Other_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free/Busy request, appears to be a normal working session. Check the response raw tab to be sure..
+        /// </summary>
+        internal static string HTTP_200_FreeBusy_Other_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_FreeBusy_Other_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free/Busy.
+        /// </summary>
+        internal static string HTTP_200_FreeBusy_Other_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_FreeBusy_Other_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HTTP 200 Free/Busy Failure..
         /// </summary>
         internal static string HTTP_200_FreeBusy_Proxy_Web_Request_Failed_ResponseAlert {
@@ -880,7 +916,7 @@ namespace Office365FiddlerExtensionRuleset.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to !INVALID JSON!.
+        ///   Looks up a localized string similar to !POSSIBLE INVALID JSON!.
         /// </summary>
         internal static string HTTP_200_Json_Invalid_ResponseAlert {
             get {
@@ -898,7 +934,7 @@ namespace Office365FiddlerExtensionRuleset.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 200 OK with INVALID JSON.
+        ///   Looks up a localized string similar to 200 OK with POSSIBLE INVALID JSON.
         /// </summary>
         internal static string HTTP_200_Json_Invalid_ResponseCodeDescription {
             get {
@@ -916,7 +952,7 @@ namespace Office365FiddlerExtensionRuleset.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to !200 OK with INVALID JSON!.
+        ///   Looks up a localized string similar to !200 OK with POSSIBLE INVALID JSON!.
         /// </summary>
         internal static string HTTP_200_Json_Invalid_SessionType {
             get {
@@ -1033,7 +1069,7 @@ namespace Office365FiddlerExtensionRuleset.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to !FAILURE LURKING!.
+        ///   Looks up a localized string similar to !200 OK POSSIBLE FAILURE LURKING!.
         /// </summary>
         internal static string HTTP_200_Lurking_Errors_SessionType {
             get {

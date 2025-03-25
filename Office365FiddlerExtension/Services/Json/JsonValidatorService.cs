@@ -22,8 +22,10 @@ namespace Office365FiddlerExtension.Services
         public bool IsValidJsonSession(Session session)
         {
             this.session = session;
+            
+            Tuple<string, bool> sessionResponse = SessionService.Instance.GetSafeSessionResponseBodyString(this.session);
 
-            string strInput = this.session.GetResponseBodyAsString();
+            string strInput =  sessionResponse.Item1;
 
             if (string.IsNullOrWhiteSpace(strInput)) { return false; }
             strInput = strInput.Trim();

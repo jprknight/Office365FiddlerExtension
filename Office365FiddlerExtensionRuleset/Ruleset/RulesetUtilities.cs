@@ -234,5 +234,24 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             return sessionSeverity;
         }
+
+        /// <summary>
+        /// Determine if the session is a Free/Busy session or not. Not using host, since Free/Busy calls can go out to either outlook.office365.com or to
+        /// OnPremise vanity domain names.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns></returns>
+        public bool IsFreeBusySession(Session session)
+        {
+            this.session = session;
+
+            if (SearchForPhrase(this.session, "GetUserAvailability")
+                || this.session.uriContains("GetUserAvailability")
+                || SearchForPhrase(this.session, "availabilityView"))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

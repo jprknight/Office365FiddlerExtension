@@ -111,5 +111,41 @@ namespace Office365FiddlerExtension
             }
             return false;
         }
+
+        // REVIEW THIS - Work around, implement fix so HTTP 200 Json, invalid & empty can properly detect.
+        // Currently, valid and invalid work.
+
+        /// <summary>
+        /// Function to safely get the response body string from a session.
+        /// 3/25/2025 I was running into issues with a session response body with content-encoding: gzip.
+        /// Trying to work with this.session.GetResponseBodyAsString() was causing issues.
+        /// This exception was being thrown which a catch statement couldn't handle.
+        /// System.IO.InvalidDataException The content could not be ungzipped The magic number in GZip header is not correct. Make sure you are passing in a GZip stream.
+        /// There's some clever things here: https://stackoverflow.com/questions/523930/sockets-in-c-how-to-get-the-response-stream
+        /// For now creating a function to work around the issue.
+        /// https://github.com/jprknight/Office365FiddlerExtension/issues/107
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns>string on response body, bool on whether session response is gzip'ed or not.</returns>
+        public Tuple<string, bool> GetSafeSessionResponseBodyString(Session session)
+        {
+            this.session = session;
+
+            try
+            {
+                if (!this.session.oResponse.headers.ExistsAndContains("Content-Encoding", "gzip"))
+                {
+                    return Tuple.Create(this.session.GetResponseBodyAsString(), false);
+                }
+            }
+            catch (Exception ex)
+            {
+                TelemetryService.CustomTrackException(ex);
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"{this.session.id} {ex}");
+            }
+
+            return Tuple.Create("",true);
+        }
     }
 }

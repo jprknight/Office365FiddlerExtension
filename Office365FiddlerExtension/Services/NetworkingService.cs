@@ -274,14 +274,15 @@ namespace Office365FiddlerExtension.Services
                 return Tuple.Create(false, "");
             }
             
-            JArray jArray = JArray.Parse(Preferences.MicrosoftURLsIPsWebService);
-
-            var children = jArray.Children();
-
-            foreach (JObject child in children.Cast<JObject>())
+            try
             {
-                try
+                JArray jArray = JArray.Parse(Preferences.MicrosoftURLsIPsWebService);
+
+                var children = jArray.Children();
+
+                foreach (JObject child in children.Cast<JObject>())
                 {
+                
                     // Attempting to deserialize the Json object within child can and will fail here.
                     // Multiple Json sections in the source data do not include IPs, the only include URLs.
                     // For this reason this entire section needs to be within a try, catch statement to handle the failures in code.
@@ -306,14 +307,16 @@ namespace Office365FiddlerExtension.Services
                         //        $"{this.session["X-HostIP"]} in subnet {subnet}. isMicrosoft365IP = {isMicrosoft365IP}.");
                     }
                 }
-                catch //(Exception ex)
-                {
-                    // Do nothing here. We're expecting to have some children which do not include ips, which will throw an exception.
-                    // Just want to ignore / handle these failures.
+            }
+            catch (Exception ex)
+            {
+                TelemetryService.CustomTrackException(ex);
 
-                    //FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
-                    //                $"{this.session["X-HostIP"]} Exception {ex}");
-                }
+                // Do nothing here. We're expecting to have some children which do not include ips, which will throw an exception.
+                // Just want to ignore / handle these failures.
+
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
+                    $"{this.session["X-HostIP"]} Exception {ex}");
             }
 
             return Tuple.Create(isMicrosoft365IP,matchingSubnet);

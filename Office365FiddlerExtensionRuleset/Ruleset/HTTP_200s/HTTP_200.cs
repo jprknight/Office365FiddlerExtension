@@ -5,6 +5,16 @@ using System.Diagnostics;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
+    /// <summary>
+    /// Main for sessions with a HTTP 200 response code.
+    /// Many types of sessions come back with a HTTP 200 "OK" response from the server,
+    /// but actually contain some error condition in the response.
+    /// The classes called here highlight HTTP 200 sessions which are not "OK" and
+    /// clears those that are.
+    /// This is intended to be the only class what pulls from the namespace ending 
+    /// in .HTTP_200s.
+    /// </summary>
+    /// <param name="session"></param>
     class HTTP_200
     {
         internal Session session { get; set; }
@@ -14,16 +24,31 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         public static HTTP_200 Instance => _instance ?? (_instance = new HTTP_200());
 
         /// <summary>
-        /// Main for sessions with a HTTP 200 response code.
-        /// Many types of sessions come back with a HTTP 200 "OK" response from the server,
-        /// but actually contain some error condition in the response.
-        /// The classes called here highlight HTTP 200 sessions which are not "OK" and
-        /// clears those that are.
-        /// This is intended to be the only class what pulls from the namespace ending 
-        /// in .HTTP_200s.
+        /// Run the HTTP 200 rulesets against the current session.
         /// </summary>
         /// <param name="session"></param>
         public void Run(Session session)
+        {
+            this.session = session;
+
+            // Do not modify this function. Add new ruleset calls into the private functions below according to when they should be called.
+            // Broken the code here out to functions as this list is growing and will continue to grow.
+            // First: Known scenarios -- Ruleset identifies traffic which is a known issue to highlight.
+            KnownScenarios(this.session);
+
+            // Second: Identify clients -- Identifies M365 clients.
+            IdentifyClients(this.session);
+
+            // Third & Last: Actually OK and lurking errors -- Should be a need to add anything here.
+            ActuallyOK_Lurking_Errors(this.session);
+        }
+
+        /// <summary>
+        /// These rulesets run first as the highest priority as they contain all the known scenarios which traffic should be
+        /// classified against before anything else.
+        /// </summary>
+        /// <param name="session"></param>
+        private void KnownScenarios(Session session)
         {
             this.session = session;
 
@@ -251,6 +276,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 TelemetryService.CustomTrackEvent("RS_HTTP_200_Javascript");
                 TelemetryService.CustomTrackMetric("RS_HTTP_200_Javascript", sw_HTTP_200_Javascript.ElapsedMilliseconds);
             }
+        }
+
+        /// <summary>
+        /// These rulesets run second moderate in priority. They don't find any known issues, rather they identify client traffic.
+        /// </summary>
+        /// <param name="session"></param>
+        private void IdentifyClients(Session session)
+        {
+            this.session = session;
 
             ///////////////////////////////
 
@@ -349,8 +383,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 TelemetryService.CustomTrackEvent("RS_HTTP_200_OWA_Attachments");
                 TelemetryService.CustomTrackMetric("RS_HTTP_200_OWA_Attachments", sw_HTTP_200_OWA_Attachments.ElapsedMilliseconds);
             }
+        }
 
-            ///////////////////////////////
+        /// <summary>
+        /// These rulesets run third & last / lowest in priority to either highlight an "actually ok" response or a possible error lurking in the response body.
+        /// </summary>
+        /// <param name="session"></param>
+        private void ActuallyOK_Lurking_Errors(Session session)
+        {
+            this.session = session;
 
             var sw_HTTP_200_Lurking_Errors = Stopwatch.StartNew();
 
