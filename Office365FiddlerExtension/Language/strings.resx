@@ -706,4 +706,13 @@
   <data name="in" xml:space="preserve">
     <value>in</value>
   </data>
+  <data name="This is more than the threshold set within the extension" xml:space="preserve">
+    <value>This is more than the threshold set within the extension</value>
+  </data>
+  <data name="If you proceed Fiddler may take some time to process all these sessions" xml:space="preserve">
+    <value>If you proceed Fiddler may take some time to process all these sessions</value>
+  </data>
+  <data name="Do you want to continue or cancel the operation?" xml:space="preserve">
+    <value>Do you want to continue or cancel the operation?</value>
+  </data>
 </root>

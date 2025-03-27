@@ -117,9 +117,14 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 return;
             }
 
+            if (Office365FiddlerExtension.Services.JsonValidatorService.Instance.IsValidJsonSession(this.session))
+            {
+                return;
+            }
+
             Tuple<string, bool> sessionResponse = SessionService.Instance.GetSafeSessionResponseBodyString(this.session);
 
-            // REVIEW THIS: Potential improvements here.
+            // REVIEW THIS: Correct once issue 107 has a complete solution.
             // If the session response is gzip'ed return. Can't do anything with this right now.
             if (sessionResponse.Item2 == true)
             {

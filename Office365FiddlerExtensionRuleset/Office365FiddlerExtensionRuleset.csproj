@@ -60,6 +60,8 @@
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\LoopBackTunnel.cs" />
     <Compile Include="Ruleset\AlwaysRun\HostIP.cs" />
     <Compile Include="Ruleset\AlwaysRun\BroadLogicChecks\ConnectTunnelTLSVersion.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Outlook\Classic\HTTP_200_Outlook_GetMailTips.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Outlook\New\HTTP_200_New_Outlook_GetMailTips.cs" />
     <Compile Include="Ruleset\HTTP_200s\OWA\HTTP_200_OWA_Attachments.cs" />
     <Compile Include="Ruleset\UnknownResponseCode.cs" />
     <Compile Include="Ruleset\HTTP_200s\HTTP_200.cs" />
@@ -78,11 +80,11 @@
     <Compile Include="Ruleset\HTTP_200s\Generic\HTTP_200_Javascript.cs" />
     <Compile Include="Ruleset\HTTP_200s\Generic\HTTP_200_Json.cs" />
     <Compile Include="Ruleset\HTTP_200s\SuccessFailure\HTTP_200_Lurking_Errors.cs" />
-    <Compile Include="Ruleset\HTTP_200s\Outlook\HTTP_200_Outlook_MAPI_Exchange_Online.cs" />
-    <Compile Include="Ruleset\HTTP_200s\Outlook\HTTP_200_Outlook_MAPI_Exchange_OnPremise.cs" />
-    <Compile Include="Ruleset\HTTP_200s\Outlook\HTTP_200_Outlook_MAPI_Protocol_Disabled.cs" />
-    <Compile Include="Ruleset\HTTP_200s\Outlook\HTTP_200_Outlook_NSPI.cs" />
-    <Compile Include="Ruleset\HTTP_200s\Outlook\HTTP_200_Outlook_RPC.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Outlook\Classic\HTTP_200_Outlook_MAPI_Exchange_Online.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Outlook\Classic\HTTP_200_Outlook_MAPI_Exchange_OnPremise.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Outlook\Classic\HTTP_200_Outlook_MAPI_Protocol_Disabled.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Outlook\Classic\HTTP_200_Outlook_NSPI.cs" />
+    <Compile Include="Ruleset\HTTP_200s\Outlook\Classic\HTTP_200_Outlook_RPC.cs" />
     <Compile Include="Ruleset\HTTP_200s\OWA\HTTP_200_OWA.cs" />
     <Compile Include="Ruleset\HTTP_200s\Generic\HTTP_200_REST_People_Request.cs" />
     <Compile Include="Ruleset\HTTP_200s\Generic\HTTP_200_Unified_Groups_Settings.cs" />

@@ -94,6 +94,12 @@
       "SessionResponseServerConfidenceLevel": 5,
       "SessionSeverity": 30
     },
+    "HTTP_200_Outlook_GetMailTips": {
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
+    },
     "HTTP_200_Outlook_Web_App": {
       "SessionAuthenticationConfidenceLevel": 5,
       "SessionTypeConfidenceLevel": 10,
@@ -227,10 +233,10 @@
       "SessionSeverity": 30
     },
     "HTTP_200_FreeBusy_Other": {
-        "SessionAuthenticationConfidenceLevel": 5,
-        "SessionTypeConfidenceLevel": 10,
-        "SessionResponseServerConfidenceLevel": 5,
-        "SessionSeverity": 30
+      "SessionAuthenticationConfidenceLevel": 5,
+      "SessionTypeConfidenceLevel": 10,
+      "SessionResponseServerConfidenceLevel": 5,
+      "SessionSeverity": 30
     },
     "HTTP_200_Outlook_For_Windows_FreeBusy": {
       "SessionAuthenticationConfidenceLevel": 5,

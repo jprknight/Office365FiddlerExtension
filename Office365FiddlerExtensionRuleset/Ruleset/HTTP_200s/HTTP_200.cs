@@ -250,6 +250,34 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             }
 
             ///////////////////////////////
+            
+            var sw_HTTP_200_NewOutlook_GetMailTips = Stopwatch.StartNew();
+
+            HTTP_200_New_Outlook_GetMailTips.Instance.Run(this.session);
+
+            sw_HTTP_200_NewOutlook_GetMailTips.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_sw_HTTP_200_NewOutlook_GetMailTips");
+                TelemetryService.CustomTrackMetric("RS_sw_HTTP_200_NewOutlook_GetMailTips", sw_HTTP_200_NewOutlook_GetMailTips.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
+            var sw_HTTP_200_Outlook_GetMailTips = Stopwatch.StartNew();
+
+            HTTP_200_Outlook_GetMailTips.Instance.Run(this.session);
+
+            sw_HTTP_200_Outlook_GetMailTips.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_sw_HTTP_200_Outlook_GetMailTips");
+                TelemetryService.CustomTrackMetric("RS_sw_HTTP_200_Outlook_GetMailTips", sw_HTTP_200_Outlook_GetMailTips.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
 
             var sw_HTTP_200_Json = Stopwatch.StartNew();
 

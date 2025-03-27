@@ -1330,6 +1330,42 @@ namespace Office365FiddlerExtensionRuleset.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Outlook GetMailTips.
+        /// </summary>
+        internal static string HTTP_200_Outlook_GetMailTips_ResponseAlert {
+            get {
+                return ResourceManager.GetString("HTTP_200_Outlook_GetMailTips_ResponseAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200 OK - Outlook GetMailTips.
+        /// </summary>
+        internal static string HTTP_200_Outlook_GetMailTips_ResponseCodeDescription {
+            get {
+                return ResourceManager.GetString("HTTP_200_Outlook_GetMailTips_ResponseCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is an Outlook GetMailTips call. This could be seen for calls for out of office..
+        /// </summary>
+        internal static string HTTP_200_Outlook_GetMailTips_ResponseComments {
+            get {
+                return ResourceManager.GetString("HTTP_200_Outlook_GetMailTips_ResponseComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outlook GetMailTips.
+        /// </summary>
+        internal static string HTTP_200_Outlook_GetMailTips_SessionType {
+            get {
+                return ResourceManager.GetString("HTTP_200_Outlook_GetMailTips_SessionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;b&gt;&lt;span style=&apos;color:red&apos;&gt;Store Error Protocol Disabled&lt;/span&gt;&lt;/b&gt;.
         /// </summary>
         internal static string HTTP_200_Outlook_Mapi_Microsoft365_Protocol_Disabled_ResponseAlert {

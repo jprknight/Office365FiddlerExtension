@@ -1415,4 +1415,16 @@
   <data name="HTTP_200_FreeBusy_Other_ResponseComments" xml:space="preserve">
     <value>Free/Busy request, appears to be a normal working session. Check the response raw tab to be sure.</value>
   </data>
+  <data name="HTTP_200_Outlook_GetMailTips_SessionType" xml:space="preserve">
+    <value>Outlook GetMailTips</value>
+  </data>
+  <data name="HTTP_200_Outlook_GetMailTips_ResponseCodeDescription" xml:space="preserve">
+    <value>200 OK - Outlook GetMailTips</value>
+  </data>
+  <data name="HTTP_200_Outlook_GetMailTips_ResponseAlert" xml:space="preserve">
+    <value>Outlook GetMailTips</value>
+  </data>
+  <data name="HTTP_200_Outlook_GetMailTips_ResponseComments" xml:space="preserve">
+    <value>This is an Outlook GetMailTips call. This could be seen for calls for out of office.</value>
+  </data>
 </root>

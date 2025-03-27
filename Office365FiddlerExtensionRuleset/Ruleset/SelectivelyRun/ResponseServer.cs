@@ -29,6 +29,25 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 return;
             }
 
+            var sw_SetResponseServer_OwaAppPool = Stopwatch.StartNew();
+
+            SetResponseServer_OwaAppPool(this.session);
+
+            sw_SetResponseServer_OwaAppPool.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_SetResponseServer_OwaAppPool");
+                TelemetryService.CustomTrackMetric("RS_SetResponseServer_OwaAppPool", sw_SetResponseServer_OwaAppPool.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
+            if (RulesetUtilities.Instance.StopProcessing_SessionResponseServerConfidenceLevel_Ten(this.session))
+            {
+                return;
+            }
+
             var sw_SetResponseServer_Server = Stopwatch.StartNew();
 
             SetResponseServer_Server(this.session);
@@ -154,6 +173,31 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 TelemetryService.CustomTrackEvent("RS_SetResponseServer_Unknown");
                 TelemetryService.CustomTrackMetric("RS_SetResponseServer_Unknown", sw_SetResponseServer_Unknown.ElapsedMilliseconds);
             }
+        }
+
+        private void SetResponseServer_OwaAppPool(Session session)
+        {
+            this.session = session;
+
+            if (!this.session.oResponse.headers.ExistsAndContains("X-ResponseOrigin", "OwaAppPool"))
+            {
+                return;
+            }
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Running SetResponseServer_OwaAppPool.");
+
+            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            {
+                SectionTitle = "SetResponseServer_OwaAppPool",
+
+                ResponseServer = this.session.oResponse["X-ResponseOrigin"],
+
+                SessionResponseServerConfidenceLevel = 10
+            };
+
+            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
+            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
         }
 
         /// <summary>

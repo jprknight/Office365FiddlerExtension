@@ -385,6 +385,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to continue or cancel the operation?.
+        /// </summary>
+        internal static string Do_you_want_to_continue_or_cancel_the_operation_ {
+            get {
+                return ResourceManager.GetString("Do you want to continue or cancel the operation?", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dutch.
         /// </summary>
         internal static string Dutch {
@@ -633,6 +642,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Host_IP {
             get {
                 return ResourceManager.GetString("Host IP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If you proceed Fiddler may take some time to process all these sessions.
+        /// </summary>
+        internal static string If_you_proceed_Fiddler_may_take_some_time_to_process_all_these_sessions {
+            get {
+                return ResourceManager.GetString("If you proceed Fiddler may take some time to process all these sessions", resourceCulture);
             }
         }
         
@@ -1254,6 +1272,15 @@ namespace Office365FiddlerExtension.Language {
         internal static string Spanish {
             get {
                 return ResourceManager.GetString("Spanish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is more than the threshold set within the extension.
+        /// </summary>
+        internal static string This_is_more_than_the_threshold_set_within_the_extension {
+            get {
+                return ResourceManager.GetString("This is more than the threshold set within the extension", resourceCulture);
             }
         }
         

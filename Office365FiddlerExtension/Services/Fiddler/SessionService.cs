@@ -63,21 +63,19 @@ namespace Office365FiddlerExtension
                 return true;
             }
 
-            // REVIEW THIS - LangHelper this message box.
-
             // The number of sessions added into the Fiddler UI is larger than the 'warn before analysing' threshold.
             // Prompt the user on whether they want to perform session analysis, giving the user a choice to accept some delay.
             string message = $"The extension is about to analyse " +
                 $"{sessionsCount} " +
-                $"sessions, " +
-                $"which is more than the threshold set within the extension of " +
+                $"{LangHelper.GetString("sessions")}. " +
+                $"{LangHelper.GetString("This is more than the threshold set within the extension")}, " +
                 $"{extensionSettings.WarnBeforeAnalysing}." +
                 Environment.NewLine +
                 Environment.NewLine +
-                $"If you proceed Fiddler may take some time to process all these sessions." +
+                $"{LangHelper.GetString("If you proceed Fiddler may take some time to process all these sessions")}." +
                 Environment.NewLine +
                 Environment.NewLine +
-                $"Do you want to continue or cancel the operation?";
+                $"{LangHelper.GetString("Do you want to continue or cancel the operation?")}";
 
             string caption = $"{LangHelper.GetString("Office 365 Fiddler Extension")}";
 
@@ -113,7 +111,7 @@ namespace Office365FiddlerExtension
         }
 
         // REVIEW THIS - Work around, implement fix so HTTP 200 Json, invalid & empty can properly detect.
-        // Currently, valid and invalid work.
+        // Currently, if the content-type is zgip, attempting to do anything with GetResponseBodyAsString() will throw an exception.
 
         /// <summary>
         /// Function to safely get the response body string from a session.
