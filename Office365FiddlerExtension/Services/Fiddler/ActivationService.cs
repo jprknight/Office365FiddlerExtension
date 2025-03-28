@@ -54,9 +54,6 @@ namespace Office365FiddlerExtension.Services
                 SettingsJsonService.Instance.SetExtensionDLL();
                 SettingsJsonService.Instance.SetExtensionPath();
                 SettingsJsonService.Instance.IncrementExecutionCount();
-                // Resetting LargeSessionAnalysisAppproval to false,
-                // just in case somehow this is left set to true from the last Fiddler session.
-                SettingsJsonService.Instance.SetLargeSessionAnalysisApproval(false);
                                 
                 InitializeTelemetry();
 

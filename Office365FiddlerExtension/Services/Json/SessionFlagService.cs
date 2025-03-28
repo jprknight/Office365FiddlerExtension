@@ -118,22 +118,20 @@ namespace Office365FiddlerExtension.Services
         {
             var Sessions = FiddlerApplication.UI.GetSelectedSessions();
 
-            // Start out by checking user is happy to perform large session analysis.
-            bool bConfirmLargeSessionAnalysis;
-
-            bConfirmLargeSessionAnalysis = SessionService.Instance.ConfirmLargeSessionAnalysis(Sessions.Length);
-
-            // Return if the user cancels large session analysis.
-            if (!bConfirmLargeSessionAnalysis)
-            {
-                return;
-            }
-
             var sw = Stopwatch.StartNew();
+
+            int SessionsProcessedCount = 0;
 
             foreach (var Session in Sessions)
             {
                 this.session = Session;
+
+                // User interruption of session processing.
+                if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().InterruptSessionProcessing)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz processing interrupted by user.");
+                    break;
+                }
 
                 // If the session already has the Microsoft365FiddlerExtensionJson flag set with high confidence session classifications set,
                 // enhance the session based on prior / stored analysis.
@@ -148,14 +146,23 @@ namespace Office365FiddlerExtension.Services
                     SessionService.Instance.OnPeekAtResponseHeaders(this.session);
                 }
 
+                SessionsProcessedCount++;
+
                 // Update status bar with load saz progress.
-                StatusBar.Instance.UpdateStatusBarOnSessionProgression(this.session.id, Sessions.Count());
+                StatusBar.Instance.UpdateStatusBarOnSessionProgression(SessionsProcessedCount, Sessions.Count());
             }
             
             sw.Stop();
 
+            // Reset the interrupt session processing flag.
+            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().InterruptSessionProcessing)
+            {
+                SettingsJsonService.Instance.SetInterruptSessionProcessing(false);
+
+            }
+
             // Update status bar once completed.
-            StatusBar.Instance.UpdateStatusBarOnSessionProcessComplete(sw, Sessions.Count());
+            StatusBar.Instance.UpdateStatusBarOnSessionProcessComplete(sw, SessionsProcessedCount);
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
                 $"Analysed {Sessions.Count()} selected sessions in {sw.ElapsedMilliseconds}ms.");
@@ -168,22 +175,20 @@ namespace Office365FiddlerExtension.Services
         {
             var Sessions = FiddlerApplication.UI.GetAllSessions();
 
-            // Start out by checking user is happy to perform large session analysis.
-            bool bConfirmLargeSessionAnalysis;
-
-            bConfirmLargeSessionAnalysis = SessionService.Instance.ConfirmLargeSessionAnalysis(Sessions.Length);
-
-            // Return if the user cancels large session analysis.
-            if (!bConfirmLargeSessionAnalysis)
-            {
-                return;
-            }
-
             var sw = Stopwatch.StartNew();
+
+            int SessionsProcessedCount = 0;
 
             foreach (var Session in Sessions)
             {
                 this.session = Session;
+
+                // User interruption of session processing.
+                if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().InterruptSessionProcessing)
+                {
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): LoadSaz processing interrupted by user.");
+                    break;
+                }
 
                 // If the session already has the Microsoft365FiddlerExtensionJson flag set with high confidence session classifications set,
                 // enhance the session based on prior / stored analysis.
@@ -198,14 +203,23 @@ namespace Office365FiddlerExtension.Services
                     SessionService.Instance.OnPeekAtResponseHeaders(this.session);
                 }
 
+                SessionsProcessedCount++;
+
                 // Update status bar with load saz progress.
-                StatusBar.Instance.UpdateStatusBarOnSessionProgression(this.session.id, Sessions.Count());
+                StatusBar.Instance.UpdateStatusBarOnSessionProgression(SessionsProcessedCount, Sessions.Count());
             }
 
             sw.Stop();
 
+            // Reset the interrupt session processing flag.
+            if (SettingsJsonService.Instance.GetDeserializedExtensionSettings().InterruptSessionProcessing)
+            {
+                SettingsJsonService.Instance.SetInterruptSessionProcessing(false);
+
+            }
+
             // Update status bar once completed.
-            StatusBar.Instance.UpdateStatusBarOnSessionProcessComplete(sw, Sessions.Count());
+            StatusBar.Instance.UpdateStatusBarOnSessionProcessComplete(sw, SessionsProcessedCount);
 
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
                         $"Analysed {Sessions.Count()} all visible sessions in {sw.ElapsedMilliseconds}ms.");

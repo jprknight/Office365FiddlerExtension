@@ -715,4 +715,7 @@
   <data name="Do you want to continue or cancel the operation?" xml:space="preserve">
     <value>Do you want to continue or cancel the operation?</value>
   </data>
+  <data name="Stop Session Analysis" xml:space="preserve">
+    <value>Stop Session Analysis</value>
+  </data>
 </root>

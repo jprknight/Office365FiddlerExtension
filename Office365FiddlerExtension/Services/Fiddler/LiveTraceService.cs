@@ -28,26 +28,23 @@ namespace Office365FiddlerExtension.Services.Fiddler
                 return;
             }
 
-            // If session analysis on live trace is enabled, run.
-            if (SettingsJsonService.Instance.SessionAnalysisOnLiveTrace)
+            // If the session has the loaded from SAZ flag on it, presedence is given to the SazFileService class.
+            if (SessionService.Instance.IsSessionLoadedFromSaz(this.session))
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to analyse session {this.session.id}.");
-
-                try
-                {
-                    SessionService.Instance.OnPeekAtResponseHeaders(this.session);
-                    this.session.RefreshUI();
-                }
-                catch (Exception ex)
-                {
-                    TelemetryService.CustomTrackException(ex);
-                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
-                }
+                return;
             }
-            else
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): Attempting to analyse session {this.session.id}.");
+
+            try
             {
-                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): " +
-                    $"Live trace set to {SettingsJsonService.Instance.SessionAnalysisOnLiveTrace} preventing session analysis for session id {this.session.id}.");
+                SessionService.Instance.OnPeekAtResponseHeaders(this.session);
+                this.session.RefreshUI();
+            }
+            catch (Exception ex)
+            {
+                TelemetryService.CustomTrackException(ex);
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {ex}");
             }
         }
     }

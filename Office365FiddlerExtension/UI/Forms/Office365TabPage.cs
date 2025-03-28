@@ -84,12 +84,10 @@ namespace Office365FiddlerExtension.UI.Forms
 
             if (extensionSettings.ExtensionSessionProcessingEnabled)
             {
-                WarnBeforeProcessingGroupBox.Enabled = true;
                 WhenToAnalyseSessionsGroupBox.Enabled = true;
             }
             else
             {
-                WarnBeforeProcessingGroupBox.Enabled = false;
                 WhenToAnalyseSessionsGroupBox.Enabled = false;
             }
 
@@ -101,10 +99,6 @@ namespace Office365FiddlerExtension.UI.Forms
 
             SessionAnalysisOnImportCheckBox.Text = LangHelper.GetString("On Import");
             SessionAnalysisOnImportCheckBox.Checked = extensionSettings.SessionAnalysisOnImport;
-
-            WarnBeforeProcessingSessionsLabel.Text = LangHelper.GetString("S Capitalised Sessions");
-            WarnBeforeProcessingGroupBox.Text = LangHelper.GetString("Warn Before Analysing");
-            WarnBeforeAnalysingTextBox.Text = extensionSettings.WarnBeforeAnalysing.ToString();
 
             WhenToAnalyseSessionsGroupBox.Text = LangHelper.GetString("Choose When To Analyse Sessions");
 
@@ -209,7 +203,6 @@ namespace Office365FiddlerExtension.UI.Forms
             var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
 
             // Enable / Disable these controls according to whether the extension is enabled or not.
-            WarnBeforeProcessingGroupBox.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
             WhenToAnalyseSessionsGroupBox.Enabled = extensionSettings.ExtensionSessionProcessingEnabled;
 
             // REVIEW THIS 2.20.2025: Unable to update the tabpage controls outside of a direct interaction with the tabpage.
@@ -282,25 +275,6 @@ namespace Office365FiddlerExtension.UI.Forms
         {
             TelemetryService.CustomTrackEvent("UI_TabPage_SessionAnalysisOnImportCheckBox_CheckedChanged");
             SettingsJsonService.Instance.SetSessionAnlysisOnImport(SessionAnalysisOnImportCheckBox.Checked);
-        }
-
-        private void WarnBeforeAnalysingTextBox_TextChanged(object sender, EventArgs e)
-        {
-            TelemetryService.CustomTrackEvent("UI_TabPage_WarnBeforeAnalysingTextBox_TextChanged");
-
-            if (System.Text.RegularExpressions.Regex.IsMatch(WarnBeforeAnalysingTextBox.Text, "[^0-9]"))
-            {
-                string message = "This textbox only accepts numbers.";
-
-                string caption = $"{LangHelper.GetString("Office 365 Fiddler Extension")}";
-
-                MessageBox.Show(message, caption);
-                WarnBeforeAnalysingTextBox.Text = WarnBeforeAnalysingTextBox.Text.Remove(WarnBeforeAnalysingTextBox.Text.Length - 1);
-            }
-            else
-            {
-                SettingsJsonService.Instance.SetWarnBeforeAnalysing(int.Parse(WarnBeforeAnalysingTextBox.Text));
-            }
         }
 
         private void DebugModeUpdateButton_Click(object sender, EventArgs e)
@@ -390,6 +364,11 @@ namespace Office365FiddlerExtension.UI.Forms
             _value = _value.Replace("\"", " ");
 
             return _value;
+        }
+
+        private void StopSessionAnalysisButton_Click(object sender, EventArgs e)
+        {
+            SettingsJsonService.Instance.SetInterruptSessionProcessing(true);
         }
     }
 

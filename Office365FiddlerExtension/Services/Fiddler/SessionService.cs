@@ -52,58 +52,21 @@ namespace Office365FiddlerExtension
             EnhanceSessionUX.Instance.EnhanceSession(this.session);
         }
 
-        public bool ConfirmLargeSessionAnalysis(int sessionsCount)
-        {
-            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
-
-            // The number of sessions added into the Fiddler UI is smaller than the 'warn before analysing' threshold.
-            // Return true so the session analysis happens without a prompt to confirm.
-            if (sessionsCount <= extensionSettings.WarnBeforeAnalysing)
-            {
-                return true;
-            }
-
-            // The number of sessions added into the Fiddler UI is larger than the 'warn before analysing' threshold.
-            // Prompt the user on whether they want to perform session analysis, giving the user a choice to accept some delay.
-            string message = $"The extension is about to analyse " +
-                $"{sessionsCount} " +
-                $"{LangHelper.GetString("sessions")}. " +
-                $"{LangHelper.GetString("This is more than the threshold set within the extension")}, " +
-                $"{extensionSettings.WarnBeforeAnalysing}." +
-                Environment.NewLine +
-                Environment.NewLine +
-                $"{LangHelper.GetString("If you proceed Fiddler may take some time to process all these sessions")}." +
-                Environment.NewLine +
-                Environment.NewLine +
-                $"{LangHelper.GetString("Do you want to continue or cancel the operation?")}";
-
-            string caption = $"{LangHelper.GetString("Office 365 Fiddler Extension")}";
-
-            MessageBoxButtons buttons = MessageBoxButtons.OKCancel;
-
-            DialogResult dialogResult = MessageBox.Show(message, caption, buttons, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
-            if (dialogResult == DialogResult.OK)
-            {
-                SettingsJsonService.Instance.SetLargeSessionAnalysisApproval(true);
-                // User wants to continue with session analysis.
-                return true;
-                
-            }
-            else if (dialogResult == DialogResult.Cancel)
-            {
-                SettingsJsonService.Instance.SetLargeSessionAnalysisApproval(false);
-                // User doesn't want to continue with session analysis.
-                return false;
-            }
-            
-            return true;
-        }
-
         public bool IsSessionImported(Session session)
         {
             this.session = session;
 
             if (this.session.isAnyFlagSet(SessionFlags.ImportedFromOtherTool))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool IsSessionLoadedFromSaz(Session session)
+        {
+            this.session = session;
+            if (this.session.isAnyFlagSet(SessionFlags.LoadedFromSAZ))
             {
                 return true;
             }

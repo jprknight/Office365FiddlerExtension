@@ -208,6 +208,18 @@ namespace Office365FiddlerExtension.Services
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
         }
 
+        public void SetInterruptSessionProcessing(bool _value)
+        {
+            // Pull & Deserialize Json from ExtensionSettings.
+            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
+
+            extensionSettings.InterruptSessionProcessing = _value;
+
+            // Serialize the object back into Json.
+            // Write the Json into the ExtensionSettings Fiddler setting.
+            Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
+        }
+
         /// <summary>
         /// Set the update check frequency hours.
         /// </summary>
@@ -401,18 +413,6 @@ namespace Office365FiddlerExtension.Services
             Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
         }
 
-
-        public void SetWarnBeforeAnalysing(int _value)
-        {
-            // Pull & Deserialize Json from ExtensionSettings.
-            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
-            // Set the attribute.
-            extensionSettings.WarnBeforeAnalysing = _value;
-            // Serialize the object back into Json.
-            // Write the Json into the ExtensionSettings Fiddler setting.
-            Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
-        }
-
         /// <summary>
         /// Set warning session time threshold in extension settings Json application preference.
         /// </summary>
@@ -556,22 +556,6 @@ namespace Office365FiddlerExtension.Services
         }
 
         /// <summary>
-        /// Sets the value to either prompt or not prompt the user for large session analysis. 
-        /// The intention is this is normally set to false, and temporarily set to true to make sure the user is only prompted once per large analysis run.
-        /// </summary>
-        /// <param name="_value"></param>
-        public void SetLargeSessionAnalysisApproval(bool _value)
-        {
-            // Pull & Deserialize Json from ExtensionSettings.
-            var extensionSettings = SettingsJsonService.Instance.GetDeserializedExtensionSettings();
-            // Set the attribute.
-            extensionSettings.LargeSessionAnalysisApproval = _value;
-            // Serialize the object back into Json.
-            // Write the Json into the ExtensionSettings Fiddler setting.
-            Preferences.ExtensionSettings = JsonConvert.SerializeObject(extensionSettings);
-        }
-
-        /// <summary>
         /// Increment execution count in extension settings Json application preference.
         /// </summary>
         public void IncrementExecutionCount()
@@ -653,8 +637,6 @@ namespace Office365FiddlerExtension.Services
 
         public bool DebugMode { get; set; }
 
-        public int WarnBeforeAnalysing { get; set; }
-
         public bool ElapsedTimeColumnEnabled { get; set; }
 
         public bool SeverityColumnEnabled { get; set; }
@@ -667,6 +649,6 @@ namespace Office365FiddlerExtension.Services
 
         public bool HostIPColumnEnabled { get; set; }
 
-        public bool LargeSessionAnalysisApproval {  get; set; }
+        public bool InterruptSessionProcessing { get; set; }
     }
 }

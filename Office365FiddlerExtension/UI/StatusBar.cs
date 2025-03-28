@@ -42,18 +42,18 @@ namespace Office365FiddlerExtension.Services
         /// </summary>
         /// <param name="sw"></param>
         /// <param name="SessionsProcessed"></param>
-        public void UpdateStatusBarOnSessionProcessComplete(Stopwatch sw, int SessionsProcessed)
+        public void UpdateStatusBarOnSessionProcessComplete(Stopwatch _sw, int _SessionsProcessed)
         {
             try
             {
-                if (sw.ElapsedMilliseconds < 1000)
+                if (_sw.ElapsedMilliseconds < 1000)
                 {
                     FiddlerObject.StatusText = $"{LangHelper.GetString("Office 365 Fiddler Extension")}: " +
                         $"{LangHelper.GetString("Processed")} " +
-                        $"{SessionsProcessed} " +
+                        $"{_SessionsProcessed} " +
                         $"{LangHelper.GetString("sessions")} " +
                         $"{LangHelper.GetString("in")} " +
-                        $"{sw.Elapsed.TotalMilliseconds.ToString("0")}ms.";
+                        $"{_sw.Elapsed.TotalMilliseconds.ToString("0")}ms.";
                         // Percentage with two decimal places. Keeping this in case it's needed in the future.
                         // 3.21.2025 Changing this to just show round numbers.
                         // $"{sw.Elapsed.TotalMilliseconds.ToString("0.##")}ms.";
@@ -62,10 +62,10 @@ namespace Office365FiddlerExtension.Services
                 {
                     FiddlerObject.StatusText = $"{LangHelper.GetString("Office 365 Fiddler Extension")}: " +
                         $"{LangHelper.GetString("Processed")} " +
-                        $"{SessionsProcessed} " +
+                        $"{_SessionsProcessed} " +
                         $"{LangHelper.GetString("sessions")} " +
                         $"{LangHelper.GetString("in")} " +
-                        $"{sw.Elapsed.TotalSeconds.ToString("0")} seconds.";
+                        $"{_sw.Elapsed.TotalSeconds.ToString("0")} seconds.";
                         // Percentage with two decimal places. Keeping this in case it's needed in the future.
                         // 3.21.2025 Changing this to just show round numbers.
                         //$"{sw.Elapsed.TotalSeconds.ToString("0.##")} seconds.";
@@ -84,37 +84,37 @@ namespace Office365FiddlerExtension.Services
         /// <param name="sw"></param>
         /// <param name="SessionsProcessed"></param>
         /// <param name="Filename"></param>
-        public void UpdateStatusBarOnSessionProcessComplete(Stopwatch sw, int SessionsProcessed, string Filename)
+        public void UpdateStatusBarOnSessionProcessComplete(Stopwatch _sw, int _SessionsProcessed, string _Filename)
         {
             try
             {
-                if (sw.ElapsedMilliseconds < 1000)
+                if (_sw.ElapsedMilliseconds < 1000)
                 {
                     FiddlerObject.StatusText = $"{LangHelper.GetString("Office 365 Fiddler Extension")}: " +
                         $"{LangHelper.GetString("Processed")} " +
-                        $"{SessionsProcessed} " +
+                        $"{_SessionsProcessed} " +
                         $"{LangHelper.GetString("sessions")} " +
                         $"{LangHelper.GetString("in")} " +
-                        $"{sw.Elapsed.TotalMilliseconds.ToString("0")}ms " +
+                        $"{_sw.Elapsed.TotalMilliseconds.ToString("0")}ms " +
                         // Percentage with two decimal places. Keeping this in case it's needed in the future.
                         // 3.21.2025 Changing this to just show round numbers.
                         // $"{sw.Elapsed.TotalMilliseconds.ToString("0.##")}ms " +
                         $"from " +
-                        $"{Filename}";
+                        $"{_Filename}";
                 }
                 else
                 {
                     FiddlerObject.StatusText = $"{LangHelper.GetString("Office 365 Fiddler Extension")}: " +
                         $"{LangHelper.GetString("Processed")} " +
-                        $"{SessionsProcessed} " +
+                        $"{_SessionsProcessed} " +
                         $"{LangHelper.GetString("sessions")} " +
                         $"{LangHelper.GetString("in")} " +
-                        $"{sw.Elapsed.TotalMilliseconds.ToString("0")}ms " +
+                        $"{_sw.Elapsed.TotalMilliseconds.ToString("0")}ms " +
                         // Percentage with two decimal places. Keeping this in case it's needed in the future.
                         // 3.21.2025 Changing this to just show round numbers.
                         // $"{sw.Elapsed.TotalMilliseconds.ToString("0.##")}ms " +
                         $"from " +
-                        $"{Filename}";
+                        $"{_Filename}";
                 }
             }
             catch (Exception ex)

@@ -1276,6 +1276,15 @@ namespace Office365FiddlerExtension.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stop Session Analysis.
+        /// </summary>
+        internal static string Stop_Session_Analysis {
+            get {
+                return ResourceManager.GetString("Stop Session Analysis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This is more than the threshold set within the extension.
         /// </summary>
         internal static string This_is_more_than_the_threshold_set_within_the_extension {

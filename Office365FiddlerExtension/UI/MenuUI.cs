@@ -38,6 +38,8 @@ namespace Office365FiddlerExtension
 
         public MenuItem MiAnalyseAllSessions { get; set; }
 
+        public MenuItem MiStopSessionAnalysis { get; set; }
+
         public MenuItem MiClearAllSessionAnalysis { get; set; }
 
         public MenuItem MiCreateConsolidatedAnalysisReport { get; set; }
@@ -109,6 +111,11 @@ namespace Office365FiddlerExtension
                         Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
                     };
 
+                    this.MiStopSessionAnalysis = new MenuItem($"{LangHelper.GetString("Stop Session Analysis")}", new System.EventHandler(this.MiStopSessionAnalysis_Click))
+                    {
+                        Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
+                    };
+
                     this.MiClearAllSessionAnalysis = new MenuItem($"{LangHelper.GetString("Clear All Session Analysis")}", new System.EventHandler(this.MiClearAllSessionAnalysis_Click))
                     {
                         Enabled = SettingsJsonService.Instance.ExtensionSessionProcessingEnabled
@@ -131,6 +138,7 @@ namespace Office365FiddlerExtension
                     this.ExtensionMenu.MenuItems.AddRange(new MenuItem[] { this.MiEnabled,
                     new MenuItem("-"),
                     this.MiAnalyseAllSessions,
+                    this.MiStopSessionAnalysis,
                     this.MiClearAllSessionAnalysis,
                     new MenuItem("-"),
                     this.MiCreateConsolidatedAnalysisReport,
@@ -331,6 +339,12 @@ namespace Office365FiddlerExtension
             TelemetryService.CustomTrackEvent("UI_MenuUI_MiAnalyseAllSessions_Click");
 
             SessionFlagService.Instance.AnalyseAllSessions();
+        }
+
+        private void MiStopSessionAnalysis_Click(object sender, EventArgs e)
+        {
+            TelemetryService.CustomTrackEvent("UI_MenuUI_MiStopSessionAnalysis_Click");
+            SettingsJsonService.Instance.SetInterruptSessionProcessing(true);
         }
 
         /// <summary>

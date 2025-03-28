@@ -199,6 +199,7 @@ namespace Office365FiddlerExtension.Services
             return false;
         }
 
+        // REVIEW THIS: Does this make sense?
         private bool SessionsStreamed()
         {
             var Sessions = FiddlerApplication.UI.GetAllSessions();

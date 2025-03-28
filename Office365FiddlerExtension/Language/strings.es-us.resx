@@ -716,4 +716,7 @@ sponible</value>
   <data name="Do you want to continue or cancel the operation?" xml:space="preserve">
     <value />
   </data>
+  <data name="Stop Session Analysis" xml:space="preserve">
+    <value />
+  </data>
 </root>
