@@ -109,62 +109,6 @@ namespace Office365FiddlerExtension.Services
         }
 
         /// <summary>
-        /// Function to set UIColoursSet session flag true/false. Trying to determine when this.session[ui-color] is null, not null, doesn't
-        /// have the right value was too cumbersome. This function is called when the UI colors on sessions are set or cleared.
-        /// </summary>
-        /// <param name="session"></param>
-        /// <param name="_value"></param>
-        public void SetUIColourSet(Session session, bool _value)
-        {
-            this.session = session;
-
-            var JsonSettings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-
-            CreateExtensionSessionFlag(this.session);
-
-            // Pull the existing session flags on the session.
-            var sessionFlags = this.session["Microsoft365FiddlerExtensionJson"];
-            var sessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(sessionFlags, JsonSettings);
-
-            // Update the session severity.
-            sessionFlagsJson.UIColoursSet = _value;
-
-            var newJsonData = JsonConvert.SerializeObject(sessionFlagsJson, Formatting.Indented);
-
-            // Save the new Json to the session flag.
-            this.session["Microsoft365FiddlerExtensionJson"] = newJsonData;
-        }
-
-        public void SetSessionSeverity(Session session, int _severity)
-        {
-            this.session = session;
-
-            var JsonSettings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-
-            CreateExtensionSessionFlag(this.session);
-
-            // Pull the existing session flags on the session.
-            var sessionFlags = this.session["Microsoft365FiddlerExtensionJson"];
-            var sessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(sessionFlags, JsonSettings);
-
-            // Update the session severity.
-            sessionFlagsJson.SessionSeverity = _severity;
-
-            var newJsonData = JsonConvert.SerializeObject(sessionFlagsJson, Formatting.Indented);
-
-            // Save the new Json to the session flag.
-            this.session["Microsoft365FiddlerExtensionJson"] = newJsonData;
-        }
-
-        /// <summary>
         /// Take any updates to session flags and save them into the session Json.
         /// </summary>
         /// <param name="Session"></param>
