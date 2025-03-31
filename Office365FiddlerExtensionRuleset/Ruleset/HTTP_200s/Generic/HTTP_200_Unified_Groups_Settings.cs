@@ -70,7 +70,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                         $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
                 }
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_200s",
 
@@ -92,8 +92,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                         sessionSeverityFallback)
                 };
 
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             // User cannot create Office 365 groups. Not an error condition in and of itself.
             else if (this.session.utilFindInResponse("<GroupCreationEnabled>false</GroupCreationEnabled>", false) > 1)
@@ -125,7 +127,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                         $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
                 }
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_200s",
 
@@ -147,8 +149,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                         sessionSeverityFallback)
                 };
 
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             // Did not see the expected keyword in the response body. This is the error condition.
             else
@@ -180,7 +184,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                         $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
                 }
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_200s",
 
@@ -202,8 +206,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                         sessionSeverityFallback)
                 };
 
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
     }

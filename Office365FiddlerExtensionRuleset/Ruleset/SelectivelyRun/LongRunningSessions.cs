@@ -104,7 +104,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 $"({this.GetType().Name}): {this.session.id} Running LongRunningSessionsWarning.");
 
             // Warn on a 2.5 second roundtrip time. Using ClientMilliseconds here since that represents the complete round trip.
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "LongRunningSesions_Warning",
 
@@ -114,8 +114,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
                 SessionSeverity = 40
             };
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         /// <summary>
@@ -137,7 +140,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} Long running client session.");
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "LongRunningSessions_Client_Session",
 
@@ -148,8 +151,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 SessionSeverity = 60
             };
 
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         /// <summary>
@@ -171,7 +176,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
                 $"({this.GetType().Name}): {this.session.id} Long running Office 365 session.");
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "LongRunningSessions_Server_Session",
 
@@ -182,8 +187,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 SessionSeverity = 60
             };
 
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);           
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);           
         }
     }
 }

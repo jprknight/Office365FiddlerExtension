@@ -142,7 +142,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_500s",
 
@@ -164,8 +164,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     sessionSeverityFallback)
             };
 
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false); 
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson); 
         }
 
         private void HTTP_500_Internal_Server_Error_Impersonate_User_Denied(Session session)
@@ -216,7 +218,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_500s",
 
@@ -238,8 +240,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     sessionSeverityFallback)
             };
 
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         private void HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong(Session session)
@@ -285,7 +289,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_500s",
 
@@ -307,8 +311,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     sessionSeverityFallback)
             };
 
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         private void HTTP_500_Internal_Server_Error_All_Others(Session session)
@@ -342,7 +348,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_500s",
 
@@ -364,8 +370,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     sessionSeverityFallback)
             };
 
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

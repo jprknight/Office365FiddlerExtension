@@ -41,12 +41,12 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 TelemetryService.CustomTrackMetric("RS_HTTP_400_Cloud_Authentication", sw_HTTP_400_Cloud_Authentication.ElapsedMilliseconds);
             }
 
+            ///////////////////////////////
+            
             if (RulesetUtilities.Instance.StopProcessing_SessionTypeConfidenceLevel_Ten(this.session))
             {
                 return;
             }
-
-            ///////////////////////////////
 
             var sw_HTTP_400_Everything_Else = Stopwatch.StartNew();
 
@@ -98,7 +98,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_400s",
 
@@ -120,8 +120,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     sessionSeverityFallback)
             };
 
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
 
         public void HTTP_400_Everything_Else(Session session)
@@ -157,7 +159,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_400s",
 
@@ -179,8 +181,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     sessionSeverityFallback)
             };
 
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

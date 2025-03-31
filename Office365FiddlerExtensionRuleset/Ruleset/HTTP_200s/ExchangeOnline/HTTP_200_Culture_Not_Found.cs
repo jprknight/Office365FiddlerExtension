@@ -45,7 +45,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 return;
             }
 
-            var ExtensionSessionFlags = SessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
+            var ExtensionSessionFlags = RulesetSessionFlagService.Instance.GetDeserializedSessionFlags(this.session);
 
             int sessionAuthenticationConfidenceLevel = 0;
             int sessionTypeConfidenceLevel = 0;
@@ -73,7 +73,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                     $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_200s",
 
@@ -95,8 +95,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                     sessionSeverityFallback)
             };
 
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
         }
     }
 }

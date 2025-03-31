@@ -55,158 +55,186 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 if (ElapsedMilliseconds / 10 > ServerMilliseconds 
                     && ElapsedMilliseconds > SettingsJsonService.Instance.SlowRunningSessionThreshold)
                 {
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                    var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                     {
                         SessionTimersDescription = RulesetLangHelper.GetString("SessionTimersDescription")
                     };
 
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                        $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
 
                     // Highlight server think time in green.
                     if (ServerMilliseconds < 1000)
                     {
-                        sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                        sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                         {
                             ServerThinkTime = $"<b><span style='color:green'>{ServerMilliseconds}ms.</span></b>"
                         };
 
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                            $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                     else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
                     {
-                        sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                        sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                         {
                             ServerThinkTime = $"<b><span style='color:green'>"
                                 + $"{ServerSeconds} {RulesetLangHelper.GetString("Second")} ({ServerMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}).</span></b>"
                         };
 
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                            $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                     else
                     {
-                        sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                        sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                         {
                             ServerThinkTime = $"<b><span style='color:green'>"
                                 + $"{ServerSeconds} {RulesetLangHelper.GetString("Seconds")} ({ServerMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}).</span></b>"
                         };
 
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                            $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
 
                     // Highlight transit time in red.
                     if (dTransitTimeMilliseconds < 1000)
                     {
-                        sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                        sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                         {
                             TransitTime = $"<b><span style='color:red'>{dTransitTimeMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}.</span></b>"
                         };
 
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                            $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                     else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
                     {
-                        sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                        sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                         {
                             TransitTime = $"<b><span style='color:red'>"
                                 + $"{iTransitTimeSeconds} {RulesetLangHelper.GetString("Second")} ({dTransitTimeMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}).</span></b>"
                         };
 
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                            $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                     else
                     {
-                        sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                        sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                         {
                             TransitTime = $"<b><span style='color:red'>"
                                 + $"{iTransitTimeSeconds} {RulesetLangHelper.GetString("Seconds")} ({dTransitTimeMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}).</span></b>"
                         };
 
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                            $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                         sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                 }
                 else
                 {
                     if (ServerMilliseconds < 1000)
                     {
-                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                         {
                             ServerThinkTime = $"{ServerMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}"
                         };
 
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                            $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                     else if (ServerMilliseconds >= 1000 && ServerMilliseconds < 2000)
                     {
-                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                         {
                             ServerThinkTime = $"{ServerSeconds} {RulesetLangHelper.GetString("Second")} ({ServerMilliseconds}{RulesetLangHelper.GetString("Milliseconds")})."
                         };
 
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                            $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                     else
                     {
-                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                         {
                             ServerThinkTime = $"{ServerSeconds} {RulesetLangHelper.GetString("Seconds")} ({ServerMilliseconds}{RulesetLangHelper.GetString("Milliseconds")})."
                         };
 
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                            $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
 
                     if (dTransitTimeMilliseconds < 1000)
                     {
-                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                         {
                             TransitTime = $"{dTransitTimeMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}"
                         };
 
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                            $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                     else if (dTransitTimeMilliseconds >= 1000 && dTransitTimeMilliseconds < 2000)
                     {
-                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                         {
                             TransitTime = $"{iTransitTimeSeconds} {RulesetLangHelper.GetString("Second")} ({dTransitTimeMilliseconds}{RulesetLangHelper.GetString("Milliseconds")})."
                         };
 
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                            $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                     else
                     {
-                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                         {
                             TransitTime = $"{iTransitTimeSeconds} {RulesetLangHelper.GetString("Seconds")} ({dTransitTimeMilliseconds}{RulesetLangHelper.GetString("Milliseconds")})."
                         };
 
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                            $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                 }
             }
             else
             {
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     ServerThinkTime = RulesetLangHelper.GetString("Insufficient data"),
                     TransitTime = RulesetLangHelper.GetString("Insufficient data"),
                     SessionTimesInsufficientData = true
                 };
 
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
 
             sw.Stop();

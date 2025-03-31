@@ -53,25 +53,29 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             {
                 double Milliseconds = Math.Round((session.Timers.ClientDoneResponse - this.session.Timers.ClientBeginRequest).TotalMilliseconds);
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = RulesetLangHelper.GetString("Session Elapsed Time"),
                     ElapsedTime = Milliseconds.ToString()
                 };
 
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
             else
             {
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "SessionElapsedTime_NoData",
                     ElapsedTime = RulesetLangHelper.GetString("No data")
                 };
 
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
 
@@ -95,80 +99,92 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 // If the roundtrip time is less than 1 second show the result in milliseconds.
                 if (ClientMilliseconds < 1000)
                 {
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                    var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "InspectorElapsedTime_LessThanOneSecond",
                         InspectorElapsedTime = $"{ClientMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}"
                     };
 
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                        $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                 }
                 // If the roundtrip is over warning and under slow running thresholds; orange.
                 else if (ClientMilliseconds > SettingsJsonService.Instance.WarningSessionTimeThreshold 
                     && ClientMilliseconds < SettingsJsonService.Instance.SlowRunningSessionThreshold)
                 {
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                    var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "InspectorElapsedTime_Warning",
                         InspectorElapsedTime = $"<b><span style='color:orange'>"
                             + $"{ClientSeconds} {RulesetLangHelper.GetString("Seconds")} ({ClientMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}).</span></b>"
                     };
 
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                        $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                 }
                 // If roundtrip is over slow running threshold; red.
                 else if (ClientMilliseconds > SettingsJsonService.Instance.SlowRunningSessionThreshold)
                 {
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                    var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                     {
                         SectionTitle = "InspectorElapsedTime_Slow",
                         InspectorElapsedTime = $"<b><span style='color:red'>"
                             + $"{ClientSeconds} {RulesetLangHelper.GetString("Seconds")} ({ClientMilliseconds}{RulesetLangHelper.GetString("Milliseconds")}).</span></b>"
                     };
 
+                    FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                        $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                     var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                    RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                 }
                 // If the roundtrip time is more than 1 second show the result in seconds.
                 else
                 {
                     if (ClientSeconds == 1)
                     {
-                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                         {
                             SectionTitle = "InspectorElapsedTime_MoreThanOneSecond",
                             InspectorElapsedTime = $"{ClientSeconds} {RulesetLangHelper.GetString("Second")} ({ClientMilliseconds}{RulesetLangHelper.GetString("Milliseconds")})."
                         };
 
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                            $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                     else
                     {
-                        var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                        var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                         {
                             SectionTitle = "InspectorElapsedTime_Else",
                             InspectorElapsedTime = $"{ClientSeconds} {RulesetLangHelper.GetString("Seconds")} ({ClientMilliseconds}{RulesetLangHelper.GetString("Milliseconds")})."
                         };
 
+                        FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                            $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                         var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                        SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                        RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
                     }
                 }
             }
             else
             {
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "InspectorElapsedTime_Insufficient_Data",
 
                     InspectorElapsedTime = RulesetLangHelper.GetString("Insufficient data")
                 };
 
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
     }

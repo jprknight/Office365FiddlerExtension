@@ -94,7 +94,7 @@ namespace Office365FiddlerExtension.UI
 
                         break;
                 }
-                SessionFlagService.Instance.SetUIColourSet(true);
+                SessionFlagService.Instance.SetUIColourSet(this.session, true);
                 this.session.RefreshUI();
             }
             catch (Exception ex)
@@ -121,12 +121,7 @@ namespace Office365FiddlerExtension.UI
                     this.session["UI-COLOR"] = "#000000";
                     this.session.RefreshUI();
 
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
-                    {
-                        SessionSeverity = 10
-                    };
-                    var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
+                    SessionFlagService.Instance.SetSessionSeverity(this.session, 10);
                 }
                 catch (Exception ex)
                 {
@@ -153,12 +148,7 @@ namespace Office365FiddlerExtension.UI
                     this.session["UI-COLOR"] = "#000000";
                     this.session.RefreshUI();
 
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
-                    {
-                        SessionSeverity = 20
-                    };
-                    var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
+                    SessionFlagService.Instance.SetSessionSeverity(this.session, 20);
                 }
                 catch (Exception ex)
                 {
@@ -185,12 +175,7 @@ namespace Office365FiddlerExtension.UI
                     this.session["UI-COLOR"] = "#000000";
                     this.session.RefreshUI();
 
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
-                    {
-                        SessionSeverity = 30
-                    };
-                    var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
+                    SessionFlagService.Instance.SetSessionSeverity(this.session, 30);
                 }
                 catch (Exception ex)
                 {
@@ -217,12 +202,7 @@ namespace Office365FiddlerExtension.UI
                     this.session["UI-COLOR"] = "#000000";
                     this.session.RefreshUI();
 
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
-                    {
-                        SessionSeverity = 40
-                    };
-                    var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
+                    SessionFlagService.Instance.SetSessionSeverity(this.session, 40);
                 }
                 catch (Exception ex)
                 {
@@ -249,12 +229,7 @@ namespace Office365FiddlerExtension.UI
                     this.session["UI-COLOR"] = "#F06141";
                     this.session.RefreshUI();
 
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
-                    {
-                        SessionSeverity = 50
-                    };
-                    var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
+                    SessionFlagService.Instance.SetSessionSeverity(this.session, 50);
                 }
                 catch (Exception ex)
                 {
@@ -281,12 +256,7 @@ namespace Office365FiddlerExtension.UI
                     this.session["UI-COLOR"] = "#000000";
                     this.session.RefreshUI();
 
-                    var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
-                    {
-                        SessionSeverity = 60
-                    };
-                    var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                    SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
+                    SessionFlagService.Instance.SetSessionSeverity(this.session, 60);
                 }
                 catch (Exception ex)
                 {

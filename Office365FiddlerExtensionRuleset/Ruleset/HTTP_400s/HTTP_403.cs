@@ -134,7 +134,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
                 }
 
-                var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_403s",
 
@@ -156,8 +156,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     sessionSeverityFallback)
                 };
 
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                 var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
             }
         }
 
@@ -195,7 +197,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                         $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
                 }
 
-                var sessionFlags_HTTP403_EWS = new SessionFlagService.ExtensionSessionFlags()
+                var sessionFlags_HTTP403_EWS = new RulesetSessionFlagService.ExtensionSessionFlags()
                 {
                     SectionTitle = "HTTP_403s_EWS_Mailbox_Language",
 
@@ -216,8 +218,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
                         sessionSeverityFallback)
                 };
+
+                FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                    $"({this.GetType().Name}): {this.session.id} Updating session flags.");
                 var sessionFlagsJson_HTTP403_EWS = JsonConvert.SerializeObject(sessionFlags_HTTP403_EWS);
-                SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson_HTTP403_EWS, false);
+                RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson_HTTP403_EWS);
             }
         }
 
@@ -273,7 +278,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }
 
-            var sessionFlags_HTTP403_FreeBusyForbidden = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags_HTTP403_FreeBusyForbidden = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_403s_FreeBusy_Request_failed_with_http_code_Forbidden",
 
@@ -294,8 +299,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
                     sessionSeverityFallback)
             };
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson_HTTP403_FreeBusyForbidden = JsonConvert.SerializeObject(sessionFlags_HTTP403_FreeBusyForbidden);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson_HTTP403_FreeBusyForbidden, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson_HTTP403_FreeBusyForbidden);
         }
 
         private void HTTP_403_Forbidden_Everything_Else(Session session)
@@ -328,7 +336,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                     $"{this.session.id} SESSION CLASSIFICATION EXTERNAL JSON FILE EXCEPTION: {ex}");
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = "HTTP_403s",
 
@@ -349,8 +357,11 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 SessionSeverity = RulesetUtilities.Instance.ValidateSessionSeverity(sessionSeverity,
                     sessionSeverityFallback)
             };
+
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);          
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);          
         }
     }
 }

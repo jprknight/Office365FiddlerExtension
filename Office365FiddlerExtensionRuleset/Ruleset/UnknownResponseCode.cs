@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Office365FiddlerExtension.Services;
 using Office365FiddlerExtensionRuleset.Services;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -32,7 +33,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             var sw = Stopwatch.StartNew();
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = RulesetLangHelper.GetString("Undefined"),
 
@@ -47,8 +48,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 SessionSeverity = 10
             };
 
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
 
             sw.Stop();
 

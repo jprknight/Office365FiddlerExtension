@@ -116,6 +116,7 @@
     <Compile Include="RunRulesetResponseCodes.cs" />
     <Compile Include="Services\RulesetLanguageService.cs" />
     <Compile Include="Services\RulesetSessionClassificationService.cs" />
+    <Compile Include="Services\RulesetSessionFlagService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

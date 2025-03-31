@@ -244,7 +244,7 @@ namespace Office365FiddlerExtension.Services
                 this.session["UI-BACKCOLOR"] = null;
                 this.session["UI-COLOR"] = null;
 
-                SetUIColourSet(false);
+                SetUIColourSet(this.session, false);
 
                 this.session.RefreshUI();
             }
@@ -269,7 +269,7 @@ namespace Office365FiddlerExtension.Services
                 this.session["UI-BACKCOLOR"] = null;
                 this.session["UI-COLOR"] = null;
 
-                SetUIColourSet(false);
+                SetUIColourSet(this.session, false);
 
                 this.session.RefreshUI();
             }
@@ -311,15 +311,31 @@ namespace Office365FiddlerExtension.Services
         /// Function to set UIColoursSet session flag true/false. Trying to determine when this.session[ui-color] is null, not null, doesn't
         /// have the right value was too cumbersome. This function is called when the UI colors on sessions are set or cleared.
         /// </summary>
+        /// <param name="session"></param>
         /// <param name="_value"></param>
-        public void SetUIColourSet(bool _value)
+        public void SetUIColourSet(Session session, bool _value)
         {
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            this.session = session;
+
+            var JsonSettings = new JsonSerializerSettings
             {
-                UIColoursSet = _value
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
             };
-            var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, true);
+
+            CreateExtensionSessionFlag(this.session);
+
+            // Pull the existing session flags on the session.
+            var sessionFlags = this.session["Microsoft365FiddlerExtensionJson"];
+            var sessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(sessionFlags, JsonSettings);
+
+            // Update the session severity.
+            sessionFlagsJson.UIColoursSet = _value;
+
+            var newJsonData = JsonConvert.SerializeObject(sessionFlagsJson, Formatting.Indented);
+
+            // Save the new Json to the session flag.
+            this.session["Microsoft365FiddlerExtensionJson"] = newJsonData;
         }
 
         /// <summary>
@@ -343,17 +359,9 @@ namespace Office365FiddlerExtension.Services
             }
         }
 
-        /// <summary>
-        /// Take any updates to session flags and save them into the session Json.
-        /// Conditional - Use the condition for Session Severity.
-        /// Unconditional - Update Session Severity. Used when calling this function fron the context menu and when a lower session severity needs to be set.
-        /// </summary>
-        /// <param name="Session"></param>
-        /// <param name="JsonData"></param>
-        /// <param name="unconditional"></param>        
-        public void UpdateSessionFlagJson(Session Session, String JsonData, bool unconditional)
+        public void SetSessionSeverity(Session session, int _severity)
         {
-            this.session = Session;
+            this.session = session;
 
             var JsonSettings = new JsonSerializerSettings
             {
@@ -363,215 +371,14 @@ namespace Office365FiddlerExtension.Services
 
             CreateExtensionSessionFlag(this.session);
 
-            var existingSessionFlags = this.session["Microsoft365FiddlerExtensionJson"];
-            var existingSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(existingSessionFlags, JsonSettings);
+            // Pull the existing session flags on the session.
+            var sessionFlags = this.session["Microsoft365FiddlerExtensionJson"];
+            var sessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(sessionFlags, JsonSettings);
 
+            // Update the session severity.
+            sessionFlagsJson.SessionSeverity = _severity;
 
-            // Pull Json for new session flags passed into function.
-            var updatedSessionFlagsJson = JsonConvert.DeserializeObject<ExtensionSessionFlags>(JsonData);
-
-            // Add the new SectionTitle to any existing value.
-            string SectionTitle;
-
-            if (existingSessionFlagsJson.SectionTitle == null || existingSessionFlagsJson.SectionTitle.Length == 0)
-            {
-                SectionTitle = updatedSessionFlagsJson.SectionTitle;
-            }
-            else
-            {
-                SectionTitle = updatedSessionFlagsJson.SectionTitle + ", " + existingSessionFlagsJson.SectionTitle;
-            }
-
-            updatedSessionFlagsJson.SectionTitle = SectionTitle;
-
-            // Replace all other values with new values as long as we don't pass in a null value.
-
-            // Session Type
-            if (updatedSessionFlagsJson.SessionType == null)
-            {
-                updatedSessionFlagsJson.SessionType = existingSessionFlagsJson.SessionType;
-            }
-
-            // Response Code Description
-            if (updatedSessionFlagsJson.ResponseCodeDescription == null)
-            {
-                updatedSessionFlagsJson.ResponseCodeDescription = existingSessionFlagsJson.ResponseCodeDescription;
-            }
-
-            // Response Server
-            if (updatedSessionFlagsJson.ResponseServer == null)
-            {
-                updatedSessionFlagsJson.ResponseServer = existingSessionFlagsJson.ResponseServer;
-            }
-
-            // Response Alert
-            if (updatedSessionFlagsJson.ResponseAlert == null)
-            {
-                updatedSessionFlagsJson.ResponseAlert = existingSessionFlagsJson.ResponseAlert;
-            }
-
-            // Response Comments
-            if (updatedSessionFlagsJson.ResponseComments == null)
-            {
-                updatedSessionFlagsJson.ResponseComments = existingSessionFlagsJson.ResponseComments;
-            }
-
-            // Data Age
-            if (updatedSessionFlagsJson.DataAge == null)
-            {
-                updatedSessionFlagsJson.DataAge = existingSessionFlagsJson.DataAge;
-            }
-
-            // Calculated Session Age
-            if (updatedSessionFlagsJson.CalculatedSessionAge == null)
-            {
-                updatedSessionFlagsJson.CalculatedSessionAge = existingSessionFlagsJson.CalculatedSessionAge;
-            }
-
-            // Date Data Collected
-            if (updatedSessionFlagsJson.DateDataCollected == null)
-            {
-                updatedSessionFlagsJson.DateDataCollected = existingSessionFlagsJson.DateDataCollected;
-            }
-
-            if (updatedSessionFlagsJson.SessionTimersDescription == null)
-            {
-                updatedSessionFlagsJson.SessionTimersDescription = existingSessionFlagsJson.SessionTimersDescription;
-            }
-
-            // Server Think Time
-            if (updatedSessionFlagsJson.ServerThinkTime == null)
-            {
-                updatedSessionFlagsJson.ServerThinkTime = existingSessionFlagsJson.ServerThinkTime;
-            }
-
-            // Transit Time
-            if (updatedSessionFlagsJson.TransitTime == null)
-            {
-                updatedSessionFlagsJson.TransitTime = existingSessionFlagsJson.TransitTime;
-            }
-
-            // Elapsed Time
-            if (updatedSessionFlagsJson.ElapsedTime == null)
-            {
-                updatedSessionFlagsJson.ElapsedTime = existingSessionFlagsJson.ElapsedTime;
-            }
-
-            // Inspector Elapsed Time
-            if (updatedSessionFlagsJson.InspectorElapsedTime == null)
-            {
-                updatedSessionFlagsJson.InspectorElapsedTime = existingSessionFlagsJson.InspectorElapsedTime;
-            }
-
-            // Authentication
-            if (updatedSessionFlagsJson.Authentication == null)
-            {
-                updatedSessionFlagsJson.Authentication = existingSessionFlagsJson.Authentication;
-            }
-
-            // Authentication Type
-            if (updatedSessionFlagsJson.AuthenticationType == null)
-            {
-                updatedSessionFlagsJson.AuthenticationType = existingSessionFlagsJson.AuthenticationType;
-            }
-
-            // Authentication Description
-            if (updatedSessionFlagsJson.AuthenticationDescription == null)
-            {
-                updatedSessionFlagsJson.AuthenticationDescription = existingSessionFlagsJson.AuthenticationDescription;
-            }
-
-            // SamlTokenIssuer
-            if (updatedSessionFlagsJson.SamlTokenIssuer == null)
-            {
-                updatedSessionFlagsJson.SamlTokenIssuer = existingSessionFlagsJson.SamlTokenIssuer;
-            }
-
-            // SamlTokenSigningCertificate
-            if (updatedSessionFlagsJson.SamlTokenSigningCertificate == null)
-            {
-                updatedSessionFlagsJson.SamlTokenSigningCertificate = existingSessionFlagsJson.SamlTokenSigningCertificate;
-            }
-
-            // SamlTokenAttributeNameUPN
-            if (updatedSessionFlagsJson.SamlTokenAttributeNameUPN == null)
-            {
-                updatedSessionFlagsJson.SamlTokenAttributeNameUPN = existingSessionFlagsJson.SamlTokenAttributeNameUPN;
-            }
-
-            // SamlTokenNameIdentifierFormat
-            if (updatedSessionFlagsJson.SamlTokenNameIdentifierFormat == null)
-            {
-                updatedSessionFlagsJson.SamlTokenNameIdentifierFormat = existingSessionFlagsJson.SamlTokenNameIdentifierFormat;
-            }
-
-            // SamlTokenAttributeNameImmutibleID
-            if (updatedSessionFlagsJson.SamlTokenAttributeNameImmutibleID == null)
-            {
-                updatedSessionFlagsJson.SamlTokenAttributeNameImmutibleID = existingSessionFlagsJson.SamlTokenAttributeNameImmutibleID;
-            }
-
-            // Process Name
-            if (updatedSessionFlagsJson.ProcessName == null)
-            {
-                updatedSessionFlagsJson.ProcessName = existingSessionFlagsJson.ProcessName;
-            }
-
-            // Host IP
-            if (updatedSessionFlagsJson.HostIP == null)
-            {
-                updatedSessionFlagsJson.HostIP = existingSessionFlagsJson.HostIP;
-            }
-
-            // TLS Version
-            if (updatedSessionFlagsJson.TLSVersion == null)
-            {
-                updatedSessionFlagsJson.TLSVersion = existingSessionFlagsJson.TLSVersion;
-            }
-
-            // Session Confidence Levels
-
-            // If the updated Session Confidence Levels are lower than the existing Session Confidence Levels, use the 
-            // existing Session Confidence Levels instead.
-            if (updatedSessionFlagsJson.SessionAuthenticationConfidenceLevel < existingSessionFlagsJson.SessionAuthenticationConfidenceLevel)
-            {
-                updatedSessionFlagsJson.SessionAuthenticationConfidenceLevel = existingSessionFlagsJson.SessionAuthenticationConfidenceLevel;
-            }
-
-            if (updatedSessionFlagsJson.SessionTypeConfidenceLevel < existingSessionFlagsJson.SessionTypeConfidenceLevel)
-            {
-                updatedSessionFlagsJson.SessionTypeConfidenceLevel = existingSessionFlagsJson.SessionTypeConfidenceLevel;
-            }
-
-            if (updatedSessionFlagsJson.SessionResponseServerConfidenceLevel < existingSessionFlagsJson.SessionResponseServerConfidenceLevel)
-            {
-                updatedSessionFlagsJson.SessionResponseServerConfidenceLevel = existingSessionFlagsJson.SessionResponseServerConfidenceLevel;
-            }
-            
-            // Session Severity.
-
-            // If the severity is being set and unconditional is false peform the logic check before allowing it to be updated.
-            if (!unconditional)
-            {
-                if (updatedSessionFlagsJson.SessionSeverity < existingSessionFlagsJson.SessionSeverity)
-                {
-                    updatedSessionFlagsJson.SessionSeverity = existingSessionFlagsJson.SessionSeverity;
-                }
-            }
-            /*
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} " +
-                $"SessionTypeConfidenceLevel set to {updatedSessionFlagsJson.SessionTypeConfidenceLevel}");
-
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} " +
-                $"SessionAuthenticationConfidenceLevel set to {updatedSessionFlagsJson.SessionAuthenticationConfidenceLevel}");
-
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} " +
-                $"SessionResponseServerConfidenceLevel set to {updatedSessionFlagsJson.SessionResponseServerConfidenceLevel}");
-
-            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} ({this.GetType().Name}): {this.session.id} " +
-                $"Session Severity set to {updatedSessionFlagsJson.SessionSeverity}");
-            */
-            var newJsonData = JsonConvert.SerializeObject(updatedSessionFlagsJson, Formatting.Indented);
+            var newJsonData = JsonConvert.SerializeObject(sessionFlagsJson, Formatting.Indented);
 
             // Save the new Json to the session flag.
             this.session["Microsoft365FiddlerExtensionJson"] = newJsonData;

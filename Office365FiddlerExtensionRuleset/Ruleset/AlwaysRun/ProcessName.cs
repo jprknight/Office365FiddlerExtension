@@ -4,6 +4,7 @@ using System;
 using Office365FiddlerExtensionRuleset.Services;
 using System.Diagnostics;
 using Office365FiddlerExtension.Services;
+using System.Reflection;
 
 namespace Office365FiddlerExtensionRuleset.Ruleset
 {
@@ -42,14 +43,16 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 ProcessName = RulesetLangHelper.GetString("Unknown");
             }
 
-            var sessionFlags = new SessionFlagService.ExtensionSessionFlags()
+            var sessionFlags = new RulesetSessionFlagService.ExtensionSessionFlags()
             {
                 SectionTitle = RulesetLangHelper.GetString("Process Name"),
                 ProcessName = ProcessName
             };
 
+            FiddlerApplication.Log.LogString($"{Assembly.GetExecutingAssembly().GetName().Name} " +
+                $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
-            SessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson, false);
+            RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
 
             sw.Stop();
 
