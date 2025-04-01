@@ -38,6 +38,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_500_Internal_Server_Error_Repeating_Redirects");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_500_Internal_Server_Error_Repeating_Redirects", sw_HTTP_500_Internal_Server_Error_Repeating_Redirects.ElapsedMilliseconds);
             }
 
@@ -57,6 +58,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_500_Internal_Server_Error_Impersonate_User_Denied");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_500_Internal_Server_Error_Impersonate_User_Denied", sw_HTTP_500_Internal_Server_Error_Impersonate_User_Denied.ElapsedMilliseconds);
             }
 
@@ -76,6 +78,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong", sw_HTTP_500_Internal_Server_Error_OWA_Something_Went_Wrong.ElapsedMilliseconds);
             }
 
@@ -95,6 +98,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_500_Internal_Server_Error_All_Others");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_500_Internal_Server_Error_All_Others", sw_HTTP_500_Internal_Server_Error_All_Others.ElapsedMilliseconds);
             }
         }

@@ -95,6 +95,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_502_Bad_Gateway_AutoDiscover_Refused_By_EXO_Vanity_Domain");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_502_Bad_Gateway_AutoDiscover_Refused_By_EXO_Vanity_Domain", sw_HTTP_502_Bad_Gateway_AutoDiscover_Refused_By_EXO_Vanity_Domain.ElapsedMilliseconds);
             }
 
@@ -114,6 +115,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover", sw_HTTP_502_Bad_Gateway_Anything_Else_AutoDiscover.ElapsedMilliseconds);
             }
 
@@ -133,6 +135,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_502_Bad_Gateway_Anything_Else");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_502_Bad_Gateway_Anything_Else", sw_HTTP_502_Bad_Gateway_Anything_Else.ElapsedMilliseconds);
             }
         }

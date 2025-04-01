@@ -38,6 +38,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_456_Multi_Factor_Required");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_456_Multi_Factor_Required", sw_HTTP_456_Multi_Factor_Required.ElapsedMilliseconds);
             }
 
@@ -57,6 +58,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_456_OAuth_Not_Available");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_456_OAuth_Not_Available", sw_456_OAuth_Not_Available.ElapsedMilliseconds);
             }
 
@@ -76,6 +78,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_456_Anything_Else");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_456_Anything_Else", sw_HTTP_456_Anything_Else.ElapsedMilliseconds);
             }
         }

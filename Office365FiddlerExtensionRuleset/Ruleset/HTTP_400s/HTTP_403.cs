@@ -38,6 +38,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_403_Forbidden_Proxy_Block");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_403_Forbidden_Proxy_Block", sw_HTTP_403_Forbidden_Proxy_Block.ElapsedMilliseconds);
             }
 
@@ -57,6 +58,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_403_ForbiHTTP_403_Forbidden_EWS_Mailbox_Language_Not_Setdden_Proxy_Block", sw_HTTP_403_Forbidden_EWS_Mailbox_Language_Not_Set.ElapsedMilliseconds);
             }
 
@@ -76,6 +78,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_403_FreeBusy_Request_Failed_Forbidden");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_403_FreeBusy_Request_Failed_Forbidden", sw_HTTP_403_FreeBusy_Request_Failed_Forbidden.ElapsedMilliseconds);
             }
 
@@ -95,6 +98,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_403_Forbidden_Everything_Else");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_403_Forbidden_Everything_Else", sw_HTTP_403_Forbidden_Everything_Else.ElapsedMilliseconds);
             }
         }

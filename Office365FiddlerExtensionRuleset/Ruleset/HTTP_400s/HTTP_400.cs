@@ -38,6 +38,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_400_Cloud_Authentication");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_400_Cloud_Authentication", sw_HTTP_400_Cloud_Authentication.ElapsedMilliseconds);
             }
 
@@ -57,6 +58,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_400_Everything_Else");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_400_Everything_Else", sw_HTTP_400_Everything_Else.ElapsedMilliseconds);
             }
         }

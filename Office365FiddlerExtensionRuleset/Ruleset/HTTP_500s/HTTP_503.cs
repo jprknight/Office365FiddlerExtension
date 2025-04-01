@@ -38,6 +38,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable", sw_HTTP_503_Service_Unavailable_Federated_STS_Unreachable_or_Unavailable.ElapsedMilliseconds);
             }
 
@@ -57,6 +58,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_503_Service_Unavailable_OWA_CreateAttachment");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_503_Service_Unavailable_OWA_CreateAttachment", sw_HTTP_503_Service_Unavailable_OWA_CreateAttachment.ElapsedMilliseconds);
             }
 
@@ -76,6 +78,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_503_Service_Unavailable_Everything_Else");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_503_Service_Unavailable_Everything_Else", sw_HTTP_503_Service_Unavailable_Everything_Else.ElapsedMilliseconds);
             }
         }

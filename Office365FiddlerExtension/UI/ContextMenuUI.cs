@@ -24,6 +24,8 @@ namespace Office365FiddlerExtension
 
         private readonly MenuItem Separator3 = new MenuItem("-");
 
+        private readonly MenuItem Separator4 = new MenuItem("-");
+
         private readonly MenuItem SubMenuSeparator = new MenuItem("-");
 
         //private readonly MenuItem CmiAnalyseAllSessions = new MenuItem(LangHelper.GetString("Analyse All Sessions"));
@@ -73,13 +75,14 @@ namespace Office365FiddlerExtension
 
                 //FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(0, CmiAnalyseAllSessions);
                 FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(0, CmiAnalyseSelectedSessions);
-                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(1, CmiStopSessionAnalysis);
                 FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(2, CmiClearAnalysisSelectedSessions);
                 FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(3, Separator1);
-                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(4, CmiSetSessionSeverity);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(1, CmiStopSessionAnalysis);
                 FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(5, Separator2);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(4, CmiSetSessionSeverity);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(5, Separator3);
                 FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(6, CmiCreateConsolidatedAnalysisReport);
-                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(7, Separator3);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(7, Separator4);
 
                 this.CmiSetSessionSeverity.MenuItems.AddRange(new MenuItem[] {
                     this.CmiRecalculateAnalysisSelectedSessions,

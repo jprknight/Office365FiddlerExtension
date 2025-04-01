@@ -191,6 +191,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+
+            TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
         }
 
         private void InvalidSessionJsonResponse(Session session)
@@ -267,6 +269,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+
+            TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
         }
     }
 }

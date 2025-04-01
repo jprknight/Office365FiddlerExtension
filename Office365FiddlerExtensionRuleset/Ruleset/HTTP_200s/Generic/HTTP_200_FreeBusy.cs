@@ -113,6 +113,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+
+            TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
         }
 
         private void FreeBusy_ProxyWebRequestFailed(Session session)
@@ -189,6 +191,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+
+            TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
         }
 
         private void FreeBusy_Failure_Result_Set_Too_Many_Calendar_Entries(Session session)
@@ -276,6 +280,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset.HTTP_200s
                 $"({this.GetType().Name}): {this.session.id} Updating session flags.");
             var sessionFlagsJson = JsonConvert.SerializeObject(sessionFlags);
             RulesetSessionFlagService.Instance.UpdateSessionFlagJson(this.session, sessionFlagsJson);
+
+            TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
         }
 
         /// <summary>

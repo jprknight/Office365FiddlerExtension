@@ -100,6 +100,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
                 {
                     TelemetryService.CustomTrackEvent("RS_ApacheAutodiscover");
+                    TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                     TelemetryService.CustomTrackMetric("RS_ApacheAutodiscover", sw.ElapsedMilliseconds);
                 }
             }

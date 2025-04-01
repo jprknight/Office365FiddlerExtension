@@ -32,27 +32,30 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             this.session = session;
 
             // Do not modify this function. Add new ruleset calls into the private functions below according to when they should be called.
-            // Broken the code here out to functions as this list is growing and will continue to grow.
-            // First: Known scenarios -- Ruleset identifies traffic which is a known issue to highlight.
-            KnownScenarios(this.session);
+            // Broken the code here out to functions as the ruleset is growing and will continue to grow.
 
-            // Second: Identify clients -- Identifies M365 clients.
+            // First: Mark up connect tunnel sessions as soon as possible in the ruleset.
+            ConnectTunnel(this.session);
+
+            // Second: Known scenarios (False Negatives) -- Ruleset identifies traffic which is a known issue to highlight.
+            KnownProblemScenarios(this.session);
+
+            // Third: Run known non-problem scenarios (Qualifying HTTP 200 traffic).
+            KnownNonProblemScenarios(this.session);
+
+            // Fourth: Identify clients -- Identifies M365 clients.
             IdentifyClients(this.session);
 
-            // Third & Last: Actually OK and lurking errors -- Should be a need to add anything here.
-            ActuallyOK_Lurking_Errors(this.session);
+            // Fifth: Actually OK and lurking errors.
+            LurkingErrors(this.session);
+
+            // Last: If all other rulesets have not already identified the session, mark the session as actually OK.
+            ActuallyOK(this.session);
         }
 
-        /// <summary>
-        /// These rulesets run first as the highest priority as they contain all the known scenarios which traffic should be
-        /// classified against before anything else.
-        /// </summary>
-        /// <param name="session"></param>
-        private void KnownScenarios(Session session)
+        private void ConnectTunnel(Session session)
         {
             this.session = session;
-
-            ///////////////////////////////
 
             var sw_HTTP_200_ConnectTunnelSessions = Stopwatch.StartNew();
 
@@ -65,6 +68,16 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 TelemetryService.CustomTrackEvent("RS_HTTP_200_ConnectTunnelSessions");
                 TelemetryService.CustomTrackMetric("RS_HTTP_200_ConnectTunnelSessions", sw_HTTP_200_ConnectTunnelSessions.ElapsedMilliseconds);
             }
+        }
+
+        /// <summary>
+        /// These rulesets run first as the highest priority as they contain all the known scenarios which traffic should be
+        /// classified against before anything else.
+        /// </summary>
+        /// <param name="session"></param>
+        private void KnownProblemScenarios(Session session)
+        {
+            this.session = session;
 
             ///////////////////////////////
 
@@ -77,6 +90,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_200_ClientAccessRule");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_200_ClientAccessRule", sw_HTTP_200_ClientAccessRule.ElapsedMilliseconds);
             }
 
@@ -92,6 +106,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_200_Culture_Not_Found");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_200_Culture_Not_Found", sw_HTTP_200_Culture_Not_Found.ElapsedMilliseconds);
             }
 
@@ -106,21 +121,8 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_200_Outlook_MAPI_Protocol_Disabled");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_200_Outlook_MAPI_Protocol_Disabled", sw_HTTP_200_Outlook_MAPI_Protocol_Disabled.ElapsedMilliseconds);
-            }
-
-            ///////////////////////////////
-
-            var sw_HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found = Stopwatch.StartNew();
-
-            HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found.Instance.Run(this.session);
-
-            sw_HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found.Stop();
-
-            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
-            {
-                TelemetryService.CustomTrackEvent("RS_HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found");
-                TelemetryService.CustomTrackMetric("RS_HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found", sw_HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found.ElapsedMilliseconds);
             }
 
             ///////////////////////////////
@@ -134,7 +136,61 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
             {
                 TelemetryService.CustomTrackEvent("RS_HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_AddressNotFound");
+                TelemetryService.CustomTrackEvent("RS_KnownProblemInSession");
                 TelemetryService.CustomTrackMetric("RS_HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_AddressNotFound", sw_HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_AddressNotFound.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
+            var sw_HTTP_200_FreeBusy = Stopwatch.StartNew();
+
+            HTTP_200_FreeBusy.Instance.Run(this.session);
+
+            sw_HTTP_200_FreeBusy.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_200_FreeBusy");
+                // Do not flag KnownProblemInSession here, there are calls within the FreeBusy functions to do this.
+                TelemetryService.CustomTrackMetric("RS_HTTP_200_FreeBusy", sw_HTTP_200_FreeBusy.ElapsedMilliseconds);
+            }
+
+            ///////////////////////////////
+
+            var sw_HTTP_200_Json = Stopwatch.StartNew();
+
+            HTTP_200_Json.Instance.Run(this.session);
+
+            sw_HTTP_200_Json.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_200_Json");
+                // Do not flag KnownProblemInSession here, there are calls within the Json functions to do this.
+                TelemetryService.CustomTrackMetric("RS_HTTP_200_Json", sw_HTTP_200_Json.ElapsedMilliseconds);
+            }
+        }
+
+        /// <summary>
+        /// These rulesets run second in priority to identify known non-problem scenarios.
+        /// </summary>
+        /// <param name="session"></param>
+        private void KnownNonProblemScenarios(Session session)
+        {
+            this.session = session;
+
+            ///////////////////////////////
+
+            var sw_HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found = Stopwatch.StartNew();
+
+            HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found.Instance.Run(this.session);
+
+            sw_HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found.Stop();
+
+            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
+            {
+                TelemetryService.CustomTrackEvent("RS_HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found");
+                TelemetryService.CustomTrackMetric("RS_HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found", sw_HTTP_200_Exchange_OnPremise_AutoDiscover_Redirect_Address_Found.ElapsedMilliseconds);
             }
 
             ///////////////////////////////
@@ -237,20 +293,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             ///////////////////////////////
 
-            var sw_HTTP_200_FreeBusy = Stopwatch.StartNew();
-
-            HTTP_200_FreeBusy.Instance.Run(this.session);
-
-            sw_HTTP_200_FreeBusy.Stop();
-
-            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
-            {
-                TelemetryService.CustomTrackEvent("RS_HTTP_200_FreeBusy");
-                TelemetryService.CustomTrackMetric("RS_HTTP_200_FreeBusy", sw_HTTP_200_FreeBusy.ElapsedMilliseconds);
-            }
-
-            ///////////////////////////////
-            
             var sw_HTTP_200_NewOutlook_GetMailTips = Stopwatch.StartNew();
 
             HTTP_200_New_Outlook_GetMailTips.Instance.Run(this.session);
@@ -279,20 +321,6 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
 
             ///////////////////////////////
 
-            var sw_HTTP_200_Json = Stopwatch.StartNew();
-
-            HTTP_200_Json.Instance.Run(this.session);
-
-            sw_HTTP_200_Json.Stop();
-
-            if (!SettingsJsonService.Instance.GetDeserializedExtensionSettings().NeverWebCall)
-            {
-                TelemetryService.CustomTrackEvent("RS_HTTP_200_Json");
-                TelemetryService.CustomTrackMetric("RS_HTTP_200_Json", sw_HTTP_200_Json.ElapsedMilliseconds);
-            }
-
-            ///////////////////////////////
-
             var sw_HTTP_200_Javascript = Stopwatch.StartNew();
 
             HTTP_200_Javascript.Instance.Run(this.session);
@@ -307,7 +335,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         }
 
         /// <summary>
-        /// These rulesets run second moderate in priority. They don't find any known issues, rather they identify client traffic.
+        /// These rulesets run third in priority to identify the client making the request.
         /// </summary>
         /// <param name="session"></param>
         private void IdentifyClients(Session session)
@@ -414,10 +442,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         }
 
         /// <summary>
-        /// These rulesets run third & last / lowest in priority to either highlight an "actually ok" response or a possible error lurking in the response body.
+        /// These rulesets run fourth in priority to identify lurking errors in the session.
         /// </summary>
         /// <param name="session"></param>
-        private void ActuallyOK_Lurking_Errors(Session session)
+        private void LurkingErrors(Session session)
         {
             this.session = session;
 
@@ -432,8 +460,15 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
                 TelemetryService.CustomTrackEvent("RS_HTTP_200_Lurking_Errors");
                 TelemetryService.CustomTrackMetric("RS_HTTP_200_Lurking_Errors", sw_HTTP_200_Lurking_Errors.ElapsedMilliseconds);
             }
+        }
 
-            ///////////////////////////////
+        /// <summary>
+        /// These rulesets run last in priority to mark the session as "actually ok" if it has not been identified as a known problem or lurking error.
+        /// </summary>
+        /// <param name="session"></param>
+        private void ActuallyOK(Session session)
+        {
+            this.session = session;
 
             var sw_HTTP_200_Actually_OK = Stopwatch.StartNew();
 

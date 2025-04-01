@@ -34,3 +34,9 @@ Always use brackets for conditionals. Apple's 'gotofail' bug, https://www.codece
 Comments where necessary, not everywhere.
 
 Writing easy to understand code.
+
+DUPLICATED CODE
+---------------
+
+There is one class file which contains some duplicated code, SessionFlagService.cs & RulesetSessionFlagService.cs.
+Session flag code is accessed both from the extension side and the ruleset side of the extension.
