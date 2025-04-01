@@ -53,6 +53,10 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
             ActuallyOK(this.session);
         }
 
+        /// <summary>
+        /// Mark up connect tunnel sessions as soon as possible in the ruleset.
+        /// </summary>
+        /// <param name="session"></param>
         private void ConnectTunnel(Session session)
         {
             this.session = session;
@@ -71,8 +75,7 @@ namespace Office365FiddlerExtensionRuleset.Ruleset
         }
 
         /// <summary>
-        /// These rulesets run first as the highest priority as they contain all the known scenarios which traffic should be
-        /// classified against before anything else.
+        /// These rulesets run first in priority to identify known problem scenarios.
         /// </summary>
         /// <param name="session"></param>
         private void KnownProblemScenarios(Session session)
