@@ -75,14 +75,14 @@ namespace Office365FiddlerExtension
 
                 //FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(0, CmiAnalyseAllSessions);
                 FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(0, CmiAnalyseSelectedSessions);
-                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(2, CmiClearAnalysisSelectedSessions);
-                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(3, Separator1);
-                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(1, CmiStopSessionAnalysis);
-                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(5, Separator2);
-                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(4, CmiSetSessionSeverity);
-                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(5, Separator3);
-                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(6, CmiCreateConsolidatedAnalysisReport);
-                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(7, Separator4);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(1, CmiClearAnalysisSelectedSessions);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(2, Separator1);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(3, CmiStopSessionAnalysis);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(4, Separator2);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(5, CmiSetSessionSeverity);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(6, Separator3);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(7, CmiCreateConsolidatedAnalysisReport);
+                FiddlerApplication.UI.mnuSessionContext.MenuItems.Add(8, Separator4);
 
                 this.CmiSetSessionSeverity.MenuItems.AddRange(new MenuItem[] {
                     this.CmiRecalculateAnalysisSelectedSessions,
