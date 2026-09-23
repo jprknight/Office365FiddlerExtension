@@ -1,3 +1,9 @@
+## DEPRECATION NOTICE
+
+Telerik has changed the licensing terms for using Fiddler Classic for commercial purposes. As a result, this extension, which ran within Fiddler, is now largely redundant.
+
+See the [M365 Trace Analyzer repository](https://github.com/jprknight/M365-Trace-Analyzer) for a standalone web-based trace analysis tool that incorporates the knowledge and capabilities developed through this extension.
+
 ## Extension Purpose
 
 This Fiddler Extension is an Office 365 / Microsoft 365 centric parser to efficiently troubleshoot Office 365 client application connectivity and functionality.
